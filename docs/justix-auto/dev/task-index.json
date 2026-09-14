@@ -328,7 +328,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-001"
       ],
@@ -351,9 +351,9 @@
       "scope": "Create module justixauto using approved compiler/dependency pins; wrapper enforces pin; test domain/app/adapter imports and shared-package nonownership. Preserve existing tools.",
       "worktree": ".worktrees/T-003",
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
-      "reviewed_sha": null,
+      "reviewed_sha": "a082c3081318b4776ea87a2f1ddeb384b93bae02",
       "agent": "backend/t003_go_foundation",
-      "execution_note": "T-001 integrated and approved; isolated Go foundation task started. Verified Go 1.27.1 is installed in project-local storage."
+      "execution_note": "Go foundation committed; race boundary tests, wrapper checks, module verification, read-only dependency compilation and module vulnerability scan pass. Independent QA pending."
     },
     {
       "id": "T-004",
