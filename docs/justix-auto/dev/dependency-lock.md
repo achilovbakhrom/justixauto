@@ -1,9 +1,9 @@
-# T-001 — proposed dependency lock
+# Dependency lock — ADR-13 baseline
 
-Status: PROPOSED; independent exact-commit QA and coordinator approval pending.
+Status: T-001 baseline approved; coordinator-approved T-004 Vitest correction below awaits T-004 exact-commit QA.
 Prepared 2026-09-14; public evidence retrieved on that UTC date.
 Task branch: `task/T-001-version-lock`; base `17f2c2cefdeb326a14cf93b71c19495c10234750`.
-This is the assigned proposal leaf for [T-001](tasks/T-001.md), not an approved ADR revision or an installation report.
+Original [T-001](tasks/T-001.md) pins were approved in [the coordinator record](../state/dependency-lock-approval.md). The [T-004 correction](../state/t004-vitest-correction-approval.md) replaces only the Vitest/coverage pair after actual compiler checks. Initial metadata-only evidence below remains scoped to T-001.
 
 ## Authority and scope
 
@@ -126,8 +126,8 @@ The table records exact direct versions and registry SHA-512 integrity values. M
 | `typescript` | `6.0.3` | `sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==` |
 | `vite` | `8.3.0` | `sha512-lhZBVvEHefgE+HQZC9O7EBJgCU/nVzFNl7vkS4RE0APtWLP02/8QVIkQtzBxPquh7lq5/78NHipTj7ODQ6XuyQ==` |
 | `@vitejs/plugin-react` | `6.1.1` | `sha512-yxLaQV9gkhS8ezJqCM6+ndU7mDY6gqAg75NQ+0IjwEI8IYOmQCgkRwHKVSfWXW076DsqMo0Dk+0FK1U+M5RgFw==` |
-| `vitest` | `5.0.0` | `sha512-gpsMNoRhMjMktVxPtstOH4/PJuPyovVaMDr4oDilXaGH1EcqM2OE96SoHT2VIQ6fTGtTjqmHDrEu2X9RQiXf8Q==` |
-| `@vitest/coverage-v8` | `5.0.0` | `sha512-toMg6PZGCIa/lQNCDoASrfb1ly4hsUKXFtFYC9kD4t78o5Y6LyNJU7AENt8eHPr3quYdxaxK7hj2mnbFfUk9NA==` |
+| `vitest` | `4.1.11` | `sha512-fhACrNXUidIbGSBr5FlbuBkO7VWC1ZyLl0DO4CU2DrQoAPxX84Ysxs+HeGQpii5lZWV1Q4gBZTTu49mF+A6Edw==` |
+| `@vitest/coverage-v8` | `4.1.11` | `sha512-8MVGEFnJIcdGjcbfKmeq8z0pZHH0JlVtoVZH9Q/qwUp6wyFnEJUBMrw9DCaj+ra3vShGmhavjalMIhPNxZAUcw==` |
 | `eslint` | `10.10.0` | `sha512-NPXn6r5zl4uET1DAVPaOwzX3rut4c0wcmw3dWJAfOsTM5+TogXo0DDjz8pwm/hL8cyVNpHqeK4JpN0NjnyFFNw==` |
 | `@eslint/js` | `10.0.1` | `sha512-zeR9k5pd4gxjZ0abRoIaxdc7I3nDktoXZk2qOv9gCNWx3mVwEn32VRhyLaRsDiJjTs0xq/T8mfPtyuXu7GWBcA==` |
 | `typescript-eslint` | `8.70.0` | `sha512-P/W5cz70/cQAuKfY3xwQMWWTV7BvJ0mAQmi+9mBcsVPaBUpd6Ohpa+fECv9rBFrQcig86jAiNBFNWUqnTjr4pw==` |
@@ -148,14 +148,14 @@ Preserve existing documentation-tool pins `clean-css` 5.3.3, `html-minifier-ters
 
 Compatibility decisions checked against exact registry engines/peerDependencies:
 
-- Node 24.21.0 satisfies Vite/plugin-react, Vitest 5, ESLint 10, jsdom 30 and all listed tooling engine ranges. @types/node is pinned to the Node 24 line, not the latest Node 26 declarations.
+- Node 24.21.0 satisfies Vite/plugin-react, Vitest 4.1.11, ESLint 10, jsdom 30 and all listed tooling engine ranges. @types/node is pinned to the Node 24 line, not the latest Node 26 declarations.
 - TypeScript **6.0.3** satisfies typescript-eslint 8.70.0's `>=4.8.4 <6.1.0`. Registry latest TypeScript 7.0.2 does not, so it is excluded.
 - ESLint 10.10.0 satisfies @eslint/js 10.0.1, typescript-eslint, React Hooks and React Refresh plugin peers; use flat configuration.
-- Vite 8.3.0 satisfies plugin-react 6.1.1 (`^8.0.0`) and Vitest 5.0.0 (`^6.4.0 || ^7.0.0 || ^8.0.0`). Coverage uses the matching 5.0.0. Optional React compiler/Babel, Sass, canvas and Vitest browser adapters are not required by this baseline.
+- Vite 8.3.0 satisfies plugin-react 6.1.1 (`^8.0.0`) and Vitest 4.1.11 (`^6.0.0 || ^7.0.0 || ^8.0.0`). Coverage uses the matching 4.1.11. Optional React compiler/Babel, Sass, canvas and Vitest browser adapters are not required by this baseline.
 - React and react-dom are both 19.3.0; matching type packages satisfy their peer ranges. Router, Query, RHF, Radix and Testing Library accept React 19. RHF 7.88.0 and Zod 4.6.5 satisfy resolver 5.9.1's required peers. Non-Zod resolver integrations are optional.
 - Testing Library React 16.3.3 pairs with DOM 10.4.2; jest-dom 7.0.1 accepts this DOM range and Vitest. Playwright 1.63.0 is for later browser QA only; browser installs belong to that later setup task.
 
-T-004 retains ownership of `web/vitest.workspace.ts` despite the historical name. Treat it as an **explicit config file** using `defineConfig` from `vitest/config` and `test.projects`; invoke `vitest run --config web/vitest.workspace.ts`. Do not use the retired `defineWorkspace`/workspace auto-discovery API. [Vitest configuration](https://vitest.dev/config/) and [projects](https://vitest.dev/config/projects) document this configuration shape. Keep paths rooted deliberately so app configs under `web/apps/*` and shared packages are discovered as they appear. An empty scaffold may report no tests; that is not a passing application test suite. Keep per-workspace build/typecheck and root orchestration separate from reference mock tests.
+T-004 retains ownership of `web/vitest.workspace.ts` despite the historical name. Treat it as an **explicit config file** using `defineConfig` from `vitest/config` and `test.projects`; invoke `vitest run --config web/vitest.workspace.ts`. Do not use the retired `defineWorkspace`/workspace auto-discovery API. [Vitest v4 configuration](https://v4.vitest.dev/config/) and [projects](https://v4.vitest.dev/guide/projects) document this configuration shape. Keep paths rooted deliberately so app configs under `web/apps/*` and shared packages are discovered as they appear. An empty scaffold may report no tests; that is not a passing application test suite. Keep per-workspace build/typecheck and root orchestration separate from reference mock tests.
 
 ## Containers
 
@@ -200,4 +200,16 @@ Confirmed ADR-09 uses Argon2id with versioned parameters. [Go Argon2 documentati
 
 Ownership, delivery and transactions remain the approved seven-owner / HTTP+RabbitMQ / local atomic transaction + durable outbox/inbox contracts. No new ownership or reliability decision is needed for these pins. Financial calculation/rounding rules, retention, live provider/security acceptance and other open decisions remain scoped to their existing tasks; this lock invents no business policy.
 
-Needed to complete T-001: independent review of this exact task commit and coordinator approval of these pins. Installation, runtime compatibility, real scanner behavior, Go/npm transitive locks and Argon2 measurements are downstream implementation evidence. Approval of the proposal permits T-003/T-004 to start with these versions; it does not mark B-01.AC1, an application, or a production deployment complete.
+T-001 completed independent QA and coordinator approval at commit `2908e9ee82fdce240d0161ab33cae858ea2007ca`; see its approval and QA records. The T-004 Vitest correction must be reviewed as part of the final T-004 commit before integration. Real scanner behavior, service runtime compatibility and Argon2 measurements remain downstream evidence. Neither this lock nor the tooling correction completes B-01.AC1, an application or a production deployment.
+
+## T-004 correction — 2026-09-14
+
+Actual strict TypeScript compilation exposed missing/broken published declarations
+in Vitest 5.0.0 that the T-001 engine/peer metadata review did not detect.
+The matched 4.1.11 pair passed the developer's strict configuration and test-source
+compilation, workspace execution, coverage and full dependency audit. Independent
+metadata/SRI/advisory checks support this correction; exact-commit T-004 QA remains
+required. No `skipLibCheck`, dependency patch or extra declaration shim is used.
+Vitest v4 is a prior major with recent maintenance evidence, not an LTS promise.
+Keep project inheritance and mock-reset defaults explicit; do not rely on v5
+defaults. See the correction approval for provenance and version-specific sources.
