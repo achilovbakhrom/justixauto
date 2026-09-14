@@ -1,0 +1,17 @@
+{
+  "run": "2026-09-13-architecture",
+  "purpose": "Recoverable originals before coordinator promotion of architecture checkpoint state",
+  "targetRoot": "/Users/bakhromachilov/startups/justixauto/docs/justix-auto",
+  "files": [
+    {"path":"dev/dev-state.md","bytes":3631,"sha256":"c3d764ed11ff20ce610e10c399da4b35d17cd3e5a3696bf5efefa7ecfe4e579a"},
+    {"path":"dev/task-board.md","bytes":927,"sha256":"857b36789952dc14b55070388063e2e73d592066d7e85501c1fe5f6e6509a031"},
+    {"path":"state/run-state.md","bytes":942,"sha256":"0a8167338a250c3083a2d1c0332510050c9ac26db4cd1ccc562a18a7a55b58fc"},
+    {"path":"open-decisions.md","bytes":12313,"sha256":"4ac6877471bef725fd335d687ac73028658024049b2c7845845463bd65b4d49c"}
+  ],
+  "sourcePointer": {
+    "path":"/Users/bakhromachilov/agents/spec-team/docs/justix-auto/dev/dev-state.md",
+    "bytes":1739,
+    "sha256":"3fbd0f2785095efe5d5ee2f49b550f1fba48c65904affddfc29d37be91eaca94",
+    "backup":"/Users/bakhromachilov/agents/spec-team/docs/justix-auto/state/backups/2026-09-13-architecture/spec-team-dev/dev-state.md"
+  }
+}

@@ -1,0 +1,474 @@
+{
+  "schema": 1,
+  "source": "/Users/bakhromachilov/agents/spec-team/docs/justix-auto/prototype",
+  "entries": [
+    "index.html",
+    "finance/index.html",
+    "insurance/index.html",
+    "admin/index.html"
+  ],
+  "tools": {
+    "terser": "5.44.0",
+    "cleanCss": "5.3.3",
+    "htmlMinifierTerser": "7.2.0"
+  },
+  "policy": "Per-file minification with local variable mangling only; no JS compression, top-level/property/function/class name mangling; shared files and script order retained; originals untouched.",
+  "files": [
+    {
+      "path": "admin/admin.css",
+      "sourceBytes": 6372,
+      "bytes": 6274,
+      "sourceSha256": "ee657e8c5b343016e7c96d0bdb500a9514a75514cc36efdca366cafeca34b7ad",
+      "sha256": "23fc32cbe0230cbfe4d96da16cd247148a0e1570b77ce52f810ac434e8793f84",
+      "kind": "runtime"
+    },
+    {
+      "path": "admin/admin.js",
+      "sourceBytes": 23982,
+      "bytes": 22643,
+      "sourceSha256": "e81bafe54cecbb084a5c1e14b65ac32e80c79bf3437c8461ceca560aeac86199",
+      "sha256": "1a95eef0c65bcffdf5ab613e4b30e3802e6bf7fd063c4b10f194774336ffc5ea",
+      "kind": "runtime"
+    },
+    {
+      "path": "admin/index.html",
+      "sourceBytes": 814,
+      "bytes": 815,
+      "sourceSha256": "2aa71e9950af46017752cc482e61a94256a444b8da0e85b9f932d5d988e67148",
+      "sha256": "0e9d0d12c5e19a0b1d4cfc1d60c83e36a0db9b18dbae19360428b2b6e29e796c",
+      "kind": "runtime"
+    },
+    {
+      "path": "admin/management.js",
+      "sourceBytes": 14958,
+      "bytes": 13792,
+      "sourceSha256": "57db776e6db89d10b595f8d7ff74f60ce1d09486cc6bf684a571f25516b158bf",
+      "sha256": "dbee0bfa577434f2ca8b9af4186d67745f0ae506df50e905b4fd2c0601af5df7",
+      "kind": "runtime"
+    },
+    {
+      "path": "app.js",
+      "sourceBytes": 238521,
+      "bytes": 227288,
+      "sourceSha256": "316680c53b7912dcdd180648c84d2622aabf8a62c75ab8277d95c444bb108284",
+      "sha256": "263836a00b00d8b0916c5b3c3cf627bc398f739d137a37cacc51a18339b679be",
+      "kind": "runtime"
+    },
+    {
+      "path": "assets/byd-song-plus.svg",
+      "sourceBytes": 1413,
+      "bytes": 1413,
+      "sourceSha256": "bfcbcc425bc298f368ca7224cbac90804f08092f27fb22615a0192a65f9c6d3f",
+      "sha256": "bfcbcc425bc298f368ca7224cbac90804f08092f27fb22615a0192a65f9c6d3f",
+      "kind": "runtime"
+    },
+    {
+      "path": "assets/li-auto-l7.svg",
+      "sourceBytes": 1417,
+      "bytes": 1417,
+      "sourceSha256": "c25b5ca96ffc080f58650efe4cd75c865cc1ea18acf36c21a554b4f8a7c1855e",
+      "sha256": "c25b5ca96ffc080f58650efe4cd75c865cc1ea18acf36c21a554b4f8a7c1855e",
+      "kind": "runtime"
+    },
+    {
+      "path": "assets/zeekr-001.svg",
+      "sourceBytes": 1416,
+      "bytes": 1416,
+      "sourceSha256": "01b0ee23b8005c7e7c4178d14784e2280dfdb9a8a91f6be756d37e505b60fbab",
+      "sha256": "01b0ee23b8005c7e7c4178d14784e2280dfdb9a8a91f6be756d37e505b60fbab",
+      "kind": "runtime"
+    },
+    {
+      "path": "common.css",
+      "sourceBytes": 47311,
+      "bytes": 41446,
+      "sourceSha256": "54bc61ad10470dd17dd303e50a8e71a053e6b970f8b4f49679d4e23360d222ff",
+      "sha256": "b8d33fc6f0ed224ff38f27f3d640f5850bd2f9103b5db759e6f3fbb2a76d1cd5",
+      "kind": "runtime"
+    },
+    {
+      "path": "company-directory-bridge.js",
+      "sourceBytes": 10267,
+      "bytes": 9300,
+      "sourceSha256": "ee1cc66b81bb57f8ac23cbb06b94638b86f3a953b745d6cbabe0c3ea2a1681ce",
+      "sha256": "74249bf60576fe9fbf692df0afa5407e740e352b4c553e4b57dc4788804f65a3",
+      "kind": "runtime"
+    },
+    {
+      "path": "company-fields.css",
+      "sourceBytes": 865,
+      "bytes": 849,
+      "sourceSha256": "113ca020eca6df095d070a010644b3bb9c0d213c793daaa79c85e7a44141a9a3",
+      "sha256": "3c3af6ae77fffc9e8dad61288bee75b19e6759e1b52851f6368f20b8f72b273e",
+      "kind": "runtime"
+    },
+    {
+      "path": "company-fields.js",
+      "sourceBytes": 3253,
+      "bytes": 2669,
+      "sourceSha256": "d838a69c5f0cdedaffe7c83b99ac026424715a9f4e243a8a561c7c2533e0aa93",
+      "sha256": "5538460b23147b87d5fd7df15efcd8c3f14672f952905c92a33d0a9a192dd479",
+      "kind": "runtime"
+    },
+    {
+      "path": "demo-accounts.js",
+      "sourceBytes": 4920,
+      "bytes": 4206,
+      "sourceSha256": "c4d3b9c6010e19a93c9eb74a69e6a086524026cd125deca0770abf0cb9afafb6",
+      "sha256": "858b4b8b88c9ff281afe0fd1512af667f0a2d8bd23f82c60fbb72b9ea13b00e8",
+      "kind": "runtime"
+    },
+    {
+      "path": "demo-accounts.test.cjs",
+      "sourceBytes": 6832,
+      "bytes": 6832,
+      "sourceSha256": "468c7312047716005bccc8a7d90434e62b028d01ef0a7d5bd64c292e6b33700e",
+      "sha256": "468c7312047716005bccc8a7d90434e62b028d01ef0a7d5bd64c292e6b33700e",
+      "kind": "regression-test"
+    },
+    {
+      "path": "finance/demo-data.js",
+      "sourceBytes": 7200,
+      "bytes": 5962,
+      "sourceSha256": "63b52de2e4e3a2720bfd2674ed2c5e1a0e7ce01ceac449988c3c235c29d2e91f",
+      "sha256": "85072d8767de3aa2163a939eafc89482bacae33b5de155624b58e35d68b9c417",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance/demo-data.test.cjs",
+      "sourceBytes": 5812,
+      "bytes": 5812,
+      "sourceSha256": "dce89eb7816f0792c75cd6d20e410f86b748844cd4501962f8c43b107f108847",
+      "sha256": "dce89eb7816f0792c75cd6d20e410f86b748844cd4501962f8c43b107f108847",
+      "kind": "regression-test"
+    },
+    {
+      "path": "finance/demo-file.js",
+      "sourceBytes": 149984,
+      "bytes": 149889,
+      "sourceSha256": "e593efce463407268f54dd97bd5961070f7190573acd4180ed7c87ab40737a95",
+      "sha256": "d2d2e510462ce35b40871c383f776d46620b15cd7be701de1f69dff329742188",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance/history-stepper.js",
+      "sourceBytes": 2409,
+      "bytes": 1869,
+      "sourceSha256": "3d37de83a76f9cd88fe9b6996a06577517800160fca567d28870ca21b04c2ad2",
+      "sha256": "2eef353a103121ecf6b406cd3bc46ee66e1aa144a3b432c6172f628fa22a5db6",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance/history-stepper.test.cjs",
+      "sourceBytes": 2802,
+      "bytes": 2802,
+      "sourceSha256": "65e23e0a750b558cfba59a25ba86c1800327d2a5067a1e8c138b21801ac0084e",
+      "sha256": "65e23e0a750b558cfba59a25ba86c1800327d2a5067a1e8c138b21801ac0084e",
+      "kind": "regression-test"
+    },
+    {
+      "path": "finance/index.html",
+      "sourceBytes": 1157,
+      "bytes": 1137,
+      "sourceSha256": "45946f3687166120d6c631f92d4a8588b5ee9657009a26b74d7ddb8b3d2cac16",
+      "sha256": "1d4f0f97fac4f52570542d8eb9ecb8efe8ca8c3bed011590f1f6bc3f2a4a125e",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance/workspace.css",
+      "sourceBytes": 7423,
+      "bytes": 6659,
+      "sourceSha256": "8c549ea084195d14745ba57b2d57becf36778125e2a790e4d4110e3e386fd4ac",
+      "sha256": "dfe6be9c09d3a3db9875fff7be50ef7f9d412875761652d3f3d00f84a76b397a",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance/workspace.js",
+      "sourceBytes": 27064,
+      "bytes": 25343,
+      "sourceSha256": "f149d29191a31d23ee1fe49a167a232a1729bfb590d88cde0abe30d82b791001",
+      "sha256": "84f9eb509d79b124eba58709c5341ec4c77174e9dfd31d1d2471f5d3cfccf36e",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance-bridge.js",
+      "sourceBytes": 12370,
+      "bytes": 11089,
+      "sourceSha256": "43d24ab07cbb40fbf12a4a39d5a4017618b0ce16bdbdd20014d93be3de49117a",
+      "sha256": "65aa918770236c5b960fd7fc73ba962bfe6b827ca7a5346812f37b97b1b9072a",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance-documents-domain.js",
+      "sourceBytes": 5250,
+      "bytes": 4342,
+      "sourceSha256": "e3194b389b1e9e354e8e8c6fbda63fdbec7d8997534b1b1a5951f642c533a3f9",
+      "sha256": "e74c4ca097ea2dac5cc9b809b8dfe99db21635b771e37903d2a63265a3ce1080",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance-documents-domain.test.cjs",
+      "sourceBytes": 5802,
+      "bytes": 5802,
+      "sourceSha256": "9396ec724b93444aa038310c02897ea93740dfe5338845a277e8ba2c30a485f4",
+      "sha256": "9396ec724b93444aa038310c02897ea93740dfe5338845a277e8ba2c30a485f4",
+      "kind": "regression-test"
+    },
+    {
+      "path": "finance-documents.css",
+      "sourceBytes": 2293,
+      "bytes": 2056,
+      "sourceSha256": "5fe201435eb7fa1aa3bcac1c52936d9856c30afe3403eca9132f396439274be9",
+      "sha256": "dbabe43498918cd69bfface25db6ea9ca6d75aed8ba13f3d5df29ea4e622d11b",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance-documents.js",
+      "sourceBytes": 12833,
+      "bytes": 11462,
+      "sourceSha256": "c53e2f15e0c5a0cb279a22e233638796d17befa687247a3e8eb0b36c608a3413",
+      "sha256": "dedfdf289aa9d7f596433ceaa6a770b93c4776e2f9b62721f8faa6a84067c78f",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance-exchange.js",
+      "sourceBytes": 9964,
+      "bytes": 8059,
+      "sourceSha256": "ce1b71c09514f1b6ab255aa9d24e6b58548b5b2ad1aa8c6f66cc4f2a916d553b",
+      "sha256": "eb733b8336fed69db7018747c3bf779d4df19f86d734adcfb241d64592b36378",
+      "kind": "runtime"
+    },
+    {
+      "path": "finance-exchange.test.cjs",
+      "sourceBytes": 6459,
+      "bytes": 6459,
+      "sourceSha256": "511ceb7df0b06047e3e8dfed875e00e61de287f79b575e3fc888b38f9b3fa258",
+      "sha256": "511ceb7df0b06047e3e8dfed875e00e61de287f79b575e3fc888b38f9b3fa258",
+      "kind": "regression-test"
+    },
+    {
+      "path": "index.html",
+      "sourceBytes": 1850,
+      "bytes": 1784,
+      "sourceSha256": "af2cafc831e2f96a0fef216b7ba5b5b33d09efdac64e91f3a6aa60fdfa4a2312",
+      "sha256": "c52fa0643950ee293e0d481f952fbb235f7e5813e91b0963616ef0101e251d27",
+      "kind": "runtime"
+    },
+    {
+      "path": "insurance/index.html",
+      "sourceBytes": 726,
+      "bytes": 727,
+      "sourceSha256": "231889fcb21b5175f3ea18dd7db192ce1302daab7a1e902ed818c9a60a960ddf",
+      "sha256": "158223855181f3d75172df934c774754c778b34c166aad0abaf44a332d72ea50",
+      "kind": "runtime"
+    },
+    {
+      "path": "insurance/workspace.js",
+      "sourceBytes": 3027,
+      "bytes": 2851,
+      "sourceSha256": "6563cc32943175e8e2603fdfcfa8e974a8add18ec69e7b2954e98ae8577cd0fd",
+      "sha256": "62777f73cf9f1059780710ab72993be625ea597dfa5e9c190df1124d9062d710",
+      "kind": "runtime"
+    },
+    {
+      "path": "insurance-bridge.js",
+      "sourceBytes": 3857,
+      "bytes": 3681,
+      "sourceSha256": "04dee2f3fae5ad8cd47c0a6b594da61e87833f04039b1a85d6c4f206d0be6a0e",
+      "sha256": "6b855b29b2c61e438c986bab66d769ea18951e7a9a402e82aa0333b73dba1c4e",
+      "kind": "runtime"
+    },
+    {
+      "path": "insurance-exchange.js",
+      "sourceBytes": 7459,
+      "bytes": 6749,
+      "sourceSha256": "6d70af03f2a0a142d84f6e897d0cfc7e027dd3ab0d1c5cb5e990e10a14c07c19",
+      "sha256": "07f4c10803c7d44cbafe35e3fe1a7a96bc78d17cb6ff665b9cdd64c26f85df5c",
+      "kind": "runtime"
+    },
+    {
+      "path": "insurance-exchange.test.cjs",
+      "sourceBytes": 4889,
+      "bytes": 4889,
+      "sourceSha256": "48a193c764dcc423013e2eb89bf3f6ff210cff2156b02e9567f8444c19435def",
+      "sha256": "48a193c764dcc423013e2eb89bf3f6ff210cff2156b02e9567f8444c19435def",
+      "kind": "regression-test"
+    },
+    {
+      "path": "insurance-ui.js",
+      "sourceBytes": 15275,
+      "bytes": 14012,
+      "sourceSha256": "17c0e1a5dfb8a722a08c0af62315be1aa5ce0ae681ee70b4816a4f7d52ff6949",
+      "sha256": "f32ec6f34c6435643538ba94d355335fae88952d5d3e2014682cabbf6d5f2501",
+      "kind": "runtime"
+    },
+    {
+      "path": "insurance.css",
+      "sourceBytes": 5762,
+      "bytes": 5752,
+      "sourceSha256": "b514d1d2312af1f284ae5e1d5582fa00f53c1b9a1a54d8d8c15a947dce4cf4d3",
+      "sha256": "e146904cd72415de5bbcdeb0cd4963b3b2c5290bf029a7652ac24ea82ddbcbd4",
+      "kind": "runtime"
+    },
+    {
+      "path": "integration-access.js",
+      "sourceBytes": 6305,
+      "bytes": 5828,
+      "sourceSha256": "9a7f2e576de01b12073a416ecd3fa596495b25c9954930b41d36abf091afb5e0",
+      "sha256": "5b3fb979bc65e11d4c53f140ba8154d4243bc48c5b6dc9ce5a1d626e9dd9980a",
+      "kind": "runtime"
+    },
+    {
+      "path": "integration-registry.js",
+      "sourceBytes": 9763,
+      "bytes": 8843,
+      "sourceSha256": "8543947c5350a681aa0869e116d7f8383335ce9a40449f7d373123a4bceef763",
+      "sha256": "f0d98e8260888d6d9ffe015b6e595022a68b003b6286a3c07a365031480c0923",
+      "kind": "runtime"
+    },
+    {
+      "path": "integration-registry.test.cjs",
+      "sourceBytes": 6834,
+      "bytes": 6834,
+      "sourceSha256": "cfab4ac9f40d2558f77225d27b44e4025e504ab73bccaa413a247c26d9349790",
+      "sha256": "cfab4ac9f40d2558f77225d27b44e4025e504ab73bccaa413a247c26d9349790",
+      "kind": "regression-test"
+    },
+    {
+      "path": "partner-finance-domain.js",
+      "sourceBytes": 9442,
+      "bytes": 6974,
+      "sourceSha256": "2bb5e657f9e1315bb9faf6cc79f6eae248c4cc67ba22df43764a554fc7ebeb2f",
+      "sha256": "39490d9c7e9240a8ae116aaa7ef71975dd0b79a3c8523406ca7d4d17a16edf8a",
+      "kind": "runtime"
+    },
+    {
+      "path": "partner-finance-domain.test.cjs",
+      "sourceBytes": 6512,
+      "bytes": 6512,
+      "sourceSha256": "c277c72cc0a2d165aed3b62bacaf387555bb0f58ad2a2b86f0b0eacab341abb6",
+      "sha256": "c277c72cc0a2d165aed3b62bacaf387555bb0f58ad2a2b86f0b0eacab341abb6",
+      "kind": "regression-test"
+    },
+    {
+      "path": "partner-finance.css",
+      "sourceBytes": 4319,
+      "bytes": 3801,
+      "sourceSha256": "7db256f67668e69892b0075e78bf2ab10f6aeb530157c231cfc84a07bede31eb",
+      "sha256": "227eb382e51ac73833ed645bf3a4673fbc8ad34fdbda7ed346b1db7617bb6ca1",
+      "kind": "runtime"
+    },
+    {
+      "path": "partner-finance.js",
+      "sourceBytes": 28902,
+      "bytes": 25356,
+      "sourceSha256": "2ea1853399e65606e498c261972b920b436e83a89e25ad8890ca4c0af1d9887b",
+      "sha256": "ecd1e0efa4a723a7b82abac099511d751ec7acc916d8a6bf972f2e0f4e3cca4d",
+      "kind": "runtime"
+    },
+    {
+      "path": "platform-directory.js",
+      "sourceBytes": 9614,
+      "bytes": 8430,
+      "sourceSha256": "04a503ab3c0bca45b38f2095b0c7bbe56c88f717bd8b6bd8c34467566e92856d",
+      "sha256": "60bae3a4076406b0884612a7726f78507787937688a822dc222ba2445acccaae",
+      "kind": "runtime"
+    },
+    {
+      "path": "platform-directory.test.cjs",
+      "sourceBytes": 9386,
+      "bytes": 9386,
+      "sourceSha256": "a2ca7185e0bc740d5d3572731eecd727dac9a994b46a3b86def1e2e711b36402",
+      "sha256": "a2ca7185e0bc740d5d3572731eecd727dac9a994b46a3b86def1e2e711b36402",
+      "kind": "regression-test"
+    },
+    {
+      "path": "realization-domain.js",
+      "sourceBytes": 5268,
+      "bytes": 3816,
+      "sourceSha256": "6e13512eb9501a364c750a0e981808f433be43251ce179743679130d3dbf9e55",
+      "sha256": "acf56073917d35995cd599eb5073be731b6533d178b977617b69837d3727cfb5",
+      "kind": "runtime"
+    },
+    {
+      "path": "realization-domain.test.cjs",
+      "sourceBytes": 3494,
+      "bytes": 3494,
+      "sourceSha256": "a04619ad8af9da81f184136d5719b4fd96f28c5c3b55b605e8d19586f0212621",
+      "sha256": "a04619ad8af9da81f184136d5719b4fd96f28c5c3b55b605e8d19586f0212621",
+      "kind": "regression-test"
+    },
+    {
+      "path": "realization.css",
+      "sourceBytes": 1712,
+      "bytes": 1509,
+      "sourceSha256": "03e6caa53b3f7aaab8116bd01c8acf08f57cec7139d3a5aec583308d1f61e3d1",
+      "sha256": "2d2a591694fbc204acfddf006eea9b4bd0ebc5b93d7fce61c1fcb56b45b2c5cc",
+      "kind": "runtime"
+    },
+    {
+      "path": "realization.js",
+      "sourceBytes": 24453,
+      "bytes": 21836,
+      "sourceSha256": "9edd3e7fb27097c1439494cee34044100446e79391b9908c115fae0d122c72b1",
+      "sha256": "032b7ecc3c264b9f49c895149db7e11dc0d6616671a58bede98133f91227ae7c",
+      "kind": "runtime"
+    },
+    {
+      "path": "styles.css",
+      "sourceBytes": 13541,
+      "bytes": 11857,
+      "sourceSha256": "c34fef646185a3a310043c168affa0d89ee990236aa383a30286dacac63340a4",
+      "sha256": "af11793c14c738af22b45922752d3dae40c677c94ec6b2508b69d3621c6fc99b",
+      "kind": "runtime"
+    },
+    {
+      "path": "vehicle-fields.css",
+      "sourceBytes": 685,
+      "bytes": 624,
+      "sourceSha256": "7cd35c88ebf9a51fa931fa69b658f35ad87b6102d43640f7939c52b75505b834",
+      "sha256": "bbb7e51437a34e03961d048cb44870a595a5da007c387ca9c7368a3e77d503af",
+      "kind": "runtime"
+    },
+    {
+      "path": "vehicle-fields.js",
+      "sourceBytes": 5201,
+      "bytes": 4166,
+      "sourceSha256": "5858548c6dd708ee60997cc5de25c97622e2f2c2ee2a858fb3c42748c1dde195",
+      "sha256": "37fb15d6c184e4e7cf4aad43286acd3794a30efd48a2552f7950de545ea67736",
+      "kind": "runtime"
+    },
+    {
+      "path": "vehicle-fields.test.cjs",
+      "sourceBytes": 1538,
+      "bytes": 1538,
+      "sourceSha256": "e522899376f304a180a45f05785a7f88c9ad8628c690a49f0a038071799475a0",
+      "sha256": "e522899376f304a180a45f05785a7f88c9ad8628c690a49f0a038071799475a0",
+      "kind": "regression-test"
+    },
+    {
+      "path": "vehicle-photos.css",
+      "sourceBytes": 1515,
+      "bytes": 1348,
+      "sourceSha256": "2d85e9ff4bec221fde8173c446acc8b1c3983457d5e4e3a9d32c394e568c21d5",
+      "sha256": "cde3e3cd32522e0b4f010a0714fdb27f86c73b8b7a1f9a8c93b95d3a4aa2df42",
+      "kind": "runtime"
+    },
+    {
+      "path": "vehicle-photos.js",
+      "sourceBytes": 7623,
+      "bytes": 6342,
+      "sourceSha256": "b7ff4474b9bbf87af12c486ca1a348b882c67f876d5d94a34c79e62bad7bda7e",
+      "sha256": "24c3bf0e3bbbe0fa8bcadd7e49ef06244412f3d34ba55aceca28242784cc140d",
+      "kind": "runtime"
+    },
+    {
+      "path": "vehicle-photos.test.cjs",
+      "sourceBytes": 1613,
+      "bytes": 1613,
+      "sourceSha256": "d946ff4c491c3717946e6576d98169cec30f92c9a712d6f9ef629f435fc39cb5",
+      "sha256": "d946ff4c491c3717946e6576d98169cec30f92c9a712d6f9ef629f435fc39cb5",
+      "kind": "regression-test"
+    }
+  ]
+}

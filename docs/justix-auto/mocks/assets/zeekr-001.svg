@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-labelledby="t d">
+  <title id="t">Zeekr 001</title><desc id="d">Демонстрационное изображение синего электромобиля</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6eef7"/><stop offset="1" stop-color="#c7d8ea"/></linearGradient><linearGradient id="car" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5d87b4"/><stop offset=".55" stop-color="#315f91"/><stop offset="1" stop-color="#1e4168"/></linearGradient></defs>
+  <rect width="320" height="200" rx="16" fill="url(#bg)"/><ellipse cx="159" cy="158" rx="120" ry="17" fill="#1e3a5f" opacity=".16"/>
+  <path d="M45 129 67 92c6-10 15-16 28-18l101-14c16-2 30 3 42 15l27 29 16 8c8 4 12 11 12 20v16H31v-10c0-5 5-8 14-9Z" fill="url(#car)"/>
+  <path d="m96 83 94-12c15-2 26 2 37 13l20 21H75l14-16c2-3 5-5 7-6Z" fill="#b9d5e8"/><path d="M164 75v30M74 108h175" stroke="#25496f" stroke-width="4" opacity=".55"/>
+  <path d="M38 132h250v16H31v-10c0-3 2-5 7-6Z" fill="#173656"/><rect x="43" y="119" width="37" height="7" rx="3.5" fill="#dbeafe"/><rect x="251" y="117" width="31" height="7" rx="3.5" fill="#fecaca"/>
+  <circle cx="87" cy="148" r="24" fill="#152b42"/><circle cx="87" cy="148" r="12" fill="#a6b8ca"/><circle cx="241" cy="148" r="24" fill="#152b42"/><circle cx="241" cy="148" r="12" fill="#a6b8ca"/>
+</svg>

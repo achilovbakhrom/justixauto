@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-labelledby="t d">
+  <title id="t">BYD Song Plus DM-i</title><desc id="d">Демонстрационное изображение серого кроссовера</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8edf4"/><stop offset="1" stop-color="#cfd8e5"/></linearGradient><linearGradient id="car" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8a96a7"/><stop offset=".6" stop-color="#5c6878"/><stop offset="1" stop-color="#3d4653"/></linearGradient></defs>
+  <rect width="320" height="200" rx="16" fill="url(#bg)"/><ellipse cx="162" cy="158" rx="120" ry="17" fill="#64748b" opacity=".16"/>
+  <path d="M54 128 74 86c5-10 13-16 25-18l91-12c16-2 29 3 40 15l31 34 16 7c9 4 14 12 14 22v14H38v-9c0-7 6-11 16-11Z" fill="url(#car)"/>
+  <path d="m97 78 87-11c13-2 23 2 32 12l20 23H77l13-17c2-3 4-5 7-7Z" fill="#b9d2e6"/><path d="M160 70v32M78 105h159" stroke="#394453" stroke-width="4" opacity=".55"/>
+  <path d="M45 132h242v16H39v-9c0-4 2-6 6-7Z" fill="#2f3844"/><rect x="49" y="119" width="31" height="8" rx="4" fill="#dbeafe"/><rect x="249" y="119" width="31" height="8" rx="4" fill="#fecaca"/>
+  <circle cx="91" cy="148" r="24" fill="#26313d"/><circle cx="91" cy="148" r="12" fill="#a9b4c2"/><circle cx="238" cy="148" r="24" fill="#26313d"/><circle cx="238" cy="148" r="12" fill="#a9b4c2"/>
+</svg>

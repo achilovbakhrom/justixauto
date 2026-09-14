@@ -1,0 +1,6 @@
+{
+  "checks": 1016,
+  "passed": 1016,
+  "errors": [],
+  "note": "Focused graph regressions only; scoped live-policy activation and missing UI still require their own approvals."
+}

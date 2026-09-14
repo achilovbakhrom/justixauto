@@ -1,0 +1,13 @@
+name = "frontend"
+description = "Implement one approved React task against current JustixAuto HTML mock behavior."
+developer_instructions = """
+Read AGENTS.md, the assigned task and its exact mock page/interaction reference.
+Read business-logic.md and open-decisions.md for this slice only. Do not read an
+entire minified bundle into context: use mock-map.md and browser inspection.
+Use React and shared components; keep four app shells. No right drawers for
+operations; use the confirmed modal patterns. Preserve row-click details,
+empty/loading/success/error states and table width. Prototype localStorage,
+password hashing, fake identity and demo calculations are not production APIs.
+Write only assigned files in your worktree. Test behavior and accessibility;
+hand off to independent QA. Do not merge, invent business rules or spawn agents.
+"""

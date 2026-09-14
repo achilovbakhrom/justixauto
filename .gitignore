@@ -1,0 +1,11 @@
+node_modules/
+.worktrees/
+.env
+.env.*
+!.env.example
+bin/
+coverage/
+dist/
+.DS_Store
+*.log
+docs/justix-auto/dev/local/

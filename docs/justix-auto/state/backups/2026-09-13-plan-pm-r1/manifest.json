@@ -1,0 +1,46 @@
+{
+  "run": "2026-09-13-plan-pm-r1",
+  "targetRoot": "/Users/bakhromachilov/startups/justixauto/docs/justix-auto",
+  "files": [
+    {
+      "path": "architecture.md",
+      "bytes": 43629,
+      "sha256": "69e8e7b53890db1bd0b834d132534d512a1f7d913c9c361c288d9ff3e21be0a8"
+    },
+    {
+      "path": "dev/backlog.md",
+      "bytes": 60567,
+      "sha256": "b47de9d815b8c33780a440c2e288172477504828069ae04291d487fa2b9cf59b"
+    },
+    {
+      "path": "dev/dev-state.md",
+      "bytes": 4900,
+      "sha256": "151f9c6404e5000b2ad48758fade0deb5e409509fb7976f4b87ff62eef48b210"
+    },
+    {
+      "path": "dev/task-board.md",
+      "bytes": 1369,
+      "sha256": "467488de1f1482327d837f9bb372247b34473b5565e904ab3850957e1a49693f"
+    },
+    {
+      "path": "dev/workflow.md",
+      "bytes": 4530,
+      "sha256": "d74b109a7e0c1f41576cde94c6bc9592e36934e485f12a575fa0aa31881149fb"
+    },
+    {
+      "path": "state/run-state.md",
+      "bytes": 1393,
+      "sha256": "4e08c70a7932c062a65e4724a76b2fcd8ae3f641c344595f070832ec06f1e6f7"
+    },
+    {
+      "path": "open-decisions.md",
+      "bytes": 14504,
+      "sha256": "bb9457bfe0214eb2f70dda9ea756f6f8156d5c72a09a30b6ed049ff57add6d40"
+    }
+  ],
+  "sourcePointer": {
+    "path": "/Users/bakhromachilov/agents/spec-team/docs/justix-auto/dev/dev-state.md",
+    "bytes": 3268,
+    "sha256": "713054f839f9fa339065eaedfd95385d99eb2cdf510d2397ae5e248fc1752cb7"
+  }
+}

@@ -1,0 +1,5 @@
+# Project scoped; does not alter personal Codex settings or permissions.
+# Agents inherit the coordinator's selected model and reasoning effort.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3

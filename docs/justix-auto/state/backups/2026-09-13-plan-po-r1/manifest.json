@@ -1,0 +1,46 @@
+{
+  "run": "2026-09-13-plan-po-r1",
+  "targetRoot": "/Users/bakhromachilov/startups/justixauto/docs/justix-auto",
+  "files": [
+    {
+      "path": "architecture.md",
+      "bytes": 43024,
+      "sha256": "1397efe8e7d3c6150de8b078733db7ae6c833c77f001cd32812393e8c8b110d3"
+    },
+    {
+      "path": "contracts/http-domain.md",
+      "bytes": 26017,
+      "sha256": "44db7ab3a4787a65d4caaf637c4b92e43807ec9c91f39460be811e6ea2fea808"
+    },
+    {
+      "path": "contracts/cross-owner.md",
+      "bytes": 20769,
+      "sha256": "a92f41aa88ab726b2283e5cae5e828a7e8afb901137bcd7648ad821e7e3c633d"
+    },
+    {
+      "path": "dev/dev-state.md",
+      "bytes": 4666,
+      "sha256": "09b3322706ac835a5fe4b9a5ae1b3702ce5167aadf9fc6394c02e52e77c7b958"
+    },
+    {
+      "path": "dev/task-board.md",
+      "bytes": 1301,
+      "sha256": "60716ffc8870dd0eab8ae8adcdd34298dbfca9b3e9739d412da1c0c82c202f28"
+    },
+    {
+      "path": "state/run-state.md",
+      "bytes": 1194,
+      "sha256": "df211c3c013e15e2081b79fa153acbe06af83dd6d40625c70a2b5e0a90224ef8"
+    },
+    {
+      "path": "open-decisions.md",
+      "bytes": 13398,
+      "sha256": "50bd8c09d90a3ee9b0a62f85a757015d238ae28ac2ee4bfce4fd5e51406dc9c8"
+    }
+  ],
+  "sourcePointer": {
+    "path": "/Users/bakhromachilov/agents/spec-team/docs/justix-auto/dev/dev-state.md",
+    "bytes": 2552,
+    "sha256": "8aa945d62147d34e99ddcf2facd93c6b26266aa476a3ea4dc579391267162740"
+  }
+}

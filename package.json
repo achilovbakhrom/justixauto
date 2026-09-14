@@ -1,0 +1,19 @@
+{
+  "name": "justixauto-development-handoff",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Documentation and mock tooling; not the production React application",
+  "scripts": {
+    "mocks:build": "node tools/build-mocks.mjs",
+    "mocks:verify": "node tools/verify-mocks.mjs",
+    "mocks:test": "node tools/test-mocks.mjs",
+    "mocks:serve": "node tools/serve-mocks.mjs",
+    "doctor": "bash tools/doctor.sh"
+  },
+  "devDependencies": {
+    "clean-css": "5.3.3",
+    "html-minifier-terser": "7.2.0",
+    "terser": "5.44.0"
+  },
+  "engines": { "node": ">=22" }
+}

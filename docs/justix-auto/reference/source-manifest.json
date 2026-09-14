@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-11",
+  "originalRoot": "/Users/bakhromachilov/agents/spec-team/docs/justix-auto",
+  "policy": "Read-only provenance; historical aggregate docs not copied as current contracts; prototype runtime copied/minified under mocks",
+  "sources": [
+    {
+      "path": "business-logic.md",
+      "bytes": 65467,
+      "sha256": "8f22c4a25d680201b1f03b75aab7cf51f48282142096ed86c02c8e2435d8cd6e"
+    },
+    {
+      "path": "screens.md",
+      "bytes": 156217,
+      "sha256": "94ab774d627f07c04e6dd4719d12b90b6f469e7e831aca0a71a88265254c0c03"
+    },
+    {
+      "path": "interaction-matrix.md",
+      "bytes": 226127,
+      "sha256": "ac7b3f7812514d01ff9818c58c4f1f9d94bc74a87d3075bd339a05711faaefe0"
+    },
+    {
+      "path": "state/run-state.md",
+      "bytes": 119265,
+      "sha256": "3349b4bd019429d14f585b90a99c194f82830bcf9a9444db07d1860ad6921161"
+    },
+    {
+      "path": "prototype/README.md",
+      "bytes": 20290,
+      "sha256": "866ccc294b0953a3943697fdb97f7256c549d3dc018686a1cbdc79e4d53cd4fe"
+    },
+    {
+      "path": "state/drafts/ux-planner/dealer-crm-sales-r1.md",
+      "bytes": 4617,
+      "sha256": "a067dfd1bf696a6e1e1ca2bd56c0e35f3723b422724df53f148de8da57a83444"
+    },
+    {
+      "path": "state/audit/realization-unified-html-r1.md",
+      "bytes": 7008,
+      "sha256": "7e266857f5b4698e867b03ae905e9394c5c3245466c347bbc7cb132428c439d2"
+    },
+    {
+      "path": "state/audit/retire-role-prototype-folders-r1.md",
+      "bytes": 3015,
+      "sha256": "84b383b81cb56c5298fd6e5e63aa9c28a7c0f158f158ad1645503f59728e27a8"
+    },
+    {
+      "path": "state/drafts/partner-finance-calculator-contract.md",
+      "bytes": 4928,
+      "sha256": "c2b6f3413f118e301380f8db9aee264681479a0d0e676bd169bdd1df1155b727"
+    },
+    {
+      "path": "state/drafts/finance-counterparty-workspace.md",
+      "bytes": 6284,
+      "sha256": "ecf9a92e2d4d1edd0267e47bc55d5fc6ec969bc2692e9ded84bc31216be197b8"
+    },
+    {
+      "path": "state/drafts/finance-post-agreement-r2.md",
+      "bytes": 5849,
+      "sha256": "b51b621e4748b7ee9de3e047dda18c94701a52a82cecbda57e44d5489ffe7981"
+    },
+    {
+      "path": "state/drafts/insurance-r1-contract.md",
+      "bytes": 2935,
+      "sha256": "72abd56613b79d975b9c8437359c7790909007f13f7c1ee2bfb744afa640200d"
+    },
+    {
+      "path": "state/audit/insurance-r1.md",
+      "bytes": 3010,
+      "sha256": "333bb66f9304f24759e8eb8564f317611e2dbe7b31163c80ccf14952dad1af64"
+    }
+  ]
+}
