@@ -62,8 +62,8 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 |---|---|---|---|---|---|---|---|---|
 | [T-001](tasks/T-001.md) | B-01 | Approve exact supported dependency and container pins | contract / 4 | decisions | integrated | — | `task/T-001-version-lock` | dependencies only |
 | [T-002](tasks/T-002.md) | B-02 | Confirm session and recovery security release settings | policy-decision / 4 | decisions | todo | — | `task/T-002-security-release` | SECURITY-ACCEPTANCE, OD-12 |
-| [T-003](tasks/T-003.md) | B-01 | Create the single Go module and architecture boundary harness | implementation / 3 | foundation | ready-for-qa | T-001 | `task/T-003-go-scaffold` | ENV-GIT |
-| [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | implementing | T-001 | `task/T-004-web-workspace` | ENV-GIT |
+| [T-003](tasks/T-003.md) | B-01 | Create the single Go module and architecture boundary harness | implementation / 3 | foundation | implementing | T-001 | `task/T-003-go-scaffold` | ENV-GIT |
+| [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | ready-for-qa | T-001 | `task/T-004-web-workspace` | ENV-GIT |
 | [T-005](tasks/T-005.md) | B-01 | Provision seven isolated local PostgreSQL owners | implementation / 3 | infra | todo | T-001, T-003 | `task/T-005-postgres-local` | ENV-GIT |
 | [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | todo | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
 | [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | todo | T-003 | `task/T-007-envelope` | ENV-GIT |
