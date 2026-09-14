@@ -351,9 +351,9 @@
       "scope": "Create module justixauto using approved compiler/dependency pins; wrapper enforces pin; test domain/app/adapter imports and shared-package nonownership. Preserve existing tools.",
       "worktree": ".worktrees/T-003",
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
-      "reviewed_sha": "a082c3081318b4776ea87a2f1ddeb384b93bae02",
+      "reviewed_sha": "5c6c67d12133f64d50df0fa38ad76d654f49f48c",
       "agent": "backend/t003_go_foundation",
-      "execution_note": "Fix cycle 1 for QA BOUNCE at a082c3081318b4776ea87a2f1ddeb384b93bae02; same isolated worktree. New commit requires fresh QA."
+      "execution_note": "Fix cycle 1 committed at 5c6c67d12133f64d50df0fa38ad76d654f49f48c after local race, six-bypass regression, readonly runtime graph and module verification passed; fresh independent QA assigned."
     },
     {
       "id": "T-004",
@@ -362,7 +362,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-001"
       ],
@@ -387,7 +387,7 @@
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
       "reviewed_sha": "fe82c455818169d7ae5b6a5e3cd7a83c54b6fd97",
       "agent": "frontend/t004_web_foundation",
-      "execution_note": "Frontend foundation and coordinator-approved Vitest4.1.11 correction committed together for independent QA. Strict config/workspace fixtures, audit and mock regression checks pass in developer verification."
+      "execution_note": "Frontend foundation plus coordinator-approved Vitest 4.1.11 correction at fe82c455818169d7ae5b6a5e3cd7a83c54b6fd97 assigned to replacement independent QA after the first QA agent hit its usage limit."
     },
     {
       "id": "T-005",
