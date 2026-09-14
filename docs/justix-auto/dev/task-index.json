@@ -272,7 +272,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [],
       "branch": "task/T-001-version-lock",
       "lane": "decisions",
@@ -288,7 +288,7 @@
       "worktree": ".worktrees/T-001",
       "base_sha": "17f2c2cefdeb326a14cf93b71c19495c10234750",
       "reviewed_sha": "2908e9ee82fdce240d0161ab33cae858ea2007ca",
-      "execution_note": "Dependency lock proposal committed; independent QA and coordinator approval pending."
+      "execution_note": "Independent QA GREEN. Coordinator approves the exact ADR-13 dependency pins in this reviewed commit; runtime and transitive verification remain downstream."
     },
     {
       "id": "T-002",

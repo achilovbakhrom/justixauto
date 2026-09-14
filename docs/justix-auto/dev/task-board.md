@@ -60,7 +60,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
-| [T-001](tasks/T-001.md) | B-01 | Approve exact supported dependency and container pins | contract / 4 | decisions | ready-for-qa | — | `task/T-001-version-lock` | dependencies only |
+| [T-001](tasks/T-001.md) | B-01 | Approve exact supported dependency and container pins | contract / 4 | decisions | qa-green | — | `task/T-001-version-lock` | dependencies only |
 | [T-002](tasks/T-002.md) | B-02 | Confirm session and recovery security release settings | policy-decision / 4 | decisions | todo | — | `task/T-002-security-release` | SECURITY-ACCEPTANCE, OD-12 |
 | [T-003](tasks/T-003.md) | B-01 | Create the single Go module and architecture boundary harness | implementation / 3 | foundation | todo | T-001 | `task/T-003-go-scaffold` | ENV-GIT |
 | [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | todo | T-001 | `task/T-004-web-workspace` | ENV-GIT |
