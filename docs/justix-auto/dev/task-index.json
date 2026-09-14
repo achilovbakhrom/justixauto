@@ -328,7 +328,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-001"
       ],
@@ -351,9 +351,9 @@
       "scope": "Create module justixauto using approved compiler/dependency pins; wrapper enforces pin; test domain/app/adapter imports and shared-package nonownership. Preserve existing tools.",
       "worktree": ".worktrees/T-003",
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
-      "reviewed_sha": "5c6c67d12133f64d50df0fa38ad76d654f49f48c",
+      "reviewed_sha": "cb5d74f726d25d72848b70df5a7e7ba4dbc2b8b4",
       "agent": "backend/t003_go_foundation",
-      "execution_note": "Fix cycle 1 committed at 5c6c67d12133f64d50df0fa38ad76d654f49f48c after local race, six-bypass regression, readonly runtime graph and module verification passed; fresh independent QA assigned."
+      "execution_note": "Independent QA GREEN at exact cb5d74f726d25d72848b70df5a7e7ba4dbc2b8b4. All original bypasses, nested source traversal, offline readonly runtime graph, race suite, module integrity, metadata and vulnerability checks pass; final SHA includes only the QA-verified checksum evidence correction after source GREEN."
     },
     {
       "id": "T-004",
@@ -362,7 +362,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-001"
       ],
@@ -387,7 +387,7 @@
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
       "reviewed_sha": "fe82c455818169d7ae5b6a5e3cd7a83c54b6fd97",
       "agent": "frontend/t004_web_foundation",
-      "execution_note": "Frontend foundation plus coordinator-approved Vitest 4.1.11 correction at fe82c455818169d7ae5b6a5e3cd7a83c54b6fd97 assigned to replacement independent QA after the first QA agent hit its usage limit."
+      "execution_note": "Independent QA BOUNCE: root unit-test discovery exits successfully when one workspace lacks vitest.config.ts but another workspace config remains. Fix cycle 1 assigned in the same isolated worktree; all other strict config, install, build, mock and failure-propagation checks passed."
     },
     {
       "id": "T-005",
