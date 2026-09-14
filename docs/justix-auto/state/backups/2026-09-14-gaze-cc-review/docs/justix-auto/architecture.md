@@ -6,7 +6,7 @@ The user-confirmed direction is Go microservices + CQRS/Event Sourcing in Gaze's
 Technical decisions below and the linked appendices were approved by the user's
 explicit "yes" to the architecture checkpoint on 2026-09-13. This does not approve
 unknown business rules, unresolved security-release settings or release scope.
-Planning is complete; see `dev/dev-state.md` for current readiness. No application implementation is authorized here.
+Next: PM task planning/validation. No application implementation is authorized here.
 
 ## 1. Authority, scope and readiness
 
@@ -15,24 +15,17 @@ Architecture contract authority: this document and its two subordinate appendice
 The appendices are part of this approved baseline, not competing specifications; this document wins if an inconsistency is found and the coordinator must correct the appendix before dependent readiness.
 `dev/analysis/{identity,inventory-commerce,retail-finance-insurance,frontend-infra}.md` record alternatives/evidence only; their prefixes, schemas and task suggestions are superseded here.
 `reference/gaze-reference.md` records observed reference behavior, not inherited guarantees. Historical `screens.md` is not the current React screen contract.
-The supplementary [Gaze Executor CC audit](reference/gaze-executor-cc-reference.md)
-records the user's 2026-09-14 request to retain microservices and also examine
-`/Users/bakhromachilov/gaze-executor-cc` at `f81b62ce346320ec229817dd73cf9ec42032e1d9`.
-Its command/aggregate/projection/subscriber structure informs implementation
-within each owner. Its pre-commit broker publication, adapter imports in the app
-layer and combined executor process do not replace the approved JustixAuto
-reliability, dependency or independently deployable service boundaries.
 Do not restore dealer/distributor apps, a fifth client app, public marketplace, dispute workflow, standalone billing/audit/workflow service or Figma prerequisite.
 No bank disbursement, actual insurance policy, legal title transfer, production registration tariff or monetary servicing rule is inferred from demo state changes.
 
-Independent Git setup was authorized and completed on 2026-09-14. The project
-has its own `main` and initial commit, pushed to the user-provided GitHub remote:
+Independent Git gate remains an implementation blocker, **not a docs-only architecture/planning blocker**:
 
 ```text
-GIT CHECK OK: /Users/bakhromachilov/startups/justixauto
+GIT CHECK FAILED: project needs its own Git repository: /Users/bakhromachilov/startups/justixauto
+Detected Git root: /Users/bakhromachilov/startups. Do not use the parent repository.
 ```
 
-Do not use the parent repository. Before application edits run the target `bash tools/check-git.sh` and require its own root + initial commit.
+Do not initialize Git or use the parent repository. Before application edits run the target `bash tools/check-git.sh` and require its own root + initial commit.
 Existing mock tests (106 at handoff), toolchain observations and source inspection are not Go/React QA. No application, dependency install, deployment or browser parity check is claimed here.
 
 ## 2. System and ownership
@@ -101,7 +94,7 @@ GORM implements PostgreSQL repositories; raw parameterized SQL is allowed inside
 | ID | Approved architectural decision | Rationale / superseded alternative |
 |---|---|---|
 | ADR-01 | Seven owners, one Go module, private DBs, HTTP internal contracts | Align with Gaze's shape without its shared business-DSN assumptions |
-| ADR-02 | Full ordered aggregate replay; no event-store snapshots initially | Original Gaze revision has snapshot stubs; CC has active SQL methods but unverified recovery. Optimize only with measured need |
+| ADR-02 | Full ordered aggregate replay; no event-store snapshots initially | Reference snapshot methods are stubs; optimize only with measured need |
 | ADR-03 | Transactional outbox + confirmed persistent AMQP + inbox + sequence-aware projections | Explicit hardening of observed publication/poison-loss gaps |
 | ADR-04 | Inventory-only atomic reservation sets; no expiry/partial allocation | Closes retail/wholesale race and prevents timeout-driven overselling |
 | ADR-05 | Caller-owned persistent processes with exact cancel/commit decisions | Resolves reservation, branch and submission races without distributed SQL |

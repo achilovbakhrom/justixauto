@@ -4,19 +4,15 @@
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
 - Phase: architecture and release scope approved; PM planning complete; implementation not started
-- Default branch: `main`; initial commit `e93c6d6260f7567da631b8a0217169c215a5b459` pushed to origin
+- Default branch: `main`; project-local Git initialized for the initial handoff commit
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
-- Git readiness: PASS; own root and initial commit verified; `npm run doctor` passes.
+- Git readiness: own root established; the initial handoff commit supplies HEAD.
   Run `bash tools/check-git.sh` before assigning application tasks.
 - Confirmed: Go microservices, CQRS + Event Sourcing, Gaze reference approach;
   React; one project folder; minified four-app HTML documentation references
 - Reference: `/Users/bakhromachilov/golang/gaze-executor`, HEAD
   `913c018fb2182ec943ef308da63baa85b5628bec`
-- Additional reference: `/Users/bakhromachilov/gaze-executor-cc`, HEAD
-  `f81b62ce346320ec229817dd73cf9ec42032e1d9`; audited 2026-09-14 in
-  `../reference/gaze-executor-cc-reference.md`. User reconfirmed microservices.
-  Existing seven-owner boundaries and approved reliability decisions remain.
 - Frontend build tool/version: React/TypeScript/Vite/shared npm workspaces approved; exact supported version lock remains a prerequisite
 - Backend service ownership, contracts and reliability ADRs: see `../architecture.md`;
   approved on 2026-09-13. Exact version lock is a first gated task; do not import
@@ -89,7 +85,8 @@ these checkpoints or regenerate the plan. `task-board.md` is the formal plan;
 `task-preview.md` remains historical examples only. Coordinator review and actual
 validation results are in `../state/planning-review.md`.
 
-Next: begin development when requested from the target project. Start with T-001 dependency
+Next: finish and verify the authorized initial Git push, then begin development
+when requested from the target project. Start with T-001 dependency
 lock and the board's first-wave sequence; resolve scoped choices only before
 their affected tasks. No policy invention. The user explicitly authorized Git
 initialization and push on 2026-09-14 and removed that prohibition from AGENTS.md.

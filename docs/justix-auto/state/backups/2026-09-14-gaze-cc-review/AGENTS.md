@@ -5,9 +5,7 @@
 1. `docs/justix-auto/dev/dev-state.md` — current phase, target root, blockers.
 2. `docs/justix-auto/business-logic.md` — reconciled product rules.
 3. `docs/justix-auto/open-decisions.md` — unresolved rules; never invent answers.
-4. `docs/justix-auto/reference/gaze-reference.md` and
-   `docs/justix-auto/reference/gaze-executor-cc-reference.md` — observed Go
-   reference patterns and their distinct reliability limits.
+4. `docs/justix-auto/reference/gaze-reference.md` — observed Go reference stack.
 5. `docs/justix-auto/mock-map.md` — exact UI surface and relevant source files.
 6. `docs/justix-auto/dev/task-board.md`, then only the assigned task/contract.
 

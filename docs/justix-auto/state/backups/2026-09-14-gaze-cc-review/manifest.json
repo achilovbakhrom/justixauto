@@ -1,0 +1,17 @@
+[
+  {
+    "path": "AGENTS.md",
+    "bytes": 4083,
+    "sha256": "140ce9fa7fa76b9b91b41f97f2c0a294722c54a58422225a58242a1bd0a9c809"
+  },
+  {
+    "path": "docs/justix-auto/architecture.md",
+    "bytes": 43706,
+    "sha256": "17579d666b3006cd9bd18096b7caab878caf661e0c544c88bbc71faaf23d8b98"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "bytes": 5646,
+    "sha256": "dfd7038fb24be81a6224c984670e178d6bfd965e5313fe20852d3b1907767273"
+  }
+]
