@@ -46,6 +46,15 @@ frontend. Agents do not create isolation automatically. Avoid concurrent edits
 to the same shared contracts/package manifests. Workers may commit their own
 task changes but must not merge or alter shared project state.
 
+Workspace scaffold tasks T-032…T-039 explicitly own their local tsconfig and
+Vitest config. Root npm lock updates for those workspace manifests are serialized
+coordinator-only handoffs before QA: inspect the manifest delta, regenerate
+`package-lock.json` with approved npm/pins in that task worktree, and commit it
+on the task branch before assigning its exact SHA to QA. Preserve mock lock
+entries and reject unrelated dependency churn. Workers never concurrently edit
+the root lock. Any lock change after QA requires renewed QA; integration does
+not silently regenerate it.
+
 Branch convention: `task/T-NNN-short-name`; worktree under `.worktrees/T-NNN`.
 Use the actual selected base branch from dev-state, never hardcode a merge into
 a parent's main. If Git is dirty or ownership overlaps, preserve and report it.

@@ -1283,7 +1283,9 @@
         "web/packages/api/package.json",
         "web/packages/api/src/client.ts",
         "web/packages/api/src/client.test.ts",
-        "web/packages/api/src/queryKeys.ts"
+        "web/packages/api/src/queryKeys.ts",
+        "web/packages/api/tsconfig.json",
+        "web/packages/api/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1296,7 +1298,10 @@
       "scope": "Same-origin transport, typed 401/403/404/409/412/422/503 receipts, no token storage or persistent PII; schema adapters injected by each feature. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-033",
@@ -1314,7 +1319,9 @@
       "files_owned": [
         "web/packages/tokens/package.json",
         "web/packages/tokens/src/tokens.css",
-        "web/packages/tokens/src/reference.test.ts"
+        "web/packages/tokens/src/reference.test.ts",
+        "web/packages/tokens/tsconfig.json",
+        "web/packages/tokens/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1331,7 +1338,10 @@
       "scope": "Read exact common/scoped CSS values, font fallback and verified responsive condition; preserve distinct insurer appearance and existing SVG assets. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-034",
@@ -1351,7 +1361,9 @@
         "web/packages/ui/src/Dialog.tsx",
         "web/packages/ui/src/Dialog.test.tsx",
         "web/packages/ui/src/Field.tsx",
-        "web/packages/ui/src/Button.tsx"
+        "web/packages/ui/src/Button.tsx",
+        "web/packages/ui/tsconfig.json",
+        "web/packages/ui/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1368,7 +1380,10 @@
       "scope": "Radix focus trap/restore, inside click does not dismiss, dirty/processing Escape behavior; test keyboard/validation and cancel-before-write only. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-035",
@@ -1388,7 +1403,9 @@
         "web/packages/test-kit/package.json",
         "web/packages/test-kit/src/fixtures.ts",
         "web/packages/test-kit/src/fixtures.test.ts",
-        "tests/e2e/playwright.config.ts"
+        "tests/e2e/playwright.config.ts",
+        "web/packages/test-kit/tsconfig.json",
+        "web/packages/test-kit/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1400,7 +1417,10 @@
       "scope": "Vitest/RTL+MSW fixture contract checks; Playwright same-state/viewport comparison infrastructure, no claim of browser parity until actually executed. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-036",
@@ -1423,7 +1443,9 @@
         "web/apps/admin/src/app/Shell.tsx",
         "web/apps/admin/src/app/Shell.module.css",
         "web/apps/admin/src/routes/registry.ts",
-        "web/apps/admin/src/app/Shell.test.tsx"
+        "web/apps/admin/src/app/Shell.test.tsx",
+        "web/apps/admin/tsconfig.json",
+        "web/apps/admin/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1439,7 +1461,10 @@
       "scope": "Base and Router basename /admin/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-037",
@@ -1462,7 +1487,9 @@
         "web/apps/realization/src/app/Shell.tsx",
         "web/apps/realization/src/app/Shell.module.css",
         "web/apps/realization/src/routes/registry.ts",
-        "web/apps/realization/src/app/Shell.test.tsx"
+        "web/apps/realization/src/app/Shell.test.tsx",
+        "web/apps/realization/tsconfig.json",
+        "web/apps/realization/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1478,7 +1505,10 @@
       "scope": "Base and Router basename /; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-038",
@@ -1501,7 +1531,9 @@
         "web/apps/financing/src/app/Shell.tsx",
         "web/apps/financing/src/app/Shell.module.css",
         "web/apps/financing/src/routes/registry.ts",
-        "web/apps/financing/src/app/Shell.test.tsx"
+        "web/apps/financing/src/app/Shell.test.tsx",
+        "web/apps/financing/tsconfig.json",
+        "web/apps/financing/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1517,7 +1549,10 @@
       "scope": "Base and Router basename /finance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-039",
@@ -1540,7 +1575,9 @@
         "web/apps/insurance/src/app/Shell.tsx",
         "web/apps/insurance/src/app/Shell.module.css",
         "web/apps/insurance/src/routes/registry.ts",
-        "web/apps/insurance/src/app/Shell.test.tsx"
+        "web/apps/insurance/src/app/Shell.test.tsx",
+        "web/apps/insurance/tsconfig.json",
+        "web/apps/insurance/vitest.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1556,7 +1593,10 @@
       "scope": "Base and Router basename /insurance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": null,
       "base_sha": null,
-      "reviewed_sha": null
+      "reviewed_sha": null,
+      "coordinator_files": [
+        "package-lock.json"
+      ]
     },
     {
       "id": "T-040",
