@@ -328,7 +328,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-001"
       ],
@@ -353,7 +353,8 @@
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
       "reviewed_sha": "cb5d74f726d25d72848b70df5a7e7ba4dbc2b8b4",
       "agent": "backend/t003_go_foundation",
-      "execution_note": "Independent QA GREEN at exact cb5d74f726d25d72848b70df5a7e7ba4dbc2b8b4. All original bypasses, nested source traversal, offline readonly runtime graph, race suite, module integrity, metadata and vulnerability checks pass; final SHA includes only the QA-verified checksum evidence correction after source GREEN."
+      "execution_note": "Merged exact QA-green branch as b467e1b1bae95f5b9847741b9a3cff69367bc3e5. On integrated main: own-root Git PASS, offline Go race suite PASS, module verification PASS and 1,016/1,016 focused readiness checks PASS.",
+      "integration_sha": "b467e1b1bae95f5b9847741b9a3cff69367bc3e5"
     },
     {
       "id": "T-004",
