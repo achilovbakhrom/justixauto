@@ -3,7 +3,7 @@
 - Date: 2026-09-14
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
-- Phase: development authorized; T-001 dependency lock in progress before application scaffolding
+- Phase: development authorized; dependency lock ready-for-qa; application scaffolding waits for approved pins
 - Default branch: `main`; initial commit `e93c6d6260f7567da631b8a0217169c215a5b459` pushed to origin
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
@@ -25,8 +25,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-001 implementing; architect agent `t001_dependency_lock`, worktree `.worktrees/T-001`, branch `task/T-001-version-lock`, base `17f2c2cefdeb326a14cf93b71c19495c10234750`.
-- Integrated tasks: 0/916; application scaffolding waits for T-001 coordinator approval and independent QA.
+- Active task: T-001 ready-for-qa (`.worktrees/T-001`, `task/T-001-version-lock`).
+- Integrated tasks: 0/916; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item

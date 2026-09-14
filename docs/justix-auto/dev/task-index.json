@@ -272,7 +272,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 4,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [],
       "branch": "task/T-001-version-lock",
       "lane": "decisions",
@@ -287,7 +287,8 @@
       "scope": "Record dated official support/security evidence, compiler compatibility and exact package/image digests for ADR-13. No installs. Include Argon2 benchmark plan and ClamAV engine pin. Coordinator approval required before completion.",
       "worktree": ".worktrees/T-001",
       "base_sha": "17f2c2cefdeb326a14cf93b71c19495c10234750",
-      "reviewed_sha": null
+      "reviewed_sha": "2908e9ee82fdce240d0161ab33cae858ea2007ca",
+      "execution_note": "Dependency lock proposal committed; independent QA and coordinator approval pending."
     },
     {
       "id": "T-002",
