@@ -363,7 +363,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-001"
       ],
@@ -386,9 +386,9 @@
       "scope": "Preserve mock commands. Add strict TypeScript workspace/test/build commands and exact lock. This is the sole initial root manifest writer; subsequent task additions use existing workspace glob, not concurrent root edits.",
       "worktree": ".worktrees/T-004",
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
-      "reviewed_sha": "fe82c455818169d7ae5b6a5e3cd7a83c54b6fd97",
+      "reviewed_sha": "7f6383c44996d9dd4121f8865d749a6d895f2b86",
       "agent": "frontend/t004_web_foundation",
-      "execution_note": "Independent QA BOUNCE: root unit-test discovery exits successfully when one workspace lacks vitest.config.ts but another workspace config remains. Fix cycle 1 assigned in the same isolated worktree; all other strict config, install, build, mock and failure-propagation checks passed."
+      "execution_note": "Fix cycle 1 at 7f6383c44996d9dd4121f8865d749a6d895f2b86 requires exactly one .ts/.mts Vitest config per discovered npm workspace. Developer checks cover missing app/package configs, ambiguous configs, strict types, lint, tests, coverage, builds, lock and 106 mock regressions; fresh exact-SHA QA assigned."
     },
     {
       "id": "T-005",
