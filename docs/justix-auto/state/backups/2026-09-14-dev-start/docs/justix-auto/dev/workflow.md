@@ -1,6 +1,6 @@
 # Codex development workflow
 
-Status: architecture and release planning scope approved; development authorized on 2026-09-14. See dev-state.md and task-board.md for live task status.
+Status: architecture and release planning scope approved; application execution not started.
 
 ## 1. Environment and inputs
 

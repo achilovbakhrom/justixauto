@@ -1,11 +1,11 @@
 {
   "metadata": {
     "project": "justix-auto",
-    "date": "2026-09-14",
+    "date": "2026-09-13",
     "target_root": "/Users/bakhromachilov/startups/justixauto",
-    "all_statuses": "mixed; see per-task status",
-    "implementation_authorized": true,
-    "git_gate": "PASS: own target Git root and initial commit verified on 2026-09-14",
+    "all_statuses": "todo",
+    "implementation_authorized": false,
+    "git_gate": "ENV-GIT unresolved; own target Git root and initial commit required; never initialize automatically",
     "scope": "42 Must + 7 Should; B-50..52 Icebox excluded",
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
@@ -272,7 +272,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 4,
-      "status": "implementing",
+      "status": "todo",
       "depends_on": [],
       "branch": "task/T-001-version-lock",
       "lane": "decisions",
@@ -285,8 +285,8 @@
         "B-01.AC1"
       ],
       "scope": "Record dated official support/security evidence, compiler compatibility and exact package/image digests for ADR-13. No installs. Include Argon2 benchmark plan and ClamAV engine pin. Coordinator approval required before completion.",
-      "worktree": ".worktrees/T-001",
-      "base_sha": "17f2c2cefdeb326a14cf93b71c19495c10234750",
+      "worktree": null,
+      "base_sha": null,
       "reviewed_sha": null
     },
     {

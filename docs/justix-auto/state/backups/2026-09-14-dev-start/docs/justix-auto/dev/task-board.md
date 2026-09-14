@@ -1,6 +1,6 @@
 # JustixAuto — reviewed development task plan
 
-Date: 2026-09-14. Release scope and architecture approved. User authorized development with "ok lets start". T-001 is implementing in its assigned branch/worktree; all other tasks remain todo. Target: `/Users/bakhromachilov/startups/justixauto`.
+Date: 2026-09-13. Release scope approved by user continuation per coordinator; architecture already approved. All tasks **todo**, no application work authorized or performed, no branches/worktrees allocated. Target: `/Users/bakhromachilov/startups/justixauto`.
 
 ## Readiness and execution rules
 
@@ -24,7 +24,7 @@ Date: 2026-09-14. Release scope and architecture approved. User authorized devel
 
 ## Graph metrics and lanes
 
-916 tasks; 3036 estimated effort-hours (not elapsed schedule). Longest dependency chain: 45 nodes. Earliest-rank maximum frontier: 150. Exact dependency-poset maximum antichain width: 335. These are graph-only upper bounds ignoring unresolved gates/worker cap, not ready-now concurrency. ENV-GIT passes; T-001 still gates application scaffolding.
+916 tasks; 3036 estimated effort-hours (not elapsed schedule). Longest dependency chain: 45 nodes. Earliest-rank maximum frontier: 150. Exact dependency-poset maximum antichain width: 335. These are graph-only upper bounds ignoring unresolved gates/worker cap, not ready-now concurrency. Real implementation-ready count is zero while ENV-GIT fails.
 
 Critical chain (unit-duration graph): T-001 → T-003 → T-007 → T-008 → T-009 → T-017 → T-018 → T-024 → T-059 → T-641 → T-060 → T-061 → T-066 → T-133 → T-134 → T-307 → T-308 → T-139 → T-315 → T-316 → T-173 → T-329 → T-330 → T-215 → T-331 → T-332 → T-216 → T-337 → T-338 → T-245 → T-357 → T-358 → T-289 → T-339 → T-340 → T-246 → T-250 → T-251 → T-252 → T-255 → T-256 → T-257 → T-860 → T-555 → T-635.
 
@@ -60,7 +60,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
-| [T-001](tasks/T-001.md) | B-01 | Approve exact supported dependency and container pins | contract / 4 | decisions | implementing | — | `task/T-001-version-lock` | dependencies only |
+| [T-001](tasks/T-001.md) | B-01 | Approve exact supported dependency and container pins | contract / 4 | decisions | todo | — | `task/T-001-version-lock` | dependencies only |
 | [T-002](tasks/T-002.md) | B-02 | Confirm session and recovery security release settings | policy-decision / 4 | decisions | todo | — | `task/T-002-security-release` | SECURITY-ACCEPTANCE, OD-12 |
 | [T-003](tasks/T-003.md) | B-01 | Create the single Go module and architecture boundary harness | implementation / 3 | foundation | todo | T-001 | `task/T-003-go-scaffold` | ENV-GIT |
 | [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | todo | T-001 | `task/T-004-web-workspace` | ENV-GIT |

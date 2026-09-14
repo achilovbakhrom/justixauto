@@ -3,7 +3,7 @@
 - Date: 2026-09-14
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
-- Phase: development authorized; T-001 dependency lock in progress before application scaffolding
+- Phase: architecture and release scope approved; PM planning complete; implementation not started
 - Default branch: `main`; initial commit `e93c6d6260f7567da631b8a0217169c215a5b459` pushed to origin
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
@@ -24,9 +24,7 @@
 - Package manager: npm for documentation tooling; lockfile included
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
-- Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-001 implementing; architect agent `t001_dependency_lock`, worktree `.worktrees/T-001`, branch `task/T-001-version-lock`, base `17f2c2cefdeb326a14cf93b71c19495c10234750`.
-- Integrated tasks: 0/916; application scaffolding waits for T-001 coordinator approval and independent QA.
+- Implementation tasks: all todo; no execution authorized or in progress
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -91,8 +89,8 @@ these checkpoints or regenerate the plan. `task-board.md` is the formal plan;
 `task-preview.md` remains historical examples only. Coordinator review and actual
 validation results are in `../state/planning-review.md`.
 
-Next: review T-001's exact dependency lock, independently QA its commit, then
-start T-003/T-004 in parallel worktrees. Follow the board's first-wave sequence; resolve scoped choices only before
+Next: begin development when requested from the target project. Start with T-001 dependency
+lock and the board's first-wave sequence; resolve scoped choices only before
 their affected tasks. No policy invention. The user explicitly authorized Git
 initialization and push on 2026-09-14 and removed that prohibition from AGENTS.md.
 
