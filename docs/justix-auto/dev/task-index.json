@@ -363,7 +363,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-001"
       ],
@@ -388,7 +388,8 @@
       "base_sha": "ed35361973d25e053be92dae47ed88d1f90710d8",
       "reviewed_sha": "7f6383c44996d9dd4121f8865d749a6d895f2b86",
       "agent": "frontend/t004_web_foundation",
-      "execution_note": "Independent QA GREEN at exact 7f6383c44996d9dd4121f8865d749a6d895f2b86. Missing app/package configs fail unit and coverage commands; .mts is supported; ambiguous dual configs fail; strict config/type/lint/test/coverage/build, offline lock install, 57 hashes and 106 mock tests pass."
+      "execution_note": "Merged exact QA-green branch as 6eb57ae04a9ef90780b07113007b88f38e7ef35c. Integrated main passes offline locked npm install (212 packages), strict Vitest config typecheck, resolved graph, 57 mock hashes, 106 mock tests and Go race regression suite.",
+      "integration_sha": "6eb57ae04a9ef90780b07113007b88f38e7ef35c"
     },
     {
       "id": "T-005",
