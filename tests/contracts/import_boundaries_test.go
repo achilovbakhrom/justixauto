@@ -25,6 +25,30 @@ type packageBoundary struct {
 	public             bool
 }
 
+func packageWithin(path, root string) bool {
+	return path == root || strings.HasPrefix(path, root+"/")
+}
+
+// These are the shared value/envelope packages approved for domain use.
+// Their own imports receive the same restrictions, preventing a shared-package
+// trampoline from a domain value to persistence or transport infrastructure.
+func sharedPrimitive(path string) bool {
+	return packageWithin(path, "pkg/events") || packageWithin(path, "pkg/money")
+}
+
+func infrastructureImport(path string) bool {
+	for _, dependency := range []string{
+		"gorm.io/gorm", "gorm.io/driver", "github.com/jackc/pgx/v5",
+		"github.com/labstack/echo/v4", "github.com/rabbitmq/amqp091-go",
+		"github.com/golang-migrate/migrate/v4", "database/sql", "net/http",
+	} {
+		if packageWithin(path, dependency) {
+			return true
+		}
+	}
+	return false
+}
+
 func classifyPackage(path string) (packageBoundary, error) {
 	parts := strings.Split(path, "/")
 	b := packageBoundary{area: parts[0]}
@@ -58,17 +82,25 @@ func importViolation(source, imported string) string {
 	if err != nil {
 		return err.Error()
 	}
-	// External library policy is version-locked separately. Here we enforce
-	// repository ownership and dependency direction, not runtime DB permissions.
+	inner := from.area == "services" && (from.layer == "domain" || from.layer == "app" || from.layer == "port" || from.public)
+	if (inner || sharedPrimitive(source)) && infrastructureImport(imported) {
+		return "storage, broker and HTTP framework dependencies belong in adapters"
+	}
+	// This is a targeted infrastructure guard, not a universal external-library
+	// allowlist. Version policy and runtime database permissions are separate.
 	if !strings.HasPrefix(imported, modulePath+"/") {
 		return ""
 	}
-	to, err := classifyPackage(strings.TrimPrefix(imported, modulePath+"/"))
+	localImport := strings.TrimPrefix(imported, modulePath+"/")
+	to, err := classifyPackage(localImport)
 	if err != nil {
 		return err.Error()
 	}
 	if from.area == "pkg" && (to.area == "services" || to.area == "edge") {
 		return "shared mechanics cannot depend on an owner or edge"
+	}
+	if sharedPrimitive(source) && !sharedPrimitive(localImport) {
+		return "shared value primitives cannot depend on infrastructure or application packages"
 	}
 	if to.area == "services" && from.area != "services" {
 		if from.area == "tests" || (from.area == "edge" && to.public) {
@@ -80,6 +112,9 @@ func importViolation(source, imported string) string {
 		return ""
 	}
 	if to.area == "pkg" {
+		if (from.layer == "domain" || from.public) && !sharedPrimitive(localImport) {
+			return "domain and public schemas may import only shared value primitives"
+		}
 		return ""
 	}
 	if to.area != "services" {
@@ -120,21 +155,22 @@ func scanBoundaries(root string) ([]string, error) {
 		if walkErr != nil {
 			return walkErr
 		}
+		relative, err := filepath.Rel(root, path)
+		if err != nil {
+			return err
+		}
 		if entry.IsDir() {
-			if path != root {
-				switch entry.Name() {
-				case ".git", ".worktrees", "node_modules", "vendor", "docs", "testdata":
-					return filepath.SkipDir
-				}
+			// Exclude real repository roots, never a basename that can also be
+			// an ordinary Go package (e.g. services/retail/app/docs).
+			switch filepath.ToSlash(relative) {
+			case ".git", ".worktrees", "node_modules", "vendor", "docs",
+				"tests/contracts/testdata", "tests/integration/testdata", "tests/e2e/testdata":
+				return filepath.SkipDir
 			}
 			return nil
 		}
 		if filepath.Ext(path) != ".go" {
 			return nil
-		}
-		relative, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
 		}
 		source := filepath.ToSlash(filepath.Dir(relative))
 		if _, err := classifyPackage(source); err != nil {
@@ -258,6 +294,91 @@ func TestBoundaryTraversal(t *testing.T) {
 	writeFixture(t, root, "services/retail/domain/broken.go", "not Go source")
 	if _, err := scanBoundaries(root); err == nil {
 		t.Fatal("malformed source must fail closed")
+	}
+}
+
+func TestQAArchitectureRegressions(t *testing.T) {
+	cases := []struct {
+		name, path, source string
+		forbidden          bool
+	}{
+		{"domain gorm signature", "services/retail/domain/model.go", `package domain; import "gorm.io/gorm"; func Save(tx *gorm.DB) *gorm.DB { return tx }`, true},
+		{"domain HTTP server", "services/retail/domain/server.go", `package domain; import "github.com/labstack/echo/v4"; func Server() *echo.Echo { return echo.New() }`, true},
+		{"app AMQP connection", "services/retail/app/publish.go", `package app; import "github.com/rabbitmq/amqp091-go"; func Connect(url string) (*amqp091.Connection,error) { return amqp091.Dial(url) }`, true},
+		{"port gorm signature", "services/retail/port/transaction.go", `package port; import "gorm.io/gorm"; type UnitOfWork interface { DB() *gorm.DB }`, true},
+		{"domain shared infrastructure", "services/retail/domain/model.go", `package domain; import _ "justixauto/pkg/eventstore"`, true},
+		{"nested docs cross owner", "services/retail/app/docs/leak.go", `package docs; import _ "justixauto/services/inventory/domain"`, true},
+		{"nested node_modules cross owner", "services/retail/app/node_modules/leak.go", `package hidden; import _ "justixauto/services/inventory/domain"`, true},
+		{"nested vendor cross owner", "services/retail/app/vendor/leak.go", `package hidden; import _ "justixauto/services/inventory/domain"`, true},
+		{"nested testdata cross owner", "services/retail/app/testdata/leak.go", `package hidden; import _ "justixauto/services/inventory/domain"`, true},
+		{"app pgx stdlib", "services/retail/app/transaction.go", `package app; import _ "github.com/jackc/pgx/v5/stdlib"`, true},
+		{"port SQL signature", "services/retail/port/transaction.go", `package port; import "database/sql"; type UnitOfWork interface { DB() *sql.DB }`, true},
+		{"domain HTTP client", "services/retail/domain/model.go", `package domain; import _ "net/http"`, true},
+		{"primitive infrastructure trampoline", "pkg/events/store.go", `package events; import _ "justixauto/pkg/eventstore"`, true},
+		{"primitive framework trampoline", "pkg/money/store.go", `package money; import _ "gorm.io/gorm/logger"`, true},
+		{"primitive nested framework", "pkg/events/wire/store.go", `package wire; import _ "github.com/rabbitmq/amqp091-go"`, true},
+		{"contract infrastructure", "services/retail/contracts/events/event.go", `package events; import _ "justixauto/pkg/outbox"`, true},
+		{"adapter gorm implementation", "services/retail/adapter/postgres/model.go", `package postgres; import "gorm.io/gorm"; func Save(tx *gorm.DB) *gorm.DB { return tx }`, false},
+		{"shared eventstore implementation", "pkg/eventstore/postgres.go", `package eventstore; import _ "gorm.io/gorm"`, false},
+		{"app technical mechanics", "services/retail/app/command.go", `package app; import _ "justixauto/pkg/commands"`, false},
+		{"domain immutable event", "services/retail/domain/model.go", `package domain; import _ "justixauto/pkg/events"`, false},
+		{"domain primitive libraries", "services/retail/domain/value.go", `package domain; import ("math/big"; "github.com/google/uuid"); type Value struct { ID uuid.UUID; Amount big.Int }`, false},
+		{"typed unit of work port", "services/retail/port/transaction.go", `package port; import "context"; type UnitOfWork interface { Commit(context.Context) error }`, false},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root := t.TempDir()
+			writeFixture(t, root, tc.path, tc.source)
+			violations, err := scanBoundaries(root)
+			if err != nil || (len(violations) > 0) != tc.forbidden {
+				t.Fatalf("forbidden=%v; violations=%v; error=%v", tc.forbidden, violations, err)
+			}
+		})
+	}
+}
+
+func TestRuntimeManifestReadonly(t *testing.T) {
+	root := repositoryRoot(t)
+	fixture := t.TempDir()
+	for _, name := range []string{"go.mod", "go.sum"} {
+		contents, err := os.ReadFile(filepath.Join(root, name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		writeFixture(t, fixture, name, string(contents))
+	}
+	// Compile an actual package tree with the reviewed manifests, including the
+	// QA import set and representative logger/stdlib APIs. A standalone source
+	// file build did not exercise this graph correctly in the original review.
+	writeFixture(t, fixture, "runtime/main.go", `package main
+import (
+ _ "github.com/google/uuid"
+ _ "github.com/jackc/pgx/v5/pgxpool"
+ _ "github.com/jackc/pgx/v5/stdlib"
+ _ "github.com/labstack/echo/v4"
+ _ "github.com/labstack/echo/v4/middleware"
+ _ "github.com/rabbitmq/amqp091-go"
+ _ "go.opentelemetry.io/otel"
+ _ "go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+ _ "go.opentelemetry.io/otel/metric"
+ _ "go.opentelemetry.io/otel/sdk"
+ _ "go.opentelemetry.io/otel/sdk/metric"
+ _ "go.opentelemetry.io/otel/sdk/resource"
+ _ "go.opentelemetry.io/otel/sdk/trace"
+ _ "go.opentelemetry.io/otel/trace"
+ _ "go.uber.org/zap"
+ _ "golang.org/x/crypto/argon2"
+ _ "gorm.io/driver/postgres"
+ _ "gorm.io/gorm"
+ _ "gorm.io/gorm/logger"
+)
+func main() {}
+`)
+	cmd := exec.Command("bash", filepath.Join(root, "tools/go.sh"), "build", "-mod=readonly", "-o", filepath.Join(fixture, "runtime-check"), "./runtime")
+	cmd.Dir = fixture
+	cmd.Env = append(os.Environ(), "GOWORK=off", "GOFLAGS=")
+	if output, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("approved runtime graph must build without manifest edits: %v\n%s", err, output)
 	}
 }
 
