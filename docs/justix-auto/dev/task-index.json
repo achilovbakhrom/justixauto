@@ -397,7 +397,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-001",
         "T-003"
@@ -417,9 +417,11 @@
         "B-01.AC1"
       ],
       "scope": "Seven owner databases/users; revoke cross-owner access; loopback-only host port; synthetic credentials injected for local tests, never seed production users.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-005",
+      "base_sha": "4c84e346c7412e0fc6e3a20a8393767de63b3131",
+      "reviewed_sha": null,
+      "agent": "backend/t005_postgres_local",
+      "execution_note": "Assigned after T-003 integration and own-root Git PASS at exact base 4c84e346c7412e0fc6e3a20a8393767de63b3131. Isolated worktree .worktrees/T-005 owns only PostgreSQL owner initialization, README, integration isolation test and ancillary result."
     },
     {
       "id": "T-006",
@@ -428,7 +430,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-001",
         "T-003"
@@ -449,9 +451,11 @@
         "B-01.AC2"
       ],
       "scope": "Durable restricted vhost/exchanges/queues, caller grants and unroutable-message tests. No public broker deployment.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-006",
+      "base_sha": "4c84e346c7412e0fc6e3a20a8393767de63b3131",
+      "reviewed_sha": null,
+      "agent": "backend/t006_rabbit_local",
+      "execution_note": "Assigned after T-003 integration and own-root Git PASS at exact base 4c84e346c7412e0fc6e3a20a8393767de63b3131. Isolated worktree .worktrees/T-006 owns only RabbitMQ definitions/config, broker topology integration test and ancillary result."
     },
     {
       "id": "T-007",

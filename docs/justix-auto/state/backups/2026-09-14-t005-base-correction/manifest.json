@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/dev/task-index.json.gz",
+    "bytes": 1422054,
+    "sha256": "25fb636fe2251ef70b50e277f2178314ebccfa9d2da60aee3ad015ff669894ec"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-005.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-005.md.gz",
+    "bytes": 6707,
+    "sha256": "608e123ec9d7aeb30cc2b387e506afb1a09255f2dcdd29cbdd8b999cfc114f33"
+  }
+]
