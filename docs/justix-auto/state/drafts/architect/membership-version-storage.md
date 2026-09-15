@@ -3,6 +3,8 @@
 2026-09-15. **PROPOSED; independent exact-commit proposal QA and coordinator
 canonical promotion required before implementation.** Base
 `d59faa8dc5b26e13e19c47686dd47744b6d73a11`. No task numbers reserved.
+Fix cycle1 supersedes the lifecycle ambiguity in reviewed commit
+`5996c77e3df371a3992154b639ce9ba91ffc3e75`; that proposal was BOUNCE, not approved.
 
 ## 1. Confirmed contract, observation and proposal boundary
 
@@ -179,18 +181,80 @@ nothing. Once committed, no claim may be appended to an existing catalog.
 | `membership_stream_selections` | (request,S) PK; transition FK; complete canonical per-stream selection/effect manifest bytes/hash; source/universe evidence, finite bootstrap/backlog vector, expected old selection identity; explicit zero set |
 | `membership_stream_consumers` | (request,S,consumer name) PK; exact catalog-claim FK, admission root/tip and bootstrap FK, range/disposition; typed adapter checks same S/kind/generation/contract and complete equality to retained stream manifest |
 | `membership_head` | singleton PK; current request/epoch/catalog via exact composite transition FK; INSERT first epoch, then only matching previous request and epoch+1 CAS; no delete/truncate |
-| `dispatch_membership_evidence` | (event ID,enrollment ID) PK/FK to existing enrollment; exact transition/stream FK, phase initial/late, canonical exact consumer-set digest; immutable proof linking the new enrollment to the admitted selection without changing old rows |
+| `dispatch_membership_evidence` | (event ID,enrollment ID) PK/FK to existing enrollment; exact transition/epoch/catalog/stream FK, phase initial/late, selection mode current/prospective, canonical exact consumer-set bytes/hash, server-created full transaction ID; separately append-only enrollment proof, not a frozen transition child |
 | `membership_selection_compatibility` | SELECT-only singleton: same exact owner/runtime, revision8/format1, ordered hashes through8 and external installation evidence |
 
 The head references immutable evidence, not caller-chosen current strings.
-Require deferred constraint triggers on new transition/stream/consumer/head and
-dispatch-evidence rows so a transaction cannot commit an incomplete declared
-set, a dangling receipt, an orphan successor not selected at commit or late
-addition to an already committed transition. For creation require the transition
-row to originate in this transaction using the same full-xid provenance approach
-as the existing message-plan checks; no durable transaction ID is an authority
-token. Check all row identities and full manifest equality again on reads.
-Do not rely only on a head trigger that permits later child-row inserts.
+There are **two different creation lifecycles**:
+
+- Transition, stream-selection and stream-consumer rows form one frozen snapshot.
+  Their deferred guards require the transition's server-recorded full `xid8` to
+  equal `pg_current_xact_id()` when adding its snapshot children, full declared
+  set equality, and the same transaction's final head CAS. Reject incomplete
+  snapshots, orphan successors and post-commit stream/consumer additions. The
+  transition creation ID is set by the server, cannot be supplied/updated by
+  runtime grants, and is provenance only, never authorization. Do not rely only
+  on a head trigger that permits later snapshot child inserts.
+- Dispatch evidence is independently append-only. A later new enrollment may
+  link to an older already committed selection. **It does not require that the
+  referenced transition was created in this transaction.** It requires that
+  the enrollment, its exact jobs and its one evidence row are all created in
+  this transaction. Transition-snapshot immutability does not freeze the future
+  set of enrollment links that refer to it.
+
+MS-SELECTION explicitly owns a new additive, deferred `AFTER INSERT` constraint
+trigger named `membership_enrollment_complete` on the existing
+`eventstore.dispatch_enrollments` table, plus guards on the new evidence table.
+It does not replace, disable or change any old trigger/function. A trigger only
+on evidence insertion cannot detect omitted evidence; this enrollment trigger
+must fire even when **no link was inserted**. Its function performs qualified
+SELECTs only, remains non-security-definer with fixed pg_catalog search path,
+and is not granted runtime EXECUTE. T-934 checks its exact validated installation,
+enabled constraint-trigger shape, timing and function identity as a declared
+revision8 object. The new trigger does not scan or fire for retained enrollment
+rows, read-only redelivery, or inert installation with no active head.
+
+At the deferred enrollment and evidence checks require exactly one link for the
+new `(event,enrollment)` and the link's server `created_xid=pg_current_xact_id()`.
+The evidence-insert guard also verifies that the referenced immutable enrollment
+tuple's `xmin=pg_current_xact_id()::xid`, the same immediate provenance predicate
+observed in T-919; an existing committed enrollment cannot receive a new link as
+a repair. Record full xid8 only on the new evidence/transition tables; add no
+column to old tables and do not describe old xmin as a stored full xid8.
+Runtime INSERT grants exclude these server provenance columns and guards reject
+overrides; owner DDL remains trusted. The prepared Go capability additionally
+binds actual full transaction ID/backend/fence nonce and the insertion candidate.
+No SQL transaction ID or user-supplied `selection_mode` supplies authority.
+The writer creates no nested transaction or savepoint. A caller subtransaction
+that cannot meet the existing top-level origin predicate fails closed; this
+handoff does not add savepoint-write support to T-919-style provenance checks.
+
+SQL enforces link/enrollment/message S identity, exact referenced transition,
+epoch/catalog, initial-versus-late identity against the message's initial
+enrollment ID, matching enrollment membership version, canonical set hash,
+duplicate-free relational set equality and actual jobs. Compare complete
+`(consumer_name,admission_id)` sets, not counts or hashes alone; existing
+`messaging_complete` and `messaging_job_guard` remain active. Additional link
+checks match kind/generation/contract and ranges through admission/bootstrap
+and stream-consumer rows. The link's finite set is exactly the effective stream
+selection for the event position in initial phase, or exactly the newly admitted
+applicable delta declared in this transition's finite backlog manifest for late
+phase. Initial enrollment names can never be used for a late append. Future
+ordinary intake uses initial/current; a late enrollment requires prospective
+selection and an explicitly declared activation backlog entry.
+
+At commit the new link must reference the selected head's exact request/epoch/
+catalog. In current mode the transition must predate this transaction; in
+prospective mode it must originate here and this transaction must select it by
+its required CAS. A current-mode insert followed by a different selection in
+the same transaction fails; choose the prospective path before writing anything.
+Foreign stream, stale head, absent head, mismatched/extra/omitted link, set or job,
+and prospective link without final selection all reject the complete transaction.
+Hash/JSON shape, relational content and local selected-head checks belong to SQL;
+canonical codec semantic equality, approved full claims, source authority,
+complete universe/backlog, original envelope validation and correctly prepared
+fences also remain mandatory typed-adapter checks. SQL shape success alone
+cannot authorize a consumer. Validate all these again on retained reads.
 
 One successful activation per owner transaction; no transient sequence of two
 heads in one commit. CAS is performed after all effects are complete. Unique
@@ -209,9 +273,12 @@ applicable consumers, an actual message may have the existing approved empty
 initial set; catalog absence cannot stand in for empty-set authority.
 
 Keep original SQL artifacts, OIDs/ACLs, rows, frozen enrollment sets, legacy
-cutovers and markers unchanged. New FKs necessarily add only their declared
-referential triggers to existing referenced tables; record those catalog deltas
-explicitly in preimage tests. Neither migration inserts a catalog/head, adopts
+cutovers and markers unchanged. The only permitted additions on existing table
+catalogs are the declared new-FK referential attachments and the new enrollment
+INSERT constraint trigger above; snapshot its exact function/trigger definition
+and demonstrate every old function/trigger is byte-identical. No old column,
+constraint or grant changes. Record these explicit deltas in preimage tests.
+Neither migration inserts a catalog/head, adopts
 retained history, updates base messaging mode2 or changes private owner history.
 
 ## 5. Atomic adapter and recovery protocol
@@ -261,10 +328,37 @@ Within the actual caller ReadCommitted transaction:
 
 Ordinary intake takes shared catalog and receiver fences and checks the installed
 sealed catalog/selection against the current head **for each new custody write**.
+It obtains an unexported-state **CurrentSelection** capability bound to the
+actual transaction/backend, prepared catalog/receiver fences, current request/
+epoch/catalog, exact S, validated event position/hash and complete selected set.
+The store's evidence writer revalidates that capability and the newly inserted
+enrollment/jobs before returning a custody candidate. T-921 cannot substitute a
+caller version string, a raw link row or an unchecked INSERT result.
+**ProspectiveSelection** is a distinct sealed capability minted by MS-STATE only
+after validating a recorded transition candidate, expected prior head, exclusive
+catalog/stream fences and its exact finite bootstrap/backlog effects. It binds
+the same transaction plus candidate identity and permits only those declared
+initial-recovery or late-delta enrollments. T-920 supplies it to the lower-level
+writer; ordinary intake cannot construct/use it or recurse through current-head
+readiness. Final SQL selection/completeness checks must still pass. Reuse on a
+different transaction, ended/rolled-back savepoint, changed event/set or stale
+fences fails before write/callback; there is no permissive common interface that
+accepts arbitrary caller-supplied capability implementations.
+
 Startup success is not a cache permitting stale writes. An exact redelivery uses
-its original retained bytes/set/evidence rather than recomputing today's set;
-this narrow reconciliation may confirm existing custody without authorizing new
-selection or execution. Stale executors stop new claims; approved draining
+its original retained bytes/set/evidence rather than recomputing today's set.
+It performs no new enrollment, job or link INSERT and does not call the
+new-insert current-head/provenance predicate on historical evidence. Validate
+the original immutable transition/stream/claim reference and exact original
+link/enrollment/jobs; a later admitted head is allowed on this read path.
+Check the retained lifecycle relation itself:
+current links have a creation xid different from their referenced transition's,
+whereas prospective links have the same recorded creation xid. Neither must
+equal the fresh reader's xid, and neither must point at the current head. Missing
+or conflicting old evidence is a hold, never backfilled, repaired, re-enrolled
+or ACKed as complete. This narrow reconciliation may confirm existing custody
+without authorizing new selection or execution. Stale executors stop new claims;
+approved draining
 executors must be explicitly present as draining claims in the current catalog,
 with unchanged meaning, and still satisfy current authority and job fences.
 
@@ -302,8 +396,14 @@ fresh factory transaction, commit function or arbitrary consumer-controlled SQL.
 The temporary compile probe verified this existing public signature composition,
 not the proposed store or transaction orchestration.
 
-MS-STATE owns the membership evidence writer needed by both T-920 and T-921,
-including the prospective-selection capability boundary. Keep shared concrete
+MS-STATE owns the membership evidence writer and typed `VerifyEnrollment`/read
+checks needed by both T-920 and T-921, including both distinct sealed selection
+capabilities. The actual T-921 writer must call them around its message/enrollment/
+job writes before returning its candidate, and known outer commit remains the
+only ACK boundary. Even if a caller omits VerifyEnrollment, SQL's new enrollment
+trigger rejects a missing link at commit; this does not replace the adapter's
+authority/fence checks. T-920 must verify every prospective backlog result before
+head selection. Keep shared concrete
 types below their callers in `pkg/inbox`; T-920/T-921 must not import each other's
 future leaves or depend on a future owner root. The existing T-920 acceptance
 must be explicitly revised to compose this writer and not invent its own second
@@ -321,7 +421,9 @@ but membership readiness is false; the checker must not require an active head
 to run the transaction that first installs one.
 
 Installer metadata is runtime SELECT-only. New immutable evidence tables grant
-only SELECT/INSERT, guarded against post-commit child addition; head grants
+only SELECT/INSERT on the exact content columns (not server provenance columns).
+Frozen snapshot-child guards and separately append-only enrollment-link guards
+enforce their respective lifecycles; head grants
 SELECT/INSERT and UPDATE only its exact pointer columns. No table-wide UPDATE,
 DELETE/TRUNCATE/TRIGGER/REFERENCES/MAINTAIN, function EXECUTE, grant option,
 schema CREATE, DB CREATE/TEMP or unexpected default grants. Check PUBLIC and
@@ -350,9 +452,9 @@ and canonical promotion QA. Tests embed fixtures in their assigned test leaf.
 | Alias | Dependencies | Exact application leaves / responsibility |
 |---|---|---|
 | MS-CATALOG | T-928 | `pkg/eventstore/migrations/000007_membership_catalog.up.sql`; `pkg/eventstore/membership_catalog_migration_test.go`: immutable complete catalogs/meanings and rev7 lineage/ACLs only |
-| MS-SELECTION | MS-CATALOG | `pkg/eventstore/migrations/000008_membership_selection.up.sql`; `pkg/eventstore/membership_selection_migration_test.go`: transition/stream/head/dispatch-link SQL constraints and rev8 only |
+| MS-SELECTION | MS-CATALOG | `pkg/eventstore/migrations/000008_membership_selection.up.sql`; `pkg/eventstore/membership_selection_migration_test.go`: transition/stream/head/dispatch-link SQL constraints, the explicitly added enrollment INSERT constraint trigger and rev8 only |
 | MS-IDENTITY | T-746, T-007 | `pkg/inbox/membership_catalog.go`; `pkg/inbox/membership_catalog_test.go`: canonical value codec, claim supplement/full-versus-stream identities, immutable request/selection constructors, no SQL |
-| MS-STATE | MS-SELECTION, MS-IDENTITY, T-014 | `pkg/inbox/membership_state.go`; `pkg/inbox/membership_state_test.go`: fenced storage/read/reconcile/candidate/selection and evidence-link primitives, no owner snapshot or source network orchestration |
+| MS-STATE | MS-SELECTION, MS-IDENTITY, T-014 | `pkg/inbox/membership_state.go`; `pkg/inbox/membership_state_test.go`: fenced storage/read/reconcile/candidate, sealed current/prospective selection, complete enrollment verification and evidence-link primitives, no owner snapshot or source network orchestration |
 
 Explicit additions: T-920 depends on MS-STATE; T-921 on MS-STATE (and existing
 T-920); T-016 on MS-STATE (and existing T-920); T-022 on MS-SELECTION and
@@ -362,6 +464,13 @@ T-934 remains sole serial successor of T-930's `check.go/check_test.go`; no new
 alias edits them. T-920 owns existing membership.go/test; T-921 owns intake.go/test;
 T-016 owns its existing generation adapter leaves. MS aliases do not claim those
 files, root manifests, go.mod, dependency locks or T-928's migration/test.
+Fix cycle1 retains four aliases/eight disjoint leaves and the same dependency
+delta: the added trigger belongs to the existing selection migration's missing
+link completeness responsibility, and the two capability lifecycles belong to
+the existing state adapter. No fifth task or earlier-migration source ownership
+is hidden here. The reduced lifecycle probe supports this boundary, not a time
+guarantee; if either full migration/adapter cannot fit its4h bound, coordinator
+must reslice before dependent assignment. T-920 retains its separate3h limit.
 Root T-580…586 assembly additionally consumes current membership readiness and
 complete inert catalogs; their existing membership/owner compatibility gates
 cannot be bypassed. No new root edit belongs to these four aliases.
@@ -373,6 +482,15 @@ not only the reduced proposal probe:
 
 - Empty receiver/source-proved h=0 installs V1 with no dummy custody; identical
   consumer meanings but changed catalog/binding V2 remain distinguishable.
+- After empty R1 commits, future ordinary intake creates a new initial enrollment,
+  exact jobs and one link to **committed R1**, with no new transition. A later
+  R2 permits read-only exact R1 redelivery, while a new R1 intake is stale and
+  rolls back. No active head is required merely to install the new trigger.
+- Late transition/stream/consumer mutation, link insertion for an old enrollment,
+  duplicate/omitted/mismatched link, wrong/extra/missing consumer/job, wrong phase,
+  prospective capability reused as current or without head CAS, stale/foreign
+  transaction capability and fabricated provenance all reject. Missing-link
+  failure is demonstrated by the **enrollment** trigger when no link trigger ran.
 - Canonical order is stable; duplicates, omitted required claims/supplements,
   mutated caller slices, changed same-version catalog and changed same-request
   bytes fail; version-only and zero-new-consumer transitions retain receipts.
@@ -391,7 +509,8 @@ not only the reduced proposal probe:
 - Ordinary intake rechecks current head inside fences; duplicate old custody
   validates original evidence; complete claim set works while an executor is down;
   required missing claim prevents readiness before Bind/consume.
-- Exact old SQL/preimages preserved except declared new-FK catalog attachments;
+- Exact old SQL/preimages preserved except declared new-FK catalog attachments
+  and the new enrollment INSERT constraint trigger; old definitions unchanged;
   required and forbidden direct/column/default/PUBLIC/reachable-role grants,
   wrong owner/runtime/hash/marker/constraint and lock/later transaction failure.
 - Forward installation on retained ambiguous state succeeds only as inert storage;
