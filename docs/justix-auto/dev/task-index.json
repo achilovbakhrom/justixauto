@@ -1550,7 +1550,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-035"
       ],
@@ -1582,12 +1582,12 @@
       "scope": "Base and Router basename /; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-037",
       "base_sha": "60abf5622597aa1af77925fd7968251e0cb81be4",
-      "reviewed_sha": null,
+      "reviewed_sha": "a0cfcc9cef2648b954fd862cfa828dfccc5c8cae",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend_t037",
-      "execution_note": "T035 integrated; own-root Git PASS and isolated Realization shell task assigned against M-R01. Root owns serialized package lock; session boundary remains injected and unregistered features inactive."
+      "execution_note": "Realization shell source, developer browser evidence and coordinator lock committed. Existing dependency pins unchanged; independent exact-commit browser QA pending."
     },
     {
       "id": "T-038",
