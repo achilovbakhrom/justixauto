@@ -91,7 +91,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
 | [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | integrated | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | integrated | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
-| [T-026](tasks/T-026.md) | B-01 | Scaffold commerce typed owner ports and migration ledger | implementation / 3 | commerce | todo | T-009, T-017, T-018, T-010 | `task/T-026-commerce-scaffold` | ENV-GIT |
+| [T-026](tasks/T-026.md) | B-01 | Scaffold commerce typed owner ports and migration ledger | implementation / 3 | commerce | in-progress | T-009, T-017, T-018, T-010 | `task/T-026-commerce-scaffold` | ENV-GIT |
 | [T-027](tasks/T-027.md) | B-01 | Scaffold retail typed owner ports and migration ledger | implementation / 3 | retail | todo | T-009, T-017, T-018, T-010 | `task/T-027-retail-scaffold` | ENV-GIT |
 | [T-028](tasks/T-028.md) | B-01 | Scaffold financing typed owner ports and migration ledger | implementation / 3 | financing | todo | T-009, T-017, T-018, T-010 | `task/T-028-financing-scaffold` | ENV-GIT |
 | [T-029](tasks/T-029.md) | B-01 | Scaffold insurance typed owner ports and migration ledger | implementation / 3 | insurance | todo | T-009, T-017, T-018, T-010 | `task/T-029-insurance-scaffold` | ENV-GIT |
