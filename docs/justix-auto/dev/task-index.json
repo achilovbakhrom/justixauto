@@ -35775,7 +35775,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-935",
         "T-058",
@@ -35795,8 +35795,10 @@
         "B-02.AC1"
       ],
       "scope": "Extend the one shared fetch path with typed 429, exact response contracts/version marker, bounded bytes and allowlisted ephemeral metadata. Exact endpoint semantic/body/header checks precede the synchronous current-ticket sink. Preserve generic result shapes and unknown dispatched write outcomes; no retry or secret-bearing receipts.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-936",
+      "base_sha": "3b796c28fa04105cb0bc7154c17f27f7e47e3470",
+      "agent": "frontend_t936",
+      "execution_note": "Assign the one shared Fetch transport successor after T-935 integration: strict bounded body stream, exact status/error/header contracts,429/version marker and synchronous current-ticket acceptance. Two client leaves only; no root manifests/generated bindings/policy/UI expansion."
     },
     {
       "id": "T-937",
