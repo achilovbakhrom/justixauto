@@ -1600,7 +1600,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "ready",
       "depends_on": [
         "T-035"
       ],
@@ -1630,12 +1630,13 @@
         "B-05.AC4"
       ],
       "scope": "Base and Router basename /finance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
+      "worktree": ".worktrees/T-038",
+      "base_sha": "3d8c5a26c3890eaa358a52281db055c1faf7e2be",
       "reviewed_sha": null,
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "execution_note": "Dependencies and Git gate passed; isolated Financing shell worktree allocated. No source edits or worker assigned yet; start when a slot is available. HTML M-F01 reference and injected closed session boundary remain required."
     },
     {
       "id": "T-039",
