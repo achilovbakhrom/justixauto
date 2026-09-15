@@ -47,8 +47,9 @@ are assigned. This document does not approve a schema or mark a task blocked.
 
 Git gate passed; isolated worktree `.worktrees/projection-storage-handoff`, branch
 `task/projection-storage-handoff`, base
-`2c1ff1de53f4dc7b0588d63d6b34de1d0983f0b3` is allocated. Assign the architect
-when a worker slot is free. Its only proposal leaf is
+`2c1ff1de53f4dc7b0588d63d6b34de1d0983f0b3` is allocated. Agent
+`architect_projection_storage` is assigned and the bounded review is in progress.
+Its only proposal leaf is
 `docs/justix-auto/state/drafts/architect/projection-storage-handoff.md`; ancillary
 result is `docs/justix-auto/dev/results/projection-storage-handoff.md`.
 No application code or canonical document ownership is delegated.

@@ -35114,7 +35114,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-013"
       ],
@@ -35135,8 +35135,9 @@
       "worktree": ".worktrees/T-922",
       "base_sha": "45dbce11571533dcb5c56212c033271b6ff892d9",
       "agent": "qa_t922",
-      "execution_note": "Implementation complete; independent exact-commit QA assigned for caller-transaction inbox effects, duplicates, mode fencing and rollback/commit ambiguity.",
-      "reviewed_sha": "e15f5e7a677084ad84c6952d53c53eddfb6d0b10"
+      "execution_note": "Independent QA GREEN at e15f5e7a677084ad84c6952d53c53eddfb6d0b10; coordinator integration full project race with live inbox PASS (11.129s inbox) and vet PASS. Transaction-bound candidate effects and duplicate job composition integrated; actual checkpoint/dispatcher storage remains separately gated.",
+      "reviewed_sha": "e15f5e7a677084ad84c6952d53c53eddfb6d0b10",
+      "integration_sha": "d31ecd9c212345a616b8a1f435ebe6b55782fbc4"
     },
     {
       "id": "T-923",
