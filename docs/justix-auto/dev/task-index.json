@@ -35024,7 +35024,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-918",
         "T-011",
@@ -35044,8 +35044,10 @@
         "B-01.AC2"
       ],
       "scope": "Amend insertion to resolve the admitted plan in the same command transaction and persist identical parent bytes with every recipient child. Preserve single-target API compatibility only in explicit legacy schema mode. Missing/extra children or conflicting immutable identity roll back all effects.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-919",
+      "base_sha": "972bd864142100a91169b9bb1b76ef9e3339b58e",
+      "agent": "backend_t919",
+      "execution_note": "Approved dependencies integrated; assigned immutable message plus complete recipient-set writer in isolated worktree. Use T918 Fence before all appends, then Resolve and ValidatePlan in the same transaction; preserve explicit legacy compatibility and require corrected custody route marker."
     },
     {
       "id": "T-920",
