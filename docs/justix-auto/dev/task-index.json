@@ -35255,7 +35255,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-006",
         "T-001",
@@ -35278,8 +35278,9 @@
       "scope": "Explicit reviewed source/target/schema route metadata and split relay/intake capabilities; no configure/foreign reads/default exchange grants. Empty activated contract set denies publication. Synthetic fixture routes do not activate business permissions. Preserve current durable owner queues/exchanges and pinned live permission evidence.",
       "worktree": ".worktrees/T-924",
       "base_sha": "288b084a988f62d09d1f08c664ffbdf1a3ba3498",
-      "agent": "backend_t924",
-      "execution_note": "Assigned approved explicit broker route metadata and split relay/intake principals after forward route correction integration. Preserve queues and default-deny inactive routes; synthetic fixture grants never activate business permissions."
+      "agent": "qa_t924",
+      "execution_note": "Broker role split and empty route activation complete; independent exact-commit QA assigned. Live denial, retained topology/message, mandatory-return and role-separation evidence require review; no production activation.",
+      "reviewed_sha": "d5dd07e4ca1327f5a9983be24797e11800e42914"
     },
     {
       "id": "T-925",
