@@ -1216,7 +1216,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1243,9 +1243,9 @@
       "scope": "Own only commerce mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later commerce_wire task.",
       "worktree": ".worktrees/T-026",
       "base_sha": "940094adae97ef9582ffebadb4f69ce6fba2f88f",
-      "reviewed_sha": null,
-      "agent": "backend_t026",
-      "execution_note": "Assigned Commerce typed persistence scaffold using reviewed Identity/Inventory patterns and exact private owner grants. Explicit legacy-only mechanics; future custody/feature migration readiness belongs to assigned composition handoff."
+      "reviewed_sha": "009f21044bfcff216ac83eec78ce51a0e3798c5c",
+      "agent": "qa_t026",
+      "execution_note": "Commerce scaffold implementation complete; full project race/live Commerce PG tests and vet passed. Independent exact-commit QA assigned for owner/grant/ledger isolation, scoped receipts, concurrency and actual unknown commit recovery; legacy-only scope remains explicit."
     },
     {
       "id": "T-027",
