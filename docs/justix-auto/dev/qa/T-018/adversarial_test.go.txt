@@ -1,0 +1,93 @@
+package commands
+
+import (
+ "context"
+ "errors"
+ "sync"
+ "testing"
+ "time"
+
+ "github.com/google/uuid"
+ "gorm.io/gorm"
+ "justixauto/pkg/eventstore"
+)
+
+func TestQAOperationsAdversarial(t *testing.T) {
+ db := fixtureDB(t)
+ ctx := context.Background()
+ t.Run("expired fence after row lock wait rejects effects", func(t *testing.T) {
+  p := processPolicy(t)
+  i := processCreate(t, db, p)
+  var c OperationClaim[outcome, processError]
+  if err := processRun(db,p).Run(ctx,func(u processPorts) error { var err error; c,_,err=u.operations.Claim(ctx,300*time.Millisecond,noProcessAlert); return err }); err!=nil {t.Fatal(err)}
+  hold := db.Begin()
+  if hold.Error!=nil {t.Fatal(hold.Error)}
+  defer hold.Rollback()
+  if err:=hold.Exec(`SELECT operation_id FROM eventstore.operations WHERE operation_id=? FOR UPDATE`,i.ID).Error;err!=nil {t.Fatal(err)}
+  done:=make(chan error,1)
+  called:=false
+  go func(){done<-processRun(db,p).Run(ctx,func(u processPorts)error{return u.operations.WithClaim(ctx,c,func(context.Context,Operation[outcome,processError])error{called=true;return nil})})}()
+  time.Sleep(400*time.Millisecond)
+  select {case err:=<-done:t.Fatalf("did not wait for lock: %v",err);default:}
+  if err:=hold.Commit().Error;err!=nil {t.Fatal(err)}
+  if err:=<-done;!errors.Is(err,ErrLeaseLost)||called {t.Fatalf("stale effect: %v called=%v",err,called)}
+ })
+ t.Run("concurrent attention scans emit one durable intent",func(t *testing.T){
+  p:=processPolicy(t); i:=processIntent(); hash,_:=p.Schema.digest(request)
+  if err:=db.Exec(`INSERT INTO eventstore.operations(operation_id,kind,aggregate_id,actor_id,company_id,admission_ref,intent_revision,request_hash,phase,revision,created_at,lease_owner,lease_until) VALUES (?,?,?,?,?,?,0,?,'pending',1,clock_timestamp()-interval '1 year',?,clock_timestamp()+interval '1 hour')`,i.ID,p.Schema.command,i.AggregateID,i.ActorID,i.CompanyID,i.AdmissionRef,hash[:],uuid.NewString()).Error;err!=nil {t.Fatal(err)}
+  effectID:=uuid.NewString(); injected:=errors.New("rollback alert")
+  err:=processRun(db,p).Run(ctx,func(u processPorts)error{_,err:=u.operations.MarkAttention(ctx,1,func(context.Context,Operation[outcome,processError])error{if err:=u.tx.Exec(`INSERT INTO eventstore.fixture_effects(id) VALUES (?)`,effectID).Error;err!=nil{return err};return injected});return err})
+  if !errors.Is(err,injected){t.Fatal(err)}
+  var flag bool; db.Raw(`SELECT attention_required FROM eventstore.operations WHERE operation_id=?`,i.ID).Scan(&flag)
+  if flag {t.Fatal("flag escaped failed intent transaction")}
+  var wg sync.WaitGroup; errs:=make(chan error,8)
+  for range 8 {wg.Add(1);go func(){defer wg.Done();errs<-processRun(db,p).Run(ctx,func(u processPorts)error{_,err:=u.operations.MarkAttention(ctx,1,func(context.Context,Operation[outcome,processError])error{return u.tx.Exec(`INSERT INTO eventstore.fixture_effects(id) VALUES (?)`,effectID).Error});return err})}()}
+  wg.Wait();close(errs);for err:=range errs{if err!=nil{t.Fatal(err)}}
+  var n int64;db.Raw(`SELECT count(*) FROM eventstore.fixture_effects WHERE id=?`,effectID).Scan(&n);if n!=1{t.Fatal(n)}
+  if err:=processRun(db,p).Run(ctx,func(u processPorts)error{o,err:=processStatus(ctx,u,i);if err==nil&&(o.Decision!=Undecided||o.Phase!="pending"||!o.AttentionRequired){t.Error(o)};return err});err!=nil{t.Fatal(err)}
+ })
+ t.Run("scope filtered before callback and resume reauthorizes action",func(t *testing.T){
+  p:=processPolicy(t);i:=processCreate(t,db,p);calls:=0
+  allow:=func(context.Context,OperationAccess,OperationAction,Operation[outcome,processError])error{calls++;return nil}
+  for _,other:=range []bool{false,true}{q:=p;company:=uuid.NewString();if other{q=processPolicy(t);company=i.CompanyID}
+   err:=processRun(db,q).Run(ctx,func(u processPorts)error{_,err:=u.operations.Status(ctx,i.ID,OperationAccess{i.ActorID,company},allow);return err});if !errors.Is(err,ErrOperationNotFound)||calls!=0{t.Fatal(err,calls)}
+  }
+  denied:=errors.New("fresh manager permission revoked")
+  err:=processRun(db,p).Run(ctx,func(u processPorts)error{return u.operations.Resume(ctx,i.ID,OperationAccess{i.ActorID,i.CompanyID},func(_ context.Context,_ OperationAccess,a OperationAction,_ Operation[outcome,processError])error{if a!=ResumeOperation{t.Error(a)};return denied})})
+  if !errors.Is(err,denied){t.Fatal(err)}
+  if err:=processRun(db,p).Run(ctx,func(u processPorts)error{o,err:=processStatus(ctx,u,i);if o.Revision!=rev(1){t.Error("denied resume changed revision")};return err});err!=nil{t.Fatal(err)}
+ })
+ t.Run("malformed step and immutable runtime evidence",func(t *testing.T){
+  p:=processPolicy(t);i:=processCreate(t,db,p);hash,_:=p.Schema.digest(request)
+  if err:=db.Exec(`INSERT INTO eventstore.operation_steps(operation_id,step,request_hash,result) VALUES (?,'finish',?,'{"id":"bad","state":"created"}')`,i.ID,hash[:]).Error;err!=nil{t.Fatal(err)}
+  called:=false
+  err:=processRun(db,p).Run(ctx,func(u processPorts)error{_,_,err:=u.steps.Execute(ctx,i.ID,request,func(context.Context)(outcome,error){called=true;return outcome{},nil});return err})
+  if !errors.Is(err,ErrCorruptReceipt)||called{t.Fatal(err,called)}
+  for _,query:=range []string{`DELETE FROM eventstore.operation_steps WHERE operation_id=?`,`UPDATE eventstore.operation_steps SET result='{}' WHERE operation_id=?`,`DELETE FROM eventstore.operations WHERE operation_id=?`,`UPDATE eventstore.operations SET company_id=NULL WHERE operation_id=?`}{if err:=db.Exec(query,i.ID).Error;err==nil{t.Fatal("runtime mutation allowed",query)}}
+ })
+ t.Run("lease expires inside callback while row lock excludes replacement",func(t *testing.T){
+  p:=processPolicy(t);i:=processCreate(t,db,p);var c OperationClaim[outcome,processError]
+  if err:=processRun(db,p).Run(ctx,func(u processPorts)error{var err error;c,_,err=u.operations.Claim(ctx,300*time.Millisecond,noProcessAlert);return err});err!=nil{t.Fatal(err)}
+  started:=make(chan struct{});release:=make(chan struct{});done:=make(chan error,1);effectID:=uuid.NewString()
+  go func(){done<-processRun(db,p).Run(ctx,func(u processPorts)error{return u.operations.WithClaim(ctx,c,func(context.Context,Operation[outcome,processError])error{close(started);<-release;return u.tx.Exec(`INSERT INTO eventstore.fixture_effects(id) VALUES (?)`,effectID).Error})})}()
+  <-started;time.Sleep(400*time.Millisecond)
+  err:=processRun(db,p).Run(ctx,func(u processPorts)error{_,ok,err:=u.operations.Claim(ctx,time.Minute,noProcessAlert);if ok{t.Error("replacement acquired locked row")};return err})
+  close(release);completionErr:=<-done
+  if err!=nil||completionErr!=nil{t.Fatal(err,completionErr)}
+  var n int64;db.Raw(`SELECT count(*) FROM eventstore.fixture_effects WHERE id=?`,effectID).Scan(&n);if n!=1{t.Fatal(n)}
+  t.Log("Completion committed after wall-clock lease expiration; row lock prevented any replacement fence during callback.")
+  if err:=processRun(db,p).Run(ctx,func(u processPorts)error{next,ok,err:=u.operations.Claim(ctx,time.Minute,noProcessAlert);if !ok||next.LeaseID==c.LeaseID||next.Operation.ID!=i.ID{t.Error("next scheduling claim invalid")};return err});err!=nil{t.Fatal(err)}
+ })
+ t.Run("unknown local completion commit recovered by retained step",func(t *testing.T){
+  for _,committed:=range []bool{false,true}{
+   p:=processPolicy(t);i:=processCreate(t,db,p);var c OperationClaim[outcome,processError]
+   if err:=processRun(db,p).Run(ctx,func(u processPorts)error{var err error;c,_,err=u.operations.Claim(ctx,time.Minute,noProcessAlert);return err});err!=nil{t.Fatal(err)}
+   effectID:=uuid.NewString();sqlDB,_:=db.DB();fault:=db.Session(&gorm.Session{NewDB:true});fault.Statement=&gorm.Statement{DB:fault,ConnPool:faultPool{DB:sqlDB,committed:committed}}
+   runCompletion:=func(target *gorm.DB)error{return processRun(target,p).Run(ctx,func(u processPorts)error{return u.operations.WithClaim(ctx,c,func(ctx context.Context,o Operation[outcome,processError])error{_,_,err:=u.steps.Execute(ctx,i.ID,request,func(context.Context)(outcome,error){err:=u.tx.Exec(`INSERT INTO eventstore.fixture_effects(id) VALUES (?)`,effectID).Error;return outcome{ID:effectID,State:"created"},err});return err})})}
+   if err:=runCompletion(fault);!errors.Is(err,eventstore.ErrCommitOutcomeUnknown){t.Fatal(err)}
+   var n int64;db.Raw(`SELECT count(*) FROM eventstore.fixture_effects WHERE id=?`,effectID).Scan(&n);if (n==1)!=committed{t.Fatal("wrong actual effect",committed,n)}
+   if committed {if err:=runCompletion(db);!errors.Is(err,ErrLeaseLost){t.Fatal("released fence not classified ErrLeaseLost",err)}} else if err:=runCompletion(db);err!=nil{t.Fatal(err)}
+   if err:=processRun(db,p).Run(ctx,func(u processPorts)error{_,replay,err:=u.steps.Execute(ctx,i.ID,request,func(context.Context)(outcome,error){t.Error("recovery repeated effect");return outcome{},nil});if !replay{t.Error("missing authoritative step")};return err});err!=nil{t.Fatal(err)}
+  }
+ })
+}

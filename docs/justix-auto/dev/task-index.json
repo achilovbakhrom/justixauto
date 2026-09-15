@@ -842,7 +842,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "in-progress",
       "depends_on": [
         "T-017",
         "T-011",
@@ -868,7 +868,7 @@
       "base_sha": "f6195282b6032e7200800401c73482be537dfae3",
       "reviewed_sha": "863a6d95c97fd542b86682cf7cf7b15d9f835fca",
       "agent": "backend_t018",
-      "execution_note": "Developer committed durable decision/step/recovery scheduling with eleven live PostgreSQL cases and project race/vet checks passed. Independent QA assigned; no owner protocol or subscription activation."
+      "execution_note": "Fix cycle 1 assigned for independent QA P2 released-lease NULL classification; original BOUNCE report/evidence preserved. New exact-commit QA required; schema and lease semantics unchanged."
     },
     {
       "id": "T-019",
