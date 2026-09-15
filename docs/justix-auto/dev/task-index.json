@@ -603,7 +603,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-009"
       ],
@@ -625,7 +625,7 @@
       "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
       "reviewed_sha": "b357e8b962eeb6d5c9872fde1e266b97e7a320ec",
       "agent": "backend_t011",
-      "execution_note": "Developer implementation committed with live PostgreSQL outbox and full project Go race/vet checks passed; independent QA assigned. Single-recipient primitive only; messaging-readiness.md tracks fan-out composition gate."
+      "execution_note": "Independent exact-commit QA GREEN: live PostgreSQL, full project race/vet and independent metadata/byte immutability/concurrent duplicate/panic rollback probes passed. Single-target limitation retained."
     },
     {
       "id": "T-012",

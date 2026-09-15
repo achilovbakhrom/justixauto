@@ -1,0 +1,96 @@
+package outbox_test
+
+import (
+ "bytes"
+ "context"
+ "crypto/sha256"
+ "encoding/json"
+ "errors"
+ "os"
+ "testing"
+ "time"
+
+ "github.com/google/uuid"
+ "justixauto/pkg/events"
+ "justixauto/pkg/eventstore"
+ "justixauto/pkg/outbox"
+)
+
+func TestQAOutboxIndependent(t *testing.T) {
+ if os.Getenv("JUSTIXAUTO_TEST_OUTBOX_INSERT") != "1" { t.Skip("isolated PostgreSQL opt-in") }
+ db := database(t)
+ r := runner(t, db)
+ ctx := context.Background()
+ count := func(id string, want int64) {
+  t.Helper()
+  var got int64
+  if err := db.Raw("SELECT count(*) FROM eventstore.outbox WHERE aggregate_id=?::uuid", id).Scan(&got).Error; err != nil || got != want { t.Fatalf("outbox count=%d want=%d err=%v",got,want,err) }
+ }
+ t.Run("remaining metadata predicates reject and roll back",func(t *testing.T){
+  for _, field := range []string{"eventId","aggregateId","aggregateType","eventType","schemaVersion","correlationId","causationId","occurredAt"} {
+   t.Run(field,func(t *testing.T){
+    id:=uuid.NewString(); e:=pending(t,id,1,1)
+    var value any=uuid.NewString()
+    s:=schema(t,events.OwnerInventory)
+    switch field {
+    case "aggregateType": value="other"; s,_=events.NewEventSchema("inventory.fixture.changed.v1",1,"other",events.CompanyScopeTenantRequired,func(payload)error{return nil})
+    case "eventType": value="inventory.other.changed.v1"; s,_=events.NewEventSchema(value.(string),1,"fixture",events.CompanyScopeTenantRequired,func(payload)error{return nil})
+    case "schemaVersion": value=2; s,_=events.NewEventSchema("inventory.fixture.changed.v2",2,"fixture",events.CompanyScopeTenantRequired,func(payload)error{return nil})
+    case "occurredAt": env,_:=e.IntegrationEnvelope(); value=env.OccurredAt().Add(time.Second).Format(time.RFC3339Nano)
+    }
+    var envelope events.Envelope
+    if field=="schemaVersion" {
+     original,_:=e.IntegrationEnvelope(); raw,_:=original.MarshalJSON(); var wire map[string]any
+     if err:=json.Unmarshal(raw,&wire);err!=nil{t.Fatal(err)}
+     wire["schemaVersion"]=2;wire["eventType"]="inventory.fixture.changed.v2"; raw,_=json.Marshal(wire)
+     if err:=json.Unmarshal(raw,&envelope);err!=nil{t.Fatal(err)}
+    } else {envelope=changed(t,e,field,value)}
+    rec,err:=outbox.NewRecord(envelope,s,events.OwnerRetail); if err!=nil {t.Fatal(err)}
+    err=r.Run(ctx,func(p ports)error{
+     if err:=p.append.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{e}});err!=nil{return err}
+     return p.insert.Insert(ctx,rec)
+    })
+    if !errors.Is(err,outbox.ErrEventNotFound){t.Fatalf("mismatch accepted: %v",err)}
+    count(id,0)
+    var n int64; if err:=db.Raw("SELECT count(*) FROM eventstore.events WHERE aggregate_id=?::uuid",id).Scan(&n).Error;err!=nil||n!=0{t.Fatalf("domain rollback n=%d err=%v",n,err)}
+   })
+  }
+ })
+ t.Run("sealed bytes survive caller mutation and concurrent duplicate attempts",func(t *testing.T){
+  id:=uuid.NewString(); e:=pending(t,id,1,1)
+  env:=changed(t,e,"data",map[string]string{"ref":"integration-reference"})
+  want,_:=env.MarshalJSON(); digest:=sha256.Sum256(want)
+  rec,err:=outbox.NewRecord(env,schema(t,events.OwnerInventory),events.OwnerRetail);if err!=nil{t.Fatal(err)}
+  data:=env.Data(); for i:=range data {data[i]='x'}
+  other,_:=changed(t,e,"data",map[string]string{"ref":"different"}).MarshalJSON()
+  if err:=json.Unmarshal(other,&env);err!=nil{t.Fatal(err)}
+  if err:=r.Run(ctx,func(p ports)error{return p.append.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{e}})});err!=nil{t.Fatal(err)}
+  start:=make(chan struct{}); done:=make(chan error,2)
+  for j:=0;j<2;j++ { go func(){<-start;done<-r.Run(ctx,func(p ports)error{return p.insert.Insert(ctx,rec)})}() }
+  close(start); wins:=0
+  for j:=0;j<2;j++{if <-done==nil{wins++}}
+  if wins!=1{t.Fatalf("duplicate winners=%d",wins)}
+  count(id,1)
+  var row struct{Envelope,EnvelopeHash []byte}
+  if err:=db.Raw("SELECT envelope,envelope_hash FROM eventstore.outbox WHERE aggregate_id=?::uuid",id).Scan(&row).Error;err!=nil{t.Fatal(err)}
+  if !bytes.Equal(row.Envelope,want)||!bytes.Equal(row.EnvelopeHash,digest[:]){t.Fatal("sealed bytes changed")}
+ })
+ t.Run("panic after insertion rolls back and releases stream lock",func(t *testing.T){
+  id:=uuid.NewString(); e:=pending(t,id,1,1)
+  func(){
+   defer func(){if recover()!="synthetic-panic"{t.Error("panic was swallowed or changed")}}()
+   _=r.Run(ctx,func(p ports)error{
+    if err:=p.append.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{e}});err!=nil{return err}
+    if err:=p.insert.Insert(ctx,record(t,e));err!=nil{return err}
+    panic("synthetic-panic")
+   })
+  }()
+  count(id,0)
+  retryctx,cancel:=context.WithTimeout(ctx,3*time.Second);defer cancel()
+  if err:=r.Run(retryctx,func(p ports)error{
+   if err:=p.append.Append(retryctx,eventstore.Batch{Events:[]eventstore.Event{e}});err!=nil{return err}
+   return p.insert.Insert(retryctx,record(t,e))
+  });err!=nil{t.Fatal("rollback/retry failed",err)}
+  count(id,1)
+ })
+}
