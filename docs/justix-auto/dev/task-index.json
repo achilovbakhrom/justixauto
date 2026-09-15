@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Longest-chain/frontier/antichain metrics retain the reviewed 916-task baseline; eight messaging amendment tasks plus one route compatibility correction and their new edges are recorded without claiming recomputed width or schedule.",
+    "graph_metrics_scope": "Longest-chain/frontier/antichain metrics retain the reviewed916-task baseline; subsequent bounded messaging amendments and frontend corrective ownership edges are recorded without claiming recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -297,6 +297,18 @@
         "T-585",
         "T-586"
       ]
+    },
+    "frontend_guard_handoff": {
+      "task": "T-038",
+      "additional_leaves": [
+        "web/apps/admin/vite.config.ts",
+        "web/apps/realization/vite.config.ts"
+      ],
+      "ordered_after": [
+        "T-036",
+        "T-037"
+      ],
+      "reason": "Independent T038 QA reproduced wildcard Accept fetch/script requests receiving app HTML; identical existing classifier in all three apps."
     }
   },
   "tasks": [
@@ -1624,7 +1636,9 @@
       "effort_hours": 4,
       "status": "bounced",
       "depends_on": [
-        "T-035"
+        "T-035",
+        "T-036",
+        "T-037"
       ],
       "branch": "task/T-038-financing-shell",
       "lane": "frontend-financing",
@@ -1638,7 +1652,9 @@
         "web/apps/financing/src/routes/registry.ts",
         "web/apps/financing/src/app/Shell.test.tsx",
         "web/apps/financing/tsconfig.json",
-        "web/apps/financing/vitest.config.ts"
+        "web/apps/financing/vitest.config.ts",
+        "web/apps/admin/vite.config.ts",
+        "web/apps/realization/vite.config.ts"
       ],
       "gates": [
         "ENV-GIT"
@@ -1651,7 +1667,7 @@
         "B-05.AC2",
         "B-05.AC4"
       ],
-      "scope": "Base and Router basename /finance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
+      "scope": "Base and Router basename /finance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries. Coordinator corrective handoff: fix the identical non-document HTML fallback condition in the existing Admin and Realization Vite configs, preserving their other behavior; verify all three dev/preview boundaries in this task exact-SHA QA.",
       "worktree": ".worktrees/T-038",
       "base_sha": "3d8c5a26c3890eaa358a52281db055c1faf7e2be",
       "reviewed_sha": "c1b0b50eed76902bf024fc6c5d9c5e4f032f642b",

@@ -170,3 +170,12 @@ adopts the exact reviewed [forward correction](../state/drafts/contracts/messagi
 T-925 and explicit dependent edges now gate canonical route and correction-marker
 readiness. This approves implementation, not an applied migration or working
 delivery runtime. The earlier diagnosis and historical QA evidence stay intact.
+
+### App fallback corrective handoff — 2026-09-15
+
+T-038 independent review reproduced non-document fetch/script requests receiving
+entry HTML. Financing fix cycle1 also owns the identical Admin and Realization
+Vite predicates, with explicit prior-task dependency edges and renewed dev/preview
+checks for all three apps. Their existing visuals and reviewed artifacts remain
+unchanged. This is the existing prefix/document-only requirement, not a new
+authentication or deployment guarantee.
