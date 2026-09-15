@@ -86,3 +86,18 @@ registered, the coordinator must assign their exact leaves and trusted profile
 assembly, with independently checked SQL/manifest byte hashes. Driver/runner
 tests may use explicit synthetic manifests; that does not prove real bundle
 readiness or grant authority to expand those tasks' source ownership.
+
+## Explicit legacy messaging mode — 2026-09-15
+
+[Retail independent QA](qa/T-027.md) reproduced that old narrow outbox grants
+restored after actual custody activation can satisfy a scaffold's grant-based
+legacy check. Retail's bounded fix must explicitly reject a present nonlegacy
+mode before factories. This is configuration drift; the runtime cannot grant
+itself privileges or bypass the database's mode guard through that restoration.
+
+Earlier scaffolds use the same grant-based convention but remain unchanged;
+this Retail reproduction does not replace their historical QA. Before composing
+an owner root, its existing OWNER-COMPATIBILITY handoff must verify explicit
+mode/profile compatibility rather than treating old grants as mode evidence.
+T-930's exact profile path already checks declared legacy mode. No working
+owner runtime or production custody compatibility is inferred here.

@@ -1,0 +1,35 @@
+{
+  "reviewed_commit": "db5c28c6ea7fe709d874f4e2a083d891a965877b",
+  "source_hashes_and_reconstructed_logs": {
+    "services/retail/adapter/postgres/unit_of_work.go": "7d3ee29cde3316ba7f1781a6fe28d8afb7a55af74808d2b78fbd231837970b7b",
+    "services/retail/adapter/postgres/unit_of_work_test.go": "4ff5d99436bf6bd9426fd84a93c0646c8d70ffa6ffb1700b2208b092ba13b2ed",
+    "services/retail/migrations/0001_mechanics.up.sql": "98d2d5514aaed88a7a187d824f52053eed555a68ed380a8e02145a5926dfa07a",
+    "services/retail/port/dependencies.go": "898dcf7881d3fd5c91538c4fa5f2525615538b547668db165b5c7aadeb221078",
+    "services/retail/port/unit_of_work.go": "7cae0dc4ea5ac88353995dfe705e4fe436114a9e306571529b6e706a33228f62",
+    "reconstructed/justixauto-t027-live-attempt1.log": "6449d8a0be40f44465e7f7cce31bcbd24e5c8e08f2c268479b5e15db550758fb",
+    "reconstructed/justixauto-t027-live-attempt2.log": "742213eda45c89f99a1ae96789e65bbf5fce388fe1504903fe81dcd46852a9ad",
+    "reconstructed/justixauto-t027-full-race.log": "e3bca13241315fad6802251e340aec09fbae5d8e23fe0459609cbee75e91137a",
+    "reconstructed/justixauto-t027-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pkg/eventstore/schema.sql": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+    "pkg/eventstore/transaction.go": "fbeda1dbb2add4b18f5901f2124c30ff77aee565c240895820ea792eb99d386f",
+    "pkg/eventstore/replay.go": "aa385e7efec58b2585721289b578703f8d4a740c062697ed22991318d3f12d43",
+    "pkg/eventstore/upcast.go": "00fe8664175c96f4c9deb4ade66c4b6b202e4fb837889460496abea472f72b20",
+    "pkg/commands/ledger.go": "e866cb37da25fb97a8749e698fb2d099ac054be10f45e6600514d49496db4e89",
+    "pkg/commands/operation.go": "0597e186a3e9bd865a4575d6f5961f67a3dd029747fe1ee82a488c2d8f35a21e",
+    "pkg/eventstore/migrations/000002_messaging_delivery.up.sql": "1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2"
+  },
+  "exact_changed_files": [
+    "docs/justix-auto/dev/results/T-027.md",
+    "services/retail/adapter/postgres/unit_of_work.go",
+    "services/retail/adapter/postgres/unit_of_work_test.go",
+    "services/retail/migrations/0001_mechanics.up.sql",
+    "services/retail/port/dependencies.go",
+    "services/retail/port/unit_of_work.go"
+  ],
+  "restored_log_lines": 4,
+  "port_imports": [
+    "db5c28c6ea7fe709d874f4e2a083d891a965877b:services/retail/port/dependencies.go:3:import \"context\"",
+    "db5c28c6ea7fe709d874f4e2a083d891a965877b:services/retail/port/unit_of_work.go:4:import \"context\""
+  ],
+  "result": "PASS"
+}

@@ -1,0 +1,4 @@
+The first independent evidence checker invocation exited 1 before examining application files.
+Its root calculation used parents[6] instead of parents[5].
+AssertionError: /Users/bakhromachilov/startups/justixauto/.worktrees
+Only this QA helper was corrected. No source change or application failure occurred.

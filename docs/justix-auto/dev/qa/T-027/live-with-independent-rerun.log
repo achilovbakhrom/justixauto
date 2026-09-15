@@ -1,0 +1,173 @@
+=== RUN   TestQA027Independent
+    qa_independent_test.go:16: created owned fixture justixauto-t027-8495a931-ca14-444a-929d-50405fe8e84f id f56ddde75b703b08a6abea107ba4fd66c8cc00b397e97a4fc99471de0633a227 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+=== RUN   TestQA027Independent/foreign-migration-identity
+=== RUN   TestQA027Independent/foreign-migration-inventory
+=== RUN   TestQA027Independent/foreign-migration-commerce
+=== RUN   TestQA027Independent/foreign-migration-financing
+=== RUN   TestQA027Independent/foreign-migration-insurance
+=== RUN   TestQA027Independent/foreign-migration-documents
+=== RUN   TestQA027Independent/empty-ledger
+=== RUN   TestQA027Independent/empty-marker
+=== RUN   TestQA027Independent/no-owner-default
+=== RUN   TestQA027Independent/public-schema-create
+=== RUN   TestQA027Independent/public-event-column-update
+=== RUN   TestQA027Independent/public-marker-column-update
+=== RUN   TestQA027Independent/public-ledger-column-insert
+=== RUN   TestQA027Independent/operation-step-delete
+=== RUN   TestQA027Independent/outbox-truncate
+=== RUN   TestQA027Independent/receipt-update
+=== RUN   TestQA027Independent/actual-readcommitted-and-single-transaction
+=== RUN   TestQA027Independent/same-runner-rechecks-between-transactions
+=== RUN   TestQA027Independent/custody-with-restored-legacy-grants
+    qa_independent_test.go:70: incompatible installation reached feature: Check=<nil> Run=<nil> binds=1 calls=1
+=== NAME  TestQA027Independent
+    unit_of_work_test.go:164: validated fixture removed and absent: f56ddde75b703b08a6abea107ba4fd66c8cc00b397e97a4fc99471de0633a227 justixauto-t027-8495a931-ca14-444a-929d-50405fe8e84f; attached volume IDs []
+--- FAIL: TestQA027Independent (4.42s)
+    --- PASS: TestQA027Independent/foreign-migration-identity (0.12s)
+    --- PASS: TestQA027Independent/foreign-migration-inventory (0.11s)
+    --- PASS: TestQA027Independent/foreign-migration-commerce (0.13s)
+    --- PASS: TestQA027Independent/foreign-migration-financing (0.15s)
+    --- PASS: TestQA027Independent/foreign-migration-insurance (0.13s)
+    --- PASS: TestQA027Independent/foreign-migration-documents (0.15s)
+    --- PASS: TestQA027Independent/empty-ledger (0.12s)
+    --- PASS: TestQA027Independent/empty-marker (0.11s)
+    --- PASS: TestQA027Independent/no-owner-default (0.12s)
+    --- PASS: TestQA027Independent/public-schema-create (0.11s)
+    --- PASS: TestQA027Independent/public-event-column-update (0.13s)
+    --- PASS: TestQA027Independent/public-marker-column-update (0.11s)
+    --- PASS: TestQA027Independent/public-ledger-column-insert (0.12s)
+    --- PASS: TestQA027Independent/operation-step-delete (0.12s)
+    --- PASS: TestQA027Independent/outbox-truncate (0.11s)
+    --- PASS: TestQA027Independent/receipt-update (0.12s)
+    --- PASS: TestQA027Independent/actual-readcommitted-and-single-transaction (0.01s)
+    --- PASS: TestQA027Independent/same-runner-rechecks-between-transactions (0.11s)
+    --- FAIL: TestQA027Independent/custody-with-restored-legacy-grants (0.27s)
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestRetailPostgresMechanics
+    unit_of_work_test.go:252: created owned fixture justixauto-t027-cb48782a-26c1-4b02-ac62-85738280b303 id ce60f4d69a1e016eeef5ca53638af7a6d6824d4e998dd1512cef62c8c80430e1 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/database_create
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/database_temporary
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/events_maintain
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/events_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/events_column_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_maintain
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_maintain
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_column_insert
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_column_insert
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_column_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_column_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/database_create
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/database_temporary
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/events_maintain
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/events_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/events_column_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_maintain
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_maintain
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_column_insert
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_column_insert
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_column_references
+=== RUN   TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_column_references
+=== RUN   TestRetailPostgresMechanics/required-grants-and-transitive-reachability
+=== RUN   TestRetailPostgresMechanics/factory-failure-rolls-back-before-callback
+=== RUN   TestRetailPostgresMechanics/atomic-rollback-replay-and-idempotency
+=== RUN   TestRetailPostgresMechanics/uncommitted-history-invisible-and-panic-cleanup
+=== NAME  TestRetailPostgresMechanics
+    unit_of_work_test.go:164: validated fixture removed and absent: ce60f4d69a1e016eeef5ca53638af7a6d6824d4e998dd1512cef62c8c80430e1 justixauto-t027-cb48782a-26c1-4b02-ac62-85738280b303; attached volume IDs []
+--- PASS: TestRetailPostgresMechanics (8.79s)
+    --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants (3.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/database_create (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/database_temporary (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/events_maintain (0.10s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/events_references (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/events_column_references (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_maintain (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_maintain (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_references (0.10s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_references (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_column_insert (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_column_insert (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/marker_column_references (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/justix_retail_runtime/ledger_column_references (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/database_create (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/database_temporary (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/events_maintain (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/events_references (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/events_column_references (0.09s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_maintain (0.13s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_maintain (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_references (0.12s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_references (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_column_insert (0.13s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_column_insert (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/marker_column_references (0.11s)
+        --- PASS: TestRetailPostgresMechanics/excess-direct-and-reachable-role-grants/retail_fixture_grants/ledger_column_references (0.12s)
+    --- PASS: TestRetailPostgresMechanics/required-grants-and-transitive-reachability (1.22s)
+    --- PASS: TestRetailPostgresMechanics/factory-failure-rolls-back-before-callback (0.17s)
+    --- PASS: TestRetailPostgresMechanics/atomic-rollback-replay-and-idempotency (0.41s)
+    --- PASS: TestRetailPostgresMechanics/uncommitted-history-invisible-and-panic-cleanup (0.03s)
+=== RUN   TestRetailScopeRecoveryAndMessaging
+    unit_of_work_test.go:635: created owned fixture justixauto-t027-45b91732-bc51-4f00-a25c-e06877615eae id 0d7c893870611e9443ed2c46e1f8eec6916274d398c87366efc237f6d09d8b7c image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+=== RUN   TestRetailScopeRecoveryAndMessaging/company-required-and-receipt-scope
+=== RUN   TestRetailScopeRecoveryAndMessaging/lost-reply-actual-commit-false
+=== RUN   TestRetailScopeRecoveryAndMessaging/lost-reply-actual-commit-true
+=== RUN   TestRetailScopeRecoveryAndMessaging/additive-legacy-ready-custody-rejected
+=== NAME  TestRetailScopeRecoveryAndMessaging
+    unit_of_work_test.go:164: validated fixture removed and absent: 0d7c893870611e9443ed2c46e1f8eec6916274d398c87366efc237f6d09d8b7c justixauto-t027-45b91732-bc51-4f00-a25c-e06877615eae; attached volume IDs []
+--- PASS: TestRetailScopeRecoveryAndMessaging (2.70s)
+    --- PASS: TestRetailScopeRecoveryAndMessaging/company-required-and-receipt-scope (0.22s)
+    --- PASS: TestRetailScopeRecoveryAndMessaging/lost-reply-actual-commit-false (0.14s)
+    --- PASS: TestRetailScopeRecoveryAndMessaging/lost-reply-actual-commit-true (0.12s)
+    --- PASS: TestRetailScopeRecoveryAndMessaging/additive-legacy-ready-custody-rejected (0.23s)
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_name
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/bad_id
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/no_tmpfs
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/unexpected_volume
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/writable_bind
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/different_bind
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_label
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_image
+--- PASS: TestFixtureRefusesUnownedIdentityOrMounts (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_name (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/bad_id (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/no_tmpfs (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/unexpected_volume (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/writable_bind (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/different_bind (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_label (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_image (0.00s)
+=== RUN   TestFixtureAllocationFailures
+=== RUN   TestFixtureAllocationFailures/lost-reply
+    unit_of_work_test.go:872: expected child failure: exit status 1
+        === RUN   TestFixtureAllocationFailures
+            unit_of_work_test.go:834: create owned fixture: exit status 42 T027 synthetic lost-reply failure
+            unit_of_work_test.go:164: validated fixture removed and absent: 70ae17cb6d67286614df279dc2a04a3f9a7eb3197f33f488a5de6d7599e5608e justixauto-t027-267deaa7-f316-44e4-a0f0-4952356d6549; attached volume IDs []
+        --- FAIL: TestFixtureAllocationFailures (1.01s)
+        FAIL
+    unit_of_work_test.go:854: fixture absent after failed allocation: justixauto-t027-267deaa7-f316-44e4-a0f0-4952356d6549
+=== RUN   TestFixtureAllocationFailures/no-allocation
+    unit_of_work_test.go:872: expected child failure: exit status 1
+        === RUN   TestFixtureAllocationFailures
+            unit_of_work_test.go:834: create owned fixture: exit status 42 unknown flag: --t027-invalid-option
+                
+                Usage:  docker create [OPTIONS] IMAGE [COMMAND] [ARG...]
+                
+                Run 'docker create --help' for more information
+                T027 actual allocation rejected: 125
+                T027 synthetic no-allocation failure
+            unit_of_work_test.go:164: fixture absent after failed allocation: justixauto-t027-46893997-d162-440e-9224-5e5f4f4ab052
+        --- FAIL: TestFixtureAllocationFailures (0.47s)
+        FAIL
+    unit_of_work_test.go:854: fixture absent after failed allocation: justixauto-t027-46893997-d162-440e-9224-5e5f4f4ab052
+--- PASS: TestFixtureAllocationFailures (1.67s)
+    --- PASS: TestFixtureAllocationFailures/lost-reply (1.13s)
+    --- PASS: TestFixtureAllocationFailures/no-allocation (0.54s)
+FAIL
+FAIL	justixauto/services/retail/adapter/postgres	18.083s
+FAIL

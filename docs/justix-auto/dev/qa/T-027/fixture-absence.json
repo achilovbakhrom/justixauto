@@ -1,0 +1,73 @@
+{
+  "allocated_fixture_count": 5,
+  "refused_allocation_count": 1,
+  "checks": [
+    {
+      "identifier": "0d7c893870611e9443ed2c46e1f8eec6916274d398c87366efc237f6d09d8b7c",
+      "exit_code": 1,
+      "stderr": "error: no such object: 0d7c893870611e9443ed2c46e1f8eec6916274d398c87366efc237f6d09d8b7c",
+      "absent": true
+    },
+    {
+      "identifier": "70ae17cb6d67286614df279dc2a04a3f9a7eb3197f33f488a5de6d7599e5608e",
+      "exit_code": 1,
+      "stderr": "error: no such object: 70ae17cb6d67286614df279dc2a04a3f9a7eb3197f33f488a5de6d7599e5608e",
+      "absent": true
+    },
+    {
+      "identifier": "bf84ce7ac73f2f9ed84deab8d0ca848d51f8a5fd221f9a1bb13b5211502f8cd9",
+      "exit_code": 1,
+      "stderr": "error: no such object: bf84ce7ac73f2f9ed84deab8d0ca848d51f8a5fd221f9a1bb13b5211502f8cd9",
+      "absent": true
+    },
+    {
+      "identifier": "ce60f4d69a1e016eeef5ca53638af7a6d6824d4e998dd1512cef62c8c80430e1",
+      "exit_code": 1,
+      "stderr": "error: no such object: ce60f4d69a1e016eeef5ca53638af7a6d6824d4e998dd1512cef62c8c80430e1",
+      "absent": true
+    },
+    {
+      "identifier": "f56ddde75b703b08a6abea107ba4fd66c8cc00b397e97a4fc99471de0633a227",
+      "exit_code": 1,
+      "stderr": "error: no such object: f56ddde75b703b08a6abea107ba4fd66c8cc00b397e97a4fc99471de0633a227",
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t027-01417240-d8a2-4ed8-b807-fb248d8d676a",
+      "exit_code": 1,
+      "stderr": "error: no such object: justixauto-t027-01417240-d8a2-4ed8-b807-fb248d8d676a",
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t027-267deaa7-f316-44e4-a0f0-4952356d6549",
+      "exit_code": 1,
+      "stderr": "error: no such object: justixauto-t027-267deaa7-f316-44e4-a0f0-4952356d6549",
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t027-45b91732-bc51-4f00-a25c-e06877615eae",
+      "exit_code": 1,
+      "stderr": "error: no such object: justixauto-t027-45b91732-bc51-4f00-a25c-e06877615eae",
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t027-46893997-d162-440e-9224-5e5f4f4ab052",
+      "exit_code": 1,
+      "stderr": "error: no such object: justixauto-t027-46893997-d162-440e-9224-5e5f4f4ab052",
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t027-8495a931-ca14-444a-929d-50405fe8e84f",
+      "exit_code": 1,
+      "stderr": "error: no such object: justixauto-t027-8495a931-ca14-444a-929d-50405fe8e84f",
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t027-cb48782a-26c1-4b02-ac62-85738280b303",
+      "exit_code": 1,
+      "stderr": "error: no such object: justixauto-t027-cb48782a-26c1-4b02-ac62-85738280b303",
+      "absent": true
+    }
+  ],
+  "result": "PASS"
+}

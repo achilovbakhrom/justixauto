@@ -1356,7 +1356,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1384,8 +1384,8 @@
       "worktree": ".worktrees/T-027",
       "base_sha": "a2c61e8fadd0b8a5f4d7563aa67c1383c30b134e",
       "reviewed_sha": "db5c28c6ea7fe709d874f4e2a083d891a965877b",
-      "agent": "qa_t027",
-      "execution_note": "Coordinator-authored Retail scaffold committed; live race14.342s, full scoped race Retail16.288s/contracts125.411s and vet pass. New fixture cleanup handles real lost create reply and pre-allocation refusal safely. Final result-only whitespace correction preserves raw-log reconstruction; source unchanged after checks. Independent exact-commit QA assigned; legacy-only scope, future owner profile composition remains separate."
+      "agent": "coordinator_t027",
+      "execution_note": "Independent BOUNCE reproduced custody readiness after restoration of old narrow outbox grants. Coordinator fix cycle1 adds explicit optional messaging-mode gating in the owned Retail adapter/tests; preserve pre-additive legacy support, all old SQL and other owner code. Original14 QA artifacts retained byte-exact, including raw whitespace in logs."
     },
     {
       "id": "T-028",

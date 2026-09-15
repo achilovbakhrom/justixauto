@@ -1,6 +1,6 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: independent r2 BOUNCE; final allowed architect fix cycle 2 queued for a worker slot; T-920 remains blocked.
+2026-09-15. Status: independent r2 BOUNCE; final allowed architect fix cycle 2 assigned to architect_membership_storage; T-920 remains blocked.
 Agent: `architect_membership_storage`.
 T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
@@ -99,3 +99,9 @@ Own only the original draft/result leaves, preserve both QA rounds and all old
 artifacts, and demonstrate ALL/named toggles in both temporal mutation orders.
 Do not start a third automatic fix cycle if the next review fails; require a
 bounded scope review. No new task IDs, policy or canonical contract is adopted.
+
+Fix cycle 2 now assigned in the original `.worktrees/membership-version-storage`.
+The architect owns the same original draft/result leaves; both independent QA
+rounds are imported unchanged. Current task graph is 944 nodes; no alias IDs
+are reserved. Future installation checks must also deny reachable parameter
+authority to bypass triggers and account for explicit constraint timing.

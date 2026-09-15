@@ -1,0 +1,13 @@
+Independent QA target: db5c28c6ea7fe709d874f4e2a083d891a965877b
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-027
+Environment: GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off
+JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 bash tools/go.sh test -count=1 -race -mod=readonly ./services/... ./pkg/... ./tests/...
+bash tools/go.sh vet ./services/... ./pkg/... ./tests/...
+JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 bash tools/go.sh test -count=1 -race -mod=readonly -overlay docs/justix-auto/dev/qa/T-027/overlay.json -run TestQA027Independent -v ./services/retail/adapter/postgres
+JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 bash tools/go.sh test -count=1 -race -mod=readonly -overlay docs/justix-auto/dev/qa/T-027/overlay.json -v ./services/retail/adapter/postgres
+python3 docs/justix-auto/dev/qa/T-027/verify_evidence.py
+python3 docs/justix-auto/dev/qa/T-027/verify_fixture_absence.py
+git diff --check
+All test/vet commands ran from the task worktree. Their raw logs are siblings of this file.
+The first two commands exited 0; both overlay test commands exited 1 for the same custody case.
+QA made no tracked source changes and no commits.
