@@ -1,0 +1,13 @@
+
+> justixauto-development-handoff@0.1.0 test:unit
+> vitest run --config web/vitest.workspace.ts --configLoader runner
+
+
+ RUN  v4.1.11 /Users/bakhromachilov/startups/justixauto/.worktrees/T-935
+
+
+ Test Files  9 passed (9)
+      Tests  294 passed (294)
+   Start at  23:09:35
+   Duration  2.35s (transform 1.07s, setup 0ms, import 3.22s, tests 2.62s, environment 5.47s)
+

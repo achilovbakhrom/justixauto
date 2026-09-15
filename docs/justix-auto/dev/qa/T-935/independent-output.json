@@ -1,0 +1,75 @@
+{
+  "result": "PASS",
+  "commit": "a71115801f57b579398f39f47b1ee4437ea2b537",
+  "node": "v24.21.0",
+  "seed": "0x3a294051",
+  "groups": {
+    "numeric": 18480,
+    "grammar": 21381,
+    "utf8": 65536,
+    "ownership": 8,
+    "limits": 32
+  },
+  "largeTokenObservations": [
+    {
+      "name": "positive exponent",
+      "bytes": 200002,
+      "milliseconds": 2.48
+    },
+    {
+      "name": "negative exponent",
+      "bytes": 200003,
+      "milliseconds": 2.52
+    },
+    {
+      "name": "zero exponent",
+      "bytes": 200003,
+      "milliseconds": 0.19
+    },
+    {
+      "name": "integer cancellation",
+      "bytes": 200009,
+      "milliseconds": 0.71
+    },
+    {
+      "name": "fraction cancellation",
+      "bytes": 200010,
+      "milliseconds": 0.29
+    },
+    {
+      "name": "positive exponent",
+      "bytes": 1000002,
+      "milliseconds": 13.14
+    },
+    {
+      "name": "negative exponent",
+      "bytes": 1000003,
+      "milliseconds": 3.6
+    },
+    {
+      "name": "zero exponent",
+      "bytes": 1000003,
+      "milliseconds": 0.93
+    },
+    {
+      "name": "integer cancellation",
+      "bytes": 1000010,
+      "milliseconds": 3.36
+    },
+    {
+      "name": "fraction cancellation",
+      "bytes": 1000011,
+      "milliseconds": 1.4
+    }
+  ],
+  "parityDirectory": "/private/tmp/justix-t935-independent-parity-Q7H7Ka",
+  "parityCases": 2013,
+  "hashes": {
+    "web/packages/api/src/responseJSON.ts": "88ec9529a314229b42345de8bcd4179e34139265b7d577c0989631c1f5d3cf6c",
+    "web/packages/api/src/responseJSON.test.ts": "d5e3d71240d15bd98087eb7161d40f92314fd7ac562569bb0570eb75471e875c",
+    "web/packages/api/src/client.ts": "eb420ca1ca94224b069a41d99864e4c5984c66f27fe9e7c7d96284c1d127457c",
+    "web/packages/api/package.json": "df56a6ceef50a291bd7fdd894b542c6909d9a6a030b7336ee03c044ce7021504",
+    "tools/generate-contracts.mjs": "38919750f561b5c4feadbcd80eaff0b34b7711d8e283786e12e532c4548ce868"
+  },
+  "limits": "No transport integration; Go parity excludes proposed future resource tightening and negative-zero sign"
+}

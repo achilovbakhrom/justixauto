@@ -1,0 +1,5 @@
+=== RUN   TestActualGeneratedDecoderAgainstIndependentCorpus
+    parity_test.go:10: 2013 independent cases: 52 accepted, 1961 rejected
+--- PASS: TestActualGeneratedDecoderAgainstIndependentCorpus (0.03s)
+PASS
+ok  	independent-decoder-audit	1.638s
