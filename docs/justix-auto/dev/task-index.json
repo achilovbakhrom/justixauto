@@ -1500,7 +1500,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-035"
       ],
@@ -1532,12 +1532,12 @@
       "scope": "Base and Router basename /admin/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-036",
       "base_sha": "6a25973f20c528ef66ecdeb86aefec058e3c06fb",
-      "reviewed_sha": null,
+      "reviewed_sha": "0f6c32843f38eeb204adc37880fc4b964fd4be50",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend_t036",
-      "execution_note": "Shared harness T035 integrated and Git passed; isolated Admin shell task assigned against M-A01 HTML reference. Root owns serialized lock update before exact-SHA browser QA."
+      "execution_note": "Developer Admin shell passed 145 unit and nine browser checks, strict typecheck/build and immutable mocks. Coordinator committed seven new lock entries with no existing pin changes and verified one-line pinned React Refresh import correction. Independent exact-commit QA assigned; default session boundary remains closed."
     },
     {
       "id": "T-037",
