@@ -1256,7 +1256,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-003"
       ],
@@ -1278,9 +1278,9 @@
       "scope": "mTLS identity and caller/action/purpose allowlist; spoofed public internal headers rejected; do not generate production certificates.",
       "worktree": ".worktrees/T-031",
       "base_sha": "a6e769e1723f784a3646099b62767d301b214eb5",
-      "reviewed_sha": null,
+      "reviewed_sha": "e39875fb207af9b88ffdfffeb9cbde8770ac58ab",
       "agent": "backend/t031_auth_transport",
-      "execution_note": "Assigned after T-003 integration and own-root Git PASS. Isolated worktree .worktrees/T-031 owns internal caller/action/purpose authorization and mTLS transport identity tests plus ancillary result; no production certificates or service runtime."
+      "execution_note": "Implementation committed clean at e39875fb207af9b88ffdfffeb9cbde8770ac58ab. Developer verifies TLS 1.3 mutual handshake via net.Pipe, exact URI-SAN caller resolution, immutable deny-by-default caller/action/purpose grants, spoofed public internal-header reject/strip, full readonly race/vet/boundary checks; exact-SHA QA pending."
     },
     {
       "id": "T-032",
