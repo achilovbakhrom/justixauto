@@ -1,7 +1,7 @@
 # Owner migration compatibility proposal assignment
 
-2026-09-15. Status: ready-for-qa architecture handoff; no implementation approval.
-Agent: qa_owner_migration. Branch: `task/owner-migration-compatibility`.
+2026-09-15. Status: technical proposal adopted; canonical promotion QA pending before implementation assignment.
+Agent: coordinator; proposal QA GREEN. Branch: `task/owner-migration-compatibility`.
 Worktree: `.worktrees/owner-migration-compatibility`; base `f0a72a9`.
 
 Resolve the concrete [readiness finding](owner-migration-readiness.md) with a
@@ -30,3 +30,5 @@ aliases remain unassigned until technical adoption. QA owns only
 `dev/qa/owner-migration-compatibility.md` and its same-named evidence directory
 in the task worktree. Check actual pinned migrate/pgx interface feasibility,
 receipt-plus-clean atomicity and precise ownership/dependency amendments.
+
+Canonical approval: [owner migration compatibility](../state/approvals/owner-migration-compatibility.md). Task aliases now map to T-929–T-934; no implementation is complete.

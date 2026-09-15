@@ -360,3 +360,14 @@ storage to T-926–T-928. It preserves private service databases, existing event
 and mode history, typed outer transaction composition and separately authorized
 bootstrap/retention/process catch-up. Its exact contract and runtime gates
 supplement §5; no running application or production policy is implied.
+
+
+## Approved owner migration implementation handoff — 2026-09-15
+
+The [ADR-03/05/13 compatibility handoff](state/approvals/owner-migration-compatibility.md)
+adds exact private artifact history and explicit read-only owner profiles, separate
+from shared messaging/storage markers. The approved migrate engine uses a bounded
+project pgx database.Driver and immutable verified source, refining the original
+upstream-adapter/file-discovery guidance. Existing SQL and legacy constructors
+are preserved; actual DDL/finalization faults and later-owner follow-ups remain
+required. No schema health check supplies authorization or delivery guarantees.

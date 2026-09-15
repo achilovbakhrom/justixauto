@@ -28,10 +28,10 @@
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-012 in-progress (`.worktrees/T-012`, `task/T-012-outbox-relay`); T-014 in-progress (`.worktrees/T-014`, `task/T-014-projection-sequence`); T-640 ready-for-qa (`.worktrees/T-640`, `task/T-640-contract-generator`).
-- Integrated tasks: 35/928; independent exact-commit QA required before each integration.
-- Active architecture handoff: [owner migration compatibility](owner-migration-assignment.md), `qa_owner_migration` reviewing `c3734a5c3f2863be8fe752338c11740b9bdf31a4` in `.worktrees/owner-migration-compatibility`; bounded proposal only, independent review required before implementation ownership changes.
+- Integrated tasks: 35/934; independent exact-commit QA required before each integration.
+- Active architecture handoff: [owner migration compatibility](owner-migration-assignment.md) proposal QA GREEN and technically adopted; canonical promotion QA remains required before T-929–T-934 assignment.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
-- Formal PM task files: 928 (916 reviewed baseline + twelve bounded messaging/storage additions); see task-board.md, task-index.json and backlog-coverage.md
+- Formal PM task files: 934 (916 reviewed baseline + eighteen bounded messaging/storage/owner-migration additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
 - Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
@@ -187,3 +187,11 @@ The [independently reviewed storage handoff](../state/approvals/projection-stora
 adds T-926–T-928 and explicit checkpoint/quarantine/generation dependencies.
 This approves bounded implementation, not installed storage or running recovery.
 See projection-storage-readiness.md; existing policy gates stay scoped.
+
+### Owner migration compatibility handoff adopted — 2026-09-15
+
+The [technical adoption](../state/approvals/owner-migration-compatibility.md)
+adds T-929–T-934 and exact T-059/060/022/580 prerequisites. Existing owner defaults
+remain legacy-only. Later owner roots retain OWNER-COMPATIBILITY until their
+explicit adapter/profile follow-ups are assigned and independently integrated.
+This is implementation architecture, not an executed migration or running API.

@@ -218,3 +218,17 @@ required. No `skipLibCheck`, dependency patch or extra declaration shim is used.
 Vitest v4 is a prior major with recent maintenance evidence, not an LTS promise.
 Keep project inheritance and mock-reset defaults explicit; do not rely on v5
 defaults. See the correction approval for provenance and version-specific sources.
+
+
+## Owner migration adapter refinement — 2026-09-15
+
+The [ADR-03/05/13 technical adoption](../state/approvals/owner-migration-compatibility.md)
+retains migrate v4.20.1 and pgx v5.11.0 pins and their approved sums. Actual public
+API inspection showed the upstream pgx driver's private connection/independent
+SetVersion transaction cannot provide artifact-receipt-plus-clean atomicity.
+T-932 implements a bounded project pgx-backed database.Driver; T-933 uses the real
+migrate engine and an immutable verified in-memory upward source. This refines
+the earlier upstream pgx/file-source guidance; it does not introduce lib/pq or
+another migration engine. Coordinator owns insertion of the approved migrate
+module/transitives and exact-commit verification when implementation requires it.
+No dependency file or installed SQL is changed by this documentation approval.

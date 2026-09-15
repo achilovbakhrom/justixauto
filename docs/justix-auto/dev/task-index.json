@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 928,
-    "effort_hours": 3078,
+    "task_count": 934,
+    "effort_hours": 3102,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed916-task baseline; twelve bounded messaging/storage additions and their edges do not claim a recomputed width or schedule.",
+    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; eighteen bounded messaging/storage/owner-migration additions do not claim a recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -360,6 +360,48 @@
         "T-586": [
           "T-016"
         ]
+      }
+    },
+    "owner_migration_compatibility": {
+      "proposal_sha": "c3734a5c3f2863be8fe752338c11740b9bdf31a4",
+      "approval": "docs/justix-auto/state/approvals/owner-migration-compatibility.md",
+      "aliases": {
+        "OM-HISTORY": "T-929",
+        "OM-PROFILE": "T-930",
+        "OM-IDENTITY": "T-931",
+        "OM-DRIVER": "T-932",
+        "OM-RUNNER": "T-933",
+        "OM-CUSTODY": "T-934"
+      },
+      "added_existing_edges": {
+        "T-059": [
+          "T-929",
+          "T-931"
+        ],
+        "T-060": [
+          "T-931"
+        ],
+        "T-022": [
+          "T-933",
+          "T-934"
+        ],
+        "T-580": [
+          "T-931",
+          "T-934",
+          "T-933"
+        ]
+      },
+      "additional_schema_leaf": "services/identity/migrations/0012_auth.manifest.json",
+      "remaining_owner_gate": {
+        "tasks": [
+          "T-581",
+          "T-582",
+          "T-583",
+          "T-584",
+          "T-585",
+          "T-586"
+        ],
+        "gate": "OWNER-COMPATIBILITY"
       }
     }
   },
@@ -1078,7 +1120,9 @@
         "T-917",
         "T-924",
         "T-925",
-        "T-928"
+        "T-928",
+        "T-933",
+        "T-934"
       ],
       "branch": "task/T-022-local-compose",
       "lane": "infra",
@@ -2396,7 +2440,9 @@
       "status": "todo",
       "depends_on": [
         "T-058",
-        "T-024"
+        "T-024",
+        "T-929",
+        "T-931"
       ],
       "branch": "task/T-059-schema-2",
       "lane": "identity",
@@ -2405,7 +2451,8 @@
         "services/identity/contracts/events/auth.schema.json",
         "services/identity/contracts/openapi/auth.fixtures.json",
         "services/identity/migrations/0012_auth.up.sql",
-        "tests/contracts/identity_auth_test.go"
+        "tests/contracts/identity_auth_test.go",
+        "services/identity/migrations/0012_auth.manifest.json"
       ],
       "gates": [
         "ENV-GIT"
@@ -2433,7 +2480,8 @@
       "depends_on": [
         "T-059",
         "T-024",
-        "T-641"
+        "T-641",
+        "T-931"
       ],
       "branch": "task/T-060-credentials",
       "lane": "identity",
@@ -31255,7 +31303,10 @@
         "T-923",
         "T-924",
         "T-925",
-        "T-016"
+        "T-016",
+        "T-931",
+        "T-934",
+        "T-933"
       ],
       "branch": "task/T-580-identity-wire",
       "lane": "identity",
@@ -31317,7 +31368,8 @@
         "tests/integration/inventory_wiring_test.go"
       ],
       "gates": [
-        "ENV-GIT"
+        "ENV-GIT",
+        "OWNER-COMPATIBILITY"
       ],
       "design_refs": [],
       "coverage": [
@@ -31364,7 +31416,8 @@
         "tests/integration/commerce_wiring_test.go"
       ],
       "gates": [
-        "ENV-GIT"
+        "ENV-GIT",
+        "OWNER-COMPATIBILITY"
       ],
       "design_refs": [],
       "coverage": [
@@ -31411,7 +31464,8 @@
         "tests/integration/retail_wiring_test.go"
       ],
       "gates": [
-        "ENV-GIT"
+        "ENV-GIT",
+        "OWNER-COMPATIBILITY"
       ],
       "design_refs": [],
       "coverage": [
@@ -31458,7 +31512,8 @@
         "tests/integration/financing_wiring_test.go"
       ],
       "gates": [
-        "ENV-GIT"
+        "ENV-GIT",
+        "OWNER-COMPATIBILITY"
       ],
       "design_refs": [],
       "coverage": [
@@ -31505,7 +31560,8 @@
         "tests/integration/insurance_wiring_test.go"
       ],
       "gates": [
-        "ENV-GIT"
+        "ENV-GIT",
+        "OWNER-COMPATIBILITY"
       ],
       "design_refs": [],
       "coverage": [
@@ -31552,7 +31608,8 @@
         "tests/integration/documents_wiring_test.go"
       ],
       "gates": [
-        "ENV-GIT"
+        "ENV-GIT",
+        "OWNER-COMPATIBILITY"
       ],
       "design_refs": [],
       "coverage": [
@@ -35416,6 +35473,189 @@
         "B-01.AC2"
       ],
       "scope": "Install owner-local immutable generation/switch evidence and CAS projection heads with narrow grants. Prove pointer identity, retained history, atomic failure and immutable evidence; no owner business read model or real guard writer is introduced.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-929",
+      "key": "owner_migration_history",
+      "title": "Install immutable owner migration history",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-008",
+        "T-024"
+      ],
+      "branch": "task/T-929-owner-migration-history",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/owner_history.sql",
+        "pkg/eventstore/owner_history_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1"
+      ],
+      "scope": "Install the explicit owner-local history template at verified or explicitly attested clean v1. Preserve original SQL/markers and retained data; immutable provenance/artifact/feature metadata, exact predecessor and runtime SELECT-only grants, bounded installation locks.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-930",
+      "key": "owner_persistence_profile",
+      "title": "Validate exact owner persistence profiles",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-929",
+        "T-009",
+        "T-024"
+      ],
+      "branch": "task/T-930-owner-persistence-profile",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/persistence/profile.go",
+        "pkg/persistence/profile_test.go",
+        "pkg/persistence/check.go",
+        "pkg/persistence/check_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1"
+      ],
+      "scope": "Construct sealed exact trusted artifact/feature/privilege profiles and read-only metadata/legacy readiness checks. Check complete history, private head and declared shared lineage; reject arbitrary newer versions and unsupported custody profiles.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-931",
+      "key": "identity_compatible_uow",
+      "title": "Bind Identity transactions to explicit migration compatibility",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-930"
+      ],
+      "branch": "task/T-931-identity-compatible-uow",
+      "lane": "foundation",
+      "files_owned": [
+        "services/identity/adapter/postgres/unit_of_work.go",
+        "services/identity/adapter/postgres/unit_of_work_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1"
+      ],
+      "scope": "Add the explicit compatible Identity UOW constructor and checks before factory binding and every actual Run. Preserve the original legacy constructor and all prior grant/owner isolation behavior; synthetic feature profile only until T059.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-932",
+      "key": "owner_migration_driver",
+      "title": "Implement the bounded pgx migration database driver",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-929",
+        "T-930",
+        "T-001",
+        "T-005"
+      ],
+      "branch": "task/T-932-owner-migration-driver",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/owner-migrate/driver.go",
+        "tools/owner-migrate/driver_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1"
+      ],
+      "scope": "Implement the actual migrate database.Driver on one owned pgx connection: bounded lock/preflight, exact pending dirty item, original complete SQL batch, and atomic artifact receipt plus clean head. Explicit fresh-v1 exception; poisoned unknown instances and retained dirty failure, no Force/Down/Drop or upstream private-field access.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-933",
+      "key": "owner_migration_runner",
+      "title": "Run verified immutable owner migration bundles",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-932"
+      ],
+      "branch": "task/T-933-owner-migration-runner",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/owner-migrate/main.go",
+        "tools/owner-migrate/main_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1"
+      ],
+      "scope": "Compose actual migrate.NewWithInstance with verified immutable upward-only source and project driver. Explicit bootstrap/shared-template phases and lock ownership, complete bundle preflight, retained incremental upgrades, verified no-op and authoritative unknown-outcome reconciliation. No automatic dirty repair or silent lower-version skipping.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-934",
+      "key": "custody_persistence_profile",
+      "title": "Validate distinct custody persistence compatibility",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-930",
+        "T-919",
+        "T-922",
+        "T-924",
+        "T-925",
+        "T-928"
+      ],
+      "branch": "task/T-934-custody-persistence-profile",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/persistence/custody.go",
+        "pkg/persistence/custody_test.go",
+        "pkg/persistence/check.go",
+        "pkg/persistence/check_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1"
+      ],
+      "scope": "Extend the common checker after T930 to exact approved custody lineage/mode/ACLs, retaining all legacy checks. Require revoked legacy writes and immutable shared markers; success is storage compatibility only, not adapter assembly, source admission or delivery effects.",
       "worktree": null,
       "base_sha": null
     }

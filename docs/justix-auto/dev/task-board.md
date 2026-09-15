@@ -11,6 +11,8 @@ Date: 2026-09-15. Release scope and architecture approved; development authorize
 - `coverage` means contributes-to. Dedicated B-item acceptance tasks close each AC; inherited AC text does not claim each layer implements the entire feature. Tasks are capped at4 effort-hours assuming their dependencies and test harnesses exist; if exceeded, reslice before implementation.
 - Minimal owner runtimes and app route loaders precede features; each completed feature adds only its own typed registration/projection/subscriber leaves. Ordinary CRM/provider/reservation features run and receive QA without unfinished policy-gated modules. No feature worker edits a shared router; contextual controls remain approved parent-page slots, not new sidebar entries.
 
+- Before later owner schema/runtime assignments, assign the exact adjacent feature manifest and owner UOW compatibility follow-up. A dependency-ready row does not waive this recorded handoff; OWNER-COMPATIBILITY remains on the six unextended owner roots.
+
 ## Conditional dependencies (not all-of barriers)
 
 - B-28: Accepted order input is quotation acceptance OR supplier-confirmed direct order. Contract fixtures cover both; runtime tests may exercise either completed origin. Do not wait for both origin UI features.
@@ -24,8 +26,8 @@ Date: 2026-09-15. Release scope and architecture approved; development authorize
 
 ## Graph metrics and lanes
 
-Current scope: 928 tasks after the approved messaging/route amendments
-and three projection/quarantine storage tasks (3,078 total task-effort hours).
+Current scope: 934 tasks after approved messaging/storage amendments and six
+owner migration compatibility tasks (3,102 total task-effort hours).
 The metrics below describe the original reviewed 916-task baseline; no new
 antichain width or elapsed schedule is claimed. See the amendment rows and
 [approval](../state/approvals/messaging-delivery.md) for the bounded new scope.
@@ -87,7 +89,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | integrated | T-003 | `task/T-019-money` | ENV-GIT |
 | [T-020](tasks/T-020.md) | B-01 | Instrument safe correlation and stuck-operation signals | implementation / 3 | foundation | todo | T-018, T-015 | `task/T-020-telemetry` | ENV-GIT |
 | [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018, T-923 | `task/T-021-recovery-harness` | ENV-GIT |
-| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924, T-925, T-928 | `task/T-022-local-compose` | ENV-GIT |
+| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924, T-925, T-928, T-933, T-934 | `task/T-022-local-compose` | ENV-GIT |
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
 | [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | integrated | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | integrated | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
@@ -125,8 +127,8 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
 | [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | ready-for-qa | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | integrated | T-001 | `task/T-058-contract-2` | dependencies only |
-| [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | todo | T-058, T-024 | `task/T-059-schema-2` | ENV-GIT |
-| [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641 | `task/T-060-credentials` | ENV-GIT |
+| [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | todo | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
+| [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931 | `task/T-060-credentials` | ENV-GIT |
 | [T-061](tasks/T-061.md) | B-02 | Implement one-use TOTP and recovery codes | implementation / 4 | identity | todo | T-059, T-024, T-641, T-060 | `task/T-061-mfa` | ENV-GIT |
 | [T-062](tasks/T-062.md) | B-02 | Implement deployment-only guarded MFA bootstrap | implementation / 4 | identity | todo | T-059, T-024, T-641, T-061 | `task/T-062-bootstrap` | ENV-GIT |
 | [T-063](tasks/T-063.md) | B-02 | Implement approved recovery and invitation proof adapters | implementation / 4 | identity | todo | T-059, T-024, T-002, T-641, T-061 | `task/T-063-recovery` | ENV-GIT |
@@ -920,13 +922,13 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-912](tasks/T-912.md) | B-09 | Project subscribe and register the retail document access slice | implementation / 3 | retail | todo | T-739, T-583 | `task/T-912-retail-document-access-registration` | ENV-GIT |
 | [T-913](tasks/T-913.md) | B-09 | Project subscribe and register the financing document access slice | implementation / 3 | financing | todo | T-740, T-584 | `task/T-913-financing-document-access-registration` | ENV-GIT |
 | [T-914](tasks/T-914.md) | B-09 | Project subscribe and register the insurance document access slice | implementation / 3 | insurance | todo | T-741, T-585 | `task/T-914-insurance-document-access-registration` | ENV-GIT |
-| [T-580](tasks/T-580.md) | B-01 | Wire minimal identity API worker and projector runtimes | implementation / 4 | identity | todo | T-024, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-580-identity-wire` | ENV-GIT |
-| [T-581](tasks/T-581.md) | B-01 | Wire minimal inventory API worker and projector runtimes | implementation / 4 | inventory | todo | T-025, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-581-inventory-wire` | ENV-GIT |
-| [T-582](tasks/T-582.md) | B-01 | Wire minimal commerce API worker and projector runtimes | implementation / 4 | commerce | todo | T-026, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-582-commerce-wire` | ENV-GIT |
-| [T-583](tasks/T-583.md) | B-01 | Wire minimal retail API worker and projector runtimes | implementation / 4 | retail | todo | T-027, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-583-retail-wire` | ENV-GIT |
-| [T-584](tasks/T-584.md) | B-01 | Wire minimal financing API worker and projector runtimes | implementation / 4 | financing | todo | T-028, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-584-financing-wire` | ENV-GIT |
-| [T-585](tasks/T-585.md) | B-01 | Wire minimal insurance API worker and projector runtimes | implementation / 4 | insurance | todo | T-029, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-585-insurance-wire` | ENV-GIT |
-| [T-586](tasks/T-586.md) | B-01 | Wire minimal documents API worker and projector runtimes | implementation / 4 | documents | todo | T-030, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-586-documents-wire` | ENV-GIT |
+| [T-580](tasks/T-580.md) | B-01 | Wire minimal identity API worker and projector runtimes | implementation / 4 | identity | todo | T-024, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016, T-931, T-934, T-933 | `task/T-580-identity-wire` | ENV-GIT |
+| [T-581](tasks/T-581.md) | B-01 | Wire minimal inventory API worker and projector runtimes | implementation / 4 | inventory | todo | T-025, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-581-inventory-wire` | ENV-GIT, OWNER-COMPATIBILITY |
+| [T-582](tasks/T-582.md) | B-01 | Wire minimal commerce API worker and projector runtimes | implementation / 4 | commerce | todo | T-026, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-582-commerce-wire` | ENV-GIT, OWNER-COMPATIBILITY |
+| [T-583](tasks/T-583.md) | B-01 | Wire minimal retail API worker and projector runtimes | implementation / 4 | retail | todo | T-027, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-583-retail-wire` | ENV-GIT, OWNER-COMPATIBILITY |
+| [T-584](tasks/T-584.md) | B-01 | Wire minimal financing API worker and projector runtimes | implementation / 4 | financing | todo | T-028, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-584-financing-wire` | ENV-GIT, OWNER-COMPATIBILITY |
+| [T-585](tasks/T-585.md) | B-01 | Wire minimal insurance API worker and projector runtimes | implementation / 4 | insurance | todo | T-029, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-585-insurance-wire` | ENV-GIT, OWNER-COMPATIBILITY |
+| [T-586](tasks/T-586.md) | B-01 | Wire minimal documents API worker and projector runtimes | implementation / 4 | documents | todo | T-030, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-586-documents-wire` | ENV-GIT, OWNER-COMPATIBILITY |
 | [T-587](tasks/T-587.md) | B-05 | Load independently completed admin routes and boundary providers | implementation / 3 | frontend-admin | todo | T-036, T-578, T-746 | `task/T-587-admin-routes` | ENV-GIT |
 | [T-588](tasks/T-588.md) | B-05 | Load independently completed realization routes and boundary providers | implementation / 3 | frontend-realization | todo | T-037, T-578, T-746 | `task/T-588-realization-routes` | ENV-GIT |
 | [T-589](tasks/T-589.md) | B-05 | Load independently completed financing routes and boundary providers | implementation / 3 | frontend-financing | todo | T-038, T-578, T-746 | `task/T-589-financing-routes` | ENV-GIT |
@@ -1003,3 +1005,14 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-926](tasks/T-926.md) | B-01 | Install checkpoint and gap storage with receiver fences | implementation / 4 | foundation | integrated | T-925, T-008, T-009 | `task/T-926-projection-checkpoint-storage` | ENV-GIT |
 | [T-927](tasks/T-927.md) | B-01 | Install protected quarantine and redrive evidence storage | implementation / 4 | foundation | todo | T-926, T-013 | `task/T-927-quarantine-evidence-storage` | ENV-GIT |
 | [T-928](tasks/T-928.md) | B-01 | Install projection generation and pointer evidence storage | implementation / 4 | foundation | todo | T-927 | `task/T-928-projection-generation-storage` | ENV-GIT |
+
+## Approved owner migration compatibility tasks — 2026-09-15
+
+| ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
+|---|---|---|---|---|---|---|---|---|
+| [T-929](tasks/T-929.md) | B-01 | Install immutable owner migration history | implementation / 4 | foundation | todo | T-008, T-024 | `task/T-929-owner-migration-history` | ENV-GIT |
+| [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | todo | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
+| [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | todo | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
+| [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | todo | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
+| [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
+| [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928 | `task/T-934-custody-persistence-profile` | ENV-GIT |

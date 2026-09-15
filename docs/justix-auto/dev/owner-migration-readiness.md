@@ -38,3 +38,12 @@ mechanics and record any additional owned leaves/dependency edges explicitly.
 The bounded [architecture assignment](owner-migration-assignment.md) is active
 in `.worktrees/owner-migration-compatibility`. Its proposal must pass independent
 review before the coordinator promotes any implementation ownership or edges.
+
+
+## Reviewed technical adoption
+
+Exact proposal `c3734a5c3f2863be8fe752338c11740b9bdf31a4` passed [independent proposal QA](qa/owner-migration-compatibility.md).
+The [technical approval](../state/approvals/owner-migration-compatibility.md)
+maps six aliases to T-929–T-934, eight existing edges and the auth manifest leaf.
+Canonical promotion QA precedes assignment; implementation and actual PostgreSQL
+driver/runtime evidence remain unfinished. Earlier findings remain provenance.
