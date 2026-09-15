@@ -88,7 +88,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018, T-923 | `task/T-021-recovery-harness` | ENV-GIT |
 | [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924 | `task/T-022-local-compose` | ENV-GIT |
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
-| [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | in-progress | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
+| [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | ready-for-qa | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | todo | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
 | [T-026](tasks/T-026.md) | B-01 | Scaffold commerce typed owner ports and migration ledger | implementation / 3 | commerce | todo | T-009, T-017, T-018, T-010 | `task/T-026-commerce-scaffold` | ENV-GIT |
 | [T-027](tasks/T-027.md) | B-01 | Scaffold retail typed owner ports and migration ledger | implementation / 3 | retail | todo | T-009, T-017, T-018, T-010 | `task/T-027-retail-scaffold` | ENV-GIT |
@@ -990,7 +990,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
-| [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | in-progress | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
+| [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | ready-for-qa | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
 | [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | todo | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
 | [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | todo | T-918, T-011 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
 | [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | todo | T-917, T-009, T-746 | `task/T-920-messaging-local-membership` | ENV-GIT |

@@ -1047,7 +1047,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1074,9 +1074,9 @@
       "scope": "Own only identity mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later identity_wire task.",
       "worktree": ".worktrees/T-024",
       "base_sha": "f36d318b8e422793d6921219e5f39938fcd27864",
-      "reviewed_sha": null,
+      "reviewed_sha": "b400904233470abdc6c8052c19ab6293786f0170",
       "agent": "backend_t024",
-      "execution_note": "T009/T017/T018/T010 integrated and Git PASS; isolated identity mechanics/migration/typed ports task allocated. Full service composition and custody-mode wiring remain later gated tasks."
+      "execution_note": "Identity typed transaction scaffold and live PostgreSQL checks completed; independent exact-commit QA pending."
     },
     {
       "id": "T-025",
@@ -34908,7 +34908,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-008"
       ],
@@ -34929,7 +34929,8 @@
       "worktree": ".worktrees/T-917",
       "base_sha": "1c77949f362ed2108b0c6ede585bf2523e928a74",
       "agent": "backend_t917",
-      "execution_note": "Architecture proposal and canonical promotion both independently QA GREEN; approved additive schema task allocated after Git PASS. Runtime gates remain pending actual migration/privilege/legacy tests."
+      "execution_note": "Developer schema implementation and live PostgreSQL checks completed; independent exact-commit QA pending.",
+      "reviewed_sha": "d88bdb824d531f6236e3e39056fcfe76acafcaa3"
     },
     {
       "id": "T-918",
