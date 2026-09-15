@@ -98,7 +98,7 @@ pretend it can infer the missing history. Stop affected processes first.
 | Table | Immutable contents and constraints |
 | --- | --- |
 | `owner_migrations.compatibility` | One singleton: exact owner/database/runtime, format revision 1, template SHA-256, base version 1 and exact base artifact SHA-256, baseline kind `verified-installation` or `attested-existing-v1`, evidence/approval/backup/stopped-runtime refs, unique installation request UUID, finite installed time. Nonempty refs are required; they contain no credentials. |
-| `owner_migrations.artifacts` | One row per private version: version PK, exact owner-relative filename unique, SQL SHA-256, predecessor version/hash, feature contract identity when applicable, unique install request UUID, installing manifest/profile digest, finite completion time, provenance kind/reference. Seed only version 1 from the explicitly accepted baseline. No synthetic history for skipped versions. |
+| `owner_migrations.artifacts` | One row per private version: version PK, exact owner-relative filename unique, SQL SHA-256, predecessor version/hash, feature contract identity when applicable, unique install request UUID, artifact-manifest digest, installing bundle/profile digest, finite completion time, provenance kind/reference. Seed only version 1 from the explicitly accepted baseline. No synthetic history for skipped versions. |
 | `owner_migrations.feature_contracts` | Feature contract ID/revision PK, unique private migration version, immutable contract digest. Each feature SQL writes its literal approved marker in the same DDL transaction; no success marker before successful schema creation/constraints/grants. |
 
 All rows are append-only, including for the ordinary migration login: invoker
@@ -112,6 +112,14 @@ Migration owners remain trusted administrators who could deliberately change
 DDL; this is auditability and runtime isolation, not tamper-proof attestation
 against the database owner. No SECURITY DEFINER bypass is needed.
 
+Artifact identity and installation history are distinct: readiness compares the
+stable per-artifact manifest/hash/contract/predecessor to the trusted release
+profile. It does not require an old artifact's installing bundle digest to equal
+the current larger release bundle digest, nor replace old request IDs/times.
+The installing bundle digest is immutable audit evidence and is compared exactly
+when reconciling that particular attempt. A populated 12→17 upgrade retains the
+recorded installation identity of 12; no marker/history rewriting is needed.
+
 For a fresh fixture, provenance can identify the verified execution of the exact
 base artifact. Existing v1 requires an explicit operator attestation plus object,
 owner/ACL and retained-data inspection with backup reference. A current file hash
@@ -120,20 +128,72 @@ approves neither an actual baseline attestation nor repair of an existing store.
 
 ## P3. Actual runner and failure protocol
 
-Keep golang-migrate as the private version/dirty-ledger mechanism. The bounded
-runner task must use the approved pinned library/driver and test its real
-execution; it must not present another hand-written test ledger as integration.
-Use a narrow wrapping database driver/hook so successful migration execution is
-followed by **one transaction appending the exact artifact receipt and setting
-that same private version clean**. If the pinned driver cannot provide this
-boundary, stop and reslice the adapter; do not separately clean then append.
+Keep golang-migrate as the private migration orchestration engine. The actual
+approved module `github.com/golang-migrate/migrate/v4@v4.20.1` was inspected after
+downloading only that module to `/private/tmp/justixauto-owner-migration-audit`.
+Its module sum `h1:2N/ToVTKrKl58ynBpgeVJ4In7VcLCjWTZtm4eP1LxhU=` and go.mod sum
+`h1:DDPgKVb4ovSWc4FwSPfV2Uz1160f4XBiTHTrAJtljmM=` match T-001; origin commit is
+`504568a3cbd23b8754760f55a3d89aec1b0c4963`, tag `v4.20.1`.
 
-The wrapper delegates actual schema locking/version/SQL execution to the pinned
-driver. It holds one owner installation lock for the entire operation, including
-validation and finalization, with bounded acquisition; competing runner fails or
-waits within that bound. Shared-template installation and private runner use the
-same explicit owner installation lock. Do not assume unrelated golang-migrate
-and psql advisory locks happen to be identical. No application runs migrations.
+Observed API: `database/driver.go:45` exposes Driver methods Open, Close, Lock,
+Unlock, Run(io.Reader), SetVersion(int,bool), Version and Drop.
+`migrate.go:171` accepts caller-owned source/database instances through
+`NewWithInstance`; `:738–750` calls SetVersion(target,true), Run, then
+SetVersion(target,false). `database/pgx/v5/pgx.go` exposes WithInstance(*sql.DB),
+but its dedicated `*sql.Conn` field is private and SetVersion independently
+begins/commits its own transaction. It offers no public same-transaction receipt
+hook. Its Lock waits indefinitely internally; the engine's timeout alone does
+not cancel that driver operation. **Do not wrap that driver and assume access to
+its connection or atomic finalization.** No `database/postgres`/lib/pq addition.
+
+Instead, OM-DRIVER implements the actual `database.Driver` interface with the
+already approved `github.com/jackc/pgx/v5` family and supplies it through
+`migrate.NewWithInstance`. This is an explicit project-owned bounded database
+adapter, not a new migration engine or a claimed upstream guarantee. It owns one
+dedicated `*pgx.Conn` from verified owner connection setup until Close; no pool
+handoff, reflection, private upstream field access or nested driver transaction.
+The parent context and finite operation deadlines are captured because Driver's
+methods lack context parameters. Actual engine integration is required in QA.
+
+Driver behavior and connection boundary:
+
+| Method/boundary | Required behavior |
+| --- | --- |
+| Construction/Open | Explicit constructor receives verified owner identity, sealed bundle and owned connection. No DB mutation at construction. Open(URL) returns unsupported; only NewWithInstance is exposed by our CLI. Do not globally register a permissive URL driver. |
+| Lock/Unlock | On that connection acquire/release the owner installation advisory lock with a driver-controlled five-second bound and parent cancellation. Use `pg_try_advisory_lock` with bounded retry or bounded server lock wait; never leave an acquisition goroutine running after return. Set the engine LockTimeout longer than this bound. Check ownership and complete bundle/history under the acquired lock before mutation. Unlock verifies ownership; error/cancellation cleanup closes the dedicated connection if lock state is uncertain. |
+| Version | Read and validate the complete ledger rowset, not LIMIT 1; return NilVersion only for the explicit empty fresh bootstrap. Reject multiple rows, bad shape and missing ledger on an existing installation. Creating the initial empty bigint/boolean ledger is an explicit fresh-bootstrap action under the installation lock, not ordinary runtime readiness. |
+| SetVersion(v,true) | Require the exact next sealed manifest item, lock held, idle connection and no unresolved prior attempt. In one pgx transaction verify prior clean ledger/history, mark the exact target dirty, commit, then retain pending version/hash/request state. Unknown commit reply poisons this driver instance and prevents Run; no automatic replay. |
+| Run(reader) | Require the pending dirty item and compare all original bytes with its manifest digest before execution. Reject absent/empty source bodies. Execute those complete bytes once on the same connection, without an outer transaction and without semicolon splitting: `conn.PgConn().Exec(ctx, sql).ReadAll()` drains all results, preserving the file's own BEGIN/COMMIT. Verify `TxStatus() == 'I'` before and after. On SQL error roll back a remaining transaction or close the connection; preserve dirty metadata and never set Run-success state. |
+| SetVersion(v,false) | Require the same pending item and successful Run, lock held and idle connection. Begin one ReadCommitted pgx transaction; lock/verify the exact dirty target ledger, verify the committed feature marker and named required objects/grants, insert its immutable artifact receipt, then update exactly that single row to clean. Commit **once**. Do not delegate to upstream SetVersion, clean first, or use a second connection for the receipt. |
+| Failure/Close/Drop | Any ambiguous connection/commit outcome poisons the instance; no next migration executes. Close rolls back open work if possible and closes only the owned connection, releasing session locks. Drop always returns unsupported. Down/Force are absent from the CLI; even direct Force would fail the required pending-success state. |
+
+The native pgx v5.11.0 source already present in the project cache supplies
+`pgconn.PgConn.Exec`, `MultiResultReader.ReadAll` and `TxStatus`; no new PG driver
+family is required. Tested BEGIN/COMMIT and fault behavior is still an implementation
+obligation, not established by reading these APIs.
+
+The immutable source passed to NewWithInstance exposes only the verified ordered
+upward artifacts and returns their buffered original bytes; it offers no down
+migrations. Rehash in Run after the engine buffer boundary to prevent a source
+reader from substituting bytes after preflight. A missing body cannot reach the
+clean hook: the adapter's pending successful-Run guard rejects that call sequence.
+Close all readers and owned connections on cancellation; do not log DSNs, raw
+SQL bodies, synthetic credentials or production values in migration diagnostics.
+
+One owner installation lock covers preflight through finalization. Use a stable
+shared key definition: first eight bytes of SHA-256 over UTF-8
+`justixauto:owner-install:v1:` followed by the exact approved database name,
+interpreted as signed big-endian int64 for the one-argument PostgreSQL advisory
+lock. Hash collision can conservatively serialize different owners, not let two
+installers share an owner. The explicit shared-template runner computes the same
+key; for psql templates the **same psql session** acquires the bounded lock,
+executes the complete template and releases it (or disconnects). Do not hold the
+lock on a parent pgx connection while a different psql connection performs DDL.
+Between explicit template/private-ledger phases, release then reacquire the same
+key and revalidate all prerequisites; do not claim an uninterrupted lock across
+different connections. No application runs migrations, and stock migrate locks are not assumed
+to coincide. Administrative changes outside this authorized runner remain outside
+the mutual-exclusion claim.
 
 Initial bootstrap is explicit: install the unchanged shared base template, run
 the unchanged private version 1 with the real runner, and retain verified base
@@ -168,6 +228,19 @@ receipt: reconcile by exact request/version/hash on a new owner connection;
 do not report completion from the client error alone. Inconsistent combinations
 are blocked. Recovery of a retained dirty installation requires its own explicit
 reviewed disposition and is not delivered by this task.
+
+Finalization reconciliation is read-only: first close the failed dedicated
+connection, then acquire the same owner lock on a fresh verified connection and
+compare the exact install request, SQL/profile hash, predecessor, feature marker,
+full artifact set and ledger. Clean target plus matching receipt proves recorded
+completion; dirty target with no receipt proves only incomplete finalization,
+even when DDL/marker exists. Missing/wrong receipts, divergent hash/request, an
+unexpected newer head or ambiguous connection cleanup remain blocked. If the
+failed session may still hold the lock, the bounded reacquisition fails; do not
+race it or force-unlock another session. Release/close the reconciliation
+connection without modifying metadata. The original command retains its unknown
+outcome until this independent evidence is available; never rerun Run to discover
+whether it previously succeeded.
 
 Reject a newly added artifact below or equal to an already installed head when
 its exact receipt is absent or different, even if stock migration discovery
@@ -249,12 +322,13 @@ ownership is implied. New tasks contribute to B-01.AC1; T-591 remains its closer
 | OM-HISTORY | T-008, T-024 | `pkg/eventstore/owner_history.sql`; `pkg/eventstore/owner_history_test.go`. Owner-local immutable metadata template and real PG isolation/installation tests, no runner. |
 | OM-PROFILE | OM-HISTORY, T-009, T-024 | `pkg/persistence/profile.go`; `pkg/persistence/profile_test.go`; `pkg/persistence/check.go`; `pkg/persistence/check_test.go`. Sealed exact manifests and read-only metadata/legacy privilege verification; custody selection explicitly unsupported. |
 | OM-IDENTITY | OM-PROFILE | Existing `services/identity/adapter/postgres/unit_of_work.go`; existing `services/identity/adapter/postgres/unit_of_work_test.go`. Explicit compatible constructor, unchanged legacy default, actual pre-bind/Run verification. Synthetic feature schema only until T-059. |
-| OM-RUNNER | OM-HISTORY, OM-PROFILE, T-001, T-005 | `tools/owner-migrate/main.go`; `tools/owner-migrate/main_test.go`; `tools/owner-migrate/driver.go`; `tools/owner-migrate/driver_test.go`. Actual pinned golang-migrate driver wrapper, verified artifact bundle, locked dirty/DDL/receipt+clean protocol and retained upgrade/fault tests. No dependency/lock edit is implied; coordinator owns any needed already-approved package pin insertion. |
+| OM-DRIVER | OM-HISTORY, OM-PROFILE, T-001, T-005 | `tools/owner-migrate/driver.go`; `tools/owner-migrate/driver_test.go`. Actual migrate database.Driver implemented on one owned pgx-v5 connection, bounded locking, guarded dirty/DDL/receipt+clean protocol, actual engine API/fault probes. No CLI or upstream private-driver access. |
+| OM-RUNNER | OM-DRIVER | `tools/owner-migrate/main.go`; `tools/owner-migrate/main_test.go`. Verified immutable artifact source and CLI using actual NewWithInstance; explicit bootstrap/shared-template orchestration, retained upgrade/no-op/reconciliation tests. No dependency/lock edit is implied; coordinator owns insertion of the approved migrate pin/transitive resolution without changing the existing pgx pin. |
 | OM-CUSTODY | OM-PROFILE, T-919, T-922, T-924, T-925, T-928 | `pkg/persistence/custody.go`; `pkg/persistence/custody_test.go`; existing `pkg/persistence/check.go`; existing `pkg/persistence/check_test.go`. Exact shared lineage/mode/ACL checker and explicit dispatch from the common Check, replacing only the unsupported-custody branch after OM-PROFILE integration; no service wiring or broker activation. |
 
 OM-IDENTITY and OM-CUSTODY can run independently after OM-PROFILE: only the
 former owns Identity UOW leaves and only the latter extends the shared checker.
-OM-CUSTODY must retain all OM-PROFILE legacy checks. OM-RUNNER's targeted Go
+OM-CUSTODY must retain all OM-PROFILE legacy checks. OM-DRIVER/OM-RUNNER targeted Go
 verification includes `./tools/owner-migrate`; the usual project command covering
 only services/pkg/tests does not discover that package automatically.
 
@@ -351,7 +425,8 @@ is needed for this contract. Independent QA must review the exact task commit.
 
 P1–P6 require technical adoption and exact-commit proposal QA. In particular,
 approve the separate owner-local history template, explicit existing-v1 baseline
-attestation boundary, actual driver finalization hook and bounded task ownership.
+attestation boundary, project-owned pgx database.Driver and its finalization hook,
+and bounded task ownership.
 No installed artifact hash in this draft is a placeholder approval to execute SQL.
 The actual new template/manifests get their reviewed hashes after implementation.
 
