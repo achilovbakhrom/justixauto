@@ -298,7 +298,7 @@
       "parent": "B-02",
       "kind": "policy-decision",
       "effort_hours": 4,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [],
       "branch": "task/T-002-security-release",
       "lane": "decisions",
@@ -321,7 +321,7 @@
       "base_sha": "d79fd44",
       "reviewed_sha": null,
       "agent": "coordinator",
-      "execution_note": "Preparing a reviewable security configuration proposal; SECURITY-ACCEPTANCE and OD12 remain open."
+      "execution_note": "Security proposal committed at 4c6fa36; independent review pending. No security acceptance inferred; Linux benchmark and delivery gates remain."
     },
     {
       "id": "T-003",
@@ -1294,7 +1294,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-004"
       ],
@@ -1324,7 +1324,7 @@
         "package-lock.json"
       ],
       "agent": "frontend/t032_api_client",
-      "execution_note": "Dependencies integrated; isolated worktree assigned; implementation active."
+      "execution_note": "Developer tests passed; coordinator added only workspace lock entries. Independent exact-commit QA pending."
     },
     {
       "id": "T-033",
