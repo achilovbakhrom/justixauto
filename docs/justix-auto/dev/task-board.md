@@ -123,7 +123,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-055](tasks/T-055.md) | B-04 | Enforce frontend context epochs and cross-tab cache clearing | implementation / 4 | frontend-shared | todo | T-032, T-070, T-643 | `task/T-055-session-client` | ENV-GIT |
 | [T-056](tasks/T-056.md) | B-07 | Implement safe command reducer and same-key receipt recovery | implementation / 4 | frontend-shared | todo | T-032, T-078, T-645 | `task/T-056-operation-reducer` | ENV-GIT |
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
-| [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | todo | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
+| [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | in-progress | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | ready-for-qa | T-001 | `task/T-058-contract-2` | dependencies only |
 | [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | todo | T-058, T-024 | `task/T-059-schema-2` | ENV-GIT |
 | [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641 | `task/T-060-credentials` | ENV-GIT |

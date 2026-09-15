@@ -2323,7 +2323,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-004",
         "T-003",
@@ -2344,9 +2344,11 @@
         "B-01.AC4"
       ],
       "scope": "Generate Go DTO/internal-owner clients and strict TS clients/runtime validators from approved concrete OpenAPI3.1; stable file ordering/version header, unknown fields/decimal string/null fixtures, clean regeneration diff check. Do not mutate root manifests; scripts were declared by workspace owner.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-640",
+      "base_sha": "8883c37",
+      "reviewed_sha": null,
+      "agent": "backend_t640",
+      "execution_note": "Assigned deterministic Go/TS contract generation from explicit approved OpenAPI3.1 inputs. Three owned leaves only, no dependency or manifest churn; use direct Node CLI because no root generation script currently exists. Auth response transport compatibility remains separately assigned before dependent browser wiring."
     },
     {
       "id": "T-058",
