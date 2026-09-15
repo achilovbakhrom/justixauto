@@ -2204,7 +2204,7 @@
       "parent": "B-02",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "ready",
       "depends_on": [
         "T-001"
       ],
@@ -2222,9 +2222,11 @@
         "B-02.AC4"
       ],
       "scope": "Use approved HTTP/domain and cross-owner appendices for only auth. Define required/unknown fields, null/empty, string precision, revisions/status/actions, permission/party scope, secret exclusions, concrete safe event payloads and typed positive/negative fixtures. Coordinator reviews/promotes and approves before this task completes; no full-owner schema rewrite.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-058",
+      "base_sha": "727fea05a6aae88ad352ee05d6a9fa9f1fd63d01",
+      "reviewed_sha": null,
+      "agent": "unassigned",
+      "execution_note": "Isolated contract worktree allocated; no proposal/code changes yet. Assign architect when a worker slot is available. T002 profile/recovery proposals remain unapproved and must not be silently frozen."
     },
     {
       "id": "T-059",

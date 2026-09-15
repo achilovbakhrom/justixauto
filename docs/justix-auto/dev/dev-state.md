@@ -27,7 +27,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-010 implementing (`.worktrees/T-010`, `task/T-010-replay`); T-017 implementing (`.worktrees/T-017`, `task/T-017-receipts`); T-034 ready-for-qa (`.worktrees/T-034`, `task/T-034-dialog`).
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-010 implementing (`.worktrees/T-010`, `task/T-010-replay`); T-017 implementing (`.worktrees/T-017`, `task/T-017-receipts`); T-034 ready-for-qa (`.worktrees/T-034`, `task/T-034-dialog`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`).
 - Integrated tasks: 13/916; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
@@ -99,10 +99,10 @@ these checkpoints or regenerate the plan. `task-board.md` is the formal plan;
 `task-preview.md` remains historical examples only. Coordinator review and actual
 validation results are in `../state/planning-review.md`.
 
-T-008 owner-installable SQL templates and T-033 mock tokens are integrated.
-T-009 conditional append and T-034 shared dialog work are active; T-032's
-corrected API client awaits final renewed QA integration. Follow the live task
-dependencies for replay/outbox/inbox and the app harness, and resolve scoped
+Event schema/append, shared API/tokens and runtime registration convention are
+integrated. The Active task field and task-index.json carry current assignments;
+continue their exact-commit QA and dependency transitions. Follow the live task
+dependencies for replay/receipts/outbox/inbox and the app harness, and resolve scoped
 choices only before affected tasks. No policy invention. The user explicitly
 authorized Git initialization and push on 2026-09-14 and removed that
 prohibition from AGENTS.md.
@@ -111,6 +111,19 @@ Git readiness blocks application code, NOT documentation architecture/planning.
 Policy decisions block only affected operations. Release approval, PM task
 generation and the initial dependency/foundation gates are complete.
 Keep current mocks immutable. Use the approved contract, not raw slice alternatives.
+
+### Pending user decisions — asked 2026-09-15
+
+- OD-02: Cars registry default should include all scoped company vehicles,
+  including warehouse stock, or only in-work vehicles outside warehouses.
+  The all-vehicles option was recommended but no response has been received.
+  T-042 remains unapproved; supported owner query filters are unaffected.
+- T-002 / OD-12: implementation security profile and restricted recovery contract
+  proposal at task commit `a262f075bd5338c03c7049141c6c9f7e674110e5` passed
+  proposal-readiness QA (`qa/T-002-r2.md`). Explicit acceptance was requested;
+  no answer has been received. The proposal stays in `.worktrees/T-002` and is
+  not an approved production configuration. Delivery/target benchmarks and
+  all-factor-loss/pending-user activation remain separately gated.
 
 ### Historical Git diagnostic — 2026-09-13
 
