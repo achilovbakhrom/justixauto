@@ -1,0 +1,76 @@
+PASS: exact proposal HEAD 90dfe726ab53c4fdd54c3cac09e706797a32ea6d
+PASS: only two assigned new documentation leaves
+PASS: git diff --check BASE SHA
+PASS: reviewed working bytes docs/justix-auto/state/drafts/architect/projection-storage-handoff.md
+SHA256: docs/justix-auto/state/drafts/architect/projection-storage-handoff.md c15418fe9d63215b8301cc0349c7a4bdbb17ba611e25d58fc97b7345d3ff191a
+PASS: reviewed working bytes docs/justix-auto/dev/results/projection-storage-handoff.md
+SHA256: docs/justix-auto/dev/results/projection-storage-handoff.md 153864022366fc0ee6ce49cb26e13911f87094a73735d107da927969960fccd1
+PASS: relative link ../../../architecture.md
+PASS: relative link ../contracts/messaging-delivery.md
+PASS: relative link ../../../reference/gaze-reference.md
+PASS: relative link ../../../reference/gaze-executor-cc-reference.md
+PASS: relative link ../../state/drafts/architect/projection-storage-handoff.md
+PASS: relative links 5
+PASS: exact eight unique proposed application leaves
+PASS: assigned base: 925 baseline tasks; proposed IDs free
+PASS: assigned base: absent/unowned pkg/eventstore/migrations/000004_projection_checkpoint.up.sql
+PASS: assigned base: absent/unowned pkg/eventstore/projection_checkpoint_migration_test.go
+PASS: assigned base: absent/unowned pkg/eventstore/receiver_fence.go
+PASS: assigned base: absent/unowned pkg/eventstore/receiver_fence_test.go
+PASS: assigned base: absent/unowned pkg/eventstore/migrations/000005_quarantine_evidence.up.sql
+PASS: assigned base: absent/unowned pkg/eventstore/quarantine_migration_test.go
+PASS: assigned base: absent/unowned pkg/eventstore/migrations/000006_projection_generation.up.sql
+PASS: assigned base: absent/unowned pkg/eventstore/projection_generation_migration_test.go
+PASS: assigned base: genuinely new edges for T-014
+PASS: assigned base: genuinely new edges for T-015
+PASS: assigned base: genuinely new edges for T-920
+PASS: assigned base: genuinely new edges for T-921
+PASS: assigned base: genuinely new edges for T-016
+PASS: assigned base: genuinely new edges for T-022
+PASS: assigned base: genuinely new edges for T-580
+PASS: assigned base: genuinely new edges for T-581
+PASS: assigned base: genuinely new edges for T-582
+PASS: assigned base: genuinely new edges for T-583
+PASS: assigned base: genuinely new edges for T-584
+PASS: assigned base: genuinely new edges for T-585
+PASS: assigned base: genuinely new edges for T-586
+PASS: assigned base: exactly 15 existing-task edge additions
+PASS: assigned base: all 928 nodes form an acyclic graph
+PASS: assigned base: bootstrap/generation directions preserved
+PASS: assigned base: T-919 dependencies unchanged
+PASS: current main: 925 baseline tasks; proposed IDs free
+PASS: current main: absent/unowned pkg/eventstore/migrations/000004_projection_checkpoint.up.sql
+PASS: current main: absent/unowned pkg/eventstore/projection_checkpoint_migration_test.go
+PASS: current main: absent/unowned pkg/eventstore/receiver_fence.go
+PASS: current main: absent/unowned pkg/eventstore/receiver_fence_test.go
+PASS: current main: absent/unowned pkg/eventstore/migrations/000005_quarantine_evidence.up.sql
+PASS: current main: absent/unowned pkg/eventstore/quarantine_migration_test.go
+PASS: current main: absent/unowned pkg/eventstore/migrations/000006_projection_generation.up.sql
+PASS: current main: absent/unowned pkg/eventstore/projection_generation_migration_test.go
+PASS: current main: genuinely new edges for T-014
+PASS: current main: genuinely new edges for T-015
+PASS: current main: genuinely new edges for T-920
+PASS: current main: genuinely new edges for T-921
+PASS: current main: genuinely new edges for T-016
+PASS: current main: genuinely new edges for T-022
+PASS: current main: genuinely new edges for T-580
+PASS: current main: genuinely new edges for T-581
+PASS: current main: genuinely new edges for T-582
+PASS: current main: genuinely new edges for T-583
+PASS: current main: genuinely new edges for T-584
+PASS: current main: genuinely new edges for T-585
+PASS: current main: genuinely new edges for T-586
+PASS: current main: exactly 15 existing-task edge additions
+PASS: current main: all 928 nodes form an acyclic graph
+PASS: current main: bootstrap/generation directions preserved
+PASS: current main: T-919 dependencies unchanged
+PASS: projection-storage-handoff: retained digest pkg/eventstore/schema.sql
+PASS: justixauto: retained digest pkg/eventstore/schema.sql
+PASS: projection-storage-handoff: retained digest pkg/eventstore/migrations/000002_messaging_delivery.up.sql
+PASS: justixauto: retained digest pkg/eventstore/migrations/000002_messaging_delivery.up.sql
+PASS: exact implementation reference e15f5e7a677084ad84c6952d53c53eddfb6d0b10
+PASS: current main matches referenced implementation pkg/inbox/consume.go
+PASS: exact implementation reference 4dbe2593bce71c045f785fc07aed9da5b4113a73
+PASS: current main matches referenced implementation pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql
+Current main: 38b7e18da430083370f54b9dc03cb147a7441a4d
+GREEN: structural proposal checks only; lock/SQL/crypto behavior is not executed by this script.
