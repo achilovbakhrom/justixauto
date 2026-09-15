@@ -1047,7 +1047,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1074,9 +1074,9 @@
       "scope": "Own only identity mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later identity_wire task.",
       "worktree": ".worktrees/T-024",
       "base_sha": "f36d318b8e422793d6921219e5f39938fcd27864",
-      "reviewed_sha": "b400904233470abdc6c8052c19ab6293786f0170",
+      "reviewed_sha": "161ec116cce245573e58cc0fe6bf5cd257580470",
       "agent": "backend_t024",
-      "execution_note": "Fix cycle1 assigned after preserved independent BOUNCE: close database/table/column privilege-readiness gaps, then rerun exact-SHA QA. Original evidence remains unchanged."
+      "execution_note": "Fix cycle1 closes excessive readiness privileges; developer live baseline, original adversarial overlay and 26 added grant regressions passed. Independent r2 required; original BOUNCE evidence retained."
     },
     {
       "id": "T-025",
