@@ -1,0 +1,62 @@
+{
+  "reviewed_sha": "2ca96dfd636fdc349777f72f1a23e5cd9f82bb98",
+  "source_hashes": {
+    "pkg/persistence/profile.go": "3f4641a8ed868c3ea5d26d646855d36da073535926e3ff9558e72d83a53922d6",
+    "pkg/persistence/profile_test.go": "4766c2fe7e16877ef86679b722ce6aaa7138becc58f3eed22fd278ca86b2048e",
+    "pkg/persistence/check.go": "fbf7cae24cb436a07e51f02921202fded906de30ef02c7cc1a111ada37c96255",
+    "pkg/persistence/check_test.go": "89201609555b0d551ff710a9edf5498776ea6d9786abf4d73cfab7fe0118a494",
+    "pkg/eventstore/owner_history.sql": "1e5138d344f07c3b3f78695f7ca7167f14b6582dbbbbd95654566eb8ddb58b70",
+    "pkg/eventstore/schema.sql": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+    "services/identity/migrations/0001_mechanics.up.sql": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d"
+  },
+  "snapshots": {
+    "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-120050282": {
+      "verified_hashes": {
+        "upgraded.json": "0dff9dbd14f0b24bb86de295ff073465e7120f0d624290d1cc371182b44a127c",
+        "initial.json": "ae3a03441b8d200a0001231dd8b48a63c01750d7b140d212f288c8f120249bf0",
+        "final-with-shared.json": "dc96607a3a24eaded960b9d53432e3ca68aacc6397b0c9223723613f1f8cdaa6",
+        "after-readonly.json": "ae3a03441b8d200a0001231dd8b48a63c01750d7b140d212f288c8f120249bf0",
+        "final-profile.json": "985832b024351d732f50b162566d11c59c9d78adc961385d8b00239e2d22ccc7"
+      },
+      "retained_preimages_preserved": true
+    },
+    "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-2265368711": {
+      "verified_hashes": {
+        "upgraded.json": "4e983ac9ee91abde7bc289411acfec815e250258e8fd746492db3edf3cb8c488",
+        "initial.json": "da9a84968712b7296834549096681176e816e238c92f43454dd732f7c49a9790",
+        "final-with-shared.json": "6d604a3a0078d6428a3a59c94ce69d17c89215905d8bd7623a61cecd1996b34b",
+        "after-readonly.json": "da9a84968712b7296834549096681176e816e238c92f43454dd732f7c49a9790",
+        "final-profile.json": "ca6c444f4b66f2742c7038c77da819ea1f2c929ca730f6af9b5d4d777ced0bfd"
+      },
+      "retained_preimages_preserved": true
+    },
+    "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-1623284051": {
+      "verified_hashes": {
+        "independent-final.json": "a11b346696010712953924180c51affbca01437cb9aa354e4222123c070ef5dd"
+      },
+      "retained_preimages_preserved": true
+    }
+  },
+  "fixture_absence": [
+    {
+      "id": "9d58f196f8ae9bdc51ee044bdec80da7d51b2a54aa229a6e83ee7ae250cec294",
+      "name": "justixauto-t930-875e56d4-da76-44cb-b0af-ddc4e1745c6c",
+      "independently_absent": true
+    },
+    {
+      "id": "c930fc2b2f6d8eb9606eb4184399d4faa721a138060f9fb0fbdfea1433ec3d5d",
+      "name": "justixauto-t930-008d18d7-9fcc-4aa0-aa23-807c12e6b250",
+      "independently_absent": true
+    },
+    {
+      "id": "e84a117342ad056c3e6cb7c1de8f60b70b6fddd899791afcd3b0f19df1976e7a",
+      "name": "justixauto-t930-dfe1b549-b707-45c3-9615-c358a50b28b7",
+      "independently_absent": true
+    },
+    {
+      "id": "f65f5433f5ed585c8b09c0185fcb82b632aaea1dd21afa4ee414a59b7a701c29",
+      "name": "justixauto-t930-c10fc85b-1400-44ef-8931-52df2396755c",
+      "independently_absent": true
+    }
+  ]
+}

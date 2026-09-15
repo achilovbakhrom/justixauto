@@ -1,0 +1,76 @@
+package persistence_test
+
+import (
+ "context"
+ "encoding/json"
+ "os"
+ "path/filepath"
+ "strings"
+ "testing"
+ "time"
+ "justixauto/pkg/persistence"
+)
+
+// This file is applied through go -overlay; reviewed application/test files stay unchanged.
+func TestIndependentCatalogFailures(t *testing.T) {
+ if os.Getenv("JUSTIXAUTO_TEST_PERSISTENCE_PROFILE") != "1" { t.Skip("owned PostgreSQL opt-in") }
+ f := startFixture(t)
+ p := profile(t, f.spec)
+ cases := []struct{name, change, undo string}{
+  {"forced RLS without enabled RLS", "ALTER TABLE owner_migrations.artifacts FORCE ROW LEVEL SECURITY", "ALTER TABLE owner_migrations.artifacts NO FORCE ROW LEVEL SECURITY"},
+  {"hidden feature rows", "ALTER TABLE synthetic_feature.items ENABLE ROW LEVEL SECURITY;CREATE POLICY qa_hide ON synthetic_feature.items USING(false)", "DROP POLICY qa_hide ON synthetic_feature.items;ALTER TABLE synthetic_feature.items DISABLE ROW LEVEL SECURITY"},
+  {"metadata delegated column SELECT", "GRANT SELECT(version) ON owner_migrations.artifacts TO justix_identity_runtime WITH GRANT OPTION", "REVOKE SELECT(version) ON owner_migrations.artifacts FROM justix_identity_runtime"},
+  {"reachable NOINHERIT delegated column", "CREATE ROLE qa_profile_nested NOINHERIT;GRANT qa_profile_nested TO justix_identity_runtime;GRANT SELECT(version) ON owner_migrations.artifacts TO qa_profile_nested WITH GRANT OPTION", "REVOKE SELECT(version) ON owner_migrations.artifacts FROM qa_profile_nested;REVOKE qa_profile_nested FROM justix_identity_runtime;DROP ROLE qa_profile_nested"},
+  {"undeclared sequence", "CREATE SEQUENCE synthetic_feature.qa_sequence;GRANT USAGE ON SEQUENCE synthetic_feature.qa_sequence TO justix_identity_runtime", "DROP SEQUENCE synthetic_feature.qa_sequence"},
+  {"PUBLIC sequence access", "CREATE SEQUENCE synthetic_feature.qa_sequence;GRANT SELECT ON SEQUENCE synthetic_feature.qa_sequence TO PUBLIC", "DROP SEQUENCE synthetic_feature.qa_sequence"},
+  {"default sequence access", "ALTER DEFAULT PRIVILEGES FOR ROLE justix_identity GRANT USAGE ON SEQUENCES TO justix_identity_runtime", "ALTER DEFAULT PRIVILEGES FOR ROLE justix_identity REVOKE USAGE ON SEQUENCES FROM justix_identity_runtime"},
+  {"default function access", "ALTER DEFAULT PRIVILEGES FOR ROLE justix_identity GRANT EXECUTE ON FUNCTIONS TO PUBLIC", "ALTER DEFAULT PRIVILEGES FOR ROLE justix_identity REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC"},
+  {"replica-only immutable guard", "ALTER TABLE owner_migrations.artifacts ENABLE REPLICA TRIGGER artifacts_immutable", "ALTER TABLE owner_migrations.artifacts ENABLE TRIGGER artifacts_immutable"},
+  {"conditional false immutable guard", "DROP TRIGGER artifacts_immutable ON owner_migrations.artifacts;CREATE TRIGGER artifacts_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT WHEN (false) EXECUTE FUNCTION owner_migrations.immutable()", "DROP TRIGGER artifacts_immutable ON owner_migrations.artifacts;CREATE TRIGGER artifacts_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT EXECUTE FUNCTION owner_migrations.immutable()"},
+ }
+ for _, tc := range cases { t.Run(tc.name, func(t *testing.T) {
+  f.t=t; f.must(tc.change,"postgres"); defer f.must(tc.undo,"postgres")
+  before:=f.snapshot(); ctx,cancel:=context.WithTimeout(context.Background(),10*time.Second); defer cancel()
+  err:=persistence.Check(ctx,f.runtime,p)
+  if tc.name=="default function access" {
+   t.Logf("retained owner default-function ACL rows: %s",f.must("SELECT count(*) FROM pg_default_acl WHERE defaclrole='justix_identity'::regrole AND defaclobjtype='f'","postgres"))
+   f.must("CREATE FUNCTION synthetic_feature.qa_default_probe() RETURNS integer LANGUAGE sql AS 'SELECT 1'", "justix_identity")
+   t.Logf("new owner function effective runtime EXECUTE: %s",f.must("SELECT has_function_privilege('justix_identity_runtime','synthetic_feature.qa_default_probe()','EXECUTE')","postgres"))
+   t.Logf("runtime invocation: %s",f.must("SELECT synthetic_feature.qa_default_probe()","justix_identity_runtime"))
+   f.must("DROP FUNCTION synthetic_feature.qa_default_probe()", "justix_identity")
+  }
+  if after:=f.snapshot(); before!=after {t.Fatal("read-only checker mutated state")}
+  if err==nil {t.Error("incompatible catalog accepted")}
+  if tc.name=="conditional false immutable guard" {
+   _, updateErr:=f.command("BEGIN;UPDATE owner_migrations.artifacts SET provenance_ref=provenance_ref;ROLLBACK", "justix_identity")
+   t.Logf("ordinary migration-owner historical UPDATE bypassed immutable guard: %v",updateErr==nil)
+   if updateErr!=nil {t.Errorf("invalid probe: %v",updateErr)}
+  }
+ }); f.t=t; f.check(p,true) }
+ t.Run("canceled SELECT and restored liveness",func(t *testing.T){f.t=t;ctx,cancel:=context.WithCancel(context.Background());cancel();if persistence.Check(ctx,f.runtime,p)==nil{t.Fatal("canceled check accepted")};f.check(p,true)})
+ f.t=t;f.retain("independent-final.json",f.snapshot())
+}
+
+func TestIndependentManifestBoundary(t *testing.T) {
+ for _, scenario := range []string{"clean", "unknown nested field", "trailing scalar", "duplicate owner", "invalid UTF8 overwritten owner", "lone surrogate overwritten owner"} {t.Run(scenario,func(t *testing.T){
+  root,err:=filepath.EvalSymlinks(t.TempDir());if err!=nil{t.Fatal(err)}
+  if err=os.Mkdir(filepath.Join(root,"migrations"),0700);err!=nil{t.Fatal(err)}
+  s:=spec()
+  for i,a:=range s.Artifacts{
+   body:="base";if i==1{body="feature12"}
+   if err=os.WriteFile(filepath.Join(root,a.Identity.Filename),[]byte(body),0600);err!=nil{t.Fatal(err)}
+   b,err:=json.Marshal(persistence.ArtifactManifest{FormatRevision:1,Owner:s.Owner,Identity:a.Identity,Prerequisites:a.Prerequisites,Feature:a.Feature});if err!=nil{t.Fatal(err)}
+   if i==0 { switch scenario {
+    case "unknown nested field": b=[]byte(strings.Replace(string(b),`"artifact":{`,`"artifact":{"unknown":true,`,1))
+    case "trailing scalar": b=append(b,[]byte(" true")...)
+    case "duplicate owner": b=append([]byte(`{"owner":"inventory",`),b[1:]...)
+    case "invalid UTF8 overwritten owner": b=append(append([]byte(`{"owner":"`),0xff),append([]byte(`",`),b[1:]...)...)
+    case "lone surrogate overwritten owner": b=append([]byte(`{"owner":"\ud800",`),b[1:]...)
+   }}
+   s.Artifacts[i].ManifestSHA256=hash(string(b))
+   if err=os.WriteFile(filepath.Join(root,strings.TrimSuffix(a.Identity.Filename,".up.sql")+".manifest.json"),b,0600);err!=nil{t.Fatal(err)}
+  }
+  err=profile(t,s).VerifyFiles(root)
+  if scenario=="clean" {if err!=nil{t.Fatal(err)}} else if err==nil{t.Error("malformed or ambiguous manifest accepted with its trusted original byte digest")}
+ })}
+}
