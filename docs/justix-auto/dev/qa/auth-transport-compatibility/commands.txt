@@ -1,0 +1,74 @@
+Independent auth transport proposal QA, 2026-09-15
+Checkout: /Users/bakhromachilov/startups/justixauto/.worktrees/auth-transport-compatibility-qa
+HEAD: 9ad5a64422b04dbbc8bee969a47acdd3e9278d81
+Base: 476777139ffa6a470c7b3f6e79086c64f2dc7db5
+
+Source SHA-256 values recomputed by independent_probe.mjs:
+draft 539aada61e3751130e880fe059c13e92663d716425b60ea981a5a4161dc4670d
+client eb420ca1ca94224b069a41d99864e4c5984c66f27fe9e7c7d96284c1d127457c
+generator 38919750f561b5c4feadbcd80eaff0b34b7711d8e283786e12e532c4548ce868
+approved auth 935aa3bf7e2c060c38696d96576c9f7a8a7c39beef1eaa6e27b9fefabeee947e
+
+Pinned executable:
+/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node
+TypeScript entry:
+/Users/bakhromachilov/startups/justixauto/node_modules/typescript/bin/tsc
+
+1. bash tools/check-git.sh
+Exit 0: GIT CHECK OK for the exact detached project worktree.
+
+2. <node> <tsc> --noEmit --strict --target es2023 --module nodenext --moduleResolution nodenext --skipLibCheck docs/justix-auto/dev/qa/auth-transport-compatibility/interfaces.ts
+Final exit 0, TypeScript 6.0.3 (existing pinned installation).
+Expected negative marker and undefined-return type assertions used @ts-expect-error.
+No suppressions on the async/Promise-to-void assignments being demonstrated.
+
+3. <node> docs/justix-auto/dev/qa/auth-transport-compatibility/independent_probe.mjs
+Exit 0, Node v24.21.0. Five grouped independent assertions passed:
+- exact proposal SHA/two-leaf scope/digest;
+- five aliases, 13 unique leaves, acyclic proposed 939-node graph and root ownership;
+- actual T032 losses/429 mismatch, legacy fractions, request isolation and unknown single-attempt write;
+- actual Headers/Response normalization and proposed syntax boundaries;
+- reproduced void-binding premature sink followed by semantic mismatch rejection.
+The runner asserts the BOUNCE reproducer; exit 0 does not mean proposal GREEN.
+Runtime warned MODULE_TYPELESS_PACKAGE_JSON for the QA-only TS fixture because
+the root package has no module type. No root manifest was changed to silence it.
+Generated isolated Go module path:
+/private/tmp/justix-auth-transport-independent-go-eEqJxW
+Its decoder is extracted directly from the exact generator template. All fixture
+source is recoverable by rerunning the committed-QA runner in the exact checkout.
+
+4. From that isolated directory:
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash /Users/bakhromachilov/startups/justixauto/.worktrees/auth-transport-compatibility-qa/tools/go.sh test -race -count=1 -v ./...
+Exit 0: TestActualDecoder and all 26 subtests PASS.
+ok independentauthprobe 1.641s
+Go wrapper selects pinned Go1.27.1; no downloads or installed source changes.
+
+5. <node> docs/justix-auto/dev/qa/auth-transport-compatibility/union_probe.mjs
+Exit 0: 7 isolated composition cases (9 assertions) PASS; catch-all hides binding defects while
+explicit mismatch/fatal outcome model rejects them. Not an implemented adapter.
+
+6. From exact checkout web/packages/api:
+<node> /Users/bakhromachilov/startups/justixauto/node_modules/vitest/vitest.mjs run --config vitest.config.ts --configLoader runner
+Exit 0: Vitest4.1.11, 1 file passed, 93 tests passed.
+Start 21:55:24; duration 182ms (tests14ms).
+
+7. git diff --check; git status --short; git rev-parse HEAD
+Diff check exit 0. Only assigned QA paths are untracked. HEAD unchanged.
+
+Harness-only initial failures (retained, not application defects):
+- Initial interfaces.ts missed factory closing brace: TS1005 '}' expected.
+  Corrected QA fixture brace.
+- Next TS compile rejected top-level await in a file under the CommonJS root:
+  TS1309. Moved that probe into an exported async function; runner calls it.
+- Initial Vitest command combined --root web/packages/api with a config path
+  already prefixed web/packages/api, causing ERR_LOAD_URL doubled path. Corrected
+  only invocation: ran from package directory with --config vitest.config.ts.
+No failed test was converted into an application pass by changing application source.
+
+Primary references checked read-only:
+https://www.typescriptlang.org/docs/handbook/2/functions.html#return-type-void
+https://fetch.spec.whatwg.org/#concept-filtered-response-basic
+https://fetch.spec.whatwg.org/#headers-class
+https://encoding.spec.whatwg.org/#interface-textdecoder
+https://www.rfc-editor.org/rfc/rfc9110.html#section-10.2.3
+No browser cookie, production endpoint, real secret, Docker or external message.

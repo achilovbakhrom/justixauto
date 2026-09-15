@@ -1,6 +1,6 @@
 # Auth transport compatibility proposal assignment
 
-2026-09-15. Status: independent exact-proposal QA assigned; no implementation approval.
+2026-09-15. Status: proposal QA BOUNCE; architect fix cycle 1 assigned; no implementation approval.
 Assigned worktree: `.worktrees/auth-transport-compatibility`.
 Branch: `task/auth-transport-compatibility`.
 Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
@@ -55,3 +55,16 @@ Go/TypeScript interfaces, pre-metadata semantic validation, raw-byte/header
 limits, T-058 preservation and the proposed dependency/ownership delta.
 Executed feasibility is not implementation QA or policy acceptance. Preserve
 source and canonical files; coordinator promotion follows independent GREEN.
+
+## Fix cycle 1
+
+Independent [BOUNCE](qa/auth-transport-compatibility.md) at `9ad5a64422b04dbbc8bee969a47acdd3e9278d81`
+reproduced Promise-returning void validators permitting premature sink acceptance,
+and union catch-all swallowing fatal binding/configuration errors. Architect
+revises only its original proposal/result leaves in the original worktree.
+Specify enforceable synchronous outcomes/runtime checks for every semantic/error
+hook, safe rejected-Promise handling, and structural mismatch versus fatal fault
+propagation in both languages. Union alternatives cannot hide a broken binding.
+Retain original evidence; demonstrate strict TS and actual Go interface probes.
+Review the max4h AT-GEN scope and reslice explicitly if necessary. No task IDs,
+canonical approval, new policy or source implementation is assigned here.
