@@ -1,0 +1,44 @@
+Reviewed source: d88bdb824d531f6236e3e39056fcfe76acafcaa3
+Base: 1c77949f362ed2108b0c6ede585bf2523e928a74
+
+Full project race command, JUSTIXAUTO_TEST_MESSAGING_MIGRATION=1:
+ok justixauto/pkg/auth 6.632s
+ok justixauto/pkg/commands 2.376s
+ok justixauto/pkg/events 1.898s
+ok justixauto/pkg/eventstore 13.350s
+ok justixauto/pkg/inbox 3.398s
+ok justixauto/pkg/money 4.807s
+ok justixauto/pkg/outbox 4.381s
+ok justixauto/tests/contracts 13.779s
+ok justixauto/tests/integration 5.271s
+Exit 0.
+
+Project vet: exit 0, no output.
+git diff --check base..HEAD: exit 0, no output.
+
+Final independent overlay run:
+=== RUN   TestQA917Independent
+=== RUN   TestQA917Independent/two-hop_non-inherited_default_privilege_rejects_atomically
+=== RUN   TestQA917Independent/cutover_missing_evidence_rolls_back_mode_and_grants
+=== RUN   TestQA917Independent/complete_two-destination_plan_and_independent_confirmation
+=== RUN   TestQA917Independent/admission_interval_excludes_checkpoint_and_includes_upper_boundary
+=== RUN   TestQA917Independent/append-only_admission_chain_cannot_cross_stream_or_subject
+=== RUN   TestQA917Independent/two_local_consumers_preserve_independent_completion_and_rollback
+=== RUN   TestQA917Independent/runtime_cannot_disable_triggers_or_alter_immutable_records
+=== RUN   TestQA917Independent/cutover_waits_for_legacy_transaction_and_retains_newly_committed_obligation
+--- PASS: TestQA917Independent (7.48s)
+    --- PASS: TestQA917Independent/two-hop_non-inherited_default_privilege_rejects_atomically (0.35s)
+    --- PASS: TestQA917Independent/cutover_missing_evidence_rolls_back_mode_and_grants (0.12s)
+    --- PASS: TestQA917Independent/complete_two-destination_plan_and_independent_confirmation (0.44s)
+    --- PASS: TestQA917Independent/admission_interval_excludes_checkpoint_and_includes_upper_boundary (0.37s)
+    --- PASS: TestQA917Independent/append-only_admission_chain_cannot_cross_stream_or_subject (0.24s)
+    --- PASS: TestQA917Independent/two_local_consumers_preserve_independent_completion_and_rollback (0.65s)
+    --- PASS: TestQA917Independent/runtime_cannot_disable_triggers_or_alter_immutable_records (0.38s)
+    --- PASS: TestQA917Independent/cutover_waits_for_legacy_transaction_and_retains_newly_committed_obligation (2.64s)
+PASS
+ok justixauto/pkg/eventstore 9.184s
+Exit 0.
+
+SHA-256:
+86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53 pkg/eventstore/schema.sql
+1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2 pkg/eventstore/migrations/000002_messaging_delivery.up.sql
