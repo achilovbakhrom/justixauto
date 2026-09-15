@@ -24,6 +24,95 @@ import (
 
 const quarantineCheckpointHash = "41536429fb95d4b60a11866843a2ccbd6a4cf723cd919884933b6bc1d8202c4c"
 
+const quarantineImage = "docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2"
+const quarantineFixtureLabel = "justixauto.t927.fixture-owner"
+
+type quarantineContainer struct {
+	ID     string            `json:"id"`
+	Name   string            `json:"name"`
+	Image  string            `json:"image"`
+	Labels map[string]string `json:"labels"`
+	Mounts []struct {
+		Type        string `json:"Type"`
+		Destination string `json:"Destination"`
+	} `json:"mounts"`
+	Tmpfs map[string]string `json:"tmpfs"`
+}
+
+// Inspect only task identity and mounts; never return a container's environment
+// or trust an ID extracted from a failed docker-run reply.
+func quarantineInspect(ctx context.Context, docker, identity string) (quarantineContainer, bool, error) {
+	var value quarantineContainer
+	format := `{"id":{{json .Id}},"name":{{json .Name}},"image":{{json .Config.Image}},"labels":{{json .Config.Labels}},"mounts":{{json .Mounts}},"tmpfs":{{json .HostConfig.Tmpfs}}}`
+	out, err := exec.CommandContext(ctx, docker, "inspect", "--format", format, identity).CombinedOutput()
+	if err != nil {
+		if strings.Contains(strings.ToLower(string(out)), "no such object") {
+			return value, false, nil
+		}
+		return value, false, fmt.Errorf("inspect task fixture: %w", err)
+	}
+	if err := json.Unmarshal(out, &value); err != nil {
+		return value, false, fmt.Errorf("decode fixture identity: %w", err)
+	}
+	return value, true, nil
+}
+
+func (v quarantineContainer) validate(name, token string) error {
+	parsed, err := uuid.Parse(strings.TrimPrefix(name, "justixauto-t927-"))
+	if err != nil || name != "justixauto-t927-"+parsed.String() || parsed == uuid.Nil {
+		return errors.New("invalid generated fixture name")
+	}
+	ownerToken, err := uuid.Parse(token)
+	if err != nil || ownerToken == uuid.Nil || ownerToken.String() != token {
+		return errors.New("invalid generated fixture ownership token")
+	}
+	id, err := hex.DecodeString(v.ID)
+	if err != nil || len(id) != 32 || hex.EncodeToString(id) != v.ID || v.Name != "/"+name || v.Image != quarantineImage || v.Labels[quarantineFixtureLabel] != token {
+		return errors.New("fixture identity mismatch; no removal authorized")
+	}
+	if len(v.Tmpfs) != 1 || v.Tmpfs["/var/lib/postgresql"] != "rw" {
+		return errors.New("fixture tmpfs mismatch; no removal authorized")
+	}
+	for _, m := range v.Mounts {
+		if m.Type != "tmpfs" || m.Destination != "/var/lib/postgresql" {
+			return errors.New("unexpected fixture mount; no removal authorized")
+		}
+	}
+	return nil
+}
+
+func quarantineCleanup(t *testing.T, docker, name, token string) {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	v, exists, err := quarantineInspect(ctx, docker, name)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if !exists {
+		t.Logf("task fixture absent after failed allocation: %s", name)
+		return
+	}
+	if err := v.validate(name, token); err != nil {
+		t.Error(err)
+		return
+	}
+	// Remove the inspected immutable ID, never a name that might be replaced
+	// between inspection and deletion. No bind/anonymous volume was accepted.
+	if _, err := exec.CommandContext(ctx, docker, "rm", "-f", v.ID).CombinedOutput(); err != nil {
+		t.Errorf("remove validated task fixture: %v", err)
+		return
+	}
+	for _, identity := range []string{v.ID, name} {
+		if _, exists, err := quarantineInspect(ctx, docker, identity); err != nil || exists {
+			t.Errorf("task fixture absence not proven: %s %v", identity, err)
+			return
+		}
+	}
+	t.Logf("validated task fixture removed and verified absent: %s %s", v.ID, name)
+}
+
 // Fixture storage is synthetic and nonsecret. No production key, crypto,
 // retention policy, existing DSN, broker or reference infrastructure is used.
 // tmpfs covers PostgreSQL's image volume destination; cleanup removes only this
@@ -46,22 +135,23 @@ func newQuarantineFixture(t *testing.T) *routeFixture {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
-	image := "docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2"
-	if out, err := exec.CommandContext(ctx, "docker", "run", "-d", "--name", f.container, "--tmpfs", "/var/lib/postgresql:rw", "-e", "POSTGRES_PASSWORD="+f.password, "-p", "127.0.0.1::5432", image).CombinedOutput(); err != nil {
+	token := uuid.NewString()
+	if _, exists, err := quarantineInspect(ctx, "docker", f.container); err != nil || exists {
+		t.Fatalf("fixture name was not proven unallocated: %v", err)
+	}
+	// Register before attempting creation: a CLI error can follow successful
+	// allocation/start. A fresh label also prevents removing an unrelated object
+	// that raced the preflight or replaced this generated name.
+	t.Cleanup(func() { quarantineCleanup(t, "docker", f.container, token) })
+	if out, err := exec.CommandContext(ctx, "docker", "run", "-d", "--name", f.container, "--label", quarantineFixtureLabel+"="+token, "--tmpfs", "/var/lib/postgresql:rw", "-e", "POSTGRES_PASSWORD="+f.password, "-p", "127.0.0.1::5432", quarantineImage).CombinedOutput(); err != nil {
 		t.Fatalf("start fixture: %v %s", err, out)
 	}
-	t.Cleanup(func() {
-		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
-		defer cancel()
-		if out, err := exec.CommandContext(ctx, "docker", "rm", "-f", "-v", f.container).CombinedOutput(); err != nil {
-			t.Errorf("remove owned fixture: %v %s", err, out)
-		}
-		if out, err := exec.CommandContext(ctx, "docker", "inspect", f.container).CombinedOutput(); err == nil || !strings.Contains(strings.ToLower(string(out)), "no such object") {
-			t.Errorf("owned fixture not proven absent: %v %s", err, out)
-		}
-	})
-	if out, err := exec.CommandContext(ctx, "docker", "inspect", "--format", "{{json .Mounts}} {{json .HostConfig.Tmpfs}}", f.container).CombinedOutput(); err != nil || strings.Contains(string(out), `"Type":"volume"`) || !strings.Contains(string(out), `"/var/lib/postgresql":"rw"`) {
-		t.Fatalf("unexpected fixture mounts: %v %s", err, out)
+	v, exists, err := quarantineInspect(ctx, "docker", f.container)
+	if err != nil || !exists {
+		t.Fatalf("created fixture identity unavailable: %v", err)
+	}
+	if err := v.validate(f.container, token); err != nil {
+		t.Fatal(err)
 	}
 	for {
 		if out, err := f.sql("postgres", "postgres", "SHOW server_version_num"); err == nil {
@@ -86,6 +176,136 @@ func newQuarantineFixture(t *testing.T) *routeFixture {
 	}
 	f.port = strings.TrimPrefix(address, "127.0.0.1:")
 	return f
+}
+
+func TestQuarantineFixtureIdentity(t *testing.T) {
+	name, token := "justixauto-t927-"+uuid.NewString(), uuid.NewString()
+	valid := quarantineContainer{ID: strings.Repeat("a", 64), Name: "/" + name, Image: quarantineImage, Labels: map[string]string{quarantineFixtureLabel: token}, Tmpfs: map[string]string{"/var/lib/postgresql": "rw"}}
+	if err := valid.validate(name, token); err != nil {
+		t.Fatal(err)
+	}
+	if err := valid.validate(name, ""); err == nil {
+		t.Fatal("empty ownership token authorized cleanup")
+	}
+	for label, alter := range map[string]func(*quarantineContainer){
+		"wrong immutable ID":    func(v *quarantineContainer) { v.ID = "not-an-ID" },
+		"wrong name":            func(v *quarantineContainer) { v.Name = "/another-container" },
+		"wrong image":           func(v *quarantineContainer) { v.Image = "postgres:latest" },
+		"wrong ownership label": func(v *quarantineContainer) { v.Labels = map[string]string{quarantineFixtureLabel: uuid.NewString()} },
+		"missing label":         func(v *quarantineContainer) { v.Labels = nil },
+		"missing tmpfs":         func(v *quarantineContainer) { v.Tmpfs = nil },
+		"unexpected volume": func(v *quarantineContainer) {
+			v.Mounts = append(v.Mounts, struct {
+				Type        string `json:"Type"`
+				Destination string `json:"Destination"`
+			}{"volume", "/var/lib/postgresql"})
+		},
+		"unexpected bind": func(v *quarantineContainer) {
+			v.Mounts = append(v.Mounts, struct {
+				Type        string `json:"Type"`
+				Destination string `json:"Destination"`
+			}{"bind", "/var/lib/postgresql"})
+		},
+	} {
+		t.Run(label, func(t *testing.T) {
+			v := valid
+			alter(&v)
+			if err := v.validate(name, token); err == nil {
+				t.Fatal("unrelated or unexpected object authorized for removal")
+			}
+		})
+	}
+}
+
+// Child tests really run the new fixture through a task-local Docker wrapper.
+// One starts the exact pinned container then loses its successful reply; the
+// other fails before allocating. Parent cleanup is a pre-registered backstop,
+// not the success criterion: both cases require the child to leave no object.
+func TestQuarantineFixtureFailures(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_QUARANTINE") != "1" {
+		t.Skip("explicit task fixture opt-in required")
+	}
+	if os.Getenv("JUSTIXAUTO_T927_FIXTURE_CHILD") != "" {
+		newQuarantineFixture(t)
+		t.Fatal("expected synthetic Docker failure")
+	}
+	docker, err := exec.LookPath("docker")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, mode := range []string{"lost-reply", "no-allocation"} {
+		t.Run(mode, func(t *testing.T) {
+			dir := t.TempDir()
+			namefile, tokenfile, idfile := filepath.Join(dir, "name"), filepath.Join(dir, "token"), filepath.Join(dir, "id")
+			quote := func(s string) string { return "'" + strings.ReplaceAll(s, "'", "'\\''") + "'" }
+			t.Cleanup(func() {
+				nameBytes, ne := os.ReadFile(namefile)
+				tokenBytes, te := os.ReadFile(tokenfile)
+				if ne != nil || te != nil {
+					return
+				}
+				name, token := strings.TrimSpace(string(nameBytes)), strings.TrimSpace(string(tokenBytes))
+				quarantineCleanup(t, docker, name, token)
+			})
+			wrapper := "#!/bin/sh\nset -eu\nif [ \"$1\" = run ]; then\n  previous=\n  for argument in \"$@\"; do\n    if [ \"$previous\" = --name ]; then printf '%s\\n' \"$argument\" > " + quote(namefile) + "; fi\n    if [ \"$previous\" = --label ]; then case \"$argument\" in " + quarantineFixtureLabel + "=*) printf '%s\\n' \"${argument#*=}\" > " + quote(tokenfile) + ";; esac; fi\n    previous=$argument\n  done\n"
+			if mode == "lost-reply" {
+				wrapper += "  " + quote(docker) + " \"$@\" > " + quote(idfile) + "\n  cat " + quote(idfile) + "\n"
+			} else {
+				// Exercise a real CLI refusal before container allocation. Insert
+				// the intentionally unknown flag before the image, never as its
+				// entrypoint command (which could allocate a container first).
+				wrapper += "  shift\n  status=0\n  " + quote(docker) + " run --t927-intentionally-invalid-option \"$@\" || status=$?\n  if [ \"$status\" = 0 ]; then exit 1; fi\n  echo \"T927 actual allocation rejected: $status\" >&2\n"
+			}
+			wrapper += "  echo 'T927 synthetic " + mode + " failure' >&2\n  exit 42\nfi\nexec " + quote(docker) + " \"$@\"\n"
+			if err := os.WriteFile(filepath.Join(dir, "docker"), []byte(wrapper), 0700); err != nil {
+				t.Fatal(err)
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second)
+			defer cancel()
+			child := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestQuarantineFixtureFailures$", "-test.v")
+			child.Env = append(os.Environ(), "PATH="+dir+string(os.PathListSeparator)+os.Getenv("PATH"), "JUSTIXAUTO_T927_FIXTURE_CHILD="+mode)
+			out, childErr := child.CombinedOutput()
+			t.Logf("expected child failure: %v\n%s", childErr, out)
+			if childErr == nil || !strings.Contains(string(out), "T927 synthetic "+mode+" failure") {
+				t.Fatal("failed creation branch not exercised")
+			}
+			nameBytes, err := os.ReadFile(namefile)
+			if err != nil {
+				t.Fatal(err)
+			}
+			name := strings.TrimSpace(string(nameBytes))
+			if _, exists, err := quarantineInspect(ctx, docker, name); err != nil || exists {
+				t.Fatalf("child left allocated fixture: %s %v", name, err)
+			}
+			if mode == "lost-reply" {
+				idBytes, err := os.ReadFile(idfile)
+				if err != nil {
+					t.Fatal(err)
+				}
+				id := strings.TrimSpace(string(idBytes))
+				decoded, err := hex.DecodeString(id)
+				if err != nil || len(decoded) != 32 {
+					t.Fatal("successful allocation not captured")
+				}
+				if _, exists, err := quarantineInspect(ctx, docker, id); err != nil || exists {
+					t.Fatalf("allocated fixture ID remains: %s %v", id, err)
+				}
+				if !strings.Contains(string(out), "validated task fixture removed and verified absent: "+id+" "+name) {
+					t.Fatal("child did not validate and remove its exact allocation")
+				}
+			} else {
+				if !strings.Contains(string(out), "T927 actual allocation rejected:") || !strings.Contains(string(out), "unknown flag") {
+					t.Fatal("real Docker pre-allocation refusal was not observed")
+				}
+				if _, err := os.Stat(idfile); !errors.Is(err, os.ErrNotExist) {
+					t.Fatalf("unexpected allocation receipt: %v", err)
+				}
+				if !strings.Contains(string(out), "task fixture absent after failed allocation: "+name) {
+					t.Fatal("child did not verify failed allocation absence")
+				}
+			}
+		})
+	}
 }
 
 func quarantineStore(t *testing.T, f *routeFixture) *routeStore {
