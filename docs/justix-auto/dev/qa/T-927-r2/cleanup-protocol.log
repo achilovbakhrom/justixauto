@@ -1,0 +1,113 @@
+=== RUN   TestQA927R2CleanupProtocol
+=== RUN   TestQA927R2CleanupProtocol/valid
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for valid: <nil>
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: validated task fixture removed and verified absent: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a
+        --- PASS: TestQA927R2CleanupProtocol (0.55s)
+        PASS
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+        ["rm", "-f", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+        ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+        ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/absent
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for absent: <nil>
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: task fixture absent after failed allocation: justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a
+        --- PASS: TestQA927R2CleanupProtocol (0.29s)
+        PASS
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/name
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for name: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: fixture identity mismatch; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.29s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/label
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for label: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: fixture identity mismatch; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.28s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/image
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for image: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: fixture identity mismatch; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.30s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/id
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for id: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: fixture identity mismatch; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.28s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/volume
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for volume: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: unexpected fixture mount; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.27s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/bind
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for bind: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: unexpected fixture mount; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.35s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/extra-tmpfs
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for extra-tmpfs: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: fixture tmpfs mismatch; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.27s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/missing-tmpfs
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for missing-tmpfs: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: fixture tmpfs mismatch; no removal authorized
+        --- FAIL: TestQA927R2CleanupProtocol (0.31s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/inspect-error
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for inspect-error: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: inspect task fixture: exit status 1
+        --- FAIL: TestQA927R2CleanupProtocol (0.27s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/invalid-json
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for invalid-json: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: decode fixture identity: invalid character 'i' looking for beginning of object key string
+        --- FAIL: TestQA927R2CleanupProtocol (0.28s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+=== RUN   TestQA927R2CleanupProtocol/still-present
+    qa_t927_r2_cleanup_test.go:65: expected child outcome for still-present: exit status 1
+        === RUN   TestQA927R2CleanupProtocol
+            qa_t927_r2_cleanup_test.go:22: task fixture absence not proven: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa <nil>
+        --- FAIL: TestQA927R2CleanupProtocol (0.42s)
+        FAIL
+    qa_t927_r2_cleanup_test.go:78: CLI protocol verified: ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "justixauto-t927-53d61ad5-bcfc-4c9b-8c72-b7c33a0e7d9a"]
+        ["rm", "-f", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+        ["inspect", "--format", "{\"id\":{{json .Id}},\"name\":{{json .Name}},\"image\":{{json .Config.Image}},\"labels\":{{json .Config.Labels}},\"mounts\":{{json .Mounts}},\"tmpfs\":{{json .HostConfig.Tmpfs}}}", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+--- PASS: TestQA927R2CleanupProtocol (6.40s)
+    --- PASS: TestQA927R2CleanupProtocol/valid (1.57s)
+    --- PASS: TestQA927R2CleanupProtocol/absent (1.31s)
+    --- PASS: TestQA927R2CleanupProtocol/name (0.31s)
+    --- PASS: TestQA927R2CleanupProtocol/label (0.29s)
+    --- PASS: TestQA927R2CleanupProtocol/image (0.32s)
+    --- PASS: TestQA927R2CleanupProtocol/id (0.29s)
+    --- PASS: TestQA927R2CleanupProtocol/volume (0.29s)
+    --- PASS: TestQA927R2CleanupProtocol/bind (0.37s)
+    --- PASS: TestQA927R2CleanupProtocol/extra-tmpfs (0.29s)
+    --- PASS: TestQA927R2CleanupProtocol/missing-tmpfs (0.33s)
+    --- PASS: TestQA927R2CleanupProtocol/inspect-error (0.29s)
+    --- PASS: TestQA927R2CleanupProtocol/invalid-json (0.30s)
+    --- PASS: TestQA927R2CleanupProtocol/still-present (0.43s)
+PASS
+ok  	justixauto/pkg/eventstore	8.127s

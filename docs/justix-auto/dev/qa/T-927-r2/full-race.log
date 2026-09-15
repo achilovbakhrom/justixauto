@@ -1,0 +1,800 @@
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestCommercePostgresMechanics
+    unit_of_work_test.go:142: set JUSTIXAUTO_TEST_COMMERCE_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestCommercePostgresMechanics (0.00s)
+=== RUN   TestCommerceScopeRecoveryAndMessaging
+    unit_of_work_test.go:525: set JUSTIXAUTO_TEST_COMMERCE_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestCommerceScopeRecoveryAndMessaging (0.00s)
+PASS
+ok  	justixauto/services/commerce/adapter/postgres	3.473s
+?   	justixauto/services/commerce/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestIdentityPostgresMechanics
+    unit_of_work_test.go:140: set JUSTIXAUTO_TEST_IDENTITY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestIdentityPostgresMechanics (0.00s)
+PASS
+ok  	justixauto/services/identity/adapter/postgres	2.359s
+?   	justixauto/services/identity/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestInventoryPostgresMechanics
+    unit_of_work_test.go:142: set JUSTIXAUTO_TEST_INVENTORY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestInventoryPostgresMechanics (0.00s)
+=== RUN   TestInventoryScopeRecoveryAndMessaging
+    unit_of_work_test.go:453: set JUSTIXAUTO_TEST_INVENTORY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestInventoryScopeRecoveryAndMessaging (0.00s)
+PASS
+ok  	justixauto/services/inventory/adapter/postgres	4.245s
+?   	justixauto/services/inventory/port	[no test files]
+=== RUN   TestAuthorizerDenyByDefaultMatrix
+=== RUN   TestAuthorizerDenyByDefaultMatrix/exact_retail_grant
+=== RUN   TestAuthorizerDenyByDefaultMatrix/exact_commerce_grant
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_caller
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_action
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_purpose
+=== RUN   TestAuthorizerDenyByDefaultMatrix/case_mismatch
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_caller
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_action
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_purpose
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wildcard_is_literal
+--- PASS: TestAuthorizerDenyByDefaultMatrix (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/exact_retail_grant (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/exact_commerce_grant (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_caller (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_action (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_purpose (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/case_mismatch (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_caller (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_action (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_purpose (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wildcard_is_literal (0.00s)
+=== RUN   TestAuthorizerRejectsInvalidConfiguration
+--- PASS: TestAuthorizerRejectsInvalidConfiguration (0.00s)
+=== RUN   TestAuthorizerCopiesConfigurationAndSupportsConcurrentReads
+--- PASS: TestAuthorizerCopiesConfigurationAndSupportsConcurrentReads (0.00s)
+=== RUN   TestNilAuthorizerDenies
+--- PASS: TestNilAuthorizerDenies (0.00s)
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/nil_state
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/handshake_incomplete
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unverified_certificate
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/verified_chain_for_different_leaf
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unknown_SAN
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/no_URI_SAN
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/disabled_identity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/ambiguous_identity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/duplicate_identical_identity
+--- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/nil_state (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/handshake_incomplete (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unverified_certificate (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/verified_chain_for_different_leaf (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unknown_SAN (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/no_URI_SAN (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/disabled_identity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/ambiguous_identity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/duplicate_identical_identity (0.00s)
+=== RUN   TestMTLSResolverConfigurationIsExactAndImmutable
+--- PASS: TestMTLSResolverConfigurationIsExactAndImmutable (0.00s)
+=== RUN   TestAuthenticateCombinesPeerAndPurposeGrant
+--- PASS: TestAuthenticateCombinesPeerAndPurposeGrant (0.00s)
+=== RUN   TestResolverWithVerifiedMutualTLSHandshake
+--- PASS: TestResolverWithVerifiedMutualTLSHandshake (5.03s)
+=== RUN   TestResolverConcurrentReads
+--- PASS: TestResolverConcurrentReads (0.00s)
+=== RUN   TestPublicIdentityHeaderRejectionAndStripping
+--- PASS: TestPublicIdentityHeaderRejectionAndStripping (0.00s)
+PASS
+ok  	justixauto/pkg/auth	7.721s
+=== RUN   TestTypedCanonicalDigestAndSecretBoundary
+--- PASS: TestTypedCanonicalDigestAndSecretBoundary (0.00s)
+=== RUN   TestScopeAndReceiptValidation
+--- PASS: TestScopeAndReceiptValidation (0.00s)
+=== RUN   TestLedgerPostgres
+    ledger_test.go:244: set JUSTIXAUTO_TEST_COMMAND_LEDGER=1 for isolated PostgreSQL 18.6 fixture
+--- SKIP: TestLedgerPostgres (0.00s)
+=== RUN   TestOperationConfiguration
+--- PASS: TestOperationConfiguration (0.00s)
+=== RUN   TestOperationsPostgres
+    operation_test.go:99: set JUSTIXAUTO_TEST_OPERATIONS=1 for disposable PostgreSQL fixture
+--- SKIP: TestOperationsPostgres (0.00s)
+=== RUN   TestOperationRetryBounds
+--- PASS: TestOperationRetryBounds (0.00s)
+=== RUN   TestOperationWorkerPostgres
+    worker_test.go:48: set JUSTIXAUTO_TEST_OPERATIONS=1 for disposable PostgreSQL fixture
+--- SKIP: TestOperationWorkerPostgres (0.00s)
+PASS
+ok  	justixauto/pkg/commands	3.078s
+=== RUN   TestEnvelopeRoundTripPreservesContractFields
+--- PASS: TestEnvelopeRoundTripPreservesContractFields (0.00s)
+=== RUN   TestEnvelopeCopiesPayloadAndCompanyID
+--- PASS: TestEnvelopeCopiesPayloadAndCompanyID (0.00s)
+=== RUN   TestEnvelopeMetadataValidation
+=== RUN   TestEnvelopeMetadataValidation/zero_integration_sequence
+=== RUN   TestEnvelopeMetadataValidation/missing_company
+=== RUN   TestEnvelopeMetadataValidation/unknown_actor_kind
+=== RUN   TestEnvelopeMetadataValidation/non-UTC_time
+=== RUN   TestEnvelopeMetadataValidation/noncanonical_event_UUID
+=== RUN   TestEnvelopeMetadataValidation/zero_aggregate_revision
+--- PASS: TestEnvelopeMetadataValidation (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/zero_integration_sequence (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/missing_company (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/unknown_actor_kind (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/non-UTC_time (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/noncanonical_event_UUID (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/zero_aggregate_revision (0.00s)
+=== RUN   TestEventSchemaValidation
+=== RUN   TestEventSchemaValidation/invalid_aggregate_type
+=== RUN   TestEventSchemaValidation/global_non-identity
+=== RUN   TestEventSchemaValidation/missing_validator
+=== RUN   TestEventSchemaValidation/unknown_owner
+=== RUN   TestEventSchemaValidation/schema_mismatch
+--- PASS: TestEventSchemaValidation (0.00s)
+    --- PASS: TestEventSchemaValidation/invalid_aggregate_type (0.00s)
+    --- PASS: TestEventSchemaValidation/global_non-identity (0.00s)
+    --- PASS: TestEventSchemaValidation/missing_validator (0.00s)
+    --- PASS: TestEventSchemaValidation/unknown_owner (0.00s)
+    --- PASS: TestEventSchemaValidation/schema_mismatch (0.00s)
+=== RUN   TestGlobalIdentityEventMayHaveNullCompany
+--- PASS: TestGlobalIdentityEventMayHaveNullCompany (0.00s)
+=== RUN   TestTenantIdentityEventRequiresCompany
+--- PASS: TestTenantIdentityEventRequiresCompany (0.00s)
+=== RUN   TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively
+--- PASS: TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively (0.00s)
+=== RUN   TestPayloadDecoderBindsEventTypeAndVersion
+--- PASS: TestPayloadDecoderBindsEventTypeAndVersion (0.00s)
+=== RUN   TestPayloadDecoderRejectsMissingRequiredFields
+--- PASS: TestPayloadDecoderRejectsMissingRequiredFields (0.00s)
+=== RUN   TestSchemaRejectsAggregateAndScopeSpoofFromRawWire
+--- PASS: TestSchemaRejectsAggregateAndScopeSpoofFromRawWire (0.00s)
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/permission
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/session
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/credential
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/mfa-factor
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/recovery-token
+--- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/permission (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/session (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/credential (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/mfa-factor (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/recovery-token (0.00s)
+=== RUN   TestZeroEnvelopeCannotBeSerialized
+--- PASS: TestZeroEnvelopeCannotBeSerialized (0.00s)
+=== RUN   TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields
+--- PASS: TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields (0.00s)
+=== RUN   TestEnvelopeRejectsOffsetTimeOnWire
+--- PASS: TestEnvelopeRejectsOffsetTimeOnWire (0.00s)
+=== RUN   TestEnvelopeConcurrentDecodeIsReadOnly
+--- PASS: TestEnvelopeConcurrentDecodeIsReadOnly (0.02s)
+=== RUN   TestRevisionCanonicalRoundTrip
+=== RUN   TestRevisionCanonicalRoundTrip/0
+=== RUN   TestRevisionCanonicalRoundTrip/1
+=== RUN   TestRevisionCanonicalRoundTrip/9007199254740993
+=== RUN   TestRevisionCanonicalRoundTrip/9223372036854775807
+--- PASS: TestRevisionCanonicalRoundTrip (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/0 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/1 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/9007199254740993 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/9223372036854775807 (0.00s)
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/#00
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/-1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/+1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/01
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/_1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1_
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1.0
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/9223372036854775808
+--- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/#00 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/-1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/+1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/01 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/_1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1_ (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1.0 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/9223372036854775808 (0.00s)
+=== RUN   TestRevisionNextAndOverflow
+--- PASS: TestRevisionNextAndOverflow (0.00s)
+PASS
+ok  	justixauto/pkg/events	4.941s
+=== RUN   TestAppendRequiresTransactionAndSchema
+--- PASS: TestAppendRequiresTransactionAndSchema (0.00s)
+=== RUN   TestConditionalAppendPostgres
+    append_test.go:127: set JUSTIXAUTO_TEST_EVENTSTORE_APPEND=1 for isolated Docker/PostgreSQL append tests
+--- SKIP: TestConditionalAppendPostgres (0.00s)
+=== RUN   TestMessagingMigrationPostgres
+    messaging_migration_test.go:17: set JUSTIXAUTO_TEST_MESSAGING_MIGRATION=1 for isolated pinned PostgreSQL
+--- SKIP: TestMessagingMigrationPostgres (0.00s)
+=== RUN   TestMessagingRouteMigrationPostgres
+    messaging_route_migration_test.go:407: set JUSTIXAUTO_TEST_MESSAGING_ROUTE_MIGRATION=1 for isolated pinned PostgreSQL
+--- SKIP: TestMessagingRouteMigrationPostgres (0.00s)
+=== RUN   TestProjectionCheckpointMigrationPostgres
+    projection_checkpoint_migration_test.go:157: set JUSTIXAUTO_TEST_PROJECTION_CHECKPOINT=1 for owned PostgreSQL fixture
+--- SKIP: TestProjectionCheckpointMigrationPostgres (0.00s)
+=== RUN   TestQA927FixtureLostStartReply
+    qa_t927_fixture_failure_test.go:40: child result: exit status 1
+        === RUN   TestQA927FixtureLostStartReply
+            qa_t927_fixture_failure_test.go:19: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1879603991
+            qa_t927_fixture_failure_test.go:19: start fixture: exit status 42 5a5b17512dc14dda9a66f40d47fce4db2da3acf4dcef7ba4e7bec8b1cf559dc2
+                QA synthetic successful-start reply lost
+            quarantine_migration_test.go:145: validated task fixture removed and verified absent: 5a5b17512dc14dda9a66f40d47fce4db2da3acf4dcef7ba4e7bec8b1cf559dc2 justixauto-t927-e72235b4-ec43-4442-8834-5ab37fd5bb45
+        --- FAIL: TestQA927FixtureLostStartReply (2.63s)
+        FAIL
+    qa_t927_fixture_failure_test.go:48: fixture child cleaned up after failed start: exit status 1 
+        error: no such object: 5a5b17512dc14dda9a66f40d47fce4db2da3acf4dcef7ba4e7bec8b1cf559dc2
+--- PASS: TestQA927FixtureLostStartReply (2.68s)
+=== RUN   TestQA927Adversarial
+    qa_t927_independent_test.go:28: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1404069452
+    qa_t927_independent_test.go:29: QA fixture identity: 562e752eafa8c0b8e115b6fdab9a9e99350db50635b0551cb30a84ddb2d90510 docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2 [] {"/var/lib/postgresql":"rw"}
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-actor
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-authority
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-scope
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-purpose
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-no-correction
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_kind
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_consumer
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/foreign_receipt_consumer
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/receipt_event_differs
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/released_direct
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  new row for relation "quarantine_actions" violates check constraint "quarantine_actions_check11"
+        DETAIL:  Failing row contains (438cc17a-1f99-4003-ba04-e60fa7ecdb8c, 70e97115-46c6-4cf7-b9e5-26fe53e3e870, be9e4917-ea05-4537-adf5-a708a76adc8e, 2a1272c4-c5a1-4ff1-b008-e5cbdaaa40bd, redrive-result, 1, synthetic-actor, synthetic-authority, synthetic-scope, synthetic-purpose, synthetic-no-correction, direct-handler, qa-consumer, synthetic-canonical-manifest, \x937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f9865..., null, null, null, null, null, released, 2026-09-15 17:07:52.581903+00).
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_accepted_event
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  new row for relation "quarantine_actions" violates check constraint "quarantine_actions_check2"
+        DETAIL:  Failing row contains (b108c765-bf9a-4b44-8a45-5205ae05cd10, 70e97115-46c6-4cf7-b9e5-26fe53e3e870, 6c03c88c-2ae9-4b94-97a3-1e729598da0e, 2a1272c4-c5a1-4ff1-b008-e5cbdaaa40bd, redrive-result, 1, synthetic-actor, synthetic-authority, synthetic-scope, synthetic-purpose, synthetic-no-correction, direct-handler, qa-consumer, synthetic-canonical-manifest, \x937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f9865..., null, \x0f30c92dcb3988d09d4069590043e1c5b8b869d645939496b2367815b11cb1..., inbox, qa-consumer, 1e3e442e-7991-42bc-a7c1-3231bc0be595, accepted, 2026-09-15 17:07:52.772896+00).
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_hash
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== NAME  TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content
+    qa_t927_independent_test.go:51: rejection retained chain: ERROR:  duplicate key value violates unique constraint "quarantine_actions_pkey"
+        DETAIL:  Key (action_id)=(b108c765-bf9a-4b44-8a45-5205ae05cd10) already exists.
+=== RUN   TestQA927Adversarial/custody_receipt_cannot_substitute_another_job_or_early_inbox
+    qa_t927_independent_test.go:67: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+    qa_t927_independent_test.go:68: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+    qa_t927_independent_test.go:69: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+    qa_t927_independent_test.go:70: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/action_commit_lost_reply_exact_receipt_and_rollback
+    qa_t927_independent_test.go:88: rejection retained chain: ERROR:  duplicate key value violates unique constraint "quarantine_actions_pkey"
+        DETAIL:  Key (action_id)=(488dd6e0-9c6a-445c-a80c-0f38301437b1) already exists.
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/trigger_definer
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/MAINTAIN
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/database_CREATE
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/column_grant_option
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/default_EXECUTE
+=== NAME  TestQA927Adversarial
+    quarantine_migration_test.go:145: validated task fixture removed and verified absent: 562e752eafa8c0b8e115b6fdab9a9e99350db50635b0551cb30a84ddb2d90510 justixauto-t927-9b4b10b3-0b9e-4dc9-be8d-7d5344f10ab8
+    qa_t927_independent_test.go:27: QA fixture verified absent: justixauto-t927-9b4b10b3-0b9e-4dc9-be8d-7d5344f10ab8
+--- PASS: TestQA927Adversarial (21.03s)
+    --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content (4.10s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-actor (0.17s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-authority (0.17s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-scope (0.17s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-purpose (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-no-correction (0.18s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_kind (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_consumer (0.18s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/foreign_receipt_consumer (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/receipt_event_differs (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/released_direct (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_accepted_event (0.18s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_hash (0.18s)
+    --- PASS: TestQA927Adversarial/custody_receipt_cannot_substitute_another_job_or_early_inbox (2.17s)
+    --- PASS: TestQA927Adversarial/action_commit_lost_reply_exact_receipt_and_rollback (1.47s)
+    --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes (11.80s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/trigger_definer (2.02s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/MAINTAIN (1.89s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/database_CREATE (1.98s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/column_grant_option (2.01s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/default_EXECUTE (1.94s)
+=== RUN   TestQuarantineFixtureIdentity
+=== RUN   TestQuarantineFixtureIdentity/wrong_immutable_ID
+=== RUN   TestQuarantineFixtureIdentity/wrong_name
+=== RUN   TestQuarantineFixtureIdentity/wrong_image
+=== RUN   TestQuarantineFixtureIdentity/wrong_ownership_label
+=== RUN   TestQuarantineFixtureIdentity/missing_label
+=== RUN   TestQuarantineFixtureIdentity/missing_tmpfs
+=== RUN   TestQuarantineFixtureIdentity/unexpected_volume
+=== RUN   TestQuarantineFixtureIdentity/unexpected_bind
+--- PASS: TestQuarantineFixtureIdentity (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_immutable_ID (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_name (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_image (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_ownership_label (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/missing_label (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/missing_tmpfs (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/unexpected_volume (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/unexpected_bind (0.00s)
+=== RUN   TestQuarantineFixtureFailures
+=== RUN   TestQuarantineFixtureFailures/lost-reply
+    quarantine_migration_test.go:268: expected child failure: exit status 1
+        === RUN   TestQuarantineFixtureFailures
+            quarantine_migration_test.go:229: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2541991788
+            quarantine_migration_test.go:229: start fixture: exit status 42 7c0207ee90fa25e47892b48f7338ad27a2243cc08a9f99535f1315ca8e9656ed
+                T927 synthetic lost-reply failure
+            quarantine_migration_test.go:145: validated task fixture removed and verified absent: 7c0207ee90fa25e47892b48f7338ad27a2243cc08a9f99535f1315ca8e9656ed justixauto-t927-813e48b9-9599-4eb6-ba39-8f8f02f2801a
+        --- FAIL: TestQuarantineFixtureFailures (0.84s)
+        FAIL
+    quarantine_migration_test.go:248: task fixture absent after failed allocation: justixauto-t927-813e48b9-9599-4eb6-ba39-8f8f02f2801a
+=== RUN   TestQuarantineFixtureFailures/no-allocation
+    quarantine_migration_test.go:268: expected child failure: exit status 1
+        === RUN   TestQuarantineFixtureFailures
+            quarantine_migration_test.go:229: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-794092198
+            quarantine_migration_test.go:229: start fixture: exit status 42 unknown flag: --t927-intentionally-invalid-option
+                
+                Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+                
+                Run 'docker run --help' for more information
+                T927 actual allocation rejected: 125
+                T927 synthetic no-allocation failure
+            quarantine_migration_test.go:145: task fixture absent after failed allocation: justixauto-t927-ca991aac-a233-4def-978e-8efffa520ab3
+        --- FAIL: TestQuarantineFixtureFailures (0.50s)
+        FAIL
+    quarantine_migration_test.go:248: task fixture absent after failed allocation: justixauto-t927-ca991aac-a233-4def-978e-8efffa520ab3
+--- PASS: TestQuarantineFixtureFailures (1.52s)
+    --- PASS: TestQuarantineFixtureFailures/lost-reply (0.95s)
+    --- PASS: TestQuarantineFixtureFailures/no-allocation (0.58s)
+=== RUN   TestQuarantineMigrationPostgres
+    quarantine_migration_test.go:432: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2259414211
+    quarantine_migration_test.go:439: 000005 SHA-256 1c1e7d17efa8ff84f2469d6d55b3b6c810143e5260aabf5f82d748797f2296a3
+=== RUN   TestQuarantineMigrationPostgres/populated_legacy_and_custody_preserve_every_prior_row_catalog_and_function
+=== RUN   TestQuarantineMigrationPostgres/populated_legacy_and_custody_preserve_every_prior_row_catalog_and_function/false
+=== RUN   TestQuarantineMigrationPostgres/populated_legacy_and_custody_preserve_every_prior_row_catalog_and_function/true
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/unsafe_error_string
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/infinite_timestamp
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/tampered_ciphertext
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/missing_policy
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/missing_key
+=== RUN   TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/unbounded_reason
+=== RUN   TestQuarantineMigrationPostgres/append_only_action_chains_reject_roots_forks_cycles_context_and_unbacked_results
+=== RUN   TestQuarantineMigrationPostgres/failed_capture_cancellation_and_lost_commit_replies_reconcile_exact_request
+=== RUN   TestQuarantineMigrationPostgres/custody_rollback_quarantine_fencing_and_completed_observation_preserve_obligations
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/backup
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/base
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/checkpoint
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/quarantine
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/owner
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/runtime
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/table_update
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/column_update
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/missing_select
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/missing_schema_usage
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/column_references
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/default_update
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/schema_create
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/database_temp
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/PUBLIC_select
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/default_PUBLIC
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/missing_insert
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/marker_insert
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/PUBLIC_column
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/delegable_select
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/migration_execute
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/installed_checkpoint_digest_mismatch
+=== RUN   TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/runtime_cannot_install_and_foreign_owner_cannot_read_evidence
+=== RUN   TestQuarantineMigrationPostgres/concurrent_installers_and_five_second_active_writer_rollback
+=== NAME  TestQuarantineMigrationPostgres
+    quarantine_migration_test.go:145: validated task fixture removed and verified absent: 6ebff1000ef1a3a4cecf7e9562839fd29bb004e27036d240241b64d16d1c839c justixauto-t927-f21d5666-03f3-45d5-901d-fb56683bce94
+--- PASS: TestQuarantineMigrationPostgres (73.91s)
+    --- PASS: TestQuarantineMigrationPostgres/populated_legacy_and_custody_preserve_every_prior_row_catalog_and_function (8.33s)
+        --- PASS: TestQuarantineMigrationPostgres/populated_legacy_and_custody_preserve_every_prior_row_catalog_and_function/false (4.10s)
+        --- PASS: TestQuarantineMigrationPostgres/populated_legacy_and_custody_preserve_every_prior_row_catalog_and_function/true (4.23s)
+    --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage (3.21s)
+        --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/unsafe_error_string (0.06s)
+        --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/infinite_timestamp (0.05s)
+        --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/tampered_ciphertext (0.06s)
+        --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/missing_policy (0.05s)
+        --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/missing_key (0.06s)
+        --- PASS: TestQuarantineMigrationPostgres/malformed_arbitrary_bytes_exact_requests_immutable_protected_storage/unbounded_reason (0.07s)
+    --- PASS: TestQuarantineMigrationPostgres/append_only_action_chains_reject_roots_forks_cycles_context_and_unbacked_results (1.77s)
+    --- PASS: TestQuarantineMigrationPostgres/failed_capture_cancellation_and_lost_commit_replies_reconcile_exact_request (1.24s)
+    --- PASS: TestQuarantineMigrationPostgres/custody_rollback_quarantine_fencing_and_completed_observation_preserve_obligations (2.46s)
+    --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically (47.85s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/backup (1.88s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/base (1.79s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/checkpoint (1.99s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/quarantine (1.86s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/owner (1.83s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/runtime (1.87s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/table_update (1.99s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/column_update (1.99s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/missing_select (1.95s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/missing_schema_usage (1.92s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/column_references (1.95s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/default_update (1.90s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/schema_create (2.00s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/database_temp (2.13s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/PUBLIC_select (2.04s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/default_PUBLIC (2.00s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/missing_insert (2.01s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/marker_insert (1.97s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/PUBLIC_column (2.04s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/delegable_select (1.93s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/migration_execute (1.97s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/installed_checkpoint_digest_mismatch (2.03s)
+        --- PASS: TestQuarantineMigrationPostgres/installation_rejects_lineage_wrong_owner_and_privilege_escalation_atomically/runtime_cannot_install_and_foreign_owner_cannot_read_evidence (2.63s)
+    --- PASS: TestQuarantineMigrationPostgres/concurrent_installers_and_five_second_active_writer_rollback (7.77s)
+=== RUN   TestFenceRequestsAreSealedAndCanonical
+--- PASS: TestFenceRequestsAreSealedAndCanonical (0.00s)
+=== RUN   TestPreparedReceiverFencesPostgres
+    receiver_fence_test.go:101: set JUSTIXAUTO_TEST_RECEIVER_FENCES=1 for owned PostgreSQL fixture
+--- SKIP: TestPreparedReceiverFencesPostgres (0.00s)
+=== RUN   TestReplayRejectsHistoryBeforeApplying
+=== RUN   TestReplayRejectsHistoryBeforeApplying/zero_event
+=== RUN   TestReplayRejectsHistoryBeforeApplying/gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/integration_gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/initial_integration_gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/foreign_stream
+=== RUN   TestReplayRejectsHistoryBeforeApplying/missing_first
+=== RUN   TestReplayRejectsHistoryBeforeApplying/reordered
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_revision
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_identity
+=== RUN   TestReplayRejectsHistoryBeforeApplying/unknown
+=== RUN   TestReplayRejectsHistoryBeforeApplying/zero_decoder
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_registration
+--- PASS: TestReplayRejectsHistoryBeforeApplying (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/zero_event (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/integration_gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/initial_integration_gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/foreign_stream (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/missing_first (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/reordered (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_revision (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_identity (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/unknown (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/zero_decoder (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_registration (0.00s)
+=== RUN   TestReplayOwnerTransitionsAndIsolation
+--- PASS: TestReplayOwnerTransitionsAndIsolation (0.00s)
+=== RUN   TestReplayLateSchemaFailuresNeverApplyPrefix
+--- PASS: TestReplayLateSchemaFailuresNeverApplyPrefix (0.00s)
+=== RUN   TestReplayPostgres
+    replay_test.go:145: set JUSTIXAUTO_TEST_EVENTSTORE_REPLAY=1 for isolated Docker/PostgreSQL replay tests
+--- SKIP: TestReplayPostgres (0.00s)
+=== RUN   TestOwnerSchemaPostgres
+    schema_test.go:32: set JUSTIXAUTO_TEST_EVENTSTORE_SCHEMA=1 for isolated Docker/PostgreSQL tests
+--- SKIP: TestOwnerSchemaPostgres (0.00s)
+=== RUN   TestTypedUpcastTombstonedReferenceReplay
+--- PASS: TestTypedUpcastTombstonedReferenceReplay (0.00s)
+=== RUN   TestUpcastRejectsInvalidMappings
+--- PASS: TestUpcastRejectsInvalidMappings (0.00s)
+PASS
+ok  	justixauto/pkg/eventstore	103.799s
+=== RUN   TestConsumerValidationBeforePersistence
+--- PASS: TestConsumerValidationBeforePersistence (0.00s)
+=== RUN   TestInboxPostgres
+    consume_test.go:171: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestInboxPostgres (0.00s)
+=== RUN   TestTransactionalConsumerRequiresTransaction
+--- PASS: TestTransactionalConsumerRequiresTransaction (0.00s)
+=== RUN   TestTransactionalInboxPostgres
+    consume_test.go:558: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestTransactionalInboxPostgres (0.00s)
+=== RUN   TestInboxCutoverLockFailurePostgres
+    consume_test.go:942: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestInboxCutoverLockFailurePostgres (0.00s)
+PASS
+ok  	justixauto/pkg/inbox	3.866s
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries
+=== PAUSE TestNewAcceptsCanonicalAmountBoundaries
+=== RUN   TestNewRejectsNonCanonicalAndOverflowAmounts
+=== PAUSE TestNewRejectsNonCanonicalAndOverflowAmounts
+=== RUN   TestCurrencyDefinitionValidationAndVersionIdentity
+=== PAUSE TestCurrencyDefinitionValidationAndVersionIdentity
+=== RUN   TestArithmeticIsExactAndChecksResultOverflow
+=== PAUSE TestArithmeticIsExactAndChecksResultOverflow
+=== RUN   TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== PAUSE TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== RUN   TestMoneyConcurrentReadsAndArithmeticDoNotMutate
+--- PASS: TestMoneyConcurrentReadsAndArithmeticDoNotMutate (0.02s)
+=== RUN   TestDecimalRateCanonicalValidation
+=== PAUSE TestDecimalRateCanonicalValidation
+=== RUN   TestDateRejectsNonCanonicalAndImpossibleDates
+=== PAUSE TestDateRejectsNonCanonicalAndImpossibleDates
+=== RUN   TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== PAUSE TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== RUN   TestPolicyValueNeverFallsBack
+=== PAUSE TestPolicyValueNeverFallsBack
+=== CONT  TestNewAcceptsCanonicalAmountBoundaries
+=== CONT  TestDecimalRateCanonicalValidation
+=== CONT  TestPolicyValueNeverFallsBack
+=== CONT  TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== CONT  TestDateRejectsNonCanonicalAndImpossibleDates
+=== CONT  TestNewRejectsNonCanonicalAndOverflowAmounts
+=== CONT  TestArithmeticIsExactAndChecksResultOverflow
+=== CONT  TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== CONT  TestCurrencyDefinitionValidationAndVersionIdentity
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/0
+--- PASS: TestPolicyValueNeverFallsBack (0.00s)
+--- PASS: TestEffectivePeriodInclusiveBoundsAndOpenEnd (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/1
+--- PASS: TestNewRejectsNonCanonicalAndOverflowAmounts (0.00s)
+--- PASS: TestArithmeticIsExactAndChecksResultOverflow (0.00s)
+--- PASS: TestCurrencyDefinitionValidationAndVersionIdentity (0.00s)
+--- PASS: TestDateRejectsNonCanonicalAndImpossibleDates (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/-1
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/99999999999999999999999999999999999999
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/-99999999999999999999999999999999999999
+--- PASS: TestNewAcceptsCanonicalAmountBoundaries (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/0 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/1 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/-1 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/99999999999999999999999999999999999999 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/-99999999999999999999999999999999999999 (0.00s)
+--- PASS: TestDecimalRateCanonicalValidation (0.00s)
+--- PASS: TestJSONUsesCanonicalPublicShapeAndSelectedDefinition (0.00s)
+PASS
+ok  	justixauto/pkg/money	5.166s
+=== RUN   TestSourceAdmissionValues
+--- PASS: TestSourceAdmissionValues (0.00s)
+=== RUN   TestSourceAdmissionReplay
+=== RUN   TestSourceAdmissionReplay/orphan
+=== RUN   TestSourceAdmissionReplay/branch
+=== RUN   TestSourceAdmissionReplay/resume_without_hold
+=== RUN   TestSourceAdmissionReplay/double_hold
+=== RUN   TestSourceAdmissionReplay/overlap
+=== RUN   TestSourceAdmissionReplay/unknown_action
+--- PASS: TestSourceAdmissionReplay (0.00s)
+    --- PASS: TestSourceAdmissionReplay/orphan (0.00s)
+    --- PASS: TestSourceAdmissionReplay/branch (0.00s)
+    --- PASS: TestSourceAdmissionReplay/resume_without_hold (0.00s)
+    --- PASS: TestSourceAdmissionReplay/double_hold (0.00s)
+    --- PASS: TestSourceAdmissionReplay/overlap (0.00s)
+    --- PASS: TestSourceAdmissionReplay/unknown_action (0.00s)
+=== RUN   TestSourceAdmissionPostgres
+    admission_test.go:222: set JUSTIXAUTO_TEST_SOURCE_ADMISSION=1 for pinned isolated PostgreSQL
+--- SKIP: TestSourceAdmissionPostgres (0.00s)
+=== RUN   TestAMQPReturnConfirmCorrelation
+=== RUN   TestAMQPReturnConfirmCorrelation/ack
+=== RUN   TestAMQPReturnConfirmCorrelation/return_then_ack
+=== RUN   TestAMQPReturnConfirmCorrelation/nack
+=== RUN   TestAMQPReturnConfirmCorrelation/wrong_sequence
+=== RUN   TestAMQPReturnConfirmCorrelation/wrong_return_identity
+=== RUN   TestAMQPReturnConfirmCorrelation/wrong_return_bytes
+=== RUN   TestAMQPReturnConfirmCorrelation/closed_confirms
+=== RUN   TestAMQPReturnConfirmCorrelation/closed_returns
+=== RUN   TestAMQPReturnConfirmCorrelation/closed_channel
+=== RUN   TestAMQPReturnConfirmCorrelation/timeout
+--- PASS: TestAMQPReturnConfirmCorrelation (0.02s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/ack (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/return_then_ack (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/nack (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/wrong_sequence (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/wrong_return_identity (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/wrong_return_bytes (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/closed_confirms (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/closed_returns (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/closed_channel (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/timeout (0.01s)
+=== RUN   TestAMQPPublisherRejectsBeforeDialAndScrubsDialErrors
+--- PASS: TestAMQPPublisherRejectsBeforeDialAndScrubsDialErrors (0.00s)
+=== RUN   TestRelayBrokerPostgres
+    amqp_test.go:369: set JUSTIXAUTO_TEST_OUTBOX_RELAY_BROKER=1 for owned pinned PostgreSQL and RabbitMQ
+--- SKIP: TestRelayBrokerPostgres (0.00s)
+=== RUN   TestRelayConstructorClosed
+--- PASS: TestRelayConstructorClosed (0.00s)
+=== RUN   TestRelayBackoffBounds
+--- PASS: TestRelayBackoffBounds (0.00s)
+=== RUN   TestRelayPostgres
+    relay_test.go:327: set JUSTIXAUTO_TEST_OUTBOX_RELAY=1 for owned pinned PostgreSQL fixtures
+--- SKIP: TestRelayPostgres (0.00s)
+=== RUN   TestRecordRequiresTypedSchemaAndRoute
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/zero_envelope
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/unbound_schema
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/foreign_schema
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/invalid_target
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/raw_unvalidated_payload
+--- PASS: TestRecordRequiresTypedSchemaAndRoute (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/zero_envelope (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/unbound_schema (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/foreign_schema (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/invalid_target (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/raw_unvalidated_payload (0.00s)
+=== RUN   TestInsertPostgres
+    insert_test.go:164: set JUSTIXAUTO_TEST_OUTBOX_INSERT=1 for isolated PostgreSQL outbox checks
+--- SKIP: TestInsertPostgres (0.00s)
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/zero_envelope
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/zero_schema
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/foreign_schema
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/invalid_data
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/missing_rule
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/other_stream
+--- PASS: TestMessageRequiresTypedSchemaAndConcreteRule (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/zero_envelope (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/zero_schema (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/foreign_schema (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/invalid_data (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/missing_rule (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/other_stream (0.00s)
+=== RUN   TestCustodyInsertPostgres
+    insert_test.go:556: set JUSTIXAUTO_TEST_OUTBOX_INSERT=1 for isolated PostgreSQL custody insertion
+--- SKIP: TestCustodyInsertPostgres (0.00s)
+PASS
+ok  	justixauto/pkg/outbox	5.501s
+=== RUN   TestRepositoryImportBoundaries
+--- PASS: TestRepositoryImportBoundaries (0.02s)
+=== RUN   TestImportBoundaryFixtures
+=== RUN   TestImportBoundaryFixtures/domain_value
+=== RUN   TestImportBoundaryFixtures/shared_value
+=== RUN   TestImportBoundaryFixtures/app_command
+=== RUN   TestImportBoundaryFixtures/app_port
+=== RUN   TestImportBoundaryFixtures/adapter
+=== RUN   TestImportBoundaryFixtures/composition
+=== RUN   TestImportBoundaryFixtures/foreign_schema
+=== RUN   TestImportBoundaryFixtures/foreign_event
+=== RUN   TestImportBoundaryFixtures/edge_schema
+=== RUN   TestImportBoundaryFixtures/integration_test
+=== RUN   TestImportBoundaryFixtures/domain_app
+=== RUN   TestImportBoundaryFixtures/domain_adapter
+=== RUN   TestImportBoundaryFixtures/domain_port
+=== RUN   TestImportBoundaryFixtures/app_adapter
+=== RUN   TestImportBoundaryFixtures/port_app
+=== RUN   TestImportBoundaryFixtures/foreign_domain
+=== RUN   TestImportBoundaryFixtures/foreign_adapter
+=== RUN   TestImportBoundaryFixtures/foreign_app
+=== RUN   TestImportBoundaryFixtures/foreign_port
+=== RUN   TestImportBoundaryFixtures/shared_owner
+=== RUN   TestImportBoundaryFixtures/shared_contract
+=== RUN   TestImportBoundaryFixtures/shared_edge
+=== RUN   TestImportBoundaryFixtures/edge_owner
+=== RUN   TestImportBoundaryFixtures/service_edge
+=== RUN   TestImportBoundaryFixtures/invalid_owner_source
+=== RUN   TestImportBoundaryFixtures/invalid_owner_target
+=== RUN   TestImportBoundaryFixtures/invalid_layer
+=== RUN   TestImportBoundaryFixtures/contract_leak
+=== RUN   TestImportBoundaryFixtures/unapproved_public_path
+--- PASS: TestImportBoundaryFixtures (0.04s)
+    --- PASS: TestImportBoundaryFixtures/domain_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_command (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/composition (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_event (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/integration_test (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/port_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_domain (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_contract (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/service_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_source (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_target (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_layer (0.00s)
+    --- PASS: TestImportBoundaryFixtures/contract_leak (0.00s)
+    --- PASS: TestImportBoundaryFixtures/unapproved_public_path (0.00s)
+=== RUN   TestBoundaryTraversal
+--- PASS: TestBoundaryTraversal (0.01s)
+=== RUN   TestQAArchitectureRegressions
+=== RUN   TestQAArchitectureRegressions/domain_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_server
+=== RUN   TestQAArchitectureRegressions/app_AMQP_connection
+=== RUN   TestQAArchitectureRegressions/port_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_shared_infrastructure
+=== RUN   TestQAArchitectureRegressions/nested_docs_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_node_modules_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_vendor_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_testdata_cross_owner
+=== RUN   TestQAArchitectureRegressions/app_pgx_stdlib
+=== RUN   TestQAArchitectureRegressions/port_SQL_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_client
+=== RUN   TestQAArchitectureRegressions/primitive_infrastructure_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_framework_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_nested_framework
+=== RUN   TestQAArchitectureRegressions/contract_infrastructure
+=== RUN   TestQAArchitectureRegressions/adapter_gorm_implementation
+=== RUN   TestQAArchitectureRegressions/shared_eventstore_implementation
+=== RUN   TestQAArchitectureRegressions/app_technical_mechanics
+=== RUN   TestQAArchitectureRegressions/domain_immutable_event
+=== RUN   TestQAArchitectureRegressions/domain_primitive_libraries
+=== RUN   TestQAArchitectureRegressions/typed_unit_of_work_port
+--- PASS: TestQAArchitectureRegressions (0.02s)
+    --- PASS: TestQAArchitectureRegressions/domain_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_server (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_AMQP_connection (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_shared_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_docs_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_node_modules_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_vendor_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_testdata_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_pgx_stdlib (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_SQL_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_client (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_infrastructure_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_framework_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_nested_framework (0.00s)
+    --- PASS: TestQAArchitectureRegressions/contract_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/adapter_gorm_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/shared_eventstore_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_technical_mechanics (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_immutable_event (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_primitive_libraries (0.00s)
+    --- PASS: TestQAArchitectureRegressions/typed_unit_of_work_port (0.00s)
+=== RUN   TestRuntimeManifestReadonly
+--- PASS: TestRuntimeManifestReadonly (1.63s)
+=== RUN   TestGoWrapperRejectsWrongCompiler
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.27.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.28.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/devel_go1.27
+--- PASS: TestGoWrapperRejectsWrongCompiler (0.78s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.27.0 (0.29s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.28.0 (0.25s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/devel_go1.27 (0.24s)
+=== RUN   TestGoWrapperExplicitCompilerAndArguments
+--- PASS: TestGoWrapperExplicitCompilerAndArguments (0.25s)
+=== RUN   TestGoWrapperProjectToolchainDiscovery
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=false
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=true
+--- PASS: TestGoWrapperProjectToolchainDiscovery (1.05s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=false (0.51s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=true (0.53s)
+PASS
+ok  	justixauto/tests/contracts	7.285s
+=== RUN   TestBrokerDefinitionsAreDurableAndRestricted
+--- PASS: TestBrokerDefinitionsAreDurableAndRestricted (0.00s)
+=== RUN   TestBrokerRouteCompiler
+=== RUN   TestBrokerRouteCompiler/reject_malformed_and_ambiguous_contracts
+=== RUN   TestBrokerRouteCompiler/byte_boundary_repeated_owner_and_deterministic_complete_set
+=== RUN   TestBrokerRouteCompiler/quarantine_requires_an_exact_owner_source_failure_review
+--- PASS: TestBrokerRouteCompiler (0.12s)
+    --- PASS: TestBrokerRouteCompiler/reject_malformed_and_ambiguous_contracts (0.00s)
+    --- PASS: TestBrokerRouteCompiler/byte_boundary_repeated_owner_and_deterministic_complete_set (0.00s)
+    --- PASS: TestBrokerRouteCompiler/quarantine_requires_an_exact_owner_source_failure_review (0.03s)
+=== RUN   TestPinnedBrokerSplitRolesAndRetainedCutover
+    broker_topology_test.go:671: set JUSTIXAUTO_TEST_BROKER_TOPOLOGY=1 for a disposable pinned broker
+--- SKIP: TestPinnedBrokerSplitRolesAndRetainedCutover (0.00s)
+=== RUN   TestPostgresInitRejectsEveryMissingOrEmptyCredential
+    database_isolation_test.go:80: JUSTIXAUTO_TEST_POSTGRES_BOOTSTRAP=1 is required for destructive disposable-container checks
+--- SKIP: TestPostgresInitRejectsEveryMissingOrEmptyCredential (0.00s)
+=== RUN   TestPostgresOwnerCatalogIsolation
+    database_isolation_test.go:158: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresOwnerCatalogIsolation (0.00s)
+=== RUN   TestPostgresRejectsEveryCrossOwnerConnection
+    database_isolation_test.go:220: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresRejectsEveryCrossOwnerConnection (0.00s)
+=== RUN   TestPostgresOwnersWriteAndRollbackIndependently
+    database_isolation_test.go:245: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresOwnersWriteAndRollbackIndependently (0.00s)
+PASS
+ok  	justixauto/tests/integration	3.351s
