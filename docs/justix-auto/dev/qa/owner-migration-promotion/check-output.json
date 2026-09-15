@@ -1,0 +1,42 @@
+{
+  "outcome": "GREEN",
+  "commit": "1a6d78b87eaa354561e36755877f8ef0a5327af3",
+  "parent": "d667b9e3a40309df8a1fd16ac077d5d869487870",
+  "proposal": "c3734a5c3f2863be8fe752338c11740b9bdf31a4",
+  "checks": 15537,
+  "relative_links": 1052,
+  "snapshot_count": 19,
+  "prior_records_retained": 928,
+  "task_count": 934,
+  "effort_hours": 3102,
+  "new_leaves": [
+    "pkg/eventstore/owner_history.sql",
+    "pkg/eventstore/owner_history_test.go",
+    "pkg/persistence/check.go",
+    "pkg/persistence/check_test.go",
+    "pkg/persistence/custody.go",
+    "pkg/persistence/custody_test.go",
+    "pkg/persistence/profile.go",
+    "pkg/persistence/profile_test.go",
+    "services/identity/migrations/0012_auth.manifest.json",
+    "tools/owner-migrate/driver.go",
+    "tools/owner-migrate/driver_test.go",
+    "tools/owner-migrate/main.go",
+    "tools/owner-migrate/main_test.go"
+  ],
+  "verification_groups": [
+    "exact commit and changed-file bytes",
+    "documentation-only scope",
+    "all modified canonical preimages recoverable against exact parent",
+    "exact proposal and result copies",
+    "prior proposal QA retained",
+    "all prior task records preserved with only approved deltas",
+    "six aliases, ownership, dependencies and bounded unassigned status",
+    "historical metrics and preserved metadata",
+    "DAG and closer ancestry",
+    "serial successor ownership and 13 previously unassigned leaves",
+    "934 board/task/index records agree",
+    "coverage and 1052 relative Markdown links",
+    "git diff --check"
+  ]
+}

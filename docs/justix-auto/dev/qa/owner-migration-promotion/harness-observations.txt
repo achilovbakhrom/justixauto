@@ -1,0 +1,6 @@
+First checker run exited 1 at: AssertionError: task file exact ownership T-032.
+Independent inspection found identical six ownership leaves in task Markdown and
+index, with different ordering already present in the unchanged parent. Ownership
+is a set, not an ordered execution protocol. Corrected the checker to compare
+equal counts and equal sets, preserving exact ordered dependency checks and exact
+prior-record comparison. No canonical or task file was changed.

@@ -1,0 +1,20 @@
+[
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 11649,
+    "sha256": "4454c9cf4c04bf2fa00f8a89678c5c4f7fdb0eabe0f2a6910ac87eda62f32e78"
+  },
+  {
+    "path": "docs/justix-auto/dev/owner-migration-assignment.md",
+    "snapshot": "docs/justix-auto/dev/owner-migration-assignment.md.gz",
+    "bytes": 2295,
+    "sha256": "6728be37ba5ac6ca2ce6cd30bacd05efc1dbef81901f9b4597cc47c4512c9cf1"
+  },
+  {
+    "path": "docs/justix-auto/state/approvals/owner-migration-compatibility.md",
+    "snapshot": "docs/justix-auto/state/approvals/owner-migration-compatibility.md.gz",
+    "bytes": 3110,
+    "sha256": "92e0fd08b8de19963f47416a332fd3e32acc544d65862abbfdf0cd03a03ad6a8"
+  }
+]

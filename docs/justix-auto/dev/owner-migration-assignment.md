@@ -1,6 +1,6 @@
 # Owner migration compatibility proposal assignment
 
-2026-09-15. Status: technical proposal adopted; canonical promotion QA pending before implementation assignment.
+2026-09-15. Status: technical proposal adopted; independent canonical promotion QA GREEN. Bounded implementation may proceed through task dependency and exact-commit QA gates.
 Agent: coordinator; proposal QA GREEN. Branch: `task/owner-migration-compatibility`.
 Worktree: `.worktrees/owner-migration-compatibility`; base `f0a72a9`.
 
@@ -32,3 +32,10 @@ in the task worktree. Check actual pinned migrate/pgx interface feasibility,
 receipt-plus-clean atomicity and precise ownership/dependency amendments.
 
 Canonical approval: [owner migration compatibility](../state/approvals/owner-migration-compatibility.md). Task aliases now map to T-929–T-934; no implementation is complete.
+
+Promotion evidence: [independent review](qa/owner-migration-promotion.md) at
+`1a6d78b87eaa354561e36755877f8ef0a5327af3` verifies 19 exact-parent preimages,
+934 task records and graph/ownership/link coherence. Coordinator's separate
+exact-promotion checker also passed; its initial empty-dependency display
+comparison was corrected without changing canonical task data. Neither check
+executes migrations or accepts real baseline attestations.

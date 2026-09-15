@@ -49,3 +49,11 @@ commit implementation QA. Baseline attestations, real release profiles, later
 owner rollout, production settings, auth transport, source admissions and business
 activation remain separate. No migration, service or deployment ran here.
 Recoverable preimages: `../backups/2026-09-15-owner-migration-promotion/`.
+
+## Canonical promotion verified
+
+Independent [promotion QA GREEN](../../dev/qa/owner-migration-promotion.md) at
+`1a6d78b87eaa354561e36755877f8ef0a5327af3` satisfies the promotion gate above.
+The six bounded tasks may be assigned as their direct dependencies integrate.
+Exact implementation QA, trusted release profiles and actual baseline evidence
+remain required; this verification ran no application or migration.

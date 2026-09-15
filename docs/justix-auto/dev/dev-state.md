@@ -29,7 +29,7 @@
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-014 ready-for-qa (`.worktrees/T-014`, `task/T-014-projection-sequence`); T-640 ready-for-qa (`.worktrees/T-640`, `task/T-640-contract-generator`).
 - Integrated tasks: 36/934; independent exact-commit QA required before each integration.
-- Active architecture handoff: [owner migration compatibility](owner-migration-assignment.md) proposal QA GREEN and technically adopted; canonical promotion QA remains required before T-929–T-934 assignment.
+- Active architecture handoff: [owner migration compatibility](owner-migration-assignment.md) proposal and canonical promotion QA GREEN; T-929–T-934 may enter bounded implementation when their direct dependencies are integrated. Auth transport and retained generation-label correction remain queued technical handoffs.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 934 (916 reviewed baseline + eighteen bounded messaging/storage/owner-migration additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
