@@ -88,3 +88,12 @@ Revised proposal `914fcd78cc0789e41e9091efdc99fb5afc6c5c50` is adopted after
 [independent r2 GREEN](qa/auth-transport-compatibility-r2.md).
 Ten aliases map to T-935–T-944; canonical promotion QA remains required before
 assignment. Original BOUNCE evidence is retained unchanged.
+
+Canonical QA target: `56e904a1a2748033be1f4d3565b0fc8eca8bdbe8`, parent
+`7dabbfd8c9e783652a48ecace39660eb66a7e009`, detached
+`.worktrees/auth-transport-promotion-qa`; agent `qa_auth_transport`.
+Own only new `dev/qa/auth-transport-promotion.md` and its evidence directory.
+Independently verify 13 exact recoverable preimages, unchanged 934 task records
+except four approved edges, 944 nodes/3138h, ten aliases/serial ownership, exact
+proposal copies, existing evidence, coverage/acceptance closure and all required
+producer/consumer/manifest/resource handoffs. No application or canonical edits.
