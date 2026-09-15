@@ -846,7 +846,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-013",
         "T-010",
@@ -869,9 +869,9 @@
       "scope": "Track integrationSequence, no-op irrelevant events with checkpoint, authorize initial snapshot/checkpoint; never jump gaps.",
       "worktree": ".worktrees/T-014",
       "base_sha": "0df6cdcd7ee77f7d07a1a2c151695274af8728ba",
-      "reviewed_sha": "8692b939de06b696269c7cce9b31c247b5762f25",
-      "agent": "backend_t014_fix",
-      "execution_note": "Independent QA BOUNCE: AppendAttempt misses exact retained bootstrap kind/generation/contract identity (five real persisted wrong-identity holds); disposable PG cleanup also omits anonymous volumes. Fix cycle1 preserves failed report/evidence and known separate space-only label storage blocker."
+      "reviewed_sha": "3a166bc39ed93eed13662a951da1626fab01fcb0",
+      "agent": "qa_t014_r2",
+      "execution_note": "Fix cycle1 committed exact retained identity and contiguous progress checks plus verified owned fixture volume cleanup. Full scoped race passed projection7.914s; cleanup-adjusted independent probes3.609s; original obsolete double-removal failure preserved. New exact-commit QA required, known space-only label storage limit remains."
     },
     {
       "id": "T-015",
@@ -2372,7 +2372,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-004",
         "T-003",
@@ -2395,9 +2395,9 @@
       "scope": "Generate Go DTO/internal-owner clients and strict TS clients/runtime validators from approved concrete OpenAPI3.1; stable file ordering/version header, unknown fields/decimal string/null fixtures, clean regeneration diff check. Do not mutate root manifests; scripts were declared by workspace owner.",
       "worktree": ".worktrees/T-640",
       "base_sha": "8883c37",
-      "reviewed_sha": "14eb0c60895c9e47e829338c5bf78b1e873c9fe1",
-      "agent": "backend_t640_fix2",
-      "execution_note": "Second QA BOUNCE: internal Error operation escapes public TS reservations and renames the required Go error interface method. Original three defects corrected; 32/33 independent groups pass. Fix cycle2 must protect generated interface methods and retain both prior reports; third failure requires scope review."
+      "reviewed_sha": "c69d52221287abecc4f1803ec7ed3532dce070f9",
+      "agent": "qa_t640_r3",
+      "execution_note": "Fix cycle2 protects generated Go methods and stable transport fields, scans code tokens without wire-string false positives; full contracts race111.729s and both prior probe expectation sets pass. Third exact-commit review required; any new failure triggers scope review, no silent further fix cycle."
     },
     {
       "id": "T-058",
