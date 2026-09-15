@@ -27,8 +27,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 ready-for-qa (`.worktrees/T-002`, `task/T-002-security-release`); T-009 implementing (`.worktrees/T-009`, `task/T-009-append`); T-032 qa-green (`.worktrees/T-032`, `task/T-032-api-client`); T-034 implementing (`.worktrees/T-034`, `task/T-034-dialog`); T-746 ready-for-qa (`.worktrees/T-746`, `task/T-746-runtime-registration-contract`).
-- Integrated tasks: 10/916; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-009 implementing (`.worktrees/T-009`, `task/T-009-append`); T-034 implementing (`.worktrees/T-034`, `task/T-034-dialog`); T-746 ready-for-qa (`.worktrees/T-746`, `task/T-746-runtime-registration-contract`).
+- Integrated tasks: 11/916; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item

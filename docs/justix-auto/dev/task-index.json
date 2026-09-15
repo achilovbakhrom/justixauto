@@ -298,7 +298,7 @@
       "parent": "B-02",
       "kind": "policy-decision",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "blocked",
       "depends_on": [],
       "branch": "task/T-002-security-release",
       "lane": "decisions",
@@ -319,9 +319,9 @@
       "scope": "Propose session limits, credential parameters, challenge/rate limits, recovery proof/delivery and invitation verification; record explicit security approval, do not claim it supplied by release scope.",
       "worktree": ".worktrees/T-002",
       "base_sha": "d79fd44",
-      "reviewed_sha": null,
+      "reviewed_sha": "a262f075bd5338c03c7049141c6c9f7e674110e5",
       "agent": "coordinator",
-      "execution_note": "Initial proposal QA bounced for proof/delivery/invitation protocol gaps. Revision a262f075bd5338c03c7049141c6c9f7e674110e5 addresses them and awaits renewed review; user acceptance remains open."
+      "execution_note": "Proposal readiness GREEN in qa/T-002-r2.md. Explicit user security-profile/recovery-contract decision requested asynchronously; no approval inferred. Production delivery and target benchmark gates remain open."
     },
     {
       "id": "T-003",
@@ -1297,7 +1297,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-004"
       ],
@@ -1327,7 +1327,8 @@
         "package-lock.json"
       ],
       "agent": "frontend/t032_api_client",
-      "execution_note": "Renewed independent QA GREEN in qa/T-032-r2.md: 99 workspace tests and19 adversarial checks, locked install/typecheck/lint/build. Initial BOUNCE evidence retained."
+      "execution_note": "Corrected API client merged after qa/T-032-r2.md GREEN. Main offline lock install,99 workspace tests,typecheck and both builds passed; no dependency churn.",
+      "integration_sha": "ea56b4d34bb7c2c71046d49efb9e0fa6283dc6dd"
     },
     {
       "id": "T-033",
