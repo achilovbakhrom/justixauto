@@ -1,0 +1,26 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/dev/task-index.json.gz",
+    "bytes": 1479562,
+    "sha256": "73c9e6885502d956f3dfbaff78ef6803e1f75d0f4c45f92478191322320d78e3"
+  },
+  {
+    "path": "docs/justix-auto/dev/task-board.md",
+    "snapshot": "docs/justix-auto/dev/task-board.md.gz",
+    "bytes": 217583,
+    "sha256": "fbff4fe96d02d4779115a48b22a99e43540356bcf8835c199c33c501836c7c1a"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-936.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-936.md.gz",
+    "bytes": 4139,
+    "sha256": "9373b97ae7b0b626fdb3bfef4ab0a9c628713a26abd10f1ec4ac8763a1166d92"
+  },
+  {
+    "path": "docs/justix-auto/state/approvals/auth-transport-compatibility.md",
+    "snapshot": "docs/justix-auto/state/approvals/auth-transport-compatibility.md.gz",
+    "bytes": 3091,
+    "sha256": "6eceb1315cf4b5e98b28980f1d9c05f352202a584b028054bc2365ed44c278d9"
+  }
+]

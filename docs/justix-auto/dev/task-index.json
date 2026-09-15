@@ -35779,13 +35779,15 @@
       "depends_on": [
         "T-935",
         "T-058",
-        "T-032"
+        "T-032",
+        "T-640"
       ],
       "branch": "task/T-936-validated-auth-transport",
       "lane": "foundation",
       "files_owned": [
         "web/packages/api/src/client.ts",
-        "web/packages/api/src/client.test.ts"
+        "web/packages/api/src/client.test.ts",
+        "tests/contracts/generation_reproducibility_test.go"
       ],
       "gates": [
         "ENV-GIT"
@@ -35794,11 +35796,11 @@
       "coverage": [
         "B-02.AC1"
       ],
-      "scope": "Extend the one shared fetch path with typed 429, exact response contracts/version marker, bounded bytes and allowlisted ephemeral metadata. Exact endpoint semantic/body/header checks precede the synchronous current-ticket sink. Preserve generic result shapes and unknown dispatched write outcomes; no retry or secret-bearing receipts.",
+      "scope": "Extend the one shared fetch path with typed 429, exact response contracts/version marker, bounded bytes and allowlisted ephemeral metadata. Exact endpoint semantic/body/header checks precede the synchronous current-ticket sink. Preserve generic result shapes and unknown dispatched write outcomes; no retry or secret-bearing receipts. Its isolated generator fixture also copies the imported responseJSON.ts; this third leaf is restricted to that fixture dependency update, with T-640 as predecessor and T-937 as serial successor.",
       "worktree": ".worktrees/T-936",
       "base_sha": "3b796c28fa04105cb0bc7154c17f27f7e47e3470",
       "agent": "frontend_t936",
-      "execution_note": "Assign the one shared Fetch transport successor after T-935 integration: strict bounded body stream, exact status/error/header contracts,429/version marker and synchronous current-ticket acceptance. Two client leaves only; no root manifests/generated bindings/policy/UI expansion."
+      "execution_note": "Original two client leaves plus the explicitly assigned isolated generator fixture dependency copy. T-640 is integrated and added as predecessor; T-937 remains serial successor on the shared test leaf. No generator behavior, root manifest, policy or UI expansion."
     },
     {
       "id": "T-937",

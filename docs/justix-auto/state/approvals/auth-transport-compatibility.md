@@ -52,3 +52,15 @@ Independent [canonical promotion QA is GREEN](../../dev/qa/auth-transport-promot
 at `56e904a1a2748033be1f4d3565b0fc8eca8bdbe8`. Coordinator accepts that
 verification and clears the pre-assignment promotion gate. Task dependencies,
 exact file ownership and independent implementation QA remain mandatory.
+
+## Isolated generator fixture dependency correction — 2026-09-15
+
+Coordinator corrects T-936's slice after its worker identified that the actual
+generator test copies only `client.ts` into an isolated module. The adopted
+decoder import needs `responseJSON.ts` copied alongside it. T-936 additionally
+owns `tests/contracts/generation_reproducibility_test.go` solely for that fixture
+copy, with explicit T-640 predecessor and existing T-937 successor. No generator
+behavior, contract, dependency pin, policy, task count or effort changes.
+The exact original proposal/canonical copy and promotion QA remain historical
+evidence; this records the subsequent bounded implementation-scope correction.
+Independent T-936 QA must verify that restriction and actual fixture regression.
