@@ -150,7 +150,9 @@ func (s *Operations[I, R, E]) lockClaim(ctx context.Context, c OperationClaim[R,
 		return Operation[R, E]{}, err
 	}
 	var live bool
-	err = s.tx.WithContext(ctx).Raw(`SELECT lease_owner=?::uuid AND lease_until>clock_timestamp() FROM eventstore.operations WHERE operation_id=?`, c.LeaseID, o.ID).Scan(&live).Error
+	// Released leases have NULL owner/until. Classify that normal recovery state
+	// as a lost fence, while preserving actual query/scan errors below.
+	err = s.tx.WithContext(ctx).Raw(`SELECT COALESCE(lease_owner=?::uuid AND lease_until>clock_timestamp(),false) FROM eventstore.operations WHERE operation_id=?`, c.LeaseID, o.ID).Scan(&live).Error
 	if err != nil {
 		return Operation[R, E]{}, err
 	}

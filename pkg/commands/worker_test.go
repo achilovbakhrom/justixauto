@@ -108,6 +108,80 @@ func TestOperationWorkerPostgres(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+	t.Run("released leases classify stale claims after confirmed or lost commit reply", func(t *testing.T) {
+		for _, retryRelease := range []bool{false, true} {
+			for _, lostReply := range []bool{false, true} {
+				p := processPolicy(t)
+				i := processCreate(t, db, p)
+				c := claimOne(t, p)
+				result := outcome{ID: uuid.NewString(), State: "created"}
+				calls := 0
+				commitDB := db
+				if lostReply {
+					sqlDB, err := db.DB()
+					if err != nil {
+						t.Fatal(err)
+					}
+					commitDB = db.Session(&gorm.Session{NewDB: true})
+					commitDB.Statement = &gorm.Statement{DB: commitDB, ConnPool: faultPool{DB: sqlDB, committed: true}}
+				}
+				err := processRun(commitDB, p).Run(ctx, func(u processPorts) error {
+					if retryRelease {
+						return u.operations.Retry(ctx, c, 1, noProcessAlert)
+					}
+					return u.operations.WithClaim(ctx, c, func(ctx context.Context, _ Operation[outcome, processError]) error {
+						_, _, err := u.steps.Execute(ctx, i.ID, request, func(context.Context) (outcome, error) {
+							calls++
+							return result, u.tx.Exec(`INSERT INTO eventstore.fixture_effects(id) VALUES (?)`, result.ID).Error
+						})
+						return err
+					})
+				})
+				if lostReply {
+					if !errors.Is(err, eventstore.ErrCommitOutcomeUnknown) {
+						t.Fatal("lost successful reply classified incorrectly", err)
+					}
+				} else if err != nil {
+					t.Fatal(err)
+				}
+				for _, retryStale := range []bool{false, true} {
+					err = processRun(db, p).Run(ctx, func(u processPorts) error {
+						if retryStale {
+							return u.operations.Retry(ctx, c, 1, noProcessAlert)
+						}
+						return u.operations.WithClaim(ctx, c, func(context.Context, Operation[outcome, processError]) error {
+							t.Error("released claim invoked local work")
+							return nil
+						})
+					})
+					if !errors.Is(err, ErrLeaseLost) {
+						t.Fatalf("retryRelease=%v lostReply=%v retryStale=%v: %v", retryRelease, lostReply, retryStale, err)
+					}
+				}
+				if !retryRelease {
+					err = processRun(db, p).Run(ctx, func(u processPorts) error {
+						stored, replayed, err := u.steps.Execute(ctx, i.ID, request, func(context.Context) (outcome, error) { calls++; return result, nil })
+						if err == nil && (!replayed || stored.ID != result.ID || calls != 1) {
+							t.Error("authoritative completed step did not recover", stored, replayed, calls)
+						}
+						return err
+					})
+					if err != nil {
+						t.Fatal(err)
+					}
+				}
+				// A genuine database/context failure must not be hidden by ErrLeaseLost.
+				err = processRun(db, p).Run(ctx, func(u processPorts) error {
+					cancelled, cancel := context.WithCancel(ctx)
+					cancel()
+					return u.operations.Retry(cancelled, c, 1, noProcessAlert)
+				})
+				if !errors.Is(err, context.Canceled) || errors.Is(err, ErrLeaseLost) {
+					t.Fatal("storage/context failure misclassified", err)
+				}
+			}
+		}
+	})
 	t.Run("exclusive claims stale fences resume retains decision", func(t *testing.T) {
 		p := processPolicy(t)
 		i := processCreate(t, db, p)
