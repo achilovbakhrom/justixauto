@@ -47,3 +47,19 @@ The [technical approval](../state/approvals/owner-migration-compatibility.md)
 maps six aliases to T-929–T-934, eight existing edges and the auth manifest leaf.
 Canonical promotion QA precedes assignment; implementation and actual PostgreSQL
 driver/runtime evidence remain unfinished. Earlier findings remain provenance.
+
+## Exact feature-grant profile boundary — 2026-09-15
+
+T-930's implementation candidate supports nonempty exact table/column grants
+with disjoint table ownership across feature identities. It rejects marker-only
+feature contracts and overlaps rather than guessing grant supersession or union.
+Complete historical feature markers/artifacts remain required independently.
+Its first-auth/synthetic profile support still requires exact-commit QA; the
+actual T-059 schema is absent, so no production compatibility is established.
+
+Before assigning any schema/profile that revises an existing feature table,
+overlaps another feature's grant contract, or needs marker-only feature grants,
+approve an explicit bounded current-grant/supersession refinement and file
+ownership. Do not discard prior markers, union permissions, or broaden this
+candidate's API silently. This affects only those profiles, not independent
+owner history, disjoint feature schemas or other ready tasks.

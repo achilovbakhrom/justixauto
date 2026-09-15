@@ -1,6 +1,8 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: prepared; architect assignment follows T-920 blocked result.
+2026-09-15. Status: architecture assigned; T-920 blocked on this handoff.
+Agent: `architect_membership_storage`.
+T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
 Branch: `task/membership-version-storage`.
 Base: `d59faa8dc5b26e13e19c47686dd47744b6d73a11`.

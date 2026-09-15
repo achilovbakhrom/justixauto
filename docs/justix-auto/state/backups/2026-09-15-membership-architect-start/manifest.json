@@ -1,0 +1,20 @@
+[
+  {
+    "path": "docs/justix-auto/dev/membership-version-assignment.md",
+    "snapshot": "docs/justix-auto/dev/membership-version-assignment.md.gz",
+    "bytes": 2379,
+    "sha256": "4c466444f2783ec19f18177f25e05bf422d15c29035bed2f71dff5007a7e6a08"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 12369,
+    "sha256": "aad46f56c808a2e517670694af3ea381c956af724612260547a3d526bdb7310a"
+  },
+  {
+    "path": "docs/justix-auto/dev/owner-migration-readiness.md",
+    "snapshot": "docs/justix-auto/dev/owner-migration-readiness.md.gz",
+    "bytes": 2985,
+    "sha256": "6d18a9262c42c3d2f500f40eaf7a8caab838dba919b9b3a61a7757d641c5e566"
+  }
+]

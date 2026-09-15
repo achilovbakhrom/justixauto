@@ -35210,7 +35210,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "blocked",
       "depends_on": [
         "T-917",
         "T-009",
@@ -35234,7 +35234,7 @@
       "worktree": ".worktrees/T-920",
       "base_sha": "2c51a4c6539c967d1e9b0f3d68536b42192861ea",
       "agent": "backend_t920",
-      "execution_note": "Approved messaging membership and T-014 bootstrap/fence dependencies integrated. Assigned complete inert membership, source-authorized atomic cutovers and retained backlog enrollment in existing two leaves."
+      "execution_note": "Result-only 0cbc724 proves empty-stream and zero-new-consumer transitions lack durable complete catalog/version/request evidence in existing SQL. No application leaves implemented. Bounded membership-version-storage architecture assigned; preserve existing refs/history rather than fabricate version receipts."
     },
     {
       "id": "T-921",

@@ -27,9 +27,10 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 in-progress (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-930 in-progress (`.worktrees/T-930`, `task/T-930-owner-persistence-profile`).
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-930 in-progress (`.worktrees/T-930`, `task/T-930-owner-persistence-profile`).
 - Integrated tasks: 40/934; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration proposal and canonical promotion QA GREEN; [auth transport](auth-transport-assignment.md) revised proposal under independent r2 QA; [retained generation-label correction](projection-label-correction-assignment.md) adopted after proposal QA GREEN, pending T-928 implementation. Their implementation gates remain explicit.
+- Additional architecture: [durable membership version storage](membership-version-assignment.md) assigned after T-920's empty-stream/version evidence blocker; no new migration or task dependency approved yet.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 934 (916 reviewed baseline + eighteen bounded messaging/storage/owner-migration additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
