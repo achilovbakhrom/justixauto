@@ -35521,7 +35521,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-927"
       ],
@@ -35541,8 +35541,8 @@
       "scope": "Install owner-local immutable generation/switch evidence and CAS projection heads with narrow grants. Prove pointer identity, retained history, atomic failure and immutable evidence; no owner business read model or real guard writer is introduced. Include the approved exact bootstrap generation CHECK forward correction in revision 6, preserving all labels/data and prior SQL; prove both consumer kinds and full failure atomicity.",
       "worktree": ".worktrees/T-928",
       "base_sha": "d59faa8dc5b26e13e19c47686dd47744b6d73a11",
-      "agent": "qa_t928",
-      "execution_note": "Independent exact-commit storage QA assigned. Verify revision-6 complete lineage and precise CHECK correction, immutable generation/event chains, deferred pointer/evidence atomicity, one head change per transaction, exact grants/defaults and retained preimages/fixture cleanup. Synthetic source/comparator/guard references supply no production authority.",
+      "agent": "backend_t928",
+      "execution_note": "Independent BOUNCE: runtime session_replication_role privilege bypasses triggers/FKs; SET CONSTRAINTS timing evades one-head-change/final-state guarantees; missing required checkpoint UPDATE privilege accepted. Assign fix cycle1 in the same two leaves plus result. Preserve all nine QA artifacts and every previous SQL artifact; rerun unchanged independent probes and full appropriate checks before new exact SHA.",
       "reviewed_sha": "d87174069acd57c2ced3689ead129749ff86dec6"
     },
     {

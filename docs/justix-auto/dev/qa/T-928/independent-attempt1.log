@@ -1,0 +1,40 @@
+=== RUN   TestQAT928IndependentPostgres
+    qa_t928_independent_test.go:16: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3485373169
+=== RUN   TestQAT928IndependentPostgres/parameter_trigger_bypass_permission
+    qa_t928_independent_test.go:21: effective SET privilege: t
+    qa_t928_independent_test.go:27: committed head without generation FK/evidence: 77|6baf93d4-0ea8-461b-a769-7ee1b1bf9422
+    qa_t928_independent_test.go:28: installation accepted runtime trigger/FK bypass capability
+=== RUN   TestQAT928IndependentPostgres/required_checkpoint_update_missing
+    qa_t928_independent_test.go:33: effective UPDATE position: f
+    qa_t928_independent_test.go:35: inventory
+        runtime_bd0b5184818f
+        86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53
+        1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2
+        c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec
+        41536429fb95d4b60a11866843a2ccbd6a4cf723cd919884933b6bc1d8202c4c
+        1c1e7d17efa8ff84f2469d6d55b3b6c810143e5260aabf5f82d748797f2296a3
+        96c9bd72f5fa82b8a8999787580d53cef29cba33505d711783e9259ee287c472
+    qa_t928_independent_test.go:35: installation accepted missing required checkpoint position UPDATE
+=== RUN   TestQAT928IndependentPostgres/deferred_flush_allows_multiple_pointer_changes
+    qa_t928_independent_test.go:46: 
+    qa_t928_independent_test.go:46: final epoch/event: 4|b2b56dee-71bb-4d91-b9b8-92c81d8680d7
+    qa_t928_independent_test.go:46: two pointer changes committed in one transaction by flushing deferred evidence early
+=== RUN   TestQAT928IndependentPostgres/early_inactive_hold_becomes_active_without_head_hold
+    qa_t928_independent_test.go:54: 
+    qa_t928_independent_test.go:54: inactive hold final-state check was flushed before generation activated in the same transaction
+=== RUN   TestQAT928IndependentPostgres/comparator_and_cursor_mismatch_all_fields
+=== RUN   TestQAT928IndependentPostgres/duplicate_request_and_one_root_retain_original
+=== RUN   TestQAT928IndependentPostgres/all_effective_default_families_and_schema_additive
+=== NAME  TestQAT928IndependentPostgres
+    quarantine_migration_test.go:145: validated task fixture removed and verified absent: fccd22e0b07435a8eee25fe2114bf32155a394a56ece7a59e39ba47a73452b16 justixauto-t927-a3d1f4df-cff7-48be-ab15-206d28b9b5cb
+--- FAIL: TestQAT928IndependentPostgres (21.70s)
+    --- FAIL: TestQAT928IndependentPostgres/parameter_trigger_bypass_permission (1.26s)
+    --- FAIL: TestQAT928IndependentPostgres/required_checkpoint_update_missing (1.06s)
+    --- FAIL: TestQAT928IndependentPostgres/deferred_flush_allows_multiple_pointer_changes (1.26s)
+    --- FAIL: TestQAT928IndependentPostgres/early_inactive_hold_becomes_active_without_head_hold (1.18s)
+    --- PASS: TestQAT928IndependentPostgres/comparator_and_cursor_mismatch_all_fields (3.29s)
+    --- PASS: TestQAT928IndependentPostgres/duplicate_request_and_one_root_retain_original (1.24s)
+    --- PASS: TestQAT928IndependentPostgres/all_effective_default_families_and_schema_additive (11.05s)
+FAIL
+FAIL	justixauto/pkg/eventstore	22.253s
+FAIL
