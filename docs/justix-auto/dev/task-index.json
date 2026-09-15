@@ -35114,7 +35114,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-013"
       ],
@@ -35134,8 +35134,9 @@
       "scope": "Definite prerequisite for dispatch: add a typed caller-transaction boundary so inbox/effect/checkpoint/job completion share one transaction without nested Run/commit. Preserve existing direct-ACK public behavior. Expose exact-duplicate outcome safely so a migrated prior inbox can complete its pending job without reapplying effects. No broker ACK or external I/O inside the caller transaction.",
       "worktree": ".worktrees/T-922",
       "base_sha": "45dbce11571533dcb5c56212c033271b6ff892d9",
-      "agent": "backend_t922",
-      "execution_note": "T013 dependency, approved messaging contract and Git gate passed. Assigned typed transaction-bound inbox effect API with safe duplicate outcome; preserve explicit single-consumer direct-ACK behavior and no nested commit."
+      "agent": "qa_t922",
+      "execution_note": "Implementation complete; independent exact-commit QA assigned for caller-transaction inbox effects, duplicates, mode fencing and rollback/commit ambiguity.",
+      "reviewed_sha": "e15f5e7a677084ad84c6952d53c53eddfb6d0b10"
     },
     {
       "id": "T-923",
@@ -35206,7 +35207,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-917",
         "T-011",
@@ -35230,8 +35231,9 @@
       "scope": "Apply the approved forward route compatibility correction, preserving installed 000002, every historical route/byte/identity and mode transition. Add immutable correction evidence and prove genuine T011-produced populated cutover, custody/job compatibility, rollback and narrow grants. No automatic repair, production cutover or business admission.",
       "worktree": ".worktrees/T-925",
       "base_sha": "fba111c583e5035b180c494ab1245f66d4d7035f",
-      "agent": "backend_t925",
-      "execution_note": "Approved route correction and independent promotion r2 GREEN; Git gate passed and isolated worktree allocated. Implement only new forward000003 plus genuine producer/cutover tests; preserve all installed migrations and historical identities."
+      "agent": "qa_t925",
+      "execution_note": "Forward migration implementation complete; independent exact-commit QA assigned for actual producer route compatibility, retained data, privileges and atomic failures.",
+      "reviewed_sha": "4dbe2593bce71c045f785fc07aed9da5b4113a73"
     }
   ]
 }
