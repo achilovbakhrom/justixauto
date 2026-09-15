@@ -298,7 +298,7 @@
       "parent": "B-02",
       "kind": "policy-decision",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [],
       "branch": "task/T-002-security-release",
       "lane": "decisions",
@@ -317,9 +317,11 @@
         "B-02.AC4"
       ],
       "scope": "Propose session limits, credential parameters, challenge/rate limits, recovery proof/delivery and invitation verification; record explicit security approval, do not claim it supplied by release scope.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-002",
+      "base_sha": "d79fd44",
+      "reviewed_sha": null,
+      "agent": "coordinator",
+      "execution_note": "Preparing a reviewable security configuration proposal; SECURITY-ACCEPTANCE and OD12 remain open."
     },
     {
       "id": "T-003",
