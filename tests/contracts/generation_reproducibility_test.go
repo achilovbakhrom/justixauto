@@ -272,6 +272,98 @@ func TestContractGenerationInternalOnly(t *testing.T) {
 	h.run(true, h.node, filepath.Join(h.main, "node_modules/typescript/bin/tsc"), "-p", filepath.Join(h.dir, "tsconfig.json"))
 }
 
+func TestContractGenerationSymbolCollisionsBeforeWrites(t *testing.T) {
+	h := newGenerationHarness(t)
+	h.generate(true)
+	goBefore, tsBefore := h.read("fixture.gen.go"), h.read("fixture.ts")
+	// Imports, emitted helpers/constructor, generated declarations, and every
+	// referenced capitalized TS global must not be shadowed by accepted DTOs.
+	for _, name := range []string{"ApiRequest", "ApiResult", "NewContractClient", "ContractTransport", "ContractOptional", "ContractClient", "ContractExchange", "MarshalJSON", "UnmarshalJSON", "IsZero", "Marshal", "Unmarshal", "Context", "PayloadSchema", "ReadSyntheticSecurity", "ReadSyntheticParameters", "CreateSyntheticResult", "Record", "Readonly", "ReadonlyArray", "Object", "Array", "JSON", "Error", "RegExp", "Number", "Date", "Reflect", "Set", "Promise", "AbortSignal", "URLSearchParams"} {
+		t.Run("schema_"+name, func(t *testing.T) {
+			h.write("input.json", strings.Replace(generationFixture, `"Maybe":`, `"`+name+`":{"type":"string"},"Maybe":`, 1))
+			h.generate(false)
+			if !bytes.Equal(goBefore, h.read("fixture.gen.go")) || !bytes.Equal(tsBefore, h.read("fixture.ts")) {
+				t.Fatal("symbol rejection changed an output")
+			}
+		})
+	}
+	for _, name := range []string{"ApiRequest", "ApiResult", "ContractTransport", "MarshalJSON", "UnmarshalJSON", "IsZero", "Marshal", "Unmarshal", "Context", "Record", "Readonly", "ReadonlyArray", "Object", "Array", "JSON", "Error", "RegExp", "Number", "Date", "Reflect", "Set", "Promise", "AbortSignal", "URLSearchParams", "PayloadSchema", "CreateSyntheticSecurity"} {
+		t.Run("operation_"+name, func(t *testing.T) {
+			h.write("input.json", strings.Replace(generationFixture, `"operationId":"ReadSynthetic"`, `"operationId":"`+name+`"`, 1))
+			h.generate(false)
+			if !bytes.Equal(goBefore, h.read("fixture.gen.go")) || !bytes.Equal(tsBefore, h.read("fixture.ts")) {
+				t.Fatal("symbol rejection changed an output")
+			}
+		})
+	}
+	h.write("input.json", strings.Replace(generationFixture, `"note":{"type":["string","null"]}`, `"note":{"type":["string","null"]},"payload":{"type":"string"},"fixturePayload":{"type":"string"}`, 1))
+	h.generate(false)
+	if !bytes.Equal(goBefore, h.read("fixture.gen.go")) || !bytes.Equal(tsBefore, h.read("fixture.ts")) {
+		t.Fatal("namespaced field collision changed an output")
+	}
+	// Distinct namespace strings can still produce identical final Go symbols.
+	h.config(true)
+	h.write("config.json", strings.Replace(string(h.read("config.json")), `"Second"`, `"FixtureExtra"`, 1))
+	h.write("input.json", strings.Replace(generationFixture, `"Maybe":`, `"ExtraPayload":{"type":"string"},"Maybe":`, 1))
+	h.generate(false)
+	if !bytes.Equal(goBefore, h.read("fixture.gen.go")) || !bytes.Equal(tsBefore, h.read("fixture.ts")) {
+		t.Fatal("cross-file symbol rejection changed an output")
+	}
+	for _, path := range []string{"second.gen.go", "second.ts"} {
+		if _, err := os.Lstat(filepath.Join(h.dir, path)); !os.IsNotExist(err) {
+			t.Fatal("cross-file symbol rejection created an output")
+		}
+	}
+}
+
+func TestContractGenerationDanglingLinksBeforeWrites(t *testing.T) {
+	for _, path := range []string{"second.ts", "second.gen.go", "missing-parent"} {
+		t.Run(path, func(t *testing.T) {
+			h := newGenerationHarness(t)
+			h.config(true)
+			h.generate(true)
+			// Force an earlier output to need rewriting; a later invalid output must
+			// abort the entire plan before any write, in check and generation modes.
+			h.write("fixture.gen.go", string(h.read("fixture.gen.go"))+"\n// preserved drift\n")
+			before := map[string][]byte{}
+			for _, file := range []string{"fixture.gen.go", "fixture.ts", "second.gen.go", "second.ts"} {
+				before[file] = h.read(file)
+			}
+			if path == "missing-parent" {
+				h.write("config.json", strings.Replace(string(h.read("config.json")), `"second.ts"`, `"missing-parent/second.ts"`, 1))
+			} else if err := os.Remove(filepath.Join(h.dir, path)); err != nil {
+				t.Fatal(err)
+			}
+			target := filepath.Join(filepath.Dir(h.dir), filepath.Base(h.dir)+"-absent-target")
+			link := filepath.Join(h.dir, path)
+			if err := os.Symlink(target, link); err != nil {
+				t.Fatal(err)
+			}
+			for _, check := range []bool{true, false} {
+				if check {
+					h.generate(false, "--check")
+				} else {
+					h.generate(false)
+				}
+				if info, err := os.Lstat(link); err != nil || info.Mode()&os.ModeSymlink == 0 {
+					t.Fatalf("link changed: %v", err)
+				}
+				if got, err := os.Readlink(link); err != nil || got != target {
+					t.Fatalf("link target changed: %s %v", got, err)
+				}
+				if _, err := os.Lstat(target); !os.IsNotExist(err) {
+					t.Fatalf("dangling target created: %v", err)
+				}
+				for file, content := range before {
+					if file != path && !bytes.Equal(content, h.read(file)) {
+						t.Fatalf("other output %s changed", file)
+					}
+				}
+			}
+		})
+	}
+}
+
 func TestContractGenerationOutputGuards(t *testing.T) {
 	for _, which := range []string{"empty", "namespace", "duplicate output", "input overwrite", "user file", "symlink", "malformed UTF8"} {
 		t.Run(which, func(t *testing.T) {
@@ -309,6 +401,7 @@ func TestContractGenerationOutputGuards(t *testing.T) {
 const generatedGoChecks = `package synthetic
 import("context";"encoding/json";"errors";"strings";"testing")
 const validPayload = "{\"amountMinor\":\"99999999999999999999999999999999999999\",\"revision\":\"9223372036854775807\",\"nullable\":null,\"tags\":[],\"metadata\":{},\"count\":1}"
+func TestMapKeyUnicode(t *testing.T){for _,tt:=range []struct{key string;valid bool}{{"\\ud800",false},{"\\udfff",false},{"prefix\\ud800suffix",false},{"\\ud83d\\ude00",true},{"😀",true},{"\\ufffd",true}}{raw:=strings.Replace(validPayload,"\"metadata\":{}","\"metadata\":{\""+tt.key+"\":\"x\"}",1);var value FixturePayload;err:=json.Unmarshal([]byte(raw),&value);if (err==nil)!=tt.valid{t.Fatalf("key %q accepted=%v",tt.key,err==nil)};if tt.valid{var key string;if err:=json.Unmarshal([]byte("\""+tt.key+"\""),&key);err!=nil{t.Fatal(err)};if len(value.Metadata)!=1||value.Metadata[key]!="x"{t.Fatal("map key normalized/dropped")};encoded,err:=json.Marshal(value);if err!=nil{t.Fatal(err)};var again FixturePayload;if err=json.Unmarshal(encoded,&again);err!=nil||again.Metadata[key]!="x"{t.Fatal("map key round trip changed")}}}}
 func TestRoundTrip(t *testing.T){var value FixturePayload;if err:=json.Unmarshal([]byte(validPayload),&value);err!=nil{t.Fatal(err)};if value.Note.Present||value.Nullable!=nil||value.AmountMinor!="99999999999999999999999999999999999999"{t.Fatal("precision/presence")};raw,err:=json.Marshal(value);if err!=nil||strings.Contains(string(raw),"note"){t.Fatalf("%s %v",raw,err)};value.Note=FixtureContractOptional[*string]{Present:true};raw,err=json.Marshal(value);if err!=nil||!strings.Contains(string(raw),"\"note\":null"){t.Fatalf("%s %v",raw,err)};var again FixturePayload;if err=json.Unmarshal(raw,&again);err!=nil||!again.Note.Present||again.Note.Value!=nil{t.Fatal(err)};value.Count=101;if _,err=json.Marshal(value);err==nil{t.Fatal("invalid constructed DTO serialized")}
  for _,bad:=range []string{strings.Replace(validPayload,"\"nullable\":null,","",1),strings.Replace(validPayload,"\"count\":1","\"count\":1,\"unknown\":true",1),strings.Replace(validPayload,"\"count\":1","\"count\":null",1),strings.Replace(validPayload,"\"count\":1","\"count\":1,\"count\":2",1),strings.Replace(validPayload,"\"tags\":[]","\"tags\":[\"x\",\"x\"]",1),strings.Replace(validPayload,"\"metadata\":{}","\"metadata\":{\"x\":1}",1),strings.Replace(validPayload,"\"nullable\":null","\"nullable\":\"\\ud800\"",1),validPayload+" {}"}{var next FixturePayload;if json.Unmarshal([]byte(bad),&next)==nil{t.Fatalf("accepted %s",bad)}}
  for _,number:=range []string{"1.0","1e0"}{var next FixturePayload;if err:=json.Unmarshal([]byte(strings.Replace(validPayload,"\"count\":1","\"count\":"+number,1)),&next);err!=nil||next.Count!=1{t.Fatal(err)}}
@@ -338,6 +431,8 @@ assert(PayloadSchema.parse(payload).amountMinor===payload.amountMinor,'precision
 assert(!Object.hasOwn(PayloadSchema.parse(payload),'note'),'omitted changed');
 assert(PayloadSchema.parse({...payload,note:null}).note===null,'explicit null changed');
 for (const bad of [{...payload,unknown:true},{...payload,note:undefined},{...payload,nullable:undefined},{...payload,count:null},{...payload,count:1.2},{...payload,amountMinor:1},{...payload,tags:['x','x']},{...payload,metadata:{x:1}},{...payload,note:'\ud800'}]) rejects(()=>PayloadSchema.parse(bad));
+for (const key of ['\ud800','\udfff','prefix\ud800suffix']) rejects(()=>PayloadSchema.parse({...payload,metadata:{[key]:'x'}}));
+for (const key of ['\ud83d\ude00','😀','\ufffd']) { const value=PayloadSchema.parse({...payload,metadata:{[key]:'x'}}); assert(Object.keys(value.metadata).length===1&&value.metadata[key]==='x','map key normalized/dropped'); assert(PayloadSchema.parse(JSON.parse(JSON.stringify(value))).metadata[key]==='x','map key round trip changed'); }
 const {nullable: removed,...missing} = payload; void removed; rejects(()=>PayloadSchema.parse(missing));
 const inherited = Object.create({nullable:null}) as Record<string,unknown>; Object.assign(inherited,payload); rejects(()=>PayloadSchema.parse(inherited));
 const sparse: unknown[] = []; sparse.length=1; rejects(()=>PayloadSchema.parse({...payload,tags:sparse}));

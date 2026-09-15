@@ -93,6 +93,17 @@ const refName = (s) => {
 const baseType = (s) => Array.isArray(s.type) ? s.type.find((t) => t !== 'null') : s.type;
 const nullable = (s) => Array.isArray(s.type) && s.type.includes('null');
 const goName = (s) => s.replace(/(^|_)([A-Za-z])/g, (_, __, c) => c.toUpperCase());
+const tsImports = ['ApiRequest', 'ApiResult'];
+// These globals are referenced by generated types/runtime code. A component or
+// operation must not shadow them, even where TS permits type/value merging.
+const tsGlobals = ['Record','Readonly','ReadonlyArray','Object','Array','JSON','Error','RegExp','Number','Date','Reflect','Set','Promise','AbortSignal','URLSearchParams'];
+function registerSymbol(symbols, name, language) {
+  if (symbols.has(name)) fail(`${language} generated symbol collision: ${name}`);
+  symbols.add(name);
+}
+const goSymbol = (namespace, name) => name.startsWith('contract')
+  ? namespace[0].toLowerCase()+namespace.slice(1)+name[0].toUpperCase()+name.slice(1)
+  : namespace+name;
 let cachedGoRoot;
 function goRoot() {
   if (!cachedGoRoot) cachedGoRoot=execFileSync('bash',[resolve(dirname(fileURLToPath(import.meta.url)),'go.sh'),'env','GOROOT'],{encoding:'utf8'}).trim();
@@ -145,7 +156,7 @@ function compile(entry, document) {
     });
   }
   if(document.security!==undefined)security(document.security,false,false);
-  const reserved = /^(Contract|Optional|Client$|Exchange$)/;
+  const reserved = /^(Contract|Optional|Client$|Exchange$|MarshalJSON$|UnmarshalJSON$|IsZero$)/;
   for (const name of sorted(schemas)) if (!/^[A-Z][A-Za-z0-9]*$/.test(name) || reserved.test(name)) fail(`reserved/invalid schema name: ${name}`);
   const add = (name, schema) => { if (name in schemas) fail(`generated schema collision: ${name}`); schemas[name] = schema; return name; };
   const operations = [];
@@ -204,12 +215,21 @@ function compile(entry, document) {
     }
   }
   if (!operations.length || !Object.keys(schemas).length) fail('concrete schemas and operations required');
-  const tsValues=new Set(sorted(schemas).map((name)=>name+'Schema'));
+  // Enumerate actual package/module declarations, imports and referenced globals
+  // before rendering. Go methods have a separate receiver scope; their result
+  // types and the constructor share the DTO package scope.
+  const goSymbols = new Set([...goRuntime.matchAll(/^(?:type|var|func) ([A-Za-z][A-Za-z0-9]*)/gm)].map((match)=>match[1]));
+  goSymbols.add('contractSchemaJSON');
+  const tsSymbols = new Set([...tsImports,...tsGlobals,'ContractTransport','contractSchemas',
+    ...[...tsRuntime.matchAll(/^(?:type|const|function) ([A-Za-z][A-Za-z0-9]*)/gm)].map((match)=>match[1])]);
+  for (const name of sorted(schemas)) {
+    registerSymbol(goSymbols,name,'Go');
+    registerSymbol(tsSymbols,name,'TypeScript');
+    registerSymbol(tsSymbols,name+'Schema','TypeScript');
+  }
   for(const op of operations) {
-    if (Object.hasOwn(schemas,op.id+'Result')) fail('Go result type collision');
-    if (!op.internal) for(const value of [op.id,op.id+'Security']) {
-      if(tsValues.has(value)) fail('TypeScript generated symbol collision');tsValues.add(value);
-    }
+    registerSymbol(goSymbols,op.id+'Result','Go');
+    if (!op.internal) for(const value of [op.id,op.id+'Security']) registerSymbol(tsSymbols,value,'TypeScript');
   }
   const annotation = ['title','description','examples'];
   const patterns=new Set();
@@ -264,7 +284,7 @@ function compile(entry, document) {
   for (const name of sorted(schemas)) schema(schemas[name], [name], true);
   for (const op of operations) for (const name of [op.bodyName,...Object.values(op.responses)].filter(Boolean)) if (!(name in schemas)) fail('operation refers to missing schema');
   verifyPatterns(patterns);
-  return {entry,schemas,operations,digest:createHash('sha256').update(stable(document)).digest('hex')};
+  return {entry,schemas,operations,goSymbols:[...goSymbols].map((name)=>goSymbol(entry.namespace,name)),digest:createHash('sha256').update(stable(document)).digest('hex')};
 }
 
 function tsType(s) {
@@ -331,7 +351,10 @@ function contractValidate(schema: ContractSchema, value: unknown): void {
       const props = schema.properties as Record<string, ContractSchema>;
       for (const key of (schema.required ?? []) as string[]) if (!Object.hasOwn(value, key)) bad();
       for (const key of Object.keys(value)) { if (!Object.hasOwn(props, key)) bad(); contractValidate(props[key] ?? bad(), value[key]); }
-    } else for (const key of Object.keys(value)) contractValidate(schema.additionalProperties as ContractSchema, value[key]);
+    } else for (const key of Object.keys(value)) {
+      contractValidate({type:'string'}, key);
+      contractValidate(schema.additionalProperties as ContractSchema, value[key]);
+    }
   } else bad();
 }
 function contractHeader(name: string, value: string): void {
@@ -340,7 +363,7 @@ function contractHeader(name: string, value: string): void {
 }
 `;
 function renderTS(c) {
-  let out = `${banner}\n// Source SHA-256: ${c.digest}\nimport type { ApiRequest, ApiResult } from '@justixauto/api';\n`;
+  let out = `${banner}\n// Source SHA-256: ${c.digest}\nimport type { ${tsImports.join(', ')} } from '@justixauto/api';\n`;
   const runtime=c.operations.some((op)=>!op.internal&&op.parameters.some((p)=>p.in==='header'))?tsRuntime:tsRuntime.slice(0,tsRuntime.indexOf('\nfunction contractHeader('));
   out += `const contractSchemas: Record<string, ContractSchema> = ${stable(c.schemas)};\n${runtime}\n`;
   for (const name of sorted(c.schemas)) out += `export type ${name} = ${tsType(c.schemas[name])};\nexport const ${name}Schema = { parse(value: unknown): ${name} { contractValidate(contractSchemas[${JSON.stringify(name)}]!, value); return value as ${name}; } };\n`;
@@ -497,10 +520,30 @@ function renderGo(c) {
   // Rename identifiers only, never wire/schema strings. Separate feature files
   // can coexist in one owner Go package without shared runtime globals.
   const publicNames = new Set([...sorted(c.schemas),...c.operations.flatMap((op)=>[op.id,`${op.id}Result`]),'NewContractClient']);
+  // Imported package selectors must retain their spelling. The namespace pass
+  // cannot reinterpret an accepted DTO/operation name as a standard-library
+  // member (for example json.Marshal or context.Context).
+  for (const match of out.matchAll(/\b(?:bytes|context|json|errors|io|math|big|mime|url|regexp|strconv|strings|time|unicode|utf8)\.([A-Za-z][A-Za-z0-9]*)/g)) {
+    if (publicNames.has(match[1])) fail(`Go imported symbol collision: ${match[1]}`);
+  }
+  const rename = (name) => publicNames.has(name)||name.startsWith('Contract')||name.startsWith('contract') ? goSymbol(c.entry.namespace,name) : name;
+  // Field normalization was checked during schema compilation. Check again in
+  // the actual emitted namespace: a field named payload and one named
+  // fixturePayload must not both become FixturePayload.
+  function fields(schema) {
+    if (baseType(schema)==='object') {
+      if (schema.additionalProperties===false) {
+        const names=new Set();
+        for (const key of sorted(schema.properties)) {
+          registerSymbol(names,rename(goName(key.replaceAll('-','_'))),'Go field');
+          fields(schema.properties[key]);
+        }
+      } else fields(schema.additionalProperties);
+    } else if (baseType(schema)==='array') fields(schema.items);
+  }
+  for (const schema of Object.values(c.schemas)) fields(schema);
   out = out.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\/[^\n]*|\b[A-Za-z_][A-Za-z0-9_]*\b/g, (token) => {
-    if (publicNames.has(token) || token.startsWith('Contract')) return c.entry.namespace+token;
-    if (token.startsWith('contract')) return c.entry.namespace[0].toLowerCase()+c.entry.namespace.slice(1)+token[0].toUpperCase()+token.slice(1);
-    return token;
+    return rename(token);
   });
   return execFileSync(resolve(goRoot(),'bin/gofmt'), [], {input:out,encoding:'utf8',maxBuffer:16*1024*1024});
 }
@@ -516,13 +559,18 @@ function main() {
   const config = readJSON(configPath);
   keys(config, ['version','contracts'], 'config');
   if (config.version !== 1 || !Array.isArray(config.contracts) || !config.contracts.length) fail('no concrete contracts configured (version 1 required)');
-  const outputs = new Map(), inputs = new Set([realpathSync(configPath)]), plans = [], namespaces = new Set();
+  const outputs = new Map(), inputs = new Set([realpathSync(configPath)]), plans = [], namespaces = new Set(), packageSymbols = new Map();
   for (const entry of config.contracts) {
     if (!object(entry) || ['input','goOutput','tsOutput','goPackage','owner','namespace'].some((key)=>typeof entry[key]!=='string'||!entry[key])) fail('complete string config entry required');
     const namespace = resolve(dirname(configPath),dirname(entry.goOutput))+'#'+entry.namespace;
     if (namespaces.has(namespace)) fail('duplicate Go output namespace'); namespaces.add(namespace);
     const input = resolve(dirname(configPath),entry.input); inputs.add(realpathSync(input));
-    plans.push(compile(entry,readJSON(input)));
+    const plan=compile(entry,readJSON(input));
+    const directory=resolve(dirname(configPath),dirname(entry.goOutput));
+    const symbols=packageSymbols.get(directory)??new Set();
+    for (const name of plan.goSymbols) registerSymbol(symbols,name,'Go package');
+    packageSymbols.set(directory,symbols);
+    plans.push(plan);
   }
   for (const plan of plans) {
     for (const [key,render,extension] of [['goOutput',renderGo,'.go'],['tsOutput',renderTS,'.ts']]) {
@@ -530,7 +578,9 @@ function main() {
       if (extname(path)!==extension || outputs.has(path) || inputs.has(path)) fail('duplicate/invalid output or input overwrite');
       // Never follow a symlink at any output path component, including an
       // existing parent. Config paths are explicit authority, not discovery.
-      for (let part=path;part!==dirname(part);part=dirname(part)) if (existsSync(part)&&lstatSync(part).isSymbolicLink()) fail('symlink output is unsupported');
+      // lstat observes the directory entry itself, including a dangling link.
+      // Only ENOENT means absent; permission and other IO errors fail closed.
+      for (let part=path;part!==dirname(part);part=dirname(part)) if (lstatSync(part,{throwIfNoEntry:false})?.isSymbolicLink()) fail('symlink output is unsupported');
       if (existsSync(path) && !readFileSync(path,'utf8').startsWith(banner+'\n')) fail('refusing to overwrite non-generated file');
       outputs.set(path,render(plan));
     }
