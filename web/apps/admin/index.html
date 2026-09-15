@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JustixAuto — Администрирование</title>
+  </head>
+  <body>
+    <div id="admin-root"></div>
+    <script type="module">
+      import React from 'react';
+      import { createRoot } from 'react-dom/client';
+      import { AdminApp } from '/src/app/App.tsx';
+      // T-054 supplies the production session boundary. Until then, fail closed:
+      // no protected children, fake identity, login design or persisted session.
+      const UnconnectedSessionBoundary = () => null;
+      createRoot(document.getElementById('admin-root')).render(
+        React.createElement(AdminApp, { SessionBoundary: UnconnectedSessionBoundary }),
+      );
+    </script>
+  </body>
+</html>
