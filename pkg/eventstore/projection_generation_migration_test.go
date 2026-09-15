@@ -158,6 +158,167 @@ func generationSwitchSQL(g generationIdentity, event, previous string, epoch int
 	return generationEventSQL(g, event, previous, "switch", epoch, active) + fmt.Sprintf("UPDATE eventstore.projection_heads SET active_generation_id='%s',epoch=%d,last_event_id='%s',last_switch_event_id='%s',hold_ref=NULL,updated_at=clock_timestamp() WHERE projection_name='%s' AND epoch=%d;", g.generation, epoch+1, event, event, g.projection, epoch)
 }
 
+func TestProjectionGenerationFix1Postgres(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_PROJECTION_GENERATION") != "1" {
+		t.Skip("explicit owned PostgreSQL fixture opt-in required")
+	}
+	f := newQuarantineFixture(t)
+	t.Run("parameter capabilities and inherited modes fail closed", func(t *testing.T) {
+		for _, priv := range []string{"SET", "ALTER SYSTEM"} {
+			for _, target := range []string{"runtime", "PUBLIC", "reachable"} {
+				t.Run(priv+"-"+target, func(t *testing.T) {
+					s := generationStore(t, f)
+					role := s.runtime
+					if target == "PUBLIC" {
+						role = "PUBLIC"
+					}
+					if target == "reachable" {
+						a, b := "t928a_"+strings.ReplaceAll(uuid.NewString(), "-", "")[:10], "t928b_"+strings.ReplaceAll(uuid.NewString(), "-", "")[:10]
+						s.must(t, "postgres", "CREATE ROLE "+a+" NOINHERIT;CREATE ROLE "+b+" NOINHERIT; GRANT "+b+" TO "+a+" WITH INHERIT FALSE;GRANT "+a+" TO "+s.runtime+" WITH INHERIT FALSE")
+						role = b
+					}
+					s.must(t, "postgres", "GRANT "+priv+" ON PARAMETER session_replication_role TO "+role)
+					t.Cleanup(func() { s.must(t, "postgres", "REVOKE "+priv+" ON PARAMETER session_replication_role FROM "+role) })
+					generationReject(t, s, generationScript(t))
+				})
+			}
+		}
+		for _, scope := range []string{"role", "database", "database-role", "current-session"} {
+			t.Run(scope, func(t *testing.T) {
+				s := generationStore(t, f)
+				script := generationScript(t)
+				switch scope {
+				case "role":
+					s.must(t, "postgres", "ALTER ROLE "+s.runtime+" SET session_replication_role=replica")
+					t.Cleanup(func() { s.must(t, "postgres", "ALTER ROLE "+s.runtime+" RESET session_replication_role") })
+				case "database":
+					s.must(t, "postgres", "ALTER DATABASE "+s.database+" SET session_replication_role=replica")
+					t.Cleanup(func() { s.must(t, "postgres", "ALTER DATABASE "+s.database+" RESET session_replication_role") })
+				case "database-role":
+					s.must(t, "postgres", "ALTER ROLE "+s.runtime+" IN DATABASE "+s.database+" SET session_replication_role=replica")
+					t.Cleanup(func() {
+						s.must(t, "postgres", "ALTER ROLE "+s.runtime+" IN DATABASE "+s.database+" RESET session_replication_role")
+					})
+				case "current-session":
+					s.must(t, "postgres", "GRANT SET ON PARAMETER session_replication_role TO "+s.migration)
+					t.Cleanup(func() { s.must(t, "postgres", "REVOKE SET ON PARAMETER session_replication_role FROM "+s.migration) })
+					script = "SET session_replication_role=replica;\n" + script
+				}
+				generationReject(t, s, script)
+			})
+		}
+	})
+	t.Run("every checkpoint update and other applicable mutable grants are required", func(t *testing.T) {
+		for _, col := range []string{"position", "last_event_id", "last_event_hash", "revision", "updated_at"} {
+			t.Run(col, func(t *testing.T) {
+				s := generationStore(t, f)
+				s.must(t, s.migration, "REVOKE UPDATE("+col+") ON eventstore.consumer_checkpoints FROM "+s.runtime)
+				generationReject(t, s, generationScript(t))
+			})
+		}
+		for _, pair := range [][2]string{{"outbox", "lease_until"}, {"operations", "revision"}, {"outbox_deliveries", "sent_at"}, {"dispatch_jobs", "completed_at"}} {
+			t.Run(pair[0], func(t *testing.T) {
+				s := generationStore(t, f)
+				s.must(t, s.migration, "REVOKE UPDATE("+pair[1]+") ON eventstore."+pair[0]+" FROM "+s.runtime)
+				generationReject(t, s, generationScript(t))
+			})
+		}
+	})
+	t.Run("constraint timing cannot change pointer protocol in either mutation order", func(t *testing.T) {
+		s := generationStore(t, f)
+		mustGeneration(t, s)
+		step := func(g generationIdentity, id, prior string, epoch int64) string {
+			return generationEventSQL(g, id, prior, "hold", epoch, g.generation) + fmt.Sprintf("UPDATE eventstore.projection_heads SET epoch=%d,hold_ref='synthetic-hold',last_event_id='%s' WHERE projection_name='%s';", epoch+1, id, g.projection)
+		}
+		// Named constraints resolve through their actual schema, not a caller-set
+		// search_path. Test the exact single trigger as well as ALL.
+		for _, name := range []string{"ALL", "eventstore.projection_pointer_receipt_guard"} {
+			t.Run(name, func(t *testing.T) {
+				flush := "SET CONSTRAINTS " + name + " IMMEDIATE; SET CONSTRAINTS " + name + " DEFERRED;"
+				g := generationID()
+				p := generationPrepare(t, s, g)
+				s.must(t, s.runtime, generationHeadSQL(g))
+				sw := uuid.NewString()
+				s.must(t, s.runtime, "BEGIN;"+generationSwitchSQL(g, sw, p, 1, "")+"COMMIT;")
+				one, two := uuid.NewString(), uuid.NewString()
+				s.reject(t, s.runtime, "BEGIN;"+step(g, one, sw, 2)+flush+step(g, two, one, 3)+"COMMIT;", "one mutation per transaction")
+				if got := s.must(t, s.runtime, "SELECT epoch FROM eventstore.projection_heads WHERE projection_name='"+g.projection+"'"); got != "2" {
+					t.Fatal("early-flushed transaction changed pointer", got)
+				}
+				// Flush a legitimate inactive hold first, then try to select that same
+				// generation. The head mutation sees the real transaction provenance.
+				inactive := generationID()
+				s.must(t, s.runtime, generationSQL(inactive)+generationHeadSQL(inactive))
+				h, b, v, next := uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString()
+				s.reject(t, s.runtime, "BEGIN;"+generationEventSQL(inactive, h, "", "hold", 0, "")+flush+generationEventSQL(inactive, b, h, "build-progress", 0, "")+generationEventSQL(inactive, v, b, "validated", 0, "")+generationSwitchSQL(inactive, next, v, 1, "")+"COMMIT;", "active generation hold")
+				s.reject(t, s.runtime, "BEGIN;SAVEPOINT child_hold;"+generationEventSQL(inactive, h, "", "hold", 0, "")+flush+"RELEASE child_hold;"+generationEventSQL(inactive, b, h, "build-progress", 0, "")+generationEventSQL(inactive, v, b, "validated", 0, "")+generationSwitchSQL(inactive, next, v, 1, "")+"COMMIT;", "active generation hold")
+				// Reverse temporal order: activate, flush, then append a supposed inactive
+				// hold. The INSERT guard rejects it even after its old queue was flushed.
+				reverse := generationID()
+				pv := generationPrepare(t, s, reverse)
+				s.must(t, s.runtime, generationHeadSQL(reverse))
+				rs := uuid.NewString()
+				s.reject(t, s.runtime, "BEGIN;"+generationSwitchSQL(reverse, rs, pv, 1, "")+flush+generationEventSQL(reverse, uuid.NewString(), rs, "hold", 0, "")+"COMMIT;", "active generation hold")
+				// Setting IMMEDIATE before INSERT does not make an unselected switch valid.
+				s.reject(t, s.runtime, "BEGIN;SET CONSTRAINTS "+name+" IMMEDIATE;"+generationSwitchSQL(reverse, uuid.NewString(), pv, 1, "")+"COMMIT;", "matching committed head")
+				if got := s.must(t, s.runtime, "SELECT count(*) FROM eventstore.projection_generation_events WHERE generation_id='"+inactive.generation+"'"); got != "0" {
+					t.Fatal("inactive hold activation left receipts", got)
+				}
+			})
+		}
+	})
+	t.Run("server provenance survives savepoints but rollback restores a free mutation", func(t *testing.T) {
+		s := generationStore(t, f)
+		mustGeneration(t, s)
+		// Caller-supplied provenance is ignored; it is never an authorization input.
+		g := generationID()
+		s.must(t, s.runtime, generationSQL(g))
+		b, v, sw := uuid.NewString(), uuid.NewString(), uuid.NewString()
+		injected := strings.Replace(generationEventSQL(g, b, "", "build-progress", 0, ""), "hold_ref)", "hold_ref,created_xid)", 1)
+		injected = strings.TrimSuffix(injected, "NULL);") + "NULL,'1'::xid8);"
+		if got := s.must(t, s.runtime, "BEGIN;"+injected+"SELECT created_xid=pg_current_xact_id() FROM eventstore.projection_generation_events WHERE event_id='"+b+"';COMMIT;"); got != "t" {
+			t.Fatal("caller event provenance was not replaced by actual transaction", got)
+		}
+		s.must(t, s.runtime, generationEventSQL(g, v, b, "validated", 0, ""))
+		s.must(t, s.runtime, "INSERT INTO eventstore.projection_heads(projection_name,epoch,last_mutation_xid) VALUES('"+g.projection+"',1,'1'::xid8)")
+		if got := s.must(t, s.runtime, "SELECT last_mutation_xid IS NULL FROM eventstore.projection_heads WHERE projection_name='"+g.projection+"'"); got != "t" {
+			t.Fatal("caller initial provenance retained")
+		}
+		s.reject(t, s.runtime, "UPDATE eventstore.projection_heads SET last_mutation_xid='1'::xid8", "permission denied")
+		s.reject(t, s.runtime, "UPDATE eventstore.projection_generation_events SET created_xid='1'::xid8", "permission denied")
+		// A subtransaction mutation released to the parent still spends the one
+		// mutation. ROLLBACK TO removes both the evidence and the row's provenance.
+		s.must(t, s.runtime, "BEGIN;SAVEPOINT before_switch;"+generationSwitchSQL(g, sw, v, 1, "")+"SET CONSTRAINTS eventstore.projection_pointer_receipt_guard IMMEDIATE;ROLLBACK TO before_switch;SET CONSTRAINTS eventstore.projection_pointer_receipt_guard DEFERRED;"+generationSwitchSQL(g, sw, v, 1, "")+"COMMIT;")
+		one, two := uuid.NewString(), uuid.NewString()
+		step := func(id, prior string, epoch int64) string {
+			return generationEventSQL(g, id, prior, "hold", epoch, g.generation) + fmt.Sprintf("UPDATE eventstore.projection_heads SET epoch=%d,hold_ref='synthetic-hold',last_event_id='%s' WHERE projection_name='%s';", epoch+1, id, g.projection)
+		}
+		s.reject(t, s.runtime, "BEGIN;SAVEPOINT before_hold;"+step(one, sw, 2)+"SET CONSTRAINTS ALL IMMEDIATE;RELEASE before_hold;SET CONSTRAINTS ALL DEFERRED;"+step(two, one, 3)+"COMMIT;", "one mutation per transaction")
+		s.must(t, s.runtime, "BEGIN;"+step(one, sw, 2)+"ROLLBACK;")
+		s.must(t, s.runtime, "BEGIN;"+step(one, sw, 2)+"SET CONSTRAINTS ALL IMMEDIATE;COMMIT;")
+		s.must(t, s.runtime, "BEGIN;"+step(two, one, 3)+"SET CONSTRAINTS ALL IMMEDIATE;COMMIT;")
+		if got := s.must(t, s.runtime, "SELECT epoch FROM eventstore.projection_heads WHERE projection_name='"+g.projection+"'"); got != "4" {
+			t.Fatal("separate transactions rejected", got)
+		}
+		// A hold that was committed while inactive remains legitimate history. A
+		// later transaction can rebuild/validate/select; old provenance is not a ban.
+		other := generationID()
+		h, build, valid, activate := uuid.NewString(), uuid.NewString(), uuid.NewString(), uuid.NewString()
+		s.must(t, s.runtime, "BEGIN;"+generationSQL(other)+generationEventSQL(other, h, "", "hold", 0, "")+"COMMIT;")
+		s.must(t, s.runtime, "BEGIN;"+generationHeadSQL(other)+generationEventSQL(other, build, h, "build-progress", 0, "")+generationEventSQL(other, valid, build, "validated", 0, "")+generationSwitchSQL(other, activate, valid, 1, "")+"COMMIT;")
+		// Roll back an inactive hold at a savepoint, then activate in that same top-
+		// level transaction. Removed evidence must not leave a nontransactional ban.
+		fresh := generationID()
+		p := generationPrepare(t, s, fresh)
+		s.must(t, s.runtime, generationHeadSQL(fresh))
+		hold := uuid.NewString()
+		s.must(t, s.runtime, "BEGIN;SAVEPOINT before_inactive;"+generationEventSQL(fresh, hold, p, "hold", 0, "")+"SET CONSTRAINTS ALL IMMEDIATE;ROLLBACK TO before_inactive;SET CONSTRAINTS ALL DEFERRED;"+generationSwitchSQL(fresh, uuid.NewString(), p, 1, "")+"COMMIT;")
+		initial := generationID()
+		ib, iv, is := uuid.NewString(), uuid.NewString(), uuid.NewString()
+		s.must(t, s.runtime, "BEGIN;"+generationSQL(initial)+generationHeadSQL(initial)+generationEventSQL(initial, ib, "", "build-progress", 0, "")+generationEventSQL(initial, iv, ib, "validated", 0, "")+generationSwitchSQL(initial, is, iv, 1, "")+"SET CONSTRAINTS eventstore.projection_pointer_receipt_guard IMMEDIATE;COMMIT;")
+	})
+}
+
 func TestProjectionGenerationFailurePostgres(t *testing.T) {
 	if os.Getenv("JUSTIXAUTO_TEST_PROJECTION_GENERATION") != "1" {
 		t.Skip("explicit owned PostgreSQL fixture opt-in required")

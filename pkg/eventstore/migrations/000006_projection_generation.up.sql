@@ -52,6 +52,19 @@ BEGIN
   END IF;
   SELECT * INTO r FROM pg_roles WHERE rolname=current_setting('justix.install_runtime');
   IF NOT FOUND THEN RAISE EXCEPTION 'runtime role must already exist'; END IF;
+  -- Trigger/FK integrity also depends on parameter authority. PUBLIC and
+  -- inherited access are included by has_parameter_privilege; MEMBER covers
+  -- conservative SET ROLE reachability, including NOINHERIT chains.
+  IF current_setting('session_replication_role')<>'origin'
+    OR EXISTS (SELECT FROM pg_roles p WHERE pg_has_role(r.oid,p.oid,'MEMBER')
+      AND (has_parameter_privilege(p.oid,'session_replication_role','SET')
+        OR has_parameter_privilege(p.oid,'session_replication_role','ALTER SYSTEM')))
+    OR EXISTS (SELECT FROM pg_db_role_setting s CROSS JOIN LATERAL unnest(s.setconfig) setting
+      WHERE s.setdatabase IN (0,(SELECT oid FROM pg_database WHERE datname=current_database()))
+        AND (s.setrole=0 OR s.setrole=r.oid OR pg_has_role(r.oid,s.setrole,'MEMBER'))
+        AND split_part(setting,'=',1)='session_replication_role' AND split_part(setting,'=',2)<>'origin') THEN
+    RAISE EXCEPTION 'unsafe session replication mode or runtime parameter authority';
+  END IF;
   IF r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolreplication OR r.rolbypassrls
     OR pg_has_role(r.oid,owner_oid,'MEMBER')
     OR pg_has_role(r.oid,(SELECT datdba FROM pg_database WHERE datname=current_database()),'MEMBER')
@@ -234,6 +247,9 @@ CREATE TABLE eventstore.projection_generation_events (
   expected_head_epoch bigint CHECK(expected_head_epoch>0),
   expected_active_generation_id uuid CHECK(expected_active_generation_id<>'00000000-0000-0000-0000-000000000000'),
   hold_ref text CHECK(length(btrim(hold_ref))>0),
+  -- Bookkeeping assigned from the real top-level transaction by the INSERT
+  -- trigger, never caller intent, comparator identity or authorization.
+  created_xid xid8 NOT NULL,
   created_at timestamptz NOT NULL DEFAULT clock_timestamp() CHECK(isfinite(created_at)),
   FOREIGN KEY(projection_name,generation_id) REFERENCES eventstore.projection_generations(projection_name,generation_id),
   FOREIGN KEY(projection_name,expected_active_generation_id) REFERENCES eventstore.projection_generations(projection_name,generation_id),
@@ -254,6 +270,7 @@ CREATE TABLE eventstore.projection_heads (
   hold_ref text CHECK(length(btrim(hold_ref))>0),
   last_event_id uuid REFERENCES eventstore.projection_generation_events(event_id),
   last_switch_event_id uuid REFERENCES eventstore.projection_generation_events(event_id),
+  last_mutation_xid xid8,
   updated_at timestamptz NOT NULL DEFAULT clock_timestamp() CHECK(isfinite(updated_at)),
   FOREIGN KEY(projection_name,active_generation_id) REFERENCES eventstore.projection_generations(projection_name,generation_id)
 );
@@ -262,6 +279,12 @@ CREATE FUNCTION eventstore.projection_generation_event_guard() RETURNS trigger
 LANGUAGE plpgsql SET search_path=pg_catalog AS $$
 DECLARE p eventstore.projection_generation_events%ROWTYPE;
 BEGIN
+  NEW.created_xid:=pg_current_xact_id();
+  IF NEW.action='hold' AND NEW.expected_head_epoch IS NULL AND EXISTS (
+    SELECT FROM eventstore.projection_heads WHERE projection_name=NEW.projection_name
+      AND active_generation_id=NEW.generation_id) THEN
+    RAISE EXCEPTION 'active generation hold requires matching committed head change';
+  END IF;
   -- No earlier-order lock is acquired here. The adapter holds the complete
   -- prepared catalog/stream/generation fences and expected chain-tip fence.
   IF NEW.previous_event_id IS NULL THEN
@@ -294,22 +317,37 @@ LANGUAGE plpgsql SET search_path=pg_catalog AS $$
 DECLARE e eventstore.projection_generation_events%ROWTYPE;
 BEGIN
   IF TG_OP='INSERT' THEN
+    NEW.last_mutation_xid:=NULL;
     IF NEW.epoch<>1 OR NEW.active_generation_id IS NOT NULL OR NEW.hold_ref IS NOT NULL
       OR NEW.last_event_id IS NOT NULL OR NEW.last_switch_event_id IS NOT NULL THEN
       RAISE EXCEPTION 'new projection head must be inactive at epoch one';
     END IF;
     RETURN NEW;
   END IF;
+  -- Constraint triggers can be flushed by SET CONSTRAINTS at any time. This
+  -- row provenance is assigned by this trigger from PostgreSQL's actual top-
+  -- level xid8, including subtransactions; savepoint rollback restores it.
+  IF OLD.last_mutation_xid=pg_current_xact_id() THEN
+    RAISE EXCEPTION 'pointer receipt requires matching committed head change: one mutation per transaction';
+  END IF;
+  NEW.last_mutation_xid:=pg_current_xact_id();
   IF NEW.projection_name IS DISTINCT FROM OLD.projection_name OR OLD.epoch=9223372036854775807
     OR NEW.epoch<>OLD.epoch+1 OR NEW.last_event_id IS NULL OR NEW.last_event_id IS NOT DISTINCT FROM OLD.last_event_id THEN
     RAISE EXCEPTION 'projection head requires next epoch and new immutable evidence';
   END IF;
   SELECT * INTO STRICT e FROM eventstore.projection_generation_events WHERE event_id=NEW.last_event_id;
   IF e.projection_name<>OLD.projection_name OR e.expected_head_epoch IS DISTINCT FROM OLD.epoch
-    OR e.expected_active_generation_id IS DISTINCT FROM OLD.active_generation_id THEN
+    OR e.expected_active_generation_id IS DISTINCT FROM OLD.active_generation_id
+    OR e.created_xid<>NEW.last_mutation_xid THEN
     RAISE EXCEPTION 'projection head evidence does not match expected pointer';
   END IF;
   IF e.action='switch' THEN
+    IF EXISTS (SELECT FROM eventstore.projection_generation_events held
+      WHERE held.projection_name=NEW.projection_name AND held.generation_id=NEW.active_generation_id
+        AND held.action='hold' AND held.expected_head_epoch IS NULL
+        AND held.created_xid=NEW.last_mutation_xid) THEN
+      RAISE EXCEPTION 'active generation hold requires matching committed head change';
+    END IF;
     IF NEW.active_generation_id IS DISTINCT FROM e.generation_id
       OR NEW.active_generation_id IS NOT DISTINCT FROM OLD.active_generation_id
       OR NEW.last_switch_event_id IS DISTINCT FROM e.event_id OR NEW.hold_ref IS NOT NULL THEN
@@ -332,9 +370,9 @@ CREATE TRIGGER projection_head_no_truncate BEFORE TRUNCATE ON eventstore.project
   FOR EACH STATEMENT EXECUTE FUNCTION eventstore.messaging_immutable();
 
 -- A switch receipt (or active hold receipt) cannot commit independently of the
--- matching CAS. This is a final-state check, so one pointer change per projection
--- per transaction is supported. Unknown replies reconcile the immutable request
--- and head; the SQL does not retry callbacks or infer commit from missing replies.
+-- matching CAS. This deferred backstop can also run early on SET CONSTRAINTS;
+-- the mutation-time guards above preserve its result under subsequent writes.
+-- Unknown replies reconcile request and head, not transaction bookkeeping.
 CREATE FUNCTION eventstore.projection_pointer_receipt_guard() RETURNS trigger
 LANGUAGE plpgsql SET search_path=pg_catalog AS $$
 DECLARE h eventstore.projection_heads%ROWTYPE;
@@ -348,6 +386,7 @@ BEGIN
     SELECT * INTO STRICT h FROM eventstore.projection_heads WHERE projection_name=NEW.projection_name;
     IF h.last_event_id IS DISTINCT FROM NEW.event_id OR NEW.expected_head_epoch=9223372036854775807
       OR h.epoch<>NEW.expected_head_epoch+1 OR h.active_generation_id IS DISTINCT FROM NEW.generation_id
+      OR h.last_mutation_xid IS DISTINCT FROM NEW.created_xid
       OR (NEW.action='switch' AND h.last_switch_event_id IS DISTINCT FROM NEW.event_id)
       OR h.hold_ref IS DISTINCT FROM NEW.hold_ref THEN
       RAISE EXCEPTION 'pointer receipt requires matching committed head change';
@@ -428,6 +467,11 @@ BEGIN
         WHEN 'dispatch_jobs' THEN ARRAY['attempts','next_attempt_at','lease_owner','lease_until','completed_at','inbox_consumer_name','inbox_event_id','hold_ref','quarantine_ref']
         ELSE ARRAY[]::text[] END;
       FOR col IN SELECT attname FROM pg_attribute WHERE attrelid=('eventstore.'||tab)::regclass AND attnum>0 AND NOT attisdropped LOOP
+        IF r.oid=current_setting('justix.install_runtime')::regrole::oid AND col.attname=ANY(allowed)
+          AND NOT (tab='outbox' AND (SELECT mode FROM eventstore.messaging_mode WHERE singleton)='custody')
+          AND NOT has_column_privilege(r.oid,'eventstore.'||tab,col.attname,'UPDATE') THEN
+          RAISE EXCEPTION 'missing required runtime UPDATE on %.%',tab,col.attname;
+        END IF;
         IF (NOT col.attname=ANY(allowed) AND has_column_privilege(r.oid,'eventstore.'||tab,col.attname,'UPDATE'))
           OR has_column_privilege(r.oid,'eventstore.'||tab,col.attname,'REFERENCES') THEN
           RAISE EXCEPTION 'unexpected messaging column privileges';
