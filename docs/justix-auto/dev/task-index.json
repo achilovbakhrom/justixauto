@@ -846,7 +846,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-013",
         "T-010",
@@ -869,9 +869,9 @@
       "scope": "Track integrationSequence, no-op irrelevant events with checkpoint, authorize initial snapshot/checkpoint; never jump gaps.",
       "worktree": ".worktrees/T-014",
       "base_sha": "0df6cdcd7ee77f7d07a1a2c151695274af8728ba",
-      "reviewed_sha": null,
-      "agent": "backend_t014",
-      "execution_note": "Assigned typed sequence/checkpoint adapters after T926 integration. Exact authorized bootstrap, original envelope stream/hash/position sealing, same-transaction no-op/effect checkpoint, durable separate gap evidence and complete receiver-fence preparation. Three owned Go leaves only; no schema or admission policy mutation."
+      "reviewed_sha": "8692b939de06b696269c7cce9b31c247b5762f25",
+      "agent": "qa_t014",
+      "execution_note": "Transaction-composable sequence, bootstrap, duplicate coverage and gap recovery committed; full scoped race including14 PostgreSQL groups passed, projection7.125s and vet0. Independent exact commit review assigned. Space-only retained labels remain explicitly blocked by unchanged000004 pending the recorded forward storage correction."
     },
     {
       "id": "T-015",
