@@ -1685,7 +1685,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-035"
       ],
@@ -1717,12 +1717,12 @@
       "scope": "Base and Router basename /insurance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-039",
       "base_sha": "2d139607bb561037abc0d6e98550261f5d3834d2",
-      "reviewed_sha": null,
+      "reviewed_sha": "022f663a7d492b0a1c4276be1f4bd0dac78929a1",
       "coordinator_files": [
         "package-lock.json"
       ],
-      "agent": "frontend_t039",
-      "execution_note": "Assigned independent Insurance shell against M-I01 immutable HTML, explicit injected session boundary and disabled unregistered navigation. Current base includes reviewed request-intent guards; use same verified local routing behavior. Coordinator owns serialized npm lock handoff before exact-commit QA."
+      "agent": "qa_t039",
+      "execution_note": "Insurance implementation and serialized lock complete; all386 previous lock entries unchanged with2 workspace entries added. Independent exact-commit shell/prefix/browser QA assigned."
     },
     {
       "id": "T-040",
@@ -35027,7 +35027,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-918",
         "T-011",
@@ -35049,8 +35049,9 @@
       "scope": "Amend insertion to resolve the admitted plan in the same command transaction and persist identical parent bytes with every recipient child. Preserve single-target API compatibility only in explicit legacy schema mode. Missing/extra children or conflicting immutable identity roll back all effects.",
       "worktree": ".worktrees/T-919",
       "base_sha": "972bd864142100a91169b9bb1b76ef9e3339b58e",
-      "agent": "backend_t919",
-      "execution_note": "Approved dependencies integrated; assigned immutable message plus complete recipient-set writer in isolated worktree. Use T918 Fence before all appends, then Resolve and ValidatePlan in the same transaction; preserve explicit legacy compatibility and require corrected custody route marker."
+      "agent": "qa_t919",
+      "execution_note": "Complete-recipient writer implementation complete; exact-commit independent PostgreSQL/transaction/mode/admission QA assigned. Actual production admissions and relay readiness remain separate.",
+      "reviewed_sha": "2569a9c7eeb1e9ed987744bb10c80ff1c166c14c"
     },
     {
       "id": "T-920",

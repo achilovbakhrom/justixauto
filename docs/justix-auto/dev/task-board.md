@@ -104,7 +104,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | integrated | T-035 | `task/T-036-admin-shell` | ENV-GIT |
 | [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | integrated | T-035 | `task/T-037-realization-shell` | ENV-GIT |
 | [T-038](tasks/T-038.md) | B-05 | Scaffold the independent financing app and verified shell | implementation / 4 | frontend-financing | integrated | T-035, T-036, T-037 | `task/T-038-financing-shell` | ENV-GIT |
-| [T-039](tasks/T-039.md) | B-05 | Scaffold the independent insurance app and verified shell | implementation / 4 | frontend-insurance | in-progress | T-035 | `task/T-039-insurance-shell` | ENV-GIT |
+| [T-039](tasks/T-039.md) | B-05 | Scaffold the independent insurance app and verified shell | implementation / 4 | frontend-insurance | ready-for-qa | T-035 | `task/T-039-insurance-shell` | ENV-GIT |
 | [T-040](tasks/T-040.md) | B-14 | Confirm suspend/restore existing obligations, pending branch/submission operations and explicit capability/compliance combinations | policy-decision / 3 | decisions | todo | — | `task/T-040-access-policy` | OD-05, OD-11 |
 | [T-041](tasks/T-041.md) | B-08 | Confirm ru/uz dictionaries, locale placement/persistence, number/date/currency examples and long-label states | policy-decision / 3 | decisions | todo | — | `task/T-041-locale-policy` | LOCALE-COPY, LOCALE-INTERACTION |
 | [T-042](tasks/T-042.md) | B-19 | Confirm exact default vehicles registry coverage | policy-decision / 3 | decisions | todo | — | `task/T-042-registry-policy` | OD-02 |
@@ -993,7 +993,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 |---|---|---|---|---|---|---|---|---|
 | [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | integrated | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
 | [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | integrated | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
-| [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | in-progress | T-918, T-011, T-925 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
+| [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | ready-for-qa | T-918, T-011, T-925 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
 | [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | todo | T-917, T-009, T-746 | `task/T-920-messaging-local-membership` | ENV-GIT |
 | [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013, T-925 | `task/T-921-messaging-durable-intake` | ENV-GIT |
 | [T-922](tasks/T-922.md) | B-01 | Expose transaction-bound inbox effects for atomic dispatch completion | implementation / 3 | foundation | integrated | T-013 | `task/T-922-messaging-transactional-inbox` | ENV-GIT |
