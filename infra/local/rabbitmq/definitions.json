@@ -1,0 +1,82 @@
+{
+  "rabbit_version": "4.3.5",
+  "rabbitmq_version": "4.3.5",
+  "product_name": "JustixAuto local broker",
+  "product_version": "1",
+  "users": [
+    { "name": "svc_identity", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] },
+    { "name": "svc_inventory", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] },
+    { "name": "svc_commerce", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] },
+    { "name": "svc_retail", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] },
+    { "name": "svc_financing", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] },
+    { "name": "svc_insurance", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] },
+    { "name": "svc_documents", "password_hash": "", "hashing_algorithm": "rabbit_password_hashing_sha256", "tags": [] }
+  ],
+  "vhosts": [
+    { "name": "/justixauto", "description": "JustixAuto local integration events", "tags": [] }
+  ],
+  "permissions": [
+    { "user": "svc_identity", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.identity\\.(inbox|quarantine)\\.v1$" },
+    { "user": "svc_inventory", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.inventory\\.(inbox|quarantine)\\.v1$" },
+    { "user": "svc_commerce", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.commerce\\.(inbox|quarantine)\\.v1$" },
+    { "user": "svc_retail", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.retail\\.(inbox|quarantine)\\.v1$" },
+    { "user": "svc_financing", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.financing\\.(inbox|quarantine)\\.v1$" },
+    { "user": "svc_insurance", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.insurance\\.(inbox|quarantine)\\.v1$" },
+    { "user": "svc_documents", "vhost": "/justixauto", "configure": "^$", "write": "^justix\\.(integration|quarantine)\\.v1$", "read": "^justix\\.documents\\.(inbox|quarantine)\\.v1$" }
+  ],
+  "topic_permissions": [
+    { "user": "svc_identity", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^identity\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.identity\\..+$" },
+    { "user": "svc_identity", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^identity\\.[^.]+\\..+$", "read": "^identity\\.[^.]+\\..+$" },
+    { "user": "svc_inventory", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^inventory\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.inventory\\..+$" },
+    { "user": "svc_inventory", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^inventory\\.[^.]+\\..+$", "read": "^inventory\\.[^.]+\\..+$" },
+    { "user": "svc_commerce", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^commerce\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.commerce\\..+$" },
+    { "user": "svc_commerce", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^commerce\\.[^.]+\\..+$", "read": "^commerce\\.[^.]+\\..+$" },
+    { "user": "svc_retail", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^retail\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.retail\\..+$" },
+    { "user": "svc_retail", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^retail\\.[^.]+\\..+$", "read": "^retail\\.[^.]+\\..+$" },
+    { "user": "svc_financing", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^financing\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.financing\\..+$" },
+    { "user": "svc_financing", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^financing\\.[^.]+\\..+$", "read": "^financing\\.[^.]+\\..+$" },
+    { "user": "svc_insurance", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^insurance\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.insurance\\..+$" },
+    { "user": "svc_insurance", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^insurance\\.[^.]+\\..+$", "read": "^insurance\\.[^.]+\\..+$" },
+    { "user": "svc_documents", "vhost": "/justixauto", "exchange": "justix.integration.v1", "write": "^documents\\.(identity|inventory|commerce|retail|financing|insurance|documents)\\..+$", "read": "^(identity|inventory|commerce|retail|financing|insurance|documents)\\.documents\\..+$" },
+    { "user": "svc_documents", "vhost": "/justixauto", "exchange": "justix.quarantine.v1", "write": "^documents\\.[^.]+\\..+$", "read": "^documents\\.[^.]+\\..+$" }
+  ],
+  "parameters": [],
+  "global_parameters": [],
+  "policies": [],
+  "queues": [
+    { "name": "justix.identity.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.identity.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.inventory.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.inventory.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.commerce.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.commerce.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.retail.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.retail.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.financing.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.financing.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.insurance.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.insurance.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.documents.inbox.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } },
+    { "name": "justix.documents.quarantine.v1", "vhost": "/justixauto", "durable": true, "auto_delete": false, "arguments": { "x-queue-type": "quorum" } }
+  ],
+  "exchanges": [
+    { "name": "justix.integration.v1", "vhost": "/justixauto", "type": "topic", "durable": true, "auto_delete": false, "internal": false, "arguments": {} },
+    { "name": "justix.quarantine.v1", "vhost": "/justixauto", "type": "topic", "durable": true, "auto_delete": false, "internal": false, "arguments": {} }
+  ],
+  "bindings": [
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.identity.inbox.v1", "destination_type": "queue", "routing_key": "*.identity.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.identity.quarantine.v1", "destination_type": "queue", "routing_key": "identity.#", "arguments": {} },
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.inventory.inbox.v1", "destination_type": "queue", "routing_key": "*.inventory.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.inventory.quarantine.v1", "destination_type": "queue", "routing_key": "inventory.#", "arguments": {} },
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.commerce.inbox.v1", "destination_type": "queue", "routing_key": "*.commerce.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.commerce.quarantine.v1", "destination_type": "queue", "routing_key": "commerce.#", "arguments": {} },
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.retail.inbox.v1", "destination_type": "queue", "routing_key": "*.retail.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.retail.quarantine.v1", "destination_type": "queue", "routing_key": "retail.#", "arguments": {} },
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.financing.inbox.v1", "destination_type": "queue", "routing_key": "*.financing.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.financing.quarantine.v1", "destination_type": "queue", "routing_key": "financing.#", "arguments": {} },
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.insurance.inbox.v1", "destination_type": "queue", "routing_key": "*.insurance.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.insurance.quarantine.v1", "destination_type": "queue", "routing_key": "insurance.#", "arguments": {} },
+    { "source": "justix.integration.v1", "vhost": "/justixauto", "destination": "justix.documents.inbox.v1", "destination_type": "queue", "routing_key": "*.documents.#", "arguments": {} },
+    { "source": "justix.quarantine.v1", "vhost": "/justixauto", "destination": "justix.documents.quarantine.v1", "destination_type": "queue", "routing_key": "documents.#", "arguments": {} }
+  ]
+}
