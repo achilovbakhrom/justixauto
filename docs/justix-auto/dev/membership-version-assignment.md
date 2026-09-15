@@ -1,0 +1,37 @@
+# Membership version storage architecture assignment
+
+2026-09-15. Status: prepared; architect assignment follows T-920 blocked result.
+Worktree: `.worktrees/membership-version-storage`.
+Branch: `task/membership-version-storage`.
+Base: `d59faa8dc5b26e13e19c47686dd47744b6d73a11`.
+
+Resolve the [observed missing durable version](membership-version-readiness.md)
+against approved messaging/storage/runtime-registration contracts and actual
+000002–000005, T-014 and T-930 interfaces. T-928's revision-6 generation storage
+and exact label correction are approved but unimplemented. Existing original
+artifacts, retained rows and consumer meanings are immutable.
+
+Architect owns only `state/drafts/architect/membership-version-storage.md`
+and `dev/results/membership-version-storage.md` in the assigned worktree.
+No application source, canonical document, task ID, migration or policy edits.
+Give concrete bounded task aliases, exact leaves and serial successor ownership,
+full lineage/privilege requirements and affected T-920/921/016/022/934 handoffs.
+No reverse inbox-to-projection import or new global mutable business table.
+
+Define complete inert catalog identity distinct from role selection, durable
+admitted version and exact cutover request, current selection and zero-consumer
+delta, with recoverable authoritative evidence on an empty stream. Preserve
+source-issued checkpoints, explicit authorized empty proof, finite complete
+backlog, snapshot/bootstraps/admission/enrollment/jobs atomicity and exact old
+sets. Readiness and current-version comparisons must use retained proof under
+catalog/receiver fences, not latest message or caller-chosen version strings.
+Schema alone does not authenticate the release manifest or authorize data reuse.
+
+Inspect actual PostgreSQL/public Go APIs and demonstrate the bounded storage
+and interface feasibility. Cover concurrent distinct versions, exact retry versus
+changed request, unknown commit, restart, zero-new-consumer transition, omitted
+required claims, late stream discovery and preserved existing enrollments.
+Propose explicit forward migration ownership/marker and downstream compatibility
+checks; never rewrite previous SQL or overload an arbitrary reference field.
+Use only unique owned pinned disposable fixtures with failure-safe cleanup if
+needed. Independent exact-proposal QA and canonical promotion precede code.
