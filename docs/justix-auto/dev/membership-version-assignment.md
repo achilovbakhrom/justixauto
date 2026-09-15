@@ -1,6 +1,6 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: architect fix cycle 1 complete; independent r2 QA active; T-920 remains blocked.
+2026-09-15. Status: independent r2 BOUNCE; final allowed architect fix cycle 2 queued for a worker slot; T-920 remains blocked.
 Agent: `architect_membership_storage`.
 T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
@@ -81,3 +81,21 @@ Recheck the original counterexample, every lifecycle/provenance/missing-link
 boundary, declared additive trigger and exact alias/dependency/ownership delta.
 Preserve all original artifacts; independent GREEN and canonical promotion QA
 must precede dependent implementation.
+
+## Fix cycle 2 queued
+
+[Independent r2 BOUNCE](qa/membership-version-storage-r2.md) at
+`c3c0da45965c980fee22a32f43e90d7a674a55c4` closes the original lifecycle
+finding but reproduces a timing gap: after a valid current enrollment/link,
+flushing ALL or only named constraints and then performing the sole valid head
+CAS commits a link to the old head. The no-toggle control rejects.
+
+The final allowed architect revision must define timing-independent enforcement
+on every relevant mutation, preserving valid current/prospective paths and exact
+final selection, missing-link checks, immutable historical reads and savepoint
+rollback. Deferred checks may run early and cannot alone establish commit-final
+state. Keep the SQL guarantee; no silent downgrade to cooperative-only behavior.
+Own only the original draft/result leaves, preserve both QA rounds and all old
+artifacts, and demonstrate ALL/named toggles in both temporal mutation orders.
+Do not start a third automatic fix cycle if the next review fails; require a
+bounded scope review. No new task IDs, policy or canonical contract is adopted.
