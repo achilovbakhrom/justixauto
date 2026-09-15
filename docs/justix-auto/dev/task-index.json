@@ -431,7 +431,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-001",
         "T-003"
@@ -454,9 +454,9 @@
       "scope": "Durable restricted vhost/exchanges/queues, caller grants and unroutable-message tests. No public broker deployment.",
       "worktree": ".worktrees/T-006",
       "base_sha": "4c84e346c7412e0fc6e3a20a8393767de63b3131",
-      "reviewed_sha": null,
+      "reviewed_sha": "f5155e7cd989820c05dc247698a2080a5fe8e74d",
       "agent": "backend/t006_rabbit_local",
-      "execution_note": "Assigned after T-003 integration and own-root Git PASS at exact base 4c84e346c7412e0fc6e3a20a8393767de63b3131. Isolated worktree .worktrees/T-006 owns only RabbitMQ definitions/config, broker topology integration test and ancillary result."
+      "execution_note": "Implementation committed clean at f5155e7cd989820c05dc247698a2080a5fe8e74d. Developer verified pinned RabbitMQ 4.3.5 topology, restricted principals/grants, 14 quorum queues, mandatory persistent NO_ROUTE return plus publisher ACK, invalid service login denial, race/vet; exact-SHA QA pending."
     },
     {
       "id": "T-007",
