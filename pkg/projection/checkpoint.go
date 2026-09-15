@@ -443,7 +443,7 @@ func (a *Checkpoints[U]) RecordGap(ctx context.Context, g *Gap, e GapEvidence, a
 	if err != nil {
 		return GapRecord{}, err
 	}
-	if cp.BootstrapID != g.bootstrap || b.BootstrapID != g.bootstrap {
+	if cp.BootstrapID != g.bootstrap || b.BootstrapID != g.bootstrap || cp.Position < b.StartAfter || cp.Position-b.StartAfter != cp.Revision {
 		return GapRecord{}, ErrReconciliationHold
 	}
 	want := gapRow{e.GapID, a.contract.value.Consumer, string(a.contract.value.SourceOwner), a.contract.value.AggregateType, a.contract.value.AggregateID, g.bootstrap, g.position.envelope.EventID(), bytes.Clone(g.position.hash[:]), g.expected, g.position.envelope.IntegrationSequence().Int64(), e.AdmissionRef, e.AuthorityRef, e.RequestID}
@@ -514,6 +514,12 @@ func (a *Checkpoints[U]) AppendAttempt(ctx context.Context, in AttemptInput, aut
 	if err := authorize(ctx, a.ports, in); err != nil {
 		return GapRecord{}, err
 	}
+	// K alone does not identify a consumer incarnation. Check the retained
+	// bootstrap before either changing the chain or reconciling an old receipt.
+	b, err := a.bootstrap(ctx)
+	if err != nil {
+		return GapRecord{}, err
+	}
 	var g gapRow
 	res := a.tx.WithContext(ctx).Table("eventstore.consumer_gaps").Where("gap_id=? AND "+keyWhere, append([]any{in.GapID}, a.key()...)...).Take(&g)
 	if res.Error != nil {
@@ -523,7 +529,7 @@ func (a *Checkpoints[U]) AppendAttempt(ctx context.Context, in AttemptInput, aut
 	if err != nil {
 		return GapRecord{}, err
 	}
-	if cp.BootstrapID != g.BootstrapID {
+	if cp.BootstrapID != g.BootstrapID || cp.BootstrapID != b.BootstrapID || cp.Position < b.StartAfter || cp.Position-b.StartAfter != cp.Revision {
 		return GapRecord{}, ErrReconciliationHold
 	}
 	var prior attemptRow
@@ -607,6 +613,7 @@ func ReadRecovery(ctx context.Context, db *gorm.DB, c Contract, gapID, attemptID
  WHERE g.gap_id=? AND a.attempt_id=? AND a.request_id=? AND a.action='requested'
  AND NOT EXISTS(SELECT FROM eventstore.consumer_gap_attempts child WHERE child.prior_attempt_id=a.attempt_id)
  AND c.position=a.interval_from-1 AND c.position<a.interval_through AND c.bootstrap_id=g.bootstrap_id AND b.consumer_name=? AND b.source_owner=? AND b.aggregate_type=? AND b.aggregate_id=?
+ AND c.position>=b.start_after AND c.position-b.start_after=c.revision
  AND b.consumer_kind=? AND b.generation=? AND b.contract_id=? AND b.contract_version=? AND b.contract_digest=?`, v.LocalOwner, gapID, attemptID, requestID, v.Consumer, v.SourceOwner, v.AggregateType, v.AggregateID, v.Kind, v.Generation, v.ContractID, v.ContractVersion, v.ContractDigest[:]).Scan(&r)
 	if result.Error != nil {
 		return RecoveryRequest{}, result.Error

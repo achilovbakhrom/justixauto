@@ -991,6 +991,87 @@ func TestCheckpointPostgres(t *testing.T) {
 			t.Fatal("branching attempts", successes.Load())
 		}
 	})
+	t.Run("attempt-retained-identity-before-new-and-replayed-receipts", func(t *testing.T) {
+		for _, mutation := range []struct {
+			name   string
+			change func(*projection.ContractInput)
+		}{
+			{"kind", func(c *projection.ContractInput) { c.Kind = "process" }},
+			{"generation", func(c *projection.ContractInput) { c.Generation = "other-generation" }},
+			{"contract-id", func(c *projection.ContractInput) { c.ContractID = "other-contract" }},
+			{"contract-version", func(c *projection.ContractInput) { c.ContractVersion++ }},
+			{"contract-digest", func(c *projection.ContractInput) { c.ContractDigest[0] ^= 1 }},
+		} {
+			t.Run(mutation.name, func(t *testing.T) {
+				c := contract(t)
+				install(t, f, c, bootstrap(t, c, 0, false))
+				blocked := message(t, c, 3)
+				_, err := consume(t, f.db, c, blocked, false, func() error { t.Error("gap ACK"); return nil })
+				var gap *projection.Gap
+				if !errors.As(err, &gap) {
+					t.Fatal(err)
+				}
+				ev := gapEvidence()
+				if err := run(t, f.db, c, eventstore.SharedFence, func(a *projection.Checkpoints[port], _ *gorm.DB) error {
+					_, e := a.RecordGap(context.Background(), gap, ev, authorizeGap)
+					return e
+				}); err != nil {
+					t.Fatal(err)
+				}
+				wrong := c
+				mutation.change(&wrong.input)
+				wrong.contract, err = projection.NewContract(wrong.input)
+				if err != nil {
+					t.Fatal(err)
+				}
+				in := projection.AttemptInput{GapID: ev.GapID, AttemptID: uuid.NewString(), RequestID: uuid.NewString(), PriorAttemptID: ev.AttemptID, Action: "held", AuthorityRef: "synthetic", HoldReasonCode: "source-unavailable"}
+				appendAttempt := func(db *gorm.DB, consumer fixtureContract) error {
+					return run(t, db, consumer, eventstore.SharedFence, func(a *projection.Checkpoints[port], _ *gorm.DB) error {
+						_, e := a.AppendAttempt(context.Background(), in, authorizeAttempt)
+						return e
+					})
+				}
+				for _, phase := range []string{"new", "replay-after-progress"} {
+					if err := appendAttempt(f.db, wrong); !errors.Is(err, projection.ErrReconciliationHold) {
+						t.Fatalf("%s: %v", phase, err)
+					}
+					if _, err := projection.ReadRecovery(context.Background(), f.db, wrong.contract, ev.GapID, ev.AttemptID, ev.AttemptRequestID, allowRecovery); !errors.Is(err, projection.ErrReconciliationHold) {
+						t.Fatal(err)
+					}
+					var attempts int64
+					if err := f.db.Table("eventstore.consumer_gap_attempts").Where("gap_id=?", ev.GapID).Count(&attempts).Error; err != nil {
+						t.Fatal(err)
+					}
+					want := int64(1)
+					if phase != "new" {
+						want = 2
+					}
+					if attempts != want {
+						t.Fatalf("%s changed chain: %d", phase, attempts)
+					}
+					if phase == "new" {
+						pool, err := f.db.DB()
+						if err != nil {
+							t.Fatal(err)
+						}
+						fault := f.db.Session(&gorm.Session{NewDB: true})
+						fault.Statement = &gorm.Statement{DB: fault, ConnPool: commitFaultPool{pool, true}}
+						if err := appendAttempt(fault, c); !errors.Is(err, eventstore.ErrCommitOutcomeUnknown) {
+							t.Fatal("lost reply outcome", err)
+						}
+						if err := appendAttempt(f.db, c); err != nil {
+							t.Fatal("exact receipt reconciliation", err)
+						}
+						if _, err := consume(t, f.db, c, message(t, c, 1), false, func() error { return nil }); err != nil {
+							t.Fatal(err)
+						}
+					} else if err := appendAttempt(f.db, c); err != nil {
+						t.Fatal("exact replay after progress", err)
+					}
+				}
+			})
+		}
+	})
 	t.Run("restart-discovers-gap-and-fetches-only-current-missing-interval", func(t *testing.T) {
 		c := contract(t)
 		install(t, f, c, bootstrap(t, c, 0, false))
@@ -1235,6 +1316,46 @@ func (t commitFaultTx) Commit() error {
 	return io.ErrUnexpectedEOF
 }
 
+func TestFixtureCleanupAfterSetupFailure(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_PROJECTION_SEQUENCE") != "1" {
+		t.Skip("opt-in own PostgreSQL fixture")
+	}
+	if os.Getenv("JUSTIXAUTO_T014_FIXTURE_FAILURE_CHILD") == "1" {
+		newFixture(t)
+		t.Fatal("failure injection did not fire")
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, os.Args[0], "-test.run=^TestFixtureCleanupAfterSetupFailure$", "-test.v")
+	cmd.Env = append(os.Environ(), "JUSTIXAUTO_T014_FIXTURE_FAILURE_CHILD=1")
+	out, err := cmd.CombinedOutput()
+	if err == nil || !strings.Contains(string(out), "synthetic setup failure after owned volume capture") {
+		t.Fatalf("expected setup failure: %v %s", err, out)
+	}
+	if strings.Contains(string(out), "absence not verified") || strings.Contains(string(out), "remove own fixture:") {
+		t.Fatalf("child cleanup failed: %s", out)
+	}
+	var container, volume string
+	for line := range strings.SplitSeq(string(out), "\n") {
+		if _, value, ok := strings.Cut(line, "owned fixture container: "); ok {
+			container = strings.TrimSpace(value)
+		}
+		if _, value, ok := strings.Cut(line, "owned fixture anonymous volume: "); ok {
+			volume = strings.TrimSpace(value)
+		}
+	}
+	if container == "" || volume == "" {
+		t.Fatalf("missing owned IDs: %s", out)
+	}
+	if out, err := exec.CommandContext(ctx, "docker", "inspect", container).CombinedOutput(); err == nil || !strings.Contains(strings.ToLower(string(out)), "no such object:") {
+		t.Fatalf("failed setup container retained: %v %s", err, out)
+	}
+	if out, err := exec.CommandContext(ctx, "docker", "volume", "inspect", volume).CombinedOutput(); err == nil || !strings.Contains(string(out), "no such volume") {
+		t.Fatalf("failed setup volume retained: %v %s", err, out)
+	}
+	t.Logf("failed setup cleanup verified: container=%s anonymous-volume=%s", container, volume)
+}
+
 // All fixture resources are new, synthetic, private and owned by this test.
 // No existing DSN, host port, volume, reference credential or broker is used.
 type fixture struct {
@@ -1249,16 +1370,64 @@ func newFixture(t *testing.T) *fixture {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 	image := "docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2"
-	if out, e := exec.CommandContext(ctx, "docker", "run", "-d", "--name", f.container, "-e", "POSTGRES_PASSWORD="+f.password, "-e", "POSTGRES_DB=justix_inventory", "-p", "127.0.0.1::5432", image).CombinedOutput(); e != nil {
-		t.Fatalf("start own fixture: %v %s", e, out)
+	// Register cleanup before creation/startup so failed setup follows the same
+	// ownership-limited removal path. No named or preexisting volume is mounted.
+	var volumes []string
+	inspectVolumes := func(ctx context.Context) ([]string, error) {
+		out, err := exec.CommandContext(ctx, "docker", "inspect", "--format", `{{range .Mounts}}{{if eq .Type "volume"}}{{println .Name}}{{end}}{{end}}`, f.container).CombinedOutput()
+		if err != nil {
+			return nil, fmt.Errorf("inspect own mounts: %w %s", err, out)
+		}
+		return strings.Fields(string(out)), nil
 	}
 	t.Cleanup(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 		defer cancel()
-		if out, e := exec.CommandContext(ctx, "docker", "rm", "-f", f.container).CombinedOutput(); e != nil {
+		if volumes == nil {
+			var err error
+			volumes, err = inspectVolumes(ctx)
+			if err != nil {
+				if strings.Contains(strings.ToLower(err.Error()), "no such object:") {
+					return
+				}
+				t.Error(err)
+			}
+		}
+		if out, e := exec.CommandContext(ctx, "docker", "rm", "-fv", f.container).CombinedOutput(); e != nil {
 			t.Errorf("remove own fixture: %v %s", e, out)
 		}
+		if out, err := exec.CommandContext(ctx, "docker", "inspect", f.container).CombinedOutput(); err == nil || !strings.Contains(strings.ToLower(string(out)), "no such object:") {
+			t.Errorf("own container absence not verified: %v %s", err, out)
+		}
+		for _, volume := range volumes {
+			if out, err := exec.CommandContext(ctx, "docker", "volume", "inspect", volume).CombinedOutput(); err == nil || !strings.Contains(string(out), "no such volume") {
+				t.Errorf("own anonymous volume absence not verified: %s %v %s", volume, err, out)
+			} else {
+				t.Logf("removed own anonymous volume: %s", volume)
+			}
+		}
 	})
+	if out, e := exec.CommandContext(ctx, "docker", "create", "--name", f.container, "-e", "POSTGRES_PASSWORD="+f.password, "-e", "POSTGRES_DB=justix_inventory", "-p", "127.0.0.1::5432", image).CombinedOutput(); e != nil {
+		t.Fatalf("create own fixture: %v %s", e, out)
+	}
+	var err error
+	volumes, err = inspectVolumes(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(volumes) != 1 {
+		t.Fatalf("expected pinned image's one anonymous volume, got %v", volumes)
+	}
+	t.Logf("owned fixture container: %s", f.container)
+	for _, volume := range volumes {
+		t.Logf("owned fixture anonymous volume: %s", volume)
+	}
+	if os.Getenv("JUSTIXAUTO_T014_FIXTURE_FAILURE_CHILD") == "1" {
+		t.Fatal("synthetic setup failure after owned volume capture")
+	}
+	if out, e := exec.CommandContext(ctx, "docker", "start", f.container).CombinedOutput(); e != nil {
+		t.Fatalf("start own fixture: %v %s", e, out)
+	}
 	f.query = func(statement string, args ...string) (string, error) {
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
