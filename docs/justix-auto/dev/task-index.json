@@ -35484,7 +35484,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-008",
         "T-024"
@@ -35503,8 +35503,10 @@
         "B-01.AC1"
       ],
       "scope": "Install the explicit owner-local history template at verified or explicitly attested clean v1. Preserve original SQL/markers and retained data; immutable provenance/artifact/feature metadata, exact predecessor and runtime SELECT-only grants, bounded installation locks.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-929",
+      "base_sha": "8e714dc98659d2ef7c901362501d60dd7e7335db",
+      "agent": "backend_t929",
+      "execution_note": "Owner migration proposal and canonical promotion independently GREEN; explicit immutable owner history template assigned in prepared isolated worktree. Preserve original SQL/private-v1 defaults; no actual baseline attestation, runner or production migration."
     },
     {
       "id": "T-930",
