@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JustixAuto — Финансирование</title>
+  </head>
+  <body>
+    <div id="finance-root"></div>
+    <script type="module">
+      import React from 'react';
+      import { createRoot } from 'react-dom/client';
+      import { FinancingApp } from '/src/app/App.tsx';
+      // T-054 supplies the production session boundary. Until then, fail closed:
+      // no protected children, fake identity, login design or persisted session.
+      const UnconnectedSessionBoundary = () => null;
+      createRoot(document.getElementById('finance-root')).render(
+        React.createElement(FinancingApp, { SessionBoundary: UnconnectedSessionBoundary }),
+      );
+    </script>
+  </body>
+</html>

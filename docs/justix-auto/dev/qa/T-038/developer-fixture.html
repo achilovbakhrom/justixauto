@@ -1,0 +1,16 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>T-038 explicit synthetic fixture</title></head>
+<body><div id="root"></div><script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { FinancingApp } from '/web/apps/financing/src/app/App.tsx';
+// Read-only reference display labels, isolated from the application bundle.
+const long = new URL(location.href).searchParams.has('long');
+history.replaceState(null, '', '/finance/');
+const context = { organizationName: long ? 'Синтетическая организация с очень длинным названием для проверки' : 'Демо-банк', organizationTypeLabel: 'Банк', organizationMark: 'Б', accountLabel: 'Демо-аккаунт', employeeName: 'Демо-администратор', employeeInitials: 'АК' };
+const keys = ['organizationName', 'organizationTypeLabel', 'organizationMark', 'accountLabel', 'employeeName', 'employeeInitials'];
+if (Object.keys(context).length !== keys.length || !keys.every(key => typeof context[key] === 'string' && context[key].length > 0)) throw Error('Invalid synthetic display fixture');
+Object.freeze(context);
+const root = createRoot(document.getElementById('root'));
+window.fixture = { context, render: (admit = true, display = context) => root.render(React.createElement(FinancingApp, { SessionBoundary: ({ children }) => admit ? children : null, ...(display ? { context: display } : {}) })) };
+window.fixture.render();
+</script></body></html>

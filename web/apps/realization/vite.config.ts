@@ -6,9 +6,35 @@ import react from '@vitejs/plugin-react';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 
+function isDocumentRequest(req: IncomingMessage): boolean {
+  // Wildcards advertise acceptable bytes, not document navigation. Legacy
+  // clients may omit Fetch Metadata; when present it must agree with HTML.
+  const acceptsHtml = req.headers.accept?.split(',').some(value => {
+    const [mediaType, ...parameters] = value.split(';').map(part => part.trim().toLowerCase());
+    const quality = parameters.find(parameter => parameter.startsWith('q='))?.slice(2);
+    return mediaType === 'text/html' && (quality === undefined || (Number(quality) > 0 && Number(quality) <= 1));
+  });
+  const destination = req.headers['sec-fetch-dest'];
+  const mode = req.headers['sec-fetch-mode'];
+  return Boolean(acceptsHtml
+    && (destination === undefined || ['document', 'iframe', 'frame'].includes(String(destination)))
+    && (mode === undefined || mode === 'navigate'));
+}
+
 /** Local development/preview only. Deployment routing is a separate task. */
-function prefixGuard(req: IncomingMessage, res: ServerResponse, next: () => void) {
+function prefixGuard(req: IncomingMessage, res: ServerResponse, next: () => void, allowHtmlProxy = false) {
   const path = (req.url ?? '/').split('?')[0]!;
+  // Preview's static middleware can serve an explicit HTML file before the
+  // fallback. Apply the same intent rule there, including encoded filenames.
+  let decodedPath = '';
+  try { decodedPath = decodeURIComponent(path); } catch { /* Fallback rejects malformed paths. */ }
+  // Vite's dev-only inline-module proxy returns JavaScript, not entry HTML.
+  const htmlProxy = allowHtmlProxy && /\?html-proxy&index=\d+\.js$/.test(req.url ?? '');
+  if (!htmlProxy && /\.html$/i.test(decodedPath) && (!['GET', 'HEAD'].includes(req.method ?? '') || !isDocumentRequest(req))) {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Not found');
+    return;
+  }
   if (/^\/(?:admin|finance|insurance|api)(?:\/|$)/.test(path)) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Not found');
@@ -21,8 +47,7 @@ function htmlFallback(html: (url: string) => Promise<string>) {
   return async (req: IncomingMessage, res: ServerResponse) => {
     // Root app must never capture sibling app prefixes, APIs or missing assets.
     const path = (req.url ?? '/').split('?')[0]!;
-    const acceptsHtml = req.headers.accept?.includes('text/html') || req.headers.accept?.includes('*/*');
-    if (!['GET', 'HEAD'].includes(req.method ?? '') || !acceptsHtml
+    if (!['GET', 'HEAD'].includes(req.method ?? '') || !isDocumentRequest(req)
       || (path !== '/index.html' && /[.%\\@]/.test(path))
       || /^\/(?:api|assets|src|node_modules)(?:\/|$)/.test(path)) {
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -44,7 +69,7 @@ export default defineConfig({
   root, base: '/', appType: 'custom', plugins: [react(), {
     name: 'realization-prefix-only-html',
     configureServer(server) {
-      server.middlewares.use(prefixGuard);
+      server.middlewares.use((req, res, next) => prefixGuard(req, res, next, true));
       return () => { server.middlewares.use(htmlFallback(async (url) =>
         server.transformIndexHtml('/index.html', await readFile(`${root}index.html`, 'utf8'), url))); };
     },

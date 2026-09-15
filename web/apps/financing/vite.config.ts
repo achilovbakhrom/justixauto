@@ -35,7 +35,7 @@ function prefixGuard(req: IncomingMessage, res: ServerResponse, next: () => void
     res.end('Not found');
     return;
   }
-  if ((path !== '/admin' && !path.startsWith('/admin/')) || /^\/admin\/api(?:\/|$)/.test(path)) {
+  if ((path !== '/finance' && !path.startsWith('/finance/')) || /^\/finance\/api(?:\/|$)/.test(path)) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Not found');
     return;
@@ -45,7 +45,7 @@ function prefixGuard(req: IncomingMessage, res: ServerResponse, next: () => void
 
 function htmlFallback(html: (url: string) => Promise<string>) {
   return async (req: IncomingMessage, res: ServerResponse) => {
-    // Vite's base middleware has already stripped /admin at this point.
+    // Vite's base middleware has already stripped /finance at this point.
     const path = (req.url ?? '/').split('?')[0]!;
     if (!['GET', 'HEAD'].includes(req.method ?? '') || !isDocumentRequest(req)
       || (path !== '/index.html' && /[.%\\@]/.test(path))
@@ -55,7 +55,7 @@ function htmlFallback(html: (url: string) => Promise<string>) {
       return;
     }
     try {
-      const body = await html(`/admin${req.url ?? '/'}`);
+      const body = await html(`/finance${req.url ?? '/'}`);
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
       res.end(req.method === 'HEAD' ? undefined : body);
     } catch {
@@ -66,8 +66,8 @@ function htmlFallback(html: (url: string) => Promise<string>) {
 }
 
 export default defineConfig({
-  root, base: '/admin/', appType: 'custom', plugins: [react(), {
-    name: 'admin-prefix-only-html',
+  root, base: '/finance/', appType: 'custom', plugins: [react(), {
+    name: 'finance-prefix-only-html',
     configureServer(server) {
       server.middlewares.use((req, res, next) => prefixGuard(req, res, next, true));
       return () => { server.middlewares.use(htmlFallback(async (url) =>
