@@ -57,6 +57,14 @@ bash tools/go.sh test -race -mod=readonly ./services/... ./pkg/... ./tests/...
 bash tools/go.sh vet ./services/... ./pkg/... ./tests/...
 ```
 
+The confirmed outbox relay, transaction-bound sequence/gap adapters, explicit
+owner-history SQL template and deterministic Go/TypeScript contract generator
+are integrated. Generator checks use the approved Node toolchain and installed
+TypeScript; the checked-in config stays empty until concrete owner schemas are
+approved and registered. Auth response metadata/429/raw JSON decoding and the
+retained all-space generation-label forward correction remain assigned handoffs.
+Owner profiles and the actual migration driver/runner are still separate tasks.
+
 Historical preflight below predates the authorized Git setup on 2026-09-14.
 `doctor` checks the independent Git root and initial commit.
 `tools/check-git.sh` reports the detected root and exact user commands. The old
