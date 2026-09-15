@@ -1,6 +1,6 @@
 # Auth transport compatibility proposal assignment
 
-2026-09-15. Status: proposal QA BOUNCE; architect fix cycle 1 assigned; no implementation approval.
+2026-09-15. Status: revised proposal under independent r2 QA; no implementation approval.
 Assigned worktree: `.worktrees/auth-transport-compatibility`.
 Branch: `task/auth-transport-compatibility`.
 Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
@@ -68,3 +68,16 @@ propagation in both languages. Union alternatives cannot hide a broken binding.
 Retain original evidence; demonstrate strict TS and actual Go interface probes.
 Review the max4h AT-GEN scope and reslice explicitly if necessary. No task IDs,
 canonical approval, new policy or source implementation is assigned here.
+
+## Independent r2 review
+
+Revised exact proposal: `914fcd78cc0789e41e9091efdc99fb5afc6c5c50`.
+Detached checkout: `.worktrees/auth-transport-compatibility-r2-qa`.
+Agent: `qa_auth_transport`; owns only NEW `dev/qa/auth-transport-compatibility-r2.md`
+and its evidence directory. Preserve the original BOUNCE/report/probes.
+Verify explicit synchronous primitive outcomes, runtime rejection handling,
+structural-first union validation, fatal propagation and current-ticket failures.
+The original generator alias is resliced into six serial aliases; ten proposed
+tasks now total 36 estimated hours. Verify exact predecessor ownership, interim
+auth rejection, terminal activation, and explicit non-auth Go resource tightening.
+Independent GREEN and canonical promotion checks precede implementation assignment.

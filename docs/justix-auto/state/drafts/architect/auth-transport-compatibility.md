@@ -1,6 +1,9 @@
 # Auth transport compatibility — bounded architecture proposal
 
 Date: 2026-09-15. Status: proposed, not implementation or security acceptance.
+Revision: architect fix cycle1 after independent BOUNCE of
+`9ad5a64422b04dbbc8bee969a47acdd3e9278d81`; original report and probes remain
+historical evidence. This revision requires renewed exact-commit review.
 Assignment/base: `task/auth-transport-compatibility` at
 `476777139ffa6a470c7b3f6e79086c64f2dc7db5`. Independent exact-commit QA and
 coordinator adoption/promotion are required before these aliases become tasks.
@@ -89,9 +92,21 @@ For bounded IO, implementation must expose immutable client construction limits
 `maxResponseBytes` and `maxJSONDepth`, validated positive safe integers. Preserve
 existing constructor callers through documented technical defaults of 8 MiB
 decoded body and 128 container levels; generated Go checks use the same defaults.
+For Go this applies to **all newly regenerated outputs only when AT-GEN-VERIFY
+activates the completed runtime profile**, including non-auth and internal
+methods. It deliberately tightens formerly accepted oversized/deep Go payloads;
+passing smaller old fixtures is not proof of identical legacy acceptance. Existing
+generated files are not silently rewritten: their assigned regeneration tasks
+adopt this versioned technical change and its negative conformance cases.
 These are **proposed parser resource bounds**, not accepted T-002 security/rate
-policy or an endpoint payload entitlement. Check accumulated stream bytes while
-reading, cancel on overflow, never trust Content-Length or allocate from it.
+policy or an endpoint payload entitlement. The browser fetch path checks
+accumulated stream bytes while reading, cancels on overflow, and never trusts
+Content-Length or allocates from it. The Go generated boundary receives an
+already materialized Body byte slice: check its length before decoding, then
+bound depth/exponent work. The injected Go exchange still owns bounded network
+reads before allocating that slice; a generator length check alone cannot prove
+bounded adapter IO. Concrete owner exchange tests must verify that separate port
+obligation before runtime activation.
 Auth deployment can impose smaller owner-approved schema/request limits; callers
 cannot increase bounds in response to an untrusted header. If a real existing
 fixture exceeds these bounds, reslice that compatibility change before adoption.
@@ -384,18 +399,114 @@ Identity and paired with the transport operation marker. The generator rejects
 missing/unsupported declaration on auth-cookie operations. This declaration
 requires a binding; it does not claim a structural schema proves the rules.
 
-AT-GEN emits a namespaced `AuthSemantics` interface with one synchronous typed
-`validate<Name>(value: Name): void` method for each concrete named schema in the
-auth document (Go `ValidateName(value Name) error`). All methods are required;
-no optional callback, default true, fallback, async validator or endpoint-only
-postprocessing. Generate `createAuthValidators(bindings)` in TS and a Go
-constructor accepting the required semantics binding for an auth client. Runtime
-construction rejects missing/nonfunction methods (Go nil bindings, including typed
-nil, reject); construction of legacy non-auth clients stays unchanged. Bindings
-have no HTTP, storage or token interface. Generated validators structurally walk
-first, call the typed binding on every named schema/ref occurrence and then check
-union cardinality including semantics. Full request and response validation uses
-this bound factory, not an unbound structural parser. Standalone generated auth
+The generator sequence below emits a namespaced `AuthSemantics` interface with
+the following **exact synchronous primitive** outcome. The original void/error
+signature is superseded; prose forbidding async did not enforce that boundary.
+
+```ts
+type SemanticOutcome = 'valid' | 'mismatch' | 'fatal:policy'
+  | 'fatal:configuration' | 'fatal:binding';
+interface AuthSemantics {
+  checkReady(): SemanticOutcome;
+  validateName(value: Name): SemanticOutcome; // one method per named schema
+  validateError(operationId: OperationID, status: ErrorStatus,
+    value: ErrorResponse): SemanticOutcome;
+}
+```
+
+No `void`, implicit undefined, boolean, PromiseLike, async method or optional
+hook. TypeScript must reject async and ordinary Promise/thenable-returning
+assignments for all three method categories. Runtime does not trust these types:
+capture the required function references at factory construction, reject missing,
+nonfunction or accessor-defined bindings, and freeze the dispatch table. Invoke
+each hook inside a guarded synchronous call. Only exact equality to one of the
+five primitive strings is a legal result; any other return, exception or malformed
+binding is fatal:binding. Do not inspect a returned object's `kind`, `then` or
+other getters to decide whether it validates. Never await a hook. Known native
+Promise returns are invalid even if already resolved to 'valid'.
+
+For Go emit `type SemanticOutcome uint8` with distinct nonzero constants
+`SemanticValid=1`, `SemanticMismatch=2`, `SemanticFatalPolicy=3`,
+`SemanticFatalConfiguration=4`, `SemanticFatalBinding=5`; zero and all unknown
+values are fatal binding defects. `CheckReady() SemanticOutcome`,
+`ValidateName(value Name) SemanticOutcome` and
+`ValidateError(operationID string, status int, value ErrorResponse) SemanticOutcome`
+return that enum directly, not `error` or an interface whose nil/error wrapping
+could be misclassified. Reject nil/typed-nil binding at construction. Recover a
+hook panic at the narrow generated boundary and convert it to FatalBinding
+without formatting the panic. Do not recover process-wide faults as success.
+
+`checkReady`/`CheckReady` validates all required immutable policy/configuration
+and binding prerequisites, including those needed by any declared alternative.
+It runs at construction, at each top-level request/response validation and
+immediately before **every** named/ref or operation/status error hook. Only
+Valid is readiness success; Mismatch here is a binding defect, not a body mismatch.
+FatalPolicy denotes absent/invalid required policy, FatalConfiguration an invalid
+trusted schema/operation/configuration binding, and FatalBinding a missing hook,
+throw/panic, illegal return or other implementation defect. Readiness is not
+permission to substitute defaults, reconfigure from response data or accept T-002.
+
+After a bad return or thrown value, rejection disposal is separate from validation and never
+allows acceptance: use a captured intrinsic `Promise.prototype.then` with constant
+fulfillment/rejection handlers returning undefined on an actual returned native
+Promise (whether returned or thrown), inside try/catch. This handles ordinary async methods, ordinary functions
+returning rejected native Promises, and ordinary cross-realm native Promises;
+it neither awaits nor prints/copies the rejection reason. Applying the intrinsic
+to a non-Promise fails its brand check, which is discarded without diagnostics.
+Do not call `Promise.resolve(returned)` or read/call arbitrary `returned.then`:
+plain thenables, then getters and callable objects reject without invoking them.
+Thus no thenable code is run as validation or cleanup. Keep only a constant safe
+fault category in public results; no raw promise/reason/stack/body/token escapes.
+
+This is a boundary for trusted compiled feature bindings, not a sandbox for
+arbitrary executable plugins. Promise proxies, hostile Promise species/constructor
+overrides, malicious getters in binding construction, or independently spawned
+unreturned asynchronous work are unsupported binding defects. The intrinsic
+cleanup cannot guarantee suppression of unrelated rejections created by such
+code; do not claim otherwise. Construction must inspect own descriptors without
+invoking accessors and bind only the approved factory's plain function table.
+The normal supported returned-Promise cases must have zero unhandled rejections
+in tests; non-Promise thenable cases must have zero getter/then invocations.
+
+Generate `createAuthValidators(bindings)` in TS and a Go constructor accepting
+the required binding. Legacy non-auth construction remains unchanged. Bindings
+are pure, synchronous and have no HTTP, storage, token or session mutation
+interface; no side effect is allowed before their outcome is checked. This is a
+reviewed code contract, not protection against deliberately malicious callbacks.
+
+Validation has two distinct phases, with no catch-all semantic branch counting:
+
+1. Preflight readiness, then validate the **entire structural tree** and all
+   nested oneOf cardinalities without invoking semantic hooks. Record the unique
+   selected branch and named/ref occurrences. Count only ordinary structural
+   Match/Mismatch results. A missing schema, invalid configuration, unexpected
+   exception/panic or unknown structural result is fatal for the entire operation,
+   even if another alternative otherwise matches. Zero or multiple structurally
+   matching alternatives reject as Mismatch; do not run semantic hooks to break
+   a tie. Existing structural-only catch-all counting cannot be reused for new
+   fatal/configuration outcomes. An ordinary value/type/constraint failure is
+   the only structural nonmatch category.
+2. Only after that complete structural pass, visit each recorded named/ref
+   occurrence on the selected tree, with readiness and exact return checks above.
+   Invoke enclosing union schema hooks after their selected child's checks.
+   Finally run the operation/status error hook when applicable. Valid continues;
+   Mismatch rejects this entire request/response and never tries another branch;
+   every fatal result aborts the entire validation. Hooks on structurally
+   unselected alternatives do not run, but their required policy/function
+   configuration was covered by global readiness. A fault cannot make a
+   structurally ambiguous union valid or get swallowed as a nonmatch.
+
+Map mismatch and all fatal outcomes to safe `invalid-request` before fetch and
+`invalid-response` after fetch; a dispatched unsafe request remains unknown
+outcome, with zero token sink calls and no retry. A fatal condition may mark the
+bound client unusable until explicit valid reconstruction; never silently retry
+with a different hook/branch/policy. No raw diagnostics are returned. All failure
+and finally paths still require the captured current ticket before clearing
+memory or releasing the in-flight slot. A stale fatal response cannot clear a
+newer accepted session. No asynchronous cleanup changes that epoch rule.
+
+Full validation uses this bound factory, not an unbound structural parser.
+Standalone generated auth
 structural parsers are explicitly named `NameStructuralSchema` in TS and
 structural Go DTO marshal/unmarshal remains documented as structural only; they
 cannot be passed off as complete auth validators. The generated typed auth client
@@ -439,8 +550,9 @@ accepted AuthDeploymentPolicy. Missing release policy blocks that capability,
 not structural generation. No new field bounds, recovery-code syntax or permission
 catalog entries are invented by this binder.
 
-This is a **fifth bounded alias**: inspection revealed that fitting dual-language
-feature semantics into AT-GEN would hide separate ownership. T-641 can generate
+The concrete feature binder remains its separate AT-AUTH alias; the original
+single AT-GEN alias is superseded by the explicit serial sequence in P7.
+T-641 can generate
 and test mandatory inert bindings with explicit synthetic validators before the
 concrete binder exists; construction/use without those validators must fail closed.
 AT-AUTH follows T-641; actual owner and session consumers follow AT-AUTH. There is
@@ -462,14 +574,58 @@ reviewed integration change before the exact T-641 QA commit, not worker scope.
 Aliases below are proposed new tasks, each max4h with independent exact-commit QA;
 reslice before assignment if an implementation estimate exceeds that bound.
 No implementation IDs are reserved by this draft. No source changes here.
+Fix-cycle estimate: the original AT-GEN scope is approximately20 effort-hours,
+not4. The six serial generator tasks below replace it; together with the four
+other aliases this is ten proposed tasks /36 estimated effort-hours. These are
+work estimates, not delivery dates or verified execution duration. Stop and
+reslice any individual task whose concrete implementation exceeds its bound.
 
 | Alias | Direct prerequisites | Exclusive leaves / serial successor |
 |---|---|---|
-| AT-JSON | T-032 | new `web/packages/api/src/responseJSON.ts`, `web/packages/api/src/responseJSON.test.ts`; scanner/profiles/limits only, no client edits |
-| AT-HTTP | AT-JSON, T-058, T-032 | serial successor `web/packages/api/src/client.ts`, `web/packages/api/src/client.test.ts`; one fetch path, exported interface types,429, metadata validation/sink and limits |
-| AT-GEN | AT-HTTP, T-640 | serial successor `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; exact supported profile, mandatory typed semantic-binding interfaces, Go/TS transport parity fixtures inside test leaf |
-| AT-AUTH | T-641, T-058 | new `web/packages/api/src/authValidation.ts`, `web/packages/api/src/authValidation.test.ts`, `services/identity/contracts/openapi/auth_semantics.go`, `services/identity/contracts/openapi/auth_semantics_test.go`; concrete typed feature binders and synthetic parity tests |
-| AT-EPOCH | AT-HTTP, T-058 | new `web/packages/api/src/authEpoch.ts`, `web/packages/api/src/authEpoch.test.ts`; serial successor `web/packages/api/package.json` **only** to add explicit `./authEpoch` export; non-React controller accepts injected classifiers, no generated imports |
+| AT-JSON | T-032 | 4h; new `web/packages/api/src/responseJSON.ts`, `web/packages/api/src/responseJSON.test.ts`; scanner/profiles/limits only, no client edits |
+| AT-HTTP | AT-JSON, T-058, T-032 | 4h; serial successor `web/packages/api/src/client.ts`, `web/packages/api/src/client.test.ts`; one fetch path, exported interface types,429, metadata validation/sink and limits |
+| AT-GEN-PROFILE | AT-HTTP, T-640 | 2h; serial successor `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; parse/check the closed header/security/semantics declarations into a trusted generation model; retain public auth generation rejection |
+| AT-GEN-SEM | AT-GEN-PROFILE | 4h; serial successor of AT-GEN-PROFILE on `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; Go/TS typed outcomes, readiness checks, guarded per-occurrence/error dispatch and complete structural-first selection; isolated emitted-runtime probes, auth CLI still rejects |
+| AT-GEN-TS | AT-GEN-SEM | 4h; serial successor of AT-GEN-SEM on `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; TS bound client, exact status/error schema map, auth port and metadata policy delegation to actual shared client, capability checks; auth CLI still rejects |
+| AT-GEN-GO | AT-GEN-TS | 4h; serial successor of AT-GEN-TS on `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; Go auth exchange/version/port, header multiplicity/media/429 metadata, no-body checks and safe unknown outcomes; auth CLI still rejects |
+| AT-GEN-RAW | AT-GEN-GO | 3h; serial successor of AT-GEN-GO on `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; bounded Go raw byte/depth/exponent handling with exact numeric parity and alignment to TS shared decoder limits; auth CLI still rejects |
+| AT-GEN-VERIFY | AT-GEN-RAW | 3h; serial successor of AT-GEN-RAW on `tools/generate-contracts.mjs`, `tests/contracts/generation_reproducibility_test.go`; full deterministic Go/TS generation and actual-client parity acceptance, then enable the complete auth profile in the CLI with regression/negative coverage |
+| AT-AUTH | T-641, T-058 | 4h; new `web/packages/api/src/authValidation.ts`, `web/packages/api/src/authValidation.test.ts`, `services/identity/contracts/openapi/auth_semantics.go`, `services/identity/contracts/openapi/auth_semantics_test.go`; concrete typed feature binders and synthetic parity tests |
+| AT-EPOCH | AT-HTTP, T-058 | 4h; new `web/packages/api/src/authEpoch.ts`, `web/packages/api/src/authEpoch.test.ts`; serial successor `web/packages/api/package.json` **only** to add explicit `./authEpoch` export; non-React controller accepts injected classifiers, no generated imports |
+
+The repeated two generator leaves are deliberately **serial successor ownership**,
+never concurrently assigned. Each task inherits the integrated exact predecessor
+commit in a new branch/worktree; dependencies are cumulative through this chain.
+No new helper file, root manifest, dependency or config entry is hidden in these
+subtasks. Synthetic source/output fixtures remain embedded in the assigned Go
+test leaf and materialized only in its owned temporary test directory. Each
+intermediate passes existing non-auth generation/guard/compile regressions and
+its bounded new probes; no task claims complete auth transport from those probes.
+
+Until AT-GEN-VERIFY completes and passes independent QA, the public generator
+must reject auth-cookie transport/semantic declarations **before writing any
+output**, even when its internal parsed model or one renderer is implemented.
+No environment/config switch can bypass that rejection, no partially generated
+auth client advertises responseContractVersion/auth support, and no concrete
+auth config registration is made. Keep legacy non-auth generator outputs/API
+behavior intact through these intermediates. In particular AT-GEN-RAW implements
+and tests its new Go resource guards in the inert versioned runtime path; it does
+not yet alter emitted legacy non-auth decoders. At AT-GEN-VERIFY the completed
+runtime is enabled for all newly regenerated Go outputs, deliberately applying
+the P2 resource-bound tightening to non-auth/internal methods too. Terminal QA
+must include previously accepted payloads beyond8MiB/128 levels now rejecting,
+plus unchanged valid below-limit values and ordinary non-auth signatures. This
+new rejection boundary requires adoption; do not describe it as complete legacy
+acceptance preservation. The intermediates' existing rejection of auth
+headers/429 remains in the public CLI. Internal template probes do not advertise
+a callable profile. AT-HTTP may advertise its fully tested shared transport
+interface independently; that marker alone does not prove generator support or
+feature semantics. AT-GEN-VERIFY is the sole generator activation task: all
+prerequisites must integrate, complete two-language output must pass actual
+shared-client/Go parity, strict semantic fault/async cases and deterministic
+guard checks, and only then does the enabled profile become eligible for T-641.
+If its terminal tests reveal missing implementation, reslice/fix the owning
+generator task; do not shift it into T-641's generated files or tests.
 
 Root controls any lockfile/root workspace changes; the export-only API manifest
 change introduces no dependencies. New decoder is internal; client.ts exports
@@ -483,7 +639,7 @@ AT-EPOCH is located in the already integrated API workspace specifically because
 T-055 owns the new session package manifest and must not be preempted. The two
 new source pairs can remain independent of T-059/T-641 fixtures.
 
-Proposed existing dependency additions: T-641 + AT-GEN; T-055 + AT-EPOCH and
+Proposed existing dependency additions: T-641 + AT-GEN-VERIFY; T-055 + AT-EPOCH and
 AT-AUTH; T-060 + AT-AUTH. Retain T-641's T-640/T-059 and T-055's
 T-032/T-070/T-643; T-641 is a transitive T-055 prerequisite through AT-AUTH.
 Do not replace
@@ -506,8 +662,12 @@ tasks. T-002 and recovery capability gates still block release behaviors only.
 ## P8. Verification floor and executed feasibility
 
 [Result/reproducer](../../../dev/results/auth-transport-compatibility.md) records
-40 Node checks, the 19-case actual generated Go decoder parity probe and strict
-TypeScript interface compilation. These are isolated exploratory probes against
+historical40 Node checks, the 19-case actual generated Go decoder parity probe and
+the original TypeScript interface compilation. That proposal subsequently
+BOUNCED: those checks did not enforce synchronous void hooks or fatal union
+composition. Fix-cycle1 adds six strict TS negative assignments, 60 runtime
+assertions and15 Go subtests for the corrected outcomes/structural-first boundary.
+These are isolated exploratory probes against
 the actual base APIs, **not implementation tests or browser/session guarantees**.
 The proposal scanner is not installed application code. No dependency install,
 network request to an auth service, cookie secret or production action occurred.
@@ -529,6 +689,15 @@ Every alias must add meaningful negative tests in its owned test leaf:
    synthetic raw/metadata corpus, old non-auth callers, internal-only mTLS methods,
    wrong capability/port, forbidden auth header combinations, exact code/status
    schema failures, deterministic regeneration/check drift and existing guard suite.
+   Reject async methods, ordinary rejected/resolved Promise returns, thenables,
+   undefined/boolean/object/unknown enum returns and malformed readiness for all
+   named/ref and operation-error hooks, including nested selected refs. Supported
+   native Promise rejections produce no unhandled diagnostic; thenable getters
+   and then functions are not invoked. Structural ambiguity with one passing
+   semantic branch still rejects before hooks; selected fatal/mismatch never
+   falls through to another alternative. Structural faults cannot be swallowed
+   when another branch matches. Run these in Go and TS; a prose-only prohibition
+   or a type-only assertion is insufficient. Preserve the original BOUNCE corpus.
 4. Deferred response orderings: read→logout, anonymous read→login, verify→logout,
    context switch→late response, old epoch/new epoch with same server revision,
    two attempted rotations, accepted/unknown enrollment-confirm, recovery204,

@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/justix-auto/dev/auth-transport-assignment.md",
+    "snapshot": "docs/justix-auto/dev/auth-transport-assignment.md.gz",
+    "bytes": 4422,
+    "sha256": "2954129e79c2ddef865c7914ba79ff067bb37fdcea11d59d82588ea37d74785c"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 12454,
+    "sha256": "c64233f7d4cda3f6c548ea324ecf937c916097b21aa82730af4fb3e98cbdb715"
+  }
+]

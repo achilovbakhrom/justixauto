@@ -1,5 +1,13 @@
 # Auth transport compatibility — architect result
 
+Current status: architect fix cycle1 complete; revised proposal awaits independent
+exact-commit QA. Original candidate `9ad5a64422b04dbbc8bee969a47acdd3e9278d81`
+BOUNCED for the synchronous void-hook and fatal union-composition gaps. The
+following original result/probes are preserved as historical evidence, not
+relabeled as sufficient validation. Revised evidence follows at the end.
+
+## Historical original candidate result
+
 2026-09-15. Proposal only; independent exact-commit QA not yet run.
 Draft: [auth-transport-compatibility.md](../../state/drafts/architect/auth-transport-compatibility.md).
 Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
@@ -184,5 +192,257 @@ func TestTypedSemanticPort(t *testing.T){
  }{if exchange(c.s,p,c.v,c.token)==nil{t.Fatal("invalid candidate accepted")}}
  if p.calls!=0{t.Fatal("premature sink")}
  if err:=exchange(&concrete{},p,session{"1","1"},"accepted");err!=nil||p.calls!=1||p.token!="accepted"{t.Fatal("valid candidate rejected")}
+}
+```
+
+## Fix cycle1 — explicit outcomes, structural-first validation and bounded scope
+
+Independent BOUNCE report and all four evidence artifacts remain unchanged in
+main `docs/justix-auto/dev/qa/auth-transport-compatibility.md` and its directory.
+Reviewed original SHA: `9ad5a64422b04dbbc8bee969a47acdd3e9278d81`.
+The original draft hash above identifies that historical candidate, not this revision.
+
+Corrections in the revised proposal:
+
+- Replace void/error hooks with a closed synchronous primitive outcome in TS and
+  a nonzero enum in Go; reject every other runtime return, catch implementation
+  exceptions/panics as safe fatal faults, and check readiness before every hook.
+- Supported native Promise returns reject immediately and receive constant
+  rejection handlers without awaiting or emitting diagnostics. Plain thenables
+  reject without invoking their then method/getter. Hostile Promise species/
+  proxies and unreturned async work are explicitly outside the trusted binding
+  contract; this does not claim arbitrary executable-code isolation.
+- Validate the full structural tree and oneOf cardinality before semantic hooks;
+  only the unique selected branch runs. Mismatch rejects the operation without
+  fallback; policy/configuration/binding faults cannot be swallowed as nonmatches.
+  Preserve current-ticket checks in failure/finally paths and unknown dispatched
+  unsafe outcomes; zero sink calls and no retry on invalid validation.
+- Estimate the original AT-GEN at20h and replace it with six explicitly serial
+  tasks (2/4/4/4/3/3h), sharing only the exact two former generator leaves.
+  There are ten proposed aliases /36h total. Intermediate public generation
+  remains closed to auth; only the terminal complete-profile verification task
+  enables it and precedes T-641. No implementation is shifted into generated leaves.
+
+Executed new checks (isolated feasibility, not installed application behavior):
+
+1. Pinned TypeScript strict compile exit0 with six used @ts-expect-error negative
+   assertions covering async/ordinary Promise/thenable/void callbacks plus readiness
+   and operation-error hooks. Initial invocation omitted `--types node` and failed
+   to discover existing Node declarations; adding that invocation option fixed the
+   harness. No package/dependency was installed or changed.
+2. Pinned Node24.21.0 executed the bypass/runtime probe:60 assertions PASS.
+   Illegal returns were injected into named, readiness and operation-error hooks;
+   nested selected-ref failure stops later hooks. Native rejected async/ordinary/
+   cross-realm Promises produce zero unhandledRejection events across two event-loop
+   turns; arbitrary thenable getters/methods are invoked zero times. Structural
+   ambiguity cannot be repaired by semantic mismatch/fatal; selected faults and
+   global policy faults abort before the sink. One uniquely valid case reaches it.
+3. Pinned Go1.27.1 through the project wrapper, `go test -race -count=1 -v ./...`
+   in the isolated semanticprobe module:15 subtests PASS, `ok semanticprobe 1.594s`.
+   Actual typed interface/enum calls cover readiness, named/error hooks, unknown/
+   zero values, selected policy faults, panics, typed-nil binding, no fallback,
+   independent structural cardinality and exact sink counts.
+4. Full existing934-task dependency graph plus ten proposed aliases:944 nodes,
+   acyclic; estimated36h. Repeated generator leaves have cumulative serial
+   prerequisites. Local prose links and revised draft digest pass; the original
+   result body and its three embedded probe sources remain byte-identical to
+   the original candidate. Only the two assigned documentation leaves differ.
+
+The final runtime activation explicitly tightens resource acceptance for all
+newly regenerated Go outputs, including non-auth/internal routes; intermediate
+RAW work leaves the old emitted path unchanged. Final tests must cover formerly
+accepted oversized/deep payloads now rejecting. Generated byte-slice checks do
+not prove bounded adapter network IO, including internal mTLS exchanges. Their
+composition adapters must bound reads before creating the Body byte slice;
+generated validation neither implements TLS nor constrains an already completed
+network allocation. This clarification preserves the distinct
+transport resource responsibilities and does not accept a release policy.
+
+No application source, canonical document, dependency, mock, cookie, policy or
+runtime activation changed. The original40-check/19-case result remains valid
+only for what it measured and does not override QA's BOUNCE. New probes verify
+an executable model of the revised interface contract, not emitted auth clients.
+
+Revised draft SHA-256: `e1643c8cf36ba5733f7bfa0d32e2285604b345fe72ed506e17248fbae9af3e0c`.
+
+### Reproduce fix-cycle probes
+
+Save the following exact sources at the named temporary paths. They contain
+synthetic values only. The compiler/module paths are existing pinned installations.
+
+```sh
+/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node /Users/bakhromachilov/startups/justixauto/node_modules/typescript/bin/tsc --noEmit --strict --target es2023 --module esnext --moduleResolution bundler --skipLibCheck --types node --typeRoots /Users/bakhromachilov/startups/justixauto/node_modules/@types /private/tmp/justix-auth-transport-r2.ts
+/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node /private/tmp/justix-auth-transport-r2.ts
+cd /private/tmp/justix-auth-transport-r2-go
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash /Users/bakhromachilov/startups/justixauto/.worktrees/auth-transport-compatibility/tools/go.sh test -race -count=1 -v ./...
+```
+
+### `/private/tmp/justix-auth-transport-r2.ts`
+
+SHA-256 `c308bd5434e2f138f8ece35c901c78d0a24c57c1da1430702c79694b309d5416`.
+
+```ts
+// Isolated proposal probe. No application implementation.
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+export type SemanticOutcome = 'valid' | 'mismatch' | 'fatal:policy' | 'fatal:configuration' | 'fatal:binding';
+type Session = {revision:string;data:{context:{revision:string}}};
+interface Semantics {checkReady():SemanticOutcome;validateSession(value:Session):SemanticOutcome;validateError(operation:string,status:number,value:unknown):SemanticOutcome}
+// @ts-expect-error Async methods cannot satisfy the exact primitive return union.
+const asyncBad:Semantics['validateSession']=async ()=> 'valid' as const;
+// @ts-expect-error Ordinary Promise-returning functions are equally excluded.
+const promiseBad:Semantics['validateSession']=()=>Promise.resolve('valid' as const);
+// @ts-expect-error Thenable objects are not a SemanticOutcome.
+const thenableBad:Semantics['validateSession']=()=>({then(){}});
+// @ts-expect-error Void/implicit undefined is not a validation success.
+const voidBad:Semantics['validateSession']=()=>{};
+// @ts-expect-error Readiness uses the identical synchronous boundary.
+const readyBad:Semantics['checkReady']=async ()=> 'valid' as const;
+// @ts-expect-error Operation/status error validation cannot return Promise either.
+const errorBad:Semantics['validateError']=()=>Promise.resolve('valid' as const);
+void asyncBad;void promiseBad;void thenableBad;void voidBad;void readyBad;void errorBad;
+let checks=0;const eq=(a:unknown,b:unknown)=>{assert.deepEqual(a,b);checks++};
+const intrinsicThen=Promise.prototype.then;
+// Return disposal is not validation: native Promise rejections get constant handlers.
+// Non-Promise thenables are never invoked/read; intrinsic brand check rejects them.
+function discardNativePromise(value:unknown){
+ if((typeof value!=='object'||value===null)&&typeof value!=='function')return;
+ try{Reflect.apply(intrinsicThen,value,[()=>undefined,()=>undefined])}catch{/* no diagnostics */}
+}
+function guardedCall(hook:unknown,args:unknown[]=[]):SemanticOutcome{
+ if(typeof hook!=='function')return 'fatal:binding';
+ let out:unknown;try{out=Reflect.apply(hook,undefined,args)}catch(error){discardNativePromise(error);return 'fatal:binding'}
+ if(out==='valid'||out==='mismatch'||out==='fatal:policy'||out==='fatal:configuration'||out==='fatal:binding')return out;
+ discardNativePromise(out);return 'fatal:binding';
+}
+function readyHook(ready:unknown,hook:unknown,args:unknown[]=[]):SemanticOutcome{
+ const r=guardedCall(ready);if(r!=='valid')return r==='mismatch'?'fatal:binding':r;
+ return guardedCall(hook,args);
+}
+type Structural = 'match'|'mismatch'|'fatal:configuration'|'fatal:binding';
+function select(structural: (()=>Structural)[]):number|Structural{
+ const matches:number[]=[];
+ for(let i=0;i<structural.length;i++){
+  let r:unknown;try{r=structural[i]!()}catch{return 'fatal:binding'}
+  if(r==='match')matches.push(i);else if(r==='mismatch')continue;
+  else return r==='fatal:configuration'?'fatal:configuration':'fatal:binding';
+ }
+ return matches.length===1?matches[0]!:'mismatch';
+}
+let sinks=0,hookCalls=0;
+function pipeline(structural:(()=>Structural)[],hooks:unknown[],ready:unknown=()=> 'valid',errorHook:unknown=()=> 'valid'):SemanticOutcome{
+ const r=guardedCall(ready);if(r!=='valid')return r==='mismatch'?'fatal:binding':r;
+ const chosen=select(structural);if(typeof chosen!=='number')return chosen==='match'?'fatal:binding':chosen;
+ hookCalls++;const s=readyHook(ready,hooks[chosen]);if(s!=='valid')return s;
+ const e=readyHook(ready,errorHook,['sessionRead',401,{}]);if(e!=='valid')return e;
+ sinks++;return 'valid';
+}
+const match=()=> 'match' as const, miss=()=> 'mismatch' as const, pass=()=> 'valid' as const;
+const unhandled:unknown[]=[];const listener=(e:unknown)=>unhandled.push(e);process.on('unhandledRejection',listener);
+let getterCalls=0,thenCalls=0;
+const invalidReturns:unknown[]=[undefined,null,true,{},'VALID',Promise.resolve('valid'),Promise.reject(new Error('synthetic-secret')),vm.runInNewContext('Promise.reject(new Error("cross-realm-synthetic-secret"))'),{get then(){getterCalls++;throw new Error('must not inspect')}},{then(){thenCalls++;throw new Error('must not invoke')}}];
+for(const v of invalidReturns){
+ eq(pipeline([match],[()=>v]),'fatal:binding');
+ eq(pipeline([match],[pass],()=>v),'fatal:binding');
+ eq(pipeline([match],[pass],pass,()=>v),'fatal:binding');
+}
+eq(pipeline([match],[async()=>{throw new Error('async-synthetic-secret')}]),'fatal:binding');
+eq(pipeline([match],[()=>Promise.reject(new Error('ordinary-synthetic-secret'))]),'fatal:binding');
+for(const where of ['ready','error']as const){
+ eq(where==='ready'?pipeline([match],[pass],async()=> 'valid'):pipeline([match],[pass],pass,async()=> 'valid'),'fatal:binding');
+}
+const throwsPromise=()=>{throw Promise.reject(Error('thrown-promise-synthetic-secret'))};
+eq(pipeline([match],[throwsPromise]),'fatal:binding');
+eq(pipeline([match],[pass],throwsPromise),'fatal:binding');
+eq(pipeline([match],[pass],pass,throwsPromise),'fatal:binding');
+eq(getterCalls,0);eq(thenCalls,0);eq(sinks,0);
+for(const fault of ['fatal:policy','fatal:configuration','fatal:binding'] as const){
+ eq(pipeline([miss,match],[pass,()=>fault]),fault);
+ eq(pipeline([match,match],[()=>fault,pass]),'mismatch');
+ eq(pipeline([()=>fault==='fatal:policy'?'fatal:configuration':fault,match],[pass,pass]),fault==='fatal:policy'?'fatal:configuration':fault);
+}
+const before=hookCalls;eq(pipeline([match,match],[()=> 'mismatch',pass]),'mismatch');eq(hookCalls,before);
+eq(pipeline([match,miss],[()=> 'mismatch',pass]),'mismatch');
+eq(pipeline([miss,match],[pass,()=>{throw new Error('hidden policy')}]),'fatal:binding');
+eq(pipeline([miss,match],[pass,pass],()=> 'fatal:policy'),'fatal:policy');
+eq(pipeline([miss,match],[pass,pass],()=> 'mismatch'),'fatal:binding');
+// A selected root/ref/error sequence stops at the first fatal outcome.
+let later=0;
+for(const hook of [pass,()=>Promise.reject(Error('nested-ref-synthetic-secret')),()=>{later++;return 'valid'}]){
+ if(readyHook(pass,hook)!=='valid')break;
+}
+eq(later,0);
+eq(sinks,0);
+eq(pipeline([miss,match],[()=>{throw Error('unselected must not run')},pass]),'valid');eq(sinks,1);
+await new Promise<void>(resolve=>setImmediate(resolve));
+await new Promise<void>(resolve=>setImmediate(resolve));
+eq(unhandled.length,0);process.off('unhandledRejection',listener);
+console.log(JSON.stringify({checks,result:'PASS',negativeTypeAssertions:6,limits:'isolated exact-outcome/structural-first model; not generated application code; no hostile Promise species or Proxy execution isolation claim'}));
+```
+
+### `/private/tmp/justix-auth-transport-r2-go/go.mod`
+
+SHA-256 `db9ae1ee238fa6ade699661f85bcd63679451505cf878f4b1093a4d6a86bb3d2`.
+
+```text
+module semanticprobe
+
+go 1.27.1
+```
+
+### `/private/tmp/justix-auth-transport-r2-go/semantics_test.go`
+
+SHA-256 `cfac8efec057a751e8cf924d0968072c2f0567ba71ce6714fbab7fd30b98c75e`.
+
+```go
+package semanticprobe
+
+import "testing"
+
+type Outcome uint8
+const (Valid Outcome=iota+1; Mismatch; FatalPolicy; FatalConfiguration; FatalBinding)
+type Semantics interface { CheckReady() Outcome; ValidateName(string) Outcome; ValidateError(string,int,any) Outcome }
+type fixture struct {ready,name,err func()Outcome}
+func(f *fixture)CheckReady()Outcome{return f.ready()}
+func(f *fixture)ValidateName(string)Outcome{return f.name()}
+func(f *fixture)ValidateError(string,int,any)Outcome{return f.err()}
+func guard(fn func()Outcome)(out Outcome){
+ out=FatalBinding;defer func(){if recover()!=nil{out=FatalBinding}}()
+ got:=fn();switch got{case Valid,Mismatch,FatalPolicy,FatalConfiguration,FatalBinding:return got};return FatalBinding
+}
+func ready(s Semantics)Outcome{r:=guard(s.CheckReady);if r==Mismatch{return FatalBinding};return r}
+func invoke(s Semantics,fn func()Outcome)Outcome{if r:=ready(s);r!=Valid{return r};return guard(fn)}
+func selectBranch(shapes []func()Outcome)(int,Outcome){
+ chosen:=-1;matches:=0
+ for i,fn:=range shapes{r:=guard(fn);switch r{case Valid:chosen=i;matches++;case Mismatch:default:return -1,r}}
+ if matches!=1{return -1,Mismatch};return chosen,Valid
+}
+func run(s Semantics,shapes []func()Outcome,hooks []func()Outcome,sinks *int)Outcome{
+ if r:=ready(s);r!=Valid{return r};chosen,r:=selectBranch(shapes);if r!=Valid{return r}
+ if r=invoke(s,hooks[chosen]);r!=Valid{return r}
+ if r=invoke(s,func()Outcome{return s.ValidateError("sessionRead",401,nil)});r!=Valid{return r}
+ *sinks++;return Valid
+}
+func fixed(v Outcome)func()Outcome{return func()Outcome{return v}}
+func TestExactOutcomesAndStructuralFirst(t *testing.T){
+ ok,miss:=fixed(Valid),fixed(Mismatch);boom:=func()Outcome{panic("synthetic secret")}
+ cases:=[]struct{name string;shapes,hooks []func()Outcome;ready,err func()Outcome;want Outcome}{
+  {"valid unique",[]func()Outcome{miss,ok},[]func()Outcome{boom,ok},ok,ok,Valid},
+  {"ambiguous cannot be resolved by mismatch",[]func()Outcome{ok,ok},[]func()Outcome{miss,ok},ok,ok,Mismatch},
+  {"ambiguous cannot be resolved by fatal",[]func()Outcome{ok,ok},[]func()Outcome{fixed(FatalPolicy),ok},ok,ok,Mismatch},
+  {"semantic mismatch no fallback",[]func()Outcome{ok,miss},[]func()Outcome{miss,ok},ok,ok,Mismatch},
+  {"structural fault plus passing alternative",[]func()Outcome{fixed(FatalConfiguration),ok},[]func()Outcome{ok,ok},ok,ok,FatalConfiguration},
+  {"policy fault selected",[]func()Outcome{miss,ok},[]func()Outcome{ok,fixed(FatalPolicy)},ok,ok,FatalPolicy},
+  {"binding panic selected",[]func()Outcome{miss,ok},[]func()Outcome{ok,boom},ok,ok,FatalBinding},
+  {"unknown outcome selected",[]func()Outcome{ok},[]func()Outcome{fixed(99)},ok,ok,FatalBinding},
+  {"zero outcome selected",[]func()Outcome{ok},[]func()Outcome{fixed(0)},ok,ok,FatalBinding},
+  {"policy readiness",[]func()Outcome{ok},[]func()Outcome{ok},fixed(FatalPolicy),ok,FatalPolicy},
+  {"mismatch readiness is fault",[]func()Outcome{ok},[]func()Outcome{ok},miss,ok,FatalBinding},
+  {"error hook fault",[]func()Outcome{ok},[]func()Outcome{ok},ok,fixed(FatalConfiguration),FatalConfiguration},
+  {"error hook panic",[]func()Outcome{ok},[]func()Outcome{ok},ok,boom,FatalBinding},
+  {"error hook zero",[]func()Outcome{ok},[]func()Outcome{ok},ok,fixed(0),FatalBinding},
+ }
+ for _,c:=range cases{t.Run(c.name,func(t *testing.T){sinks:=0;s:=&fixture{c.ready,ok,c.err};got:=run(s,c.shapes,c.hooks,&sinks);if got!=c.want{t.Fatalf("got %d want %d",got,c.want)};wantSink:=0;if c.want==Valid{wantSink=1};if sinks!=wantSink{t.Fatalf("sinks %d",sinks)}})}
+ t.Run("typed nil is fatal",func(t *testing.T){var f *fixture;var s Semantics=f;if ready(s)!=FatalBinding{t.Fatal("nil accepted")}})
 }
 ```
