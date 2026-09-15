@@ -34940,7 +34940,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-917",
         "T-009"
@@ -34959,8 +34959,10 @@
         "B-01.AC2"
       ],
       "scope": "Typed owner-local source admission ranges and stream fencing; frozen distinct complete recipient plans; explicit empty-plan contract, checkpoint/bootstrap references, drain/hold cutovers and fail-closed conflicts. Technical metadata is not a business data grant.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-918",
+      "base_sha": "5d0236dd2f6c27ba37a9b2cd3c0ef2b9ac97fd1a",
+      "agent": "backend_t918",
+      "execution_note": "Dependencies T917/T009 integrated and Git gate passed. Assigned typed source admission ranges and frozen recipient planning under the same sorted append stream fence; no concrete business admissions."
     },
     {
       "id": "T-919",
