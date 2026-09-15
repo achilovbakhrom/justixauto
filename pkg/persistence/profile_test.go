@@ -3,6 +3,7 @@ package persistence_test
 import (
 	"crypto/sha256"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -388,6 +389,202 @@ func TestRawManifestUnicodeMembersAndExactTypedNames(t *testing.T) {
 				}
 			} else if err == nil || !strings.Contains(err.Error(), tc.want) {
 				t.Fatalf("wanted %q before decoder loss, got %v", tc.want, err)
+			}
+		})
+	}
+}
+
+// These real SQL byte strings hash to nonzero digests with zero FIRST and LAST
+// bytes. Consequently null-byte and shortened-array probes would match after
+// decoder zero-filling; failure cannot depend on accidentally nonzero fixtures.
+func verifyScalarManifestFixture(t *testing.T, artifact int, change func(map[string]any)) error {
+	t.Helper()
+	root, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(filepath.Join(root, "migrations"), 0700); err != nil {
+		t.Fatal(err)
+	}
+	bodies := []string{"T930 canonical base 33023", "T930 canonical feature12 57033"}
+	s := spec()
+	for i, body := range bodies {
+		s.Artifacts[i].Identity.SHA256 = hash(body)
+		digest := s.Artifacts[i].Identity.SHA256
+		if digest[0] != 0 || digest[31] != 0 || digest == (persistence.Digest{}) {
+			t.Fatal("invalid zero-endpoint SQL digest control")
+		}
+	}
+	s.Artifacts[1].Prerequisites[0] = s.Artifacts[0].Identity
+	s.Artifacts[1].Feature.SHA256[0] = 0
+	s.Artifacts[1].Feature.SHA256[31] = 0
+	s.Features[0].Identity = *s.Artifacts[1].Feature
+	for i, a := range s.Artifacts {
+		if err := os.WriteFile(filepath.Join(root, a.Identity.Filename), []byte(bodies[i]), 0600); err != nil {
+			t.Fatal(err)
+		}
+		b, err := json.Marshal(persistence.ArtifactManifest{FormatRevision: 1, Owner: s.Owner, Identity: a.Identity, Prerequisites: a.Prerequisites, Feature: a.Feature})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if i == artifact {
+			var m map[string]any
+			if err := json.Unmarshal(b, &m); err != nil {
+				t.Fatal(err)
+			}
+			change(m)
+			b, err = json.Marshal(m)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
+		s.Artifacts[i].ManifestSHA256 = hash(string(b))
+		if err := os.WriteFile(filepath.Join(root, strings.TrimSuffix(a.Identity.Filename, ".up.sql")+".manifest.json"), b, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return profile(t, s).VerifyFiles(root)
+}
+
+func rawIdentity(m map[string]any, location string) map[string]any {
+	switch location {
+	case "artifact":
+		return m["artifact"].(map[string]any)
+	case "prerequisite":
+		return m["prerequisites"].([]any)[0].(map[string]any)
+	default:
+		return m["feature_contract"].(map[string]any)
+	}
+}
+
+func TestManifestDigestsRequireExactly32ActualIntegerBytes(t *testing.T) {
+	cases := []struct {
+		name   string
+		change func(map[string]any)
+	}{
+		{"null digest", func(m map[string]any) { m["SHA256"] = nil }},
+		{"missing digest", func(m map[string]any) { delete(m, "SHA256") }},
+		{"empty digest", func(m map[string]any) { m["SHA256"] = []any{} }},
+		{"missing zero last byte", func(m map[string]any) { m["SHA256"] = m["SHA256"].([]any)[:31] }},
+		{"one zero byte only", func(m map[string]any) { m["SHA256"] = []any{float64(0)} }},
+		{"extra byte", func(m map[string]any) { m["SHA256"] = append(m["SHA256"].([]any), float64(0)) }},
+		{"extra null", func(m map[string]any) { m["SHA256"] = append(m["SHA256"].([]any), nil) }},
+		{"extra unknown object", func(m map[string]any) { m["SHA256"] = append(m["SHA256"].([]any), map[string]any{"unknown": true}) }},
+		{"extra array", func(m map[string]any) { m["SHA256"] = append(m["SHA256"].([]any), []any{}) }},
+		{"null zero first byte", func(m map[string]any) { m["SHA256"].([]any)[0] = nil }},
+		{"null zero last byte", func(m map[string]any) { m["SHA256"].([]any)[31] = nil }},
+		{"string byte", func(m map[string]any) { m["SHA256"].([]any)[0] = "0" }},
+		{"boolean byte", func(m map[string]any) { m["SHA256"].([]any)[0] = false }},
+		{"object byte", func(m map[string]any) { m["SHA256"].([]any)[0] = map[string]any{} }},
+		{"array byte", func(m map[string]any) { m["SHA256"].([]any)[0] = []any{} }},
+		{"fractional representation", func(m map[string]any) { m["SHA256"].([]any)[0] = json.Number("0.0") }},
+		{"exponent representation", func(m map[string]any) { m["SHA256"].([]any)[0] = json.Number("0e0") }},
+		{"negative zero representation", func(m map[string]any) { m["SHA256"].([]any)[0] = json.Number("-0") }},
+		{"negative byte", func(m map[string]any) { m["SHA256"].([]any)[0] = json.Number("-1") }},
+		{"overflow byte", func(m map[string]any) { m["SHA256"].([]any)[0] = json.Number("256") }},
+		{"huge integer byte", func(m map[string]any) { m["SHA256"].([]any)[0] = json.Number("18446744073709551616") }},
+		{"string digest", func(m map[string]any) { m["SHA256"] = strings.Repeat("0", 64) }},
+		{"object digest", func(m map[string]any) { m["SHA256"] = map[string]any{} }},
+	}
+	for _, location := range []string{"artifact", "prerequisite", "feature"} {
+		t.Run(location+" valid zero endpoints", func(t *testing.T) {
+			if err := verifyScalarManifestFixture(t, 1, func(map[string]any) {}); err != nil {
+				t.Fatal(err)
+			}
+		})
+		for _, tc := range cases {
+			t.Run(location+"/"+tc.name, func(t *testing.T) {
+				if err := verifyScalarManifestFixture(t, 1, func(m map[string]any) { tc.change(rawIdentity(m, location)) }); err == nil {
+					t.Fatal("malformed digest accepted before typed conversion")
+				}
+			})
+		}
+	}
+}
+
+func TestManifestIdentityScalarsDoNotNormalizeNullOrOmission(t *testing.T) {
+	for _, field := range []string{"owner", "format_revision", "artifact", "prerequisites", "feature_contract"} {
+		for _, missing := range []bool{false, true} {
+			t.Run(fmt.Sprintf("root %s missing=%v", field, missing), func(t *testing.T) {
+				if err := verifyScalarManifestFixture(t, 1, func(m map[string]any) {
+					if missing {
+						delete(m, field)
+					} else {
+						m[field] = nil
+					}
+				}); err == nil {
+					t.Fatal("required feature identity became valid by null/default conversion")
+				}
+			})
+		}
+	}
+	for _, location := range []string{"artifact", "prerequisite", "feature"} {
+		fields := []string{"Version", "Filename"}
+		if location == "feature" {
+			fields = []string{"Revision", "ID"}
+		}
+		for _, field := range fields {
+			for _, kind := range []string{"null", "omitted", "boolean", "array", "object", "fraction", "overflow"} {
+				t.Run(location+"/"+field+"/"+kind, func(t *testing.T) {
+					if err := verifyScalarManifestFixture(t, 1, func(m map[string]any) {
+						item := rawIdentity(m, location)
+						switch kind {
+						case "null":
+							item[field] = nil
+						case "omitted":
+							delete(item, field)
+						case "boolean":
+							item[field] = true
+						case "array":
+							item[field] = []any{}
+						case "object":
+							item[field] = map[string]any{}
+						case "fraction":
+							item[field] = json.Number("1.0")
+						case "overflow":
+							item[field] = json.Number("18446744073709551616")
+						}
+					}); err == nil {
+						t.Fatal("malformed identity scalar accepted")
+					}
+				})
+			}
+		}
+	}
+	for _, kind := range []string{"null prerequisite item", "null after real prerequisite", "array feature", "array artifact", "string prerequisites"} {
+		t.Run(kind, func(t *testing.T) {
+			if err := verifyScalarManifestFixture(t, 1, func(m map[string]any) {
+				switch kind {
+				case "null prerequisite item":
+					m["prerequisites"] = []any{nil}
+				case "null after real prerequisite":
+					m["prerequisites"] = append(m["prerequisites"].([]any), nil)
+				case "array feature":
+					m["feature_contract"] = []any{}
+				case "array artifact":
+					m["artifact"] = []any{}
+				case "string prerequisites":
+					m["prerequisites"] = ""
+				}
+			}); err == nil {
+				t.Fatal("malformed composite identity accepted")
+			}
+		})
+	}
+	// Format 1 explicitly represents absent BASELINE prerequisites/feature with
+	// null (the canonical Go manifest), and also permits an empty prerequisite
+	// array. These are declared nullable positions, not ignored numeric nulls.
+	for _, empty := range []bool{false, true} {
+		t.Run(fmt.Sprintf("baseline nullable control empty=%v", empty), func(t *testing.T) {
+			if err := verifyScalarManifestFixture(t, 0, func(m map[string]any) {
+				m["feature_contract"] = nil
+				if empty {
+					m["prerequisites"] = []any{}
+				} else {
+					m["prerequisites"] = nil
+				}
+			}); err != nil {
+				t.Fatal(err)
 			}
 		})
 	}

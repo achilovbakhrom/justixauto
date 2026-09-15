@@ -503,8 +503,47 @@ func validateManifestJSON(b []byte) error {
 	if !ok {
 		return bad("field names")
 	}
-	if _, ok := exact(m["artifact"], "Version", "Filename", "SHA256"); !ok {
-		return bad("field names")
+	// encoding/json's fixed-array decoder truncates extra values, zero-fills
+	// short arrays and ignores null numeric elements. Validate every raw scalar
+	// and every digest array here, before any typed conversion can discard them.
+	integer := func(v any, bits int, positive bool) bool {
+		n, ok := v.(json.Number)
+		if !ok {
+			return false
+		}
+		u, err := strconv.ParseUint(string(n), 10, bits)
+		return err == nil && (!positive || u > 0)
+	}
+	identity := func(v any, feature bool) error {
+		version, name := "Version", "Filename"
+		bits := 63
+		if feature {
+			version, name = "Revision", "ID"
+			bits = 32
+		}
+		item, ok := exact(v, version, name, "SHA256")
+		if !ok {
+			return bad("field names")
+		}
+		if _, ok := item[name].(string); !ok || !integer(item[version], bits, true) {
+			return bad("identity scalar")
+		}
+		digest, ok := item["SHA256"].([]any)
+		if !ok || len(digest) != 32 {
+			return bad("digest shape")
+		}
+		for _, part := range digest {
+			if !integer(part, 8, false) {
+				return bad("digest byte")
+			}
+		}
+		return nil
+	}
+	if _, ok := m["owner"].(string); !ok || !integer(m["format_revision"], 32, true) {
+		return bad("identity scalar")
+	}
+	if err := identity(m["artifact"], false); err != nil {
+		return err
 	}
 	if m["prerequisites"] != nil {
 		items, ok := m["prerequisites"].([]any)
@@ -512,14 +551,14 @@ func validateManifestJSON(b []byte) error {
 			return bad("prerequisite shape")
 		}
 		for _, item := range items {
-			if _, ok := exact(item, "Version", "Filename", "SHA256"); !ok {
-				return bad("field names")
+			if err := identity(item, false); err != nil {
+				return err
 			}
 		}
 	}
 	if m["feature_contract"] != nil {
-		if _, ok := exact(m["feature_contract"], "ID", "Revision", "SHA256"); !ok {
-			return bad("field names")
+		if err := identity(m["feature_contract"], true); err != nil {
+			return err
 		}
 	}
 	return nil
