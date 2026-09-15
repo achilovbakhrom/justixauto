@@ -1216,7 +1216,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1245,7 +1245,8 @@
       "base_sha": "940094adae97ef9582ffebadb4f69ce6fba2f88f",
       "reviewed_sha": "009f21044bfcff216ac83eec78ce51a0e3798c5c",
       "agent": "qa_t026",
-      "execution_note": "Commerce scaffold implementation complete; full project race/live Commerce PG tests and vet passed. Independent exact-commit QA assigned for owner/grant/ledger isolation, scoped receipts, concurrency and actual unknown commit recovery; legacy-only scope remains explicit."
+      "execution_note": "Independent QA GREEN at009f21044bfcff216ac83eec78ce51a0e3798c5c with14 adversarial PG probes. Main full project race with live Commerce flag PASS (Commerce14.397s) and vet PASS against integrated T919 writer. Private typed persistence/ledger/grant readiness integrated; business authorization, API roots, real migration runner and custody support remain separate.",
+      "integration_sha": "0d8648a564b04ed8eae813c6648b535c61f95292"
     },
     {
       "id": "T-027",
