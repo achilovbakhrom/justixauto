@@ -1,0 +1,2183 @@
+{
+  "checks": [
+    "admin:4590 wildcard missing-resource rejected",
+    "admin:4590 wildcard index.html rejected",
+    "admin:4590 wildcard %69ndex%2ehtml rejected",
+    "admin:4590 JSON missing-resource rejected",
+    "admin:4590 JSON index.html rejected",
+    "admin:4590 JSON %69ndex%2ehtml rejected",
+    "admin:4590 zero HTML missing-resource rejected",
+    "admin:4590 zero HTML index.html rejected",
+    "admin:4590 zero HTML %69ndex%2ehtml rejected",
+    "admin:4590 wrong media missing-resource rejected",
+    "admin:4590 wrong media index.html rejected",
+    "admin:4590 wrong media %69ndex%2ehtml rejected",
+    "admin:4590 script missing-resource rejected",
+    "admin:4590 script index.html rejected",
+    "admin:4590 script %69ndex%2ehtml rejected",
+    "admin:4590 fetch missing-resource rejected",
+    "admin:4590 fetch index.html rejected",
+    "admin:4590 fetch %69ndex%2ehtml rejected",
+    "admin:4590 HTML fetch missing-resource rejected",
+    "admin:4590 HTML fetch index.html rejected",
+    "admin:4590 HTML fetch %69ndex%2ehtml rejected",
+    "admin:4590 HTML script missing-resource rejected",
+    "admin:4590 HTML script index.html rejected",
+    "admin:4590 HTML script %69ndex%2ehtml rejected",
+    "admin:4590 image missing-resource rejected",
+    "admin:4590 image index.html rejected",
+    "admin:4590 image %69ndex%2ehtml rejected",
+    "admin:4590 inconsistent mode missing-resource rejected",
+    "admin:4590 inconsistent mode index.html rejected",
+    "admin:4590 inconsistent mode %69ndex%2ehtml rejected",
+    "admin:4590 document GET {\"Accept\":\"text/html\"}",
+    "admin:4590 document HEAD {\"Accept\":\"text/html\"}",
+    "admin:4590 document GET {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4590 document HEAD {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4590 document GET {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4590 document HEAD {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4590 prefix/assets /",
+    "admin:4590 prefix/assets /api/session",
+    "admin:4590 prefix/assets /admin/api/session",
+    "admin:4590 prefix/assets /finance/",
+    "admin:4590 prefix/assets /admin/assets/missing",
+    "admin:4590 prefix/assets /admin/missing.js",
+    "admin:4590 prefix/assets /admin/%61pi",
+    "admin:4590 reject POST",
+    "admin:4590 reject PUT",
+    "admin:4590 reject PATCH",
+    "admin:4590 reject DELETE",
+    "admin:4590 actual navigation /admin/",
+    "admin:4590 actual navigation /admin/applications/synthetic",
+    "admin:4590 actual navigation /admin/index.html",
+    "admin:4590 actual entry scripts loaded",
+    "admin:4590 Chromium fetch missing-resource null",
+    "admin:4590 Chromium fetch index.html null",
+    "admin:4590 Chromium fetch missing-resource text/html",
+    "admin:4590 Chromium fetch index.html text/html",
+    "admin:4590 Chromium script rejected",
+    "admin:4590 missing script not executed",
+    "admin:4591 wildcard missing-resource rejected",
+    "admin:4591 wildcard index.html rejected",
+    "admin:4591 wildcard %69ndex%2ehtml rejected",
+    "admin:4591 JSON missing-resource rejected",
+    "admin:4591 JSON index.html rejected",
+    "admin:4591 JSON %69ndex%2ehtml rejected",
+    "admin:4591 zero HTML missing-resource rejected",
+    "admin:4591 zero HTML index.html rejected",
+    "admin:4591 zero HTML %69ndex%2ehtml rejected",
+    "admin:4591 wrong media missing-resource rejected",
+    "admin:4591 wrong media index.html rejected",
+    "admin:4591 wrong media %69ndex%2ehtml rejected",
+    "admin:4591 script missing-resource rejected",
+    "admin:4591 script index.html rejected",
+    "admin:4591 script %69ndex%2ehtml rejected",
+    "admin:4591 fetch missing-resource rejected",
+    "admin:4591 fetch index.html rejected",
+    "admin:4591 fetch %69ndex%2ehtml rejected",
+    "admin:4591 HTML fetch missing-resource rejected",
+    "admin:4591 HTML fetch index.html rejected",
+    "admin:4591 HTML fetch %69ndex%2ehtml rejected",
+    "admin:4591 HTML script missing-resource rejected",
+    "admin:4591 HTML script index.html rejected",
+    "admin:4591 HTML script %69ndex%2ehtml rejected",
+    "admin:4591 image missing-resource rejected",
+    "admin:4591 image index.html rejected",
+    "admin:4591 image %69ndex%2ehtml rejected",
+    "admin:4591 inconsistent mode missing-resource rejected",
+    "admin:4591 inconsistent mode index.html rejected",
+    "admin:4591 inconsistent mode %69ndex%2ehtml rejected",
+    "admin:4591 document GET {\"Accept\":\"text/html\"}",
+    "admin:4591 document HEAD {\"Accept\":\"text/html\"}",
+    "admin:4591 document GET {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4591 document HEAD {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4591 document GET {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4591 document HEAD {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "admin:4591 prefix/assets /",
+    "admin:4591 prefix/assets /api/session",
+    "admin:4591 prefix/assets /admin/api/session",
+    "admin:4591 prefix/assets /finance/",
+    "admin:4591 prefix/assets /admin/assets/missing",
+    "admin:4591 prefix/assets /admin/missing.js",
+    "admin:4591 prefix/assets /admin/%61pi",
+    "admin:4591 reject POST",
+    "admin:4591 reject PUT",
+    "admin:4591 reject PATCH",
+    "admin:4591 reject DELETE",
+    "admin:4591 actual navigation /admin/",
+    "admin:4591 actual navigation /admin/applications/synthetic",
+    "admin:4591 actual navigation /admin/index.html",
+    "admin:4591 actual entry scripts loaded",
+    "admin:4591 Chromium fetch missing-resource null",
+    "admin:4591 Chromium fetch index.html null",
+    "admin:4591 Chromium fetch missing-resource text/html",
+    "admin:4591 Chromium fetch index.html text/html",
+    "admin:4591 Chromium script rejected",
+    "admin:4591 missing script not executed",
+    "realization:4592 wildcard missing-resource rejected",
+    "realization:4592 wildcard index.html rejected",
+    "realization:4592 wildcard %69ndex%2ehtml rejected",
+    "realization:4592 JSON missing-resource rejected",
+    "realization:4592 JSON index.html rejected",
+    "realization:4592 JSON %69ndex%2ehtml rejected",
+    "realization:4592 zero HTML missing-resource rejected",
+    "realization:4592 zero HTML index.html rejected",
+    "realization:4592 zero HTML %69ndex%2ehtml rejected",
+    "realization:4592 wrong media missing-resource rejected",
+    "realization:4592 wrong media index.html rejected",
+    "realization:4592 wrong media %69ndex%2ehtml rejected",
+    "realization:4592 script missing-resource rejected",
+    "realization:4592 script index.html rejected",
+    "realization:4592 script %69ndex%2ehtml rejected",
+    "realization:4592 fetch missing-resource rejected",
+    "realization:4592 fetch index.html rejected",
+    "realization:4592 fetch %69ndex%2ehtml rejected",
+    "realization:4592 HTML fetch missing-resource rejected",
+    "realization:4592 HTML fetch index.html rejected",
+    "realization:4592 HTML fetch %69ndex%2ehtml rejected",
+    "realization:4592 HTML script missing-resource rejected",
+    "realization:4592 HTML script index.html rejected",
+    "realization:4592 HTML script %69ndex%2ehtml rejected",
+    "realization:4592 image missing-resource rejected",
+    "realization:4592 image index.html rejected",
+    "realization:4592 image %69ndex%2ehtml rejected",
+    "realization:4592 inconsistent mode missing-resource rejected",
+    "realization:4592 inconsistent mode index.html rejected",
+    "realization:4592 inconsistent mode %69ndex%2ehtml rejected",
+    "realization:4592 document GET {\"Accept\":\"text/html\"}",
+    "realization:4592 document HEAD {\"Accept\":\"text/html\"}",
+    "realization:4592 document GET {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4592 document HEAD {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4592 document GET {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4592 document HEAD {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4592 prefix/assets /admin/",
+    "realization:4592 prefix/assets /finance/",
+    "realization:4592 prefix/assets /insurance/",
+    "realization:4592 prefix/assets /api/session",
+    "realization:4592 prefix/assets /assets/missing",
+    "realization:4592 prefix/assets /missing.js",
+    "realization:4592 prefix/assets /%61pi",
+    "realization:4592 reject POST",
+    "realization:4592 reject PUT",
+    "realization:4592 reject PATCH",
+    "realization:4592 reject DELETE",
+    "realization:4592 actual navigation /",
+    "realization:4592 actual navigation /applications/synthetic",
+    "realization:4592 actual navigation /index.html",
+    "realization:4592 actual entry scripts loaded",
+    "realization:4592 Chromium fetch missing-resource null",
+    "realization:4592 Chromium fetch index.html null",
+    "realization:4592 Chromium fetch missing-resource text/html",
+    "realization:4592 Chromium fetch index.html text/html",
+    "realization:4592 Chromium script rejected",
+    "realization:4592 missing script not executed",
+    "realization:4593 wildcard missing-resource rejected",
+    "realization:4593 wildcard index.html rejected",
+    "realization:4593 wildcard %69ndex%2ehtml rejected",
+    "realization:4593 JSON missing-resource rejected",
+    "realization:4593 JSON index.html rejected",
+    "realization:4593 JSON %69ndex%2ehtml rejected",
+    "realization:4593 zero HTML missing-resource rejected",
+    "realization:4593 zero HTML index.html rejected",
+    "realization:4593 zero HTML %69ndex%2ehtml rejected",
+    "realization:4593 wrong media missing-resource rejected",
+    "realization:4593 wrong media index.html rejected",
+    "realization:4593 wrong media %69ndex%2ehtml rejected",
+    "realization:4593 script missing-resource rejected",
+    "realization:4593 script index.html rejected",
+    "realization:4593 script %69ndex%2ehtml rejected",
+    "realization:4593 fetch missing-resource rejected",
+    "realization:4593 fetch index.html rejected",
+    "realization:4593 fetch %69ndex%2ehtml rejected",
+    "realization:4593 HTML fetch missing-resource rejected",
+    "realization:4593 HTML fetch index.html rejected",
+    "realization:4593 HTML fetch %69ndex%2ehtml rejected",
+    "realization:4593 HTML script missing-resource rejected",
+    "realization:4593 HTML script index.html rejected",
+    "realization:4593 HTML script %69ndex%2ehtml rejected",
+    "realization:4593 image missing-resource rejected",
+    "realization:4593 image index.html rejected",
+    "realization:4593 image %69ndex%2ehtml rejected",
+    "realization:4593 inconsistent mode missing-resource rejected",
+    "realization:4593 inconsistent mode index.html rejected",
+    "realization:4593 inconsistent mode %69ndex%2ehtml rejected",
+    "realization:4593 document GET {\"Accept\":\"text/html\"}",
+    "realization:4593 document HEAD {\"Accept\":\"text/html\"}",
+    "realization:4593 document GET {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4593 document HEAD {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4593 document GET {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4593 document HEAD {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "realization:4593 prefix/assets /admin/",
+    "realization:4593 prefix/assets /finance/",
+    "realization:4593 prefix/assets /insurance/",
+    "realization:4593 prefix/assets /api/session",
+    "realization:4593 prefix/assets /assets/missing",
+    "realization:4593 prefix/assets /missing.js",
+    "realization:4593 prefix/assets /%61pi",
+    "realization:4593 reject POST",
+    "realization:4593 reject PUT",
+    "realization:4593 reject PATCH",
+    "realization:4593 reject DELETE",
+    "realization:4593 actual navigation /",
+    "realization:4593 actual navigation /applications/synthetic",
+    "realization:4593 actual navigation /index.html",
+    "realization:4593 actual entry scripts loaded",
+    "realization:4593 Chromium fetch missing-resource null",
+    "realization:4593 Chromium fetch index.html null",
+    "realization:4593 Chromium fetch missing-resource text/html",
+    "realization:4593 Chromium fetch index.html text/html",
+    "realization:4593 Chromium script rejected",
+    "realization:4593 missing script not executed",
+    "financing:4594 wildcard missing-resource rejected",
+    "financing:4594 wildcard index.html rejected",
+    "financing:4594 wildcard %69ndex%2ehtml rejected",
+    "financing:4594 JSON missing-resource rejected",
+    "financing:4594 JSON index.html rejected",
+    "financing:4594 JSON %69ndex%2ehtml rejected",
+    "financing:4594 zero HTML missing-resource rejected",
+    "financing:4594 zero HTML index.html rejected",
+    "financing:4594 zero HTML %69ndex%2ehtml rejected",
+    "financing:4594 wrong media missing-resource rejected",
+    "financing:4594 wrong media index.html rejected",
+    "financing:4594 wrong media %69ndex%2ehtml rejected",
+    "financing:4594 script missing-resource rejected",
+    "financing:4594 script index.html rejected",
+    "financing:4594 script %69ndex%2ehtml rejected",
+    "financing:4594 fetch missing-resource rejected",
+    "financing:4594 fetch index.html rejected",
+    "financing:4594 fetch %69ndex%2ehtml rejected",
+    "financing:4594 HTML fetch missing-resource rejected",
+    "financing:4594 HTML fetch index.html rejected",
+    "financing:4594 HTML fetch %69ndex%2ehtml rejected",
+    "financing:4594 HTML script missing-resource rejected",
+    "financing:4594 HTML script index.html rejected",
+    "financing:4594 HTML script %69ndex%2ehtml rejected",
+    "financing:4594 image missing-resource rejected",
+    "financing:4594 image index.html rejected",
+    "financing:4594 image %69ndex%2ehtml rejected",
+    "financing:4594 inconsistent mode missing-resource rejected",
+    "financing:4594 inconsistent mode index.html rejected",
+    "financing:4594 inconsistent mode %69ndex%2ehtml rejected",
+    "financing:4594 document GET {\"Accept\":\"text/html\"}",
+    "financing:4594 document HEAD {\"Accept\":\"text/html\"}",
+    "financing:4594 document GET {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4594 document HEAD {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4594 document GET {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4594 document HEAD {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4594 prefix/assets /",
+    "financing:4594 prefix/assets /api/session",
+    "financing:4594 prefix/assets /finance/api/session",
+    "financing:4594 prefix/assets /admin/",
+    "financing:4594 prefix/assets /finance/assets/missing",
+    "financing:4594 prefix/assets /finance/missing.js",
+    "financing:4594 prefix/assets /finance/%61pi",
+    "financing:4594 reject POST",
+    "financing:4594 reject PUT",
+    "financing:4594 reject PATCH",
+    "financing:4594 reject DELETE",
+    "financing:4594 actual navigation /finance/",
+    "financing:4594 actual navigation /finance/applications/synthetic",
+    "financing:4594 actual navigation /finance/index.html",
+    "financing:4594 actual entry scripts loaded",
+    "financing:4594 Chromium fetch missing-resource null",
+    "financing:4594 Chromium fetch index.html null",
+    "financing:4594 Chromium fetch missing-resource text/html",
+    "financing:4594 Chromium fetch index.html text/html",
+    "financing:4594 Chromium script rejected",
+    "financing:4594 missing script not executed",
+    "financing:4595 wildcard missing-resource rejected",
+    "financing:4595 wildcard index.html rejected",
+    "financing:4595 wildcard %69ndex%2ehtml rejected",
+    "financing:4595 JSON missing-resource rejected",
+    "financing:4595 JSON index.html rejected",
+    "financing:4595 JSON %69ndex%2ehtml rejected",
+    "financing:4595 zero HTML missing-resource rejected",
+    "financing:4595 zero HTML index.html rejected",
+    "financing:4595 zero HTML %69ndex%2ehtml rejected",
+    "financing:4595 wrong media missing-resource rejected",
+    "financing:4595 wrong media index.html rejected",
+    "financing:4595 wrong media %69ndex%2ehtml rejected",
+    "financing:4595 script missing-resource rejected",
+    "financing:4595 script index.html rejected",
+    "financing:4595 script %69ndex%2ehtml rejected",
+    "financing:4595 fetch missing-resource rejected",
+    "financing:4595 fetch index.html rejected",
+    "financing:4595 fetch %69ndex%2ehtml rejected",
+    "financing:4595 HTML fetch missing-resource rejected",
+    "financing:4595 HTML fetch index.html rejected",
+    "financing:4595 HTML fetch %69ndex%2ehtml rejected",
+    "financing:4595 HTML script missing-resource rejected",
+    "financing:4595 HTML script index.html rejected",
+    "financing:4595 HTML script %69ndex%2ehtml rejected",
+    "financing:4595 image missing-resource rejected",
+    "financing:4595 image index.html rejected",
+    "financing:4595 image %69ndex%2ehtml rejected",
+    "financing:4595 inconsistent mode missing-resource rejected",
+    "financing:4595 inconsistent mode index.html rejected",
+    "financing:4595 inconsistent mode %69ndex%2ehtml rejected",
+    "financing:4595 document GET {\"Accept\":\"text/html\"}",
+    "financing:4595 document HEAD {\"Accept\":\"text/html\"}",
+    "financing:4595 document GET {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4595 document HEAD {\"Accept\":\"text/html;q=0.8,application/xhtml+xml;q=0.9,*/*;q=0.1\",\"Sec-Fetch-Dest\":\"document\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4595 document GET {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4595 document HEAD {\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"iframe\",\"Sec-Fetch-Mode\":\"navigate\"}",
+    "financing:4595 prefix/assets /",
+    "financing:4595 prefix/assets /api/session",
+    "financing:4595 prefix/assets /finance/api/session",
+    "financing:4595 prefix/assets /admin/",
+    "financing:4595 prefix/assets /finance/assets/missing",
+    "financing:4595 prefix/assets /finance/missing.js",
+    "financing:4595 prefix/assets /finance/%61pi",
+    "financing:4595 reject POST",
+    "financing:4595 reject PUT",
+    "financing:4595 reject PATCH",
+    "financing:4595 reject DELETE",
+    "financing:4595 actual navigation /finance/",
+    "financing:4595 actual navigation /finance/applications/synthetic",
+    "financing:4595 actual navigation /finance/index.html",
+    "financing:4595 actual entry scripts loaded",
+    "financing:4595 Chromium fetch missing-resource null",
+    "financing:4595 Chromium fetch index.html null",
+    "financing:4595 Chromium fetch missing-resource text/html",
+    "financing:4595 Chromium fetch index.html text/html",
+    "financing:4595 Chromium script rejected",
+    "financing:4595 missing script not executed",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1180-candidate-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1180-candidate-viewport.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1180-reference-projected.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1180-reference-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1440-candidate-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1440-candidate-viewport.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1440-reference-projected.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-1440-reference-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-600-candidate-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-600-candidate-viewport.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-600-reference-projected.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-600-reference-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-browser.mjs",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-fixture.html",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-long-label.png",
+    "preserved docs/justix-auto/dev/qa/T-038/developer-observations.json",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1180-candidate-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1180-candidate-viewport.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1180-reference-projected.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1180-reference-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1440-candidate-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1440-candidate-viewport.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1440-reference-projected.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-1440-reference-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-600-candidate-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-600-candidate-viewport.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-600-reference-projected.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-600-reference-raw.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-browser.mjs",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-fixture.html",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-long-label.png",
+    "preserved docs/justix-auto/dev/qa/T-038/independent-observations.json",
+    "preserved package-lock.json"
+  ],
+  "responses": [
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "wildcard",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "wildcard",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "wildcard",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "JSON",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "JSON",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "JSON",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "zero HTML",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "zero HTML",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "zero HTML",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "wrong media",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "wrong media",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "wrong media",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "HTML fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "HTML fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "HTML fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "HTML script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "HTML script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "HTML script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "image",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "image",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "image",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "inconsistent mode",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "inconsistent mode",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "name": "inconsistent mode",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "wildcard",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "wildcard",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "wildcard",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "JSON",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "JSON",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "JSON",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "zero HTML",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "zero HTML",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "zero HTML",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "wrong media",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "wrong media",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "wrong media",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "HTML fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "HTML fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "HTML fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "HTML script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "HTML script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "HTML script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "image",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "image",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "image",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "inconsistent mode",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "inconsistent mode",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "name": "inconsistent mode",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "wildcard",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "wildcard",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "wildcard",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "JSON",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "JSON",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "JSON",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "zero HTML",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "zero HTML",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "zero HTML",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "wrong media",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "wrong media",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "wrong media",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "HTML fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "HTML fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "HTML fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "HTML script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "HTML script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "HTML script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "image",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "image",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "image",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "inconsistent mode",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "inconsistent mode",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "name": "inconsistent mode",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "wildcard",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "wildcard",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "wildcard",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "JSON",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "JSON",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "JSON",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "zero HTML",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "zero HTML",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "zero HTML",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "wrong media",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "wrong media",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "wrong media",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "HTML fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "HTML fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "HTML fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "HTML script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "HTML script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "HTML script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "image",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "image",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "image",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "inconsistent mode",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "inconsistent mode",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "name": "inconsistent mode",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "wildcard",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "wildcard",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "wildcard",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "JSON",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "JSON",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "JSON",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "zero HTML",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "zero HTML",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "zero HTML",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "wrong media",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "wrong media",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "wrong media",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "HTML fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "HTML fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "HTML fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "HTML script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "HTML script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "HTML script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "image",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "image",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "image",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "inconsistent mode",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "inconsistent mode",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "name": "inconsistent mode",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "wildcard",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "wildcard",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "wildcard",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "JSON",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "JSON",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "JSON",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "zero HTML",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "zero HTML",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "zero HTML",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "wrong media",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "wrong media",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "wrong media",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "HTML fetch",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "HTML fetch",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "HTML fetch",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "HTML script",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "HTML script",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "HTML script",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "image",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "image",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "image",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "inconsistent mode",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "inconsistent mode",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "name": "inconsistent mode",
+      "resource": "%69ndex%2ehtml",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    }
+  ],
+  "browserRequests": [
+    {
+      "app": "admin",
+      "port": 4590,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4590,
+      "kind": "script",
+      "status": 404,
+      "requestHeaders": {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "host": "127.0.0.1:4590",
+        "referer": "http://127.0.0.1:4590/admin/index.html",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "admin",
+      "port": 4591,
+      "kind": "script",
+      "status": 404,
+      "requestHeaders": {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "host": "127.0.0.1:4591",
+        "referer": "http://127.0.0.1:4591/admin/index.html",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4592,
+      "kind": "script",
+      "status": 404,
+      "requestHeaders": {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "host": "127.0.0.1:4592",
+        "referer": "http://127.0.0.1:4592/index.html",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "realization",
+      "port": 4593,
+      "kind": "script",
+      "status": 404,
+      "requestHeaders": {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "host": "127.0.0.1:4593",
+        "referer": "http://127.0.0.1:4593/index.html",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4594,
+      "kind": "script",
+      "status": 404,
+      "requestHeaders": {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "host": "127.0.0.1:4594",
+        "referer": "http://127.0.0.1:4594/finance/index.html",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "kind": "fetch",
+      "accept": null,
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "missing-resource",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "kind": "fetch",
+      "accept": "text/html",
+      "resource": "index.html",
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "body": "Not found"
+    },
+    {
+      "app": "financing",
+      "port": 4595,
+      "kind": "script",
+      "status": 404,
+      "requestHeaders": {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "host": "127.0.0.1:4595",
+        "referer": "http://127.0.0.1:4595/finance/index.html",
+        "sec-fetch-dest": "script",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+        "sec-ch-ua": "\"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\""
+      }
+    }
+  ]
+}
