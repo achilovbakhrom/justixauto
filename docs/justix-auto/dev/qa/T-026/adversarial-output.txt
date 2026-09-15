@@ -1,0 +1,32 @@
+=== RUN   TestQACommerceAdversarial
+=== RUN   TestQACommerceAdversarial/inherited-default-grant-shared-install-atomic-rejection
+=== RUN   TestQACommerceAdversarial/owner-marker-default-grant-rejected-without-repair
+=== RUN   TestQACommerceAdversarial/check-is-read-only
+=== RUN   TestQACommerceAdversarial/public-maintain
+=== RUN   TestQACommerceAdversarial/two-hop-noinherit
+=== RUN   TestQACommerceAdversarial/missing-events-insert
+=== RUN   TestQACommerceAdversarial/missing-inbox-select
+=== RUN   TestQACommerceAdversarial/missing-outbox-lease-update
+=== RUN   TestQACommerceAdversarial/missing-operation-revision-update
+=== RUN   TestQACommerceAdversarial/missing-eventstore-usage
+=== RUN   TestQACommerceAdversarial/extra-ledger-row
+=== RUN   TestQACommerceAdversarial/factory-error-rolls-back-all-three-records
+=== RUN   TestQACommerceAdversarial/competing-changed-input-one-receipt
+=== RUN   TestQACommerceAdversarial/operation-company-fence-before-authorization
+--- PASS: TestQACommerceAdversarial (4.09s)
+    --- PASS: TestQACommerceAdversarial/inherited-default-grant-shared-install-atomic-rejection (0.26s)
+    --- PASS: TestQACommerceAdversarial/owner-marker-default-grant-rejected-without-repair (0.12s)
+    --- PASS: TestQACommerceAdversarial/check-is-read-only (0.00s)
+    --- PASS: TestQACommerceAdversarial/public-maintain (0.12s)
+    --- PASS: TestQACommerceAdversarial/two-hop-noinherit (0.11s)
+    --- PASS: TestQACommerceAdversarial/missing-events-insert (0.13s)
+    --- PASS: TestQACommerceAdversarial/missing-inbox-select (0.14s)
+    --- PASS: TestQACommerceAdversarial/missing-outbox-lease-update (0.11s)
+    --- PASS: TestQACommerceAdversarial/missing-operation-revision-update (0.11s)
+    --- PASS: TestQACommerceAdversarial/missing-eventstore-usage (0.13s)
+    --- PASS: TestQACommerceAdversarial/extra-ledger-row (0.14s)
+    --- PASS: TestQACommerceAdversarial/factory-error-rolls-back-all-three-records (0.20s)
+    --- PASS: TestQACommerceAdversarial/competing-changed-input-one-receipt (0.19s)
+    --- PASS: TestQACommerceAdversarial/operation-company-fence-before-authorization (0.09s)
+PASS
+ok  	justixauto/services/commerce/adapter/postgres	5.929s

@@ -1,0 +1,574 @@
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestCommercePostgresMechanics
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/database_create
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/database_temporary
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/events_maintain
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/events_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/events_column_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_maintain
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_maintain
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_column_insert
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_column_insert
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_column_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_column_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/database_create
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/database_temporary
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/events_maintain
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/events_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/events_column_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_maintain
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_maintain
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_column_insert
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_column_insert
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_column_references
+=== RUN   TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_column_references
+=== RUN   TestCommercePostgresMechanics/required-grants-and-transitive-reachability
+=== RUN   TestCommercePostgresMechanics/factory-failure-rolls-back-before-callback
+=== RUN   TestCommercePostgresMechanics/atomic-rollback-replay-and-idempotency
+=== RUN   TestCommercePostgresMechanics/uncommitted-history-invisible-and-panic-cleanup
+--- PASS: TestCommercePostgresMechanics (9.45s)
+    --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants (3.34s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/database_create (0.13s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/database_temporary (0.13s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/events_maintain (0.13s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/events_references (0.15s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/events_column_references (0.14s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_maintain (0.12s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_maintain (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_references (0.13s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_references (0.12s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_column_insert (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_column_insert (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/marker_column_references (0.12s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/justix_commerce_runtime/ledger_column_references (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/database_create (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/database_temporary (0.12s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/events_maintain (0.14s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/events_references (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/events_column_references (0.12s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_maintain (0.13s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_maintain (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_references (0.10s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_references (0.13s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_column_insert (0.11s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_column_insert (0.14s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/marker_column_references (0.12s)
+        --- PASS: TestCommercePostgresMechanics/excess-direct-and-reachable-role-grants/commerce_fixture_grants/ledger_column_references (0.14s)
+    --- PASS: TestCommercePostgresMechanics/required-grants-and-transitive-reachability (1.35s)
+    --- PASS: TestCommercePostgresMechanics/factory-failure-rolls-back-before-callback (0.18s)
+    --- PASS: TestCommercePostgresMechanics/atomic-rollback-replay-and-idempotency (0.44s)
+    --- PASS: TestCommercePostgresMechanics/uncommitted-history-invisible-and-panic-cleanup (0.03s)
+=== RUN   TestCommerceScopeRecoveryAndMessaging
+=== RUN   TestCommerceScopeRecoveryAndMessaging/company-required-and-receipt-scope
+=== RUN   TestCommerceScopeRecoveryAndMessaging/lost-reply-actual-commit-false
+=== RUN   TestCommerceScopeRecoveryAndMessaging/lost-reply-actual-commit-true
+=== RUN   TestCommerceScopeRecoveryAndMessaging/additive-legacy-ready-custody-rejected
+--- PASS: TestCommerceScopeRecoveryAndMessaging (2.88s)
+    --- PASS: TestCommerceScopeRecoveryAndMessaging/company-required-and-receipt-scope (0.21s)
+    --- PASS: TestCommerceScopeRecoveryAndMessaging/lost-reply-actual-commit-false (0.14s)
+    --- PASS: TestCommerceScopeRecoveryAndMessaging/lost-reply-actual-commit-true (0.15s)
+    --- PASS: TestCommerceScopeRecoveryAndMessaging/additive-legacy-ready-custody-rejected (0.22s)
+PASS
+ok  	justixauto/services/commerce/adapter/postgres	13.967s
+?   	justixauto/services/commerce/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestIdentityPostgresMechanics
+    unit_of_work_test.go:140: set JUSTIXAUTO_TEST_IDENTITY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestIdentityPostgresMechanics (0.00s)
+PASS
+ok  	justixauto/services/identity/adapter/postgres	2.027s
+?   	justixauto/services/identity/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestInventoryPostgresMechanics
+    unit_of_work_test.go:142: set JUSTIXAUTO_TEST_INVENTORY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestInventoryPostgresMechanics (0.00s)
+=== RUN   TestInventoryScopeRecoveryAndMessaging
+    unit_of_work_test.go:453: set JUSTIXAUTO_TEST_INVENTORY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestInventoryScopeRecoveryAndMessaging (0.00s)
+PASS
+ok  	justixauto/services/inventory/adapter/postgres	2.431s
+?   	justixauto/services/inventory/port	[no test files]
+=== RUN   TestAuthorizerDenyByDefaultMatrix
+=== RUN   TestAuthorizerDenyByDefaultMatrix/exact_retail_grant
+=== RUN   TestAuthorizerDenyByDefaultMatrix/exact_commerce_grant
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_caller
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_action
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_purpose
+=== RUN   TestAuthorizerDenyByDefaultMatrix/case_mismatch
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_caller
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_action
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_purpose
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wildcard_is_literal
+--- PASS: TestAuthorizerDenyByDefaultMatrix (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/exact_retail_grant (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/exact_commerce_grant (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_caller (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_action (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_purpose (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/case_mismatch (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_caller (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_action (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_purpose (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wildcard_is_literal (0.00s)
+=== RUN   TestAuthorizerRejectsInvalidConfiguration
+--- PASS: TestAuthorizerRejectsInvalidConfiguration (0.00s)
+=== RUN   TestAuthorizerCopiesConfigurationAndSupportsConcurrentReads
+--- PASS: TestAuthorizerCopiesConfigurationAndSupportsConcurrentReads (0.00s)
+=== RUN   TestNilAuthorizerDenies
+--- PASS: TestNilAuthorizerDenies (0.00s)
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/nil_state
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/handshake_incomplete
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unverified_certificate
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/verified_chain_for_different_leaf
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unknown_SAN
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/no_URI_SAN
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/disabled_identity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/ambiguous_identity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/duplicate_identical_identity
+--- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/nil_state (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/handshake_incomplete (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unverified_certificate (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/verified_chain_for_different_leaf (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unknown_SAN (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/no_URI_SAN (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/disabled_identity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/ambiguous_identity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/duplicate_identical_identity (0.00s)
+=== RUN   TestMTLSResolverConfigurationIsExactAndImmutable
+--- PASS: TestMTLSResolverConfigurationIsExactAndImmutable (0.00s)
+=== RUN   TestAuthenticateCombinesPeerAndPurposeGrant
+--- PASS: TestAuthenticateCombinesPeerAndPurposeGrant (0.00s)
+=== RUN   TestResolverWithVerifiedMutualTLSHandshake
+--- PASS: TestResolverWithVerifiedMutualTLSHandshake (5.02s)
+=== RUN   TestResolverConcurrentReads
+--- PASS: TestResolverConcurrentReads (0.00s)
+=== RUN   TestPublicIdentityHeaderRejectionAndStripping
+--- PASS: TestPublicIdentityHeaderRejectionAndStripping (0.00s)
+PASS
+ok  	justixauto/pkg/auth	7.775s
+=== RUN   TestTypedCanonicalDigestAndSecretBoundary
+--- PASS: TestTypedCanonicalDigestAndSecretBoundary (0.00s)
+=== RUN   TestScopeAndReceiptValidation
+--- PASS: TestScopeAndReceiptValidation (0.00s)
+=== RUN   TestLedgerPostgres
+    ledger_test.go:244: set JUSTIXAUTO_TEST_COMMAND_LEDGER=1 for isolated PostgreSQL 18.6 fixture
+--- SKIP: TestLedgerPostgres (0.00s)
+=== RUN   TestOperationConfiguration
+--- PASS: TestOperationConfiguration (0.00s)
+=== RUN   TestOperationsPostgres
+    operation_test.go:99: set JUSTIXAUTO_TEST_OPERATIONS=1 for disposable PostgreSQL fixture
+--- SKIP: TestOperationsPostgres (0.00s)
+=== RUN   TestOperationRetryBounds
+--- PASS: TestOperationRetryBounds (0.00s)
+=== RUN   TestOperationWorkerPostgres
+    worker_test.go:48: set JUSTIXAUTO_TEST_OPERATIONS=1 for disposable PostgreSQL fixture
+--- SKIP: TestOperationWorkerPostgres (0.00s)
+PASS
+ok  	justixauto/pkg/commands	3.151s
+=== RUN   TestEnvelopeRoundTripPreservesContractFields
+--- PASS: TestEnvelopeRoundTripPreservesContractFields (0.00s)
+=== RUN   TestEnvelopeCopiesPayloadAndCompanyID
+--- PASS: TestEnvelopeCopiesPayloadAndCompanyID (0.00s)
+=== RUN   TestEnvelopeMetadataValidation
+=== RUN   TestEnvelopeMetadataValidation/noncanonical_event_UUID
+=== RUN   TestEnvelopeMetadataValidation/zero_aggregate_revision
+=== RUN   TestEnvelopeMetadataValidation/zero_integration_sequence
+=== RUN   TestEnvelopeMetadataValidation/missing_company
+=== RUN   TestEnvelopeMetadataValidation/unknown_actor_kind
+=== RUN   TestEnvelopeMetadataValidation/non-UTC_time
+--- PASS: TestEnvelopeMetadataValidation (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/noncanonical_event_UUID (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/zero_aggregate_revision (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/zero_integration_sequence (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/missing_company (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/unknown_actor_kind (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/non-UTC_time (0.00s)
+=== RUN   TestEventSchemaValidation
+=== RUN   TestEventSchemaValidation/schema_mismatch
+=== RUN   TestEventSchemaValidation/invalid_aggregate_type
+=== RUN   TestEventSchemaValidation/global_non-identity
+=== RUN   TestEventSchemaValidation/missing_validator
+=== RUN   TestEventSchemaValidation/unknown_owner
+--- PASS: TestEventSchemaValidation (0.00s)
+    --- PASS: TestEventSchemaValidation/schema_mismatch (0.00s)
+    --- PASS: TestEventSchemaValidation/invalid_aggregate_type (0.00s)
+    --- PASS: TestEventSchemaValidation/global_non-identity (0.00s)
+    --- PASS: TestEventSchemaValidation/missing_validator (0.00s)
+    --- PASS: TestEventSchemaValidation/unknown_owner (0.00s)
+=== RUN   TestGlobalIdentityEventMayHaveNullCompany
+--- PASS: TestGlobalIdentityEventMayHaveNullCompany (0.00s)
+=== RUN   TestTenantIdentityEventRequiresCompany
+--- PASS: TestTenantIdentityEventRequiresCompany (0.00s)
+=== RUN   TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively
+--- PASS: TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively (0.00s)
+=== RUN   TestPayloadDecoderBindsEventTypeAndVersion
+--- PASS: TestPayloadDecoderBindsEventTypeAndVersion (0.00s)
+=== RUN   TestPayloadDecoderRejectsMissingRequiredFields
+--- PASS: TestPayloadDecoderRejectsMissingRequiredFields (0.00s)
+=== RUN   TestSchemaRejectsAggregateAndScopeSpoofFromRawWire
+--- PASS: TestSchemaRejectsAggregateAndScopeSpoofFromRawWire (0.00s)
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/permission
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/session
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/credential
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/mfa-factor
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/recovery-token
+--- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/permission (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/session (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/credential (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/mfa-factor (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/recovery-token (0.00s)
+=== RUN   TestZeroEnvelopeCannotBeSerialized
+--- PASS: TestZeroEnvelopeCannotBeSerialized (0.00s)
+=== RUN   TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields
+--- PASS: TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields (0.00s)
+=== RUN   TestEnvelopeRejectsOffsetTimeOnWire
+--- PASS: TestEnvelopeRejectsOffsetTimeOnWire (0.00s)
+=== RUN   TestEnvelopeConcurrentDecodeIsReadOnly
+--- PASS: TestEnvelopeConcurrentDecodeIsReadOnly (0.02s)
+=== RUN   TestRevisionCanonicalRoundTrip
+=== RUN   TestRevisionCanonicalRoundTrip/0
+=== RUN   TestRevisionCanonicalRoundTrip/1
+=== RUN   TestRevisionCanonicalRoundTrip/9007199254740993
+=== RUN   TestRevisionCanonicalRoundTrip/9223372036854775807
+--- PASS: TestRevisionCanonicalRoundTrip (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/0 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/1 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/9007199254740993 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/9223372036854775807 (0.00s)
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/#00
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/-1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/+1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/01
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/_1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1_
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1.0
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/9223372036854775808
+--- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/#00 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/-1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/+1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/01 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/_1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1_ (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1.0 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/9223372036854775808 (0.00s)
+=== RUN   TestRevisionNextAndOverflow
+--- PASS: TestRevisionNextAndOverflow (0.00s)
+PASS
+ok  	justixauto/pkg/events	3.477s
+=== RUN   TestAppendRequiresTransactionAndSchema
+--- PASS: TestAppendRequiresTransactionAndSchema (0.00s)
+=== RUN   TestConditionalAppendPostgres
+    append_test.go:127: set JUSTIXAUTO_TEST_EVENTSTORE_APPEND=1 for isolated Docker/PostgreSQL append tests
+--- SKIP: TestConditionalAppendPostgres (0.00s)
+=== RUN   TestMessagingMigrationPostgres
+    messaging_migration_test.go:17: set JUSTIXAUTO_TEST_MESSAGING_MIGRATION=1 for isolated pinned PostgreSQL
+--- SKIP: TestMessagingMigrationPostgres (0.00s)
+=== RUN   TestMessagingRouteMigrationPostgres
+    messaging_route_migration_test.go:407: set JUSTIXAUTO_TEST_MESSAGING_ROUTE_MIGRATION=1 for isolated pinned PostgreSQL
+--- SKIP: TestMessagingRouteMigrationPostgres (0.00s)
+=== RUN   TestReplayRejectsHistoryBeforeApplying
+=== RUN   TestReplayRejectsHistoryBeforeApplying/missing_first
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_identity
+=== RUN   TestReplayRejectsHistoryBeforeApplying/integration_gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/initial_integration_gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/zero_event
+=== RUN   TestReplayRejectsHistoryBeforeApplying/gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/reordered
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_revision
+=== RUN   TestReplayRejectsHistoryBeforeApplying/foreign_stream
+=== RUN   TestReplayRejectsHistoryBeforeApplying/unknown
+=== RUN   TestReplayRejectsHistoryBeforeApplying/zero_decoder
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_registration
+--- PASS: TestReplayRejectsHistoryBeforeApplying (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/missing_first (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_identity (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/integration_gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/initial_integration_gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/zero_event (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/reordered (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_revision (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/foreign_stream (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/unknown (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/zero_decoder (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_registration (0.00s)
+=== RUN   TestReplayOwnerTransitionsAndIsolation
+--- PASS: TestReplayOwnerTransitionsAndIsolation (0.00s)
+=== RUN   TestReplayLateSchemaFailuresNeverApplyPrefix
+--- PASS: TestReplayLateSchemaFailuresNeverApplyPrefix (0.00s)
+=== RUN   TestReplayPostgres
+    replay_test.go:145: set JUSTIXAUTO_TEST_EVENTSTORE_REPLAY=1 for isolated Docker/PostgreSQL replay tests
+--- SKIP: TestReplayPostgres (0.00s)
+=== RUN   TestOwnerSchemaPostgres
+    schema_test.go:32: set JUSTIXAUTO_TEST_EVENTSTORE_SCHEMA=1 for isolated Docker/PostgreSQL tests
+--- SKIP: TestOwnerSchemaPostgres (0.00s)
+=== RUN   TestTypedUpcastTombstonedReferenceReplay
+--- PASS: TestTypedUpcastTombstonedReferenceReplay (0.00s)
+=== RUN   TestUpcastRejectsInvalidMappings
+--- PASS: TestUpcastRejectsInvalidMappings (0.00s)
+PASS
+ok  	justixauto/pkg/eventstore	3.894s
+=== RUN   TestConsumerValidationBeforePersistence
+--- PASS: TestConsumerValidationBeforePersistence (0.00s)
+=== RUN   TestInboxPostgres
+    consume_test.go:171: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestInboxPostgres (0.00s)
+=== RUN   TestTransactionalConsumerRequiresTransaction
+--- PASS: TestTransactionalConsumerRequiresTransaction (0.00s)
+=== RUN   TestTransactionalInboxPostgres
+    consume_test.go:558: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestTransactionalInboxPostgres (0.00s)
+=== RUN   TestInboxCutoverLockFailurePostgres
+    consume_test.go:942: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestInboxCutoverLockFailurePostgres (0.00s)
+PASS
+ok  	justixauto/pkg/inbox	4.098s
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries
+=== PAUSE TestNewAcceptsCanonicalAmountBoundaries
+=== RUN   TestNewRejectsNonCanonicalAndOverflowAmounts
+=== PAUSE TestNewRejectsNonCanonicalAndOverflowAmounts
+=== RUN   TestCurrencyDefinitionValidationAndVersionIdentity
+=== PAUSE TestCurrencyDefinitionValidationAndVersionIdentity
+=== RUN   TestArithmeticIsExactAndChecksResultOverflow
+=== PAUSE TestArithmeticIsExactAndChecksResultOverflow
+=== RUN   TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== PAUSE TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== RUN   TestMoneyConcurrentReadsAndArithmeticDoNotMutate
+--- PASS: TestMoneyConcurrentReadsAndArithmeticDoNotMutate (0.02s)
+=== RUN   TestDecimalRateCanonicalValidation
+=== PAUSE TestDecimalRateCanonicalValidation
+=== RUN   TestDateRejectsNonCanonicalAndImpossibleDates
+=== PAUSE TestDateRejectsNonCanonicalAndImpossibleDates
+=== RUN   TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== PAUSE TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== RUN   TestPolicyValueNeverFallsBack
+=== PAUSE TestPolicyValueNeverFallsBack
+=== CONT  TestNewRejectsNonCanonicalAndOverflowAmounts
+=== CONT  TestDecimalRateCanonicalValidation
+--- PASS: TestNewRejectsNonCanonicalAndOverflowAmounts (0.00s)
+=== CONT  TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== CONT  TestPolicyValueNeverFallsBack
+=== CONT  TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== CONT  TestArithmeticIsExactAndChecksResultOverflow
+=== CONT  TestCurrencyDefinitionValidationAndVersionIdentity
+=== CONT  TestDateRejectsNonCanonicalAndImpossibleDates
+=== CONT  TestNewAcceptsCanonicalAmountBoundaries
+--- PASS: TestPolicyValueNeverFallsBack (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/0
+--- PASS: TestEffectivePeriodInclusiveBoundsAndOpenEnd (0.00s)
+--- PASS: TestArithmeticIsExactAndChecksResultOverflow (0.00s)
+--- PASS: TestCurrencyDefinitionValidationAndVersionIdentity (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/1
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/-1
+--- PASS: TestDateRejectsNonCanonicalAndImpossibleDates (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/99999999999999999999999999999999999999
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/-99999999999999999999999999999999999999
+--- PASS: TestDecimalRateCanonicalValidation (0.00s)
+--- PASS: TestNewAcceptsCanonicalAmountBoundaries (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/0 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/1 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/-1 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/99999999999999999999999999999999999999 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/-99999999999999999999999999999999999999 (0.00s)
+--- PASS: TestJSONUsesCanonicalPublicShapeAndSelectedDefinition (0.00s)
+PASS
+ok  	justixauto/pkg/money	4.787s
+=== RUN   TestSourceAdmissionValues
+--- PASS: TestSourceAdmissionValues (0.00s)
+=== RUN   TestSourceAdmissionReplay
+=== RUN   TestSourceAdmissionReplay/orphan
+=== RUN   TestSourceAdmissionReplay/branch
+=== RUN   TestSourceAdmissionReplay/resume_without_hold
+=== RUN   TestSourceAdmissionReplay/double_hold
+=== RUN   TestSourceAdmissionReplay/overlap
+=== RUN   TestSourceAdmissionReplay/unknown_action
+--- PASS: TestSourceAdmissionReplay (0.00s)
+    --- PASS: TestSourceAdmissionReplay/orphan (0.00s)
+    --- PASS: TestSourceAdmissionReplay/branch (0.00s)
+    --- PASS: TestSourceAdmissionReplay/resume_without_hold (0.00s)
+    --- PASS: TestSourceAdmissionReplay/double_hold (0.00s)
+    --- PASS: TestSourceAdmissionReplay/overlap (0.00s)
+    --- PASS: TestSourceAdmissionReplay/unknown_action (0.00s)
+=== RUN   TestSourceAdmissionPostgres
+    admission_test.go:222: set JUSTIXAUTO_TEST_SOURCE_ADMISSION=1 for pinned isolated PostgreSQL
+--- SKIP: TestSourceAdmissionPostgres (0.00s)
+=== RUN   TestRecordRequiresTypedSchemaAndRoute
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/zero_envelope
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/unbound_schema
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/foreign_schema
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/invalid_target
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/raw_unvalidated_payload
+--- PASS: TestRecordRequiresTypedSchemaAndRoute (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/zero_envelope (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/unbound_schema (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/foreign_schema (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/invalid_target (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/raw_unvalidated_payload (0.00s)
+=== RUN   TestInsertPostgres
+    insert_test.go:162: set JUSTIXAUTO_TEST_OUTBOX_INSERT=1 for isolated PostgreSQL outbox checks
+--- SKIP: TestInsertPostgres (0.00s)
+PASS
+ok  	justixauto/pkg/outbox	4.491s
+=== RUN   TestRepositoryImportBoundaries
+--- PASS: TestRepositoryImportBoundaries (0.01s)
+=== RUN   TestImportBoundaryFixtures
+=== RUN   TestImportBoundaryFixtures/domain_value
+=== RUN   TestImportBoundaryFixtures/shared_value
+=== RUN   TestImportBoundaryFixtures/app_command
+=== RUN   TestImportBoundaryFixtures/app_port
+=== RUN   TestImportBoundaryFixtures/adapter
+=== RUN   TestImportBoundaryFixtures/composition
+=== RUN   TestImportBoundaryFixtures/foreign_schema
+=== RUN   TestImportBoundaryFixtures/foreign_event
+=== RUN   TestImportBoundaryFixtures/edge_schema
+=== RUN   TestImportBoundaryFixtures/integration_test
+=== RUN   TestImportBoundaryFixtures/domain_app
+=== RUN   TestImportBoundaryFixtures/domain_adapter
+=== RUN   TestImportBoundaryFixtures/domain_port
+=== RUN   TestImportBoundaryFixtures/app_adapter
+=== RUN   TestImportBoundaryFixtures/port_app
+=== RUN   TestImportBoundaryFixtures/foreign_domain
+=== RUN   TestImportBoundaryFixtures/foreign_adapter
+=== RUN   TestImportBoundaryFixtures/foreign_app
+=== RUN   TestImportBoundaryFixtures/foreign_port
+=== RUN   TestImportBoundaryFixtures/shared_owner
+=== RUN   TestImportBoundaryFixtures/shared_contract
+=== RUN   TestImportBoundaryFixtures/shared_edge
+=== RUN   TestImportBoundaryFixtures/edge_owner
+=== RUN   TestImportBoundaryFixtures/service_edge
+=== RUN   TestImportBoundaryFixtures/invalid_owner_source
+=== RUN   TestImportBoundaryFixtures/invalid_owner_target
+=== RUN   TestImportBoundaryFixtures/invalid_layer
+=== RUN   TestImportBoundaryFixtures/contract_leak
+=== RUN   TestImportBoundaryFixtures/unapproved_public_path
+--- PASS: TestImportBoundaryFixtures (0.03s)
+    --- PASS: TestImportBoundaryFixtures/domain_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_command (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/composition (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_event (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/integration_test (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/port_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_domain (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_contract (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/service_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_source (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_target (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_layer (0.00s)
+    --- PASS: TestImportBoundaryFixtures/contract_leak (0.00s)
+    --- PASS: TestImportBoundaryFixtures/unapproved_public_path (0.00s)
+=== RUN   TestBoundaryTraversal
+--- PASS: TestBoundaryTraversal (0.01s)
+=== RUN   TestQAArchitectureRegressions
+=== RUN   TestQAArchitectureRegressions/domain_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_server
+=== RUN   TestQAArchitectureRegressions/app_AMQP_connection
+=== RUN   TestQAArchitectureRegressions/port_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_shared_infrastructure
+=== RUN   TestQAArchitectureRegressions/nested_docs_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_node_modules_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_vendor_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_testdata_cross_owner
+=== RUN   TestQAArchitectureRegressions/app_pgx_stdlib
+=== RUN   TestQAArchitectureRegressions/port_SQL_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_client
+=== RUN   TestQAArchitectureRegressions/primitive_infrastructure_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_framework_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_nested_framework
+=== RUN   TestQAArchitectureRegressions/contract_infrastructure
+=== RUN   TestQAArchitectureRegressions/adapter_gorm_implementation
+=== RUN   TestQAArchitectureRegressions/shared_eventstore_implementation
+=== RUN   TestQAArchitectureRegressions/app_technical_mechanics
+=== RUN   TestQAArchitectureRegressions/domain_immutable_event
+=== RUN   TestQAArchitectureRegressions/domain_primitive_libraries
+=== RUN   TestQAArchitectureRegressions/typed_unit_of_work_port
+--- PASS: TestQAArchitectureRegressions (0.03s)
+    --- PASS: TestQAArchitectureRegressions/domain_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_server (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_AMQP_connection (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_shared_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_docs_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_node_modules_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_vendor_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_testdata_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_pgx_stdlib (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_SQL_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_client (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_infrastructure_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_framework_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_nested_framework (0.00s)
+    --- PASS: TestQAArchitectureRegressions/contract_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/adapter_gorm_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/shared_eventstore_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_technical_mechanics (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_immutable_event (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_primitive_libraries (0.00s)
+    --- PASS: TestQAArchitectureRegressions/typed_unit_of_work_port (0.00s)
+=== RUN   TestRuntimeManifestReadonly
+--- PASS: TestRuntimeManifestReadonly (1.59s)
+=== RUN   TestGoWrapperRejectsWrongCompiler
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.27.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.28.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/devel_go1.27
+--- PASS: TestGoWrapperRejectsWrongCompiler (1.13s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.27.0 (0.38s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.28.0 (0.38s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/devel_go1.27 (0.37s)
+=== RUN   TestGoWrapperExplicitCompilerAndArguments
+--- PASS: TestGoWrapperExplicitCompilerAndArguments (0.38s)
+=== RUN   TestGoWrapperProjectToolchainDiscovery
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=false
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=true
+--- PASS: TestGoWrapperProjectToolchainDiscovery (1.33s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=false (0.81s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=true (0.51s)
+PASS
+ok  	justixauto/tests/contracts	7.841s
+=== RUN   TestBrokerDefinitionsAreDurableAndRestricted
+--- PASS: TestBrokerDefinitionsAreDurableAndRestricted (0.01s)
+=== RUN   TestPinnedBrokerReturnsMandatoryUnroutableMessage
+    broker_topology_test.go:162: set JUSTIX_RABBITMQ_URL to run against the isolated pinned broker
+--- SKIP: TestPinnedBrokerReturnsMandatoryUnroutableMessage (0.00s)
+=== RUN   TestPostgresInitRejectsEveryMissingOrEmptyCredential
+    database_isolation_test.go:80: JUSTIXAUTO_TEST_POSTGRES_BOOTSTRAP=1 is required for destructive disposable-container checks
+--- SKIP: TestPostgresInitRejectsEveryMissingOrEmptyCredential (0.00s)
+=== RUN   TestPostgresOwnerCatalogIsolation
+    database_isolation_test.go:158: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresOwnerCatalogIsolation (0.00s)
+=== RUN   TestPostgresRejectsEveryCrossOwnerConnection
+    database_isolation_test.go:220: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresRejectsEveryCrossOwnerConnection (0.00s)
+=== RUN   TestPostgresOwnersWriteAndRollbackIndependently
+    database_isolation_test.go:245: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresOwnersWriteAndRollbackIndependently (0.00s)
+PASS
+ok  	justixauto/tests/integration	3.291s
