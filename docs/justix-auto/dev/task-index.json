@@ -35098,7 +35098,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-013"
       ],
@@ -35116,8 +35116,10 @@
         "B-01.AC2"
       ],
       "scope": "Definite prerequisite for dispatch: add a typed caller-transaction boundary so inbox/effect/checkpoint/job completion share one transaction without nested Run/commit. Preserve existing direct-ACK public behavior. Expose exact-duplicate outcome safely so a migrated prior inbox can complete its pending job without reapplying effects. No broker ACK or external I/O inside the caller transaction.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-922",
+      "base_sha": "45dbce11571533dcb5c56212c033271b6ff892d9",
+      "agent": "backend_t922",
+      "execution_note": "T013 dependency, approved messaging contract and Git gate passed. Assigned typed transaction-bound inbox effect API with safe duplicate outcome; preserve explicit single-consumer direct-ACK behavior and no nested commit."
     },
     {
       "id": "T-923",
