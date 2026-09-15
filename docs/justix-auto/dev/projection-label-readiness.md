@@ -38,3 +38,11 @@ projection UUID. Existing artifact SHA-256 remains
 
 Inputs: `state/approvals/projection-generation-label-compatibility.md`, T-917 and
 T-926 SQL/test leaves, T-014 author finding, and T-928 ownership/dependencies.
+
+## Adopted correction — 2026-09-15
+
+Independent proposal QA is GREEN for `f3fc029de3da3dbadb0cab980ef6bd33c86723b3`.
+The [technical approval](../state/approvals/projection-label-forward-correction.md)
+and exact T-928/T-016/T-934 scope amendments adopt the forward correction.
+The actual migration and full retained-label guarantee remain unfinished until
+their implementation QA/integration gates pass; historical findings stay intact.

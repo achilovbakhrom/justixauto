@@ -403,6 +403,19 @@
         ],
         "gate": "OWNER-COMPATIBILITY"
       }
+    },
+    "projection_label_correction": {
+      "proposal_sha": "f3fc029de3da3dbadb0cab980ef6bd33c86723b3",
+      "proposal_sha256": "704d2c65eedbe1e98f36bc0270d6ce366ad7cd38cccc2fe94b25e2a3ffa9f196",
+      "approval": "docs/justix-auto/state/approvals/projection-label-forward-correction.md",
+      "scope_targets": [
+        "T-928",
+        "T-016",
+        "T-934"
+      ],
+      "added_tasks": [],
+      "added_edges": [],
+      "added_files": []
     }
   },
   "tasks": [
@@ -933,7 +946,7 @@
       "coverage": [
         "B-01.AC2"
       ],
-      "scope": "Use historical payloads only, no fresh aggregate lookup or command effects; compare invariants then pointer switch; fence guard rebuild writes.",
+      "scope": "Use historical payloads only, no fresh aggregate lookup or command effects; compare invariants then pointer switch; fence guard rebuild writes. Require exact revision-6 artifact and corrected bootstrap generation CHECK before full retained-label compatibility; preserve separate projection UUID and exact logical/process labels.",
       "worktree": null,
       "base_sha": null,
       "reviewed_sha": null
@@ -35478,7 +35491,7 @@
       "coverage": [
         "B-01.AC2"
       ],
-      "scope": "Install owner-local immutable generation/switch evidence and CAS projection heads with narrow grants. Prove pointer identity, retained history, atomic failure and immutable evidence; no owner business read model or real guard writer is introduced.",
+      "scope": "Install owner-local immutable generation/switch evidence and CAS projection heads with narrow grants. Prove pointer identity, retained history, atomic failure and immutable evidence; no owner business read model or real guard writer is introduced. Include the approved exact bootstrap generation CHECK forward correction in revision 6, preserving all labels/data and prior SQL; prove both consumer kinds and full failure atomicity.",
       "worktree": null,
       "base_sha": null
     },
@@ -35667,7 +35680,7 @@
       "coverage": [
         "B-01.AC1"
       ],
-      "scope": "Extend the common checker after T930 to exact approved custody lineage/mode/ACLs, retaining all legacy checks. Require revoked legacy writes and immutable shared markers; success is storage compatibility only, not adapter assembly, source admission or delivery effects.",
+      "scope": "Extend the common checker after T930 to exact approved custody lineage/mode/ACLs, retaining all legacy checks. Require revoked legacy writes and immutable shared markers; success is storage compatibility only, not adapter assembly, source admission or delivery effects. Include exact revision-6 artifact and corrected bootstrap generation CHECK identity/validation in read-only custody readiness; earlier markers do not establish all-space compatibility.",
       "worktree": null,
       "base_sha": null
     }

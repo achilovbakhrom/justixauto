@@ -37,3 +37,8 @@ generation fixtures. Installed artifact SHA-256 remains
 `1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2`.
 The existing task preimage is retained under
 `../backups/2026-09-15-generation-label-clarification/`.
+
+The [forward correction approval](projection-label-forward-correction.md)
+records the actual 000004 all-space predicate mismatch and requires its precise
+replacement through T-928's existing revision-6 migration. Earlier test evidence
+does not establish all-space compatibility; the original meaning above remains.

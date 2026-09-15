@@ -29,7 +29,7 @@
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-927 ready-for-qa (`.worktrees/T-927`, `task/T-927-quarantine-evidence-storage`); T-930 in-progress (`.worktrees/T-930`, `task/T-930-owner-persistence-profile`).
 - Integrated tasks: 39/934; independent exact-commit QA required before each integration.
-- Active architecture handoff: owner migration proposal and canonical promotion QA GREEN; [auth transport](auth-transport-assignment.md) under independent proposal QA; [retained generation-label correction](projection-label-correction-assignment.md) proposal QA GREEN, canonical adoption next. Their implementation gates remain explicit.
+- Active architecture handoff: owner migration proposal and canonical promotion QA GREEN; [auth transport](auth-transport-assignment.md) under independent proposal QA; [retained generation-label correction](projection-label-correction-assignment.md) adopted after proposal QA GREEN, pending T-928 implementation. Their implementation gates remain explicit.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 934 (916 reviewed baseline + eighteen bounded messaging/storage/owner-migration additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item

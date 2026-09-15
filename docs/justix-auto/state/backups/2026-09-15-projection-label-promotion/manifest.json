@@ -1,0 +1,56 @@
+[
+  {
+    "path": "docs/justix-auto/dev/tasks/T-928.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-928.md.gz",
+    "sha256": "d444cf89a23e6fcdf1ad5f30241fde5e4bedf49be3552bc8957b008013420970",
+    "bytes": 2998
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-016.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-016.md.gz",
+    "sha256": "aa0587bc39ca4d8945548bd1204e68351977d9dab1babbffd86dc79081f2dfa5",
+    "bytes": 7261
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-934.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-934.md.gz",
+    "sha256": "aa2c2e5e7fa17b5d2428f1dbdbc5ba99d29da0aca55dc2b57bc877b50c5f8d2f",
+    "bytes": 3532
+  },
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/dev/task-index.json.gz",
+    "sha256": "97f7193abe6651e3f5a34094b74d2943c11656cc8bb2d9285c4c8f32683c9e43",
+    "bytes": 1464241
+  },
+  {
+    "path": "docs/justix-auto/dev/projection-label-readiness.md",
+    "snapshot": "docs/justix-auto/dev/projection-label-readiness.md.gz",
+    "sha256": "68e0d59038c19ee523fbfa19332d4018dfa3c580b4481dc53afdfe2f35882c17",
+    "bytes": 2540
+  },
+  {
+    "path": "docs/justix-auto/dev/projection-label-correction-assignment.md",
+    "snapshot": "docs/justix-auto/dev/projection-label-correction-assignment.md.gz",
+    "sha256": "b68e7ab29a842f1a4e66a717dac06c86bad355a70092e941e7d096b2d0010be3",
+    "bytes": 1068
+  },
+  {
+    "path": "docs/justix-auto/state/approvals/projection-storage-handoff.md",
+    "snapshot": "docs/justix-auto/state/approvals/projection-storage-handoff.md.gz",
+    "sha256": "db9a81cf35cd33018f77f83723035ac203adcfa3ba1ac3ab3eee6d71cda664ca",
+    "bytes": 2256
+  },
+  {
+    "path": "docs/justix-auto/state/approvals/projection-generation-label-compatibility.md",
+    "snapshot": "docs/justix-auto/state/approvals/projection-generation-label-compatibility.md.gz",
+    "sha256": "01a5843057ad8b56943221857050b1eea5ddd637977197c267b9829b1c64ccfb",
+    "bytes": 2441
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "sha256": "97f14b4ab969a948134fd43864bcad319543aeec5436ecb47988a31f38e5b104",
+    "bytes": 12345
+  }
+]

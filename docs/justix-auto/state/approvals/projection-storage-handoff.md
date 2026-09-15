@@ -31,3 +31,8 @@ distinguishes new mechanical UUIDs from retained T-917 text labels. Bootstrap
 matching preserves the exact existing label for projection and process consumers;
 the new projection-generation primary key remains a UUID. Reviewed proposal
 copies and installed migration identities remain unchanged.
+
+The [reviewed forward correction](projection-label-forward-correction.md)
+adopts T-928's exact bootstrap generation CHECK replacement and T-016/T-934
+revision-6 readiness requirements. It resolves the observed all-space rejection
+without rewriting this contract, installed SQL, retained labels or historical QA.
