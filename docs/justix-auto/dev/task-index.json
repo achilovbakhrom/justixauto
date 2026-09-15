@@ -1634,7 +1634,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-035",
         "T-036",
@@ -1670,12 +1670,12 @@
       "scope": "Base and Router basename /finance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries. Coordinator corrective handoff: fix the identical non-document HTML fallback condition in the existing Admin and Realization Vite configs, preserving their other behavior; verify all three dev/preview boundaries in this task exact-SHA QA.",
       "worktree": ".worktrees/T-038",
       "base_sha": "3d8c5a26c3890eaa358a52281db055c1faf7e2be",
-      "reviewed_sha": "c1b0b50eed76902bf024fc6c5d9c5e4f032f642b",
+      "reviewed_sha": "fba510c0c5220207b1f470eb2008132097a27a54",
       "coordinator_files": [
         "package-lock.json"
       ],
-      "execution_note": "Fix cycle1 assigned under explicit three-config handoff. Reject non-document wildcard fetch/script HTML fallback, preserve valid document navigation, and add actual dev/preview checks across Admin/Realization/Financing. Previous evidence and lock stay unchanged.",
-      "agent": "frontend_t038"
+      "execution_note": "Fix cycle1 corrects request-intent predicates in Financing, Admin and Realization; independent r2 verifies all three dev/preview guards and Financing visuals. Original BOUNCE preserved; npm lock unchanged.",
+      "agent": "qa_t038_r2"
     },
     {
       "id": "T-039",
