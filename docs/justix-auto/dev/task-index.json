@@ -35254,7 +35254,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-006",
         "T-001",
@@ -35275,8 +35275,10 @@
         "B-01.AC2"
       ],
       "scope": "Explicit reviewed source/target/schema route metadata and split relay/intake capabilities; no configure/foreign reads/default exchange grants. Empty activated contract set denies publication. Synthetic fixture routes do not activate business permissions. Preserve current durable owner queues/exchanges and pinned live permission evidence.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-924",
+      "base_sha": "288b084a988f62d09d1f08c664ffbdf1a3ba3498",
+      "agent": "backend_t924",
+      "execution_note": "Assigned approved explicit broker route metadata and split relay/intake principals after forward route correction integration. Preserve queues and default-deny inactive routes; synthetic fixture grants never activate business permissions."
     },
     {
       "id": "T-925",
@@ -35321,7 +35323,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-925",
         "T-008",
@@ -35343,8 +35345,10 @@
         "B-01.AC2"
       ],
       "scope": "Install owner-local bootstrap/checkpoint/gap evidence with narrow grants and contiguous updates. Implement the shared transaction-bound receiver/catalog/generation/guard fence preparation, exact encoded keys and modes, completeness capabilities and no late lock upgrades. Prove explicit nonzero/new-empty bootstrap, evidence chains, rollback and concurrency under the approved handoff.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-926",
+      "base_sha": "288b084a988f62d09d1f08c664ffbdf1a3ba3498",
+      "agent": "backend_t926",
+      "execution_note": "Assigned approved owner-local checkpoint/gap migration and shared receiver/catalog/generation/guard fence preparation after exact proposal and canonical promotion QA GREEN. No hidden owner guard readiness or production bootstrap authority."
     },
     {
       "id": "T-927",
