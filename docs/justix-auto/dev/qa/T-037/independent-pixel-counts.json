@@ -1,0 +1,9 @@
+{
+  "method": "Pillow RGB ImageChops.difference; count pixels with any nonzero channel",
+  "reference": "independent-1440-reference-projected.png",
+  "rectangles": [
+    {"box": [0, 0, 244, 1000], "candidate": 8509, "smoothingDiagnostic": 30},
+    {"box": [244, 0, 1440, 64], "candidate": 2503, "smoothingDiagnostic": 0}
+  ],
+  "diagnosticOnly": true
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "url": "http://127.0.0.1:4180/",
+    "styles": {
+      "body": {
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSmoothing": "antialiased",
+        "textRendering": "auto"
+      },
+      "aside nav button span": {
+        "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSmoothing": "antialiased",
+        "textRendering": "auto"
+      },
+      "header button": {
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSmoothing": "antialiased",
+        "textRendering": "auto"
+      }
+    }
+  },
+  {
+    "url": "http://127.0.0.1:4236/docs/justix-auto/dev/qa/T-037/independent-fixture.html",
+    "styles": {
+      "body": {
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSmoothing": "auto",
+        "textRendering": "auto"
+      },
+      "aside nav button span": {
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSmoothing": "auto",
+        "textRendering": "auto"
+      },
+      "header button": {
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSmoothing": "auto",
+        "textRendering": "auto"
+      }
+    }
+  }
+]

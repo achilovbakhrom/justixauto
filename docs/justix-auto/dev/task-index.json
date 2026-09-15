@@ -1550,7 +1550,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-035"
       ],
@@ -1587,7 +1587,7 @@
         "package-lock.json"
       ],
       "agent": "frontend_t037",
-      "execution_note": "Realization shell source, developer browser evidence and coordinator lock committed. Existing dependency pins unchanged; independent exact-commit browser QA pending."
+      "execution_note": "Independent QA BOUNCE P2: missing reference font-smoothing changes shell text weight; browser-only diagnostic confirms cause. 150 unit,93 browser assertions,34 route checks passed. Original exact evidence preserved before fix cycle1."
     },
     {
       "id": "T-038",
