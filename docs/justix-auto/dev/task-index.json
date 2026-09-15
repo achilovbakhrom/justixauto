@@ -489,9 +489,9 @@
       "scope": "Validate event IDs, aggregate revision versus integrationSequence, secret exclusion and versioned event decoding; no raw PII.",
       "worktree": ".worktrees/T-007",
       "base_sha": "ba6653c80c59658d1be2776bafe20972207ccb47",
-      "reviewed_sha": null,
+      "reviewed_sha": "5a5d13bef2ce220fadb04c6bd8500be9b50764ff",
       "agent": "backend/t007_envelope",
-      "execution_note": "Assigned after T-003 integration and own-root Git PASS. Isolated worktree .worktrees/T-007 owns typed event envelope/revision values and tests plus ancillary result; no service runtime or transport behavior."
+      "execution_note": "Implementation committed clean at 5a5d13bef2ce220fadb04c6bd8500be9b50764ff. Developer race/full/boundary checks cover immutable typed envelopes, distinct aggregate revision/integration sequence, canonical decimal revision, strict UUID/owner/schema/UTC validation and recursive secret/raw-PII key rejection; exact-SHA QA pending."
     },
     {
       "id": "T-008",
