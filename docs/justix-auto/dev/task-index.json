@@ -35585,7 +35585,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-929",
         "T-009",
@@ -35610,8 +35610,9 @@
       "worktree": ".worktrees/T-930",
       "base_sha": "ad7e601555cdfcde03506f93c20132870c44d83a",
       "agent": "qa_t930",
-      "execution_note": "Independent r3 assigned to final allowed fix-cycle commit. Verify exact digest/scalar shape plus both unchanged prior QA suites and preserved evidence. A further BOUNCE requires scope review; no automatic third fix cycle.",
-      "reviewed_sha": "9802e7a0800a8e54043f59d0583d0ff7eb074744"
+      "execution_note": "Independent r3 GREEN at9802e7a; both historical BOUNCE rounds preserved. Merged exact source; coordinator scoped race/vet PASS (persistence49.061s/contracts133.952s). Explicit profiles/read-only checks only; UOW binding, actual bundle/default provisioning and custody successor remain separate. See qa/integration-t930-t935.md.",
+      "reviewed_sha": "9802e7a0800a8e54043f59d0583d0ff7eb074744",
+      "integration_sha": "e469212cbc30d26927a061e86691c7d7cad9dba2"
     },
     {
       "id": "T-931",
@@ -35742,7 +35743,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-032"
       ],
@@ -35763,8 +35764,9 @@
       "worktree": ".worktrees/T-935",
       "base_sha": "596627e1d17ead2a6e8a818e2db63c046823b0cd",
       "agent": "qa_auth_transport",
-      "execution_note": "Independent exact-commit decoder QA assigned in T-935 worktree. Verify raw grammar/Unicode/duplicates, exact safe integers and finite legacy profile, resource limits, generated Go parity and unchanged shared transport before integration.",
-      "reviewed_sha": "a71115801f57b579398f39f47b1ee4437ea2b537"
+      "execution_note": "Independent GREEN at a711158; exact two decoder leaves/result integrated. Main full frontend294tests/typecheck/lint PASS; independent raw/numeric/UTF8 corpus and generated Go parity retained. Shared Fetch integration remains T-936. See qa/integration-t930-t935.md.",
+      "reviewed_sha": "a71115801f57b579398f39f47b1ee4437ea2b537",
+      "integration_sha": "c246d9f5be22faea88fc8eebd4285cc2cb9e2b60"
     },
     {
       "id": "T-936",
