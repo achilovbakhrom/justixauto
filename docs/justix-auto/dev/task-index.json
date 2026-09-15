@@ -2357,7 +2357,7 @@
       "parent": "B-02",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-001"
       ],
@@ -2379,7 +2379,8 @@
       "base_sha": "c135e4e33190ad4e30c4f573f133e25fd5614f21",
       "reviewed_sha": "fe3ffbfbe37d05261296a0ef5ba91cbec8edcead",
       "agent": "qa_t058",
-      "execution_note": "Auth wire/event/fixture proposal complete; independent exact-commit proposal QA assigned. A1-A5 technical refinements require coordinator adoption; T002 settings/recovery and production UI remain unapproved. Separate Identity owner-ledger and event-recipient handoffs are explicit."
+      "execution_note": "Exact QA GREEN proposal adopted by state/approvals/auth.md: A1-A5 and safe event/fixture contract approved for T059 encoding. Main proposal bytes and approval links verified; 121 checks rerun at exact task SHA. Auth transport and owner migration compatibility require concrete assignments before dependent wiring; T002 and external recipient activation remain gated.",
+      "integration_sha": "3279a5cc8ef6b0e6aa1941cd2c41d9d1a9a5b791"
     },
     {
       "id": "T-059",
