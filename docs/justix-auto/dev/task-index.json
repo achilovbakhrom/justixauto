@@ -398,7 +398,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-001",
         "T-003"
@@ -422,7 +422,7 @@
       "base_sha": "4c84e346c7412e0fc6e3a20a8393767de63b3131",
       "reviewed_sha": "f80d8f2b1d5600101b607f6840f357cde13cd91d",
       "agent": "backend/t005_postgres_local",
-      "execution_note": "Implementation committed clean at f80d8f2b1d5600101b607f6840f357cde13cd91d. Developer verified pinned PostgreSQL 18.6 digest, seven owners, all 42 cross-owner denials, concurrent local writes, rollback and race suite on loopback 55433 because unrelated port 55432 was occupied; exact-SHA QA pending."
+      "execution_note": "Independent QA BOUNCE: PostgreSQL 18 ignores psql `\\\\quit 3`; an empty required database password exits 0 and official entrypoint reports ready with zero owner stores. Fix cycle 1 assigned. All seven-owner, 42 denial, concurrency, rollback, repeat-init/rotation, digest and loopback checks otherwise passed."
     },
     {
       "id": "T-006",
