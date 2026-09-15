@@ -1,0 +1,80 @@
+package eventstore_test
+
+import (
+ "context"
+ "errors"
+ "testing"
+
+ "github.com/google/uuid"
+ "justixauto/pkg/events"
+ "justixauto/pkg/eventstore"
+)
+
+// Independent QA probes, overlaid as an extra test file without editing source.
+func TestQAReplaySQLCorruptionAndVisibility(t *testing.T) {
+ db := appendDatabase(t)
+ ctx := context.Background()
+ loader, err := eventstore.NewLoader(db, events.OwnerInventory)
+ if err != nil { t.Fatal(err) }
+ _, schema := referenceSchemas(t)
+ company, ref := uuid.NewString(), uuid.NewString()
+ stream := func(id string) eventstore.Stream { return eventstore.Stream{Owner: events.OwnerInventory, AggregateType:"fixture", AggregateID:id} }
+ makeEvent := func(id string, rev, seq int64) eventstore.Event {
+  return referenceEvent(t, replayInput(id, company, rev, seq), schema, currentReference{SecureRecordRef:ref})
+ }
+ insert := func(id string, rev, seq int64, data string) {
+  t.Helper()
+  var position any
+  if seq > 0 { position = seq }
+  err := db.Exec(`INSERT INTO eventstore.events (event_id,event_type,owner_service,schema_version,aggregate_type,aggregate_id,aggregate_version,integration_sequence,company_id,occurred_at,actor_kind,actor_id,correlation_id,causation_id,operation_id,data) VALUES (?,'inventory.fixture.reference.v2','inventory',2,'fixture',?,?,?,?,now(),'user',?,?,?,?,?::jsonb)`, uuid.NewString(),id,rev,position,company,uuid.NewString(),uuid.NewString(),uuid.NewString(),uuid.NewString(),data).Error
+  if err != nil { t.Fatal(err) }
+ }
+ payload := `{"secureRecordRef":"` + ref + `","removed":true}`
+ for _, positions := range [][]int64{{2,1},{1,3},{0,2}} {
+  id := uuid.NewString()
+  insert(id,1,positions[0],payload)
+  insert(id,2,positions[1],payload)
+  if history, err := loader.Load(ctx,stream(id)); !errors.Is(err,eventstore.ErrCorruptHistory) || history != nil { t.Fatalf("accepted sequence corruption %v: %v",positions,err) }
+ }
+ // Physical insertion order is not replay order; only revisions define order.
+ id := uuid.NewString()
+ insert(id,2,0,payload)
+ insert(id,1,0,payload)
+ history, err := loader.Load(ctx,stream(id))
+ if err != nil { t.Fatal(err) }
+ got, err := eventstore.Replay(ctx,stream(id),history,[]eventstore.Decoder[currentReference]{eventstore.DecodeWith(schema)},func() int { return 0 },func(s int,m eventstore.ReplayMetadata,p currentReference)(int,error){
+  if !m.IntegrationSequence.IsZero() || m.Revision.Int64()!=int64(s+1) || !p.Removed { t.Fatal("wrong internal replay metadata") }
+  return s+1,nil
+ })
+ if err != nil || got.State!=2 || !got.IntegrationSequence.IsZero() { t.Fatal(got,err) }
+ // SQL only checks object shape; late typed rejection must prevent all apply.
+ bad := uuid.NewString()
+ insert(bad,1,1,payload)
+ insert(bad,2,2,`{"secureRecordRef":"`+ref+`","removed":true,"unknown":"value"}`)
+ badHistory,err:=loader.Load(ctx,stream(bad))
+ if err != nil { t.Fatal(err) }
+ _,err=eventstore.Replay(ctx,stream(bad),badHistory,[]eventstore.Decoder[currentReference]{eventstore.DecodeWith(schema)},func() int { t.Fatal("constructed state for late invalid payload"); return 0 },func(s int,_ eventstore.ReplayMetadata,_ currentReference)(int,error){ t.Fatal("applied invalid history"); return s,nil })
+ if !errors.Is(err,events.ErrInvalidPayload) { t.Fatal(err) }
+ // An open transaction is never interpreted as committed history.
+ pendingID:=uuid.NewString()
+ tx:=db.Begin()
+ appender,err:=eventstore.NewAppender(tx,events.OwnerInventory)
+ if err!=nil { t.Fatal(err) }
+ if err=appender.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{makeEvent(pendingID,1,1)}});err!=nil { t.Fatal(err) }
+ if _,err=loader.Load(ctx,stream(pendingID));!errors.Is(err,eventstore.ErrAggregateNotFound){t.Fatal("uncommitted event visible",err)}
+ if err=tx.Rollback().Error;err!=nil {t.Fatal(err)}
+ if _,err=loader.Load(ctx,stream(pendingID));!errors.Is(err,eventstore.ErrAggregateNotFound){t.Fatal("rolled back event visible",err)}
+ tx=db.Begin()
+ appender,err=eventstore.NewAppender(tx,events.OwnerInventory)
+ if err!=nil {t.Fatal(err)}
+ if err=appender.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{makeEvent(pendingID,1,1),makeEvent(pendingID,2,2)}});err!=nil {t.Fatal(err)}
+ if _,err=loader.Load(ctx,stream(pendingID));!errors.Is(err,eventstore.ErrAggregateNotFound){t.Fatal(err)}
+ if err=tx.Commit().Error;err!=nil {t.Fatal(err)}
+ if history,err=loader.Load(ctx,stream(pendingID));err!=nil || len(history)!=2 {t.Fatal("committed history missing",err)}
+ if err=runner(t,db).Run(ctx,func(u fixtureUOW)error{return u.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{makeEvent(pendingID,1,1)}})});!errors.Is(err,eventstore.ErrVersionConflict){t.Fatal("stale absence enabled duplicate create",err)}
+ if history,err=loader.Load(ctx,stream(pendingID));err!=nil || len(history)!=2 {t.Fatal("duplicate create changed history",err)}
+ // Runtime cannot mutate historical records while loading still works.
+ if err=db.Exec("DELETE FROM eventstore.events WHERE aggregate_id=?",pendingID).Error;err==nil {t.Fatal("runtime deleted history")}
+ if err=db.Exec("UPDATE eventstore.events SET data='{}' WHERE aggregate_id=?",pendingID).Error;err==nil {t.Fatal("runtime rewrote history")}
+ if history,err=loader.Load(ctx,stream(pendingID));err!=nil || len(history)!=2 {t.Fatal("permission denial damaged history",err)}
+}
