@@ -70,9 +70,9 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | integrated | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | integrated | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | integrated | T-009 | `task/T-010-replay` | ENV-GIT |
-| [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | todo | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
+| [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | in-progress | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006 | `task/T-012-outbox-relay` | ENV-GIT |
-| [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | todo | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
+| [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | in-progress | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | todo | T-013, T-010 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013 | `task/T-015-quarantine` | ENV-GIT |
 | [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014 | `task/T-016-projection-rebuild` | ENV-GIT |
@@ -93,7 +93,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-031](tasks/T-031.md) | B-01 | Enforce explicit authenticated internal callers and edge identity stripping | implementation / 3 | foundation | integrated | T-003 | `task/T-031-auth-transport` | ENV-GIT |
 | [T-032](tasks/T-032.md) | B-05 | Create schema-validating HTTP client and scope-key helpers | implementation / 3 | frontend-shared | integrated | T-004 | `task/T-032-api-client` | ENV-GIT |
 | [T-033](tasks/T-033.md) | B-05 | Extract existing HTML tokens without redesign | implementation / 2 | frontend-shared | integrated | T-004 | `task/T-033-tokens` | ENV-GIT |
-| [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | ready-for-qa | T-033 | `task/T-034-dialog` | ENV-GIT |
+| [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | qa-green | T-033 | `task/T-034-dialog` | ENV-GIT |
 | [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | todo | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
 | [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | todo | T-035 | `task/T-036-admin-shell` | ENV-GIT |
 | [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | todo | T-035 | `task/T-037-realization-shell` | ENV-GIT |

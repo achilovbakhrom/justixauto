@@ -1,0 +1,127 @@
+{
+  "reviewedCommit": "6321f190fdd8edc31b65ad8455cf96b405aaf23f",
+  "checks": [
+    "dealer-shell 320px fits",
+    "dealer-shell long title no close overlap",
+    "dealer-shell no horizontal dialog overflow",
+    "dealer-shell input focus outline visible",
+    "dealer-shell keyboard close focus visible",
+    "dealer-shell narrow Escape zero writes and restores",
+    "finance-workspace 320px fits",
+    "finance-workspace long title no close overlap",
+    "finance-workspace no horizontal dialog overflow",
+    "finance-workspace input focus outline visible",
+    "finance-workspace keyboard close focus visible",
+    "finance-workspace narrow Escape zero writes and restores",
+    "ins-workspace 320px fits",
+    "ins-workspace long title no close overlap",
+    "ins-workspace no horizontal dialog overflow",
+    "ins-workspace input focus outline visible",
+    "ins-workspace keyboard close focus visible",
+    "ins-workspace narrow Escape zero writes and restores",
+    "admin-shell 320px fits",
+    "admin-shell long title no close overlap",
+    "admin-shell no horizontal dialog overflow",
+    "admin-shell input focus outline visible",
+    "admin-shell keyboard close focus visible",
+    "admin-shell narrow Escape zero writes and restores"
+  ],
+  "states": [
+    {
+      "scope": "dealer-shell",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      },
+      "rects": {
+        "x": 16,
+        "right": 304,
+        "width": 288,
+        "titleRight": 231,
+        "closeX": 243,
+        "clientWidth": 286,
+        "scrollWidth": 286
+      },
+      "focused": {
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px",
+        "border": "rgb(23, 105, 224)"
+      },
+      "closeFocus": {
+        "focused": true,
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px"
+      }
+    },
+    {
+      "scope": "finance-workspace",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      },
+      "rects": {
+        "x": 16,
+        "right": 304,
+        "width": 288,
+        "titleRight": 231,
+        "closeX": 243,
+        "clientWidth": 286,
+        "scrollWidth": 286
+      },
+      "focused": {
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px",
+        "border": "rgb(23, 105, 224)"
+      },
+      "closeFocus": {
+        "focused": true,
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px"
+      }
+    },
+    {
+      "scope": "ins-workspace",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      },
+      "rects": {
+        "x": 12,
+        "right": 308,
+        "width": 296,
+        "titleRight": 237.9375,
+        "closeX": 249.9375,
+        "clientWidth": 294,
+        "scrollWidth": 294
+      },
+      "focused": {
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px",
+        "border": "rgb(23, 105, 224)"
+      },
+      "closeFocus": {
+        "focused": true,
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px"
+      }
+    },
+    {
+      "scope": "admin-shell",
+      "viewport": {
+        "width": 320,
+        "height": 800
+      },
+      "rects": {
+        "x": 12,
+        "right": 308,
+        "width": 296,
+        "titleRight": 228.40625,
+        "closeX": 240.40625,
+        "clientWidth": 294,
+        "scrollWidth": 294
+      },
+      "focused": {
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px",
+        "border": "rgb(23, 105, 224)"
+      },
+      "closeFocus": {
+        "focused": true,
+        "outline": "rgba(23, 105, 224, 0.16) solid 2px"
+      }
+    }
+  ]
+}

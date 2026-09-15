@@ -603,7 +603,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009"
       ],
@@ -621,9 +621,11 @@
         "B-01.AC2"
       ],
       "scope": "Stable event bytes/hash and integration sequence with local event/guard transaction. Rollback creates no outbound effect.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-011",
+      "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
+      "reviewed_sha": null,
+      "agent": "backend_t011",
+      "execution_note": "Dependencies integrated and own-root Git gate passed. Coordinator allocated isolated worktree; bounded backend implementation assigned."
     },
     {
       "id": "T-012",
@@ -664,7 +666,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-006"
@@ -683,9 +685,11 @@
         "B-01.AC2"
       ],
       "scope": "Atomic consumerName+eventId dedup, effect and checkpoint; ACK only after commit; retry/rollback duplicate tests.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-013",
+      "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
+      "reviewed_sha": null,
+      "agent": "backend_t013",
+      "execution_note": "Dependencies integrated and own-root Git gate passed. Coordinator allocated isolated worktree; bounded backend implementation assigned."
     },
     {
       "id": "T-014",
@@ -1387,7 +1391,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-033"
       ],
@@ -1417,12 +1421,12 @@
       "scope": "Radix focus trap/restore, inside click does not dismiss, dirty/processing Escape behavior; test keyboard/validation and cancel-before-write only. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-034",
       "base_sha": "e6ae00f2c1dcc5c43a1a44fb6c88da30406f8406",
-      "reviewed_sha": "fb744c830fa2228c16d41ef695d953299d140045",
+      "reviewed_sha": "6321f190fdd8edc31b65ad8455cf96b405aaf23f",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend/t034_fix1",
-      "execution_note": "Fixcycle1 commit6321f190fdd8edc31b65ad8455cf96b405aaf23f corrects scoped styles; developer106tests/151browser assertions pass. Independent renewed review active; original QA evidence preserved."
+      "execution_note": "Independent renewed QA GREEN: 106 tests, typecheck/lint/build, offline lock install, 247 comparative browser assertions and 24 narrow/focus checks; original BOUNCE evidence preserved. See qa/T-034-r2.md."
     },
     {
       "id": "T-035",
