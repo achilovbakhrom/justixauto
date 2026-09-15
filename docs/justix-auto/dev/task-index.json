@@ -1440,7 +1440,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-032",
         "T-034"
@@ -1470,7 +1470,7 @@
         "package-lock.json"
       ],
       "agent": "frontend_t035",
-      "execution_note": "Developer schema/RTL/MSW tests and ten browser harness checks passed. Coordinator committed 51 new lock entries with no existing version/resolved/integrity changes; MSW exact approved integrity matched. Independent QA must review complete source plus lock SHA."
+      "execution_note": "Independent QA GREEN: offline locked install, 140 unit tests, ten independent browser/MSW/JSON probes, typecheck/lint/build and 57 immutable mock hashes. No whole-application parity claim; browser slot released."
     },
     {
       "id": "T-036",

@@ -94,7 +94,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-032](tasks/T-032.md) | B-05 | Create schema-validating HTTP client and scope-key helpers | implementation / 3 | frontend-shared | integrated | T-004 | `task/T-032-api-client` | ENV-GIT |
 | [T-033](tasks/T-033.md) | B-05 | Extract existing HTML tokens without redesign | implementation / 2 | frontend-shared | integrated | T-004 | `task/T-033-tokens` | ENV-GIT |
 | [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | integrated | T-033 | `task/T-034-dialog` | ENV-GIT |
-| [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | ready-for-qa | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
+| [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | qa-green | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
 | [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | todo | T-035 | `task/T-036-admin-shell` | ENV-GIT |
 | [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | todo | T-035 | `task/T-037-realization-shell` | ENV-GIT |
 | [T-038](tasks/T-038.md) | B-05 | Scaffold the independent financing app and verified shell | implementation / 4 | frontend-financing | todo | T-035 | `task/T-038-financing-shell` | ENV-GIT |
