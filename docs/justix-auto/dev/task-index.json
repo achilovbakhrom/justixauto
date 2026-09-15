@@ -467,7 +467,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-003"
       ],
@@ -491,7 +491,7 @@
       "base_sha": "ba6653c80c59658d1be2776bafe20972207ccb47",
       "reviewed_sha": "0eec15ab7b0bbf3eea8e09c6335938163a1ec8d4",
       "agent": "backend/t007_envelope",
-      "execution_note": "Coordinator-reviewed fix cycle 2 committed clean at 0eec15ab7b0bbf3eea8e09c6335938163a1ec8d4. EventSchema binds eventType, version, aggregateType, company scope and validator for construction/decode; spoofable input fields and shared identity allowlist are removed; raw wire is structural only. Full readonly race/vet/boundary checks pass; final exact-SHA QA pending."
+      "execution_note": "Final independent QA GREEN at exact 0eec15ab7b0bbf3eea8e09c6335938163a1ec8d4 after coordinator review. Independent archive tests close schema/version/aggregate/scope spoofing, unapproved auth claims, missing/unknown fields and nested PII while revision, UUID, owner and immutability checks plus full readonly race/vet/boundary suites pass."
     },
     {
       "id": "T-008",
