@@ -1,0 +1,7 @@
+=== RUN   TestQA918Adversarial
+=== RUN   TestQA918Adversarial/tracked_T917_canonical_route_rejection_remains_explicit
+    qa_t918_test.go:147: Known separate T917 gate reproduced: canonical T011 route rejected; production admission resolver preserved route contract
+--- PASS: TestQA918Adversarial (1.96s)
+    --- PASS: TestQA918Adversarial/tracked_T917_canonical_route_rejection_remains_explicit (0.03s)
+PASS
+ok  	justixauto/pkg/outbox	3.702s

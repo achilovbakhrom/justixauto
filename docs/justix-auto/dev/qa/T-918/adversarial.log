@@ -1,0 +1,20 @@
+=== RUN   TestQA918Adversarial
+=== RUN   TestQA918Adversarial/foreign_owner_cannot_fence_inventory_database
+=== RUN   TestQA918Adversarial/runtime_cannot_rewrite_admission_or_mode_evidence
+=== RUN   TestQA918Adversarial/internal_revisions_do_not_skip_integration_positions
+=== RUN   TestQA918Adversarial/recipient_copy_cannot_change_candidate_or_admission_digest
+=== RUN   TestQA918Adversarial/foreign_security_hold_and_sent_status_survive_source_hold_resume
+=== RUN   TestQA918Adversarial/closed_held_range_resumes_retained_work_without_reopening
+=== RUN   TestQA918Adversarial/second_adapter_in_same_SQL_transaction_cannot_reuse_issuer_candidate
+=== RUN   TestQA918Adversarial/direct_SQL_branch_fails_complete_replay
+--- PASS: TestQA918Adversarial (1.90s)
+    --- PASS: TestQA918Adversarial/foreign_owner_cannot_fence_inventory_database (0.01s)
+    --- PASS: TestQA918Adversarial/runtime_cannot_rewrite_admission_or_mode_evidence (0.01s)
+    --- PASS: TestQA918Adversarial/internal_revisions_do_not_skip_integration_positions (0.02s)
+    --- PASS: TestQA918Adversarial/recipient_copy_cannot_change_candidate_or_admission_digest (0.01s)
+    --- PASS: TestQA918Adversarial/foreign_security_hold_and_sent_status_survive_source_hold_resume (0.03s)
+    --- PASS: TestQA918Adversarial/closed_held_range_resumes_retained_work_without_reopening (0.02s)
+    --- PASS: TestQA918Adversarial/second_adapter_in_same_SQL_transaction_cannot_reuse_issuer_candidate (0.01s)
+    --- PASS: TestQA918Adversarial/direct_SQL_branch_fails_complete_replay (0.01s)
+PASS
+ok  	justixauto/pkg/outbox	3.674s

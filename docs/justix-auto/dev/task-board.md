@@ -992,7 +992,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
 | [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | integrated | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
-| [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | ready-for-qa | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
+| [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | qa-green | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
 | [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | todo | T-918, T-011, T-925 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
 | [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | todo | T-917, T-009, T-746 | `task/T-920-messaging-local-membership` | ENV-GIT |
 | [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013, T-925 | `task/T-921-messaging-durable-intake` | ENV-GIT |

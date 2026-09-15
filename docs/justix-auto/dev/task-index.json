@@ -34975,7 +34975,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-917",
         "T-009"
@@ -34997,7 +34997,7 @@
       "worktree": ".worktrees/T-918",
       "base_sha": "5d0236dd2f6c27ba37a9b2cd3c0ef2b9ac97fd1a",
       "agent": "backend_t918",
-      "execution_note": "Developer source-admission implementation complete;14 live PostgreSQL scenarios, full race and vet pass. Established T011 routing unchanged; T917 short-route synthetic fixture limitation and exact defect reproducer documented. Independent QA pending.",
+      "execution_note": "Independent exact-commit QA GREEN: full race/vet,14 live developer cases and9 independent PostgreSQL probes pass. Route defect reproduced independently; T925/T919 remain separate composition gates. No concrete business admissions.",
       "reviewed_sha": "d9ca2bc01fecbd81319d3c7ba2184e43417dd7e9"
     },
     {
