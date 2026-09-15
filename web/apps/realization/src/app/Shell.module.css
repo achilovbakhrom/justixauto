@@ -1,4 +1,4 @@
-:global(body) { margin: 0; background: var(--canvas); color: var(--text); font: var(--font-size)/var(--line-height) var(--font-family); }
+:global(body) { margin: 0; background: var(--canvas); color: var(--text); font: var(--font-size)/var(--line-height) var(--font-family); -webkit-font-smoothing: antialiased; }
 .shell, .shell * { box-sizing: border-box; }
 .shell button, .shell input { font: inherit; }
 .shell button:disabled, .shell input:disabled { opacity: 1; cursor: default; }

@@ -1,4 +1,4 @@
-/** M-R01 placement only. T-587 owns validated feature discovery and binding.
+/** M-R01 placement only. T-588 owns validated feature discovery and binding.
  * This catalog grants no permissions and currently registers zero pages. */
 export const navigation = Object.freeze([
   { id: 'dashboard', label: 'Дашборд', group: 'Обзор', icon: 'dashboard' },

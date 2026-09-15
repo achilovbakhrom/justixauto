@@ -1,0 +1,10 @@
+{
+  "method": "Pillow RGB ImageChops.difference; count pixels with any nonzero channel",
+  "reference": "developer-r2-1440-reference-projected.png",
+  "candidate": "developer-r2-1440-candidate.png",
+  "rectangles": [
+    {"box": [0, 0, 244, 1000], "differingPixels": 30},
+    {"box": [244, 0, 1440, 64], "differingPixels": 0}
+  ],
+  "scope": "Corrected source, shell-only comparison; not whole-page parity or independent QA"
+}
