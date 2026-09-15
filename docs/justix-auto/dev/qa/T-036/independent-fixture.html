@@ -1,0 +1,11 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><div id="qa-root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {AdminApp} from '/web/apps/admin/src/app/App.tsx';
+// QA-only fixture. Deliberate explicit synthetic admission, never app entry.
+const params = new URLSearchParams(location.search);
+const label = params.has('long') ? 'СинтетическийАдминистратор'.repeat(16) : 'Администратор Justix · Демо';
+history.replaceState(null, '', '/admin/');
+const Boundary = ({children}) => params.has('deny') ? null : children;
+createRoot(document.getElementById('qa-root')).render(React.createElement(AdminApp, {SessionBoundary: Boundary, identityLabel: label}));
+</script></body></html>

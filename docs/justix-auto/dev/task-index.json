@@ -1047,7 +1047,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1072,9 +1072,11 @@
         "B-01.AC2"
       ],
       "scope": "Own only identity mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later identity_wire task.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-024",
+      "base_sha": "f36d318b8e422793d6921219e5f39938fcd27864",
+      "reviewed_sha": null,
+      "agent": "backend_t024",
+      "execution_note": "T009/T017/T018/T010 integrated and Git PASS; isolated identity mechanics/migration/typed ports task allocated. Full service composition and custody-mode wiring remain later gated tasks."
     },
     {
       "id": "T-025",
@@ -1501,7 +1503,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-035"
       ],
@@ -1538,7 +1540,7 @@
         "package-lock.json"
       ],
       "agent": "frontend_t036",
-      "execution_note": "Developer Admin shell passed 145 unit and nine browser checks, strict typecheck/build and immutable mocks. Coordinator committed seven new lock entries with no existing pin changes and verified one-line pinned React Refresh import correction. Independent exact-commit QA assigned; default session boundary remains closed."
+      "execution_note": "Independent exact-commit QA GREEN: 145 tests, strict checks/build, 55 browser assertions, three shell comparisons and 30 route observations. Shared lint rule remains active and lock pins preserved. Future Admin binder is T587 (developer comment T590 is non-authoritative); /admin/ canonical path passes."
     },
     {
       "id": "T-037",
