@@ -837,7 +837,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "qa-green",
       "depends_on": [
         "T-003"
       ],
@@ -861,7 +861,7 @@
       "base_sha": "ba6653c80c59658d1be2776bafe20972207ccb47",
       "reviewed_sha": "a14d64fc78a32c73ee9866831a2810e40b0a9294",
       "agent": "backend/t019_money",
-      "execution_note": "Implementation committed clean at a14d64fc78a32c73ee9866831a2810e40b0a9294. Developer race/readonly/vet checks cover immutable exact money, 38-digit bounds, versioned currency, decimal rates, effective dates and explicit unresolved policy values; exact-SHA QA pending."
+      "execution_note": "Independent QA GREEN at exact a14d64fc78a32c73ee9866831a2810e40b0a9294. Full readonly race/vet/module checks and independent adversarial tests pass for 38-digit signed money, canonical JSON, immutable arithmetic, currency version/exponent mismatches, Gregorian dates and explicit policy-unresolved behavior."
     },
     {
       "id": "T-020",
