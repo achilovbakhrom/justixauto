@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -32,6 +35,8 @@ var databaseOwners = []databaseOwner{
 	{name: "insurance", role: "justix_insurance", database: "justix_insurance", passwordEnv: "JUSTIXAUTO_INSURANCE_DB_PASSWORD"},
 	{name: "documents", role: "justix_documents", database: "justix_documents", passwordEnv: "JUSTIXAUTO_DOCUMENTS_DB_PASSWORD"},
 }
+
+const postgresImage = "docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2"
 
 type postgresFixture struct {
 	admin     *pgx.ConnConfig
@@ -68,6 +73,74 @@ func isLoopbackHost(host string) bool {
 	}
 	ip := net.ParseIP(host)
 	return ip != nil && ip.IsLoopback()
+}
+
+func TestPostgresInitRejectsEveryMissingOrEmptyCredential(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_POSTGRES_BOOTSTRAP") != "1" {
+		t.Skip("JUSTIXAUTO_TEST_POSTGRES_BOOTSTRAP=1 is required for destructive disposable-container checks")
+	}
+	if _, err := exec.LookPath("docker"); err != nil {
+		t.Fatalf("find Docker CLI: %v", err)
+	}
+	_, source, _, ok := runtime.Caller(0)
+	if !ok {
+		t.Fatal("locate integration test source")
+	}
+	initScript := filepath.Join(filepath.Dir(source), "../../infra/local/postgres/init-owners.sql")
+	initScript, err := filepath.Abs(initScript)
+	if err != nil {
+		t.Fatalf("resolve init script: %v", err)
+	}
+
+	for _, missing := range databaseOwners {
+		missing := missing
+		for _, mode := range []string{"missing", "empty"} {
+			mode := mode
+			t.Run(missing.name+"/"+mode, func(t *testing.T) {
+				containerName := "justixauto-t005-credential-" + strings.ReplaceAll(uuid.NewString(), "-", "")
+				args := []string{
+					"run", "--rm", "--name", containerName,
+					"-e", "POSTGRES_PASSWORD=t005-bootstrap-admin-" + uuid.NewString(),
+				}
+				for _, owner := range databaseOwners {
+					switch {
+					case owner.name != missing.name:
+						args = append(args, "-e", owner.passwordEnv+"=t005-"+owner.name+"-"+uuid.NewString())
+					case mode == "empty":
+						args = append(args, "-e", owner.passwordEnv+"=")
+					}
+				}
+				args = append(args,
+					"-v", initScript+":/docker-entrypoint-initdb.d/10-justix-owners.sql:ro",
+					postgresImage,
+				)
+
+				ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+				defer cancel()
+				output, runErr := exec.CommandContext(ctx, "docker", args...).CombinedOutput()
+				// A client timeout can leave the daemon-side container alive. Cleanup is
+				// scoped to the random name created by this test.
+				exec.Command("docker", "rm", "-f", containerName).Run() //nolint:errcheck -- --rm normally removed it
+				if ctx.Err() != nil {
+					t.Fatalf("credential guard timed out: %v", ctx.Err())
+				}
+				if runErr == nil {
+					t.Fatalf("entrypoint accepted %s %s", mode, missing.passwordEnv)
+				}
+				log := string(output)
+				if strings.Contains(log, "CREATE ROLE") || strings.Contains(log, "CREATE DATABASE") ||
+					strings.Contains(log, "PostgreSQL init process complete") {
+					t.Fatalf("entrypoint created owner state after %s %s:\n%s", mode, missing.passwordEnv, log)
+				}
+				if !strings.Contains(log, missing.passwordEnv) {
+					t.Fatalf("entrypoint failure did not identify %s %s:\n%s", mode, missing.passwordEnv, log)
+				}
+				if mode == "empty" && !strings.Contains(log, missing.passwordEnv+" is required and must not be empty") {
+					t.Fatalf("entrypoint did not identify empty %s:\n%s", missing.passwordEnv, log)
+				}
+			})
+		}
+	}
 }
 
 func connectAs(t *testing.T, fixture postgresFixture, owner databaseOwner, database string) (*pgx.Conn, error) {

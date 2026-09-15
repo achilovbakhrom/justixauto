@@ -3,6 +3,13 @@
 -- T-005 local-only bootstrap. The official PostgreSQL entrypoint runs this as
 -- the bootstrap superuser. Passwords must be supplied through environment
 -- variables; no credential has a repository default.
+\set identity_password ''
+\set inventory_password ''
+\set commerce_password ''
+\set retail_password ''
+\set financing_password ''
+\set insurance_password ''
+\set documents_password ''
 \getenv identity_password JUSTIXAUTO_IDENTITY_DB_PASSWORD
 \getenv inventory_password JUSTIXAUTO_INVENTORY_DB_PASSWORD
 \getenv commerce_password JUSTIXAUTO_COMMERCE_DB_PASSWORD
@@ -12,19 +19,52 @@
 \getenv documents_password JUSTIXAUTO_DOCUMENTS_DB_PASSWORD
 
 SELECT
-  :'identity_password' <> '' AND
-  :'inventory_password' <> '' AND
-  :'commerce_password' <> '' AND
-  :'retail_password' <> '' AND
-  :'financing_password' <> '' AND
-  :'insurance_password' <> '' AND
-  :'documents_password' <> '' AS credentials_present
+  :'identity_password' <> '' AS identity_password_present,
+  :'inventory_password' <> '' AS inventory_password_present,
+  :'commerce_password' <> '' AS commerce_password_present,
+  :'retail_password' <> '' AS retail_password_present,
+  :'financing_password' <> '' AS financing_password_present,
+  :'insurance_password' <> '' AS insurance_password_present,
+  :'documents_password' <> '' AS documents_password_present
 \gset
 
-\if :credentials_present
+-- ON_ERROR_STOP propagates this server error through psql and the official
+-- entrypoint. PostgreSQL 18's psql \quit command has no exit-status argument,
+-- so it must not be used as a configuration-failure signal.
+\if :identity_password_present
 \else
-  \echo 'All seven JUSTIXAUTO_*_DB_PASSWORD variables are required.'
-  \quit 3
+  \echo 'JUSTIXAUTO_IDENTITY_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
+\endif
+\if :inventory_password_present
+\else
+  \echo 'JUSTIXAUTO_INVENTORY_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
+\endif
+\if :commerce_password_present
+\else
+  \echo 'JUSTIXAUTO_COMMERCE_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
+\endif
+\if :retail_password_present
+\else
+  \echo 'JUSTIXAUTO_RETAIL_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
+\endif
+\if :financing_password_present
+\else
+  \echo 'JUSTIXAUTO_FINANCING_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
+\endif
+\if :insurance_password_present
+\else
+  \echo 'JUSTIXAUTO_INSURANCE_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
+\endif
+\if :documents_password_present
+\else
+  \echo 'JUSTIXAUTO_DOCUMENTS_DB_PASSWORD is required and must not be empty.'
+  SELECT 1 / 0 AS missing_required_owner_credential;
 \endif
 
 CREATE TEMP TABLE justix_owner_bootstrap (

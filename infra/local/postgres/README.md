@@ -63,6 +63,16 @@ rollback behavior, and concurrent use of the same table name in seven databases.
 It skips when the admin DSN is absent, so an ordinary unit-test run never reaches
 an unrequested database. It rejects a non-loopback admin endpoint.
 
+The bootstrap failure regression runs 14 fresh containers: one missing and one
+explicitly empty case for every required owner password. It publishes no host
+port and removes each disposable container. Enable this slower Docker check only
+when requested:
+
+```sh
+JUSTIXAUTO_TEST_POSTGRES_BOOTSTRAP=1 bash tools/go.sh test -race -count=1 \
+  -run TestPostgresInitRejectsEveryMissingOrEmptyCredential ./tests/integration
+```
+
 This task provisions empty owner stores only. It does not run owner migrations,
 seed users or vehicles, create production credentials, or establish event delivery
 guarantees. Database owners can run their own later migration set; service runtime
