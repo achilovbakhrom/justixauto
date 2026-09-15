@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JustixAuto — Страховая</title>
+  </head>
+  <body>
+    <div id="insurance-root"></div>
+    <script type="module">
+      import React from 'react';
+      import { createRoot } from 'react-dom/client';
+      import { InsuranceApp } from '/src/app/App.tsx';
+      // T-054 confirms boundary states; T-590 wires the approved providers.
+      // Until those dependencies are implemented, fail closed:
+      // no protected children, fake identity, login design or persisted session.
+      const UnconnectedSessionBoundary = () => null;
+      createRoot(document.getElementById('insurance-root')).render(
+        React.createElement(InsuranceApp, { SessionBoundary: UnconnectedSessionBoundary }),
+      );
+    </script>
+  </body>
+</html>
