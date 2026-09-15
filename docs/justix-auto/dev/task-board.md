@@ -65,7 +65,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-003](tasks/T-003.md) | B-01 | Create the single Go module and architecture boundary harness | implementation / 3 | foundation | integrated | T-001 | `task/T-003-go-scaffold` | ENV-GIT |
 | [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | integrated | T-001 | `task/T-004-web-workspace` | ENV-GIT |
 | [T-005](tasks/T-005.md) | B-01 | Provision seven isolated local PostgreSQL owners | implementation / 3 | infra | bounced | T-001, T-003 | `task/T-005-postgres-local` | ENV-GIT |
-| [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | ready-for-qa | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
+| [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | qa-green | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
 | [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | todo | T-003 | `task/T-007-envelope` | ENV-GIT |
 | [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | todo | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | todo | T-008 | `task/T-009-append` | ENV-GIT |
