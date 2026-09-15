@@ -298,7 +298,7 @@
       "parent": "B-02",
       "kind": "policy-decision",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "ready-for-qa",
       "depends_on": [],
       "branch": "task/T-002-security-release",
       "lane": "decisions",
@@ -317,9 +317,11 @@
         "B-02.AC4"
       ],
       "scope": "Propose session limits, credential parameters, challenge/rate limits, recovery proof/delivery and invitation verification; record explicit security approval, do not claim it supplied by release scope.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-002",
+      "base_sha": "d79fd44",
+      "reviewed_sha": null,
+      "agent": "coordinator",
+      "execution_note": "Initial proposal QA bounced for proof/delivery/invitation protocol gaps. Revision a262f075bd5338c03c7049141c6c9f7e674110e5 addresses them and awaits renewed review; user acceptance remains open."
     },
     {
       "id": "T-003",
@@ -501,7 +503,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "integrated",
       "depends_on": [
         "T-007",
         "T-005"
@@ -520,9 +522,12 @@
         "B-01.AC1"
       ],
       "scope": "Append-only event roles, event ID and aggregate-version uniqueness, idempotency/outbox/inbox/process tables; install templates per owner database.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-008",
+      "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
+      "reviewed_sha": "19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d",
+      "agent": "backend/t008_event_schema",
+      "execution_note": "QA-approved schema merged; main integration race suite including live PostgreSQL and vet passed. T009 conditional append is now eligible.",
+      "integration_sha": "b22982108ba4bde357f0987382098054109009af"
     },
     {
       "id": "T-009",
@@ -531,7 +536,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-008"
       ],
@@ -550,9 +555,11 @@
         "B-01.AC2"
       ],
       "scope": "Expected-version append includes guards/outbox/receipt via typed transaction; competing append and rollback tests against PostgreSQL.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-009",
+      "base_sha": "1c8f8aa403deb752924209b778aaf2747ef79bbb",
+      "reviewed_sha": null,
+      "agent": "backend/t009_append",
+      "execution_note": "T008 integrated and pushed; conditional append and typed transaction implementation assigned."
     },
     {
       "id": "T-010",
@@ -1290,7 +1297,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "bounced",
       "depends_on": [
         "T-004"
       ],
@@ -1313,12 +1320,14 @@
         "B-05.AC4"
       ],
       "scope": "Same-origin transport, typed 401/403/404/409/412/422/503 receipts, no token storage or persistent PII; schema adapters injected by each feature. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null,
+      "worktree": ".worktrees/T-032",
+      "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
+      "reviewed_sha": "01d0a19dcf5ca1a8dd11039239e19d5c8b917417",
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend/t032_api_client",
+      "execution_note": "Independent QA BOUNCE: reserved identity-header aliases and sparse SELECTED branch arrays accepted. Fix cycle 1 assigned; evidence preserved."
     },
     {
       "id": "T-033",
@@ -1327,7 +1336,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "todo",
+      "status": "integrated",
       "depends_on": [
         "T-004"
       ],
@@ -1353,12 +1362,15 @@
         "B-05.AC2"
       ],
       "scope": "Read exact common/scoped CSS values, font fallback and verified responsive condition; preserve distinct insurer appearance and existing SVG assets. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null,
+      "worktree": ".worktrees/T-033",
+      "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
+      "reviewed_sha": "b7f739bb36e9ac85ee680e4fc17e9d25639d3b54",
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend/t033_tokens",
+      "execution_note": "QA-approved tokens merged. Main offline lock install, strict typecheck, six tests and CSS package build passed; independent browser evidence preserved. T034 now eligible.",
+      "integration_sha": "e9567ffc1817136a71d0060102d4d108db5212a7"
     },
     {
       "id": "T-034",
@@ -25504,7 +25516,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-001"
       ],
@@ -25520,9 +25532,11 @@
         "B-01.AC4"
       ],
       "scope": "Define inert owner feature-factory registration, explicit composition-root dependency injection, duplicate route/consumer rejection and fail-closed missing-feature behavior. No init-time I/O/business effects or service-locator domain coupling. Frontend registry discovers completed owner-local route exports without requiring absent feature files. Contract review precedes runtime implementation; this is an implementation convention within approved hexagonal boundaries, not new domain authority.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-746",
+      "base_sha": "537b662af02db56611bf6377fc42b16086a037dd",
+      "reviewed_sha": null,
+      "agent": "architect/t746_registration_contract",
+      "execution_note": "Architect assigned ancillary state/drafts/architect/runtime-registration.md; coordinator promotes to task-owned contracts draft before exact-commit QA. Base537b662af02db56611bf6377fc42b16086a037dd."
     },
     {
       "id": "T-747",

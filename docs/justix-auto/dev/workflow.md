@@ -4,12 +4,16 @@ Status: architecture and release planning scope approved; development authorized
 
 ## 1. Environment and inputs
 
-Run `npm run doctor` from the project root. The own-Git-root check must pass;
+Run `bash tools/check-git.sh` from the project root before application changes;
 never accept the parent repository as a substitute. Go/Node/Docker/Codex are
-installed on the laptop, but service and React dependencies are not installed.
-The root package.json belongs to mock documentation tooling only.
-Use `bash tools/go.sh <arguments>` for Go commands: it rejects the laptop's
-older default and chooses an installed compiler >= 1.23 without PATH mutation.
+installed. The Go module and root frontend workspace dependencies are locked
+and installed; owner services and the four React apps follow their task gates.
+The root package.json now contains shared frontend and mock tooling scripts.
+Use `bash tools/go.sh <arguments>` for the locked Go 1.27.1 compiler and the
+project-local Node 24.21.0/npm 11.19.0 via command-local PATH. See dev-state.md
+for toolchain locations and the supported project-package test command.
+The existing `doctor` script still prints a historical scaffold message and
+uses the caller's Node/npm PATH; its output alone is not development readiness.
 
 Read dev-state.md, current business-logic.md, open-decisions.md and mock-map.md.
 Use the Gaze source audit as technology evidence, not as product requirements.

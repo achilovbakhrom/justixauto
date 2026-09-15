@@ -1,0 +1,140 @@
+Reviewed commit: 01d0a19dcf5ca1a8dd11039239e19d5c8b917417
+Command exit code: 1
+(node:50444) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ known server-reserved identity header X-Permissions is rejected before dispatch (15.603375ms)
+✖ known server-reserved identity header X_Permissions is rejected before dispatch (0.702666ms)
+✖ known server-reserved identity header X-Justix-Internal-Caller is rejected before dispatch (0.346083ms)
+✖ known server-reserved identity header X_Justix_Internal_Caller is rejected before dispatch (0.403459ms)
+✖ SELECTED sparse branch array does not represent a valid nonempty UUID scope (0.442375ms)
+✔ known receipts require exact structure and never invoke success schema (1.428125ms)
+✔ unknown/malformed receipts never become authoritative HTTP failures (0.380209ms)
+✔ schema diagnostics do not escape through invalid-response (0.161917ms)
+✔ write timeout is unknown, has no retry, and independent identical calls stay explicit (0.689542ms)
+✔ mid-body connection failure on a write does not become a rejection receipt (0.591375ms)
+✔ path encodings and authority substitution fail closed before dispatch (0.18275ms)
+✔ precise context headers, no-store, same-origin cookies and no redirects (0.227417ms)
+✔ all admitted identity/resource dimensions create distinct serialized keys (0.199958ms)
+✔ nested filters and branches have no mutable aliases and freeze deeply (0.204166ms)
+✔ JSON proto-named filters remain distinct own data without pollution (0.097667ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 10
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110.144875
+
+✖ failing tests:
+
+test at docs/justix-auto/dev/qa/T-032/adversarial.mjs:22:3
+✖ known server-reserved identity header X-Permissions is rejected before dispatch (15.603375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   data: {},
+  +   kind: 'success',
+  +   status: 200
+  -   kind: 'invalid-request'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-032/docs/justix-auto/dev/qa/T-032/adversarial.mjs:26:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { kind: 'success', status: 200, data: {} },
+    expected: { kind: 'invalid-request' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at docs/justix-auto/dev/qa/T-032/adversarial.mjs:22:3
+✖ known server-reserved identity header X_Permissions is rejected before dispatch (0.702666ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   data: {},
+  +   kind: 'success',
+  +   status: 200
+  -   kind: 'invalid-request'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-032/docs/justix-auto/dev/qa/T-032/adversarial.mjs:26:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { kind: 'success', status: 200, data: {} },
+    expected: { kind: 'invalid-request' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at docs/justix-auto/dev/qa/T-032/adversarial.mjs:22:3
+✖ known server-reserved identity header X-Justix-Internal-Caller is rejected before dispatch (0.346083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   data: {},
+  +   kind: 'success',
+  +   status: 200
+  -   kind: 'invalid-request'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-032/docs/justix-auto/dev/qa/T-032/adversarial.mjs:26:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { kind: 'success', status: 200, data: {} },
+    expected: { kind: 'invalid-request' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at docs/justix-auto/dev/qa/T-032/adversarial.mjs:22:3
+✖ known server-reserved identity header X_Justix_Internal_Caller is rejected before dispatch (0.403459ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   data: {},
+  +   kind: 'success',
+  +   status: 200
+  -   kind: 'invalid-request'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-032/docs/justix-auto/dev/qa/T-032/adversarial.mjs:26:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { kind: 'success', status: 200, data: {} },
+    expected: { kind: 'invalid-request' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at docs/justix-auto/dev/qa/T-032/adversarial.mjs:31:1
+✖ SELECTED sparse branch array does not represent a valid nonempty UUID scope (0.442375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-032/docs/justix-auto/dev/qa/T-032/adversarial.mjs:32:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
