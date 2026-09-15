@@ -1,0 +1,21 @@
+Exact source: b400904233470abdc6c8052c19ab6293786f0170
+Independent final run: exit 1, justixauto/services/identity/adapter/postgres 7.288s
+TestQAIdentityAdversarial (4.04s): FAIL
+table_maintain: FAIL
+marker_column_insert: FAIL
+ledger_column_insert: FAIL
+marker_column_references: FAIL
+ledger_column_references: FAIL
+table_references: FAIL
+column_references: FAIL
+database_create: FAIL
+Each failure: incompatible grants accepted: Check=<nil> Run=<nil> callback=true factory calls=1
+missing_schema_usage: PASS
+missing_insert: PASS
+column_marker_update: PASS
+empty_ledger: PASS
+rollback_lost_reply: PASS
+commit_lost_reply: PASS
+TestQAIdentityMessagingCompatibility (2.53s): PASS
+Exact T917 additive schema in legacy mode: Check and Run succeed
+Exact T917 empty-owner custody activation: Check and Run reject, no callback
