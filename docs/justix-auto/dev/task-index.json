@@ -35187,7 +35187,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-917",
         "T-011",
@@ -35209,8 +35209,10 @@
         "B-01.AC2"
       ],
       "scope": "Apply the approved forward route compatibility correction, preserving installed 000002, every historical route/byte/identity and mode transition. Add immutable correction evidence and prove genuine T011-produced populated cutover, custody/job compatibility, rollback and narrow grants. No automatic repair, production cutover or business admission.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-925",
+      "base_sha": "fba111c583e5035b180c494ab1245f66d4d7035f",
+      "agent": "backend_t925",
+      "execution_note": "Approved route correction and independent promotion r2 GREEN; Git gate passed and isolated worktree allocated. Implement only new forward000003 plus genuine producer/cutover tests; preserve all installed migrations and historical identities."
     }
   ]
 }
