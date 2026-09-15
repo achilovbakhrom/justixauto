@@ -734,7 +734,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-011",
         "T-006",
@@ -757,9 +757,11 @@
         "B-01.AC2"
       ],
       "scope": "Mandatory persistent publish, confirms, reconnect/lost-confirm duplicate replay with identical eventId; mark sent only after routed confirm.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-012",
+      "base_sha": "7d6516d34ef1b68d4a8e48c8796a199bdb736c5d",
+      "reviewed_sha": null,
+      "agent": "backend_t012",
+      "execution_note": "Assigned confirmed AMQP relay after T919/T924 integration. Persisted complete recipient plan and original bytes only; mandatory returns and publisher confirms jointly determine sent state, lease/unknown outcomes remain explicit. Four owned Go leaves only, synthetic database/broker fixtures."
     },
     {
       "id": "T-013",
