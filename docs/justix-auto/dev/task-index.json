@@ -1685,7 +1685,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-035"
       ],
@@ -1715,12 +1715,14 @@
         "B-05.AC4"
       ],
       "scope": "Base and Router basename /insurance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
+      "worktree": ".worktrees/T-039",
+      "base_sha": "2d139607bb561037abc0d6e98550261f5d3834d2",
       "reviewed_sha": null,
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend_t039",
+      "execution_note": "Assigned independent Insurance shell against M-I01 immutable HTML, explicit injected session boundary and disabled unregistered navigation. Current base includes reviewed request-intent guards; use same verified local routing behavior. Coordinator owns serialized npm lock handoff before exact-commit QA."
     },
     {
       "id": "T-040",
