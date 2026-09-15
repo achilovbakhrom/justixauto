@@ -1,0 +1,28 @@
+=== RUN   TestRealEngineProtocol
+=== RUN   TestRealEngineProtocol/success
+    engine_probe_test.go:89: calls=[lock version set:12:true run:original-bytes set:12:false unlock] error=<nil>
+=== RUN   TestRealEngineProtocol/dirty-write-error
+    engine_probe_test.go:89: calls=[lock version set:12:true unlock] error=synthetic boundary failure
+=== RUN   TestRealEngineProtocol/DDL-error
+    engine_probe_test.go:89: calls=[lock version set:12:true run:original-bytes unlock] error=synthetic boundary failure
+=== RUN   TestRealEngineProtocol/finalization-error
+    engine_probe_test.go:89: calls=[lock version set:12:true run:original-bytes set:12:false unlock] error=synthetic boundary failure
+=== RUN   TestRealEngineProtocol/missing-body-clean-guard
+    engine_probe_test.go:89: calls=[lock version set:12:true set:12:false unlock] error=synthetic boundary failure
+=== RUN   TestRealEngineProtocol/retained-dirty-rejected
+    engine_probe_test.go:89: calls=[lock version unlock] error=Dirty database version 1. Fix and force version.
+--- PASS: TestRealEngineProtocol (0.00s)
+    --- PASS: TestRealEngineProtocol/success (0.00s)
+    --- PASS: TestRealEngineProtocol/dirty-write-error (0.00s)
+    --- PASS: TestRealEngineProtocol/DDL-error (0.00s)
+    --- PASS: TestRealEngineProtocol/finalization-error (0.00s)
+    --- PASS: TestRealEngineProtocol/missing-body-clean-guard (0.00s)
+    --- PASS: TestRealEngineProtocol/retained-dirty-rejected (0.00s)
+=== RUN   TestForceCannotBypassPendingRunGuard
+    engine_probe_test.go:100: [lock set:12:false unlock]
+--- PASS: TestForceCannotBypassPendingRunGuard (0.00s)
+=== RUN   TestDriverBoundPrecedesEngineLockTimeout
+    engine_probe_test.go:110: driver-controlled bounded failure surfaced before the longer engine timeout
+--- PASS: TestDriverBoundPrecedesEngineLockTimeout (0.01s)
+PASS
+ok  	justixauto-qa-owner-migration-api	1.400s

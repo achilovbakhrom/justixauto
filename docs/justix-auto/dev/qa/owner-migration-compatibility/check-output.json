@@ -1,0 +1,163 @@
+{
+  "reviewed_sha": "c3734a5c3f2863be8fe752338c11740b9bdf31a4",
+  "base_sha": "f0a72a94b9badabc32f9ad028f913a98960e6b4a",
+  "proposal_sha256": "87ca5a5b7b5398726a53a9f4ec52b4f63c665e08ebaf69f57003401fa9ccbd76",
+  "hypothetical_nodes": 934,
+  "new_aliases": {
+    "OM-HISTORY": {
+      "deps": [
+        "T-008",
+        "T-024"
+      ],
+      "files": [
+        "pkg/eventstore/owner_history.sql",
+        "pkg/eventstore/owner_history_test.go"
+      ]
+    },
+    "OM-PROFILE": {
+      "deps": [
+        "OM-HISTORY",
+        "T-009",
+        "T-024"
+      ],
+      "files": [
+        "pkg/persistence/profile.go",
+        "pkg/persistence/profile_test.go",
+        "pkg/persistence/check.go",
+        "pkg/persistence/check_test.go"
+      ]
+    },
+    "OM-IDENTITY": {
+      "deps": [
+        "OM-PROFILE"
+      ],
+      "files": [
+        "services/identity/adapter/postgres/unit_of_work.go",
+        "services/identity/adapter/postgres/unit_of_work_test.go"
+      ]
+    },
+    "OM-DRIVER": {
+      "deps": [
+        "OM-HISTORY",
+        "OM-PROFILE",
+        "T-001",
+        "T-005"
+      ],
+      "files": [
+        "tools/owner-migrate/driver.go",
+        "tools/owner-migrate/driver_test.go"
+      ]
+    },
+    "OM-RUNNER": {
+      "deps": [
+        "OM-DRIVER"
+      ],
+      "files": [
+        "tools/owner-migrate/main.go",
+        "tools/owner-migrate/main_test.go"
+      ]
+    },
+    "OM-CUSTODY": {
+      "deps": [
+        "OM-PROFILE",
+        "T-919",
+        "T-922",
+        "T-924",
+        "T-925",
+        "T-928"
+      ],
+      "files": [
+        "pkg/persistence/custody.go",
+        "pkg/persistence/custody_test.go",
+        "pkg/persistence/check.go",
+        "pkg/persistence/check_test.go"
+      ]
+    }
+  },
+  "existing_amendments": {
+    "T-059": [
+      "OM-HISTORY",
+      "OM-IDENTITY"
+    ],
+    "T-060": [
+      "OM-IDENTITY"
+    ],
+    "T-022": [
+      "OM-CUSTODY",
+      "OM-RUNNER"
+    ],
+    "T-580": [
+      "OM-CUSTODY",
+      "OM-IDENTITY",
+      "OM-RUNNER"
+    ]
+  },
+  "new_leaves": [
+    "pkg/eventstore/owner_history.sql",
+    "pkg/eventstore/owner_history_test.go",
+    "pkg/persistence/check.go",
+    "pkg/persistence/check_test.go",
+    "pkg/persistence/custody.go",
+    "pkg/persistence/custody_test.go",
+    "pkg/persistence/profile.go",
+    "pkg/persistence/profile_test.go",
+    "services/identity/migrations/0012_auth.manifest.json",
+    "tools/owner-migrate/driver.go",
+    "tools/owner-migrate/driver_test.go",
+    "tools/owner-migrate/main.go",
+    "tools/owner-migrate/main_test.go"
+  ],
+  "checks_passed": 42,
+  "checks": [
+    "exact reviewed HEAD",
+    "only assigned proposal/result changed",
+    "proposal bytes equal exact Git object",
+    "result bytes equal exact Git object",
+    "link: ../../../architecture.md",
+    "link: ../../../dev/owner-migration-readiness.md",
+    "link: ../contracts/messaging-delivery.md",
+    "link: ../contracts/projection-storage-handoff.md",
+    "link: ../../../reference/gaze-reference.md",
+    "link: ../../state/drafts/architect/owner-migration-compatibility.md",
+    "baseline has 928 distinct tasks",
+    "six aliases, no numeric reservations",
+    "hypothetical 934-node graph is acyclic",
+    "all new aliases remain under B-01 closer T-591",
+    "explicit serial ownership: OM-IDENTITY after T-024 services/identity/adapter/postgres/unit_of_work.go",
+    "explicit serial ownership: OM-IDENTITY after T-024 services/identity/adapter/postgres/unit_of_work_test.go",
+    "explicit serial ownership: OM-CUSTODY after OM-PROFILE pkg/persistence/check.go",
+    "explicit serial ownership: OM-CUSTODY after OM-PROFILE pkg/persistence/check_test.go",
+    "auth manifest unowned before explicit T-059 extension",
+    "13 distinct new leaves including T-059 manifest",
+    "Identity UOW ownership explicit successor to integrated T-024",
+    "custody checker serialization preserves profile ownership",
+    "OM-IDENTITY and OM-CUSTODY disjoint",
+    "T-061 inherits compatible Identity dependency",
+    "identity unchanged explicit transaction and dirty v1 guard",
+    "identity legacy exact clean v1, check before bind",
+    "identity existing SQL lacks fabricated historical artifact evidence",
+    "inventory unchanged explicit transaction and dirty v1 guard",
+    "inventory legacy exact clean v1, check before bind",
+    "inventory existing SQL lacks fabricated historical artifact evidence",
+    "commerce unchanged explicit transaction and dirty v1 guard",
+    "commerce legacy exact clean v1, check before bind",
+    "commerce existing SQL lacks fabricated historical artifact evidence",
+    "migrate insertion is still pending, pgx pin unchanged",
+    "downloaded source equals approved archive bytes",
+    "independently recomputed migrate module h1",
+    "independently recomputed migrate go.mod h1",
+    "NewWithInstance accepts public Driver directly",
+    "Driver has Run and SetVersion hooks",
+    "upstream connection is private and finalization owns separate tx",
+    "pgx supports complete simple-query batch and drained results",
+    "pgx Tx retains its owned connection"
+  ],
+  "api_source_sha256": {
+    "/private/tmp/justixauto-owner-migration-audit/github.com/golang-migrate/migrate/v4@v4.20.1/migrate.go": "43b6dc16f9e9dbbdf61df74dd8d99e72a5617e247f5ff154e0771993e3f44fae",
+    "/private/tmp/justixauto-owner-migration-audit/github.com/golang-migrate/migrate/v4@v4.20.1/database/driver.go": "db7d9fc009b15812638a29646699876498d2b6cbf50be250bf3fd799aee9b1d2",
+    "/private/tmp/justixauto-owner-migration-audit/github.com/golang-migrate/migrate/v4@v4.20.1/database/pgx/v5/pgx.go": "0919b22e6cad86e929eee87c37750dfaf30ec5ea2b70edcea463b1337883e787",
+    "/private/tmp/justixauto-t003-modcache/github.com/jackc/pgx/v5@v5.11.0/pgconn/pgconn.go": "08a383a3160fb1ba9c901b1aa0e6d0d53b435a3789c0481019b124a79cbe71e9",
+    "/private/tmp/justixauto-t003-modcache/github.com/jackc/pgx/v5@v5.11.0/tx.go": "5072bc290fefc16aef08c9a4cea712b5cbe054c5d6051bcd65b0ad0764cf9393"
+  },
+  "limitations": "Proposal/static/API feasibility only. Engine probe uses an observed fake Driver; no live PostgreSQL or implemented driver guarantee."
+}
