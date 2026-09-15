@@ -1256,7 +1256,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-003"
       ],
@@ -1280,7 +1280,8 @@
       "base_sha": "a6e769e1723f784a3646099b62767d301b214eb5",
       "reviewed_sha": "8366e5352ac4a9892c0a5dd2a31553658666e755",
       "agent": "backend/t031_auth_transport",
-      "execution_note": "Independent QA GREEN at exact 8366e5352ac4a9892c0a5dd2a31553658666e755. Duplicate identical and distinct service URI SAN ambiguity fail closed; full real TLS no-cert/CA/EKU, public header, exact immutable grant, race/vet/import-boundary adversarial suites pass; fix scope is exact and tree clean."
+      "execution_note": "Merged exact QA-green branch as 868ac5f8a37eb493791226e7424a1474ed0e3c78. Integrated project package race/vet tests (`./pkg/... ./tests/...`), module verification and 1,016 readiness checks pass; exact QA supplied the full synthetic TLS/header/grant adversarial evidence.",
+      "integration_sha": "868ac5f8a37eb493791226e7424a1474ed0e3c78"
     },
     {
       "id": "T-032",
