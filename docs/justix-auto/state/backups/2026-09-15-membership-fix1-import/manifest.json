@@ -1,0 +1,26 @@
+[
+  {
+    "path": "docs/justix-auto/state/drafts/architect/membership-version-storage.md",
+    "snapshot": "docs/justix-auto/state/drafts/architect/membership-version-storage.md.gz",
+    "bytes": 28994,
+    "sha256": "74ec431e86b33346c82f28c8181fd671720f7456ba675b87ea8a6a4475de68ce"
+  },
+  {
+    "path": "docs/justix-auto/dev/results/membership-version-storage.md",
+    "snapshot": "docs/justix-auto/dev/results/membership-version-storage.md.gz",
+    "bytes": 17343,
+    "sha256": "9e8b6baa4a8632406856fe47e30cb3edb1eafc485e13eec15bfe3611c994043b"
+  },
+  {
+    "path": "docs/justix-auto/dev/membership-version-assignment.md",
+    "snapshot": "docs/justix-auto/dev/membership-version-assignment.md.gz",
+    "bytes": 4206,
+    "sha256": "357e20cfc08672ba15c648a8242bfd058446cffbb3a5e5c54c29774d524232c5"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 12775,
+    "sha256": "61347d28b843e20e10e94e12c5d709066e0dbc1ad5f09001b363aef77a169ca5"
+  }
+]

@@ -1,6 +1,6 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: independent proposal QA BOUNCE; architect fix cycle 1 assigned; T-920 remains blocked.
+2026-09-15. Status: architect fix cycle 1 complete; independent r2 QA queued; T-920 remains blocked.
 Agent: `architect_membership_storage`.
 T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
@@ -65,3 +65,11 @@ SQL versus adapter missing-link enforcement boundary. Preserve old migrations
 and ordinary future intake; no new policy or source ownership is authorized.
 Architect revises only the original draft/result leaves, preserves original
 evidence, and supplies concrete reduced regressions before independent r2 QA.
+
+Revised proposal commit: `c3c0da45965c980fee22a32f43e90d7a674a55c4`.
+Coordinator imports its exact draft/result after preserving both preimages.
+The revision explicitly proposes a new deferred INSERT constraint trigger on
+existing enrollments within SQL008's owned leaf; old trigger/function definitions
+and migrations remain unchanged. Independent r2 must audit that declared catalog
+delta, missing-link enforcement, ordinary future intake and inert retained state.
+Original BOUNCE evidence remains unchanged; no canonical contract adoption yet.
