@@ -1,0 +1,128 @@
+{
+  "sha": "9ed232ebb5ffa110454e16f8c92d3cd8bec8162b",
+  "temporary_root": "/private/tmp/justix-t640-independent-eqz391zh",
+  "results": [
+    {
+      "case": "dangling output symlink rejected without following",
+      "pass": false,
+      "target_created": true,
+      "target": "/private/tmp/justix-t640-independent-eqz391zh/outside-config-created.ts",
+      "result": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      }
+    },
+    {
+      "case": "emitted symbol collision ApiRequest",
+      "pass": false,
+      "generation": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      },
+      "compile": {
+        "exit": 2,
+        "output": "fixture.ts(3,15): error TS2440: Import declaration conflicts with local declaration of 'ApiRequest'.\nfixture.ts(59,58): error TS2314: Generic type 'ApiRequest<T>' requires 1 type argument(s).\nfixture.ts(59,144): error TS2314: Generic type 'ApiRequest<T>' requires 1 type argument(s).\n"
+      }
+    },
+    {
+      "case": "emitted symbol collision ApiResult",
+      "pass": false,
+      "generation": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      },
+      "compile": {
+        "exit": 2,
+        "output": "fixture.ts(3,27): error TS2440: Import declaration conflicts with local declaration of 'ApiResult'.\nfixture.ts(59,57): error TS2314: Generic type 'ApiResult' requires 1 type argument(s).\nfixture.ts(59,141): error TS2314: Generic type 'ApiResult' requires 1 type argument(s).\n"
+      }
+    },
+    {
+      "case": "emitted symbol collision NewContractClient",
+      "pass": false,
+      "generation": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      },
+      "compile": {
+        "exit": 1,
+        "output": "# synthetic\n./fixture.gen.go:602:6: FixtureNewContractClient redeclared in this block\n\t./fixture.gen.go:388:6: other declaration of FixtureNewContractClient\n./fixture.gen.go:604:9: FixtureNewContractClient (function) is not a type\n./fixture.gen.go:605:13: FixtureNewContractClient (function) is not a type\n./fixture.gen.go:615:10: FixtureNewContractClient (function) is not a type\n./fixture.gen.go:619:13: FixtureNewContractClient (function) is not a type\n./fixture.gen.go:624:7: assignment mismatch: 1 variable but FixtureNewContractClient returns 2 values\nFAIL\tsynthetic [build failed]\nFAIL\n"
+      }
+    },
+    {
+      "case": "TS value probes",
+      "checks": [
+        {
+          "name": "valid unicode map key",
+          "expected": true,
+          "accepted": true,
+          "pass": true
+        },
+        {
+          "name": "unpaired surrogate map key",
+          "expected": false,
+          "accepted": true,
+          "pass": false
+        },
+        {
+          "name": "unknown nonenumerable property",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "unknown symbol property",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "fractional number",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "prototype map",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "missing required",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "leap date",
+          "expected": true,
+          "accepted": true,
+          "pass": true
+        },
+        {
+          "name": "nonleap date",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "hour overflow",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        }
+      ],
+      "result": {
+        "exit": 0,
+        "output": "[{\"name\":\"valid unicode map key\",\"expected\":true,\"accepted\":true,\"pass\":true},{\"name\":\"unpaired surrogate map key\",\"expected\":false,\"accepted\":true,\"pass\":false},{\"name\":\"unknown nonenumerable property\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"unknown symbol property\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"fractional number\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"prototype map\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"missing required\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"leap date\",\"expected\":true,\"accepted\":true,\"pass\":true},{\"name\":\"nonleap date\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"hour overflow\",\"expected\":false,\"accepted\":false,\"pass\":true}]\n"
+      }
+    },
+    {
+      "case": "Go map-key Unicode parity counterpart",
+      "result": {
+        "exit": 0,
+        "output": "=== RUN   TestIndependentMapKeyUnicode\n--- PASS: TestIndependentMapKeyUnicode (0.00s)\nPASS\nok  \tsynthetic\t1.530s\n"
+      }
+    }
+  ]
+}

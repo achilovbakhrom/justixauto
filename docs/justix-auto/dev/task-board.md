@@ -79,7 +79,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | integrated | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | integrated | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | integrated | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
-| [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | in-progress | T-011, T-006, T-919, T-924 | `task/T-012-outbox-relay` | ENV-GIT |
+| [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | ready-for-qa | T-011, T-006, T-919, T-924 | `task/T-012-outbox-relay` | ENV-GIT |
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | in-progress | T-013, T-010, T-926 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013, T-927, T-922 | `task/T-015-quarantine` | ENV-GIT |
@@ -125,7 +125,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-055](tasks/T-055.md) | B-04 | Enforce frontend context epochs and cross-tab cache clearing | implementation / 4 | frontend-shared | todo | T-032, T-070, T-643 | `task/T-055-session-client` | ENV-GIT |
 | [T-056](tasks/T-056.md) | B-07 | Implement safe command reducer and same-key receipt recovery | implementation / 4 | frontend-shared | todo | T-032, T-078, T-645 | `task/T-056-operation-reducer` | ENV-GIT |
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
-| [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | ready-for-qa | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
+| [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | bounced | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | integrated | T-001 | `task/T-058-contract-2` | dependencies only |
 | [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | todo | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
 | [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931 | `task/T-060-credentials` | ENV-GIT |

@@ -776,7 +776,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-011",
         "T-006",
@@ -801,9 +801,9 @@
       "scope": "Mandatory persistent publish, confirms, reconnect/lost-confirm duplicate replay with identical eventId; mark sent only after routed confirm.",
       "worktree": ".worktrees/T-012",
       "base_sha": "7d6516d34ef1b68d4a8e48c8796a199bdb736c5d",
-      "reviewed_sha": null,
-      "agent": "backend_t012",
-      "execution_note": "Assigned confirmed AMQP relay after T919/T924 integration. Persisted complete recipient plan and original bytes only; mandatory returns and publisher confirms jointly determine sent state, lease/unknown outcomes remain explicit. Four owned Go leaves only, synthetic database/broker fixtures."
+      "reviewed_sha": "e76fe6c410a23ac35e3fb80ffaae7b3119f0452d",
+      "agent": "qa_t012",
+      "execution_note": "Confirmed recipient relay and bounded exponential jitter committed; independent exact-commit live PostgreSQL and RabbitMQ QA assigned."
     },
     {
       "id": "T-013",
@@ -2371,7 +2371,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-004",
         "T-003",
@@ -2395,8 +2395,8 @@
       "worktree": ".worktrees/T-640",
       "base_sha": "8883c37",
       "reviewed_sha": "9ed232ebb5ffa110454e16f8c92d3cd8bec8162b",
-      "agent": "qa_t640",
-      "execution_note": "Deterministic explicit OpenAPI3.1 profile and generated Go/TS execution complete; independent exact-commit QA assigned. Internal routes remain Go-only through typed authenticated exchange metadata. Auth headers/429 and raw browser decoding remain explicit shared-transport handoffs, not silent schema omissions."
+      "agent": "backend_t640_fix",
+      "execution_note": "Independent QA BOUNCE: dangling output symlink, emitted/imported symbol collisions, and malformed Unicode map-key parity. Fix cycle 1 preserves the original QA evidence and requires a new exact commit review."
     },
     {
       "id": "T-058",
