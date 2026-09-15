@@ -1,0 +1,47 @@
+:global(body) { margin: 0; background: var(--canvas); color: var(--text); font: var(--font-size)/var(--line-height) var(--font-family); -webkit-font-smoothing: antialiased; }
+.shell, .shell * { box-sizing: border-box; }
+.shell button, .shell input { font: inherit; }
+.shell button:disabled, .shell input:disabled { opacity: 1; cursor: default; }
+.sidebar { position: fixed; inset: 0 auto 0 0; z-index: 40; width: var(--sidebar); display: flex; flex-direction: column; padding: var(--sidebar-padding); background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; }
+.brand { display: flex; align-items: center; gap: 12px; padding: 4px 8px 14px; }
+.brandMark { width: 36px; height: 36px; display: grid; place-items: center; color: #fff; background: var(--primary); border-radius: 8px; font-size: 16px; font-weight: 700; }
+.brandName { font-size: 20px; font-weight: 700; }
+.brandRole { color: var(--text-secondary); font-size: 12px; letter-spacing: .04em; }
+.summary { margin-bottom: 20px; padding: 10px; background: var(--surface-subtle); border-radius: var(--radius); display: flex; align-items: center; gap: 10px; min-height: 52px; }
+.avatar { width: 32px; height: 32px; border-radius: 6px; background: var(--surface); display: grid; place-items: center; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+.summaryText { min-width: 0; }
+.summary strong, .summary span { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.summary strong { font-size: 13px; }
+.summary span { font-size: 11px; color: var(--text-secondary); }
+.groupWrap { display: contents; }
+.group { margin: 9px 0 6px; padding: 0 10px; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.nav { display: grid; gap: 3px; }
+.nav button.item { position: relative; width: 100%; height: 36px; padding: 0 10px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; border: 0; border-radius: var(--radius); background: transparent; color: var(--text-secondary); text-align: left; font-weight: 400; }
+.item svg { flex: 0 0 auto; }
+.bottom { margin-top: auto; padding-top: 24px; }
+.bottom button.external { margin-top: 12px; white-space: normal; min-height: 32px; height: auto; padding: 0 11px; font-size: 13px; font-weight: 600; background: var(--surface); color: #0000ee; border: 1px solid var(--border-strong); }
+.bottom button.external:last-child { margin-top: 8px; }
+.topbar { position: fixed; inset: 0 0 auto var(--sidebar); z-index: 30; height: var(--topbar); display: flex; align-items: center; gap: 12px; padding: var(--topbar-padding); background: var(--surface); border-bottom: 1px solid var(--border); }
+.topbar button.context { position: relative; min-width: 210px; height: 40px; padding: 0 12px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); font-weight: 400; }
+.context > span { min-width: 0; text-align: left; }
+.label, .value { display: block; }
+.label { color: var(--text-secondary); font-size: 12px; }
+.value { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.context svg { margin-left: auto; flex: 0 0 auto; }
+.search { position: relative; flex: 1; max-width: 480px; margin-left: auto; }
+.search input { width: 100%; height: 40px; padding: 0 36px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); }
+.search svg { position: absolute; left: 12px; top: 11px; color: var(--text-muted); }
+.topbar button.notifications { width: 38px; height: 38px; display: inline-grid; place-items: center; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); padding: 2px 6px; }
+.user { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+.main { margin-left: var(--sidebar); padding-top: var(--topbar); min-height: 100vh; }
+.page { padding: var(--page-padding); }
+@media (max-width: 1180px) {
+  .summaryText, .group, .item span { display: none; }
+  .sidebar { padding-inline: 12px; }
+  .brand { justify-content: center; padding-inline: 0; }
+  .summary { justify-content: center; padding: 8px; min-height: 48px; }
+  .nav button.item { justify-content: center; padding: 0; }
+  .topbar { padding-inline: 18px; }
+  .topbar button.context { min-width: 174px; }
+}
+@media (max-width: 900px) { .search { display: none; } .page { padding: 24px 20px 48px; } }

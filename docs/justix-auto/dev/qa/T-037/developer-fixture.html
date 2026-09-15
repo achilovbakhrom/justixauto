@@ -1,0 +1,17 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>T-037 synthetic Realization shell</title></head>
+<body><div id="root"></div><script type="module">
+  import React from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { RealizationApp } from '/web/apps/realization/src/app/App.tsx';
+  // Explicit isolated browser fixture only. These reference labels are never
+  // imported by the application entry or its production build.
+  const company = new URL(location.href).searchParams.get('long')
+    ? 'Очень длинное название синтетической компании для проверки переполнения'
+    : 'Tashkent Motors';
+  history.replaceState(null, '', '/');
+  const SyntheticBoundary = ({ children }) => children;
+  createRoot(document.getElementById('root')).render(React.createElement(RealizationApp, {
+    SessionBoundary: SyntheticBoundary,
+    context: { company, branches: 'Все филиалы', companyMark: 'TM', userMark: 'ДА', locale: 'RU' },
+  }));
+</script></body></html>
