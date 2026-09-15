@@ -39,13 +39,17 @@ type Actor struct {
 	ID   string    `json:"id"`
 }
 
+type CompanyScope string
+
+const (
+	CompanyScopeTenantRequired CompanyScope = "tenant-required"
+	CompanyScopeGlobalAllowed  CompanyScope = "global-allowed"
+)
+
 // EnvelopeInput contains the metadata required to construct an integration
 // event envelope. CompanyID may be nil only for global identity events.
 type EnvelopeInput struct {
 	EventID             string
-	EventType           string
-	SchemaVersion       uint32
-	AggregateType       string
 	AggregateID         string
 	AggregateVersion    Revision
 	IntegrationSequence Revision
@@ -55,6 +59,17 @@ type EnvelopeInput struct {
 	CorrelationID       string
 	CausationID         string
 	OperationID         string
+}
+
+// EventSchema is an owner-declared binding between an event name, its schema
+// version, its aggregate stream and its company scope. Shared mechanics retain
+// no registry of business event or aggregate types.
+type EventSchema[T any] struct {
+	eventType     string
+	schemaVersion uint32
+	aggregateType string
+	companyScope  CompanyScope
+	validate      func(T) error
 }
 
 // Envelope is immutable after construction. Its payload is retained as copied
@@ -86,20 +101,58 @@ var (
 	aggregateTypePattern     = regexp.MustCompile(`^[a-z][a-z0-9-]*$`)
 )
 
-func NewEnvelope(input EnvelopeInput, data any) (Envelope, error) {
+func NewEventSchema[T any](eventType string, schemaVersion uint32, aggregateType string, companyScope CompanyScope, validate func(T) error) (EventSchema[T], error) {
+	matches := eventTypePattern.FindStringSubmatch(eventType)
+	if matches == nil {
+		return EventSchema[T]{}, fmt.Errorf("%w: schema eventType must be owner-qualified and versioned", ErrInvalidEnvelope)
+	}
+	owner := Owner(matches[1])
+	version, err := strconv.ParseUint(matches[2], 10, 32)
+	if !owner.Valid() || err != nil || version != uint64(schemaVersion) || schemaVersion == 0 {
+		return EventSchema[T]{}, fmt.Errorf("%w: schema eventType and schemaVersion must match", ErrInvalidEnvelope)
+	}
+	if !aggregateTypePattern.MatchString(aggregateType) {
+		return EventSchema[T]{}, fmt.Errorf("%w: schema aggregateType must be a lower-case slug", ErrInvalidEnvelope)
+	}
+	switch companyScope {
+	case CompanyScopeTenantRequired:
+	case CompanyScopeGlobalAllowed:
+		if owner != OwnerIdentity {
+			return EventSchema[T]{}, fmt.Errorf("%w: only identity schemas may allow global events", ErrInvalidEnvelope)
+		}
+	default:
+		return EventSchema[T]{}, fmt.Errorf("%w: unsupported company scope %q", ErrInvalidEnvelope, companyScope)
+	}
+	if validate == nil {
+		return EventSchema[T]{}, fmt.Errorf("%w: schema requires payload validation", ErrInvalidEnvelope)
+	}
+	return EventSchema[T]{
+		eventType: eventType, schemaVersion: schemaVersion, aggregateType: aggregateType,
+		companyScope: companyScope, validate: validate,
+	}, nil
+}
+
+func NewEnvelope[T any](input EnvelopeInput, schema EventSchema[T], data T) (Envelope, error) {
 	payload, err := json.Marshal(data)
 	if err != nil {
 		return Envelope{}, fmt.Errorf("%w: encode data: %v", ErrInvalidEnvelope, err)
 	}
-	return newEnvelopeFromJSON(input, payload)
+	return NewEnvelopeJSON(input, schema, payload)
 }
 
-func NewEnvelopeJSON(input EnvelopeInput, data json.RawMessage) (Envelope, error) {
-	return newEnvelopeFromJSON(input, data)
+func NewEnvelopeJSON[T any](input EnvelopeInput, schema EventSchema[T], data json.RawMessage) (Envelope, error) {
+	envelope, err := newEnvelopeFromJSON(input, schema.eventType, schema.schemaVersion, schema.aggregateType, data)
+	if err != nil {
+		return Envelope{}, err
+	}
+	if _, err := DecodeData(envelope, schema); err != nil {
+		return Envelope{}, err
+	}
+	return envelope, nil
 }
 
-func newEnvelopeFromJSON(input EnvelopeInput, data []byte) (Envelope, error) {
-	owner, err := validateMetadata(input)
+func newEnvelopeFromJSON(input EnvelopeInput, eventType string, schemaVersion uint32, aggregateType string, data []byte) (Envelope, error) {
+	owner, err := validateMetadata(input, eventType, schemaVersion, aggregateType)
 	if err != nil {
 		return Envelope{}, err
 	}
@@ -114,8 +167,8 @@ func newEnvelopeFromJSON(input EnvelopeInput, data []byte) (Envelope, error) {
 		companyID = &copied
 	}
 	return Envelope{
-		eventID: input.EventID, eventType: input.EventType, owner: owner,
-		schemaVersion: input.SchemaVersion, aggregateType: input.AggregateType,
+		eventID: input.EventID, eventType: eventType, owner: owner,
+		schemaVersion: schemaVersion, aggregateType: aggregateType,
 		aggregateID: input.AggregateID, aggregateVersion: input.AggregateVersion,
 		integrationSequence: input.IntegrationSequence, companyID: companyID,
 		occurredAt: input.OccurredAt.UTC(), actor: input.Actor,
@@ -124,7 +177,7 @@ func newEnvelopeFromJSON(input EnvelopeInput, data []byte) (Envelope, error) {
 	}, nil
 }
 
-func validateMetadata(input EnvelopeInput) (Owner, error) {
+func validateMetadata(input EnvelopeInput, eventType string, schemaVersion uint32, aggregateType string) (Owner, error) {
 	for name, id := range map[string]string{
 		"eventId": input.EventID, "aggregateId": input.AggregateID,
 		"actor.id": input.Actor.ID, "correlationId": input.CorrelationID,
@@ -135,7 +188,7 @@ func validateMetadata(input EnvelopeInput) (Owner, error) {
 		}
 	}
 
-	matches := eventTypePattern.FindStringSubmatch(input.EventType)
+	matches := eventTypePattern.FindStringSubmatch(eventType)
 	if matches == nil {
 		return "", fmt.Errorf("%w: eventType must be owner-qualified and end in .v<schemaVersion>", ErrInvalidEnvelope)
 	}
@@ -144,10 +197,10 @@ func validateMetadata(input EnvelopeInput) (Owner, error) {
 		return "", fmt.Errorf("%w: unsupported event owner %q", ErrInvalidEnvelope, owner)
 	}
 	version, err := strconv.ParseUint(matches[2], 10, 32)
-	if err != nil || version != uint64(input.SchemaVersion) || input.SchemaVersion == 0 {
+	if err != nil || version != uint64(schemaVersion) || schemaVersion == 0 {
 		return "", fmt.Errorf("%w: eventType version and schemaVersion must match", ErrInvalidEnvelope)
 	}
-	if !aggregateTypePattern.MatchString(input.AggregateType) {
+	if !aggregateTypePattern.MatchString(aggregateType) {
 		return "", fmt.Errorf("%w: aggregateType must be a lower-case slug", ErrInvalidEnvelope)
 	}
 	if input.AggregateVersion.IsZero() {
@@ -156,11 +209,10 @@ func validateMetadata(input EnvelopeInput) (Owner, error) {
 	if input.IntegrationSequence.IsZero() {
 		return "", fmt.Errorf("%w: integrationSequence must be positive", ErrInvalidEnvelope)
 	}
-	if input.CompanyID == nil {
-		if owner != OwnerIdentity || !isGlobalIdentityAggregate(input.AggregateType) {
-			return "", fmt.Errorf("%w: companyId may be null only for approved global identity aggregates", ErrInvalidEnvelope)
-		}
-	} else if !isCanonicalUUID(*input.CompanyID) {
+	if input.CompanyID == nil && owner != OwnerIdentity {
+		return "", fmt.Errorf("%w: companyId may be null only for identity events", ErrInvalidEnvelope)
+	}
+	if input.CompanyID != nil && !isCanonicalUUID(*input.CompanyID) {
 		return "", fmt.Errorf("%w: companyId must be a canonical UUID", ErrInvalidEnvelope)
 	}
 	if !input.Actor.Kind.Valid() {
@@ -252,15 +304,6 @@ func isSensitivePayloadKey(key string) bool {
 	}
 }
 
-func isGlobalIdentityAggregate(aggregateType string) bool {
-	switch aggregateType {
-	case "user", "role", "permission", "session", "credential", "mfa-factor", "recovery-token", "platform-access-guard":
-		return true
-	default:
-		return false
-	}
-}
-
 func isCanonicalUUID(value string) bool {
 	parsed, err := uuid.Parse(value)
 	return err == nil && parsed.String() == value
@@ -307,40 +350,22 @@ func (e Envelope) CompanyID() (string, bool) {
 
 func (e Envelope) Data() json.RawMessage { return bytes.Clone(e.data) }
 
-// PayloadDecoder binds a Go payload type and validator to one exact event schema.
-// Owner packages supply the event name and required-field validation; this
-// shared package does not define business event types.
-type PayloadDecoder[T any] struct {
-	eventType     string
-	schemaVersion uint32
-	validate      func(T) error
-}
-
-func NewPayloadDecoder[T any](eventType string, schemaVersion uint32, validate func(T) error) (PayloadDecoder[T], error) {
-	matches := eventTypePattern.FindStringSubmatch(eventType)
-	if matches == nil {
-		return PayloadDecoder[T]{}, fmt.Errorf("%w: decoder eventType must be owner-qualified and versioned", ErrInvalidEnvelope)
-	}
-	owner := Owner(matches[1])
-	version, err := strconv.ParseUint(matches[2], 10, 32)
-	if !owner.Valid() || err != nil || version != uint64(schemaVersion) || schemaVersion == 0 {
-		return PayloadDecoder[T]{}, fmt.Errorf("%w: decoder eventType and schemaVersion must match", ErrInvalidEnvelope)
-	}
-	if validate == nil {
-		return PayloadDecoder[T]{}, fmt.Errorf("%w: decoder requires payload validation", ErrInvalidEnvelope)
-	}
-	return PayloadDecoder[T]{eventType: eventType, schemaVersion: schemaVersion, validate: validate}, nil
-}
-
 // DecodeData decodes the immutable payload through an explicitly bound schema.
-func DecodeData[T any](e Envelope, decoder PayloadDecoder[T]) (T, error) {
+func DecodeData[T any](e Envelope, schema EventSchema[T]) (T, error) {
 	var target T
-	if decoder.eventType == "" || decoder.schemaVersion == 0 || decoder.validate == nil {
-		return target, fmt.Errorf("%w: uninitialized decoder", ErrPayloadSchemaMismatch)
+	if schema.eventType == "" || schema.schemaVersion == 0 || schema.aggregateType == "" || schema.validate == nil {
+		return target, fmt.Errorf("%w: uninitialized schema", ErrPayloadSchemaMismatch)
 	}
-	if e.eventType != decoder.eventType || e.schemaVersion != decoder.schemaVersion {
-		return target, fmt.Errorf("%w: envelope is %s schema v%d, decoder is %s schema v%d",
-			ErrPayloadSchemaMismatch, e.eventType, e.schemaVersion, decoder.eventType, decoder.schemaVersion)
+	if e.eventType != schema.eventType || e.schemaVersion != schema.schemaVersion || e.aggregateType != schema.aggregateType {
+		return target, fmt.Errorf("%w: envelope is %s/%s schema v%d, decoder is %s/%s schema v%d",
+			ErrPayloadSchemaMismatch, e.eventType, e.aggregateType, e.schemaVersion,
+			schema.eventType, schema.aggregateType, schema.schemaVersion)
+	}
+	if schema.companyScope == CompanyScopeTenantRequired && e.companyID == nil {
+		return target, fmt.Errorf("%w: schema requires companyId", ErrPayloadSchemaMismatch)
+	}
+	if schema.companyScope == CompanyScopeGlobalAllowed && e.owner != OwnerIdentity {
+		return target, fmt.Errorf("%w: global scope is limited to identity", ErrPayloadSchemaMismatch)
 	}
 	jsonDecoder := json.NewDecoder(bytes.NewReader(e.data))
 	jsonDecoder.DisallowUnknownFields()
@@ -350,7 +375,7 @@ func DecodeData[T any](e Envelope, decoder PayloadDecoder[T]) (T, error) {
 	if err := requireJSONEOF(jsonDecoder); err != nil {
 		return target, err
 	}
-	if err := decoder.validate(target); err != nil {
+	if err := schema.validate(target); err != nil {
 		return target, fmt.Errorf("%w: %s schema v%d: %v", ErrInvalidPayload, e.eventType, e.schemaVersion, err)
 	}
 	return target, nil
@@ -387,8 +412,9 @@ func (e Envelope) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// Validate rechecks an envelope received across an untrusted or persistence
-// boundary. Constructed envelopes are already valid.
+// Validate rechecks structural envelope invariants. An envelope received across
+// an untrusted or persistence boundary still requires DecodeData with an
+// owner-declared EventSchema before its type, aggregate and scope are accepted.
 func (e Envelope) Validate() error {
 	var companyID *string
 	if e.companyID != nil {
@@ -396,13 +422,12 @@ func (e Envelope) Validate() error {
 		companyID = &copied
 	}
 	owner, err := validateMetadata(EnvelopeInput{
-		EventID: e.eventID, EventType: e.eventType, SchemaVersion: e.schemaVersion,
-		AggregateType: e.aggregateType, AggregateID: e.aggregateID,
+		EventID: e.eventID, AggregateID: e.aggregateID,
 		AggregateVersion: e.aggregateVersion, IntegrationSequence: e.integrationSequence,
 		CompanyID: companyID, OccurredAt: e.occurredAt, Actor: e.actor,
 		CorrelationID: e.correlationID, CausationID: e.causationID,
 		OperationID: e.operationID,
-	})
+	}, e.eventType, e.schemaVersion, e.aggregateType)
 	if err != nil {
 		return err
 	}
@@ -434,13 +459,12 @@ func (e *Envelope) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("%w: occurredAt must be RFC3339: %v", ErrInvalidEnvelope, err)
 	}
 	constructed, err := newEnvelopeFromJSON(EnvelopeInput{
-		EventID: wire.EventID, EventType: wire.EventType, SchemaVersion: wire.SchemaVersion,
-		AggregateType: wire.AggregateType, AggregateID: wire.AggregateID,
+		EventID: wire.EventID, AggregateID: wire.AggregateID,
 		AggregateVersion: wire.AggregateVersion, IntegrationSequence: wire.IntegrationSequence,
 		CompanyID: wire.CompanyID, OccurredAt: occurredAt, Actor: wire.Actor,
 		CorrelationID: wire.CorrelationID, CausationID: wire.CausationID,
 		OperationID: wire.OperationID,
-	}, wire.Data)
+	}, wire.EventType, wire.SchemaVersion, wire.AggregateType, wire.Data)
 	if err != nil {
 		return err
 	}

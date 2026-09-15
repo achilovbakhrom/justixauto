@@ -27,9 +27,9 @@ type reservationGrantedV1 struct {
 	EvidenceRef string `json:"evidenceRef,omitempty"`
 }
 
-func reservationGrantedDecoder(t *testing.T) PayloadDecoder[reservationGrantedV1] {
+func reservationGrantedSchema(t *testing.T) EventSchema[reservationGrantedV1] {
 	t.Helper()
-	decoder, err := NewPayloadDecoder("inventory.reservation.granted.v1", 1, func(payload reservationGrantedV1) error {
+	schema, err := NewEventSchema("inventory.reservation.granted.v1", 1, "reservation-set", CompanyScopeTenantRequired, func(payload reservationGrantedV1) error {
 		if payload.Holder.Service == "" {
 			return errors.New("holder.service is required")
 		}
@@ -39,9 +39,18 @@ func reservationGrantedDecoder(t *testing.T) PayloadDecoder[reservationGrantedV1
 		return nil
 	})
 	if err != nil {
-		t.Fatalf("NewPayloadDecoder: %v", err)
+		t.Fatalf("NewEventSchema: %v", err)
 	}
-	return decoder
+	return schema
+}
+
+func mapSchema(t *testing.T, eventType string, version uint32, aggregateType string, scope CompanyScope) EventSchema[map[string]any] {
+	t.Helper()
+	schema, err := NewEventSchema(eventType, version, aggregateType, scope, func(map[string]any) error { return nil })
+	if err != nil {
+		t.Fatalf("NewEventSchema: %v", err)
+	}
+	return schema
 }
 
 func validEnvelopeInput() EnvelopeInput {
@@ -49,8 +58,7 @@ func validEnvelopeInput() EnvelopeInput {
 	integrationSequence, _ := ParseRevision("2")
 	company := companyID
 	return EnvelopeInput{
-		EventID: eventID, EventType: "inventory.reservation.granted.v1", SchemaVersion: 1,
-		AggregateType: "reservation-set", AggregateID: aggregateID,
+		EventID: eventID, AggregateID: aggregateID,
 		AggregateVersion: aggregateVersion, IntegrationSequence: integrationSequence,
 		CompanyID: &company, OccurredAt: time.Date(2026, 9, 13, 10, 0, 0, 123, time.UTC),
 		Actor: Actor{Kind: ActorUser, ID: actorID}, CorrelationID: correlationID,
@@ -67,7 +75,7 @@ func validPayload() reservationGrantedV1 {
 }
 
 func TestEnvelopeRoundTripPreservesContractFields(t *testing.T) {
-	envelope, err := NewEnvelope(validEnvelopeInput(), validPayload())
+	envelope, err := NewEnvelope(validEnvelopeInput(), reservationGrantedSchema(t), validPayload())
 	if err != nil {
 		t.Fatalf("NewEnvelope: %v", err)
 	}
@@ -92,7 +100,7 @@ func TestEnvelopeRoundTripPreservesContractFields(t *testing.T) {
 	if err := json.Unmarshal(wire, &decoded); err != nil {
 		t.Fatalf("Unmarshal: %v", err)
 	}
-	payload, err := DecodeData(decoded, reservationGrantedDecoder(t))
+	payload, err := DecodeData(decoded, reservationGrantedSchema(t))
 	if err != nil {
 		t.Fatalf("DecodeData: %v", err)
 	}
@@ -104,7 +112,7 @@ func TestEnvelopeRoundTripPreservesContractFields(t *testing.T) {
 func TestEnvelopeCopiesPayloadAndCompanyID(t *testing.T) {
 	input := validEnvelopeInput()
 	raw := json.RawMessage(`{"holder":{"service":"retail","id":"10000000-0000-4000-8000-000000000008"}}`)
-	envelope, err := NewEnvelopeJSON(input, raw)
+	envelope, err := NewEnvelopeJSON(input, reservationGrantedSchema(t), raw)
 	if err != nil {
 		t.Fatalf("NewEnvelopeJSON: %v", err)
 	}
@@ -125,9 +133,6 @@ func TestEnvelopeCopiesPayloadAndCompanyID(t *testing.T) {
 func TestEnvelopeMetadataValidation(t *testing.T) {
 	tests := map[string]func(*EnvelopeInput){
 		"noncanonical event UUID": func(in *EnvelopeInput) { in.EventID = "AAAAAAAA-0000-4000-8000-000000000001" },
-		"unknown owner":           func(in *EnvelopeInput) { in.EventType = "billing.invoice.created.v1" },
-		"schema mismatch":         func(in *EnvelopeInput) { in.SchemaVersion = 2 },
-		"invalid aggregate type":  func(in *EnvelopeInput) { in.AggregateType = "ReservationSet" },
 		"zero aggregate revision": func(in *EnvelopeInput) { in.AggregateVersion = Revision{} },
 		"zero integration sequence": func(in *EnvelopeInput) {
 			in.IntegrationSequence = Revision{}
@@ -142,7 +147,39 @@ func TestEnvelopeMetadataValidation(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			input := validEnvelopeInput()
 			mutate(&input)
-			if _, err := NewEnvelope(input, validPayload()); !errors.Is(err, ErrInvalidEnvelope) {
+			if _, err := NewEnvelope(input, reservationGrantedSchema(t), validPayload()); !errors.Is(err, ErrInvalidEnvelope) {
+				t.Fatalf("error = %v, want ErrInvalidEnvelope", err)
+			}
+		})
+	}
+}
+
+func TestEventSchemaValidation(t *testing.T) {
+	validator := func(map[string]any) error { return nil }
+	for name, create := range map[string]func() error{
+		"unknown owner": func() error {
+			_, err := NewEventSchema("billing.invoice.created.v1", 1, "invoice", CompanyScopeTenantRequired, validator)
+			return err
+		},
+		"schema mismatch": func() error {
+			_, err := NewEventSchema("inventory.sample.recorded.v2", 1, "sample", CompanyScopeTenantRequired, validator)
+			return err
+		},
+		"invalid aggregate type": func() error {
+			_, err := NewEventSchema("inventory.sample.recorded.v1", 1, "Sample", CompanyScopeTenantRequired, validator)
+			return err
+		},
+		"global non-identity": func() error {
+			_, err := NewEventSchema("inventory.sample.recorded.v1", 1, "sample", CompanyScopeGlobalAllowed, validator)
+			return err
+		},
+		"missing validator": func() error {
+			_, err := NewEventSchema[map[string]any]("inventory.sample.recorded.v1", 1, "sample", CompanyScopeTenantRequired, nil)
+			return err
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			if err := create(); !errors.Is(err, ErrInvalidEnvelope) {
 				t.Fatalf("error = %v, want ErrInvalidEnvelope", err)
 			}
 		})
@@ -151,12 +188,9 @@ func TestEnvelopeMetadataValidation(t *testing.T) {
 
 func TestGlobalIdentityEventMayHaveNullCompany(t *testing.T) {
 	input := validEnvelopeInput()
-	input.EventType = "identity.platform-access-guard.bootstrap-recorded.v1"
-	input.AggregateType = "platform-access-guard"
 	input.CompanyID = nil
-	envelope, err := NewEnvelope(input, struct {
-		BootstrapRef string `json:"bootstrapRef"`
-	}{BootstrapRef: "10000000-0000-4000-8000-000000000010"})
+	schema := mapSchema(t, "identity.platform-access-guard.bootstrap-recorded.v1", 1, "platform-access-guard", CompanyScopeGlobalAllowed)
+	envelope, err := NewEnvelope(input, schema, map[string]any{"bootstrapRef": "10000000-0000-4000-8000-000000000010"})
 	if err != nil {
 		t.Fatalf("NewEnvelope: %v", err)
 	}
@@ -167,13 +201,10 @@ func TestGlobalIdentityEventMayHaveNullCompany(t *testing.T) {
 
 func TestTenantIdentityEventRequiresCompany(t *testing.T) {
 	input := validEnvelopeInput()
-	input.EventType = "identity.branch.created.v1"
-	input.AggregateType = "branch"
 	input.CompanyID = nil
-	if _, err := NewEnvelope(input, struct {
-		BranchID string `json:"branchId"`
-	}{BranchID: aggregateID}); !errors.Is(err, ErrInvalidEnvelope) {
-		t.Fatalf("tenant identity event error = %v, want ErrInvalidEnvelope", err)
+	schema := mapSchema(t, "identity.branch.created.v1", 1, "branch", CompanyScopeTenantRequired)
+	if _, err := NewEnvelope(input, schema, map[string]any{"branchId": aggregateID}); !errors.Is(err, ErrPayloadSchemaMismatch) {
+		t.Fatalf("tenant identity event error = %v, want ErrPayloadSchemaMismatch", err)
 	}
 }
 
@@ -190,7 +221,7 @@ func TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively(t *testing.T) {
 		`{"nested":[{"surname":"Person"}]}`,
 		`{"nested":[{"mobile":"+998000000000"}]}`,
 	} {
-		if _, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(raw)); !errors.Is(err, ErrSensitivePayload) {
+		if _, err := NewEnvelopeJSON(validEnvelopeInput(), mapSchema(t, "inventory.sample.recorded.v1", 1, "sample", CompanyScopeTenantRequired), json.RawMessage(raw)); !errors.Is(err, ErrSensitivePayload) {
 			t.Errorf("payload %s error = %v, want ErrSensitivePayload", raw, err)
 		}
 	}
@@ -200,39 +231,88 @@ func TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively(t *testing.T) {
 		`{"noteRef":"10000000-0000-4000-8000-000000000011"}`,
 		`{"credentialId":"10000000-0000-4000-8000-000000000012"}`,
 	} {
-		if _, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(raw)); err != nil {
+		if _, err := NewEnvelopeJSON(validEnvelopeInput(), mapSchema(t, "inventory.sample.recorded.v1", 1, "sample", CompanyScopeTenantRequired), json.RawMessage(raw)); err != nil {
 			t.Errorf("safe reference payload %s rejected: %v", raw, err)
 		}
 	}
 }
 
 func TestPayloadDecoderBindsEventTypeAndVersion(t *testing.T) {
-	input := validEnvelopeInput()
-	input.EventType = "inventory.reservation.granted.v2"
-	input.SchemaVersion = 2
-	envelope, err := NewEnvelope(input, validPayload())
+	v2Schema, err := NewEventSchema("inventory.reservation.granted.v2", 2, "reservation-set", CompanyScopeTenantRequired, func(reservationGrantedV1) error { return nil })
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := DecodeData(envelope, reservationGrantedDecoder(t)); !errors.Is(err, ErrPayloadSchemaMismatch) {
+	envelope, err := NewEnvelope(validEnvelopeInput(), v2Schema, validPayload())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := DecodeData(envelope, reservationGrantedSchema(t)); !errors.Is(err, ErrPayloadSchemaMismatch) {
 		t.Fatalf("DecodeData mismatch error = %v, want ErrPayloadSchemaMismatch", err)
-	}
-
-	if _, err := NewPayloadDecoder[reservationGrantedV1]("inventory.reservation.granted.v2", 1, func(reservationGrantedV1) error { return nil }); !errors.Is(err, ErrInvalidEnvelope) {
-		t.Fatalf("NewPayloadDecoder mismatch error = %v, want ErrInvalidEnvelope", err)
-	}
-	if _, err := NewPayloadDecoder[reservationGrantedV1]("inventory.reservation.granted.v1", 1, nil); !errors.Is(err, ErrInvalidEnvelope) {
-		t.Fatalf("NewPayloadDecoder nil validator error = %v, want ErrInvalidEnvelope", err)
 	}
 }
 
 func TestPayloadDecoderRejectsMissingRequiredFields(t *testing.T) {
-	envelope, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(`{}`))
+	if _, err := NewEnvelopeJSON(validEnvelopeInput(), reservationGrantedSchema(t), json.RawMessage(`{}`)); !errors.Is(err, ErrInvalidPayload) {
+		t.Fatalf("NewEnvelopeJSON missing required field error = %v, want ErrInvalidPayload", err)
+	}
+}
+
+func TestSchemaRejectsAggregateAndScopeSpoofFromRawWire(t *testing.T) {
+	input := validEnvelopeInput()
+	input.CompanyID = nil
+	approvedGlobal := mapSchema(t, "identity.platform-access-guard.bootstrap-recorded.v1", 1, "platform-access-guard", CompanyScopeGlobalAllowed)
+	globalEnvelope, err := NewEnvelope(input, approvedGlobal, map[string]any{"bootstrapRef": aggregateID})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := DecodeData(envelope, reservationGrantedDecoder(t)); !errors.Is(err, ErrInvalidPayload) {
-		t.Fatalf("DecodeData missing required field error = %v, want ErrInvalidPayload", err)
+	wire, err := json.Marshal(globalEnvelope)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wire = []byte(strings.ReplaceAll(string(wire),
+		`"eventType":"identity.platform-access-guard.bootstrap-recorded.v1"`,
+		`"eventType":"identity.branch.created.v1"`))
+	wire = []byte(strings.ReplaceAll(string(wire),
+		`"aggregateType":"platform-access-guard"`,
+		`"aggregateType":"user"`))
+	var untrusted Envelope
+	if err := json.Unmarshal(wire, &untrusted); err != nil {
+		t.Fatalf("structural wire parse: %v", err)
+	}
+	branchSchema := mapSchema(t, "identity.branch.created.v1", 1, "branch", CompanyScopeTenantRequired)
+	if _, err := DecodeData(untrusted, branchSchema); !errors.Is(err, ErrPayloadSchemaMismatch) {
+		t.Fatalf("spoofed aggregate/scope error = %v, want ErrPayloadSchemaMismatch", err)
+	}
+}
+
+func TestUnapprovedGlobalClaimsHaveNoMatchingSchema(t *testing.T) {
+	input := validEnvelopeInput()
+	input.CompanyID = nil
+	approvedGlobal := mapSchema(t, "identity.platform-access-guard.bootstrap-recorded.v1", 1, "platform-access-guard", CompanyScopeGlobalAllowed)
+	globalEnvelope, err := NewEnvelope(input, approvedGlobal, map[string]any{"bootstrapRef": aggregateID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseline, err := json.Marshal(globalEnvelope)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, aggregateType := range []string{"permission", "session", "credential", "mfa-factor", "recovery-token"} {
+		t.Run(aggregateType, func(t *testing.T) {
+			wire := strings.ReplaceAll(string(baseline),
+				`"eventType":"identity.platform-access-guard.bootstrap-recorded.v1"`,
+				`"eventType":"identity.`+aggregateType+`.recorded.v1"`)
+			wire = strings.ReplaceAll(wire,
+				`"aggregateType":"platform-access-guard"`,
+				`"aggregateType":"`+aggregateType+`"`)
+			var structural Envelope
+			if err := json.Unmarshal([]byte(wire), &structural); err != nil {
+				t.Fatalf("structural parse: %v", err)
+			}
+			if _, err := DecodeData(structural, approvedGlobal); !errors.Is(err, ErrPayloadSchemaMismatch) {
+				t.Fatalf("unapproved global claim error = %v, want ErrPayloadSchemaMismatch", err)
+			}
+		})
 	}
 }
 
@@ -244,21 +324,17 @@ func TestZeroEnvelopeCannotBeSerialized(t *testing.T) {
 
 func TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields(t *testing.T) {
 	for _, raw := range []string{`null`, `[]`, `{`, `{} {}`} {
-		if _, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(raw)); !errors.Is(err, ErrInvalidEnvelope) {
+		if _, err := NewEnvelopeJSON(validEnvelopeInput(), reservationGrantedSchema(t), json.RawMessage(raw)); !errors.Is(err, ErrInvalidEnvelope) {
 			t.Errorf("payload %s error = %v", raw, err)
 		}
 	}
 
-	envelope, err := NewEnvelope(validEnvelopeInput(), validPayload())
+	envelope, err := NewEnvelope(validEnvelopeInput(), reservationGrantedSchema(t), validPayload())
 	if err != nil {
 		t.Fatal(err)
 	}
-	withUnknownData, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(`{"holder":{"service":"retail","id":"10000000-0000-4000-8000-000000000008"},"future":true}`))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, err := DecodeData(withUnknownData, reservationGrantedDecoder(t)); err == nil {
-		t.Fatal("DecodeData accepted a field outside the selected schema")
+	if _, err := NewEnvelopeJSON(validEnvelopeInput(), reservationGrantedSchema(t), json.RawMessage(`{"holder":{"service":"retail","id":"10000000-0000-4000-8000-000000000008"},"future":true}`)); err == nil {
+		t.Fatal("NewEnvelopeJSON accepted a field outside the selected schema")
 	}
 
 	wire, _ := json.Marshal(envelope)
@@ -270,7 +346,7 @@ func TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields(t *testin
 }
 
 func TestEnvelopeRejectsOffsetTimeOnWire(t *testing.T) {
-	envelope, err := NewEnvelope(validEnvelopeInput(), validPayload())
+	envelope, err := NewEnvelope(validEnvelopeInput(), reservationGrantedSchema(t), validPayload())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -283,18 +359,18 @@ func TestEnvelopeRejectsOffsetTimeOnWire(t *testing.T) {
 }
 
 func TestEnvelopeConcurrentDecodeIsReadOnly(t *testing.T) {
-	envelope, err := NewEnvelope(validEnvelopeInput(), validPayload())
+	envelope, err := NewEnvelope(validEnvelopeInput(), reservationGrantedSchema(t), validPayload())
 	if err != nil {
 		t.Fatal(err)
 	}
-	decoder := reservationGrantedDecoder(t)
+	schema := reservationGrantedSchema(t)
 	var wait sync.WaitGroup
 	for i := 0; i < 32; i++ {
 		wait.Add(1)
 		go func() {
 			defer wait.Done()
 			for j := 0; j < 100; j++ {
-				payload, decodeErr := DecodeData(envelope, decoder)
+				payload, decodeErr := DecodeData(envelope, schema)
 				if decodeErr != nil || payload.Holder.Service != "retail" {
 					t.Errorf("DecodeData = (%+v, %v)", payload, decodeErr)
 					return
