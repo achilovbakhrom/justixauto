@@ -1,0 +1,7 @@
+PASS exact SHA-256 docs/justix-auto/state/drafts/architect/projection-label-forward-correction.md 704d2c65eedbe1e98f36bc0270d6ce366ad7cd38cccc2fe94b25e2a3ffa9f196
+PASS exact SHA-256 pkg/eventstore/migrations/000002_messaging_delivery.up.sql 1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2
+PASS exact SHA-256 pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec
+PASS exact SHA-256 pkg/eventstore/migrations/000004_projection_checkpoint.up.sql 41536429fb95d4b60a11866843a2ccbd6a4cf723cd919884933b6bc1d8202c4c
+PASS future T-928 exclusive leaves, existing T-016/T-934 dependency paths, 934-task count and unassigned implementation status
+PASS historical coverage correction retained; installed CHECK, admission equality and marker privilege source inspected
+GREEN static proposal scope. No application source changed; canonical adoption and future implementation remain separate.

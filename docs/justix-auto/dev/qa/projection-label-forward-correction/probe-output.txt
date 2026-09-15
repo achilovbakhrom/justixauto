@@ -1,0 +1,44 @@
+PASS exact reviewed commit
+PASS original 000004 hash
+Owned container justix-qa-label-9bb736b20f15
+Attached mounts []
+PASS tmpfs fixture has no attached Docker volume
+PASS pinned PostgreSQL 18.6
+Actual unmodified 000004 CREATE TABLE catalog:
+consumer_bootstraps_generation_check|{7}|t|t|t|0|(length(btrim(generation)) > 0)|CHECK ((length(btrim(generation)) > 0))
+PASS exact constraint catalog predicate
+PASS U+0020 versus tab and NBSP distinction
+PASS old CHECK rejects ' '
+PASS old CHECK rejects '   '
+PASS old CHECK rejects ''
+PASS old CHECK admits tab-only label (actual extracted table; no admission trigger installed)
+PASS catalog rejects missing
+PASS missing trial rollback restores catalog
+PASS catalog rejects renamed
+PASS renamed trial rollback restores catalog
+PASS catalog rejects duplicate
+PASS duplicate trial rollback restores catalog
+PASS catalog rejects altered
+PASS altered trial rollback restores catalog
+PASS catalog rejects unvalidated
+PASS unvalidated trial rollback restores catalog
+PASS pinned server rejects disabling this CHECK through ALTER CONSTRAINT
+PASS denied disable leaves validated enforced CHECK unchanged
+PASS forced later transaction failure
+PASS failed installation restores old constraint identity and expression
+PASS failed installation leaves no synthetic revision marker
+PASS failure preserves retained row bytes
+PASS runtime cannot replace constraint
+PASS successful replacement preserves retained row bytes
+PASS replacement preserves ACLs
+PASS replacement preserves all other constraints and foreign keys
+PASS new CHECK stable name, validated and enforced
+PASS new CHECK preserves exact ' '
+PASS new CHECK preserves exact '   '
+PASS new CHECK preserves exact '\t'
+PASS new CHECK preserves exact '  padded  '
+PASS new CHECK preserves exact 'not-a-uuid'
+PASS replacement still rejects empty
+PASS no original SQL mutation
+37 assertions PASS; bounded catalog/DDL feasibility only; no full forward migration or runtime activation proof.
+PASS owned container removed

@@ -1,6 +1,6 @@
 # Auth transport compatibility proposal assignment
 
-2026-09-15. Status: architecture in progress; no implementation approval.
+2026-09-15. Status: independent exact-proposal QA assigned; no implementation approval.
 Assigned worktree: `.worktrees/auth-transport-compatibility`.
 Branch: `task/auth-transport-compatibility`.
 Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
@@ -44,3 +44,14 @@ recovery delivery or factor-loss decisions cannot be supplied by this technical
 handoff. Preserve approved T-058 route and response semantics; any necessary
 technical refinement must be explicit and reviewed before dependent code.
 Independent exact-proposal QA and canonical promotion checks precede assignment.
+
+## Independent review assignment
+
+Proposal commit: `9ad5a64422b04dbbc8bee969a47acdd3e9278d81`.
+QA checkout: `.worktrees/auth-transport-compatibility-qa` (detached).
+Agent: `qa_auth_transport`. Own only `dev/qa/auth-transport-compatibility.md`
+and its same-named evidence directory. Review five bounded aliases, exact
+Go/TypeScript interfaces, pre-metadata semantic validation, raw-byte/header
+limits, T-058 preservation and the proposed dependency/ownership delta.
+Executed feasibility is not implementation QA or policy acceptance. Preserve
+source and canonical files; coordinator promotion follows independent GREEN.

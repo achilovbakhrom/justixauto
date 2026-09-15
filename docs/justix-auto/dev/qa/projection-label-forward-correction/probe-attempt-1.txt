@@ -1,0 +1,26 @@
+PASS exact reviewed commit
+PASS original 000004 hash
+Owned container justix-qa-label-2c9bf966b376
+Attached mounts []
+PASS tmpfs fixture has no attached Docker volume
+PASS pinned PostgreSQL 18.6
+Actual unmodified 000004 CREATE TABLE catalog:
+consumer_bootstraps_generation_check|{7}|t|t|t|0|(length(btrim(generation)) > 0)|CHECK ((length(btrim(generation)) > 0))
+PASS exact constraint catalog predicate
+PASS U+0020 versus tab and NBSP distinction
+PASS old CHECK rejects ' '
+PASS old CHECK rejects '   '
+PASS old CHECK rejects ''
+PASS old CHECK admits tab-only label (actual extracted table; no admission trigger installed)
+PASS catalog rejects missing
+PASS missing trial rollback restores catalog
+PASS catalog rejects renamed
+PASS renamed trial rollback restores catalog
+PASS catalog rejects duplicate
+PASS duplicate trial rollback restores catalog
+PASS catalog rejects altered
+PASS altered trial rollback restores catalog
+PASS catalog rejects unvalidated
+PASS unvalidated trial rollback restores catalog
+PASS owned container removed
+QA harness attempt stopped: PostgreSQL 18.6 rejects ALTER CONSTRAINT ... NOT ENFORCED for this CHECK (cannot alter enforceability). The owned fixture was removed. This is an unsupported test setup, not a proposal failure. Subsequent probe records that denial and confirms catalog unchanged.
