@@ -35095,7 +35095,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-918",
         "T-011",
@@ -35118,8 +35118,9 @@
       "worktree": ".worktrees/T-919",
       "base_sha": "972bd864142100a91169b9bb1b76ef9e3339b58e",
       "agent": "qa_t919",
-      "execution_note": "Complete-recipient writer implementation complete; exact-commit independent PostgreSQL/transaction/mode/admission QA assigned. Actual production admissions and relay readiness remain separate.",
-      "reviewed_sha": "2569a9c7eeb1e9ed987744bb10c80ff1c166c14c"
+      "execution_note": "Independent QA GREEN at2569a9c7eeb1e9ed987744bb10c80ff1c166c14c. Main full project race with writer/source-admission/route-migration live flags PASS (outbox12.899s,eventstore53.148s) and vet PASS. Complete immutable recipient plans now share the outer command transaction; relay/intake/checkpoint effects and owner runtime activation remain separately gated.",
+      "reviewed_sha": "2569a9c7eeb1e9ed987744bb10c80ff1c166c14c",
+      "integration_sha": "e9b53c77f0d78be6db963691fd5dfed3be79ceab"
     },
     {
       "id": "T-920",
