@@ -28,9 +28,9 @@
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-039 ready-for-qa (`.worktrees/T-039`, `task/T-039-insurance-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-919 ready-for-qa (`.worktrees/T-919`, `task/T-919-messaging-outbox-plan`).
-- Integrated tasks: 29/925; independent exact-commit QA required before each integration.
+- Integrated tasks: 29/928; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
-- Formal PM task files: 925 (916 reviewed baseline + eight messaging amendments + one route correction); see task-board.md, task-index.json and backlog-coverage.md
+- Formal PM task files: 928 (916 reviewed baseline + twelve bounded messaging/storage additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
 - Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
@@ -179,3 +179,10 @@ Vite predicates, with explicit prior-task dependency edges and renewed dev/previ
 checks for all three apps. Their existing visuals and reviewed artifacts remain
 unchanged. This is the existing prefix/document-only requirement, not a new
 authentication or deployment guarantee.
+
+### Projection storage handoff approved — 2026-09-15
+
+The [independently reviewed storage handoff](../state/approvals/projection-storage-handoff.md)
+adds T-926–T-928 and explicit checkpoint/quarantine/generation dependencies.
+This approves bounded implementation, not installed storage or running recovery.
+See projection-storage-readiness.md; existing policy gates stay scoped.

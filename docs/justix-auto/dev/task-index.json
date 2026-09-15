@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 925,
-    "effort_hours": 3066,
+    "task_count": 928,
+    "effort_hours": 3078,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Longest-chain/frontier/antichain metrics retain the reviewed916-task baseline; subsequent bounded messaging amendments and frontend corrective ownership edges are recorded without claiming recomputed width or schedule.",
+    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed916-task baseline; twelve bounded messaging/storage additions and their edges do not claim a recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -309,6 +309,58 @@
         "T-037"
       ],
       "reason": "Independent T038 QA reproduced wildcard Accept fetch/script requests receiving app HTML; identical existing classifier in all three apps."
+    },
+    "projection_storage_handoff": {
+      "proposal_sha": "90dfe726ab53c4fdd54c3cac09e706797a32ea6d",
+      "approval": "docs/justix-auto/state/approvals/projection-storage-handoff.md",
+      "added_tasks": [
+        "T-926",
+        "T-927",
+        "T-928"
+      ],
+      "added_existing_edges": {
+        "T-014": [
+          "T-926"
+        ],
+        "T-015": [
+          "T-927",
+          "T-922"
+        ],
+        "T-920": [
+          "T-014"
+        ],
+        "T-921": [
+          "T-015"
+        ],
+        "T-016": [
+          "T-928",
+          "T-920"
+        ],
+        "T-022": [
+          "T-928"
+        ],
+        "T-580": [
+          "T-016"
+        ],
+        "T-581": [
+          "T-016"
+        ],
+        "T-582": [
+          "T-016"
+        ],
+        "T-583": [
+          "T-016"
+        ],
+        "T-584": [
+          "T-016"
+        ],
+        "T-585": [
+          "T-016"
+        ],
+        "T-586": [
+          "T-016"
+        ]
+      }
     }
   },
   "tasks": [
@@ -752,7 +804,8 @@
       "status": "todo",
       "depends_on": [
         "T-013",
-        "T-010"
+        "T-010",
+        "T-926"
       ],
       "branch": "task/T-014-projection-sequence",
       "lane": "foundation",
@@ -782,7 +835,9 @@
       "effort_hours": 3,
       "status": "todo",
       "depends_on": [
-        "T-013"
+        "T-013",
+        "T-927",
+        "T-922"
       ],
       "branch": "task/T-015-quarantine",
       "lane": "foundation",
@@ -813,7 +868,9 @@
       "effort_hours": 3,
       "status": "todo",
       "depends_on": [
-        "T-014"
+        "T-014",
+        "T-928",
+        "T-920"
       ],
       "branch": "task/T-016-projection-rebuild",
       "lane": "foundation",
@@ -1016,7 +1073,8 @@
         "T-008",
         "T-917",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-928"
       ],
       "branch": "task/T-022-local-compose",
       "lane": "infra",
@@ -31185,7 +31243,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-580-identity-wire",
       "lane": "identity",
@@ -31231,7 +31290,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-581-inventory-wire",
       "lane": "inventory",
@@ -31277,7 +31337,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-582-commerce-wire",
       "lane": "commerce",
@@ -31323,7 +31384,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-583-retail-wire",
       "lane": "retail",
@@ -31369,7 +31431,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-584-financing-wire",
       "lane": "financing",
@@ -31415,7 +31478,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-585-insurance-wire",
       "lane": "insurance",
@@ -31461,7 +31525,8 @@
         "T-919",
         "T-923",
         "T-924",
-        "T-925"
+        "T-925",
+        "T-016"
       ],
       "branch": "task/T-586-documents-wire",
       "lane": "documents",
@@ -35064,7 +35129,8 @@
       "depends_on": [
         "T-917",
         "T-009",
-        "T-746"
+        "T-746",
+        "T-014"
       ],
       "branch": "task/T-920-messaging-local-membership",
       "lane": "foundation",
@@ -35094,7 +35160,8 @@
       "depends_on": [
         "T-920",
         "T-013",
-        "T-925"
+        "T-925",
+        "T-015"
       ],
       "branch": "task/T-921-messaging-durable-intake",
       "lane": "foundation",
@@ -35242,6 +35309,95 @@
       "execution_note": "Independent QA GREEN at 4dbe2593bce71c045f785fc07aed9da5b4113a73. Main full project race with both route migration and inbox live flags PASS (eventstore49.041s; inbox10.273s), vet PASS. Forward route correction preserves prior migrations, actual producer bytes and privileges; writer/intake/broker/runtime activation remain dependent tasks.",
       "reviewed_sha": "4dbe2593bce71c045f785fc07aed9da5b4113a73",
       "integration_sha": "67c90f01ea5493e1453723e95cb92cec41c6dd3e"
+    },
+    {
+      "id": "T-926",
+      "key": "projection_checkpoint_storage",
+      "title": "Install checkpoint and gap storage with receiver fences",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-925",
+        "T-008",
+        "T-009"
+      ],
+      "branch": "task/T-926-projection-checkpoint-storage",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000004_projection_checkpoint.up.sql",
+        "pkg/eventstore/projection_checkpoint_migration_test.go",
+        "pkg/eventstore/receiver_fence.go",
+        "pkg/eventstore/receiver_fence_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Install owner-local bootstrap/checkpoint/gap evidence with narrow grants and contiguous updates. Implement the shared transaction-bound receiver/catalog/generation/guard fence preparation, exact encoded keys and modes, completeness capabilities and no late lock upgrades. Prove explicit nonzero/new-empty bootstrap, evidence chains, rollback and concurrency under the approved handoff.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-927",
+      "key": "quarantine_evidence_storage",
+      "title": "Install protected quarantine and redrive evidence storage",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-926",
+        "T-013"
+      ],
+      "branch": "task/T-927-quarantine-evidence-storage",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000005_quarantine_evidence.up.sql",
+        "pkg/eventstore/quarantine_migration_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Install immutable sealed quarantine evidence and append-only redrive action chains with exact request identity, protected content references and narrow privileges. Synthetic sealing tests do not authorize production cryptography, retention or ACK behavior.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-928",
+      "key": "projection_generation_storage",
+      "title": "Install projection generation and pointer evidence storage",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-927"
+      ],
+      "branch": "task/T-928-projection-generation-storage",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000006_projection_generation.up.sql",
+        "pkg/eventstore/projection_generation_migration_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Install owner-local immutable generation/switch evidence and CAS projection heads with narrow grants. Prove pointer identity, retained history, atomic failure and immutable evidence; no owner business read model or real guard writer is introduced.",
+      "worktree": null,
+      "base_sha": null
     }
   ]
 }

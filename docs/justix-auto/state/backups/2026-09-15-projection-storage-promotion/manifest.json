@@ -1,0 +1,122 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/dev/task-index.json.gz",
+    "sha256": "cf8e07d392341adc229120ab81f7f91274b480a06e3f424baf04b8837802c8e2",
+    "bytes": 1446968
+  },
+  {
+    "path": "docs/justix-auto/dev/task-board.md",
+    "snapshot": "docs/justix-auto/dev/task-board.md.gz",
+    "sha256": "6d9cd5b0e3fb7b062999573bb227b795294b416e8bbf43e6b183d2fe742d4c9f",
+    "bytes": 212804
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-014.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-014.md.gz",
+    "sha256": "d9b291cc8cb0503dc5d4c5ffd955d14b5931c0fd38da620ad86c7b718ad27925",
+    "bytes": 6356
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-015.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-015.md.gz",
+    "sha256": "66651acd9fba8586b201957a2250d8dd54751da142d710c7fb0f74aa07c07a2b",
+    "bytes": 6381
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-920.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-920.md.gz",
+    "sha256": "ba7a603f0cc55f817157da4f79ab006f2b1c4808827a63b9e0e75f9a963210a7",
+    "bytes": 2502
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-921.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-921.md.gz",
+    "sha256": "8ecd8a199e951f9b0acb0473bb2eadb8fce620a4defb4c550202635ca6a0a036",
+    "bytes": 3350
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-016.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-016.md.gz",
+    "sha256": "4d275715fb05a776477fdba4a80482a93d45e9b968d8751c5cb2540c6d435fa4",
+    "bytes": 6333
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-022.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-022.md.gz",
+    "sha256": "5d66b0d60748c9c4a89fb09dc761f1adc909f523407109d2f204d2fe6b0ce99e",
+    "bytes": 7788
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-580.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-580.md.gz",
+    "sha256": "8d4d3d11c4a53385eadbcce245091a6d57b9a4678484e598042c62f6a14f755c",
+    "bytes": 8993
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-581.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-581.md.gz",
+    "sha256": "4afd46f4daca0b8aef8bcdf9a06c3d8f28d67b13eb134a16a0029e20c1d7aa3f",
+    "bytes": 9011
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-582.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-582.md.gz",
+    "sha256": "b508498751136bf5376838e914c8fa134021c095e32a6207582e183bc757343e",
+    "bytes": 8993
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-583.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-583.md.gz",
+    "sha256": "f73b893738f856dba27f683d368a275219e44164493bedc7c1e8d1e7919397b3",
+    "bytes": 8957
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-584.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-584.md.gz",
+    "sha256": "89862015220b385d0fe53ce51eaf35ed0603caa362d18076fe4d8064f51df988",
+    "bytes": 9011
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-585.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-585.md.gz",
+    "sha256": "d259af26704591f881319247b4f2e21af407ddb94b78e31ecc8b1b4f748bcc8a",
+    "bytes": 9011
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-586.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-586.md.gz",
+    "sha256": "6dd4470a58e9d1190d1833d5fd7f8bbe3432faabae6b68f105a5a0f4d94e80f5",
+    "bytes": 9011
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-923.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-923.md.gz",
+    "sha256": "c372c2144a9b4e3f6d3a8859d32b531af85800b90b77e3911d71ec2a950eb678",
+    "bytes": 2545
+  },
+  {
+    "path": "docs/justix-auto/dev/backlog-coverage.md",
+    "snapshot": "docs/justix-auto/dev/backlog-coverage.md.gz",
+    "sha256": "db6c9e7365c9e51b975bbae825d7e866a4366c79926a4e17f9a727862bce9a9f",
+    "bytes": 41157
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "sha256": "0196307a5d79f350a70318e147ea9b3f814ca4afed951ca6243150488d09de12",
+    "bytes": 10611
+  },
+  {
+    "path": "docs/justix-auto/architecture.md",
+    "snapshot": "docs/justix-auto/architecture.md.gz",
+    "sha256": "94eb92ae044903f9dc04590dcd6785960dd83e01fc6bde5ea01ccf36b05be3c1",
+    "bytes": 45283
+  },
+  {
+    "path": "docs/justix-auto/dev/projection-storage-readiness.md",
+    "snapshot": "docs/justix-auto/dev/projection-storage-readiness.md.gz",
+    "sha256": "e2717ae74e28790e72fc0ed2be7135a9dd1860be08906c1028c44cd4334dc849",
+    "bytes": 3439
+  }
+]

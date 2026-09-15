@@ -50,7 +50,7 @@ Git gate passed; isolated worktree `.worktrees/projection-storage-handoff`, bran
 `2c1ff1de53f4dc7b0588d63d6b34de1d0983f0b3` is allocated. Agent
 `architect_projection_storage` completed exact proposal
 `90dfe726ab53c4fdd54c3cac09e706797a32ea6d`; independent proposal reviewer
-`qa_projection_storage` is assigned. No schema/task amendment is approved yet.
+`qa_projection_storage` is assigned. Proposal-only QA is complete; implementation approval is recorded below.
 Its only proposal leaf is
 `docs/justix-auto/state/drafts/architect/projection-storage-handoff.md`; ancillary
 result is `docs/justix-auto/dev/results/projection-storage-handoff.md`.
@@ -59,3 +59,11 @@ No application code or canonical document ownership is delegated.
 T-919's already-approved writer work and app shells can
 continue independently. No complete delivery-runtime claim follows from their
 individual integration.
+
+
+## Reviewed promotion
+
+Proposal `90dfe726ab53c4fdd54c3cac09e706797a32ea6d` passed [independent QA](qa/projection-storage-handoff.md).
+The coordinator [approved the exact contract](../state/approvals/projection-storage-handoff.md)
+for T-926–T-928 and fifteen dependency additions. The earlier observation is
+preserved. Implementation and independent live SQL/adapter checks remain pending.

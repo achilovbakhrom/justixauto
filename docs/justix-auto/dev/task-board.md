@@ -24,8 +24,8 @@ Date: 2026-09-15. Release scope and architecture approved; development authorize
 
 ## Graph metrics and lanes
 
-Current scope: 925 tasks after the approved eight-task messaging amendment
-and one forward route compatibility correction (3,066 total task-effort hours).
+Current scope: 928 tasks after the approved messaging/route amendments
+and three projection/quarantine storage tasks (3,078 total task-effort hours).
 The metrics below describe the original reviewed 916-task baseline; no new
 antichain width or elapsed schedule is claimed. See the amendment rows and
 [approval](../state/approvals/messaging-delivery.md) for the bounded new scope.
@@ -79,15 +79,15 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | integrated | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006, T-919, T-924 | `task/T-012-outbox-relay` | ENV-GIT |
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
-| [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | todo | T-013, T-010 | `task/T-014-projection-sequence` | ENV-GIT |
-| [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013 | `task/T-015-quarantine` | ENV-GIT |
-| [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014 | `task/T-016-projection-rebuild` | ENV-GIT |
+| [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | todo | T-013, T-010, T-926 | `task/T-014-projection-sequence` | ENV-GIT |
+| [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013, T-927, T-922 | `task/T-015-quarantine` | ENV-GIT |
+| [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014, T-928, T-920 | `task/T-016-projection-rebuild` | ENV-GIT |
 | [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | integrated | T-009 | `task/T-017-receipts` | ENV-GIT |
 | [T-018](tasks/T-018.md) | B-01 | Implement durable operation decisions and recovery scheduling | implementation / 3 | foundation | integrated | T-017, T-011, T-013 | `task/T-018-process` | ENV-GIT |
 | [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | integrated | T-003 | `task/T-019-money` | ENV-GIT |
 | [T-020](tasks/T-020.md) | B-01 | Instrument safe correlation and stuck-operation signals | implementation / 3 | foundation | todo | T-018, T-015 | `task/T-020-telemetry` | ENV-GIT |
 | [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018, T-923 | `task/T-021-recovery-harness` | ENV-GIT |
-| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924, T-925 | `task/T-022-local-compose` | ENV-GIT |
+| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924, T-925, T-928 | `task/T-022-local-compose` | ENV-GIT |
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
 | [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | integrated | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | integrated | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
@@ -920,13 +920,13 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-912](tasks/T-912.md) | B-09 | Project subscribe and register the retail document access slice | implementation / 3 | retail | todo | T-739, T-583 | `task/T-912-retail-document-access-registration` | ENV-GIT |
 | [T-913](tasks/T-913.md) | B-09 | Project subscribe and register the financing document access slice | implementation / 3 | financing | todo | T-740, T-584 | `task/T-913-financing-document-access-registration` | ENV-GIT |
 | [T-914](tasks/T-914.md) | B-09 | Project subscribe and register the insurance document access slice | implementation / 3 | insurance | todo | T-741, T-585 | `task/T-914-insurance-document-access-registration` | ENV-GIT |
-| [T-580](tasks/T-580.md) | B-01 | Wire minimal identity API worker and projector runtimes | implementation / 4 | identity | todo | T-024, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-580-identity-wire` | ENV-GIT |
-| [T-581](tasks/T-581.md) | B-01 | Wire minimal inventory API worker and projector runtimes | implementation / 4 | inventory | todo | T-025, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-581-inventory-wire` | ENV-GIT |
-| [T-582](tasks/T-582.md) | B-01 | Wire minimal commerce API worker and projector runtimes | implementation / 4 | commerce | todo | T-026, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-582-commerce-wire` | ENV-GIT |
-| [T-583](tasks/T-583.md) | B-01 | Wire minimal retail API worker and projector runtimes | implementation / 4 | retail | todo | T-027, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-583-retail-wire` | ENV-GIT |
-| [T-584](tasks/T-584.md) | B-01 | Wire minimal financing API worker and projector runtimes | implementation / 4 | financing | todo | T-028, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-584-financing-wire` | ENV-GIT |
-| [T-585](tasks/T-585.md) | B-01 | Wire minimal insurance API worker and projector runtimes | implementation / 4 | insurance | todo | T-029, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-585-insurance-wire` | ENV-GIT |
-| [T-586](tasks/T-586.md) | B-01 | Wire minimal documents API worker and projector runtimes | implementation / 4 | documents | todo | T-030, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925 | `task/T-586-documents-wire` | ENV-GIT |
+| [T-580](tasks/T-580.md) | B-01 | Wire minimal identity API worker and projector runtimes | implementation / 4 | identity | todo | T-024, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-580-identity-wire` | ENV-GIT |
+| [T-581](tasks/T-581.md) | B-01 | Wire minimal inventory API worker and projector runtimes | implementation / 4 | inventory | todo | T-025, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-581-inventory-wire` | ENV-GIT |
+| [T-582](tasks/T-582.md) | B-01 | Wire minimal commerce API worker and projector runtimes | implementation / 4 | commerce | todo | T-026, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-582-commerce-wire` | ENV-GIT |
+| [T-583](tasks/T-583.md) | B-01 | Wire minimal retail API worker and projector runtimes | implementation / 4 | retail | todo | T-027, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-583-retail-wire` | ENV-GIT |
+| [T-584](tasks/T-584.md) | B-01 | Wire minimal financing API worker and projector runtimes | implementation / 4 | financing | todo | T-028, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-584-financing-wire` | ENV-GIT |
+| [T-585](tasks/T-585.md) | B-01 | Wire minimal insurance API worker and projector runtimes | implementation / 4 | insurance | todo | T-029, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-585-insurance-wire` | ENV-GIT |
+| [T-586](tasks/T-586.md) | B-01 | Wire minimal documents API worker and projector runtimes | implementation / 4 | documents | todo | T-030, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924, T-925, T-016 | `task/T-586-documents-wire` | ENV-GIT |
 | [T-587](tasks/T-587.md) | B-05 | Load independently completed admin routes and boundary providers | implementation / 3 | frontend-admin | todo | T-036, T-578, T-746 | `task/T-587-admin-routes` | ENV-GIT |
 | [T-588](tasks/T-588.md) | B-05 | Load independently completed realization routes and boundary providers | implementation / 3 | frontend-realization | todo | T-037, T-578, T-746 | `task/T-588-realization-routes` | ENV-GIT |
 | [T-589](tasks/T-589.md) | B-05 | Load independently completed financing routes and boundary providers | implementation / 3 | frontend-financing | todo | T-038, T-578, T-746 | `task/T-589-financing-routes` | ENV-GIT |
@@ -994,9 +994,12 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | integrated | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
 | [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | integrated | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
 | [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | ready-for-qa | T-918, T-011, T-925 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
-| [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | todo | T-917, T-009, T-746 | `task/T-920-messaging-local-membership` | ENV-GIT |
-| [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013, T-925 | `task/T-921-messaging-durable-intake` | ENV-GIT |
+| [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | todo | T-917, T-009, T-746, T-014 | `task/T-920-messaging-local-membership` | ENV-GIT |
+| [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013, T-925, T-015 | `task/T-921-messaging-durable-intake` | ENV-GIT |
 | [T-922](tasks/T-922.md) | B-01 | Expose transaction-bound inbox effects for atomic dispatch completion | implementation / 3 | foundation | integrated | T-013 | `task/T-922-messaging-transactional-inbox` | ENV-GIT |
 | [T-923](tasks/T-923.md) | B-01 | Run independently fenced logical consumer jobs with atomic completion | implementation / 4 | foundation | todo | T-921, T-922, T-014, T-015 | `task/T-923-messaging-consumer-dispatch` | ENV-GIT |
 | [T-924](tasks/T-924.md) | B-01 | Restrict activated broker routes and separate relay and intake principals | implementation / 3 | foundation | todo | T-006, T-001, T-925 | `task/T-924-messaging-broker-roles` | ENV-GIT |
 | [T-925](tasks/T-925.md) | B-01 | Correct retained messaging route compatibility | implementation / 4 | foundation | integrated | T-917, T-011, T-007, T-006 | `task/T-925-messaging-route-compatibility` | ENV-GIT |
+| [T-926](tasks/T-926.md) | B-01 | Install checkpoint and gap storage with receiver fences | implementation / 4 | foundation | todo | T-925, T-008, T-009 | `task/T-926-projection-checkpoint-storage` | ENV-GIT |
+| [T-927](tasks/T-927.md) | B-01 | Install protected quarantine and redrive evidence storage | implementation / 4 | foundation | todo | T-926, T-013 | `task/T-927-quarantine-evidence-storage` | ENV-GIT |
+| [T-928](tasks/T-928.md) | B-01 | Install projection generation and pointer evidence storage | implementation / 4 | foundation | todo | T-927 | `task/T-928-projection-generation-storage` | ENV-GIT |

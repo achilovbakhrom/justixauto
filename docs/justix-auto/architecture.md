@@ -350,3 +350,13 @@ unanswered OD business rules, a not-yet-presented release backlog, missing visua
 states, production deployment, application implementation or Git initialization.
 The exact pre-approval files and hashes are preserved under
 `state/backups/2026-09-13-plan-po-r1/`.
+
+
+## Approved projection durability implementation handoff — 2026-09-15
+
+The [ADR-03/05 storage handoff](state/approvals/projection-storage-handoff.md)
+assigns owner-local checkpoint/gap, protected quarantine and generation evidence
+storage to T-926–T-928. It preserves private service databases, existing event
+and mode history, typed outer transaction composition and separately authorized
+bootstrap/retention/process catch-up. Its exact contract and runtime gates
+supplement §5; no running application or production policy is implied.
