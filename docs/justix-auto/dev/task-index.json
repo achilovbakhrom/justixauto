@@ -503,7 +503,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-007",
         "T-005"
@@ -526,7 +526,7 @@
       "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
       "reviewed_sha": null,
       "agent": "backend/t008_event_schema",
-      "execution_note": "Dependencies integrated; isolated worktree assigned; implementation active."
+      "execution_note": "Implementation commit 19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d passed live seven-owner PostgreSQL tests. Independent QA pending."
     },
     {
       "id": "T-009",
@@ -1294,7 +1294,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-004"
       ],
@@ -1319,12 +1319,12 @@
       "scope": "Same-origin transport, typed 401/403/404/409/412/422/503 receipts, no token storage or persistent PII; schema adapters injected by each feature. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-032",
       "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
-      "reviewed_sha": null,
+      "reviewed_sha": "01d0a19dcf5ca1a8dd11039239e19d5c8b917417",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend/t032_api_client",
-      "execution_note": "Developer tests passed; coordinator added only workspace lock entries. Independent exact-commit QA pending."
+      "execution_note": "Independent QA BOUNCE: reserved identity-header aliases and sparse SELECTED branch arrays accepted. Fix cycle 1 assigned; evidence preserved."
     },
     {
       "id": "T-033",
@@ -1333,7 +1333,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-004"
       ],
@@ -1366,7 +1366,7 @@
         "package-lock.json"
       ],
       "agent": "frontend/t033_tokens",
-      "execution_note": "T004 integrated; isolated worktree assigned; existing HTML token extraction active."
+      "execution_note": "CSS tokens, six provenance tests and developer browser evidence complete; coordinator workspace lock added before independent QA. API QA findings may change merge order."
     },
     {
       "id": "T-034",
