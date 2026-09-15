@@ -27,8 +27,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-024 in-progress (`.worktrees/T-024`, `task/T-024-identity-scaffold`); T-036 qa-green (`.worktrees/T-036`, `task/T-036-admin-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-917 in-progress (`.worktrees/T-917`, `task/T-917-messaging-delivery-schema`).
-- Integrated tasks: 20/924; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-024 in-progress (`.worktrees/T-024`, `task/T-024-identity-scaffold`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-917 in-progress (`.worktrees/T-917`, `task/T-917-messaging-delivery-schema`).
+- Integrated tasks: 21/924; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 924 (916 reviewed baseline + eight approved messaging amendments); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -83,9 +83,13 @@ boundary, not a missing Docker installation.
 ## Commands not available yet
 
 No owner service composition roots, shared local Compose runner, owner migration
-runner, CI pipeline, or React application workspaces exist yet. Explicit SQL
-installation templates and the shared token package are integrated. Root shared
-package test/build commands work; app-specific builds await their app tasks.
+runner or CI pipeline exist yet. The Admin React workspace and shared API,
+tokens, UI and test-kit packages are integrated. `npm run build:apps` builds
+Admin; its default session boundary renders no protected children until session
+integration. Explicit synthetic QA fixtures display the empty shell. This is
+not a working business application; the other three app shells and feature
+routes remain in their assigned tasks. Explicit SQL installation templates and
+shared Go durability primitives are integrated.
 Broad `go test ./...` from the main checkout also discovers ignored Go sources
 inside the local compiler and `node_modules`; use the project-package commands
 above until tooling relocates or isolates those development artifacts. Do not

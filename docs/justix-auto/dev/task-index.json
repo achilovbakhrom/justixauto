@@ -1503,7 +1503,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-035"
       ],
@@ -1540,7 +1540,8 @@
         "package-lock.json"
       ],
       "agent": "frontend_t036",
-      "execution_note": "Independent exact-commit QA GREEN: 145 tests, strict checks/build, 55 browser assertions, three shell comparisons and 30 route observations. Shared lint rule remains active and lock pins preserved. Future Admin binder is T587 (developer comment T590 is non-authoritative); /admin/ canonical path passes."
+      "execution_note": "Merged exact independent browser QA GREEN commit. Main offline locked install, all 145 unit tests, strict typecheck/lint and Admin app build passed. Default entry remains session-gated; canonical future Admin route binder is T587.",
+      "integration_sha": "0d6d06090dca5ffd3088bfcb279e429e6ad0c4a2"
     },
     {
       "id": "T-037",
