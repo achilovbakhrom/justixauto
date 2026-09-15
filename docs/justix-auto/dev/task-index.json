@@ -35444,7 +35444,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-926",
         "T-013"
@@ -35466,8 +35466,9 @@
       "worktree": ".worktrees/T-927",
       "base_sha": "8e714dc98659d2ef7c901362501d60dd7e7335db",
       "agent": "qa_t927",
-      "execution_note": "Fix cycle1 exact 3e1a5fe: failure-safe owned Docker cleanup and real allocation/lost-reply regressions; SQL unchanged; full scoped race plus original QA overlay103.958s and vet passed. Independent r2 review assigned, original BOUNCE evidence preserved.",
-      "reviewed_sha": "3e1a5fe2d18f49f68738b954a3e0f0f489ad8c33"
+      "execution_note": "Exact3e1a5fe independent r2 QA GREEN; source-identical merge and full scoped integration race passed (eventstore84.789s, contracts147.561s), vet/diff0. Both20 original/r2 QA artifacts preserved; integration-t927.md. Production sealing/privacy, ACK/redrive, full membership and revision6 correction remain separate.",
+      "reviewed_sha": "3e1a5fe2d18f49f68738b954a3e0f0f489ad8c33",
+      "integration_sha": "0ea8ed7f7e73dc742bc832e5bd1fa5f9629fe7a5"
     },
     {
       "id": "T-928",
