@@ -431,7 +431,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-001",
         "T-003"
@@ -456,7 +456,8 @@
       "base_sha": "4c84e346c7412e0fc6e3a20a8393767de63b3131",
       "reviewed_sha": "f5155e7cd989820c05dc247698a2080a5fe8e74d",
       "agent": "backend/t006_rabbit_local",
-      "execution_note": "Independent QA GREEN at exact f5155e7cd989820c05dc247698a2080a5fe8e74d. Static race/vet/module checks and live pinned RabbitMQ 4.3.5 verify restricted principals/grants, own/foreign access, spoofed-topic denial, mandatory NO_ROUTE plus publisher ACK, and topology/message durability across restart."
+      "execution_note": "Merged exact QA-green branch as 2720822c8b97cccbcf04c0403e23987fddeec9d9. Integrated main passes offline Go race/vet for integration and contract suites plus 1,016/1,016 focused readiness checks; exact-commit QA supplied the live RabbitMQ restart/permission/routing evidence.",
+      "integration_sha": "2720822c8b97cccbcf04c0403e23987fddeec9d9"
     },
     {
       "id": "T-007",
