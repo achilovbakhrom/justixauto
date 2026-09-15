@@ -846,7 +846,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-013",
         "T-010",
@@ -870,8 +870,8 @@
       "worktree": ".worktrees/T-014",
       "base_sha": "0df6cdcd7ee77f7d07a1a2c151695274af8728ba",
       "reviewed_sha": "8692b939de06b696269c7cce9b31c247b5762f25",
-      "agent": "qa_t014",
-      "execution_note": "Transaction-composable sequence, bootstrap, duplicate coverage and gap recovery committed; full scoped race including14 PostgreSQL groups passed, projection7.125s and vet0. Independent exact commit review assigned. Space-only retained labels remain explicitly blocked by unchanged000004 pending the recorded forward storage correction."
+      "agent": "backend_t014_fix",
+      "execution_note": "Independent QA BOUNCE: AppendAttempt misses exact retained bootstrap kind/generation/contract identity (five real persisted wrong-identity holds); disposable PG cleanup also omits anonymous volumes. Fix cycle1 preserves failed report/evidence and known separate space-only label storage blocker."
     },
     {
       "id": "T-015",

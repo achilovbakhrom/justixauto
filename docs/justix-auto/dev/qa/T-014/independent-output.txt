@@ -1,0 +1,26 @@
+=== RUN   TestIndependentT014
+    independent_qa_test.go:26: owned PG 180006; exact T008/000002/000003/000004 artifacts; narrow runtime; random loopback
+    independent_qa_test.go:30: owned fixture anonymous volumes: [9d8e3ed6377366ca6076981dfddafd75df7142bd1168de0a191ddd072d5f95da]
+=== RUN   TestIndependentT014/changed-identity-kind
+    independent_qa_test.go:70: changed kind accepted: error=<nil> persisted_attempts=1
+=== RUN   TestIndependentT014/changed-identity-generation
+    independent_qa_test.go:70: changed generation accepted: error=<nil> persisted_attempts=1
+=== RUN   TestIndependentT014/changed-identity-contract-id
+    independent_qa_test.go:70: changed contract-id accepted: error=<nil> persisted_attempts=1
+=== RUN   TestIndependentT014/changed-identity-contract-version
+    independent_qa_test.go:70: changed contract-version accepted: error=<nil> persisted_attempts=1
+=== RUN   TestIndependentT014/changed-identity-contract-digest
+    independent_qa_test.go:70: changed contract-digest accepted: error=<nil> persisted_attempts=1
+=== RUN   TestIndependentT014/current-authority-and-scope-controls
+=== RUN   TestIndependentT014/runtime-history-mutation-denied
+--- FAIL: TestIndependentT014 (2.20s)
+    --- FAIL: TestIndependentT014/changed-identity-kind (0.07s)
+    --- FAIL: TestIndependentT014/changed-identity-generation (0.04s)
+    --- FAIL: TestIndependentT014/changed-identity-contract-id (0.04s)
+    --- FAIL: TestIndependentT014/changed-identity-contract-version (0.04s)
+    --- FAIL: TestIndependentT014/changed-identity-contract-digest (0.04s)
+    --- PASS: TestIndependentT014/current-authority-and-scope-controls (0.05s)
+    --- PASS: TestIndependentT014/runtime-history-mutation-denied (0.03s)
+FAIL
+FAIL	justixauto/pkg/projection	2.934s
+FAIL
