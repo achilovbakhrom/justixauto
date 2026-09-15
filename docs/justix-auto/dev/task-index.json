@@ -35442,7 +35442,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-926",
         "T-013"
@@ -35463,8 +35463,8 @@
       "scope": "Install immutable sealed quarantine evidence and append-only redrive action chains with exact request identity, protected content references and narrow privileges. Synthetic sealing tests do not authorize production cryptography, retention or ACK behavior.",
       "worktree": ".worktrees/T-927",
       "base_sha": "8e714dc98659d2ef7c901362501d60dd7e7335db",
-      "agent": "qa_t927",
-      "execution_note": "Developer exact commit ready; full scoped race and vet passed. Independent review must verify protected evidence, receipt authority, retained data and atomic installation; production sealing and ACK composition remain separate.",
+      "agent": "backend_t927",
+      "execution_note": "Independent QA BOUNCE P2 at 5d8edb0: lost successful Docker-start reply leaves owned fixture because cleanup registers late. SQL/full race/vet passed. Fix cycle1 limited to failure-safe fixture cleanup and meaningful regression; preserve original report/evidence and SQL bytes.",
       "reviewed_sha": "5d8edb0167e654bdb3db8cee26f028c50e8eb1fa"
     },
     {
