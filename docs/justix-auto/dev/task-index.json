@@ -34975,7 +34975,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-917",
         "T-009"
@@ -34997,8 +34997,9 @@
       "worktree": ".worktrees/T-918",
       "base_sha": "5d0236dd2f6c27ba37a9b2cd3c0ef2b9ac97fd1a",
       "agent": "backend_t918",
-      "execution_note": "Independent exact-commit QA GREEN: full race/vet,14 live developer cases and9 independent PostgreSQL probes pass. Route defect reproduced independently; T925/T919 remain separate composition gates. No concrete business admissions.",
-      "reviewed_sha": "d9ca2bc01fecbd81319d3c7ba2184e43417dd7e9"
+      "execution_note": "Merged exact GREEN d9ca2bc; main full services/pkg/tests race with live source admission7.757s and vet passed. Transactional recipient planning only; T925 correction and T919 writer remain required before routing composition.",
+      "reviewed_sha": "d9ca2bc01fecbd81319d3c7ba2184e43417dd7e9",
+      "integration_sha": "2fb2c769fda27160e963673dc70cb08b838aa811"
     },
     {
       "id": "T-919",
