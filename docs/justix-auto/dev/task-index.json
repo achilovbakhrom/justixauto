@@ -35775,7 +35775,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-935",
         "T-058",
@@ -35800,7 +35800,8 @@
       "worktree": ".worktrees/T-936",
       "base_sha": "3b796c28fa04105cb0bc7154c17f27f7e47e3470",
       "agent": "frontend_t936",
-      "execution_note": "Original two client leaves plus the explicitly assigned isolated generator fixture dependency copy. T-640 is integrated and added as predecessor; T-937 remains serial successor on the shared test leaf. No generator behavior, root manifest, policy or UI expansion."
+      "execution_note": "Auth transport implementation and approved decoder fixture copy are committed. Frontend 399 tests, workspace typechecks/lint and full contract race/vet passed; independent exact-commit QA is next.",
+      "reviewed_sha": "0adcda6d5011c6e602963d0392b1d8241fb4a5a4"
     },
     {
       "id": "T-937",
