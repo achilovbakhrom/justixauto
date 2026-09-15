@@ -66,7 +66,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | integrated | T-001 | `task/T-004-web-workspace` | ENV-GIT |
 | [T-005](tasks/T-005.md) | B-01 | Provision seven isolated local PostgreSQL owners | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-005-postgres-local` | ENV-GIT |
 | [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
-| [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | todo | T-003 | `task/T-007-envelope` | ENV-GIT |
+| [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | implementing | T-003 | `task/T-007-envelope` | ENV-GIT |
 | [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | todo | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | todo | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | todo | T-009 | `task/T-010-replay` | ENV-GIT |
@@ -78,7 +78,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014 | `task/T-016-projection-rebuild` | ENV-GIT |
 | [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | todo | T-009 | `task/T-017-receipts` | ENV-GIT |
 | [T-018](tasks/T-018.md) | B-01 | Implement durable operation decisions and recovery scheduling | implementation / 3 | foundation | todo | T-017, T-011, T-013 | `task/T-018-process` | ENV-GIT |
-| [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | todo | T-003 | `task/T-019-money` | ENV-GIT |
+| [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | implementing | T-003 | `task/T-019-money` | ENV-GIT |
 | [T-020](tasks/T-020.md) | B-01 | Instrument safe correlation and stuck-operation signals | implementation / 3 | foundation | todo | T-018, T-015 | `task/T-020-telemetry` | ENV-GIT |
 | [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018 | `task/T-021-recovery-harness` | ENV-GIT |
 | [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008 | `task/T-022-local-compose` | ENV-GIT |
