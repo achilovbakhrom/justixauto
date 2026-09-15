@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 10946,
+    "sha256": "1b40cb361686ba321e8040ebe6afe864bd935b8bbcdf51970ea39003b254ae6b"
+  },
+  {
+    "path": "docs/justix-auto/dev/owner-migration-readiness.md",
+    "snapshot": "docs/justix-auto/dev/owner-migration-readiness.md.gz",
+    "bytes": 2260,
+    "sha256": "7e32848c7b2fa04dee5db5b5afeef59f8ecb1d8f44c5ec69fc666e51eacc7f79"
+  }
+]

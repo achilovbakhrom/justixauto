@@ -34,3 +34,7 @@ recovery/delivery policy or new business permissions.
 Inputs: T-024 r2/T-025/T-026 results and exact owner UOW source; T-059/T-060/
 T-061 ownership; approved architecture and storage handoffs. Reuse their reviewed
 mechanics and record any additional owned leaves/dependency edges explicitly.
+
+The bounded [architecture assignment](owner-migration-assignment.md) is active
+in `.worktrees/owner-migration-compatibility`. Its proposal must pass independent
+review before the coordinator promotes any implementation ownership or edges.
