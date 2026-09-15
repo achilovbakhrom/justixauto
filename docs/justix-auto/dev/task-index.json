@@ -569,7 +569,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-009"
       ],
@@ -593,7 +593,8 @@
       "base_sha": "8f15950c234f4e09bbc4d8b585e477fa4b929af2",
       "reviewed_sha": "29c4d25790c4c6c231a68a66d06d7299780b28f4",
       "agent": "backend/t010_replay",
-      "execution_note": "Independent QA GREEN: full replay/append/schema suites and adversarial corruption/transaction-visibility checks passed; source unchanged."
+      "execution_note": "Merged after independent exact-commit QA GREEN. Combined main replay and ledger live PostgreSQL race tests plus all project package tests and vet passed on c01e2c3.",
+      "integration_sha": "aebd92b79fe5014a5a19fd59a1d371a9235a79e4"
     },
     {
       "id": "T-011",
@@ -784,7 +785,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-009"
       ],
@@ -808,7 +809,8 @@
       "base_sha": "8f15950c234f4e09bbc4d8b585e477fa4b929af2",
       "reviewed_sha": "554caced444d6c6584d27bc614e2e002a3709bd1",
       "agent": "backend/t017_receipts",
-      "execution_note": "Independent QA GREEN: live concurrency/lost-commit tests,malformed stored receipt and runtime immutability probes,race/vet passed. QA wrote assigned new artifacts in main; source worktree unchanged."
+      "execution_note": "Merged after independent exact-commit QA GREEN. Combined main replay and ledger live PostgreSQL race tests plus all project package tests and vet passed on c01e2c3.",
+      "integration_sha": "c01e2c3ec9f0cebd163018ea92e904841eecbe2c"
     },
     {
       "id": "T-018",
