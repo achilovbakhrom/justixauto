@@ -35258,7 +35258,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-006",
         "T-001",
@@ -35282,8 +35282,9 @@
       "worktree": ".worktrees/T-924",
       "base_sha": "288b084a988f62d09d1f08c664ffbdf1a3ba3498",
       "agent": "qa_t924",
-      "execution_note": "Broker role split and empty route activation complete; independent exact-commit QA assigned. Live denial, retained topology/message, mandatory-return and role-separation evidence require review; no production activation.",
-      "reviewed_sha": "d5dd07e4ca1327f5a9983be24797e11800e42914"
+      "execution_note": "Exact independent broker QA GREEN integrated. Combined main full scoped race with live broker/checkpoint/fence flags and vet passed; integration package13.255s. Empty activated routes and separate relay/intake/denied legacy principals preserved; no business activation.",
+      "reviewed_sha": "d5dd07e4ca1327f5a9983be24797e11800e42914",
+      "integration_sha": "4d59144869586c9eb539eed5aaeaaecd5dca962d"
     },
     {
       "id": "T-925",
@@ -35328,7 +35329,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-925",
         "T-008",
@@ -35353,8 +35354,9 @@
       "worktree": ".worktrees/T-926",
       "base_sha": "288b084a988f62d09d1f08c664ffbdf1a3ba3498",
       "agent": "qa_t926",
-      "execution_note": "Checkpoint/gap migration and receiver fences committed; independent exact-commit QA assigned. Review retained text generation labels under c135e4e clarification, immutable evidence, ACLs, exact actual-transaction lock order and prior artifact preservation; no runtime projection activation.",
-      "reviewed_sha": "9c680af82fa83160b5477dd965287e9d1b54c045"
+      "execution_note": "Exact independent checkpoint/fence QA GREEN integrated. Combined main full scoped race with live broker/checkpoint/fence flags and vet passed; eventstore63.770s. Original SQL and exact retained generation labels preserved. T014/T927 implementation may proceed; no runtime projection activation.",
+      "reviewed_sha": "9c680af82fa83160b5477dd965287e9d1b54c045",
+      "integration_sha": "e3778dcc22f6e0f205b0d3876b5822cbb40ba7e8"
     },
     {
       "id": "T-927",
