@@ -2,7 +2,7 @@ const { defineConfig, globalIgnores } = require('eslint/config');
 const js = require('@eslint/js');
 const ts = require('typescript-eslint');
 const hooks = require('eslint-plugin-react-hooks');
-const refresh = require('eslint-plugin-react-refresh');
+const refresh = require('eslint-plugin-react-refresh').default;
 const globals = require('globals');
 
 // This config is explicitly loaded from the repository root. Keep linting
