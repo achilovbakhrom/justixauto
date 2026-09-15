@@ -1622,7 +1622,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-035"
       ],
@@ -1654,11 +1654,11 @@
       "scope": "Base and Router basename /finance/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-038",
       "base_sha": "3d8c5a26c3890eaa358a52281db055c1faf7e2be",
-      "reviewed_sha": null,
+      "reviewed_sha": "c1b0b50eed76902bf024fc6c5d9c5e4f032f642b",
       "coordinator_files": [
         "package-lock.json"
       ],
-      "execution_note": "Financing shell worker assigned to prepared worktree. Existing M-F01 shell only, injected closed session boundary, inactive unregistered navigation and independently scoped /finance/ routes. Coordinator owns serialized root lock.",
+      "execution_note": "Developer Financing shell a7343d3 and coordinator lock committed; exactly2 new workspace entries, all existing records unchanged.155 unit tests,3 app builds and58 browser checks pass. Independent complete-SHA browser QA pending.",
       "agent": "frontend_t038"
     },
     {
