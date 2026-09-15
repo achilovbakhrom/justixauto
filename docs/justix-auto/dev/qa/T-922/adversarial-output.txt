@@ -1,0 +1,18 @@
+=== RUN   TestQA922AdversarialPostgres
+=== RUN   TestQA922AdversarialPostgres/consumer_namespaces_do_not_reuse_another_inbox_or_complete_its_job
+=== RUN   TestQA922AdversarialPostgres/read_only_caller_cannot_return_even_a_duplicate_candidate
+=== RUN   TestQA922AdversarialPostgres/duplicate_does_not_bypass_missing_runtime_insert_privilege
+=== RUN   TestQA922AdversarialPostgres/savepoint_rollback_invalidates_candidate_and_restores_fresh_processing
+=== RUN   TestQA922AdversarialPostgres/duplicate_retains_table_fence_until_caller_rollback
+=== RUN   TestQA922AdversarialPostgres/cancel_while_waiting_for_conflicting_insert_leaves_no_partial_duplicate
+=== RUN   TestQA922AdversarialPostgres/runtime_cannot_rewrite_durable_inbox_evidence_or_active_mode
+--- PASS: TestQA922AdversarialPostgres (2.46s)
+    --- PASS: TestQA922AdversarialPostgres/consumer_namespaces_do_not_reuse_another_inbox_or_complete_its_job (0.04s)
+    --- PASS: TestQA922AdversarialPostgres/read_only_caller_cannot_return_even_a_duplicate_candidate (0.01s)
+    --- PASS: TestQA922AdversarialPostgres/duplicate_does_not_bypass_missing_runtime_insert_privilege (0.13s)
+    --- PASS: TestQA922AdversarialPostgres/savepoint_rollback_invalidates_candidate_and_restores_fresh_processing (0.02s)
+    --- PASS: TestQA922AdversarialPostgres/duplicate_retains_table_fence_until_caller_rollback (0.23s)
+    --- PASS: TestQA922AdversarialPostgres/cancel_while_waiting_for_conflicting_insert_leaves_no_partial_duplicate (0.14s)
+    --- PASS: TestQA922AdversarialPostgres/runtime_cannot_rewrite_durable_inbox_evidence_or_active_mode (0.01s)
+PASS
+ok  	justixauto/pkg/inbox	4.242s
