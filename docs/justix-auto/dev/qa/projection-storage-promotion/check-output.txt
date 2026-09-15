@@ -1,0 +1,66 @@
+PASS: exact canonical promotion 940094adae97ef9582ffebadb4f69ce6fba2f88f
+Parent: 19ff36368a1ced0f06f134ceae9a5917c99b4872
+PASS: documentation-only additions/modifications; no deletion or application change
+PASS: 20 unique canonical preimages
+PASS: preimages cover every and only modified canonical document
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/task-index.json
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/task-board.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-014.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-015.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-920.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-921.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-016.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-022.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-580.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-581.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-582.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-583.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-584.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-585.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-586.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/tasks/T-923.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/backlog-coverage.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/dev-state.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/architecture.md
+PASS: recoverable exact parent SHA-256 preimage docs/justix-auto/dev/projection-storage-readiness.md
+PASS: reviewed proposal digest
+PASS: exact reviewed proposal copy docs/justix-auto/state/drafts/architect/projection-storage-handoff.md
+PASS: exact reviewed proposal copy docs/justix-auto/state/drafts/contracts/projection-storage-handoff.md
+PASS: architect result provenance preserved byte-for-byte
+PASS: approval pins proposal and bounded implementation authority
+PASS: changed/provenance/QA relative links resolve: 1026
+PASS: 925 baseline tasks retained plus exactly T-926/927/928
+PASS: original 925 task ordering retained
+PASS: 928 tasks total 3078 task-effort hours
+PASS: metadata task count 928
+PASS: exactly fifteen specified existing-task edge additions
+PASS: all 925 prior task records otherwise unchanged, including statuses, ownership, scope, effort and evidence
+PASS: only four intended metadata fields changed; historical graph measurements retained
+PASS: edge metadata matches approved amendment
+PASS: eight distinct new leaves
+PASS: new leaves are absent and nonoverlapping with all prior ownership
+PASS: new ownership equals exact approved eight leaves
+PASS: T-926 bounded dependency/status/coverage contract
+PASS: T-927 bounded dependency/status/coverage contract
+PASS: T-928 bounded dependency/status/coverage contract
+PASS: acyclic complete 928-node DAG
+PASS: board contains each of 928 tasks exactly once
+PASS: all 928 task/index/board dependencies and statuses agree
+PASS: state/board count and effort consistency
+PASS: T-923 carries approved lock/duplicate completion handoff
+PASS: T-581 carries approved lock/duplicate completion handoff
+PASS: T-582 carries approved lock/duplicate completion handoff
+PASS: T-014 carries approved lock/duplicate completion handoff
+PASS: T-583 carries approved lock/duplicate completion handoff
+PASS: T-921 carries approved lock/duplicate completion handoff
+PASS: T-580 carries approved lock/duplicate completion handoff
+PASS: T-015 carries approved lock/duplicate completion handoff
+PASS: T-016 carries approved lock/duplicate completion handoff
+PASS: T-022 carries approved lock/duplicate completion handoff
+PASS: T-584 carries approved lock/duplicate completion handoff
+PASS: T-920 carries approved lock/duplicate completion handoff
+PASS: T-585 carries approved lock/duplicate completion handoff
+PASS: T-586 carries approved lock/duplicate completion handoff
+PASS: T-923 unchanged graph/ownership; receives required linked behavioral handoff
+PASS: AC2 adds three contributors and retains T-591 sole closer
+GREEN: canonical promotion structural checks; no SQL or production runtime certification.
