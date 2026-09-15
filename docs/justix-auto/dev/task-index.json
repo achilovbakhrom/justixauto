@@ -1086,7 +1086,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1111,9 +1111,11 @@
         "B-01.AC2"
       ],
       "scope": "Own only inventory mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later inventory_wire task.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-025",
+      "base_sha": "e47e08b6f0aee8f432f8b6e1675619069f8160c1",
+      "reviewed_sha": null,
+      "agent": "backend_t025",
+      "execution_note": "Git gate and dependencies passed. Assigned inventory typed persistence scaffold; use reviewed Identity mechanics pattern with inventory ownership/scope and independent live validation, no business tables or composition."
     },
     {
       "id": "T-026",

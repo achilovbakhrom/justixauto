@@ -1,0 +1,26 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/dev/task-index.json.gz",
+    "bytes": 1441199,
+    "sha256": "0bd8b3440edb3e31d2e9bb66407a629f462dfe04ef1a3cdd8fa218eda61b882b"
+  },
+  {
+    "path": "docs/justix-auto/dev/task-board.md",
+    "snapshot": "docs/justix-auto/dev/task-board.md.gz",
+    "bytes": 212388,
+    "sha256": "07c8abd1327e0d3c11aa3e58b04483a70465af0183d246e8c0a9e6fe4851e2ce"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-025.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-025.md.gz",
+    "bytes": 6965,
+    "sha256": "b6de887c2708a6b3cedac4993f93dccee647eb7d34fdf5ac799429985574af79"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 8852,
+    "sha256": "2007ffca7874450927231a8583c6d3b27257c0518121bd831c98d2f8982c52e9"
+  }
+]
