@@ -28,9 +28,9 @@
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-038 in-progress (`.worktrees/T-038`, `task/T-038-financing-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 ready-for-qa (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
-- Integrated tasks: 25/924; independent exact-commit QA required before each integration.
+- Integrated tasks: 25/925; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
-- Formal PM task files: 924 (916 reviewed baseline + eight approved messaging amendments); see task-board.md, task-index.json and backlog-coverage.md
+- Formal PM task files: 925 (916 reviewed baseline + eight messaging amendments + one route correction); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
 - Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
@@ -162,3 +162,11 @@ An isolated architect proposal is assigned in
 migrations; a separately reviewed forward correction must precede dependent
 writer/intake/topology activation. T-918 admission logic may proceed with its
 explicitly documented synthetic fixture limit. See messaging-readiness.md.
+
+### Route correction approved for bounded implementation — 2026-09-15
+
+Independent proposal QA is GREEN; [coordinator approval](../state/approvals/messaging-route-correction.md)
+adopts the exact reviewed [forward correction](../state/drafts/contracts/messaging-route-correction.md).
+T-925 and explicit dependent edges now gate canonical route and correction-marker
+readiness. This approves implementation, not an applied migration or working
+delivery runtime. The earlier diagnosis and historical QA evidence stay intact.

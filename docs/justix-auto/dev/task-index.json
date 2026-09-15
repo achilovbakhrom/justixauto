@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 924,
-    "effort_hours": 3062,
+    "task_count": 925,
+    "effort_hours": 3066,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Longest-chain/frontier/antichain metrics retain the reviewed 916-task baseline; eight bounded messaging amendment tasks and new edges are recorded without claiming recomputed width or schedule.",
+    "graph_metrics_scope": "Longest-chain/frontier/antichain metrics retain the reviewed 916-task baseline; eight messaging amendment tasks plus one route compatibility correction and their new edges are recorded without claiming recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -276,6 +276,26 @@
         "T-922",
         "T-923",
         "T-924"
+      ]
+    },
+    "route_compatibility_correction": {
+      "proposal_sha": "631388169f3f24c97b9237bcf933de79315b3651",
+      "approval": "docs/justix-auto/state/approvals/messaging-route-correction.md",
+      "added_tasks": [
+        "T-925"
+      ],
+      "direct_targets": [
+        "T-919",
+        "T-921",
+        "T-924",
+        "T-022",
+        "T-580",
+        "T-581",
+        "T-582",
+        "T-583",
+        "T-584",
+        "T-585",
+        "T-586"
       ]
     }
   },
@@ -983,7 +1003,8 @@
         "T-006",
         "T-008",
         "T-917",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-022-local-compose",
       "lane": "infra",
@@ -31144,7 +31165,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-580-identity-wire",
       "lane": "identity",
@@ -31189,7 +31211,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-581-inventory-wire",
       "lane": "inventory",
@@ -31234,7 +31257,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-582-commerce-wire",
       "lane": "commerce",
@@ -31279,7 +31303,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-583-retail-wire",
       "lane": "retail",
@@ -31324,7 +31349,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-584-financing-wire",
       "lane": "financing",
@@ -31369,7 +31395,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-585-insurance-wire",
       "lane": "insurance",
@@ -31414,7 +31441,8 @@
         "T-014",
         "T-919",
         "T-923",
-        "T-924"
+        "T-924",
+        "T-925"
       ],
       "branch": "task/T-586-documents-wire",
       "lane": "documents",
@@ -34982,7 +35010,8 @@
       "status": "todo",
       "depends_on": [
         "T-918",
-        "T-011"
+        "T-011",
+        "T-925"
       ],
       "branch": "task/T-919-messaging-outbox-plan",
       "lane": "foundation",
@@ -35041,7 +35070,8 @@
       "status": "todo",
       "depends_on": [
         "T-920",
-        "T-013"
+        "T-013",
+        "T-925"
       ],
       "branch": "task/T-921-messaging-durable-intake",
       "lane": "foundation",
@@ -35129,7 +35159,8 @@
       "status": "todo",
       "depends_on": [
         "T-006",
-        "T-001"
+        "T-001",
+        "T-925"
       ],
       "branch": "task/T-924-messaging-broker-roles",
       "lane": "foundation",
@@ -35146,6 +35177,38 @@
         "B-01.AC2"
       ],
       "scope": "Explicit reviewed source/target/schema route metadata and split relay/intake capabilities; no configure/foreign reads/default exchange grants. Empty activated contract set denies publication. Synthetic fixture routes do not activate business permissions. Preserve current durable owner queues/exchanges and pinned live permission evidence.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-925",
+      "key": "messaging_route_compatibility",
+      "title": "Correct retained messaging route compatibility",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-917",
+        "T-011",
+        "T-007",
+        "T-006"
+      ],
+      "branch": "task/T-925-messaging-route-compatibility",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql",
+        "pkg/eventstore/messaging_route_migration_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC1",
+        "B-01.AC2"
+      ],
+      "scope": "Apply the approved forward route compatibility correction, preserving installed 000002, every historical route/byte/identity and mode transition. Add immutable correction evidence and prove genuine T011-produced populated cutover, custody/job compatibility, rollback and narrow grants. No automatic repair, production cutover or business admission.",
       "worktree": null,
       "base_sha": null
     }

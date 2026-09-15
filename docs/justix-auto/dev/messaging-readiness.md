@@ -67,3 +67,14 @@ SQL-compatible synthetic obligation fixture; this is not permission to change
 the established writer route. Dependent T-919 writer, T-921 intake and T-924
 route metadata must use one reviewed route convention after the correction.
 Implementation assignment and independent exact-commit QA are still pending.
+
+## Reviewed forward correction and implementation gate
+
+Proposal `631388169f3f24c97b9237bcf933de79315b3651` passed independent
+[design QA](qa/messaging-route-correction.md) and is
+[approved](../state/approvals/messaging-route-correction.md). T-925 adds the
+forward migration, marker and genuine producer/cutover regression; dependent
+writer/intake/broker/infra/owner tasks now explicitly wait for it. T-918/T-920
+admission-only work and T-922 remain independent. The defect is not fixed by
+this approval; runtime integration remains blocked until implementation and
+independent live QA pass. Existing T-917 evidence and installed SQL stay intact.
