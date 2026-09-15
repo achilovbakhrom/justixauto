@@ -45,7 +45,14 @@ are assigned. This document does not approve a schema or mark a task blocked.
 
 ## Next action
 
-Allocate an isolated architect worktree and assign the bounded review when a
-worker slot is free. T-919's already-approved writer work and app shells can
+Git gate passed; isolated worktree `.worktrees/projection-storage-handoff`, branch
+`task/projection-storage-handoff`, base
+`2c1ff1de53f4dc7b0588d63d6b34de1d0983f0b3` is allocated. Assign the architect
+when a worker slot is free. Its only proposal leaf is
+`docs/justix-auto/state/drafts/architect/projection-storage-handoff.md`; ancillary
+result is `docs/justix-auto/dev/results/projection-storage-handoff.md`.
+No application code or canonical document ownership is delegated.
+
+T-919's already-approved writer work and app shells can
 continue independently. No complete delivery-runtime claim follows from their
 individual integration.
