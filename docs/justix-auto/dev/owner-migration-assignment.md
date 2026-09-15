@@ -1,7 +1,7 @@
 # Owner migration compatibility proposal assignment
 
-2026-09-15. Status: in-progress architecture handoff; no implementation approval.
-Agent: architect_owner_migration. Branch: `task/owner-migration-compatibility`.
+2026-09-15. Status: ready-for-qa architecture handoff; no implementation approval.
+Agent: qa_owner_migration. Branch: `task/owner-migration-compatibility`.
 Worktree: `.worktrees/owner-migration-compatibility`; base `f0a72a9`.
 
 Resolve the concrete [readiness finding](owner-migration-readiness.md) with a
@@ -24,3 +24,9 @@ exact file leaves, dependency edges and verification cases. Keep work bounded to
 this compatibility gap; generic auth response transport is a separate handoff.
 No security policy, feature permissions, service roots or migration execution.
 Coordinator reviews and obtains independent proposal QA before promotion.
+
+Review exact commit `c3734a5c3f2863be8fe752338c11740b9bdf31a4`; the six task
+aliases remain unassigned until technical adoption. QA owns only
+`dev/qa/owner-migration-compatibility.md` and its same-named evidence directory
+in the task worktree. Check actual pinned migrate/pgx interface feasibility,
+receipt-plus-clean atomicity and precise ownership/dependency amendments.
