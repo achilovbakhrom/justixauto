@@ -603,7 +603,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009"
       ],
@@ -623,9 +623,9 @@
       "scope": "Stable event bytes/hash and integration sequence with local event/guard transaction. Rollback creates no outbound effect.",
       "worktree": ".worktrees/T-011",
       "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
-      "reviewed_sha": null,
+      "reviewed_sha": "b357e8b962eeb6d5c9872fde1e266b97e7a320ec",
       "agent": "backend_t011",
-      "execution_note": "Dependencies integrated and own-root Git gate passed. Coordinator allocated isolated worktree; bounded backend implementation assigned."
+      "execution_note": "Developer implementation committed with live PostgreSQL outbox and full project Go race/vet checks passed; independent QA assigned. Single-recipient primitive only; messaging-readiness.md tracks fan-out composition gate."
     },
     {
       "id": "T-012",
@@ -666,7 +666,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-006"
@@ -687,9 +687,9 @@
       "scope": "Atomic consumerName+eventId dedup, effect and checkpoint; ACK only after commit; retry/rollback duplicate tests.",
       "worktree": ".worktrees/T-013",
       "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
-      "reviewed_sha": null,
+      "reviewed_sha": "1582f24fff93b59942188b463b4d67bd34c73e4d",
       "agent": "backend_t013",
-      "execution_note": "Dependencies integrated and own-root Git gate passed. Coordinator allocated isolated worktree; bounded backend implementation assigned."
+      "execution_note": "Developer committed atomic inbox and passed ten live PostgreSQL scenarios, full project race tests and vet. Awaiting independent QA slot; no integration or broker wiring claimed."
     },
     {
       "id": "T-014",

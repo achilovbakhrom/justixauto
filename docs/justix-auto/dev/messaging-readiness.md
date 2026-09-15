@@ -18,7 +18,14 @@ implementation pass independent QA.
    consumer identities and justified effects but explicitly does not approve
    new queue-sharing or topology semantics.
 
-The coordinator will assign a bounded architect proposal for durable authorized
+The coordinator assigned `/root/architect_messaging_delivery` a bounded proposal
+in `.worktrees/messaging-delivery-contract`, branch
+`task/messaging-delivery-contract`, base `6524338`. Its only proposal leaf is
+`../state/drafts/architect/messaging-delivery.md`, with ancillary result
+`results/messaging-delivery.md`. It requires coordinator review and independent
+exact-commit QA before approval; implementation scope is not yet selected.
+
+The proposal covers durable authorized
 recipient delivery and owner-local subscriber dispatch, preserving immutable
 event bytes/identity, sequence guarantees, least-privilege broker access and
 confirmed delivery/ACK semantics. No runtime policy is selected by this note.
