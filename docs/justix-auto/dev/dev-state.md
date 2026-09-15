@@ -25,7 +25,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-007 bounced (`.worktrees/T-007`, `task/T-007-envelope`).
+- Active task: T-007 ready-for-qa (`.worktrees/T-007`, `task/T-007-envelope`).
 - Integrated tasks: 6/916; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
