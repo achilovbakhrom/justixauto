@@ -536,7 +536,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-008"
       ],
@@ -557,9 +557,9 @@
       "scope": "Expected-version append includes guards/outbox/receipt via typed transaction; competing append and rollback tests against PostgreSQL.",
       "worktree": ".worktrees/T-009",
       "base_sha": "1c8f8aa403deb752924209b778aaf2747ef79bbb",
-      "reviewed_sha": null,
+      "reviewed_sha": "fd979e4ec942693c983c2b49c1934f4492493aee",
       "agent": "backend/t009_append",
-      "execution_note": "Developer commit fd979e4ec942693c983c2b49c1934f4492493aee passed live Postgres and import/vet checks. Independent exact-commit QA active."
+      "execution_note": "Independent QA GREEN: live schema/append tests,5 adversarial probes, full Go race regression and vet. No blocking findings; fixtures removed."
     },
     {
       "id": "T-010",
@@ -25519,7 +25519,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-001"
       ],
@@ -25539,7 +25539,8 @@
       "base_sha": "537b662af02db56611bf6377fc42b16086a037dd",
       "reviewed_sha": "ddeec749c68ab3d4edba428a1e2b0eeb7b1fdb88",
       "agent": "architect/t746_registration_contract",
-      "execution_note": "Independent qa/T-746-r2.md GREEN closes inert-claim gap. Coordinator approves the exact registration convention within existing ADRs; runtime behavior remains downstream."
+      "execution_note": "Exact QA-reviewed convention approved in state/approvals/T-746.md and merged. Readiness graph1016checks and integration diff checks passed; no application behavior claimed.",
+      "integration_sha": "a7ac5097a4804b2ac6443eb1b4aeed3c5d1378be"
     },
     {
       "id": "T-747",

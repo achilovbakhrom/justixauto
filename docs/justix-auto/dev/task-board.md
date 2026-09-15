@@ -68,7 +68,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
 | [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | integrated | T-003 | `task/T-007-envelope` | ENV-GIT |
 | [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | integrated | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
-| [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | ready-for-qa | T-008 | `task/T-009-append` | ENV-GIT |
+| [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | qa-green | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | todo | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | todo | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006 | `task/T-012-outbox-relay` | ENV-GIT |
@@ -745,7 +745,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-743](tasks/T-743.md) | B-17 | Generate private inventory branch attachments DTO and client fixtures | implementation / 2 | inventory | todo | T-640, T-287 | `task/T-743-inventory-attachment-clients` | ENV-GIT |
 | [T-744](tasks/T-744.md) | B-28 | Generate private commerce allocations DTO and client fixtures | implementation / 2 | commerce | todo | T-640, T-695 | `task/T-744-commerce-allocation-clients` | ENV-GIT |
 | [T-745](tasks/T-745.md) | B-29 | Generate private inventory shipment receipts DTO and client fixtures | implementation / 2 | inventory | todo | T-640, T-696 | `task/T-745-inventory-receipt-clients` | ENV-GIT |
-| [T-746](tasks/T-746.md) | B-01 | Specify incremental typed owner and app feature registration | contract / 3 | contracts-foundation | qa-green | T-001 | `task/T-746-runtime-registration-contract` | dependencies only |
+| [T-746](tasks/T-746.md) | B-01 | Specify incremental typed owner and app feature registration | contract / 3 | contracts-foundation | integrated | T-001 | `task/T-746-runtime-registration-contract` | dependencies only |
 | [T-747](tasks/T-747.md) | B-02 | Project subscribe and register the credentials slice | implementation / 3 | identity | todo | T-060, T-580 | `task/T-747-credentials-registration` | ENV-GIT |
 | [T-748](tasks/T-748.md) | B-02 | Project subscribe and register the mfa slice | implementation / 3 | identity | todo | T-061, T-580 | `task/T-748-mfa-registration` | ENV-GIT |
 | [T-749](tasks/T-749.md) | B-02 | Project subscribe and register the bootstrap slice | implementation / 3 | identity | todo | T-062, T-580 | `task/T-749-bootstrap-registration` | ENV-GIT |
