@@ -27,7 +27,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-930 bounced (`.worktrees/T-930`, `task/T-930-owner-persistence-profile`).
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 in-progress (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-930 bounced (`.worktrees/T-930`, `task/T-930-owner-persistence-profile`).
 - Integrated tasks: 40/944; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration and retained-label handoffs approved; [auth transport](auth-transport-assignment.md) technically adopted after independent r2 GREEN, canonical promotion QA pending before T-935–T-944 assignment.
 - Additional architecture: [durable membership version storage](membership-version-assignment.md) assigned after T-920's empty-stream/version evidence blocker; no new migration or task dependency approved yet.
