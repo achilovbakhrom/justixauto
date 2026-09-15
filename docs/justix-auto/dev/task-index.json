@@ -1086,7 +1086,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1115,7 +1115,7 @@
       "base_sha": "e47e08b6f0aee8f432f8b6e1675619069f8160c1",
       "reviewed_sha": "da73efefa5dc62189018734dcb5a5873cbd77041",
       "agent": "backend_t025",
-      "execution_note": "Inventory scaffold developer live PostgreSQL checks12.492s,26 privilege cases, scope/concurrency/replay/lost-reply and compatibility probes passed; full services/pkg/tests race and vet passed. Independent exact-commit QA pending."
+      "execution_note": "Independent exact-commit QA GREEN: full project race/live Inventory12.857s,11 independent adversarial cases and vet passed. Scope and privilege boundaries verified; legacy scaffold only, populated route/custody runtime remains separate."
     },
     {
       "id": "T-026",

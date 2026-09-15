@@ -1,0 +1,26 @@
+=== RUN   TestQAInventoryAdversarial
+=== RUN   TestQAInventoryAdversarial/public-maintain
+=== RUN   TestQAInventoryAdversarial/two-hop-noinherit
+=== RUN   TestQAInventoryAdversarial/missing-events-insert
+=== RUN   TestQAInventoryAdversarial/missing-inbox-select
+=== RUN   TestQAInventoryAdversarial/missing-outbox-lease-update
+=== RUN   TestQAInventoryAdversarial/missing-operation-revision-update
+=== RUN   TestQAInventoryAdversarial/missing-eventstore-usage
+=== RUN   TestQAInventoryAdversarial/extra-ledger-row
+=== RUN   TestQAInventoryAdversarial/factory-error-rolls-back-all-three-records
+=== RUN   TestQAInventoryAdversarial/competing-changed-input-one-receipt
+=== RUN   TestQAInventoryAdversarial/operation-company-fence-before-authorization
+--- PASS: TestQAInventoryAdversarial (4.15s)
+    --- PASS: TestQAInventoryAdversarial/public-maintain (0.14s)
+    --- PASS: TestQAInventoryAdversarial/two-hop-noinherit (0.11s)
+    --- PASS: TestQAInventoryAdversarial/missing-events-insert (0.14s)
+    --- PASS: TestQAInventoryAdversarial/missing-inbox-select (0.12s)
+    --- PASS: TestQAInventoryAdversarial/missing-outbox-lease-update (0.13s)
+    --- PASS: TestQAInventoryAdversarial/missing-operation-revision-update (0.11s)
+    --- PASS: TestQAInventoryAdversarial/missing-eventstore-usage (0.12s)
+    --- PASS: TestQAInventoryAdversarial/extra-ledger-row (0.12s)
+    --- PASS: TestQAInventoryAdversarial/factory-error-rolls-back-all-three-records (0.21s)
+    --- PASS: TestQAInventoryAdversarial/competing-changed-input-one-receipt (0.20s)
+    --- PASS: TestQAInventoryAdversarial/operation-company-fence-before-authorization (0.08s)
+PASS
+ok  	justixauto/services/inventory/adapter/postgres	5.967s
