@@ -1047,7 +1047,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1076,7 +1076,7 @@
       "base_sha": "f36d318b8e422793d6921219e5f39938fcd27864",
       "reviewed_sha": "b400904233470abdc6c8052c19ab6293786f0170",
       "agent": "backend_t024",
-      "execution_note": "Independent QA BOUNCE P2: readiness accepts eight excessive database/table/column permission cases. Transaction, replay, unknown-commit and legacy/custody boundary checks pass. Fix cycle1 required; preserve original report."
+      "execution_note": "Fix cycle1 assigned after preserved independent BOUNCE: close database/table/column privilege-readiness gaps, then rerun exact-SHA QA. Original evidence remains unchanged."
     },
     {
       "id": "T-025",
