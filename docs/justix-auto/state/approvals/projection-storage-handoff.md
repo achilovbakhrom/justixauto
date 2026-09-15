@@ -25,3 +25,9 @@ failure/concurrency checks and independent exact-commit QA before integration.
 No production migration, external data access, broker readiness or completed
 runtime is claimed. Canonical SHA-256/recoverable preimages are in
 `../backups/2026-09-15-projection-storage-promotion/`.
+
+The [generation-label compatibility clarification](projection-generation-label-compatibility.md)
+distinguishes new mechanical UUIDs from retained T-917 text labels. Bootstrap
+matching preserves the exact existing label for projection and process consumers;
+the new projection-generation primary key remains a UUID. Reviewed proposal
+copies and installed migration identities remain unchanged.
