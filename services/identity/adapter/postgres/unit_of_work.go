@@ -77,26 +77,29 @@ func check(db *gorm.DB) error {
 	        OR r.rolname LIKE 'pg\_%' ESCAPE '\'
 	        OR r.oid=(SELECT datdba FROM pg_database WHERE datname=current_database())))
 	 AND NOT EXISTS (SELECT FROM pg_roles r WHERE pg_has_role(current_user,r.oid,'MEMBER')
-	      AND (has_schema_privilege(r.oid,'eventstore','CREATE')
+	      AND (has_database_privilege(r.oid,current_database(),'CREATE,TEMPORARY')
+	        OR has_schema_privilege(r.oid,'eventstore','CREATE')
 	        OR has_schema_privilege(r.oid,'public','CREATE')
 	        OR has_schema_privilege(r.oid,'identity_mechanics','CREATE')
-	        OR has_table_privilege(r.oid,'identity_mechanics.compatibility','INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER')
-	        OR has_table_privilege(r.oid,'public.schema_migrations','INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER')))
+	        OR has_table_privilege(r.oid,'identity_mechanics.compatibility','INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER,REFERENCES,MAINTAIN')
+	        OR has_table_privilege(r.oid,'public.schema_migrations','INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER,REFERENCES,MAINTAIN')))
 	 AND NOT EXISTS (SELECT FROM pg_roles r CROSS JOIN
 	      (VALUES ('events'),('command_receipts'),('outbox'),('inbox'),('operations'),('operation_steps')) t(name)
 	      WHERE pg_has_role(current_user,r.oid,'MEMBER') AND
 	      (NOT has_table_privilege(current_user,'eventstore.'||t.name,'SELECT')
 	       OR NOT has_table_privilege(current_user,'eventstore.'||t.name,'INSERT')
-	       OR has_table_privilege(r.oid,'eventstore.'||t.name,'UPDATE,DELETE,TRUNCATE,TRIGGER')))
+	       OR has_table_privilege(r.oid,'eventstore.'||t.name,'UPDATE,DELETE,TRUNCATE,TRIGGER,REFERENCES,MAINTAIN')))
 	 AND NOT EXISTS (SELECT FROM pg_roles r CROSS JOIN pg_attribute a
 	      JOIN pg_class c ON c.oid=a.attrelid JOIN pg_namespace n ON n.oid=c.relnamespace
 	      WHERE pg_has_role(current_user,r.oid,'MEMBER') AND a.attnum>0 AND NOT a.attisdropped
 	        AND (n.nspname='identity_mechanics' OR (n.nspname='public' AND c.relname='schema_migrations')
 	          OR (n.nspname='eventstore' AND c.relname IN ('events','command_receipts','outbox','inbox','operations','operation_steps')))
-	        AND has_column_privilege(r.oid,c.oid,a.attnum,'UPDATE')
+	        AND (has_column_privilege(r.oid,c.oid,a.attnum,'REFERENCES')
+	          OR (n.nspname<>'eventstore' AND has_column_privilege(r.oid,c.oid,a.attnum,'INSERT'))
+	          OR (has_column_privilege(r.oid,c.oid,a.attnum,'UPDATE')
 	        AND NOT (n.nspname='eventstore' AND
 	          ((c.relname='outbox' AND a.attname IN ('attempts','next_attempt_at','lease_owner','lease_until','sent_at'))
-	           OR (c.relname='operations' AND a.attname IN ('phase','decision','attention_required','result','error','attempts','next_attempt_at','lease_owner','lease_until','revision','updated_at')))))
+	           OR (c.relname='operations' AND a.attname IN ('phase','decision','attention_required','result','error','attempts','next_attempt_at','lease_owner','lease_until','revision','updated_at')))))))
 	 AND NOT EXISTS (SELECT FROM (VALUES
 	      ('outbox','attempts'),('outbox','next_attempt_at'),('outbox','lease_owner'),('outbox','lease_until'),('outbox','sent_at'),
 	      ('operations','phase'),('operations','decision'),('operations','attention_required'),('operations','result'),('operations','error'),

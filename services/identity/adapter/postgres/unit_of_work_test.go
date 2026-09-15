@@ -199,6 +199,51 @@ func TestIdentityPostgresMechanics(t *testing.T) {
 	f.must("justix_identity", "postgres", "GRANT pg_write_all_data TO justix_identity_runtime WITH INHERIT FALSE;")
 	reject()
 	f.must("justix_identity", "postgres", "REVOKE pg_write_all_data FROM justix_identity_runtime;")
+	t.Run("excess-direct-and-reachable-role-grants", func(t *testing.T) {
+		// NOINHERIT membership is still reachable through SET ROLE. Every
+		// check must reject before both feature construction and execution.
+		f.must("justix_identity", "postgres", "CREATE ROLE identity_fixture_grants NOLOGIN; GRANT identity_fixture_grants TO justix_identity_runtime WITH INHERIT FALSE;")
+		defer f.must("justix_identity", "postgres", "REVOKE identity_fixture_grants FROM justix_identity_runtime;")
+		cases := []struct{ name, privilege, object string }{
+			{"database_create", "CREATE", "DATABASE justix_identity"},
+			{"database_temporary", "TEMPORARY", "DATABASE justix_identity"},
+			{"events_maintain", "MAINTAIN", "eventstore.events"},
+			{"events_references", "REFERENCES", "eventstore.events"},
+			{"events_column_references", "REFERENCES(event_id)", "eventstore.events"},
+			{"marker_maintain", "MAINTAIN", "identity_mechanics.compatibility"},
+			{"ledger_maintain", "MAINTAIN", "public.schema_migrations"},
+			{"marker_references", "REFERENCES", "identity_mechanics.compatibility"},
+			{"ledger_references", "REFERENCES", "public.schema_migrations"},
+			{"marker_column_insert", "INSERT(singleton,owner_service,mechanics_version)", "identity_mechanics.compatibility"},
+			{"ledger_column_insert", "INSERT(version,dirty)", "public.schema_migrations"},
+			{"marker_column_references", "REFERENCES(singleton)", "identity_mechanics.compatibility"},
+			{"ledger_column_references", "REFERENCES(version)", "public.schema_migrations"},
+		}
+		for _, role := range []string{"justix_identity_runtime", "identity_fixture_grants"} {
+			for _, tc := range cases {
+				t.Run(role+"/"+tc.name, func(t *testing.T) {
+					f.must("justix_identity", "justix_identity", "GRANT "+tc.privilege+" ON "+tc.object+" TO "+role)
+					defer f.must("justix_identity", "justix_identity", "REVOKE "+tc.privilege+" ON "+tc.object+" FROM "+role)
+					binds := 0
+					r, err := identity.NewUnitOfWork(db, func(tx *gorm.DB) (fixturePorts, error) { binds++; return bindFixture(tx) })
+					if err != nil {
+						t.Fatal(err)
+					}
+					if !errors.Is(r.Check(ctx), identity.ErrIncompatiblePersistence) {
+						t.Fatal("excess grants accepted by Check")
+					}
+					called := false
+					err = r.Run(ctx, func(fixturePorts) error { called = true; return nil })
+					if !errors.Is(err, identity.ErrIncompatiblePersistence) || binds != 0 || called {
+						t.Fatalf("excess grants reached feature: %v binds=%d called=%v", err, binds, called)
+					}
+				})
+			}
+		}
+		if err := runner.Check(ctx); err != nil {
+			t.Fatalf("narrow privileges no longer accepted: %v", err)
+		}
+	})
 	ownerRunner, _ := identity.NewUnitOfWork(f.open("justix_identity"), bindFixture)
 	if ownerRunner.Check(ctx) == nil {
 		t.Fatal("migration owner accepted as runtime")
