@@ -667,7 +667,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-009",
         "T-006"
@@ -690,7 +690,7 @@
       "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
       "reviewed_sha": "1582f24fff93b59942188b463b4d67bd34c73e4d",
       "agent": "backend_t013",
-      "execution_note": "Developer committed atomic inbox and passed ten live PostgreSQL scenarios, full project race tests and vet. Awaiting independent QA slot; no integration or broker wiring claimed."
+      "execution_note": "Independent exact-commit QA GREEN with live PostgreSQL race tests, conflicting hashes, unknown duplicate commit/ACK outcomes, factory-write rollback and immutable dedup evidence. No broker wiring or fan-out claim."
     },
     {
       "id": "T-014",
@@ -1437,7 +1437,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-032",
         "T-034"
@@ -1462,12 +1462,12 @@
       "scope": "Vitest/RTL+MSW fixture contract checks; Playwright same-state/viewport comparison infrastructure, no claim of browser parity until actually executed. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-035",
       "base_sha": "3cd4d702589ed7ec827b50c9667c2562810a6009",
-      "reviewed_sha": null,
+      "reviewed_sha": "54fd3472908f32b49838363dd73b1f48c2975485",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend_t035",
-      "execution_note": "T032 and T034 integrated; own-root Git passed and isolated worktree allocated. Root coordinator owns serialized dependency-lock handoff before exact-SHA QA."
+      "execution_note": "Developer schema/RTL/MSW tests and ten browser harness checks passed. Coordinator committed 51 new lock entries with no existing version/resolved/integrity changes; MSW exact approved integrity matched. Independent QA must review complete source plus lock SHA."
     },
     {
       "id": "T-036",

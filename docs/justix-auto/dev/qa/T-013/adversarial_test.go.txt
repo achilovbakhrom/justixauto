@@ -1,0 +1,68 @@
+package inbox_test
+
+import (
+ "bytes"
+ "context"
+ "errors"
+ "io"
+ "os"
+ "sync/atomic"
+ "testing"
+
+ "github.com/google/uuid"
+ "gorm.io/driver/postgres"
+ "gorm.io/gorm"
+ "gorm.io/gorm/logger"
+ "justixauto/pkg/events"
+ "justixauto/pkg/eventstore"
+ "justixauto/pkg/inbox"
+)
+
+func TestQAInboxIndependent(t *testing.T) {
+ if os.Getenv("JUSTIXAUTO_TEST_INBOX")!="1"{t.Skip("isolated PostgreSQL opt-in")}
+ db:=database(t);ctx:=context.Background();company:=uuid.NewString()
+ apply:=func(p effects,e events.Envelope)error{return p.Apply(ctx,e)}
+ noEffect:=func(effects,events.Envelope)error{t.Error("unexpected duplicate effect");return nil}
+ noAck:=func()error{t.Error("unconfirmed delivery acknowledged");return nil}
+ t.Run("simultaneous conflicting bytes produce one effect and one ACK",func(t *testing.T){
+  name:="qa-conflicting";id,stream:=uuid.NewString(),uuid.NewString()
+  body:=message(t,id,stream,company,1);other:=bytes.Replace(body,[]byte("synthetic-reference"),[]byte("other-reference"),1)
+  c:=consumer(t,db,name,company);start:=make(chan struct{});var acks,calls atomic.Int32
+  type result struct{o inbox.Outcome;err error};done:=make(chan result,2)
+  for _,wire:=range [][]byte{body,other}{go func(){<-start;o,err:=c.Consume(ctx,wire,func(p effects,e events.Envelope)error{calls.Add(1);return apply(p,e)},func()error{acks.Add(1);return nil});done<-result{o,err}}()}
+  close(start);applied,conflicts:=0,0
+  for j:=0;j<2;j++{r:=<-done;if r.o==inbox.Applied&&r.err==nil{applied++}else if r.o==inbox.Unconfirmed&&errors.Is(r.err,inbox.ErrEnvelopeConflict){conflicts++}else{t.Fatalf("unexpected result %+v",r)}}
+  if applied!=1||conflicts!=1||acks.Load()!=1||calls.Load()!=1{t.Fatalf("applied=%d conflict=%d acks=%d calls=%d",applied,conflicts,acks.Load(),calls.Load())}
+  var position int64;if err:=db.Raw("SELECT position FROM fixture.checkpoints WHERE consumer_name=? AND aggregate_id=?::uuid",name,stream).Scan(&position).Error;err!=nil||position!=1{t.Fatalf("checkpoint %d %v",position,err)}
+ })
+ t.Run("duplicate transaction commit ambiguity never ACKs",func(t *testing.T){
+  for _,commitFirst:=range []bool{false,true}{
+   name,id,stream:=uuid.NewString(),uuid.NewString(),uuid.NewString();body:=message(t,id,stream,company,1)
+   c:=consumer(t,db,name,company)
+   if o,err:=c.Consume(ctx,body,apply,func()error{return nil});o!=inbox.Applied||err!=nil{t.Fatal(o,err)}
+   pool,err:=db.DB();if err!=nil{t.Fatal(err)}
+   fault,err:=gorm.Open(postgres.New(postgres.Config{Conn:commitFaultPool{DB:pool,commitFirst:commitFirst}}),&gorm.Config{Logger:logger.Default.LogMode(logger.Silent)});if err!=nil{t.Fatal(err)}
+   o,err:=consumer(t,fault,name,company).Consume(ctx,body,noEffect,noAck)
+   if o!=inbox.Unconfirmed||!errors.Is(err,eventstore.ErrCommitOutcomeUnknown)||!errors.Is(err,io.ErrUnexpectedEOF){t.Fatal(o,err)}
+   o,err=c.Consume(ctx,body,noEffect,func()error{return io.ErrClosedPipe})
+   if o!=inbox.Duplicate||!errors.Is(err,inbox.ErrAcknowledgment)||!errors.Is(err,io.ErrClosedPipe){t.Fatal(o,err)}
+   if o,err:=c.Consume(ctx,body,noEffect,func()error{return nil});o!=inbox.Duplicate||err!=nil{t.Fatal(o,err)}
+  }
+ })
+ t.Run("factory failure rolls back its transaction-local writes",func(t *testing.T){
+  name,id,stream:=uuid.NewString(),uuid.NewString(),uuid.NewString();body:=message(t,id,stream,company,1);stop:=errors.New("synthetic bind failure")
+  c,err:=inbox.NewConsumer(db,name,func(tx *gorm.DB)(effects,error){
+   if err:=tx.Exec("INSERT INTO fixture.effects(consumer_name,event_id)VALUES(?,?::uuid)",name,id).Error;err!=nil{return nil,err}
+   return nil,stop
+  },validator(t,company));if err!=nil{t.Fatal(err)}
+  if o,err:=c.Consume(ctx,body,noEffect,noAck);o!=inbox.Unconfirmed||!errors.Is(err,stop){t.Fatal(o,err)}
+  var n int64;if err:=db.Raw("SELECT count(*) FROM fixture.effects WHERE consumer_name=?",name).Scan(&n).Error;err!=nil||n!=0{t.Fatal(n,err)}
+  if o,err:=consumer(t,db,name,company).Consume(ctx,body,apply,func()error{return nil});o!=inbox.Applied||err!=nil{t.Fatal(o,err)}
+ })
+ t.Run("runtime cannot rewrite or remove dedup evidence",func(t *testing.T){
+  name,id,stream:=uuid.NewString(),uuid.NewString(),uuid.NewString();body:=message(t,id,stream,company,1);c:=consumer(t,db,name,company)
+  if o,err:=c.Consume(ctx,body,apply,func()error{return nil});o!=inbox.Applied||err!=nil{t.Fatal(o,err)}
+  for _,statement:=range []string{"UPDATE eventstore.inbox SET envelope_hash=sha256('changed'::bytea) WHERE consumer_name=?","DELETE FROM eventstore.inbox WHERE consumer_name=?"}{if err:=db.Exec(statement,name).Error;err==nil{t.Fatal("runtime mutated inbox")}}
+  if o,err:=c.Consume(ctx,body,noEffect,func()error{return nil});o!=inbox.Duplicate||err!=nil{t.Fatal(o,err)}
+ })
+}
