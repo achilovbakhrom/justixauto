@@ -1,0 +1,14 @@
+{
+  "name": "@justixauto/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/client.ts",
+    "./queryKeys": "./src/queryKeys.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json",
+    "build": "npm run typecheck"
+  }
+}
