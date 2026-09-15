@@ -1336,7 +1336,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-004"
       ],
@@ -1369,7 +1369,8 @@
         "package-lock.json"
       ],
       "agent": "frontend/t033_tokens",
-      "execution_note": "Independent QA GREEN: six token tests, strict checks, consumer CSS bundle, 44 browser reference/consumer comparisons; no full React parity claimed."
+      "execution_note": "QA-approved tokens merged. Main offline lock install, strict typecheck, six tests and CSS package build passed; independent browser evidence preserved. T034 now eligible.",
+      "integration_sha": "e9567ffc1817136a71d0060102d4d108db5212a7"
     },
     {
       "id": "T-034",

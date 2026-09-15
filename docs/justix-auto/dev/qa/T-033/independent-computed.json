@@ -1,0 +1,1215 @@
+{
+  "sha": "b7f739bb36e9ac85ee680e4fc17e9d25639d3b54",
+  "results": [
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 1440,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 1181,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 1180,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 901,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 900,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 851,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 850,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 601,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 600,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 581,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "realization",
+      "url": "http://127.0.0.1:4193/",
+      "width": 580,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "244px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 1440,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "232px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "232px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 1181,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "232px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 16px",
+        "topbarPadding": "0px 24px",
+        "sidebarWidth": "232px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 1180,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 901,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "28px 32px 56px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 900,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 851,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 850,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 601,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 600,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 581,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "financing",
+      "url": "http://127.0.0.1:4193/finance/",
+      "width": 580,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "20px 12px",
+        "topbarPadding": "0px 18px",
+        "sidebarWidth": "76px",
+        "pagePadding": "24px 20px 48px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 1440,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 1192px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 1192px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 1181,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 933px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 933px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 1180,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 932px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 932px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 901,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 653px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 653px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 900,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 720px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 720px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 851,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 671px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 671px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 850,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 670px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 670px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 601,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 421px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 421px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 600,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "16px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "16px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 581,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "16px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "16px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "insurance",
+      "url": "http://127.0.0.1:4193/insurance/",
+      "width": 580,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "16px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "16px",
+        "topbarPadding": "18px 32px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 1440,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 1192px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 1192px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 1181,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 933px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 933px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 1180,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 932px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 932px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 901,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 653px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 653px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 900,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 652px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 652px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 851,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 603px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "248px 603px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "32px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 850,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 670px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 670px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 601,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 421px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 421px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 600,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 420px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 420px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 581,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 401px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "28px 20px",
+        "topbarPadding": "20px 32px",
+        "shellDisplay": "grid",
+        "shellColumns": "180px 401px",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "differences": []
+    },
+    {
+      "entry": "admin",
+      "url": "http://127.0.0.1:4193/admin/",
+      "width": 580,
+      "height": 1000,
+      "reference": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "18px",
+        "topbarPadding": "16px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "fixture": {
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "fontSize": "14px",
+        "lineHeight": "20.3px",
+        "sidebarPadding": "18px",
+        "topbarPadding": "16px",
+        "shellDisplay": "block",
+        "shellColumns": "180px minmax(0px, 1fr)",
+        "navColor": "rgb(23, 101, 217)",
+        "navBackground": "rgb(234, 242, 255)",
+        "pagePadding": "20px"
+      },
+      "differences": []
+    }
+  ]
+}
