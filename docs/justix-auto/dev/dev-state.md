@@ -27,7 +27,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-014 in-progress (`.worktrees/T-014`, `task/T-014-projection-sequence`); T-640 bounced (`.worktrees/T-640`, `task/T-640-contract-generator`).
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-014 in-progress (`.worktrees/T-014`, `task/T-014-projection-sequence`); T-640 ready-for-qa (`.worktrees/T-640`, `task/T-640-contract-generator`).
 - Integrated tasks: 36/934; independent exact-commit QA required before each integration.
 - Active architecture handoff: [owner migration compatibility](owner-migration-assignment.md) proposal QA GREEN and technically adopted; canonical promotion QA remains required before T-929–T-934 assignment.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation

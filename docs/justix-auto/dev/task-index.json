@@ -2372,7 +2372,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-004",
         "T-003",
@@ -2395,9 +2395,9 @@
       "scope": "Generate Go DTO/internal-owner clients and strict TS clients/runtime validators from approved concrete OpenAPI3.1; stable file ordering/version header, unknown fields/decimal string/null fixtures, clean regeneration diff check. Do not mutate root manifests; scripts were declared by workspace owner.",
       "worktree": ".worktrees/T-640",
       "base_sha": "8883c37",
-      "reviewed_sha": "9ed232ebb5ffa110454e16f8c92d3cd8bec8162b",
-      "agent": "backend_t640_fix",
-      "execution_note": "Independent QA BOUNCE: dangling output symlink, emitted/imported symbol collisions, and malformed Unicode map-key parity. Fix cycle 1 preserves the original QA evidence and requires a new exact commit review."
+      "reviewed_sha": "14eb0c60895c9e47e829338c5bf78b1e873c9fe1",
+      "agent": "qa_t640_r2",
+      "execution_note": "Fix cycle 1 committed all three independent findings and broader generated-symbol regressions; contracts race55.965s, vet/syntax/format checks passed. Original QA BOUNCE preserved; new exact-commit review records qa/T-640-r2.md."
     },
     {
       "id": "T-058",
