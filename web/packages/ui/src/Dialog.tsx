@@ -29,8 +29,8 @@ const styles = `
   .jx-dialog { box-sizing:border-box;width:var(--dialog-width);max-width:100%;max-height:var(--dialog-max-height);overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--dialog-radius);box-shadow:var(--shadow-overlay) }
   .jx-dialog[data-size=compact] { width:var(--dialog-compact-width) }
   .jx-dialog[data-size=wide] { width:var(--dialog-wide-width) }
-  .jx-dialog-header { display:grid;grid-template-columns:1fr 36px;gap:12px;align-items:start;padding:var(--dialog-header-padding) }
-  .jx-dialog-header[data-icon=true] { grid-template-columns:40px 1fr 36px }
+  .jx-dialog-header { display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start;padding:var(--dialog-header-padding) }
+  .jx-dialog-header[data-icon=true] { grid-template-columns:40px minmax(0,1fr) auto }
   .jx-dialog-icon { width:40px;height:40px;display:grid;place-items:center;border-radius:7px;color:var(--primary);background:var(--primary-soft) }
   .jx-dialog-title { margin:0;font-size:18px;line-height:24px;overflow-wrap:anywhere }
   .jx-dialog-description { margin:3px 0 0;color:var(--text-secondary);font-size:13px;overflow-wrap:anywhere }
@@ -40,9 +40,13 @@ const styles = `
   .jx-dialog-close:focus-visible { outline:var(--field-focus-outline) }
   .jx-dialog-body { padding:var(--dialog-body-padding) }
   .jx-dialog-footer { display:flex;justify-content:flex-end;gap:10px;padding:var(--dialog-footer-padding);border-top:1px solid var(--border) }
+  .finance-workspace .jx-dialog-title { font-size:22px }
+  .finance-workspace .jx-dialog-close { font-size:24px }
   .ins-workspace .jx-dialog, .admin-shell .jx-dialog { border-color:var(--shell-border) }
   .ins-workspace .jx-dialog-header, .admin-shell .jx-dialog-header { align-items:center;border-bottom:1px solid var(--shell-border) }
-  .ins-workspace .jx-dialog-title, .admin-shell .jx-dialog-title { font-size:23px;line-height:normal }
+  .ins-workspace .jx-dialog-title, .admin-shell .jx-dialog-title { font-size:23px;line-height:inherit }
+  .ins-workspace .jx-dialog-close, .admin-shell .jx-dialog-close { width:auto;height:38px;padding:0 14px;border:1px solid var(--border-strong);background:var(--surface);font-weight:600 }
+  .admin-shell .jx-dialog-close { font-size:20px }
   .ins-workspace .jx-dialog-footer, .admin-shell .jx-dialog-footer { position:sticky;bottom:0;background:var(--surface);gap:12px;border-color:var(--shell-border) }
   @media(max-width:600px) { .ins-workspace .jx-dialog-footer { flex-wrap:wrap } }
 `;
@@ -77,7 +81,7 @@ export function Dialog({ open, onOpenChange, trigger, scope, title, description,
               <RadixDialog.Description className="jx-dialog-description">{description}</RadixDialog.Description></div>
             <button type="button" className="jx-dialog-close" aria-label={closeLabel} disabled={processing}
               onClick={() => requestDismiss('close')}>
-              {scope === 'dealer-shell' || scope === 'finance-workspace'
+              {scope === 'dealer-shell'
                 ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
                 : <span aria-hidden="true">×</span>}
             </button>
