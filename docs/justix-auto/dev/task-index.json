@@ -35582,7 +35582,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-929",
         "T-009",
@@ -35606,9 +35606,9 @@
       "scope": "Construct sealed exact trusted artifact/feature/privilege profiles and read-only metadata/legacy readiness checks. Check complete history, private head and declared shared lineage; reject arbitrary newer versions and unsupported custody profiles.",
       "worktree": ".worktrees/T-930",
       "base_sha": "ad7e601555cdfcde03506f93c20132870c44d83a",
-      "agent": "backend_t930",
-      "execution_note": "Independent QA BOUNCE: implicit PUBLIC function defaults, conditional immutable guard bypass, and duplicate/malformed Unicode manifests. Full scoped race/vet passed but five independent failures reproduced. Fix cycle 1 stays within four owned leaves; preserve all 11 original QA artifacts and exact supported-profile boundaries.",
-      "reviewed_sha": "2ca96dfd636fdc349777f72f1a23e5cd9f82bb98"
+      "agent": "qa_t930",
+      "execution_note": "Fix cycle 1 passed developer scoped race/vet and unchanged original independent probes. Assign independent r2 on exact corrected commit; preserve all original BOUNCE artifacts and verify effective default ACLs, unconditional guards, strict manifest identity and session_replication_role privilege denials.",
+      "reviewed_sha": "979972f766503dd31fcd53ca088275ae7679afda"
     },
     {
       "id": "T-931",

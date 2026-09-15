@@ -1011,7 +1011,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
 | [T-929](tasks/T-929.md) | B-01 | Install immutable owner migration history | implementation / 4 | foundation | integrated | T-008, T-024 | `task/T-929-owner-migration-history` | ENV-GIT |
-| [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | bounced | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
+| [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | ready-for-qa | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | todo | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | todo | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
 | [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
