@@ -1,13 +1,13 @@
 # Development state
 
-- Date: 2026-09-15
+- Date: 2026-09-14
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
-- Phase: development active; eight QA-gated foundation tasks integrated; event-store and shared frontend slices next
-- Default branch: `main`; integrated foundation state `5a74db0` pushed to origin
+- Phase: development authorized; dependency lock integrated; Go/frontend foundation execution next
+- Default branch: `main`; initial commit `e93c6d6260f7567da631b8a0217169c215a5b459` pushed to origin
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
-- Git readiness: PASS; own root, clean main and origin synchronization verified.
+- Git readiness: PASS; own root and initial commit verified; `npm run doctor` passes.
   Run `bash tools/check-git.sh` before assigning application tasks.
 - Confirmed: Go microservices, CQRS + Event Sourcing, Gaze reference approach;
   React; one project folder; minified four-app HTML documentation references
@@ -17,13 +17,11 @@
   `f81b62ce346320ec229817dd73cf9ec42032e1d9`; audited 2026-09-14 in
   `../reference/gaze-executor-cc-reference.md`. User reconfirmed microservices.
   Existing seven-owner boundaries and approved reliability decisions remain.
-- Frontend build tool/version: React/TypeScript/Vite/shared npm workspaces approved and locked; workspace config discovery is QA-gated
+- Frontend build tool/version: React/TypeScript/Vite/shared npm workspaces approved; exact supported version lock remains a prerequisite
 - Backend service ownership, contracts and reliability ADRs: see `../architecture.md`;
-  approved on 2026-09-13. Go module/boundaries, seven PostgreSQL owners,
-  restricted RabbitMQ topology, event envelopes, money values and internal
-  caller authentication are integrated. Do not import trading dependencies or
-  Gaze credentials.
-- Package manager: npm 11.19.0 with Node 24.21.0; exact workspace lock included
+  approved on 2026-09-13. Exact version lock is a first gated task; do not import
+  trading dependencies or Gaze credentials
+- Package manager: npm for documentation tooling; lockfile included
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
@@ -36,24 +34,23 @@
 
 ## Laptop preflight observed
 
-Project-local Go `1.27.1` and Node `24.21.0`/npm `11.19.0` are installed under
-the ignored `docs/justix-auto/dev/local/toolchains/` directory. The pinned
-wrapper enforces Go 1.27.1; use `bash tools/go.sh`, not an unqualified Go
-command. Docker daemon `29.0.1` and Compose `v2.40.3-desktop.1` are available.
-Pinned PostgreSQL 18.6 and RabbitMQ 4.3.5 images were verified through
-disposable loopback-only QA containers; no project infrastructure remains
-running after the checks.
+Node `v22.23.0`; npm `10.9.8`; Go `go1.24.2 darwin/arm64`; Docker Compose
+`v2.40.3-desktop.1`; Docker daemon `29.0.1`; Codex CLI `0.154.0`.
+Target-folder default Go resolves to `/usr/local/go/bin/go` 1.22.2; the
+project-local `bash tools/go.sh` chooses installed `/opt/homebrew/bin/go` 1.24.2
+to meet the reference minimum. Use the wrapper, not an unqualified Go command.
+Gaze declares Go `1.23.0`; target compiler/module/container pins need a recorded
+architecture decision. No compiler upgrade, service images or app dependencies
+were installed. Root node dependencies are minification tools only.
 
 ## Commands available now
 
 ```sh
 npm ci --ignore-scripts
-npm run typecheck:config
 npm run mocks:verify
 npm run mocks:test
 npm run mocks:serve
-bash tools/go.sh test -race -mod=readonly ./pkg/... ./tests/...
-bash tools/go.sh vet ./pkg/... ./tests/...
+npm run doctor
 ```
 
 Historical preflight below predates the authorized Git setup on 2026-09-14.
@@ -82,13 +79,9 @@ boundary, not a missing Docker installation.
 
 ## Commands not available yet
 
-No owner service composition roots, shared local Compose runner, migrations,
-CI pipeline, or React application workspaces exist yet. Root React test/build
-commands intentionally fail until child app/package workspaces are added.
-Broad `go test ./...` from the main checkout also discovers ignored Go sources
-inside the local compiler and `node_modules`; use the project-package commands
-above until tooling relocates or isolates those development artifacts. Do not
-describe the repository as a running Go/React application yet.
+No Go test/build/migration targets or React dev/build targets exist. Infrastructure
+Compose and CI pipelines are not implemented. Do not substitute mock tests for
+application tests or describe the repository as a running Go/React app.
 
 ## Next coordinator action
 
@@ -98,17 +91,14 @@ these checkpoints or regenerate the plan. `task-board.md` is the formal plan;
 `task-preview.md` remains historical examples only. Coordinator review and actual
 validation results are in `../state/planning-review.md`.
 
-Next eligible foundation work starts with T-008 owner-installable event/command
-SQL templates, followed by conditional append/replay/outbox/inbox mechanics.
-Independent frontend work may proceed through T-032 schema-validating API client
-and T-033 mock-token extraction. Follow task dependencies and resolve scoped
-choices only before affected tasks. No policy invention. The user explicitly
-authorized Git initialization and push on 2026-09-14 and removed that
-prohibition from AGENTS.md.
+Next: review T-001's exact dependency lock, independently QA its commit, then
+start T-003/T-004 in parallel worktrees. Follow the board's first-wave sequence; resolve scoped choices only before
+their affected tasks. No policy invention. The user explicitly authorized Git
+initialization and push on 2026-09-14 and removed that prohibition from AGENTS.md.
 
 Git readiness blocks application code, NOT documentation architecture/planning.
-Policy decisions block only affected operations. Release approval, PM task
-generation and the initial dependency/foundation gates are complete.
+Policy decisions block only affected operations. Release approval and PM task
+generation are complete; exact dependency pins still precede scaffold work.
 Keep current mocks immutable. Use the approved contract, not raw slice alternatives.
 
 ### Historical Git diagnostic — 2026-09-13
