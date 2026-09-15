@@ -1634,7 +1634,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-035",
         "T-036",
@@ -1674,8 +1674,9 @@
       "coordinator_files": [
         "package-lock.json"
       ],
-      "execution_note": "Fix cycle1 corrects request-intent predicates in Financing, Admin and Realization; independent r2 verifies all three dev/preview guards and Financing visuals. Original BOUNCE preserved; npm lock unchanged.",
-      "agent": "qa_t038_r2"
+      "execution_note": "Independent r2 GREEN at fba510c0c5220207b1f470eb2008132097a27a54; 1015 routing assertions across all three dev/preview guards, 44 visual assertions and three byte-identical Financing projected screenshots. Main offline npm ci354 packages, typecheck, lint,155 unit tests and all3 builds PASS; original BOUNCE evidence preserved. Empty shell only; auth/features remain gated.",
+      "agent": "qa_t038_r2",
+      "integration_sha": "6254555cf10f714329a4fb44b04ba7b618bdf70e"
     },
     {
       "id": "T-039",
