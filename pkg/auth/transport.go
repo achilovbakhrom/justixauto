@@ -69,29 +69,28 @@ func (r *MTLSResolver) Resolve(state *tls.ConnectionState) (Caller, error) {
 		return Caller{}, ErrMissingPeerIdentity
 	}
 
-	matches := make(map[string]boundIdentity)
+	var match boundIdentity
+	matchCount := 0
 	for _, uri := range leaf.URIs {
 		if uri == nil {
 			continue
 		}
 		value := uri.String()
 		if binding, ok := r.bindings[value]; ok {
-			matches[value] = binding
+			match = binding
+			matchCount++
 		}
 	}
-	if len(matches) == 0 {
+	if matchCount == 0 {
 		return Caller{}, ErrUnknownPeerIdentity
 	}
-	if len(matches) != 1 {
+	if matchCount != 1 {
 		return Caller{}, ErrAmbiguousPeerIdentity
 	}
-	for _, match := range matches {
-		if !match.enabled {
-			return Caller{}, ErrDisabledPeerIdentity
-		}
-		return Caller{service: match.service}, nil
+	if !match.enabled {
+		return Caller{}, ErrDisabledPeerIdentity
 	}
-	panic("unreachable")
+	return Caller{service: match.service}, nil
 }
 
 func verifiedLeaf(chains [][]*x509.Certificate, raw []byte) bool {

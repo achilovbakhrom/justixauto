@@ -87,6 +87,7 @@ func TestMTLSResolverRequiresVerifiedKnownEnabledIdentity(t *testing.T) {
 		{"no URI SAN", peerState(t), ErrUnknownPeerIdentity},
 		{"disabled identity", peerState(t, disabledSAN), ErrDisabledPeerIdentity},
 		{"ambiguous identity", peerState(t, retailSAN, commerceSAN), ErrAmbiguousPeerIdentity},
+		{"duplicate identical identity", peerState(t, retailSAN, retailSAN), ErrAmbiguousPeerIdentity},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
