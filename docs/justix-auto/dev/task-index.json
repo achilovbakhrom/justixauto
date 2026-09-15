@@ -2373,10 +2373,10 @@
       ],
       "scope": "Use approved HTTP/domain and cross-owner appendices for only auth. Define required/unknown fields, null/empty, string precision, revisions/status/actions, permission/party scope, secret exclusions, concrete safe event payloads and typed positive/negative fixtures. Coordinator reviews/promotes and approves before this task completes; no full-owner schema rewrite.",
       "worktree": ".worktrees/T-058",
-      "base_sha": "727fea05a6aae88ad352ee05d6a9fa9f1fd63d01",
+      "base_sha": "c135e4e33190ad4e30c4f573f133e25fd5614f21",
       "reviewed_sha": null,
       "agent": "unassigned",
-      "execution_note": "Isolated contract worktree allocated; no proposal/code changes yet. Assign architect when a worker slot is available. T002 profile/recovery proposals remain unapproved and must not be silently frozen."
+      "execution_note": "Untouched allocated branch fast-forwarded to current approved main after clean/zero-task-commit verification. Auth contract remains unassigned pending worker slot; T002 settings/recovery proposal remains unapproved and may not be silently incorporated."
     },
     {
       "id": "T-059",
