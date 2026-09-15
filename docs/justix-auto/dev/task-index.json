@@ -2355,7 +2355,7 @@
       "parent": "B-02",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-001"
       ],
@@ -2375,9 +2375,9 @@
       "scope": "Use approved HTTP/domain and cross-owner appendices for only auth. Define required/unknown fields, null/empty, string precision, revisions/status/actions, permission/party scope, secret exclusions, concrete safe event payloads and typed positive/negative fixtures. Coordinator reviews/promotes and approves before this task completes; no full-owner schema rewrite.",
       "worktree": ".worktrees/T-058",
       "base_sha": "c135e4e33190ad4e30c4f573f133e25fd5614f21",
-      "reviewed_sha": null,
-      "agent": "architect_t058",
-      "execution_note": "Assigned bounded auth request/event/fixture contract from approved HTTP/domain and IAM mechanisms. Preserve symbolic deployment settings and explicit disabled recovery/delivery gates; unaccepted T002 proposal is not approval. No full-owner schema rewrite or application code."
+      "reviewed_sha": "fe3ffbfbe37d05261296a0ef5ba91cbec8edcead",
+      "agent": "qa_t058",
+      "execution_note": "Auth wire/event/fixture proposal complete; independent exact-commit proposal QA assigned. A1-A5 technical refinements require coordinator adoption; T002 settings/recovery and production UI remain unapproved. Separate Identity owner-ledger and event-recipient handoffs are explicit."
     },
     {
       "id": "T-059",
