@@ -467,7 +467,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-003"
       ],
@@ -491,7 +491,7 @@
       "base_sha": "ba6653c80c59658d1be2776bafe20972207ccb47",
       "reviewed_sha": "5a5d13bef2ce220fadb04c6bd8500be9b50764ff",
       "agent": "backend/t007_envelope",
-      "execution_note": "Implementation committed clean at 5a5d13bef2ce220fadb04c6bd8500be9b50764ff. Developer race/full/boundary checks cover immutable typed envelopes, distinct aggregate revision/integration sequence, canonical decimal revision, strict UUID/owner/schema/UTC validation and recursive secret/raw-PII key rejection; exact-SHA QA pending."
+      "execution_note": "Independent QA BOUNCE: DecodeData is not bound to envelope event type/schema and accepts missing required fields; tenant identity events accept null companyId; recursive PII guard misses BirthDate/surname/mobile in nested arrays. Fix cycle 1 assigned. Revision, UUID, owner, immutability, race/vet/boundary checks otherwise passed."
     },
     {
       "id": "T-008",
