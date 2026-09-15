@@ -1,0 +1,98 @@
+{
+  "fixture": "justix-membership-qa-4cfaebe3-249a-4875-9d53-07440f84a6bf",
+  "image": "postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2",
+  "observations": [
+    {
+      "case": "pinned PostgreSQL 18.6",
+      "result": "PASS"
+    },
+    {
+      "case": "empty stream retains catalog without custody",
+      "result": "PASS"
+    },
+    {
+      "case": "same version changed bytes",
+      "result": "REJECTED",
+      "reason": "duplicate key"
+    },
+    {
+      "case": "hash mismatch",
+      "result": "REJECTED",
+      "reason": "check constraint"
+    },
+    {
+      "case": "post-commit transition child rejected",
+      "result": "REJECTED",
+      "reason": "transition already committed"
+    },
+    {
+      "case": "future ordinary intake fails under literal transition guard",
+      "result": "REJECTED",
+      "reason": "transition already committed"
+    },
+    {
+      "case": "failed future intake leaves no custody enrollment",
+      "result": "PASS"
+    },
+    {
+      "case": "omitted stream rolls back successor",
+      "result": "REJECTED",
+      "reason": "missing stream"
+    },
+    {
+      "case": "missing stream preserved prior state",
+      "result": "PASS"
+    },
+    {
+      "case": "competing exact successors",
+      "result": "one commit, one conflict"
+    },
+    {
+      "case": "zero delta version upgrade retains independent receipt",
+      "result": "PASS"
+    },
+    {
+      "case": "historical exact request survives later head",
+      "result": "PASS"
+    },
+    {
+      "case": "changed historical request distinguishes conflict",
+      "result": "PASS"
+    },
+    {
+      "case": "runtime cannot rewrite receipt",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "runtime cannot delete head",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "isolated role cannot read owner evidence",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "separate enrollment provenance permits valid later intake",
+      "result": "PASS"
+    },
+    {
+      "case": "duplicate enrollment cannot duplicate evidence",
+      "result": "REJECTED",
+      "reason": "duplicate key"
+    },
+    {
+      "case": "transition children still immutable after separated provenance",
+      "result": "REJECTED",
+      "reason": "transition already committed"
+    },
+    {
+      "case": "exact owned fixture cleanup",
+      "result": "ID and name absent",
+      "id": "6cc3667b14256a0ac98686835c54f682fbb46b59f36c57e1e615fab31586d12e"
+    }
+  ],
+  "count": 20
+}

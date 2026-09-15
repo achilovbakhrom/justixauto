@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/Users/bakhromachilov/startups/justixauto/.worktrees/membership-version-storage-qa/docs/justix-auto/dev/qa/membership-version-storage/probe.py", line 55, in <module>
+    assert inspect(NAME) is None
+  File "/Users/bakhromachilov/startups/justixauto/.worktrees/membership-version-storage-qa/docs/justix-auto/dev/qa/membership-version-storage/probe.py", line 29, in inspect
+    raise RuntimeError(p.stderr)
+RuntimeError: error: no such object: justix-membership-qa-8b437a56-95b1-44a7-9b38-d333f956e286
+

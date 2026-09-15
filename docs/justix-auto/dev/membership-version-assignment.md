@@ -1,6 +1,6 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: proposal completed; independent QA active; T-920 remains blocked.
+2026-09-15. Status: independent proposal QA BOUNCE; architect fix cycle 1 assigned; T-920 remains blocked.
 Agent: `architect_membership_storage`.
 T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
@@ -51,3 +51,17 @@ Verify four bounded aliases and exact serial/disjoint leaves; T-928 is unchanged
 The architect's reduced SQL and public Go probes are feasibility evidence, not
 full migration, server restart, actual commit-loss or authority verification.
 T-935–T-944 are already allocated to auth; this proposal reserves no task IDs.
+
+## Fix cycle 1
+
+[Independent BOUNCE](qa/membership-version-storage.md) at
+`5996c77e3df371a3992154b639ce9ba91ffc3e75` reproduced a lifecycle conflict:
+the proposed same-transaction transition guard rejects future ordinary intake
+that links a new enrollment to an already committed selection. Separate frozen
+transition/stream/consumer children from append-only dispatch evidence. Specify
+the enrollment's same-transaction provenance, exact complete link/job set,
+current or prospective selection binding, historical redelivery and the precise
+SQL versus adapter missing-link enforcement boundary. Preserve old migrations
+and ordinary future intake; no new policy or source ownership is authorized.
+Architect revises only the original draft/result leaves, preserves original
+evidence, and supplies concrete reduced regressions before independent r2 QA.

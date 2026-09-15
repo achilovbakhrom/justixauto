@@ -1,0 +1,75 @@
+{
+  "reviewed_sha": "5996c77e3df371a3992154b639ce9ba91ffc3e75",
+  "base": "d59faa8dc5b26e13e19c47686dd47744b6d73a11",
+  "changed": [
+    "docs/justix-auto/dev/results/membership-version-storage.md",
+    "docs/justix-auto/state/drafts/architect/membership-version-storage.md"
+  ],
+  "document_hashes": {
+    "docs/justix-auto/dev/results/membership-version-storage.md": "9e8b6baa4a8632406856fe47e30cb3edb1eafc485e13eec15bfe3611c994043b",
+    "docs/justix-auto/state/drafts/architect/membership-version-storage.md": "74ec431e86b33346c82f28c8181fd671720f7456ba675b87ea8a6a4475de68ce"
+  },
+  "graphs": [
+    {
+      "sha": "5996c77e3df371a3992154b639ce9ba91ffc3e75",
+      "existing_tasks": 934,
+      "prospective_nodes": 938,
+      "new_aliases": 4,
+      "new_leaves": 8,
+      "new_explicit_downstream_edges": 6,
+      "acyclic": true,
+      "T591_and_all_owner_roots_cover_all_aliases": true
+    },
+    {
+      "sha": "6b3685bebefb556eab2a30afb26cbae909752d97",
+      "existing_tasks": 944,
+      "prospective_nodes": 948,
+      "new_aliases": 4,
+      "new_leaves": 8,
+      "new_explicit_downstream_edges": 6,
+      "acyclic": true,
+      "T591_and_all_owner_roots_cover_all_aliases": true
+    }
+  ],
+  "embedded_artifacts": [
+    {
+      "name": "Temporary Go probe",
+      "sha256": "653b8bb6c7063fc2c67018518da22096ec121c380120c13c3d2a89bc18a36535",
+      "recoverable_hash_match": true,
+      "execution_not_inferred": true
+    },
+    {
+      "name": "Final Python SQL/fixture probe",
+      "sha256": "199cd4661aa6e6ba2148c5dbe58adaeecb7788bb82b6036343c534eec15eec3c",
+      "recoverable_hash_match": true,
+      "execution_not_inferred": true
+    },
+    {
+      "name": "Attempt1 log",
+      "sha256": "4c954eb5d1497e83744fa00d14017ba03e0791eb3f10f50f76a424f0be5605d8",
+      "recoverable_hash_match": true,
+      "execution_not_inferred": true
+    },
+    {
+      "name": "Attempt2 log",
+      "sha256": "534130dc57f22d58b9c5f1de7205969c2cfb74473ae79b8d2fd472512dea735c",
+      "recoverable_hash_match": true,
+      "execution_not_inferred": true
+    },
+    {
+      "name": "Final log",
+      "sha256": "189151301a2a544881fb48f10a45f6a830e84ba443a7c8889af8a6a2177f1c1b",
+      "recoverable_hash_match": true,
+      "execution_not_inferred": true
+    }
+  ],
+  "immutable_base_files": {
+    "pkg/eventstore/migrations/000002_messaging_delivery.up.sql": "1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2",
+    "pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql": "c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec",
+    "pkg/eventstore/migrations/000004_projection_checkpoint.up.sql": "41536429fb95d4b60a11866843a2ccbd6a4cf723cd919884933b6bc1d8202c4c",
+    "pkg/eventstore/migrations/000005_quarantine_evidence.up.sql": "1c1e7d17efa8ff84f2469d6d55b3b6c810143e5260aabf5f82d748797f2296a3",
+    "pkg/eventstore/receiver_fence.go": "7dab3bc96affa43bf050cfcc2c7f7c80178025b990a7f5497cdb726049b0cb52",
+    "pkg/projection/checkpoint.go": "0659b9a79a1c4b161279d7be9421b1f8280acf9e8cbef077ca5d4484edd95c66",
+    "pkg/projection/sequence.go": "cd027ba7b0306ab84ba06e8caa4708a8c99b425023c8f7d52fc1b05f02a1d6b6"
+  }
+}

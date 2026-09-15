@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/justix-auto/dev/membership-version-assignment.md",
+    "snapshot": "docs/justix-auto/dev/membership-version-assignment.md.gz",
+    "bytes": 3333,
+    "sha256": "ef8fd7936bb58a8738823af09f435b3d94ff162fd35000d7785230c5c7ba5b7b"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 12695,
+    "sha256": "aac6bc2eac8bf4d90b58d1551a311298ad3397418aa83cfb298fe99fa38785cd"
+  }
+]
