@@ -1,0 +1,610 @@
+[
+  {
+    "kind": "reference",
+    "scope": "dealer-shell",
+    "url": "http://127.0.0.1:4194/",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "modal-title",
+        "text": "Новый оптовый заказ",
+        "width": 418,
+        "height": 24,
+        "fontSize": "18px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "24px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "modal-close",
+        "text": "",
+        "width": 36,
+        "height": 36,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "1px 6px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Партнёр-покупатель *",
+        "width": 518,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Автомобили из общего остатка *",
+        "width": 518,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "wholesale-choice",
+        "text": "BYD Song Plus DM-iLC0CE4DC9R1299024 · Склад Сергели",
+        "width": 518,
+        "height": 70,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "1px solid rgb(217, 222, 231)",
+        "padding": "12px",
+        "borderRadius": "8px"
+      }
+    ]
+  },
+  {
+    "kind": "react",
+    "scope": "dealer-shell",
+    "url": "http://127.0.0.1:4195/docs/justix-auto/dev/qa/T-034/developer-fixture.html?scope=dealer-shell",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "jx-dialog-title",
+        "text": "Проверка общей формы",
+        "width": 470,
+        "height": 24,
+        "fontSize": "18px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "24px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-dialog-close",
+        "text": "",
+        "width": 36,
+        "height": 36,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "1px 6px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Название",
+        "width": 518,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "class": "",
+        "text": "",
+        "width": 518,
+        "height": 40.296875,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(217, 222, 231)",
+        "padding": "9px 11px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-button",
+        "text": "Отмена",
+        "width": 83.9453125,
+        "height": 38,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      }
+    ]
+  },
+  {
+    "kind": "reference",
+    "scope": "finance-workspace",
+    "url": "http://127.0.0.1:4194/finance/",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "modal-title",
+        "text": "Создать программу",
+        "width": 470,
+        "height": 24,
+        "fontSize": "22px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "24px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "modal-close",
+        "text": "×",
+        "width": 36,
+        "height": 36,
+        "fontSize": "24px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "34.8px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "1px 6px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Название программы *",
+        "width": 251,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "class": "",
+        "text": "",
+        "width": 251,
+        "height": 40.296875,
+        "fontSize": "14px",
+        "color": "rgb(0, 0, 0)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(217, 222, 231)",
+        "padding": "9px 11px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Первоначальный взнос от, % *",
+        "width": 251,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      }
+    ]
+  },
+  {
+    "kind": "react",
+    "scope": "finance-workspace",
+    "url": "http://127.0.0.1:4195/docs/justix-auto/dev/qa/T-034/developer-fixture.html?scope=finance-workspace",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "jx-dialog-title",
+        "text": "Проверка общей формы",
+        "width": 470,
+        "height": 24,
+        "fontSize": "18px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "24px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-dialog-close",
+        "text": "",
+        "width": 36,
+        "height": 36,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "1px 6px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Название",
+        "width": 518,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "class": "",
+        "text": "",
+        "width": 518,
+        "height": 40.296875,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(217, 222, 231)",
+        "padding": "9px 11px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-button",
+        "text": "Отмена",
+        "width": 83.9453125,
+        "height": 38,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      }
+    ]
+  },
+  {
+    "kind": "reference",
+    "scope": "ins-workspace",
+    "url": "http://127.0.0.1:4194/insurance/",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "",
+        "text": "Запросить сведения",
+        "width": 232.1953125,
+        "height": 33.34375,
+        "fontSize": "23px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "33.35px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "btn btn-secondary",
+        "text": "×",
+        "width": 39.0625,
+        "height": 38,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Какие сведения нужны *",
+        "width": 538,
+        "height": 131.484375,
+        "fontSize": "14px",
+        "color": "rgb(82, 96, 120)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(82, 96, 120)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "TEXTAREA",
+        "class": "",
+        "text": "",
+        "width": 538,
+        "height": 103.1875,
+        "fontSize": "14px",
+        "color": "rgb(24, 35, 51)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(203, 213, 225)",
+        "padding": "10px 12px",
+        "borderRadius": "7px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "btn btn-secondary",
+        "text": "Отмена",
+        "width": 83.9453125,
+        "height": 38,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      }
+    ]
+  },
+  {
+    "kind": "react",
+    "scope": "ins-workspace",
+    "url": "http://127.0.0.1:4195/docs/justix-auto/dev/qa/T-034/developer-fixture.html?scope=ins-workspace",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "jx-dialog-title",
+        "text": "Проверка общей формы",
+        "width": 490,
+        "height": 27,
+        "fontSize": "23px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "normal",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-dialog-close",
+        "text": "×",
+        "width": 36,
+        "height": 36,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "1px 6px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Название",
+        "width": 538,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "class": "",
+        "text": "",
+        "width": 538,
+        "height": 40.296875,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(217, 222, 231)",
+        "padding": "9px 11px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-button",
+        "text": "Отмена",
+        "width": 83.9453125,
+        "height": 38,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      }
+    ]
+  },
+  {
+    "kind": "reference",
+    "scope": "admin-shell",
+    "url": "http://127.0.0.1:4194/admin/",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "",
+        "text": "Добавить компанию",
+        "width": 231,
+        "height": 33.34375,
+        "fontSize": "23px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "33.35px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "btn btn-secondary admin-dialog-close",
+        "text": "×",
+        "width": 42.59375,
+        "height": 38,
+        "fontSize": "20px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "29px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Название в приложении *",
+        "width": 502,
+        "height": 72.59375,
+        "fontSize": "14px",
+        "color": "rgb(82, 96, 120)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(82, 96, 120)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "class": "",
+        "text": "",
+        "width": 502,
+        "height": 44.296875,
+        "fontSize": "14px",
+        "color": "rgb(24, 35, 51)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(203, 213, 225)",
+        "padding": "11px 12px",
+        "borderRadius": "7px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Юридическое название *",
+        "width": 502,
+        "height": 72.59375,
+        "fontSize": "14px",
+        "color": "rgb(82, 96, 120)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(82, 96, 120)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      }
+    ]
+  },
+  {
+    "kind": "react",
+    "scope": "admin-shell",
+    "url": "http://127.0.0.1:4195/docs/justix-auto/dev/qa/T-034/developer-fixture.html?scope=admin-shell",
+    "viewport": {
+      "width": 600,
+      "height": 1000
+    },
+    "elements": [
+      {
+        "tag": "H2",
+        "class": "jx-dialog-title",
+        "text": "Проверка общей формы",
+        "width": 454,
+        "height": 27,
+        "fontSize": "23px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "normal",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-dialog-close",
+        "text": "×",
+        "width": 36,
+        "height": 36,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "0px none rgb(24, 33, 47)",
+        "padding": "1px 6px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "LABEL",
+        "class": "",
+        "text": "Название",
+        "width": 502,
+        "height": 17.3984375,
+        "fontSize": "12px",
+        "color": "rgb(94, 106, 125)",
+        "lineHeight": "17.4px",
+        "border": "0px none rgb(94, 106, 125)",
+        "padding": "0px",
+        "borderRadius": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "class": "",
+        "text": "",
+        "width": 502,
+        "height": 40.296875,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(217, 222, 231)",
+        "padding": "9px 11px",
+        "borderRadius": "6px"
+      },
+      {
+        "tag": "BUTTON",
+        "class": "jx-button",
+        "text": "Отмена",
+        "width": 83.9453125,
+        "height": 38,
+        "fontSize": "14px",
+        "color": "rgb(24, 33, 47)",
+        "lineHeight": "20.3px",
+        "border": "1px solid rgb(185, 193, 206)",
+        "padding": "0px 14px",
+        "borderRadius": "6px"
+      }
+    ]
+  }
+]

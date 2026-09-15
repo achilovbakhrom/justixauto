@@ -1385,7 +1385,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-033"
       ],
@@ -1415,12 +1415,12 @@
       "scope": "Radix focus trap/restore, inside click does not dismiss, dirty/processing Escape behavior; test keyboard/validation and cancel-before-write only. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-034",
       "base_sha": "e6ae00f2c1dcc5c43a1a44fb6c88da30406f8406",
-      "reviewed_sha": null,
+      "reviewed_sha": "fb744c830fa2228c16d41ef695d953299d140045",
       "coordinator_files": [
         "package-lock.json"
       ],
-      "agent": "frontend/t034_dialog",
-      "execution_note": "Developer commit c7d2d6e complete; coordinator updated main/base and approved dependency lock to fb744c830fa2228c16d41ef695d953299d140045. Independent browser/code QA active."
+      "agent": "frontend/t034_fix1",
+      "execution_note": "Independent QA passed106unit/97browser interaction checks but found scoped title/close/field visual mismatches. Bounded fixcycle1 assigned; exact measurements and screenshots preserved."
     },
     {
       "id": "T-035",
