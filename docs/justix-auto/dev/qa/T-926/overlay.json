@@ -1,0 +1,5 @@
+{
+  "Replace": {
+    "/Users/bakhromachilov/startups/justixauto/.worktrees/T-926/pkg/eventstore/qa_t926_test.go": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-926/docs/justix-auto/dev/qa/T-926/independent_test.go"
+  }
+}

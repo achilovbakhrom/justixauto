@@ -1,0 +1,18 @@
+=== RUN   TestQA926Adversarial
+    qa_t926_test.go:17: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t925-evidence-1955546402
+    qa_t926_test.go:17: PostgreSQL 180006; 000002 SHA-256 1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2; 000003 SHA-256 c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec
+=== RUN   TestQA926Adversarial/extra_reachable_and_default_privilege_rejection_remains_atomic
+=== RUN   TestQA926Adversarial/all_admission_identity_evidence_exact_and_retained_generation_whitespace
+=== RUN   TestQA926Adversarial/checkpoint_bigint_overflow_and_nonfinite_evidence_rollback_inbox
+=== RUN   TestQA926Adversarial/cross_bootstrap_gaps_and_duplicate_requests_preserve_evidence
+=== RUN   TestQA926Adversarial/savepoint_rollback_invalidates_capability_and_releases_locks
+=== RUN   TestQA926Adversarial/readonly_transactions_preserve_write_prohibition_and_foreign_owner_coverage_stays_closed
+--- PASS: TestQA926Adversarial (14.05s)
+    --- PASS: TestQA926Adversarial/extra_reachable_and_default_privilege_rejection_remains_atomic (7.26s)
+    --- PASS: TestQA926Adversarial/all_admission_identity_evidence_exact_and_retained_generation_whitespace (1.79s)
+    --- PASS: TestQA926Adversarial/checkpoint_bigint_overflow_and_nonfinite_evidence_rollback_inbox (1.01s)
+    --- PASS: TestQA926Adversarial/cross_bootstrap_gaps_and_duplicate_requests_preserve_evidence (1.30s)
+    --- PASS: TestQA926Adversarial/savepoint_rollback_invalidates_capability_and_releases_locks (0.59s)
+    --- PASS: TestQA926Adversarial/readonly_transactions_preserve_write_prohibition_and_foreign_owner_coverage_stays_closed (0.58s)
+PASS
+ok  	justixauto/pkg/eventstore	15.908s

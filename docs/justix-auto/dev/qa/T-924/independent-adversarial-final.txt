@@ -1,0 +1,17 @@
+=== RUN   TestT924IndependentBrokerAdversarial
+    qa_t924_independent_test.go:22: owned fixture: justixauto-t924-83ff56767625
+=== RUN   TestT924IndependentBrokerAdversarial/repeated_empty_import_denies_every_role_and_odd_key
+=== RUN   TestT924IndependentBrokerAdversarial/resource_names_and_quarantine_absolute_endings
+=== RUN   TestT924IndependentBrokerAdversarial/runtime_management_and_foreign_vhost_cannot_widen_grants
+=== RUN   TestT924IndependentBrokerAdversarial/connection_loss_requeues_original_bytes_and_duplicate_publication_stays_visible
+=== RUN   TestT924IndependentBrokerAdversarial/broker_restart_retains_backlog_and_final_restrictive_bootstrap
+    qa_t924_independent_test.go:124: restart unavailable
+--- FAIL: TestT924IndependentBrokerAdversarial (69.16s)
+    --- PASS: TestT924IndependentBrokerAdversarial/repeated_empty_import_denies_every_role_and_odd_key (1.83s)
+    --- PASS: TestT924IndependentBrokerAdversarial/resource_names_and_quarantine_absolute_endings (0.14s)
+    --- PASS: TestT924IndependentBrokerAdversarial/runtime_management_and_foreign_vhost_cannot_widen_grants (0.03s)
+    --- PASS: TestT924IndependentBrokerAdversarial/connection_loss_requeues_original_bytes_and_duplicate_publication_stays_visible (0.04s)
+    --- FAIL: TestT924IndependentBrokerAdversarial/broker_restart_retains_backlog_and_final_restrictive_bootstrap (61.74s)
+FAIL
+FAIL	justixauto/tests/integration	69.869s
+FAIL

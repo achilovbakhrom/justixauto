@@ -1,0 +1,15 @@
+bindings UNCHANGED
+exchanges UNCHANGED
+global_parameters UNCHANGED
+parameters UNCHANGED
+policies UNCHANGED
+product_name UNCHANGED
+product_version UNCHANGED
+queues UNCHANGED
+rabbit_version UNCHANGED
+rabbitmq_version UNCHANGED
+vhosts UNCHANGED
+infra/local/rabbitmq/definitions.json a660ed941969f6fa067dd6804f5f285fe1ae297d5e7c2e26dd12b88af9c3c865 EXACT COMMIT
+infra/local/rabbitmq/route-contracts.json a10fe6fbf655a953f6b586f52721bc44f822fdb7912eb2df81628020bdd705b0 EXACT COMMIT
+tests/integration/broker_topology_test.go 5296de11a7fdc6b776e19a8333e4d0c0942e3d9df9618c38105f84095263d1c0 EXACT COMMIT
+PASS: exact reviewed commit and all retained topology fields

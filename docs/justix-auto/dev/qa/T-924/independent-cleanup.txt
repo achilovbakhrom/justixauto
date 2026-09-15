@@ -1,0 +1,7 @@
+container justixauto-t924-af5e4a0c42b9 REMOVED
+container justixauto-t924-5406273d8335 REMOVED
+container justixauto-t924-83ff56767625 REMOVED
+container justixauto-t924-1d162336e005 REMOVED
+volume 687b4f46893a9a4aea5345ab2225a5753b7db1cb4ab2c89ea0c2a53907070fac REMOVED
+volume 8687263aecdd395c5438cf5a3381e73d59ac0ff3dabe24fcc4f0e146f2c0aa85 REMOVED
+No remaining T-924 fixture containers; no global volume cleanup claimed or performed.
