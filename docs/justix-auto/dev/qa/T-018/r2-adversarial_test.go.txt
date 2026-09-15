@@ -1,0 +1,53 @@
+package commands
+
+import (
+ "context"
+ "database/sql"
+ "errors"
+ "strings"
+ "testing"
+ "time"
+
+ "github.com/jackc/pgx/v5/pgconn"
+ "gorm.io/gorm"
+ "justixauto/pkg/eventstore"
+)
+
+// Inject a real PostgreSQL undefined-function error precisely in the live-fence
+// query, after successful row loading. No source or shared fixture is changed.
+type qaR2QueryPool struct{ *sql.DB }
+func (p qaR2QueryPool) BeginTx(ctx context.Context, o *sql.TxOptions) (gorm.ConnPool,error) {
+ tx,err:=p.DB.BeginTx(ctx,o);if err!=nil{return nil,err};return &qaR2QueryTx{tx},nil
+}
+type qaR2QueryTx struct{ *sql.Tx }
+func (tx qaR2QueryTx) QueryContext(ctx context.Context,q string,args ...any)(*sql.Rows,error){
+ if strings.Contains(q,"COALESCE(lease_owner="){return tx.Tx.QueryContext(ctx,"SELECT justixauto_qa_absent_function()")}
+ return tx.Tx.QueryContext(ctx,q,args...)
+}
+
+func TestQAOperationsR2(t *testing.T){
+ db:=fixtureDB(t);ctx:=context.Background()
+ t.Run("both release paths and both stale APIs after unknown successful commit",func(t *testing.T){
+  for _,releaseRetry:=range []bool{false,true}{
+   p:=processPolicy(t);processCreate(t,db,p);var c OperationClaim[outcome,processError]
+   if err:=processRun(db,p).Run(ctx,func(u processPorts)error{var err error;c,_,err=u.operations.Claim(ctx,time.Minute,noProcessAlert);return err});err!=nil{t.Fatal(err)}
+   sqlDB,_:=db.DB();fault:=db.Session(&gorm.Session{NewDB:true});fault.Statement=&gorm.Statement{DB:fault,ConnPool:faultPool{DB:sqlDB,committed:true}}
+   err:=processRun(fault,p).Run(ctx,func(u processPorts)error{if releaseRetry{return u.operations.Retry(ctx,c,1,noProcessAlert)};return u.operations.WithClaim(ctx,c,func(context.Context,Operation[outcome,processError])error{return nil})})
+   if !errors.Is(err,eventstore.ErrCommitOutcomeUnknown){t.Fatal(err)}
+   for _,staleRetry:=range []bool{false,true}{
+    err=processRun(db,p).Run(ctx,func(u processPorts)error{if staleRetry{return u.operations.Retry(ctx,c,1,noProcessAlert)};return u.operations.WithClaim(ctx,c,func(context.Context,Operation[outcome,processError])error{t.Error("stale callback executed");return nil})})
+    if !errors.Is(err,ErrLeaseLost){t.Fatalf("releaseRetry=%v staleRetry=%v err=%v",releaseRetry,staleRetry,err)}
+   }
+  }
+ })
+ t.Run("real database error in fence query preserved for both APIs",func(t *testing.T){
+  p:=processPolicy(t);processCreate(t,db,p);var c OperationClaim[outcome,processError]
+  if err:=processRun(db,p).Run(ctx,func(u processPorts)error{var err error;c,_,err=u.operations.Claim(ctx,time.Minute,noProcessAlert);return err});err!=nil{t.Fatal(err)}
+  sqlDB,_:=db.DB();fault:=db.Session(&gorm.Session{NewDB:true});fault.Statement=&gorm.Statement{DB:fault,ConnPool:qaR2QueryPool{sqlDB}}
+  for _,retry:=range []bool{false,true}{
+   err:=processRun(fault,p).Run(ctx,func(u processPorts)error{if retry{return u.operations.Retry(ctx,c,1,noProcessAlert)};return u.operations.WithClaim(ctx,c,func(context.Context,Operation[outcome,processError])error{t.Error("work after database error");return nil})})
+   var pg *pgconn.PgError
+   if !errors.As(err,&pg)||pg.Code!="42883"||errors.Is(err,ErrLeaseLost){t.Fatalf("storage failure misclassified: %T %v",err,err)}
+  }
+ })
+}
