@@ -1,0 +1,14 @@
+=== RUN   TestQA927FixtureLostStartReply
+    qa_t927_fixture_failure_test.go:40: child result: exit status 1
+        === RUN   TestQA927FixtureLostStartReply
+            qa_t927_fixture_failure_test.go:19: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-99365273
+            qa_t927_fixture_failure_test.go:19: start fixture: exit status 42 4f8aa829bf4ed6698ad0f8cbbd78272d1e915333bf27618c423ac18acd57b0e8
+                QA synthetic successful-start reply lost
+        --- FAIL: TestQA927FixtureLostStartReply (0.77s)
+        FAIL
+    qa_t927_fixture_failure_test.go:48: BOUNCE: fixture child returned after failed start but left its container allocated: 4f8aa829bf4ed6698ad0f8cbbd78272d1e915333bf27618c423ac18acd57b0e8 /justixauto-t927-dc8f78aa-71eb-43b2-91f7-41edebbb8b44 true [] {"/var/lib/postgresql":"rw"}
+    qa_t927_fixture_failure_test.go:36: QA parent removed and verified absent: 4f8aa829bf4ed6698ad0f8cbbd78272d1e915333bf27618c423ac18acd57b0e8 justixauto-t927-dc8f78aa-71eb-43b2-91f7-41edebbb8b44
+--- FAIL: TestQA927FixtureLostStartReply (1.06s)
+FAIL
+FAIL	justixauto/pkg/eventstore	2.080s
+FAIL

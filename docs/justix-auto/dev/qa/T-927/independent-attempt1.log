@@ -1,0 +1,87 @@
+=== RUN   TestQA927Adversarial
+    qa_t927_independent_test.go:28: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1463740414
+    qa_t927_independent_test.go:29: QA fixture identity: 97ca787f008cabc16977a3c2a1ab612bcf156351326392de3b6d78d5b10eb851 docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2 [] {"/var/lib/postgresql":"rw"}
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-actor
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-authority
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-scope
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-purpose
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-no-correction
+    qa_t927_independent_test.go:40: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_consumer
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/foreign_receipt_consumer
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/receipt_event_differs
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/released_direct
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  new row for relation "quarantine_actions" violates check constraint "quarantine_actions_check11"
+        DETAIL:  Failing row contains (94059ff4-c269-4f6a-8559-3f3ac07ec541, a9284e88-934d-4f00-b35c-f28e8abb4a33, 988f2df3-05ae-44e2-8376-ac8de8062bbf, 8c826482-0439-42df-9a21-cd943de36b99, redrive-result, 1, synthetic-actor, synthetic-authority, synthetic-scope, synthetic-purpose, synthetic-no-correction, direct-handler, qa-consumer, synthetic-canonical-manifest, \x937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f9865..., null, null, null, null, null, released, 2026-09-15 16:52:12.461396+00).
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_accepted_event
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  new row for relation "quarantine_actions" violates check constraint "quarantine_actions_check2"
+        DETAIL:  Failing row contains (2d97de58-1eba-4763-817c-56c0c66bfad5, a9284e88-934d-4f00-b35c-f28e8abb4a33, 92049923-1d20-40d5-a5ac-e0f4bdbe405f, 8c826482-0439-42df-9a21-cd943de36b99, redrive-result, 1, synthetic-actor, synthetic-authority, synthetic-scope, synthetic-purpose, synthetic-no-correction, direct-handler, qa-consumer, synthetic-canonical-manifest, \x937a22712ea5c20073d2c8a226f1f4a9c2c30aba40a497f2412a34426f9865..., null, \x0f30c92dcb3988d09d4069590043e1c5b8b869d645939496b2367815b11cb1..., inbox, qa-consumer, ad0c7459-7ac6-45a7-bddf-28591eff63e5, accepted, 2026-09-15 16:52:12.614061+00).
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_hash
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== RUN   TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_kind
+    qa_t927_independent_test.go:49: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+=== NAME  TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content
+    qa_t927_independent_test.go:51: rejection retained chain: ERROR:  duplicate key value violates unique constraint "quarantine_actions_pkey"
+        DETAIL:  Key (action_id)=(2d97de58-1eba-4763-817c-56c0c66bfad5) already exists.
+=== RUN   TestQA927Adversarial/custody_receipt_cannot_substitute_another_job_or_early_inbox
+    qa_t927_independent_test.go:67: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+    qa_t927_independent_test.go:68: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+    qa_t927_independent_test.go:69: rejection retained chain: ERROR:  missing matching authoritative redrive receipt
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 38 at RAISE
+    qa_t927_independent_test.go:70: rejection retained chain: ERROR:  redrive result requires exact prior request context
+        CONTEXT:  PL/pgSQL function eventstore.quarantine_action_guard() line 14 at RAISE
+=== RUN   TestQA927Adversarial/action_commit_lost_reply_exact_receipt_and_rollback
+    qa_t927_independent_test.go:88: rejection retained chain: ERROR:  duplicate key value violates unique constraint "quarantine_actions_pkey"
+        DETAIL:  Key (action_id)=(e4c67e77-6a65-4fc4-8af3-32c001fc2f2b) already exists.
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/MAINTAIN
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/database_CREATE
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/column_grant_option
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/default_EXECUTE
+=== RUN   TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/trigger_definer
+=== NAME  TestQA927Adversarial
+    qa_t927_independent_test.go:27: QA fixture verified absent: justixauto-t927-97e4d05a-8f79-4ada-91bd-ffc652c416d6
+--- PASS: TestQA927Adversarial (20.30s)
+    --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content (3.96s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-actor (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-authority (0.18s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-scope (0.16s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-purpose (0.18s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/synthetic-no-correction (0.17s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_consumer (0.16s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/foreign_receipt_consumer (0.15s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/receipt_event_differs (0.17s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/released_direct (0.19s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_accepted_event (0.15s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_hash (0.16s)
+        --- PASS: TestQA927Adversarial/nullable_shapes_exact_request_context_and_immutable_content/null_receipt_kind (0.18s)
+    --- PASS: TestQA927Adversarial/custody_receipt_cannot_substitute_another_job_or_early_inbox (2.10s)
+    --- PASS: TestQA927Adversarial/action_commit_lost_reply_exact_receipt_and_rollback (1.50s)
+    --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes (11.41s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/MAINTAIN (2.02s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/database_CREATE (1.89s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/column_grant_option (1.90s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/default_EXECUTE (1.87s)
+        --- PASS: TestQA927Adversarial/late_installation_rollback_and_independent_escalation_probes/trigger_definer (1.86s)
+PASS
+ok  	justixauto/pkg/eventstore	22.080s
