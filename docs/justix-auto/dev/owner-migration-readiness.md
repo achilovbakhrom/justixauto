@@ -63,3 +63,26 @@ approve an explicit bounded current-grant/supersession refinement and file
 ownership. Do not discard prior markers, union permissions, or broaden this
 candidate's API silently. This affects only those profiles, not independent
 owner history, disjoint feature schemas or other ready tasks.
+
+## Effective default ACLs and baseline manifests — 2026-09-15
+
+T-930 independent QA demonstrated that an absent function `pg_default_acl` row
+can mean PostgreSQL's built-in PUBLIC EXECUTE default, not denied access. Its
+fix cycle evaluates built-in/global/schema defaults; new T-928 storage aligns
+with the approved default-privilege audit. Explicit owner function/type default
+denials are installation prerequisites. Existing original SQL and init templates
+do not establish those defaults. Read-only compatibility checks must reject an
+unsafe installation and must never alter its ACLs automatically.
+
+Before concrete T-932/T-933 bundle installation is advertised, assign and review
+the exact outer prerequisite provisioning and verify it under the actual owner
+roles. Synthetic fixtures may set these defaults explicitly and must label that
+setup. Preserve old SQL hashes; no silent revision of installed artifacts.
+
+T-930 also verifies every private SQL artifact's adjacent manifest, including
+version 1 and already installed lower versions. Concrete baseline companion
+manifests have not yet been assigned or supplied. Before a real owner bundle is
+registered, the coordinator must assign their exact leaves and trusted profile
+assembly, with independently checked SQL/manifest byte hashes. Driver/runner
+tests may use explicit synthetic manifests; that does not prove real bundle
+readiness or grant authority to expand those tasks' source ownership.

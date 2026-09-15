@@ -1,6 +1,6 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: architecture assigned; T-920 blocked on this handoff.
+2026-09-15. Status: proposal completed; independent QA active; T-920 remains blocked.
 Agent: `architect_membership_storage`.
 T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
@@ -37,3 +37,17 @@ Propose explicit forward migration ownership/marker and downstream compatibility
 checks; never rewrite previous SQL or overload an arbitrary reference field.
 Use only unique owned pinned disposable fixtures with failure-safe cleanup if
 needed. Independent exact-proposal QA and canonical promotion precede code.
+
+## Independent proposal review
+
+Exact proposal commit: `5996c77e3df371a3992154b639ce9ba91ffc3e75`.
+Detached review checkout: `.worktrees/membership-version-storage-qa`.
+Agent: `qa_membership_storage`. Own only new
+`dev/qa/membership-version-storage.md` and its evidence directory.
+Review complete owner catalog versus stream selection, empty-stream/zero-delta
+receipts, historical reconciliation after a later head, finite complete universe,
+concurrency/fences, immutable child evidence and ordinary future enrollment.
+Verify four bounded aliases and exact serial/disjoint leaves; T-928 is unchanged.
+The architect's reduced SQL and public Go probes are feasibility evidence, not
+full migration, server restart, actual commit-loss or authority verification.
+T-935–T-944 are already allocated to auth; this proposal reserves no task IDs.

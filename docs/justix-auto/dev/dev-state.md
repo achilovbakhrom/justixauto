@@ -30,7 +30,7 @@
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 in-progress (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-930 bounced (`.worktrees/T-930`, `task/T-930-owner-persistence-profile`).
 - Integrated tasks: 40/944; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
-- Additional architecture: [durable membership version storage](membership-version-assignment.md) assigned after T-920's empty-stream/version evidence blocker; no new migration or task dependency approved yet.
+- Additional architecture: [durable membership version storage](membership-version-assignment.md) proposal completed and under independent exact-commit QA after T-920's empty-stream/version evidence blocker; no new migration or task dependency approved yet.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 944 (916 reviewed baseline + twenty-eight bounded messaging/storage/owner-migration/auth additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item

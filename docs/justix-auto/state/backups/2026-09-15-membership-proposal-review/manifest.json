@@ -1,0 +1,32 @@
+[
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 12567,
+    "sha256": "a08cbbd0cae4997fcf03f7b4e32b9ae6b9d65fe6f6e727961bb1d52aba059525"
+  },
+  {
+    "path": "docs/justix-auto/dev/membership-version-assignment.md",
+    "snapshot": "docs/justix-auto/dev/membership-version-assignment.md.gz",
+    "bytes": 2481,
+    "sha256": "880b915dc541284681eb8c91a3f1a30d8ccfa82c49f9b5ee971687dc7535410e"
+  },
+  {
+    "path": "docs/justix-auto/dev/owner-migration-readiness.md",
+    "snapshot": "docs/justix-auto/dev/owner-migration-readiness.md.gz",
+    "bytes": 3958,
+    "sha256": "ef7bfee3216b60874be17840861beeed955fa3389cef014cff4e03be162c417c"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-932.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-932.md.gz",
+    "bytes": 3520,
+    "sha256": "2480b5df83e711fd4e672f2ac79d49756e6f14d3f33b8295f1de589fb9004a01"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-933.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-933.md.gz",
+    "bytes": 3502,
+    "sha256": "419b4ba509086991fcb7e8e05049cb3d9b27c6aa112e2a829eb02e7d7df3f15d"
+  }
+]
