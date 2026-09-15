@@ -61,14 +61,14 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
 | [T-001](tasks/T-001.md) | B-01 | Approve exact supported dependency and container pins | contract / 4 | decisions | integrated | — | `task/T-001-version-lock` | dependencies only |
-| [T-002](tasks/T-002.md) | B-02 | Confirm session and recovery security release settings | policy-decision / 4 | decisions | ready-for-qa | — | `task/T-002-security-release` | SECURITY-ACCEPTANCE, OD-12 |
+| [T-002](tasks/T-002.md) | B-02 | Confirm session and recovery security release settings | policy-decision / 4 | decisions | blocked | — | `task/T-002-security-release` | SECURITY-ACCEPTANCE, OD-12 |
 | [T-003](tasks/T-003.md) | B-01 | Create the single Go module and architecture boundary harness | implementation / 3 | foundation | integrated | T-001 | `task/T-003-go-scaffold` | ENV-GIT |
 | [T-004](tasks/T-004.md) | B-01 | Create shared npm workspace and verification script contract | implementation / 3 | foundation | integrated | T-001 | `task/T-004-web-workspace` | ENV-GIT |
 | [T-005](tasks/T-005.md) | B-01 | Provision seven isolated local PostgreSQL owners | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-005-postgres-local` | ENV-GIT |
 | [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
 | [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | integrated | T-003 | `task/T-007-envelope` | ENV-GIT |
 | [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | integrated | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
-| [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | implementing | T-008 | `task/T-009-append` | ENV-GIT |
+| [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | qa-green | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | todo | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | todo | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006 | `task/T-012-outbox-relay` | ENV-GIT |
@@ -91,9 +91,9 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-029](tasks/T-029.md) | B-01 | Scaffold insurance typed owner ports and migration ledger | implementation / 3 | insurance | todo | T-009, T-017, T-018, T-010 | `task/T-029-insurance-scaffold` | ENV-GIT |
 | [T-030](tasks/T-030.md) | B-01 | Scaffold documents typed owner ports and migration ledger | implementation / 3 | documents | todo | T-009, T-017, T-018, T-010 | `task/T-030-documents-scaffold` | ENV-GIT |
 | [T-031](tasks/T-031.md) | B-01 | Enforce explicit authenticated internal callers and edge identity stripping | implementation / 3 | foundation | integrated | T-003 | `task/T-031-auth-transport` | ENV-GIT |
-| [T-032](tasks/T-032.md) | B-05 | Create schema-validating HTTP client and scope-key helpers | implementation / 3 | frontend-shared | bounced | T-004 | `task/T-032-api-client` | ENV-GIT |
+| [T-032](tasks/T-032.md) | B-05 | Create schema-validating HTTP client and scope-key helpers | implementation / 3 | frontend-shared | integrated | T-004 | `task/T-032-api-client` | ENV-GIT |
 | [T-033](tasks/T-033.md) | B-05 | Extract existing HTML tokens without redesign | implementation / 2 | frontend-shared | integrated | T-004 | `task/T-033-tokens` | ENV-GIT |
-| [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | todo | T-033 | `task/T-034-dialog` | ENV-GIT |
+| [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | implementing | T-033 | `task/T-034-dialog` | ENV-GIT |
 | [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | todo | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
 | [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | todo | T-035 | `task/T-036-admin-shell` | ENV-GIT |
 | [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | todo | T-035 | `task/T-037-realization-shell` | ENV-GIT |
@@ -745,7 +745,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-743](tasks/T-743.md) | B-17 | Generate private inventory branch attachments DTO and client fixtures | implementation / 2 | inventory | todo | T-640, T-287 | `task/T-743-inventory-attachment-clients` | ENV-GIT |
 | [T-744](tasks/T-744.md) | B-28 | Generate private commerce allocations DTO and client fixtures | implementation / 2 | commerce | todo | T-640, T-695 | `task/T-744-commerce-allocation-clients` | ENV-GIT |
 | [T-745](tasks/T-745.md) | B-29 | Generate private inventory shipment receipts DTO and client fixtures | implementation / 2 | inventory | todo | T-640, T-696 | `task/T-745-inventory-receipt-clients` | ENV-GIT |
-| [T-746](tasks/T-746.md) | B-01 | Specify incremental typed owner and app feature registration | contract / 3 | contracts-foundation | implementing | T-001 | `task/T-746-runtime-registration-contract` | dependencies only |
+| [T-746](tasks/T-746.md) | B-01 | Specify incremental typed owner and app feature registration | contract / 3 | contracts-foundation | integrated | T-001 | `task/T-746-runtime-registration-contract` | dependencies only |
 | [T-747](tasks/T-747.md) | B-02 | Project subscribe and register the credentials slice | implementation / 3 | identity | todo | T-060, T-580 | `task/T-747-credentials-registration` | ENV-GIT |
 | [T-748](tasks/T-748.md) | B-02 | Project subscribe and register the mfa slice | implementation / 3 | identity | todo | T-061, T-580 | `task/T-748-mfa-registration` | ENV-GIT |
 | [T-749](tasks/T-749.md) | B-02 | Project subscribe and register the bootstrap slice | implementation / 3 | identity | todo | T-062, T-580 | `task/T-749-bootstrap-registration` | ENV-GIT |

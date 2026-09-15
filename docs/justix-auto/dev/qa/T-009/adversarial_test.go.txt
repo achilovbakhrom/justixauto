@@ -1,0 +1,89 @@
+// Independent QA supplement appended through a Go overlay to append_test.go.
+func TestQAAppendAdversarial(t *testing.T) {
+	db := appendDatabase(t)
+	r := runner(t, db)
+	ctx := context.Background()
+	company := uuid.NewString()
+	assertCount := func(table, column, id string, want int64) {
+		t.Helper()
+		var got int64
+		if err := db.Raw("SELECT count(*) FROM eventstore."+table+" WHERE "+column+"=?::uuid", id).Scan(&got).Error; err != nil { t.Fatal(err) }
+		if got != want { t.Fatalf("%s count=%d want=%d", table, got, want) }
+	}
+	t.Run("factory error and panic roll back before callback", func(t *testing.T) {
+		for _, panicFactory := range []bool{false, true} {
+			id := uuid.NewString()
+			failure := errors.New("QA factory failure")
+			calls := 0
+			factoryRunner, err := eventstore.NewTransactions(db, func(tx *gorm.DB) (fixtureUOW, error) {
+				if err := tx.Exec("INSERT INTO eventstore.fixture_guard(id) VALUES (?::uuid)", id).Error; err != nil { return nil, err }
+				if panicFactory { panic(failure) }
+				return nil, failure
+			})
+			if err != nil { t.Fatal(err) }
+			func() {
+				if panicFactory { defer func() { if recover() != failure { t.Error("factory panic lost") } }() }
+				err = factoryRunner.Run(ctx, func(fixtureUOW) error { calls++; return nil })
+				if !errors.Is(err, failure) { t.Errorf("factory error=%v", err) }
+			}()
+			if calls != 0 { t.Fatal("callback ran after failed factory") }
+			assertCount("fixture_guard", "id", id, 0)
+		}
+	})
+	t.Run("internal-only origin then integration and aggregate limit", func(t *testing.T) {
+		id := uuid.NewString()
+		if err := r.Run(ctx, func(u fixtureUOW) error { return u.Append(ctx, eventstore.Batch{Events: []eventstore.Event{pending(t,id,company,1,0), pending(t,id,company,2,0)}}) }); err != nil { t.Fatal(err) }
+		if err := r.Run(ctx, func(u fixtureUOW) error { return u.Append(ctx, eventstore.Batch{Expected:revision(2), Events: []eventstore.Event{pending(t,id,company,3,1)}}) }); err != nil { t.Fatal(err) }
+		var sequence string
+		if err := db.Raw("SELECT string_agg(coalesce(integration_sequence::text,'null'),',' ORDER BY aggregate_version) FROM eventstore.events WHERE aggregate_id=?::uuid",id).Scan(&sequence).Error; err != nil { t.Fatal(err) }
+		if sequence != "null,null,1" { t.Fatal(sequence) }
+		err := r.Run(ctx, func(u fixtureUOW) error { return u.Append(ctx, eventstore.Batch{Expected:revision(9223372036854775807), Events: []eventstore.Event{pending(t,id,company,9223372036854775807,1)}}) })
+		if !errors.Is(err,events.ErrRevisionOverflow) { t.Fatalf("overflow=%v",err) }
+		assertCount("events","aggregate_id",id,3)
+	})
+	t.Run("stored integration gap fails closed", func(t *testing.T) {
+		id := uuid.NewString()
+		bad := eventSQL("inventory",uuid.NewString(),id,"'"+company+"'",1)
+		// Inject a structurally valid old event with sequence 2 while revision is 1.
+		bad = strings.Replace(bad,"aggregate_version,", "integration_sequence,aggregate_version,",1)
+		bad = strings.Replace(bad,"'"+id+"',1,", "'"+id+"',2,1,",1)
+		if err := db.Exec(bad).Error; err != nil { t.Fatal(err) }
+		err := r.Run(ctx,func(u fixtureUOW) error { return u.Append(ctx,eventstore.Batch{Expected:revision(1),Events:[]eventstore.Event{pending(t,id,company,2,3)}}) })
+		if !errors.Is(err,eventstore.ErrCorruptHistory) { t.Fatalf("corrupt integration history=%v",err) }
+		assertCount("events","aggregate_id",id,1)
+	})
+	t.Run("duplicate receipt aborts earlier event without retry", func(t *testing.T) {
+		id, second := uuid.NewString(),uuid.NewString()
+		if err := r.Run(ctx,func(u fixtureUOW) error { return u.Effects(ctx,id) }); err != nil { t.Fatal(err) }
+		calls := 0
+		duplicateRunner,err := eventstore.NewTransactions(db,func(tx *gorm.DB)(fixtureUOW,error){ a,err:=eventstore.NewAppender(tx,events.OwnerInventory); return fixturePorts{Appender:a,tx:tx},err })
+		if err != nil { t.Fatal(err) }
+		err = duplicateRunner.Run(ctx,func(u fixtureUOW) error {
+			calls++
+			if err := u.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{pending(t,second,company,1,1)}}); err != nil { return err }
+			return u.(fixturePorts).tx.Exec(`INSERT INTO eventstore.command_receipts(receipt_id,actor_id,company_id,command_name,target_id,idempotency_key,request_hash,http_status,receipt) SELECT ?::uuid,actor_id,company_id,command_name,target_id,idempotency_key,request_hash,http_status,receipt FROM eventstore.command_receipts WHERE receipt_id=?::uuid`,second,id).Error
+		})
+		if err == nil || calls != 1 { t.Fatalf("duplicate receipt err=%v calls=%d",err,calls) }
+		assertCount("events","aggregate_id",second,0)
+		assertCount("command_receipts","receipt_id",id,1)
+		assertCount("command_receipts","receipt_id",second,0)
+	})
+	t.Run("cancelled lock waiter leaves winner intact",func(t *testing.T){
+		id:=uuid.NewString()
+		tx:=db.Begin()
+		if tx.Error != nil { t.Fatal(tx.Error) }
+		defer tx.Rollback()
+		a,err:=eventstore.NewAppender(tx,events.OwnerInventory)
+		if err!=nil { t.Fatal(err) }
+		if err=a.Append(ctx,eventstore.Batch{Events:[]eventstore.Event{pending(t,id,company,1,1)}});err!=nil { t.Fatal(err) }
+		waitCtx,cancel:=context.WithTimeout(ctx,100*time.Millisecond)
+		defer cancel()
+		calls:=0
+		err=r.Run(waitCtx,func(u fixtureUOW)error { calls++;return u.Append(waitCtx,eventstore.Batch{Events:[]eventstore.Event{pending(t,id,company,1,1)}}) })
+		if err==nil || calls!=1 || !errors.Is(waitCtx.Err(),context.DeadlineExceeded) { t.Fatalf("lock waiter err=%v calls=%d",err,calls) }
+		if err=tx.Commit().Error;err!=nil { t.Fatal(err) }
+		assertCount("events","aggregate_id",id,1)
+		if err=r.Run(ctx,func(u fixtureUOW)error{return u.Append(ctx,eventstore.Batch{Expected:revision(1),Events:[]eventstore.Event{pending(t,id,company,2,2)}})});err!=nil {t.Fatal(err)}
+		assertCount("events","aggregate_id",id,2)
+	})
+}

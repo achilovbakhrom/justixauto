@@ -1,0 +1,87 @@
+Exact reviewed commit: caf1473b8778c6409ba5b5d120e510fedc838994
+Pinned Node24.21.0/npm11.19.0; offline no-audit install then typecheck/unit/lint/build/original adversarial harness.
+Exit code: 0
+
+added 214 packages in 2s
+
+54 packages are looking for funding
+  run `npm fund` for details
+
+> justixauto-development-handoff@0.1.0 typecheck
+> npm run typecheck:config && npm run typecheck --workspaces
+
+
+> justixauto-development-handoff@0.1.0 typecheck:config
+> tsc --noEmit --strict --module esnext --moduleResolution bundler --target es2022 --types node web/vitest.workspace.ts
+
+
+> @justixauto/api@0.1.0 typecheck
+> tsc --project tsconfig.json
+
+
+> @justixauto/tokens@0.1.0 typecheck
+> tsc --noEmit
+
+
+> justixauto-development-handoff@0.1.0 test:unit
+> vitest run --config web/vitest.workspace.ts --configLoader runner
+
+
+ RUN  v4.1.11 /Users/bakhromachilov/startups/justixauto/.worktrees/T-032
+
+
+ Test Files  2 passed (2)
+      Tests  99 passed (99)
+   Start at  14:55:58
+   Duration  153ms (transform 43ms, setup 0ms, import 75ms, tests 45ms, environment 0ms)
+
+
+> justixauto-development-handoff@0.1.0 lint
+> eslint --config web/eslint.config.js web --max-warnings 0
+
+
+> justixauto-development-handoff@0.1.0 build
+> npm run build --workspaces
+
+
+> @justixauto/api@0.1.0 build
+> npm run typecheck
+
+
+> @justixauto/api@0.1.0 typecheck
+> tsc --project tsconfig.json
+
+
+> @justixauto/tokens@0.1.0 build
+> npm run typecheck && node -e "const fs=require('node:fs');fs.mkdirSync('dist',{recursive:true});fs.copyFileSync('src/tokens.css','dist/tokens.css')"
+
+
+> @justixauto/tokens@0.1.0 typecheck
+> tsc --noEmit
+
+(node:56134) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ known server-reserved identity header X-Permissions is rejected before dispatch (12.79925ms)
+✔ known server-reserved identity header X_Permissions is rejected before dispatch (0.292083ms)
+✔ known server-reserved identity header X-Justix-Internal-Caller is rejected before dispatch (0.107541ms)
+✔ known server-reserved identity header X_Justix_Internal_Caller is rejected before dispatch (0.105083ms)
+✔ SELECTED sparse branch array does not represent a valid nonempty UUID scope (0.281792ms)
+✔ known receipts require exact structure and never invoke success schema (2.82975ms)
+✔ unknown/malformed receipts never become authoritative HTTP failures (0.449916ms)
+✔ schema diagnostics do not escape through invalid-response (0.171042ms)
+✔ write timeout is unknown, has no retry, and independent identical calls stay explicit (0.201917ms)
+✔ mid-body connection failure on a write does not become a rejection receipt (0.51825ms)
+✔ path encodings and authority substitution fail closed before dispatch (0.1505ms)
+✔ precise context headers, no-store, same-origin cookies and no redirects (0.192ms)
+✔ all admitted identity/resource dimensions create distinct serialized keys (0.223625ms)
+✔ nested filters and branches have no mutable aliases and freeze deeply (0.21175ms)
+✔ JSON proto-named filters remain distinct own data without pollution (0.087458ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109.120958
+
