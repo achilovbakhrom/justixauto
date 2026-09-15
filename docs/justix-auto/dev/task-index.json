@@ -35427,7 +35427,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-926",
         "T-013"
@@ -35446,8 +35446,10 @@
         "B-01.AC2"
       ],
       "scope": "Install immutable sealed quarantine evidence and append-only redrive action chains with exact request identity, protected content references and narrow privileges. Synthetic sealing tests do not authorize production cryptography, retention or ACK behavior.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-927",
+      "base_sha": "8e714dc98659d2ef7c901362501d60dd7e7335db",
+      "agent": "backend_t927",
+      "execution_note": "Approved quarantine/redrive evidence storage assigned in prepared isolated worktree; dependencies926/013 integrated. Preserve all existing SQL. Synthetic sealed-content tests do not authorize production cryptography/privacy policy or broker ACK."
     },
     {
       "id": "T-928",
