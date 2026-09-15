@@ -72,7 +72,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | integrated | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | integrated | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006 | `task/T-012-outbox-relay` | ENV-GIT |
-| [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | qa-green | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
+| [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | todo | T-013, T-010 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013 | `task/T-015-quarantine` | ENV-GIT |
 | [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014 | `task/T-016-projection-rebuild` | ENV-GIT |

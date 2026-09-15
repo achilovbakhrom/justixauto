@@ -667,7 +667,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-009",
         "T-006"
@@ -690,7 +690,8 @@
       "base_sha": "074e0529fca80f95ff6c81165f97f906a7b6c46e",
       "reviewed_sha": "1582f24fff93b59942188b463b4d67bd34c73e4d",
       "agent": "backend_t013",
-      "execution_note": "Independent exact-commit QA GREEN with live PostgreSQL race tests, conflicting hashes, unknown duplicate commit/ACK outcomes, factory-write rollback and immutable dedup evidence. No broker wiring or fan-out claim."
+      "execution_note": "Merged exact independent QA GREEN commit. Main live inbox PostgreSQL test and all project Go race tests plus vet passed. Callback-only ACK and subscriber composition limits retained.",
+      "integration_sha": "779ce33a8b8d3075c9f96720376e4b5aaa17dc9c"
     },
     {
       "id": "T-014",
