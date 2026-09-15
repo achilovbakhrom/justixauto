@@ -35210,7 +35210,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-917",
         "T-009",
@@ -35231,8 +35231,10 @@
         "B-01.AC2"
       ],
       "scope": "Typed complete role-independent consumer membership, explicit source-issued checkpoints, fenced addition/backlog enrollment and drain/hold evidence. Do not rewrite old enrollment sets, infer sequence zero or replay private history from catalog presence.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-920",
+      "base_sha": "2c51a4c6539c967d1e9b0f3d68536b42192861ea",
+      "agent": "backend_t920",
+      "execution_note": "Approved messaging membership and T-014 bootstrap/fence dependencies integrated. Assigned complete inert membership, source-authorized atomic cutovers and retained backlog enrollment in existing two leaves."
     },
     {
       "id": "T-921",
