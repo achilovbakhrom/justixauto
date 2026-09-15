@@ -501,7 +501,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-007",
         "T-005"
@@ -520,9 +520,11 @@
         "B-01.AC1"
       ],
       "scope": "Append-only event roles, event ID and aggregate-version uniqueness, idempotency/outbox/inbox/process tables; install templates per owner database.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-008",
+      "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
+      "reviewed_sha": null,
+      "agent": "backend/t008_event_schema",
+      "execution_note": "Dependencies integrated; isolated worktree assigned; implementation active."
     },
     {
       "id": "T-009",
@@ -1290,7 +1292,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-004"
       ],
@@ -1313,12 +1315,14 @@
         "B-05.AC4"
       ],
       "scope": "Same-origin transport, typed 401/403/404/409/412/422/503 receipts, no token storage or persistent PII; schema adapters injected by each feature. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
+      "worktree": ".worktrees/T-032",
+      "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
       "reviewed_sha": null,
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend/t032_api_client",
+      "execution_note": "Dependencies integrated; isolated worktree assigned; implementation active."
     },
     {
       "id": "T-033",
@@ -1327,7 +1331,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-004"
       ],
@@ -1353,12 +1357,14 @@
         "B-05.AC2"
       ],
       "scope": "Read exact common/scoped CSS values, font fallback and verified responsive condition; preserve distinct insurer appearance and existing SVG assets. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
+      "worktree": ".worktrees/T-033",
+      "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
       "reviewed_sha": null,
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend/t033_tokens",
+      "execution_note": "T004 integrated; isolated worktree assigned; existing HTML token extraction active."
     },
     {
       "id": "T-034",
