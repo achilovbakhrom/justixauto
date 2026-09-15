@@ -398,7 +398,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "qa-green",
       "depends_on": [
         "T-001",
         "T-003"
@@ -420,9 +420,9 @@
       "scope": "Seven owner databases/users; revoke cross-owner access; loopback-only host port; synthetic credentials injected for local tests, never seed production users.",
       "worktree": ".worktrees/T-005",
       "base_sha": "4c84e346c7412e0fc6e3a20a8393767de63b3131",
-      "reviewed_sha": "f80d8f2b1d5600101b607f6840f357cde13cd91d",
+      "reviewed_sha": "fdf6c3b563062609e8b837aa253ce5d6a048c227",
       "agent": "backend/t005_postgres_local",
-      "execution_note": "Independent QA BOUNCE: PostgreSQL 18 ignores psql `\\\\quit 3`; an empty required database password exits 0 and official entrypoint reports ready with zero owner stores. Fix cycle 1 assigned. All seven-owner, 42 denial, concurrency, rollback, repeat-init/rotation, digest and loopback checks otherwise passed."
+      "execution_note": "Independent QA GREEN at exact fdf6c3b563062609e8b837aa253ce5d6a048c227. All 14 omitted/empty credential cases fail before owner creation; fresh and rotated positive runs verify seven owners, all 42 cross-owner denials, concurrent writes, rollback, pinned digest and loopback-only exposure."
     },
     {
       "id": "T-006",
