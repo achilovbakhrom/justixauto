@@ -316,6 +316,86 @@ func TestContractGenerationSymbolCollisionsBeforeWrites(t *testing.T) {
 	}
 }
 
+func TestContractGenerationGoMethodContractsBeforeWrites(t *testing.T) {
+	h := newGenerationHarness(t)
+	h.generate(true)
+	goBefore, tsBefore := h.read("fixture.gen.go"), h.read("fixture.ts")
+	// Go-only operation Error bypassed the public TS reserved-name check and
+	// removed ContractFailure's error interface. Cover every runtime/DTO hook
+	// and the external receiver methods used by the decoder, numbers, patterns
+	// and query builder; those selectors must survive namespacing as well.
+	names := []string{"Error", "MarshalJSON", "UnmarshalJSON", "IsZero", "Exchange", "Token", "UseNumber", "More", "SetString", "IsInt", "Num", "IsInt64", "Int64", "String", "MatchString", "Set", "Encode",
+		// Stable fields in the runtime transport/security/failure/optional types
+		// and result wrappers must not be renamed consistently into a broken API.
+		"Owner", "OperationID", "Method", "Path", "Headers", "Body", "Security", "Status", "ContentType", "Kind", "UnknownOutcome", "Type", "In", "Name", "Value", "Present", "Status200", "Status201", "Status422"}
+	for _, kind := range []string{"schema", "public-operation", "internal-operation"} {
+		for _, name := range names {
+			t.Run(kind+"_"+name, func(t *testing.T) {
+				h := h
+				h.t = t
+				input := generationFixture
+				if kind == "schema" {
+					input = strings.Replace(input, `"Maybe":`, `"`+name+`":{"type":"string"},"Maybe":`, 1)
+				} else {
+					original := "ReadSynthetic"
+					if kind == "internal-operation" {
+						original = "ReadInternal"
+					}
+					input = strings.Replace(input, `"operationId":"`+original+`"`, `"operationId":"`+name+`"`, 1)
+				}
+				h.write("input.json", input)
+				h.generate(false)
+				if !bytes.Equal(goBefore, h.read("fixture.gen.go")) || !bytes.Equal(tsBefore, h.read("fixture.ts")) {
+					t.Fatal("Go method collision changed an output")
+				}
+			})
+		}
+	}
+}
+
+func TestContractGenerationSelectorLookingWireText(t *testing.T) {
+	h := newGenerationHarness(t)
+	input := strings.Replace(generationFixture, `"operationId":"ReadInternal"`, `"operationId":"ReadReceipt"`, 1)
+	// Neither ordinary receiver-looking text nor imported-package-looking text
+	// in schema literals is Go code. Both must survive generation and decoding.
+	input = strings.Replace(input, `"Maybe":`, `"WireText":{"type":"string","enum":["x.ReadReceipt(","strings.ReadReceipt(","/* x.ReadReceipt( */","'x.ReadReceipt('","`+"`x.ReadReceipt(`"+`"]},"Maybe":`, 1)
+	h.write("input.json", input)
+	h.generate(true)
+	if bytes.Contains(h.read("fixture.ts"), []byte("/internal/v1/")) || bytes.Contains(h.read("fixture.ts"), []byte("function ReadReceipt(")) {
+		t.Fatal("internal method exposed to browser")
+	}
+	h.write("go.mod", "module synthetic\n\ngo 1.27.1\n")
+	h.write("wire_test.go", `package synthetic
+import("context";"encoding/json";"testing")
+type wireExchange struct{}
+func(wireExchange) Exchange(_ context.Context,r FixtureContractRequest)(FixtureContractResponse,error){
+ _=r.Owner;_=r.OperationID;_=r.Method;_=r.Path;_=r.Headers;_=r.Body;_=r.Security
+ return FixtureContractResponse{Status:200,ContentType:"application/json",Body:nil},FixtureContractFailure{Kind:"synthetic failure",UnknownOutcome:true}
+}
+var _ FixtureContractExchange=wireExchange{}
+var _ error=FixtureContractFailure{}
+func TestWireText(t *testing.T){
+ if _,err:=FixtureNewContractClient(wireExchange{});err!=nil{t.Fatal(err)}
+ for _,value:=range []string{"x.ReadReceipt(","strings.ReadReceipt(","/* x.ReadReceipt( */","'x.ReadReceipt('","`+"`x.ReadReceipt(`"+`"}{
+  raw,_:=json.Marshal(value);var decoded FixtureWireText
+  if err:=json.Unmarshal(raw,&decoded);err!=nil{t.Fatal(err)}
+  after,err:=json.Marshal(decoded);if err!=nil||string(after)!=string(raw){t.Fatal("wire text changed",err)}
+ }
+}
+`)
+	h.run(true, filepath.Join(runtime.GOROOT(), "bin/go"), "test", "-race", "./...")
+	h.run(true, filepath.Join(runtime.GOROOT(), "bin/go"), "vet", "./...")
+	api, err := os.ReadFile(filepath.Join(h.root, "web/packages/api/src/client.ts"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	h.write("client.ts", string(api))
+	h.write("tsconfig.json", `{"compilerOptions":{"target":"ES2022","lib":["ES2022","DOM","DOM.Iterable"],"module":"Node16","moduleResolution":"Node16","strict":true,"types":[],"paths":{"@justixauto/api":["./client.ts"]},"outDir":"out"},"include":["*.ts"]}`)
+	h.write("wire.ts", "import { WireTextSchema } from './fixture.js';\nfor (const value of ['x.ReadReceipt(', 'strings.ReadReceipt(', '/* x.ReadReceipt( */', \"'x.ReadReceipt('\", '`x.ReadReceipt(`']) { if (WireTextSchema.parse(value) !== value || WireTextSchema.parse(JSON.parse(JSON.stringify(value))) !== value) throw new Error('wire text changed'); }\n")
+	h.run(true, h.node, filepath.Join(h.main, "node_modules/typescript/bin/tsc"), "-p", filepath.Join(h.dir, "tsconfig.json"))
+	h.run(true, h.node, filepath.Join(h.dir, "out/wire.js"))
+}
+
 func TestContractGenerationDanglingLinksBeforeWrites(t *testing.T) {
 	for _, path := range []string{"second.ts", "second.gen.go", "missing-parent"} {
 		t.Run(path, func(t *testing.T) {

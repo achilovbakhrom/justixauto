@@ -104,6 +104,11 @@ function registerSymbol(symbols, name, language) {
 const goSymbol = (namespace, name) => name.startsWith('contract')
   ? namespace[0].toLowerCase()+namespace.slice(1)+name[0].toUpperCase()+name.slice(1)
   : namespace+name;
+// The same lexical exclusions serve symbol preflight and namespace rewriting.
+// Wire strings, rune/raw literals (including struct tags), and comments cannot
+// declare or invoke Go symbols, even when they contain selector-looking text.
+const goTokens = /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`[^`]*`|\/\/[^\n]*|\/\*[\s\S]*?\*\/|\b[A-Za-z_][A-Za-z0-9_]*\b/g;
+const goCode = (source) => source.replace(goTokens, (token) => /^[A-Za-z_][A-Za-z0-9_]*$/.test(token) ? token : token.replace(/[^\n]/g, ' '));
 let cachedGoRoot;
 function goRoot() {
   if (!cachedGoRoot) cachedGoRoot=execFileSync('bash',[resolve(dirname(fileURLToPath(import.meta.url)),'go.sh'),'env','GOROOT'],{encoding:'utf8'}).trim();
@@ -523,9 +528,30 @@ function renderGo(c) {
   // Imported package selectors must retain their spelling. The namespace pass
   // cannot reinterpret an accepted DTO/operation name as a standard-library
   // member (for example json.Marshal or context.Context).
-  for (const match of out.matchAll(/\b(?:bytes|context|json|errors|io|math|big|mime|url|regexp|strconv|strings|time|unicode|utf8)\.([A-Za-z][A-Za-z0-9]*)/g)) {
+  const code = goCode(out);
+  for (const match of code.matchAll(/\b(?:bytes|context|json|errors|io|math|big|mime|url|regexp|strconv|strings|time|unicode|utf8)\.([A-Za-z][A-Za-z0-9]*)/g)) {
     if (publicNames.has(match[1])) fail(`Go imported symbol collision: ${match[1]}`);
   }
+  // Receiver selectors are not package selectors: d.Token(), r.IsInt() and
+  // query.Encode() must also keep the methods supplied by their external types.
+  // Runtime receiver declarations cover interface methods even when there is
+  // no direct invocation (notably error.Error and JSON/omitzero hooks). The
+  // exchange port's Exchange method is invoked in every generated client.
+  // Apply this to every schema and operation, including Go-only internal ones;
+  // the public TS reserved set cannot protect Go's method contracts.
+  const methodNames = new Set([
+    ...[...goCode(goRuntime).matchAll(/\bfunc\s*\([^)]*\)\s*([A-Za-z][A-Za-z0-9]*)\s*\(/g)].map((match)=>match[1]),
+    ...[...code.matchAll(/\.\s*([A-Za-z][A-Za-z0-9]*)\s*\(/g)].map((match)=>match[1]),
+  ]);
+  for (const name of methodNames) if (publicNames.has(name)) fail(`Go method symbol collision: ${name}`);
+  // These are stable injected-port/error/optional field names, not DTO names.
+  // Renaming declarations and their local uses together could compile while
+  // silently breaking an independently implemented exchange adapter.
+  const runtimeFields = new Set([...goCode(goRuntime).matchAll(/\bstruct\s*\{([^{}]*)\}/g)]
+    .flatMap((match)=>match[1].split(';').map((field)=>/^\s*([A-Za-z][A-Za-z0-9]*)\s+/.exec(field)?.[1]).filter(Boolean)));
+  runtimeFields.add('Status');
+  for (const op of c.operations) for (const [status,name] of Object.entries(op.responses)) if (name) runtimeFields.add('Status'+status);
+  for (const name of runtimeFields) if (publicNames.has(name)) fail(`Go stable field symbol collision: ${name}`);
   const rename = (name) => publicNames.has(name)||name.startsWith('Contract')||name.startsWith('contract') ? goSymbol(c.entry.namespace,name) : name;
   // Field normalization was checked during schema compilation. Check again in
   // the actual emitted namespace: a field named payload and one named
@@ -542,7 +568,7 @@ function renderGo(c) {
     } else if (baseType(schema)==='array') fields(schema.items);
   }
   for (const schema of Object.values(c.schemas)) fields(schema);
-  out = out.replace(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\/[^\n]*|\b[A-Za-z_][A-Za-z0-9_]*\b/g, (token) => {
+  out = out.replace(goTokens, (token) => {
     return rename(token);
   });
   return execFileSync(resolve(goRoot(),'bin/gofmt'), [], {input:out,encoding:'utf8',maxBuffer:16*1024*1024});
