@@ -503,7 +503,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-007",
         "T-005"
@@ -526,7 +526,8 @@
       "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
       "reviewed_sha": "19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d",
       "agent": "backend/t008_event_schema",
-      "execution_note": "Independent QA GREEN at19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d: live owner isolation, privilege probes, durable decisions and crash recovery passed."
+      "execution_note": "QA-approved schema merged; main integration race suite including live PostgreSQL and vet passed. T009 conditional append is now eligible.",
+      "integration_sha": "b22982108ba4bde357f0987382098054109009af"
     },
     {
       "id": "T-009",

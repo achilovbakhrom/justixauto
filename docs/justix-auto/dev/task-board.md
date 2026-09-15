@@ -67,7 +67,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-005](tasks/T-005.md) | B-01 | Provision seven isolated local PostgreSQL owners | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-005-postgres-local` | ENV-GIT |
 | [T-006](tasks/T-006.md) | B-01 | Define durable local RabbitMQ topology and grants | implementation / 3 | infra | integrated | T-001, T-003 | `task/T-006-rabbit-local` | ENV-GIT |
 | [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | integrated | T-003 | `task/T-007-envelope` | ENV-GIT |
-| [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | qa-green | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
+| [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | integrated | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | todo | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | todo | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | todo | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
