@@ -34902,7 +34902,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-008"
       ],
@@ -34920,8 +34920,10 @@
         "B-01.AC2"
       ],
       "scope": "Implement the approved additive parent/delivery, custody/enrollment/job and admission records, complete-child constraints, immutable evidence, narrowed grants, explicit mode fencing and populated legacy preservation. No destructive down migration or automatic cutover. Split before implementation if the four-hour bound is exceeded.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-917",
+      "base_sha": "1c77949f362ed2108b0c6ede585bf2523e928a74",
+      "agent": "backend_t917",
+      "execution_note": "Architecture proposal and canonical promotion both independently QA GREEN; approved additive schema task allocated after Git PASS. Runtime gates remain pending actual migration/privilege/legacy tests."
     },
     {
       "id": "T-918",
