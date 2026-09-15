@@ -34945,7 +34945,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-917",
         "T-009"
@@ -34967,7 +34967,8 @@
       "worktree": ".worktrees/T-918",
       "base_sha": "5d0236dd2f6c27ba37a9b2cd3c0ef2b9ac97fd1a",
       "agent": "backend_t918",
-      "execution_note": "Dependencies T917/T009 integrated and Git gate passed. Assigned typed source admission ranges and frozen recipient planning under the same sorted append stream fence; no concrete business admissions."
+      "execution_note": "Developer source-admission implementation complete;14 live PostgreSQL scenarios, full race and vet pass. Established T011 routing unchanged; T917 short-route synthetic fixture limitation and exact defect reproducer documented. Independent QA pending.",
+      "reviewed_sha": "d9ca2bc01fecbd81319d3c7ba2184e43417dd7e9"
     },
     {
       "id": "T-919",
