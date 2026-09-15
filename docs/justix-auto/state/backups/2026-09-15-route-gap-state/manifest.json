@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "sha256": "576604621b79b6f927b1ea7fed0ff4510b16fca18723146fb64e712bd800b64c",
+    "bytes": 8854
+  },
+  {
+    "path": "docs/justix-auto/dev/messaging-readiness.md",
+    "snapshot": "docs/justix-auto/dev/messaging-readiness.md.gz",
+    "sha256": "d78fbab46846bd217bdb13695bb6fed470d6b7e0a06812c37532ef2fbad3147d",
+    "bytes": 2639
+  }
+]

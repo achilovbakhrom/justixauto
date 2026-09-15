@@ -27,8 +27,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-025 in-progress (`.worktrees/T-025`, `task/T-025-inventory-scaffold`); T-037 qa-green (`.worktrees/T-037`, `task/T-037-realization-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 in-progress (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
-- Integrated tasks: 23/924; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-025 ready-for-qa (`.worktrees/T-025`, `task/T-025-inventory-scaffold`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 in-progress (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
+- Integrated tasks: 24/924; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 924 (916 reviewed baseline + eight approved messaging amendments); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -83,11 +83,11 @@ boundary, not a missing Docker installation.
 ## Commands not available yet
 
 No owner service composition roots, shared local Compose runner, owner migration
-runner or CI pipeline exist yet. The Admin React workspace and shared API,
+runner or CI pipeline exist yet. The Admin and Realization React workspaces and shared API,
 tokens, UI and test-kit packages are integrated. `npm run build:apps` builds
-Admin; its default session boundary renders no protected children until session
+both apps; their default session boundaries render no protected children until session
 integration. Explicit synthetic QA fixtures display the empty shell. This is
-not a working business application; the other three app shells and feature
+not a working business application; the Financing/Insurance shells and feature
 routes remain in their assigned tasks. Explicit SQL installation templates and
 shared Go durability primitives are integrated. Identity now has typed owner
 transaction ports, an explicit migration and fail-closed persistence readiness.
@@ -150,3 +150,15 @@ approved by [coordinator decision](../state/approvals/messaging-delivery.md).
 T-917–T-924 implement recipient plans, durable intake and logical dispatch;
 T-922 is the definite transaction-composable inbox prerequisite identified by QA.
 No affected composition is ready until its added graph dependencies integrate.
+
+### Source route compatibility correction pending — 2026-09-15
+
+T-918 live work exposed a mismatch between T-011's established
+`source.target.fullOwnerQualifiedEventType` route and T-917's schema allowlist
+reconstruction. Correctly admitted populated legacy routes can be rejected.
+An isolated architect proposal is assigned in
+`.worktrees/messaging-route-correction` at base
+`f0d0454e0794dbdc4bddd3cb3b3bb4e331e9a51a`. Preserve routes and existing
+migrations; a separately reviewed forward correction must precede dependent
+writer/intake/topology activation. T-918 admission logic may proceed with its
+explicitly documented synthetic fixture limit. See messaging-readiness.md.

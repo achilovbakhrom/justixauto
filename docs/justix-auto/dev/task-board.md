@@ -89,7 +89,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924 | `task/T-022-local-compose` | ENV-GIT |
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
 | [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | integrated | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
-| [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | in-progress | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
+| [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | ready-for-qa | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
 | [T-026](tasks/T-026.md) | B-01 | Scaffold commerce typed owner ports and migration ledger | implementation / 3 | commerce | todo | T-009, T-017, T-018, T-010 | `task/T-026-commerce-scaffold` | ENV-GIT |
 | [T-027](tasks/T-027.md) | B-01 | Scaffold retail typed owner ports and migration ledger | implementation / 3 | retail | todo | T-009, T-017, T-018, T-010 | `task/T-027-retail-scaffold` | ENV-GIT |
 | [T-028](tasks/T-028.md) | B-01 | Scaffold financing typed owner ports and migration ledger | implementation / 3 | financing | todo | T-009, T-017, T-018, T-010 | `task/T-028-financing-scaffold` | ENV-GIT |
@@ -101,7 +101,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | integrated | T-033 | `task/T-034-dialog` | ENV-GIT |
 | [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | integrated | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
 | [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | integrated | T-035 | `task/T-036-admin-shell` | ENV-GIT |
-| [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | qa-green | T-035 | `task/T-037-realization-shell` | ENV-GIT |
+| [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | integrated | T-035 | `task/T-037-realization-shell` | ENV-GIT |
 | [T-038](tasks/T-038.md) | B-05 | Scaffold the independent financing app and verified shell | implementation / 4 | frontend-financing | todo | T-035 | `task/T-038-financing-shell` | ENV-GIT |
 | [T-039](tasks/T-039.md) | B-05 | Scaffold the independent insurance app and verified shell | implementation / 4 | frontend-insurance | todo | T-035 | `task/T-039-insurance-shell` | ENV-GIT |
 | [T-040](tasks/T-040.md) | B-14 | Confirm suspend/restore existing obligations, pending branch/submission operations and explicit capability/compliance combinations | policy-decision / 3 | decisions | todo | — | `task/T-040-access-policy` | OD-05, OD-11 |

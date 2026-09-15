@@ -41,3 +41,29 @@ reviewed bytes. T-917–T-924 are bounded follow-ups; T-922 definitively supplie
 the missing transaction-composable inbox interface. Existing primitive QA stays
 valid for its historical scope. This decision closes the design choice, not
 the runtime gaps: they remain gated on the new task graph and live failure tests.
+
+## Newly observed source route compatibility defect
+
+2026-09-15, discovered during T-918 live integration. T-011 constructs
+`inventory.retail.inventory.fixture.changed.v1` from source `inventory`, target
+`retail`, and full T-007 event type `inventory.fixture.changed.v1`. T-917's
+`messaging_delivery_guard` and `messaging_job_guard` instead prepend the source
+to the suffix after the target, producing an incorrect doubled event namespace
+for the admission lookup. A correct schema allowlist therefore rejects this
+existing route, including during populated legacy cutover. The earlier T-917
+QA remains preserved for its tested fixtures; it did not exercise this exact
+T-011-produced route through cutover.
+
+Do not normalize or rewrite retained routes/bytes/event IDs to accommodate the
+check. The coordinator allocated `.worktrees/messaging-route-correction`,
+branch `task/messaging-route-correction`, base
+`f0d0454e0794dbdc4bddd3cb3b3bb4e331e9a51a`, to architect_route_correction for a
+bounded forward migration proposal and exact regression/dependency plan.
+Proposal ownership: `../state/drafts/architect/messaging-route-correction.md`
+and `results/messaging-route-correction.md` in that worktree only.
+
+T-918 may finish transaction/admission mechanics while documenting its shorter
+SQL-compatible synthetic obligation fixture; this is not permission to change
+the established writer route. Dependent T-919 writer, T-921 intake and T-924
+route metadata must use one reviewed route convention after the correction.
+Implementation assignment and independent exact-commit QA are still pending.
