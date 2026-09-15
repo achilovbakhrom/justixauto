@@ -78,6 +78,26 @@ type FeatureID string // owner/category/feature; stable, nonempty
 type Descriptor struct {
     ID       FeatureID
     Requires []FeatureID // required installed capabilities, not task IDs
+    Consumers []ConsumerClaim // inert claims, empty for HTTP-only features
+}
+type ConsumerKind string // exactly "projection" or "process"
+type SchemaClaim struct {
+    EventType string
+    Version   uint32
+}
+type SubscriptionClaim struct {
+    ContractID   string // stable approved subscription contract/version ID
+    SourceOwner  string
+    StreamID     string // approved stream selection, not a feature-invented filter
+    Exchange     string
+    Queue        string
+    RoutingKeys  []string
+    Schemas      []SchemaClaim
+}
+type ConsumerClaim struct {
+    Name         string
+    Kind         ConsumerKind
+    Subscription SubscriptionClaim
 }
 type Factory[D, F any] struct {
     Descriptor Descriptor
@@ -97,6 +117,24 @@ Late additions after freeze are rejected; no hot registration. Catalog copies
 descriptor slices on entry and return, owns its storage and is safe against
 concurrent misuse. Independent tests use fresh catalog instances, not resets of
 production package globals. Order never depends on source-file or init ordering.
+
+Consumer claims are literal nonsecret metadata from the approved subscription
+contract. They exist before Bind and include every declared consumer, including
+consumers belonging to other process roles. Deep-copy nested routing/schema
+slices and validate required fields, supported kind/owner/schema keys and the
+approved contract ID. A deployment-specific name must use one declared symbolic
+name resolved by the same root configuration for every role before comparison;
+factories cannot invent a different queue/exchange at bind time. This convention
+does not approve new broker topology or subscription scope. Claims outside the
+approved topology/feature subscription contract fail validation.
+
+Each root unions these frozen claims across the owner's projection and process
+catalogs without calling either role's Bind. Feature IDs P and Q are insufficient:
+if P and Q both claim consumer name X, startup fails even when only one role is
+selected. Compare full subscription claims and reject conflicting ownership of
+binding/checkpoint identities. Any intentional physical queue sharing must already
+be defined by the approved ingress/dispatch contract; separate process roles must
+not silently become competing consumers for independent required effects.
 
 Conceptual leaf: `init() { httpFactories.Add(credentialsFactory) }`, where
 `credentialsFactory.Bind` constructs the completed credentials HTTP adapter with
@@ -119,6 +157,13 @@ Startup is all-or-nothing for its selected installed capabilities:
    dependencies even if the missing feature was simply not selected. Reject nil
    required ports, typed-nil implementations, nil handlers, constructor errors,
    duplicate routes/consumers and invalid references before mounting anything.
+   Match each selected factory's bound consumer set exactly to its own frozen
+   claims: name, kind, contract/source/stream, resolved exchange/queue, normalized
+   routing-key set and schema-key set. No extra, missing or changed consumer is
+   permitted. Reordering may normalize deterministically; duplicates are errors,
+   not silently deduplicated. A selected factory cannot emit another feature's
+   claim. The root creates actual subscriptions from the matched immutable plan;
+   factory outputs cannot append opaque extra bindings or subscribe directly.
 5. Freeze the prepared plan, mount validated handlers and start approved runners
    under a root context. Startup failure cancels and joins started runners and
    closes owned resources in reverse order; readiness stays false. Routine stop
@@ -283,6 +328,8 @@ this documentation task**. Use only synthetic values and isolated infrastructure
 | Import/freeze/bind with I/O tripwires | No connection, migration, command, publish, goroutine or subscription before explicit root startup |
 | Two fresh catalogs and repeated snapshot reads | No shared test state, mutation leaks or init-order-dependent activation |
 | Duplicate ID, HTTP parameter alias, automatic method collision, consumer name across kinds | Deterministic error before route exposure or consumer start |
+| Projection P and process Q have different IDs but both claim consumer X; only one role selected | Inert union rejects X before any Bind executes |
+| Bound consumer renamed, omitted or added; queue/exchange/routing/schema changed from claim | Selected factory rejected before subscription, including cross-feature claim substitution |
 | Missing/nil/typed-nil port, factory error, missing required feature, dependency cycle | Startup fails and resources close; no ready partial API or fake handler |
 | Invalid prefix, wildcard catch-all, foreign owner/app import | Contract/import checks reject; no request forwarding or cross-app fallback |
 | One permitted request plus unauthenticated/foreign company/branch/party and stale revision fixtures | Actual feature admission enforces its approved matrix; registration cannot make forbidden commands succeed |
