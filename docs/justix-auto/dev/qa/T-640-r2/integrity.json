@@ -1,0 +1,79 @@
+{
+  "original_evidence": {
+    "docs/justix-auto/dev/qa/T-640/baseline.txt": {
+      "sha256": "a2ff3c0860c77476d45377921a8d5fa9c5439c08edb9456d002d05a5dd15c978",
+      "matches_preserved_main_copy": true
+    },
+    "docs/justix-auto/dev/qa/T-640/independent.json": {
+      "sha256": "11569e66a4e26300120dea9fc8daf5133f4f0ba082adb730946d95bb0e4d39b6",
+      "matches_preserved_main_copy": true
+    },
+    "docs/justix-auto/dev/qa/T-640/independent.py": {
+      "sha256": "cfa9c5be5fef938da6b2e4c3d287c145f6da8628a3dc673f76891d894c2e84ef",
+      "matches_preserved_main_copy": true
+    },
+    "docs/justix-auto/dev/qa/T-640/vet.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches_preserved_main_copy": true
+    },
+    "docs/justix-auto/dev/qa/T-640.md": {
+      "sha256": "c75c77fe9195a87c5bf135303c72814653310b7e9abe5b81d450324e78b4e9c9",
+      "matches_preserved_main_copy": true
+    }
+  },
+  "checks": {
+    "head": {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "output": "14eb0c60895c9e47e829338c5bf78b1e873c9fe1\n"
+    },
+    "tracked_clean": {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    "whitespace": {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    "node_syntax": {
+      "command": [
+        "/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node",
+        "--check",
+        "tools/generate-contracts.mjs"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    "node_version": {
+      "command": [
+        "/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node",
+        "--version"
+      ],
+      "exit": 0,
+      "output": "v24.21.0\n"
+    },
+    "go_version": {
+      "command": [
+        "bash",
+        "tools/go.sh",
+        "version"
+      ],
+      "exit": 0,
+      "output": "go version go1.27.1 darwin/arm64\n"
+    }
+  }
+}

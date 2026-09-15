@@ -1,0 +1,367 @@
+{
+  "sha": "14eb0c60895c9e47e829338c5bf78b1e873c9fe1",
+  "temporary_root": "/private/tmp/justix-t640-r2-independent-h_bva_96",
+  "results": [
+    {
+      "case": "dangling fixture.ts ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "dangling fixture.ts ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "dangling fixture.gen.go ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "dangling fixture.gen.go ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "dangling missing-parent ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "dangling missing-parent ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "schema ApiRequest",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: ApiRequest\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema ApiResult",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: ApiResult\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema NewContractClient",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go generated symbol collision: NewContractClient\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema Context",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: Context\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema Marshal",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: Marshal\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema Unmarshal",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: Unmarshal\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema MarshalJSON",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: reserved/invalid schema name: MarshalJSON\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema UnmarshalJSON",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: reserved/invalid schema name: UnmarshalJSON\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema IsZero",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: reserved/invalid schema name: IsZero\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema ContractFailure",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: reserved/invalid schema name: ContractFailure\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "schema PayloadSchema",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: PayloadSchema\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation ApiRequest",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: ApiRequest\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation ApiResult",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: ApiResult\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation Context",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: Context\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation MarshalJSON",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation UnmarshalJSON",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation IsZero",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "public-operation Error",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: Error\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "internal-operation Error",
+      "pass": false,
+      "generation": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      },
+      "go": {
+        "exit": 1,
+        "output": "# synthetic\n./fixture.gen.go:390:15: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:788:18: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:791:18: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:799:19: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:809:18: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:815:43: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:818:18: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:831:18: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:834:18: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:842:19: cannot use FixtureContractFailure{\u2026} (value of struct type FixtureContractFailure) as error value in return statement: FixtureContractFailure does not implement error (missing method Error)\n./fixture.gen.go:842:19: too many errors\nFAIL\tsynthetic [build failed]\nFAIL\n"
+      },
+      "ts": {
+        "exit": 0,
+        "output": ""
+      },
+      "outputs_unchanged": false
+    },
+    {
+      "case": "internal-operation MarshalJSON",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "internal-operation UnmarshalJSON",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "internal-operation IsZero",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "internal-operation Context",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: Context\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "internal-operation Exchange",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      },
+      "go": null,
+      "ts": null,
+      "outputs_unchanged": true
+    },
+    {
+      "case": "internal-operation ReadReceipt",
+      "pass": true,
+      "generation": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      },
+      "go": {
+        "exit": 0,
+        "output": "?   \tsynthetic\t[no test files]\n"
+      },
+      "ts": {
+        "exit": 0,
+        "output": ""
+      },
+      "outputs_unchanged": false
+    },
+    {
+      "case": "TS typed map Unicode exact round trips",
+      "pass": true,
+      "compile": {
+        "exit": 0,
+        "output": ""
+      },
+      "runtime": {
+        "exit": 0,
+        "output": "[{\"key\":\"\\ud800\",\"expected\":false,\"accepted\":false,\"exact\":false,\"pass\":true},{\"key\":\"\\udfff\",\"expected\":false,\"accepted\":false,\"exact\":false,\"pass\":true},{\"key\":\"prefix\\ud800suffix\",\"expected\":false,\"accepted\":false,\"exact\":false,\"pass\":true},{\"key\":\"\\ud800\\ud800\",\"expected\":false,\"accepted\":false,\"exact\":false,\"pass\":true},{\"key\":\"\\udfff\\ud800\",\"expected\":false,\"accepted\":false,\"exact\":false,\"pass\":true},{\"key\":\"\ud83d\ude00\",\"expected\":true,\"accepted\":true,\"exact\":true,\"pass\":true},{\"key\":\"\ud83d\ude00\",\"expected\":true,\"accepted\":true,\"exact\":true,\"pass\":true},{\"key\":\"\ufffd\",\"expected\":true,\"accepted\":true,\"exact\":true,\"pass\":true},{\"key\":\"\",\"expected\":true,\"accepted\":true,\"exact\":true,\"pass\":true},{\"key\":\"__proto__\",\"expected\":true,\"accepted\":true,\"exact\":true,\"pass\":true}]\n"
+      }
+    },
+    {
+      "case": "Go raw map Unicode exact round trips",
+      "pass": true,
+      "go": {
+        "exit": 0,
+        "output": "=== RUN   TestIndependentUnicodeKeys\n--- PASS: TestIndependentUnicodeKeys (0.01s)\nPASS\nok  \tsynthetic\t1.442s\n"
+      },
+      "vet": {
+        "exit": 0,
+        "output": ""
+      }
+    }
+  ],
+  "passed": 32,
+  "total": 33
+}

@@ -2372,7 +2372,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-004",
         "T-003",
@@ -2396,8 +2396,8 @@
       "worktree": ".worktrees/T-640",
       "base_sha": "8883c37",
       "reviewed_sha": "14eb0c60895c9e47e829338c5bf78b1e873c9fe1",
-      "agent": "qa_t640_r2",
-      "execution_note": "Fix cycle 1 committed all three independent findings and broader generated-symbol regressions; contracts race55.965s, vet/syntax/format checks passed. Original QA BOUNCE preserved; new exact-commit review records qa/T-640-r2.md."
+      "agent": "backend_t640_fix2",
+      "execution_note": "Second QA BOUNCE: internal Error operation escapes public TS reservations and renames the required Go error interface method. Original three defects corrected; 32/33 independent groups pass. Fix cycle2 must protect generated interface methods and retain both prior reports; third failure requires scope review."
     },
     {
       "id": "T-058",
