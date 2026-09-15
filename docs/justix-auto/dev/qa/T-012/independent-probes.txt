@@ -1,0 +1,18 @@
+=== RUN   TestIndependentRelayDurability
+=== RUN   TestIndependentRelayDurability/real_receipts_bind_destination_and_copied_accessors_preserve_broker_bytes
+=== RUN   TestIndependentRelayDurability/committed_hold_while_completion_waits_retains_broker_accepted_bytes_unsent
+=== RUN   TestIndependentRelayDurability/unknown_retry_reconciles_actual_commit_versus_rollback_without_sent_state
+=== RUN   TestIndependentRelayDurability/canceled_completion_cannot_consume_a_real_receipt
+=== RUN   TestIndependentRelayDurability/additional_privilege_grants_reject_before_attempts_or_publication
+=== RUN   TestIndependentRelayDurability/unknown_claim_remains_unpublishable_after_authoritative_reconciliation
+=== RUN   TestIndependentRelayDurability/unchanged_recipients_remain_durable_through_independent_retry_attempt
+--- PASS: TestIndependentRelayDurability (7.66s)
+    --- PASS: TestIndependentRelayDurability/real_receipts_bind_destination_and_copied_accessors_preserve_broker_bytes (0.25s)
+    --- PASS: TestIndependentRelayDurability/committed_hold_while_completion_waits_retains_broker_accepted_bytes_unsent (0.36s)
+    --- PASS: TestIndependentRelayDurability/unknown_retry_reconciles_actual_commit_versus_rollback_without_sent_state (0.27s)
+    --- PASS: TestIndependentRelayDurability/canceled_completion_cannot_consume_a_real_receipt (0.15s)
+    --- PASS: TestIndependentRelayDurability/additional_privilege_grants_reject_before_attempts_or_publication (0.60s)
+    --- PASS: TestIndependentRelayDurability/unknown_claim_remains_unpublishable_after_authoritative_reconciliation (0.11s)
+    --- PASS: TestIndependentRelayDurability/unchanged_recipients_remain_durable_through_independent_retry_attempt (0.32s)
+PASS
+ok  	justixauto/pkg/outbox	9.221s

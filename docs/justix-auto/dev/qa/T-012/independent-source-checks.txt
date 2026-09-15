@@ -1,0 +1,24 @@
+HEAD e76fe6c410a23ac35e3fb80ffaae7b3119f0452d
+BASE 7d6516d34ef1b68d4a8e48c8796a199bdb736c5d
+PASS exact task ownership: four source/test leaves, result, two developer logs
+PASS no tracked changes; exact reviewed application source retained
+dccefc021cd450809fbe97cbd0e8c91280a0d823692825f7269f008ce2b98f50  docs/justix-auto/dev/qa/T-012/developer-race-final.txt
+dcc3e7c0329e95d5464899c748d7b46faaec6808d6ef323e41094d38ad03a0b0  docs/justix-auto/dev/qa/T-012/developer-race.txt
+a2c2d9b7e10a62a7085d4715a0b280b6d5d7f472ae39ef2730b7c1c7d4253403  docs/justix-auto/dev/results/T-012.md
+03424aef40e212c1f9df9db5386a237e30557ad6a2d8ad1febfc201666cc7656  pkg/outbox/amqp.go
+fd38d734ee137764737ebe97ab8bac34b485bff7ede1635c09cb3236561ec809  pkg/outbox/amqp_test.go
+58ccae799b26fdb64c1b28c8cd9251d4ed6310ad385e567235ee4341acd510dd  pkg/outbox/relay.go
+2fef84d950a48768015a78517e58e199d88c2564fc42d71d3a39e91bb6c4a5b0  pkg/outbox/relay_test.go
+PASS base unchanged pkg/eventstore/schema.sql
+PASS base unchanged pkg/eventstore/migrations/000002_messaging_delivery.up.sql
+PASS base unchanged pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql
+PASS base unchanged infra/local/rabbitmq/definitions.json
+PASS base unchanged infra/local/rabbitmq/route-contracts.json
+PASS base unchanged go.mod
+PASS base unchanged go.sum
+PASS git diff --check base..SHA
+cf9d36d93158be16803f7740d13f0e1c77024d78fd76614b2c6a05a0ac131491  independent-race.txt
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  independent-vet.txt
+71c6628c56ed9c256fedf97b07b9c88e05ae1f30e1d50663c4b0671bd5ac2131  independent-probes.txt
+ef626663368971374108538892226691e4adb0c5ad0b8f0c464569a10ed4ab2e  independent_probe_test.go
+0c49f39df1e09fc4bd4852b8bc428999a92e8aeec6c8dab37fbbf2014d7b5ef8  independent-overlay.json

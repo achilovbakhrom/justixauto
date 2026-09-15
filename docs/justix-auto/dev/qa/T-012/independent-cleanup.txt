@@ -1,0 +1,12 @@
+Post-test read-only Docker checks, 2026-09-15:
+
+$ docker ps -a --filter name=justixauto-t012- --format '{{.Names}} {{.Status}}'
+[no containers]
+
+$ docker ps --filter name=octocoach-postgres --format '{{.Names}} {{.Ports}}'
+octocoach-postgres 127.0.0.1:55432->5432/tcp
+
+Both test runs used inspected random-name fixture helpers with cleanup
+docker rm -f -v <owned-name>. No cleanup failure occurred. No unknown volume
+pruning was performed. This does not certify absence of historical orphan volumes.
+No reference HTTP server or browser was operated.
