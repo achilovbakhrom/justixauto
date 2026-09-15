@@ -1,0 +1,20 @@
+[
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/dev/dev-state.md.gz",
+    "bytes": 12544,
+    "sha256": "e297a828361ac4f40603715651d680f9aa8b7d79f551120c98e1ade75c98a5f4"
+  },
+  {
+    "path": "docs/justix-auto/dev/auth-transport-assignment.md",
+    "snapshot": "docs/justix-auto/dev/auth-transport-assignment.md.gz",
+    "bytes": 6141,
+    "sha256": "7988a0d554e6a39617c8debd9b33c86a7353160d06bdd9cdcf77c2e7335110ea"
+  },
+  {
+    "path": "docs/justix-auto/state/approvals/auth-transport-compatibility.md",
+    "snapshot": "docs/justix-auto/state/approvals/auth-transport-compatibility.md.gz",
+    "bytes": 2779,
+    "sha256": "61bfad7e96f7ef6468d9d5f4593a588cb48cc15399552d2965cbdd81789b82fe"
+  }
+]

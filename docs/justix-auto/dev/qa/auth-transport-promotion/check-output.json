@@ -1,0 +1,381 @@
+{
+  "result": "PASS",
+  "commit": "56e904a1a2748033be1f4d3565b0fc8eca8bdbe8",
+  "parent": "7dabbfd8c9e783652a48ecace39660eb66a7e009",
+  "assertions": 19822,
+  "preimages": [
+    {
+      "path": "docs/justix-auto/dev/task-index.json",
+      "bytes": 1466105,
+      "sha256": "b51697bae0cc811162c6a648cd1c4cdde2ceceac67d5c3320c2b2700192e5175"
+    },
+    {
+      "path": "docs/justix-auto/dev/task-board.md",
+      "bytes": 215389,
+      "sha256": "5f8d9e5a40c146274840073d8b07da81df2420d2528301406e922c04bf80c156"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-059.md",
+      "bytes": 7973,
+      "sha256": "aa2ca89aa5af2705693d1d212f05270e69b2e9d3914a22cbcdf97676f97e61fb"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-641.md",
+      "bytes": 7054,
+      "sha256": "eae23ccc9929446e5a90fcbeeb7446d542249b042dd037c54d0ab0daf46971ba"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-055.md",
+      "bytes": 8750,
+      "sha256": "97a5e0debfcddec9ef4c67a1ac55d25941084216574e03dae787a6248f6d01a9"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-060.md",
+      "bytes": 7883,
+      "sha256": "9d51f1b16364071d53e0463bd6b76679e7d6d909e7ad94e5ddfc6816fddb9211"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-592.md",
+      "bytes": 7172,
+      "sha256": "dc7337eb12cbd5c69d30e3423eae821a3839bd146da47b61ba77f5058a29261c"
+    },
+    {
+      "path": "docs/justix-auto/dev/backlog-coverage.md",
+      "bytes": 41220,
+      "sha256": "94068e5f5e59b3ba4fae7cfeffed6449d35cd47fcbeef94ae4902c88e83a97c4"
+    },
+    {
+      "path": "docs/justix-auto/dev/dev-state.md",
+      "bytes": 12580,
+      "sha256": "63ce515566dc6a8c7af7f6acdd72b2556bc6db44f0d78f3c599e53b0fbdafa06"
+    },
+    {
+      "path": "docs/justix-auto/architecture.md",
+      "bytes": 46472,
+      "sha256": "d7ac017bfddaef915de1e7bf2b1c41df800641e1e7972dc94dcf714bfefd4551"
+    },
+    {
+      "path": "docs/justix-auto/state/approvals/auth.md",
+      "bytes": 2653,
+      "sha256": "bb4952a9978c466f37612af534621e4631a57c903fc7d365ddd703015d999c13"
+    },
+    {
+      "path": "docs/justix-auto/dev/auth-client-readiness.md",
+      "bytes": 3810,
+      "sha256": "b22f435b989299a698f909394e400508425207352649371a55425977bb695f67"
+    },
+    {
+      "path": "docs/justix-auto/dev/auth-transport-assignment.md",
+      "bytes": 5217,
+      "sha256": "eef399dc6f2eebd3020d63396e21d42992729a8859b3699357a97defebeb51d8"
+    }
+  ],
+  "preserved_existing_task_records": 934,
+  "task_count": 944,
+  "total_effort_hours": 3138,
+  "new_effort_hours": 36,
+  "aliases": {
+    "AT-JSON": "T-935",
+    "AT-HTTP": "T-936",
+    "AT-GEN-PROFILE": "T-937",
+    "AT-GEN-SEM": "T-938",
+    "AT-GEN-TS": "T-939",
+    "AT-GEN-GO": "T-940",
+    "AT-GEN-RAW": "T-941",
+    "AT-GEN-VERIFY": "T-942",
+    "AT-AUTH": "T-943",
+    "AT-EPOCH": "T-944"
+  },
+  "serial_generator_chain": [
+    "T-937",
+    "T-938",
+    "T-939",
+    "T-940",
+    "T-941",
+    "T-942"
+  ],
+  "unique_shared_leaf_owner_pairs": 45,
+  "shared_pairs": [
+    [
+      "web/packages/api/package.json",
+      "T-032",
+      "T-944"
+    ],
+    [
+      "web/packages/api/src/client.ts",
+      "T-032",
+      "T-936"
+    ],
+    [
+      "web/packages/api/src/client.test.ts",
+      "T-032",
+      "T-936"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-640",
+      "T-937"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-640",
+      "T-938"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-640",
+      "T-939"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-640",
+      "T-940"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-640",
+      "T-941"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-640",
+      "T-942"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-937",
+      "T-938"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-937",
+      "T-939"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-937",
+      "T-940"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-937",
+      "T-941"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-937",
+      "T-942"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-938",
+      "T-939"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-938",
+      "T-940"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-938",
+      "T-941"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-938",
+      "T-942"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-939",
+      "T-940"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-939",
+      "T-941"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-939",
+      "T-942"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-940",
+      "T-941"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-940",
+      "T-942"
+    ],
+    [
+      "tools/generate-contracts.mjs",
+      "T-941",
+      "T-942"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-640",
+      "T-937"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-640",
+      "T-938"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-640",
+      "T-939"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-640",
+      "T-940"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-640",
+      "T-941"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-640",
+      "T-942"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-937",
+      "T-938"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-937",
+      "T-939"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-937",
+      "T-940"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-937",
+      "T-941"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-937",
+      "T-942"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-938",
+      "T-939"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-938",
+      "T-940"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-938",
+      "T-941"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-938",
+      "T-942"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-939",
+      "T-940"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-939",
+      "T-941"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-939",
+      "T-942"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-940",
+      "T-941"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-940",
+      "T-942"
+    ],
+    [
+      "tests/contracts/generation_reproducibility_test.go",
+      "T-941",
+      "T-942"
+    ]
+  ],
+  "modified_markdown_links_checked": 1014,
+  "preserved_qa_artifacts": [
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility.md",
+      "sha256": "d1401baa1dc334f14f68406c86d6a97bda791580171b55c7229d677a60696a1a"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility/union_probe.mjs",
+      "sha256": "33f65fc3cf1163b81a4bb23223b4a43b0a67ab892100a1672480630c700ad013"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility/commands.txt",
+      "sha256": "5b4ca9e8bbc8babd35f2ae0e1ef935ff74128da0090fa0be6155b26e66666089"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility/independent_probe.mjs",
+      "sha256": "9de99e9e3b72a35efb21d33a574db0564f52de9aba4870068478a21002daed12"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility/interfaces.ts",
+      "sha256": "98bf22d187ed70fed3ceaee93a20cad48c09dea7579131addecd7cd0236062ed"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2.md",
+      "sha256": "d44e782f43b7141afc1b0e4c97c6bb992ee9d1bdf25bc1e9e29c02060f724bef"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/cli_probe.mjs",
+      "sha256": "7e832b0b05b0b024639d05a30fa30a7722aa9f04a823e69b71613780a3e1335a"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/check.py",
+      "sha256": "1a159d953591499f28d981503f0e59af5bc74afe91f5b3ef3e403cd5781bb957"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/prepare_go.mjs",
+      "sha256": "f0fc5a5bc518b7113c43fddcd8549db096850819fb30c2f40d3c5a23b7e67ab8"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/semantics_test.go",
+      "sha256": "191caa3b6a9b87c3cfc7d1edf47e5621afac05fd6143d540ed7db7bfdbdc13b5"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/runtime.mjs",
+      "sha256": "5e05dfd63d126125681586fc62d7006080df6671fe48e2e57083e2c53e335c13"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/commands.txt",
+      "sha256": "f173061c2878320ca86daca348d3c2b7221df97666fa604b1dc9676ffb2a649f"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/auth-transport-compatibility-r2/interfaces.mts",
+      "sha256": "48a2f6c54bbd415cebe16bbb90a987e4215247841a876916a81f8106f06ddedb"
+    }
+  ],
+  "limits": "canonical promotion audit only; runtime models were not rerun and implementation/production gates remain"
+}

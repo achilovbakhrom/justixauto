@@ -1,6 +1,6 @@
 # Auth transport compatibility proposal assignment
 
-2026-09-15. Status: technical proposal adopted; canonical promotion QA pending before implementation assignment.
+2026-09-15. Status: technical proposal adopted; independent canonical promotion QA GREEN; implementation follows task dependencies.
 Assigned worktree: `.worktrees/auth-transport-compatibility`.
 Branch: `task/auth-transport-compatibility`.
 Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
@@ -97,3 +97,12 @@ Independently verify 13 exact recoverable preimages, unchanged 934 task records
 except four approved edges, 944 nodes/3138h, ten aliases/serial ownership, exact
 proposal copies, existing evidence, coverage/acceptance closure and all required
 producer/consumer/manifest/resource handoffs. No application or canonical edits.
+
+## Canonical review completed
+
+[Independent GREEN](qa/auth-transport-promotion.md) verifies exact promotion
+`56e904a1a2748033be1f4d3565b0fc8eca8bdbe8`: all 13 preimages, 934 prior
+task records except four approved dependency additions, the 944-node graph,
+3,138 estimated hours, 45 serialized ownership pairs and 13 prior QA artifacts.
+Coordinator imported the report and three evidence files byte-for-byte. The
+promotion gate is cleared; implementation and exact-commit QA remain pending.

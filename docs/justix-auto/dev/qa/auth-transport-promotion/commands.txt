@@ -1,0 +1,41 @@
+Independent canonical auth promotion audit — 2026-09-15
+Working directory:
+/Users/bakhromachilov/startups/justixauto/.worktrees/auth-transport-promotion-qa
+Exact HEAD: 56e904a1a2748033be1f4d3565b0fc8eca8bdbe8
+Exact parent: 7dabbfd8c9e783652a48ecace39660eb66a7e009
+Reviewed proposal: 914fcd78cc0789e41e9091efdc99fb5afc6c5c50
+Reviewed SHA256: e1643c8cf36ba5733f7bfa0d32e2285604b345fe72ed506e17248fbae9af3e0c
+
+Read AGENTS.md, current assignment/adoption, approval, proposed/canonical contract,
+new and affected tasks, board/index/coverage/architecture diffs and coordinator
+result. Independent checks use exact Git objects, not that result as evidence.
+
+1. python3 docs/justix-auto/dev/qa/auth-transport-promotion/check.py
+Exit0, first independent run: PASS19792 assertions.
+No failures. Added30 further task-document contribution/closer/parent assertions.
+
+2. python3 docs/justix-auto/dev/qa/auth-transport-promotion/check.py > docs/justix-auto/dev/qa/auth-transport-promotion/check-output.json
+Exit0, final independent run: PASS19822 assertions.
+13 exact SHA/gzip/byte-length parent preimages;
+934 existing full task records unchanged except4 approved dependency additions;
+944 unique tasks,3138h,10 proposed aliases/36h,13 unique source leaves;
+45 computed shared-leaf/owner-pair tuples, all serial through dependency ancestry;
+all task/board status/dependency/ownership consistency;
+exact new coverage plus dedicated transitive closer;
+1014 local link targets verified;
+5 original and8 r2 QA artifacts preserved byte-for-byte.
+Detailed evidence and identities are in check-output.json.
+Assertion count includes repeated graph traversal/field checks, not business cases.
+
+3. bash tools/check-git.sh
+Exit0: GIT CHECK OK for the exact detached project worktree.
+
+4. git diff --check; git diff --quiet; git status --short; git rev-parse HEAD
+Exit0. Tracked files unchanged. Only assigned new report/evidence paths present.
+HEAD remains the reviewed canonical promotion SHA.
+
+No runtime/Go/React/browser suite rerun: exact reviewed proposal and source bytes
+are unchanged, and this task is canonical promotion verification. Existing r2
+runtime evidence is preserved and cited with its original limits, not relabeled
+as newly executed. No network, dependency install/audit, Docker, production,
+secrets, external message, commit or merge was performed.

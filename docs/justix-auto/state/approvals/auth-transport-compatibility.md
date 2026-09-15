@@ -47,3 +47,8 @@ Canonical promotion QA must verify all prior task states/edges/ownership,
 coverage/closure, exact copies and recoverable preimages before assignment.
 Snapshots: `../backups/2026-09-15-auth-transport-promotion/`. Implementation, browser/owner cookie tests,
 production configuration, recovery delivery and running services remain pending.
+
+Independent [canonical promotion QA is GREEN](../../dev/qa/auth-transport-promotion.md)
+at `56e904a1a2748033be1f4d3565b0fc8eca8bdbe8`. Coordinator accepts that
+verification and clears the pre-assignment promotion gate. Task dependencies,
+exact file ownership and independent implementation QA remain mandatory.
