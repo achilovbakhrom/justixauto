@@ -1256,7 +1256,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-003"
       ],
@@ -1278,9 +1278,9 @@
       "scope": "mTLS identity and caller/action/purpose allowlist; spoofed public internal headers rejected; do not generate production certificates.",
       "worktree": ".worktrees/T-031",
       "base_sha": "a6e769e1723f784a3646099b62767d301b214eb5",
-      "reviewed_sha": "e39875fb207af9b88ffdfffeb9cbde8770ac58ab",
+      "reviewed_sha": "8366e5352ac4a9892c0a5dd2a31553658666e755",
       "agent": "backend/t031_auth_transport",
-      "execution_note": "Independent QA BOUNCE: resolver map-deduplicates repeated identical configured URI SANs and admits an ambiguous certificate despite the exactly-one identity rule. Fix cycle 1 assigned. Real TLS no-cert/untrusted-CA/server-EKU misuse, DNS/CN-only identity denial, header spoofing, exact grants, race/vet/boundary checks otherwise pass."
+      "execution_note": "Fix cycle 1 committed clean at 8366e5352ac4a9892c0a5dd2a31553658666e755. Resolver counts configured URI SAN occurrences and rejects repeated identical identities as ambiguous; permanent regression and full QA adversarial fixture pass under race with readonly full/vet/boundary checks. Fresh exact-SHA QA pending."
     },
     {
       "id": "T-032",
