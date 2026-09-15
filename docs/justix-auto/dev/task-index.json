@@ -536,7 +536,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "implementing",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-008"
       ],
@@ -559,7 +559,7 @@
       "base_sha": "1c8f8aa403deb752924209b778aaf2747ef79bbb",
       "reviewed_sha": null,
       "agent": "backend/t009_append",
-      "execution_note": "T008 integrated and pushed; conditional append and typed transaction implementation assigned."
+      "execution_note": "Developer commit fd979e4ec942693c983c2b49c1934f4492493aee passed live Postgres and import/vet checks. Independent exact-commit QA active."
     },
     {
       "id": "T-010",
@@ -25539,7 +25539,7 @@
       "base_sha": "537b662af02db56611bf6377fc42b16086a037dd",
       "reviewed_sha": null,
       "agent": "architect/t746_registration_contract",
-      "execution_note": "Architect proposal promoted by coordinator to task-owned contracts draft; fixed navigation catalog clarified. Independent proposal QA pending; no runtime implementation claimed."
+      "execution_note": "First QA BOUNCE found missing inert consumer claims. Corrected promoted contract ddeec749c68ab3d4edba428a1e2b0eeb7b1fdb88 now under independent re-review; source draft and snapshot preserved."
     },
     {
       "id": "T-747",
