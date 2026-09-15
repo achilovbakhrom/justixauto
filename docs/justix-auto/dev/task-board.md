@@ -24,6 +24,11 @@ Date: 2026-09-15. Release scope and architecture approved; development authorize
 
 ## Graph metrics and lanes
 
+Current scope: 924 tasks after the approved eight-task messaging correction.
+The metrics below describe the original reviewed 916-task baseline; no new
+antichain width or elapsed schedule is claimed. See the amendment rows and
+[approval](../state/approvals/messaging-delivery.md) for the bounded new scope.
+
 916 tasks; 3036 estimated effort-hours (not elapsed schedule). Longest dependency chain: 45 nodes. Earliest-rank maximum frontier: 150. Exact dependency-poset maximum antichain width: 335. These are graph-only upper bounds ignoring unresolved gates/worker cap, not ready-now concurrency. ENV-GIT passes; T-001 still gates application scaffolding.
 
 Critical chain (unit-duration graph): T-001 → T-003 → T-007 → T-008 → T-009 → T-017 → T-018 → T-024 → T-059 → T-641 → T-060 → T-061 → T-066 → T-133 → T-134 → T-307 → T-308 → T-139 → T-315 → T-316 → T-173 → T-329 → T-330 → T-215 → T-331 → T-332 → T-216 → T-337 → T-338 → T-245 → T-357 → T-358 → T-289 → T-339 → T-340 → T-246 → T-250 → T-251 → T-252 → T-255 → T-256 → T-257 → T-860 → T-555 → T-635.
@@ -71,7 +76,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | integrated | T-008 | `task/T-009-append` | ENV-GIT |
 | [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | integrated | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | integrated | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
-| [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006 | `task/T-012-outbox-relay` | ENV-GIT |
+| [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006, T-919, T-924 | `task/T-012-outbox-relay` | ENV-GIT |
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | todo | T-013, T-010 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013 | `task/T-015-quarantine` | ENV-GIT |
@@ -80,8 +85,8 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-018](tasks/T-018.md) | B-01 | Implement durable operation decisions and recovery scheduling | implementation / 3 | foundation | in-progress | T-017, T-011, T-013 | `task/T-018-process` | ENV-GIT |
 | [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | integrated | T-003 | `task/T-019-money` | ENV-GIT |
 | [T-020](tasks/T-020.md) | B-01 | Instrument safe correlation and stuck-operation signals | implementation / 3 | foundation | todo | T-018, T-015 | `task/T-020-telemetry` | ENV-GIT |
-| [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018 | `task/T-021-recovery-harness` | ENV-GIT |
-| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008 | `task/T-022-local-compose` | ENV-GIT |
+| [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018, T-923 | `task/T-021-recovery-harness` | ENV-GIT |
+| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924 | `task/T-022-local-compose` | ENV-GIT |
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
 | [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | todo | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | todo | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
@@ -95,7 +100,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-033](tasks/T-033.md) | B-05 | Extract existing HTML tokens without redesign | implementation / 2 | frontend-shared | integrated | T-004 | `task/T-033-tokens` | ENV-GIT |
 | [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | integrated | T-033 | `task/T-034-dialog` | ENV-GIT |
 | [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | integrated | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
-| [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | todo | T-035 | `task/T-036-admin-shell` | ENV-GIT |
+| [T-036](tasks/T-036.md) | B-05 | Scaffold the independent admin app and verified shell | implementation / 4 | frontend-admin | in-progress | T-035 | `task/T-036-admin-shell` | ENV-GIT |
 | [T-037](tasks/T-037.md) | B-05 | Scaffold the independent realization app and verified shell | implementation / 4 | frontend-realization | todo | T-035 | `task/T-037-realization-shell` | ENV-GIT |
 | [T-038](tasks/T-038.md) | B-05 | Scaffold the independent financing app and verified shell | implementation / 4 | frontend-financing | todo | T-035 | `task/T-038-financing-shell` | ENV-GIT |
 | [T-039](tasks/T-039.md) | B-05 | Scaffold the independent insurance app and verified shell | implementation / 4 | frontend-insurance | todo | T-035 | `task/T-039-insurance-shell` | ENV-GIT |
@@ -914,13 +919,13 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-912](tasks/T-912.md) | B-09 | Project subscribe and register the retail document access slice | implementation / 3 | retail | todo | T-739, T-583 | `task/T-912-retail-document-access-registration` | ENV-GIT |
 | [T-913](tasks/T-913.md) | B-09 | Project subscribe and register the financing document access slice | implementation / 3 | financing | todo | T-740, T-584 | `task/T-913-financing-document-access-registration` | ENV-GIT |
 | [T-914](tasks/T-914.md) | B-09 | Project subscribe and register the insurance document access slice | implementation / 3 | insurance | todo | T-741, T-585 | `task/T-914-insurance-document-access-registration` | ENV-GIT |
-| [T-580](tasks/T-580.md) | B-01 | Wire minimal identity API worker and projector runtimes | implementation / 4 | identity | todo | T-024, T-746, T-031, T-020, T-012, T-014 | `task/T-580-identity-wire` | ENV-GIT |
-| [T-581](tasks/T-581.md) | B-01 | Wire minimal inventory API worker and projector runtimes | implementation / 4 | inventory | todo | T-025, T-746, T-031, T-020, T-012, T-014 | `task/T-581-inventory-wire` | ENV-GIT |
-| [T-582](tasks/T-582.md) | B-01 | Wire minimal commerce API worker and projector runtimes | implementation / 4 | commerce | todo | T-026, T-746, T-031, T-020, T-012, T-014 | `task/T-582-commerce-wire` | ENV-GIT |
-| [T-583](tasks/T-583.md) | B-01 | Wire minimal retail API worker and projector runtimes | implementation / 4 | retail | todo | T-027, T-746, T-031, T-020, T-012, T-014 | `task/T-583-retail-wire` | ENV-GIT |
-| [T-584](tasks/T-584.md) | B-01 | Wire minimal financing API worker and projector runtimes | implementation / 4 | financing | todo | T-028, T-746, T-031, T-020, T-012, T-014 | `task/T-584-financing-wire` | ENV-GIT |
-| [T-585](tasks/T-585.md) | B-01 | Wire minimal insurance API worker and projector runtimes | implementation / 4 | insurance | todo | T-029, T-746, T-031, T-020, T-012, T-014 | `task/T-585-insurance-wire` | ENV-GIT |
-| [T-586](tasks/T-586.md) | B-01 | Wire minimal documents API worker and projector runtimes | implementation / 4 | documents | todo | T-030, T-746, T-031, T-020, T-012, T-014 | `task/T-586-documents-wire` | ENV-GIT |
+| [T-580](tasks/T-580.md) | B-01 | Wire minimal identity API worker and projector runtimes | implementation / 4 | identity | todo | T-024, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-580-identity-wire` | ENV-GIT |
+| [T-581](tasks/T-581.md) | B-01 | Wire minimal inventory API worker and projector runtimes | implementation / 4 | inventory | todo | T-025, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-581-inventory-wire` | ENV-GIT |
+| [T-582](tasks/T-582.md) | B-01 | Wire minimal commerce API worker and projector runtimes | implementation / 4 | commerce | todo | T-026, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-582-commerce-wire` | ENV-GIT |
+| [T-583](tasks/T-583.md) | B-01 | Wire minimal retail API worker and projector runtimes | implementation / 4 | retail | todo | T-027, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-583-retail-wire` | ENV-GIT |
+| [T-584](tasks/T-584.md) | B-01 | Wire minimal financing API worker and projector runtimes | implementation / 4 | financing | todo | T-028, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-584-financing-wire` | ENV-GIT |
+| [T-585](tasks/T-585.md) | B-01 | Wire minimal insurance API worker and projector runtimes | implementation / 4 | insurance | todo | T-029, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-585-insurance-wire` | ENV-GIT |
+| [T-586](tasks/T-586.md) | B-01 | Wire minimal documents API worker and projector runtimes | implementation / 4 | documents | todo | T-030, T-746, T-031, T-020, T-012, T-014, T-919, T-923, T-924 | `task/T-586-documents-wire` | ENV-GIT |
 | [T-587](tasks/T-587.md) | B-05 | Load independently completed admin routes and boundary providers | implementation / 3 | frontend-admin | todo | T-036, T-578, T-746 | `task/T-587-admin-routes` | ENV-GIT |
 | [T-588](tasks/T-588.md) | B-05 | Load independently completed realization routes and boundary providers | implementation / 3 | frontend-realization | todo | T-037, T-578, T-746 | `task/T-588-realization-routes` | ENV-GIT |
 | [T-589](tasks/T-589.md) | B-05 | Load independently completed financing routes and boundary providers | implementation / 3 | frontend-financing | todo | T-038, T-578, T-746 | `task/T-589-financing-routes` | ENV-GIT |
@@ -980,3 +985,16 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 ## Deferred scope
 
 B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded oversight/overrides remain Icebox. No implementation tasks are assigned to them. Existing CRM, agreed finance document exchange and underwriting decisions remain in scope.
+
+## Approved messaging correction tasks — 2026-09-15
+
+| ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
+|---|---|---|---|---|---|---|---|---|
+| [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | todo | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
+| [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | todo | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
+| [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | todo | T-918, T-011 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
+| [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | todo | T-917, T-009, T-746 | `task/T-920-messaging-local-membership` | ENV-GIT |
+| [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013 | `task/T-921-messaging-durable-intake` | ENV-GIT |
+| [T-922](tasks/T-922.md) | B-01 | Expose transaction-bound inbox effects for atomic dispatch completion | implementation / 3 | foundation | todo | T-013 | `task/T-922-messaging-transactional-inbox` | ENV-GIT |
+| [T-923](tasks/T-923.md) | B-01 | Run independently fenced logical consumer jobs with atomic completion | implementation / 4 | foundation | todo | T-921, T-922, T-014, T-015 | `task/T-923-messaging-consumer-dispatch` | ENV-GIT |
+| [T-924](tasks/T-924.md) | B-01 | Restrict activated broker routes and separate relay and intake principals | implementation / 3 | foundation | todo | T-006, T-001 | `task/T-924-messaging-broker-roles` | ENV-GIT |

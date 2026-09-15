@@ -31,3 +31,13 @@ event bytes/identity, sequence guarantees, least-privilege broker access and
 confirmed delivery/ACK semantics. No runtime policy is selected by this note.
 Approved single-consumer fixtures may proceed; no affected owner subscription
 is ready for activation on the basis of current primitive tests alone.
+
+## Reviewed decision and implementation gate
+
+Proposal `ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7` passed independent design QA
+and is [approved](../state/approvals/messaging-delivery.md). The canonical
+[contract](../state/drafts/contracts/messaging-delivery.md) preserves its exact
+reviewed bytes. T-917–T-924 are bounded follow-ups; T-922 definitively supplies
+the missing transaction-composable inbox interface. Existing primitive QA stays
+valid for its historical scope. This decision closes the design choice, not
+the runtime gaps: they remain gated on the new task graph and live failure tests.

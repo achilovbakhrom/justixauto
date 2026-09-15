@@ -1,7 +1,7 @@
 {
   "metadata": {
     "project": "justix-auto",
-    "date": "2026-09-14",
+    "date": "2026-09-15",
     "target_root": "/Users/bakhromachilov/startups/justixauto",
     "all_statuses": "mixed; see per-task status",
     "implementation_authorized": true,
@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 916,
-    "effort_hours": 3036,
+    "task_count": 924,
+    "effort_hours": 3062,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -262,7 +262,22 @@
       "T-555",
       "T-635"
     ],
-    "weighted_critical_path_hours": 152
+    "weighted_critical_path_hours": 152,
+    "graph_metrics_scope": "Longest-chain/frontier/antichain metrics retain the reviewed 916-task baseline; eight bounded messaging amendment tasks and new edges are recorded without claiming recomputed width or schedule.",
+    "messaging_amendment": {
+      "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
+      "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
+      "added_tasks": [
+        "T-917",
+        "T-918",
+        "T-919",
+        "T-920",
+        "T-921",
+        "T-922",
+        "T-923",
+        "T-924"
+      ]
+    }
   },
   "tasks": [
     {
@@ -638,7 +653,9 @@
       "status": "todo",
       "depends_on": [
         "T-011",
-        "T-006"
+        "T-006",
+        "T-919",
+        "T-924"
       ],
       "branch": "task/T-012-outbox-relay",
       "lane": "foundation",
@@ -931,7 +948,8 @@
         "T-012",
         "T-016",
         "T-015",
-        "T-018"
+        "T-018",
+        "T-923"
       ],
       "branch": "task/T-021-recovery-harness",
       "lane": "verification",
@@ -962,7 +980,9 @@
       "depends_on": [
         "T-005",
         "T-006",
-        "T-008"
+        "T-008",
+        "T-917",
+        "T-924"
       ],
       "branch": "task/T-022-local-compose",
       "lane": "infra",
@@ -1480,7 +1500,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-035"
       ],
@@ -1510,12 +1530,14 @@
         "B-05.AC4"
       ],
       "scope": "Base and Router basename /admin/; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
+      "worktree": ".worktrees/T-036",
+      "base_sha": "6a25973f20c528ef66ecdeb86aefec058e3c06fb",
       "reviewed_sha": null,
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend_t036",
+      "execution_note": "Shared harness T035 integrated and Git passed; isolated Admin shell task assigned against M-A01 HTML reference. Root owns serialized lock update before exact-SHA browser QA."
     },
     {
       "id": "T-037",
@@ -31106,7 +31128,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-580-identity-wire",
       "lane": "identity",
@@ -31148,7 +31173,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-581-inventory-wire",
       "lane": "inventory",
@@ -31190,7 +31218,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-582-commerce-wire",
       "lane": "commerce",
@@ -31232,7 +31263,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-583-retail-wire",
       "lane": "retail",
@@ -31274,7 +31308,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-584-financing-wire",
       "lane": "financing",
@@ -31316,7 +31353,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-585-insurance-wire",
       "lane": "insurance",
@@ -31358,7 +31398,10 @@
         "T-031",
         "T-020",
         "T-012",
-        "T-014"
+        "T-014",
+        "T-919",
+        "T-923",
+        "T-924"
       ],
       "branch": "task/T-586-documents-wire",
       "lane": "documents",
@@ -34851,6 +34894,240 @@
       "worktree": null,
       "base_sha": null,
       "reviewed_sha": null
+    },
+    {
+      "id": "T-917",
+      "key": "messaging_delivery_schema",
+      "title": "Add immutable delivery and dispatch schema with retained legacy migration",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-008"
+      ],
+      "branch": "task/T-917-messaging-delivery-schema",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000002_messaging_delivery.up.sql",
+        "pkg/eventstore/messaging_migration_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Implement the approved additive parent/delivery, custody/enrollment/job and admission records, complete-child constraints, immutable evidence, narrowed grants, explicit mode fencing and populated legacy preservation. No destructive down migration or automatic cutover. Split before implementation if the four-hour bound is exceeded.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-918",
+      "key": "messaging_source_admission",
+      "title": "Resolve authorized source stream recipient plans in the owner transaction",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-917",
+        "T-009"
+      ],
+      "branch": "task/T-918-messaging-source-admission",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/outbox/admission.go",
+        "pkg/outbox/admission_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Typed owner-local source admission ranges and stream fencing; frozen distinct complete recipient plans; explicit empty-plan contract, checkpoint/bootstrap references, drain/hold cutovers and fail-closed conflicts. Technical metadata is not a business data grant.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-919",
+      "key": "messaging_outbox_plan",
+      "title": "Persist one immutable message with its complete recipient delivery set",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-918",
+        "T-011"
+      ],
+      "branch": "task/T-919-messaging-outbox-plan",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/outbox/insert.go",
+        "pkg/outbox/insert_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Amend insertion to resolve the admitted plan in the same command transaction and persist identical parent bytes with every recipient child. Preserve single-target API compatibility only in explicit legacy schema mode. Missing/extra children or conflicting immutable identity roll back all effects.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-920",
+      "key": "messaging_local_membership",
+      "title": "Admit complete local consumer membership and bootstrap cutovers",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-917",
+        "T-009",
+        "T-746"
+      ],
+      "branch": "task/T-920-messaging-local-membership",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/inbox/membership.go",
+        "pkg/inbox/membership_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Typed complete role-independent consumer membership, explicit source-issued checkpoints, fenced addition/backlog enrollment and drain/hold evidence. Do not rewrite old enrollment sets, infer sequence zero or replay private history from catalog presence.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-921",
+      "key": "messaging_durable_intake",
+      "title": "Accept durable owner custody and stage every admitted consumer job",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-920",
+        "T-013"
+      ],
+      "branch": "task/T-921-messaging-durable-intake",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/inbox/intake.go",
+        "pkg/inbox/intake_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Validate route/source/schema/admission and atomically preserve immutable custody plus complete frozen enrollment/jobs before a custody ACK. Duplicate comparison reuses original membership; unknown commit withholds ACK. Custody acceptance is distinct from business-consumer completion.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-922",
+      "key": "messaging_transactional_inbox",
+      "title": "Expose transaction-bound inbox effects for atomic dispatch completion",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-013"
+      ],
+      "branch": "task/T-922-messaging-transactional-inbox",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/inbox/consume.go",
+        "pkg/inbox/consume_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Definite prerequisite for dispatch: add a typed caller-transaction boundary so inbox/effect/checkpoint/job completion share one transaction without nested Run/commit. Preserve existing direct-ACK public behavior. Expose exact-duplicate outcome safely so a migrated prior inbox can complete its pending job without reapplying effects. No broker ACK or external I/O inside the caller transaction.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-923",
+      "key": "messaging_consumer_dispatch",
+      "title": "Run independently fenced logical consumer jobs with atomic completion",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-921",
+        "T-922",
+        "T-014",
+        "T-015"
+      ],
+      "branch": "task/T-923-messaging-consumer-dispatch",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/inbox/dispatch.go",
+        "pkg/inbox/dispatch_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Role-specific consumer jobs with bounded lease tokens, typed same-transaction inbox/effect/checkpoint/completion, duplicate and legacy-inbox recovery, independent gap/quarantine holds and retries. Lost fence rolls back effects; no timeout cancellation or cross-consumer progress credit.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-924",
+      "key": "messaging_broker_roles",
+      "title": "Restrict activated broker routes and separate relay and intake principals",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-006",
+        "T-001"
+      ],
+      "branch": "task/T-924-messaging-broker-roles",
+      "lane": "foundation",
+      "files_owned": [
+        "infra/local/rabbitmq/definitions.json",
+        "infra/local/rabbitmq/route-contracts.json",
+        "tests/integration/broker_topology_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Explicit reviewed source/target/schema route metadata and split relay/intake capabilities; no configure/foreign reads/default exchange grants. Empty activated contract set denies publication. Synthetic fixture routes do not activate business permissions. Preserve current durable owner queues/exchanges and pinned live permission evidence.",
+      "worktree": null,
+      "base_sha": null
     }
   ]
 }

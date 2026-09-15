@@ -381,3 +381,16 @@ leaf export cannot create navigation by itself or change catalog placement. New
 navigation requires a separately approved catalog change; contextual slot-only
 features need no catalog entry. This makes the example FeatureRoutes shape
 sufficient without an implicit untyped menu-property extension.
+
+## Approved messaging transport amendment — 2026-09-15
+
+[Coordinator approval](../../approvals/messaging-delivery.md) adopts the
+[reviewed delivery contract](messaging-delivery.md), supplementing this original
+T-746 proposal. In custody mode only owner intake competes on the AMQP queue;
+projection/process factories supply logical SQL consumer jobs. Complete inert
+claims still cover both roles. Broker ACK follows durable custody plus all
+admitted jobs; each consumer separately commits inbox/effect/checkpoint/job
+completion. Registration never grants stream access, alters enrollment history
+or authorizes snapshot/process catch-up. Existing direct-ACK mode remains only
+for explicitly single-consumer compositions. T-917–T-924 and updated owner
+wiring dependencies must integrate before this mode is activated.

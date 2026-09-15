@@ -27,10 +27,10 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-018 in-progress (`.worktrees/T-018`, `task/T-018-process`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`).
-- Integrated tasks: 19/916; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-018 in-progress (`.worktrees/T-018`, `task/T-018-process`); T-036 in-progress (`.worktrees/T-036`, `task/T-036-admin-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`).
+- Integrated tasks: 19/924; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
-- Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
+- Formal PM task files: 924 (916 reviewed baseline + eight approved messaging amendments); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
 - Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
@@ -135,3 +135,11 @@ User action: cd '/Users/bakhromachilov/startups/justixauto' && git init -b main 
 
 This is tool output, not a command executed by the coordinator. User should review
 what will be staged before creating the initial commit; parent repo is untouched.
+
+### Approved messaging correction — 2026-09-15
+
+The reviewed [amendment](../state/drafts/contracts/messaging-delivery.md) is
+approved by [coordinator decision](../state/approvals/messaging-delivery.md).
+T-917–T-924 implement recipient plans, durable intake and logical dispatch;
+T-922 is the definite transaction-composable inbox prerequisite identified by QA.
+No affected composition is ready until its added graph dependencies integrate.
