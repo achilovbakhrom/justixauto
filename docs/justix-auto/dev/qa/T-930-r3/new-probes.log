@@ -1,0 +1,42 @@
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/canonical_maximum_identities
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/CRLF_whitespace
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/escaped_exact_field_names_and_filename
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/UTF8_BOM
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/NUL_trailer
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/comment_trailer
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/leading_comment
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/max_version_overflow
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/max_revision_overflow
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/same_version_exponent
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/same_revision_fraction
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/quoted_maximum_version
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/leading_zero_byte
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/positive-sign_byte
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/nonfinite_byte
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/hex_byte
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/byte_overflow_at_second_position
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/fractional_byte_at_second_position
+=== RUN   TestIndependentR3CanonicalAndMalformedBoundaries/duplicate_byte_field_escaped
+--- PASS: TestIndependentR3CanonicalAndMalformedBoundaries (0.05s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/canonical_maximum_identities (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/CRLF_whitespace (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/escaped_exact_field_names_and_filename (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/UTF8_BOM (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/NUL_trailer (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/comment_trailer (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/leading_comment (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/max_version_overflow (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/max_revision_overflow (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/same_version_exponent (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/same_revision_fraction (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/quoted_maximum_version (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/leading_zero_byte (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/positive-sign_byte (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/nonfinite_byte (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/hex_byte (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/byte_overflow_at_second_position (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/fractional_byte_at_second_position (0.00s)
+    --- PASS: TestIndependentR3CanonicalAndMalformedBoundaries/duplicate_byte_field_escaped (0.00s)
+PASS
+ok  	justixauto/pkg/persistence	1.678s

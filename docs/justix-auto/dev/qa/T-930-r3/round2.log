@@ -1,0 +1,72 @@
+=== RUN   TestIndependentR2RuntimeAuthority
+    independent_r2_test.go:15: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3543056243
+    independent_r2_test.go:15: created owned fixture justixauto-t930-0187c98c-529b-405e-80b4-fa5bc2bb753f id a633da229fa4a4a316058d9593f21e76e89bd1160afbe2618bc4f75498cbfdbf image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestIndependentR2RuntimeAuthority/SET/justix_identity_runtime
+=== RUN   TestIndependentR2RuntimeAuthority/SET/PUBLIC
+=== RUN   TestIndependentR2RuntimeAuthority/SET/qa_parameter_inner
+=== RUN   TestIndependentR2RuntimeAuthority/ALTER_SYSTEM/justix_identity_runtime
+=== RUN   TestIndependentR2RuntimeAuthority/ALTER_SYSTEM/PUBLIC
+=== RUN   TestIndependentR2RuntimeAuthority/ALTER_SYSTEM/qa_parameter_inner
+=== RUN   TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/TABLES
+=== RUN   TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/SEQUENCES
+=== RUN   TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/FUNCTIONS
+=== RUN   TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/TYPES
+=== RUN   TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/SCHEMAS
+=== RUN   TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/LARGE_OBJECTS
+=== RUN   TestIndependentR2RuntimeAuthority/source_session_replication_mode_cannot_be_inherited_at_login
+=== NAME  TestIndependentR2RuntimeAuthority
+    check_test.go:191: validated fixture removed and absent: a633da229fa4a4a316058d9593f21e76e89bd1160afbe2618bc4f75498cbfdbf justixauto-t930-0187c98c-529b-405e-80b4-fa5bc2bb753f; attached volume IDs []
+--- PASS: TestIndependentR2RuntimeAuthority (9.97s)
+    --- PASS: TestIndependentR2RuntimeAuthority/SET/justix_identity_runtime (0.41s)
+    --- PASS: TestIndependentR2RuntimeAuthority/SET/PUBLIC (0.29s)
+    --- PASS: TestIndependentR2RuntimeAuthority/SET/qa_parameter_inner (0.53s)
+    --- PASS: TestIndependentR2RuntimeAuthority/ALTER_SYSTEM/justix_identity_runtime (0.31s)
+    --- PASS: TestIndependentR2RuntimeAuthority/ALTER_SYSTEM/PUBLIC (0.27s)
+    --- PASS: TestIndependentR2RuntimeAuthority/ALTER_SYSTEM/qa_parameter_inner (0.51s)
+    --- PASS: TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/TABLES (0.38s)
+    --- PASS: TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/SEQUENCES (0.40s)
+    --- PASS: TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/FUNCTIONS (0.43s)
+    --- PASS: TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/TYPES (0.37s)
+    --- PASS: TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/SCHEMAS (0.37s)
+    --- PASS: TestIndependentR2RuntimeAuthority/unrelated_grantee_defaults/LARGE_OBJECTS (0.36s)
+    --- PASS: TestIndependentR2RuntimeAuthority/source_session_replication_mode_cannot_be_inherited_at_login (0.23s)
+=== RUN   TestIndependentR2ManifestDigestShape
+=== RUN   TestIndependentR2ManifestDigestShape/artifact/valid
+=== RUN   TestIndependentR2ManifestDigestShape/artifact/extra_byte
+=== RUN   TestIndependentR2ManifestDigestShape/artifact/extra_null
+=== RUN   TestIndependentR2ManifestDigestShape/artifact/extra_object
+=== RUN   TestIndependentR2ManifestDigestShape/artifact/null_byte
+=== RUN   TestIndependentR2ManifestDigestShape/artifact/missing_byte
+=== RUN   TestIndependentR2ManifestDigestShape/prerequisite/valid
+=== RUN   TestIndependentR2ManifestDigestShape/prerequisite/extra_byte
+=== RUN   TestIndependentR2ManifestDigestShape/prerequisite/extra_null
+=== RUN   TestIndependentR2ManifestDigestShape/prerequisite/extra_object
+=== RUN   TestIndependentR2ManifestDigestShape/prerequisite/null_byte
+=== RUN   TestIndependentR2ManifestDigestShape/prerequisite/missing_byte
+=== RUN   TestIndependentR2ManifestDigestShape/feature/valid
+=== RUN   TestIndependentR2ManifestDigestShape/feature/extra_byte
+=== RUN   TestIndependentR2ManifestDigestShape/feature/extra_null
+=== RUN   TestIndependentR2ManifestDigestShape/feature/extra_object
+=== RUN   TestIndependentR2ManifestDigestShape/feature/null_byte
+=== RUN   TestIndependentR2ManifestDigestShape/feature/missing_byte
+--- PASS: TestIndependentR2ManifestDigestShape (0.06s)
+    --- PASS: TestIndependentR2ManifestDigestShape/artifact/valid (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/artifact/extra_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/artifact/extra_null (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/artifact/extra_object (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/artifact/null_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/artifact/missing_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/prerequisite/valid (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/prerequisite/extra_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/prerequisite/extra_null (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/prerequisite/extra_object (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/prerequisite/null_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/prerequisite/missing_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/feature/valid (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/feature/extra_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/feature/extra_null (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/feature/extra_object (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/feature/null_byte (0.00s)
+    --- PASS: TestIndependentR2ManifestDigestShape/feature/missing_byte (0.00s)
+PASS
+ok  	justixauto/pkg/persistence	15.125s

@@ -1,0 +1,48 @@
+=== RUN   TestIndependentCatalogFailures
+    independent_probe_test.go:17: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3671672791
+    independent_probe_test.go:17: created owned fixture justixauto-t930-7d0dfa26-cee4-49f1-b605-6e9be75e760e id dda47945828f2ca6696255d7c3b897696c9574b9afebe7cade50379f311467a8 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestIndependentCatalogFailures/forced_RLS_without_enabled_RLS
+=== RUN   TestIndependentCatalogFailures/hidden_feature_rows
+=== RUN   TestIndependentCatalogFailures/metadata_delegated_column_SELECT
+=== RUN   TestIndependentCatalogFailures/reachable_NOINHERIT_delegated_column
+=== RUN   TestIndependentCatalogFailures/undeclared_sequence
+=== RUN   TestIndependentCatalogFailures/PUBLIC_sequence_access
+=== RUN   TestIndependentCatalogFailures/default_sequence_access
+=== RUN   TestIndependentCatalogFailures/default_function_access
+    independent_probe_test.go:36: retained owner default-function ACL rows: 0
+    independent_probe_test.go:38: new owner function effective runtime EXECUTE: t
+    independent_probe_test.go:39: runtime invocation: 1
+=== RUN   TestIndependentCatalogFailures/replica-only_immutable_guard
+=== RUN   TestIndependentCatalogFailures/conditional_false_immutable_guard
+    independent_probe_test.go:46: ordinary migration-owner historical UPDATE bypassed immutable guard: true
+=== RUN   TestIndependentCatalogFailures/canceled_SELECT_and_restored_liveness
+=== NAME  TestIndependentCatalogFailures
+    check_test.go:191: validated fixture removed and absent: dda47945828f2ca6696255d7c3b897696c9574b9afebe7cade50379f311467a8 justixauto-t930-7d0dfa26-cee4-49f1-b605-6e9be75e760e; attached volume IDs []
+--- PASS: TestIndependentCatalogFailures (7.67s)
+    --- PASS: TestIndependentCatalogFailures/forced_RLS_without_enabled_RLS (0.34s)
+    --- PASS: TestIndependentCatalogFailures/hidden_feature_rows (0.25s)
+    --- PASS: TestIndependentCatalogFailures/metadata_delegated_column_SELECT (0.26s)
+    --- PASS: TestIndependentCatalogFailures/reachable_NOINHERIT_delegated_column (0.28s)
+    --- PASS: TestIndependentCatalogFailures/undeclared_sequence (0.29s)
+    --- PASS: TestIndependentCatalogFailures/PUBLIC_sequence_access (0.25s)
+    --- PASS: TestIndependentCatalogFailures/default_sequence_access (0.25s)
+    --- PASS: TestIndependentCatalogFailures/default_function_access (0.56s)
+    --- PASS: TestIndependentCatalogFailures/replica-only_immutable_guard (0.29s)
+    --- PASS: TestIndependentCatalogFailures/conditional_false_immutable_guard (0.35s)
+    --- PASS: TestIndependentCatalogFailures/canceled_SELECT_and_restored_liveness (0.16s)
+=== RUN   TestIndependentManifestBoundary
+=== RUN   TestIndependentManifestBoundary/clean
+=== RUN   TestIndependentManifestBoundary/unknown_nested_field
+=== RUN   TestIndependentManifestBoundary/trailing_scalar
+=== RUN   TestIndependentManifestBoundary/duplicate_owner
+=== RUN   TestIndependentManifestBoundary/invalid_UTF8_overwritten_owner
+=== RUN   TestIndependentManifestBoundary/lone_surrogate_overwritten_owner
+--- PASS: TestIndependentManifestBoundary (0.01s)
+    --- PASS: TestIndependentManifestBoundary/clean (0.00s)
+    --- PASS: TestIndependentManifestBoundary/unknown_nested_field (0.00s)
+    --- PASS: TestIndependentManifestBoundary/trailing_scalar (0.00s)
+    --- PASS: TestIndependentManifestBoundary/duplicate_owner (0.00s)
+    --- PASS: TestIndependentManifestBoundary/invalid_UTF8_overwritten_owner (0.00s)
+    --- PASS: TestIndependentManifestBoundary/lone_surrogate_overwritten_owner (0.00s)
+PASS
+ok  	justixauto/pkg/persistence	9.476s
