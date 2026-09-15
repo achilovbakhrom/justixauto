@@ -1,0 +1,85 @@
+Independent auth transport r2 proposal QA — 2026-09-15
+Exact checkout: /Users/bakhromachilov/startups/justixauto/.worktrees/auth-transport-compatibility-r2-qa
+HEAD: 914fcd78cc0789e41e9091efdc99fb5afc6c5c50
+Proposal SHA256: e1643c8cf36ba5733f7bfa0d32e2285604b345fe72ed506e17248fbae9af3e0c
+
+<node> means:
+/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node
+<tsc> means:
+/Users/bakhromachilov/startups/justixauto/node_modules/typescript/bin/tsc
+
+python3 docs/justix-auto/dev/qa/auth-transport-compatibility-r2/check.py
+Exit0. Exact two-leaf diff, original result unchanged within revised result;
+944-node graph acyclic,10 aliases,36h,13 unique leaves. Generator chain exact:
+AT-GEN-PROFILE -> AT-GEN-SEM -> AT-GEN-TS -> AT-GEN-GO -> AT-GEN-RAW -> AT-GEN-VERIFY.
+Original BOUNCE+4 evidence files unchanged across old QA checkout and main.
+Source hashes:
+client eb420ca1ca94224b069a41d99864e4c5984c66f27fe9e7c7d96284c1d127457c
+generator 38919750f561b5c4feadbcd80eaff0b34b7711d8e283786e12e532c4548ce868
+T058 auth 935aa3bf7e2c060c38696d96576c9f7a8a7c39beef1eaa6e27b9fefabeee947e
+Original report/evidence hashes:
+report d1401baa1dc334f14f68406c86d6a97bda791580171b55c7229d677a60696a1a
+union_probe.mjs 33f65fc3cf1163b81a4bb23223b4a43b0a67ab892100a1672480630c700ad013
+commands.txt 5b4ca9e8bbc8babd35f2ae0e1ef935ff74128da0090fa0be6155b26e66666089
+independent_probe.mjs 9de99e9e3b72a35efb21d33a574db0564f52de9aba4870068478a21002daed12
+interfaces.ts 98bf22d187ed70fed3ceaee93a20cad48c09dea7579131addecd7cd0236062ed
+
+<node> <tsc> --noEmit --strict --target es2023 --module nodenext --moduleResolution nodenext --skipLibCheck docs/justix-auto/dev/qa/auth-transport-compatibility-r2/interfaces.mts
+Final exit0. TypeScript6.0.3;11 expected negative assignments, including9 async/
+Promise/thenable combinations across3 hook categories, plus void and missing marker.
+
+<node> docs/justix-auto/dev/qa/auth-transport-compatibility-r2/runtime.mjs
+Exit0, Node24.21.0:
+result PASS; scenarios91; assertions153; invalidReturnKinds19; hookCategories3;
+unhandledRejections0; getterCalls0; thenCalls0.
+Independent interface model; no generated auth implementation or browser proof.
+
+<node> docs/justix-auto/dev/qa/auth-transport-compatibility-r2/prepare_go.mjs
+Exit0; isolated temporary module /private/tmp/justix-auth-r2-independent-go-kMyr17
+Actual decoder and ContractExchange declarations extracted from exact generator.
+Independent semantics_test.go copied from assigned QA evidence directory.
+
+From that isolated module:
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash /Users/bakhromachilov/startups/justixauto/.worktrees/auth-transport-compatibility-r2-qa/tools/go.sh test -race -count=1 -v ./...
+Exit0, Go1.27.1 selected by project wrapper.
+TestLegacyResourceAcceptance PASS,0.39s (over8MiB and129containers).
+TestLegacyNumbers PASS (8 cases).
+TestEveryHookExactOutcome PASS (24 subtests).
+TestPanicAndNilConstruction PASS (3 panic subtests +6 constructor checks).
+TestStructuralAndSemanticSeparation PASS (7 subtests).
+ok independentauth 2.039s
+
+Same environment/wrapper: go vet ./...
+Exit0, no diagnostics.
+
+<node> docs/justix-auto/dev/qa/auth-transport-compatibility-r2/cli_probe.mjs
+Exit0. Actual current generator valid non-auth baseline succeeds.10 negative
+generate/check cases return exit1 and leave all4 output sentinels unchanged:
+semantic declaration -> unsupported x-justix-auth-semantics;
+transport declaration -> unsupported x-justix-auth-transport;
+response header -> unsupported headers;
+429 -> unsupported status429: shared transport handoff required;
+request CSRF -> unsupported request header: transport handoff required.
+Temporary fixture directory /private/tmp/justix-auth-r2-cli-VcNU4h
+These baseline checks do not certify the future intermediate or activated CLI.
+
+bash tools/check-git.sh
+Exit0: exact detached project worktree Git gate passes.
+Final git diff --check and tracked diff checks: exit0, no tracked changes.
+Only assigned NEW report/evidence files remain untracked.
+
+Harness observations retained:
+- Initial .mts probe compile failed TS7060: generic async<T> syntax in an .mts
+  file requires a trailing comma or constraint. Changed QA fixture to async<T,>.
+  This was not a proposal or application defect; final strict compile passed.
+- The new QA runtime model was initially created at an incorrect worktree-root
+  path. Moved it with apply_patch into its assigned evidence directory before
+  execution. No existing file or application source was changed or deleted.
+- No author's probe was reused as independent runtime evidence.
+- Original93-test API regression result remains historical; source hash is
+  unchanged at r2. It was not rerun or claimed as a new execution in this review.
+
+Primary reference checked read-only:
+https://tc39.es/ecma262/multipage/control-abstraction-objects.html#sec-promise.prototype.then
+Brand checking precedes species-based Promise construction. Unsupported hostile
+species/constructor/proxy behavior is explicitly excluded from the cleanup claim.
