@@ -1,0 +1,40 @@
+=== RUN   TestQAT925Adversarial
+    qa_t925_test.go:20: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t925-evidence-248582574
+    qa_t925_test.go:20: PostgreSQL 180006; 000002 SHA-256 1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2; 000003 SHA-256 c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/identity
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/inventory
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/commerce
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/retail
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/financing
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/insurance
+=== RUN   TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/documents
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_references
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_database_ddl
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/public_schema_ddl
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/public_column_read
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/delegable_work_column
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_default_grant_option
+=== RUN   TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_migration_evidence_column
+=== RUN   TestQAT925Adversarial/empty_evidence_and_incompatible_function_properties_abort
+--- PASS: TestQAT925Adversarial (31.57s)
+    --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation (17.66s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/identity (2.43s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/inventory (2.41s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/commerce (2.51s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/retail (2.52s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/financing (2.37s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/insurance (2.30s)
+        --- PASS: TestQAT925Adversarial/all_seven_actual_producer_destinations_and_cross-owner_isolation/documents (2.64s)
+    --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits (7.85s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_references (0.93s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_database_ddl (0.92s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/public_schema_ddl (0.88s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/public_column_read (0.96s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/delegable_work_column (0.90s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_default_grant_option (0.88s)
+        --- PASS: TestQAT925Adversarial/two-hop_noinherit_and_public_column_default_grant_audits/reachable_migration_evidence_column (0.92s)
+    --- PASS: TestQAT925Adversarial/empty_evidence_and_incompatible_function_properties_abort (4.76s)
+PASS
+ok  	justixauto/pkg/eventstore	33.135s
