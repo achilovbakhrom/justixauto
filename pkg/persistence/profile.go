@@ -372,6 +372,9 @@ func (p Profile) VerifyFiles(ownerRoot string) error {
 				return fmt.Errorf("%w: artifact bytes", ErrInvalidProfile)
 			}
 			if name != a.Identity.Filename {
+				if err := validateManifestJSON(b); err != nil {
+					return err
+				}
 				var manifest ArtifactManifest
 				decoder := json.NewDecoder(bytes.NewReader(b))
 				decoder.DisallowUnknownFields()
@@ -386,6 +389,137 @@ func (p Profile) VerifyFiles(ownerRoot string) error {
 					return fmt.Errorf("%w: manifest identity", ErrInvalidProfile)
 				}
 			}
+		}
+	}
+	return nil
+}
+
+// Validate original bytes before encoding/json can replace malformed Unicode,
+// overwrite duplicate members, or match a differently-cased typed field name.
+// Object names compare decoded codepoints; no Unicode normalization is applied.
+func validateManifestJSON(b []byte) error {
+	bad := func(reason string) error { return fmt.Errorf("%w: manifest %s", ErrInvalidProfile, reason) }
+	if !utf8.Valid(b) || !json.Valid(b) {
+		return bad("JSON encoding")
+	}
+	for i := 0; i < len(b); i++ {
+		if b[i] != '"' {
+			continue
+		}
+		i++
+		for i < len(b) && b[i] != '"' {
+			if b[i] != '\\' {
+				i++
+				continue
+			}
+			if b[i+1] != 'u' {
+				i += 2
+				continue
+			}
+			u, _ := strconv.ParseUint(string(b[i+2:i+6]), 16, 16)
+			if u >= 0xdc00 && u <= 0xdfff {
+				return bad("Unicode surrogate")
+			}
+			if u >= 0xd800 && u <= 0xdbff {
+				if i+12 > len(b) || b[i+6] != '\\' || b[i+7] != 'u' {
+					return bad("Unicode surrogate")
+				}
+				low, err := strconv.ParseUint(string(b[i+8:i+12]), 16, 16)
+				if err != nil || low < 0xdc00 || low > 0xdfff {
+					return bad("Unicode surrogate")
+				}
+				i += 6
+			}
+			i += 6
+		}
+	}
+	d := json.NewDecoder(bytes.NewReader(b))
+	d.UseNumber()
+	var value func() (any, error)
+	value = func() (any, error) {
+		token, err := d.Token()
+		if err != nil {
+			return nil, bad("JSON token")
+		}
+		switch token {
+		case json.Delim('{'):
+			out := map[string]any{}
+			for d.More() {
+				key, err := d.Token()
+				if err != nil {
+					return nil, bad("JSON member")
+				}
+				name, ok := key.(string)
+				if !ok {
+					return nil, bad("JSON member")
+				}
+				if _, exists := out[name]; exists {
+					return nil, bad("duplicate member")
+				}
+				v, err := value()
+				if err != nil {
+					return nil, err
+				}
+				out[name] = v
+			}
+			if _, err := d.Token(); err != nil {
+				return nil, bad("JSON object")
+			}
+			return out, nil
+		case json.Delim('['):
+			out := []any{}
+			for d.More() {
+				v, err := value()
+				if err != nil {
+					return nil, err
+				}
+				out = append(out, v)
+			}
+			if _, err := d.Token(); err != nil {
+				return nil, bad("JSON array")
+			}
+			return out, nil
+		default:
+			return token, nil
+		}
+	}
+	root, err := value()
+	if err != nil {
+		return err
+	}
+	exact := func(v any, keys ...string) (map[string]any, bool) {
+		m, ok := v.(map[string]any)
+		if !ok || len(m) != len(keys) {
+			return nil, false
+		}
+		for _, key := range keys {
+			if _, ok := m[key]; !ok {
+				return nil, false
+			}
+		}
+		return m, true
+	}
+	m, ok := exact(root, "format_revision", "owner", "artifact", "prerequisites", "feature_contract")
+	if !ok {
+		return bad("field names")
+	}
+	if _, ok := exact(m["artifact"], "Version", "Filename", "SHA256"); !ok {
+		return bad("field names")
+	}
+	if m["prerequisites"] != nil {
+		items, ok := m["prerequisites"].([]any)
+		if !ok {
+			return bad("prerequisite shape")
+		}
+		for _, item := range items {
+			if _, ok := exact(item, "Version", "Filename", "SHA256"); !ok {
+				return bad("field names")
+			}
+		}
+	}
+	if m["feature_contract"] != nil {
+		if _, ok := exact(m["feature_contract"], "ID", "Revision", "SHA256"); !ok {
+			return bad("field names")
 		}
 	}
 	return nil

@@ -229,6 +229,9 @@ func startFixture(t *testing.T) fixture {
 	f.port = strings.TrimPrefix(strings.TrimSpace(string(out)), "127.0.0.1:")
 	f.must("CREATE ROLE justix_identity_runtime LOGIN PASSWORD '"+f.password+"'; GRANT CONNECT ON DATABASE justix_identity TO justix_identity_runtime; REVOKE TEMP ON DATABASE justix_identity FROM PUBLIC;", "postgres")
 	f.install("pkg/eventstore/schema.sql")
+	// Existing function REVOKEs do not alter built-in creation defaults. The
+	// compatible path requires explicit private defaults for future objects.
+	f.must("ALTER DEFAULT PRIVILEGES REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;ALTER DEFAULT PRIVILEGES REVOKE USAGE ON TYPES FROM PUBLIC")
 	f.must("CREATE TABLE public.schema_migrations(version bigint PRIMARY KEY,dirty boolean NOT NULL); INSERT INTO public.schema_migrations VALUES(1,true)")
 	f.must(f.read("services/identity/migrations/0001_mechanics.up.sql"))
 	f.must("UPDATE public.schema_migrations SET dirty=false")
@@ -690,4 +693,144 @@ func TestPersistenceProfilePostgres(t *testing.T) {
 		f.retain("final-profile.json", string(b))
 		f.retain("final-with-shared.json", f.snapshot())
 	}
+}
+
+func TestPersistenceEffectiveDefaultsAndGuardsPostgres(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_PERSISTENCE_PROFILE") != "1" {
+		t.Skip("owned PostgreSQL opt-in required")
+	}
+	f := startFixture(t)
+	p := profile(t, f.spec)
+	f.check(p, true)
+	t.Run("implicit function default survives absent ACL rows and schema revoke", func(t *testing.T) {
+		f.t = t
+		f.must("ALTER DEFAULT PRIVILEGES GRANT EXECUTE ON FUNCTIONS TO PUBLIC;ALTER DEFAULT PRIVILEGES IN SCHEMA synthetic_feature REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC")
+		defer f.must("ALTER DEFAULT PRIVILEGES REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC")
+		if rows := f.must("SELECT count(*) FROM pg_default_acl WHERE defaclrole=current_user::regrole AND defaclobjtype='f'"); rows != "0" {
+			t.Fatalf("implicit default probe retained %s rows", rows)
+		}
+		f.check(p, false)
+		f.must("CREATE FUNCTION synthetic_feature.t930_implicit() RETURNS integer LANGUAGE sql AS 'SELECT 1'")
+		defer f.must("DROP FUNCTION synthetic_feature.t930_implicit()")
+		if value := f.must("SELECT synthetic_feature.t930_implicit()", "justix_identity_runtime"); value != "1" {
+			t.Fatal("actual inherited function execution not demonstrated")
+		}
+	})
+	f.t = t
+	f.check(p, true)
+	t.Run("private effective default denies newly created function", func(t *testing.T) {
+		f.t = t
+		f.must("CREATE FUNCTION synthetic_feature.t930_private() RETURNS integer LANGUAGE sql AS 'SELECT 1'")
+		defer f.must("DROP FUNCTION synthetic_feature.t930_private()")
+		f.check(p, true)
+		if _, err := f.command("SELECT synthetic_feature.t930_private()", "justix_identity_runtime"); err == nil {
+			t.Fatal("runtime executed new function despite denied effective defaults")
+		}
+	})
+	t.Run("implicit type default", func(t *testing.T) {
+		f.t = t
+		f.must("ALTER DEFAULT PRIVILEGES GRANT USAGE ON TYPES TO PUBLIC")
+		defer f.must("ALTER DEFAULT PRIVILEGES REVOKE USAGE ON TYPES FROM PUBLIC")
+		if rows := f.must("SELECT count(*) FROM pg_default_acl WHERE defaclrole=current_user::regrole AND defaclobjtype='T'"); rows != "0" {
+			t.Fatalf("implicit type default retained %s rows", rows)
+		}
+		f.check(p, false)
+		f.must("CREATE DOMAIN synthetic_feature.t930_type AS integer")
+		defer f.must("DROP DOMAIN synthetic_feature.t930_type")
+		if got := f.must("SELECT has_type_privilege('justix_identity_runtime','synthetic_feature.t930_type','USAGE')"); got != "t" {
+			t.Fatal("actual type default not demonstrated")
+		}
+	})
+	f.t = t
+	f.check(p, true)
+	for _, family := range []struct{ object, privilege string }{{"TABLES", "SELECT"}, {"SEQUENCES", "USAGE"}, {"FUNCTIONS", "EXECUTE"}, {"TYPES", "USAGE"}, {"SCHEMAS", "USAGE"}, {"LARGE OBJECTS", "SELECT"}} {
+		for _, scope := range []string{"", " IN SCHEMA synthetic_feature"} {
+			if scope != "" && (family.object == "SCHEMAS" || family.object == "LARGE OBJECTS") {
+				continue
+			}
+			t.Run("effective "+family.object+scope, func(t *testing.T) {
+				f.t = t
+				f.must("ALTER DEFAULT PRIVILEGES" + scope + " GRANT " + family.privilege + " ON " + family.object + " TO justix_identity_runtime")
+				defer f.must("ALTER DEFAULT PRIVILEGES" + scope + " REVOKE " + family.privilege + " ON " + family.object + " FROM justix_identity_runtime")
+				f.check(p, false)
+			})
+			f.t = t
+			f.check(p, true)
+		}
+	}
+	t.Run("schema additions cannot be hidden by private global defaults", func(t *testing.T) {
+		f.t = t
+		f.must("ALTER DEFAULT PRIVILEGES IN SCHEMA synthetic_feature GRANT EXECUTE ON FUNCTIONS TO PUBLIC")
+		defer f.must("ALTER DEFAULT PRIVILEGES IN SCHEMA synthetic_feature REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC")
+		f.check(p, false)
+		f.must("CREATE FUNCTION synthetic_feature.t930_schema_default() RETURNS integer LANGUAGE sql AS 'SELECT 2'")
+		defer f.must("DROP FUNCTION synthetic_feature.t930_schema_default()")
+		if got := f.must("SELECT synthetic_feature.t930_schema_default()", "justix_identity_runtime"); got != "2" {
+			t.Fatal("schema default addition not demonstrated")
+		}
+	})
+	f.t = t
+	f.check(p, true)
+	for _, guard := range []struct{ name, definition, bypass string }{
+		{"WHEN false", "BEFORE UPDATE OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT WHEN(false) EXECUTE FUNCTION owner_migrations.immutable()", "UPDATE owner_migrations.artifacts SET provenance_ref=provenance_ref"},
+		{"WHEN true", "BEFORE UPDATE OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT WHEN(true) EXECUTE FUNCTION owner_migrations.immutable()", ""},
+		{"column filter", "BEFORE UPDATE OF provenance_ref OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT EXECUTE FUNCTION owner_migrations.immutable()", "UPDATE owner_migrations.artifacts SET artifact_manifest_sha256=artifact_manifest_sha256"},
+		{"unexpected trigger argument", "BEFORE UPDATE OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT EXECUTE FUNCTION owner_migrations.immutable('unexpected')", ""},
+	} {
+		t.Run("immutable execution metadata "+guard.name, func(t *testing.T) {
+			f.t = t
+			f.must("DROP TRIGGER artifacts_immutable ON owner_migrations.artifacts;CREATE TRIGGER artifacts_immutable " + guard.definition)
+			defer f.must("DROP TRIGGER artifacts_immutable ON owner_migrations.artifacts;CREATE TRIGGER artifacts_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON owner_migrations.artifacts FOR EACH STATEMENT EXECUTE FUNCTION owner_migrations.immutable()")
+			before := f.snapshot()
+			f.check(p, false)
+			if guard.bypass != "" {
+				if _, err := f.command("BEGIN;"+guard.bypass+";ROLLBACK", "justix_identity"); err != nil {
+					t.Fatalf("ordinary owner bypass not demonstrated: %v", err)
+				}
+				if before != f.snapshot() {
+					t.Fatal("bypass rollback changed evidence")
+				}
+			}
+		})
+		f.t = t
+		f.check(p, true)
+	}
+	t.Run("guard function execution path", func(t *testing.T) {
+		f.t = t
+		f.must("ALTER FUNCTION owner_migrations.immutable() SET search_path TO public,pg_catalog")
+		defer f.must("ALTER FUNCTION owner_migrations.immutable() SET search_path TO pg_catalog")
+		f.check(p, false)
+	})
+	f.t = t
+	f.check(p, true)
+	t.Run("runtime cannot acquire a trigger disabling mode", func(t *testing.T) {
+		f.t = t
+		f.must("GRANT SET ON PARAMETER session_replication_role TO justix_identity_runtime", "postgres")
+		defer f.must("REVOKE SET ON PARAMETER session_replication_role FROM justix_identity_runtime", "postgres")
+		f.check(p, false)
+		if got := f.must("BEGIN;SET LOCAL session_replication_role=replica;SELECT current_setting('session_replication_role');ROLLBACK", "justix_identity_runtime"); got != "replica" {
+			t.Fatalf("actual trigger mode change not demonstrated: %s", got)
+		}
+	})
+	f.t = t
+	f.check(p, true)
+	t.Run("reachable NOINHERIT trigger mode privilege", func(t *testing.T) {
+		f.t = t
+		f.must("CREATE ROLE t930_mode_outer NOINHERIT;CREATE ROLE t930_mode_inner NOINHERIT;GRANT t930_mode_inner TO t930_mode_outer;GRANT t930_mode_outer TO justix_identity_runtime;GRANT SET ON PARAMETER session_replication_role TO t930_mode_inner", "postgres")
+		defer f.must("REVOKE SET ON PARAMETER session_replication_role FROM t930_mode_inner;REVOKE t930_mode_outer FROM justix_identity_runtime;DROP ROLE t930_mode_outer;DROP ROLE t930_mode_inner", "postgres")
+		f.check(p, false)
+	})
+	f.t = t
+	f.check(p, true)
+	t.Run("restored unconditional guard rejects ordinary owner mutation", func(t *testing.T) {
+		f.t = t
+		if _, err := f.command("BEGIN;UPDATE owner_migrations.artifacts SET provenance_ref=provenance_ref;ROLLBACK", "justix_identity"); err == nil {
+			t.Fatal("restored guard failed to reject owner update")
+		}
+		f.must("ALTER TABLE owner_migrations.artifacts ENABLE ALWAYS TRIGGER artifacts_immutable")
+		defer f.must("ALTER TABLE owner_migrations.artifacts ENABLE TRIGGER artifacts_immutable")
+		f.check(p, true)
+	})
+	f.t = t
+	f.retain("effective-defaults-and-guards-final.json", f.snapshot())
 }

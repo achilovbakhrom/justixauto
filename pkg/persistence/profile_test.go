@@ -296,3 +296,99 @@ func TestProfileRejectsMarkerOnlyAndOverlappingFeatureGrants(t *testing.T) {
 		t.Fatal("overlapping distinct feature contracts were implicitly unioned or superseded")
 	}
 }
+
+func TestRawManifestUnicodeMembersAndExactTypedNames(t *testing.T) {
+	cases := []struct {
+		name     string
+		artifact int
+		rewrite  func([]byte) []byte
+		want     string
+	}{
+		{"escaped canonical owner", 0, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"owner":"identity"`, `"owner":"\u0069dentity"`, 1))
+		}, ""},
+		{"escaped canonical field", 0, func(b []byte) []byte { return []byte(strings.Replace(string(b), `"owner":`, `"\u006fwner":`, 1)) }, ""},
+		{"duplicate escaped root key", 0, func(b []byte) []byte { return append([]byte(`{"\u006fwner":"inventory",`), b[1:]...) }, "duplicate member"},
+		{"duplicate nested artifact", 0, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"artifact":{`, `"artifact":{"Version":99,`, 1))
+		}, "duplicate member"},
+		{"duplicate escaped prerequisite", 1, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"prerequisites":[{`, `"prerequisites":[{"\u0056ersion":99,`, 1))
+		}, "duplicate member"},
+		{"duplicate feature identity", 1, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"feature_contract":{`, `"feature_contract":{"ID":"wrong",`, 1))
+		}, "duplicate member"},
+		{"duplicate nested unknown object", 0, func(b []byte) []byte { return append([]byte(`{"unknown":{"x":1,"\u0078":2},`), b[1:]...) }, "duplicate member"},
+		{"raw invalid UTF8 overwritten", 0, func(b []byte) []byte {
+			return append(append([]byte(`{"owner":"`), 0xff), append([]byte(`",`), b[1:]...)...)
+		}, "JSON encoding"},
+		{"raw invalid UTF8 key", 0, func(b []byte) []byte { return append(append([]byte(`{"`), 0xff), append([]byte(`":0,`), b[1:]...)...) }, "JSON encoding"},
+		{"overlong UTF8", 0, func(b []byte) []byte {
+			return append(append([]byte(`{"unknown":"`), 0xc0, 0xaf), append([]byte(`",`), b[1:]...)...)
+		}, "JSON encoding"},
+		{"lone high surrogate overwritten", 0, func(b []byte) []byte { return append([]byte(`{"owner":"\ud800",`), b[1:]...) }, "Unicode surrogate"},
+		{"lone low surrogate key", 0, func(b []byte) []byte { return append([]byte(`{"\udfff":0,`), b[1:]...) }, "Unicode surrogate"},
+		{"surrogate in nested array", 0, func(b []byte) []byte { return append([]byte(`{"unknown":[{"x":"\ud800"}],`), b[1:]...) }, "Unicode surrogate"},
+		{"high surrogate followed by nonsurrogate", 0, func(b []byte) []byte { return append([]byte(`{"unknown":"\ud800\u0061",`), b[1:]...) }, "Unicode surrogate"},
+		{"valid astral duplicate decoded keys", 0, func(b []byte) []byte { return append([]byte(`{"😀":0,"\ud83d\ude00":1,`), b[1:]...) }, "duplicate member"},
+		{"distinct normalized Unicode keys", 0, func(b []byte) []byte { return append([]byte(`{"é":0,"e\u0301":1,`), b[1:]...) }, "field names"},
+		{"replacement rune is valid Unicode", 0, func(b []byte) []byte { return append([]byte(`{"unknown":"�",`), b[1:]...) }, "field names"},
+		{"literal backslash u is not surrogate", 0, func(b []byte) []byte { return append([]byte(`{"unknown":"\\ud800",`), b[1:]...) }, "field names"},
+		{"single wrong-case root field", 0, func(b []byte) []byte { return []byte(strings.Replace(string(b), `"owner":`, `"Owner":`, 1)) }, "field names"},
+		{"conflicting root field aliases", 0, func(b []byte) []byte { return append([]byte(`{"Owner":"inventory",`), b[1:]...) }, "field names"},
+		{"single nested wrong-case field", 0, func(b []byte) []byte { return []byte(strings.Replace(string(b), `"Version":`, `"version":`, 1)) }, "field names"},
+		{"conflicting nested field aliases", 0, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"artifact":{`, `"artifact":{"version":99,`, 1))
+		}, "field names"},
+		{"escaped wrong-case prerequisite field", 1, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"prerequisites":[{"Version":`, `"prerequisites":[{"\u0076ersion":`, 1))
+		}, "field names"},
+		{"feature field alias", 1, func(b []byte) []byte {
+			return []byte(strings.Replace(string(b), `"feature_contract":{"ID":`, `"feature_contract":{"id":`, 1))
+		}, "field names"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root, err := filepath.EvalSymlinks(t.TempDir())
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.Mkdir(filepath.Join(root, "migrations"), 0700); err != nil {
+				t.Fatal(err)
+			}
+			s := spec()
+			for i, a := range s.Artifacts {
+				body := "base"
+				if i == 1 {
+					body = "feature12"
+				}
+				if err := os.WriteFile(filepath.Join(root, a.Identity.Filename), []byte(body), 0600); err != nil {
+					t.Fatal(err)
+				}
+				b, err := json.Marshal(persistence.ArtifactManifest{FormatRevision: 1, Owner: s.Owner, Identity: a.Identity, Prerequisites: a.Prerequisites, Feature: a.Feature})
+				if err != nil {
+					t.Fatal(err)
+				}
+				if i == tc.artifact {
+					changed := tc.rewrite(b)
+					if string(changed) == string(b) {
+						t.Fatal("probe did not change original bytes")
+					}
+					b = changed
+				}
+				s.Artifacts[i].ManifestSHA256 = hash(string(b))
+				if err := os.WriteFile(filepath.Join(root, strings.TrimSuffix(a.Identity.Filename, ".up.sql")+".manifest.json"), b, 0600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			err = profile(t, s).VerifyFiles(root)
+			if tc.want == "" {
+				if err != nil {
+					t.Fatal(err)
+				}
+			} else if err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("wanted %q before decoder loss, got %v", tc.want, err)
+			}
+		})
+	}
+}

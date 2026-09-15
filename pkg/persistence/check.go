@@ -254,7 +254,10 @@ func checkCatalog(db *gorm.DB, s Specification) error {
 	}
 	expected := []guard{{"artifacts", "artifacts_immutable", "immutable", 58}, {"artifacts", "artifacts_insert", "artifact_guard", 7}, {"compatibility", "compatibility_immutable", "immutable", 58}, {"feature_contracts", "feature_contracts_immutable", "immutable", 58}, {"feature_contracts", "feature_contracts_insert", "feature_guard", 7}}
 	var got []guard
-	err = db.Raw(`SELECT c.relname AS table,t.tgname AS name,p.proname AS function,t.tgtype AS kind FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace n ON n.oid=p.pronamespace WHERE c.relnamespace='owner_migrations'::regnamespace AND NOT t.tgisinternal AND t.tgenabled IN ('O','A') AND n.nspname='owner_migrations' AND NOT p.prosecdef AND p.proowner=(SELECT datdba FROM pg_database WHERE datname=current_database()) ORDER BY c.relname,t.tgname`).Scan(&got).Error
+	err = db.Raw(`SELECT c.relname AS table,t.tgname AS name,p.proname AS function,t.tgtype AS kind FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_proc p ON p.oid=t.tgfoid JOIN pg_namespace n ON n.oid=p.pronamespace WHERE c.relnamespace='owner_migrations'::regnamespace AND NOT t.tgisinternal AND t.tgenabled IN ('O','A')
+ AND t.tgqual IS NULL AND t.tgnargs=0 AND octet_length(t.tgargs)=0 AND t.tgattr=''::int2vector
+ AND t.tgconstraint=0 AND t.tgconstrrelid=0 AND t.tgconstrindid=0 AND NOT t.tgdeferrable AND NOT t.tginitdeferred AND t.tgparentid=0 AND t.tgoldtable IS NULL AND t.tgnewtable IS NULL
+ AND n.nspname='owner_migrations' AND NOT p.prosecdef AND p.proconfig=ARRAY['search_path=pg_catalog']::text[] AND p.proowner=(SELECT datdba FROM pg_database WHERE datname=current_database()) ORDER BY c.relname,t.tgname`).Scan(&got).Error
 	if err != nil {
 		return fmt.Errorf("%w: %w", ErrIncompatible, err)
 	}
@@ -273,11 +276,14 @@ const catalogSQL = `WITH expected AS (
 ), owner AS (SELECT oid FROM pg_roles WHERE rolname=?), runtime AS (SELECT oid FROM pg_roles WHERE rolname=?),
  roles AS (SELECT r.* FROM pg_roles r,runtime u WHERE pg_has_role(u.oid,r.oid,'MEMBER')),
  namespaces AS (SELECT * FROM pg_namespace WHERE nspname NOT LIKE 'pg\_%' ESCAPE '\' AND nspname<>'information_schema'),
- relations AS (SELECT c.*,n.nspname FROM pg_class c JOIN namespaces n ON n.oid=c.relnamespace WHERE c.relkind IN ('r','p','v','m','f','S'))
+ relations AS (SELECT c.*,n.nspname FROM pg_class c JOIN namespaces n ON n.oid=c.relnamespace WHERE c.relkind IN ('r','p','v','m','f','S')),
+ default_families AS (SELECT kind::"char",builtin::"char" FROM (VALUES ('r','r'),('S','s'),('f','f'),('T','T'),('n','n'),('L','L')) family(kind,builtin)),
+ effective_global_defaults AS (SELECT coalesce(d.defaclacl,acldefault(f.builtin,o.oid)) AS acl FROM owner o CROSS JOIN default_families f LEFT JOIN pg_default_acl d ON d.defaclrole=o.oid AND d.defaclnamespace=0 AND d.defaclobjtype=f.kind)
 SELECT (SELECT count(*)=1 FROM owner) AND (SELECT count(*)=1 FROM runtime)
+ AND current_setting('session_replication_role')='origin'
  AND (SELECT datdba=(SELECT oid FROM owner) FROM pg_database WHERE datname=current_database())
  AND has_database_privilege(current_user,current_database(),'CONNECT')
- AND NOT EXISTS(SELECT FROM roles r WHERE r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolreplication OR r.rolbypassrls OR r.oid=(SELECT oid FROM owner) OR r.rolname LIKE 'pg\_%' ESCAPE '\' OR has_database_privilege(r.oid,current_database(),'CREATE,TEMPORARY'))
+ AND NOT EXISTS(SELECT FROM roles r WHERE r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolreplication OR r.rolbypassrls OR r.oid=(SELECT oid FROM owner) OR r.rolname LIKE 'pg\_%' ESCAPE '\' OR has_database_privilege(r.oid,current_database(),'CREATE,TEMPORARY') OR has_parameter_privilege(r.oid,'session_replication_role','SET,ALTER SYSTEM'))
  AND NOT EXISTS(SELECT FROM pg_database d CROSS JOIN LATERAL aclexplode(d.datacl) a WHERE d.datname=current_database() AND (a.grantee=0 OR (a.grantee IN (SELECT oid FROM roles) AND a.is_grantable)))
  AND NOT EXISTS(SELECT FROM pg_database d CROSS JOIN roles r WHERE d.datname LIKE 'justix\_%' ESCAPE '\' AND d.datname<>current_database() AND has_database_privilege(r.oid,d.oid,'CONNECT,CREATE,TEMPORARY'))
  AND NOT EXISTS(SELECT FROM expected e LEFT JOIN namespaces n ON n.nspname=e.schema WHERE n.oid IS NULL OR (n.nspname<>'public' AND n.nspowner<>(SELECT oid FROM owner)) OR NOT has_schema_privilege(current_user,n.oid,'USAGE'))
@@ -296,4 +302,7 @@ SELECT (SELECT count(*)=1 FROM owner) AND (SELECT count(*)=1 FROM runtime)
  AND NOT EXISTS(SELECT FROM relations c CROSS JOIN LATERAL aclexplode(c.relacl) a WHERE a.grantee=0 OR (a.grantee IN (SELECT oid FROM roles) AND a.is_grantable))
  AND NOT EXISTS(SELECT FROM relations c JOIN pg_attribute col ON col.attrelid=c.oid CROSS JOIN LATERAL aclexplode(col.attacl) a WHERE a.grantee=0 OR (a.grantee IN (SELECT oid FROM roles) AND a.is_grantable))
  AND NOT EXISTS(SELECT FROM pg_proc p JOIN namespaces n ON n.oid=p.pronamespace CROSS JOIN roles r WHERE has_function_privilege(r.oid,p.oid,'EXECUTE'))
- AND NOT EXISTS(SELECT FROM pg_default_acl d CROSS JOIN LATERAL aclexplode(d.defaclacl) a WHERE d.defaclrole=(SELECT oid FROM owner) AND d.defaclobjtype IN ('r','f','S','n') AND a.grantee<>(SELECT oid FROM owner))`
+ -- Global ACLs replace built-in defaults. Per-schema ACLs ADD to that set;
+ -- their revocations cannot subtract implicit/global PUBLIC privileges.
+ AND NOT EXISTS(SELECT FROM effective_global_defaults d CROSS JOIN LATERAL aclexplode(d.acl) a WHERE a.grantee<>(SELECT oid FROM owner))
+ AND NOT EXISTS(SELECT FROM pg_default_acl d CROSS JOIN LATERAL aclexplode(d.defaclacl) a WHERE d.defaclrole=(SELECT oid FROM owner) AND d.defaclnamespace<>0 AND d.defaclobjtype IN ('r','f','S','T','n','L') AND a.grantee<>(SELECT oid FROM owner))`
