@@ -1,0 +1,20 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Independent Financing QA fixture</title></head><body><div id="qa"></div><script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { useQueryClient } from '@tanstack/react-query';
+import { FinancingApp } from '/web/apps/financing/src/app/App.tsx';
+const display = Object.freeze({ organizationName:'Демо-банк', organizationTypeLabel:'Банк', organizationMark:'Б', accountLabel:'Демо-аккаунт', employeeName:'Демо-администратор', employeeInitials:'АК' });
+if (Object.values(display).some(value => typeof value !== 'string' || !value)) throw Error('Invalid explicit synthetic display');
+history.replaceState(null, '', '/finance/qa/deep');
+let root = createRoot(document.getElementById('qa'));
+const observed = [];
+let allowed = true;
+function Boundary({children}) { const client=useQueryClient(); if (!observed.includes(client)) observed.push(client); return allowed ? children : null; }
+window.qa = {
+  render(admit=true, context=display) { allowed=admit; root.render(React.createElement(FinancingApp,{SessionBoundary:Boundary, ...(context ? {context} : {})})); },
+  clients:observed,
+  remount() { root.unmount(); root=createRoot(document.getElementById('qa')); this.render(); },
+  display,
+};
+window.qa.render();
+</script></body></html>

@@ -1622,7 +1622,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-035"
       ],
@@ -1658,7 +1658,7 @@
       "coordinator_files": [
         "package-lock.json"
       ],
-      "execution_note": "Developer Financing shell a7343d3 and coordinator lock committed; exactly2 new workspace entries, all existing records unchanged.155 unit tests,3 app builds and58 browser checks pass. Independent complete-SHA browser QA pending.",
+      "execution_note": "Independent QA BOUNCE P2: extensionless fetch/script requests with wildcard Accept receive app HTML in dev/preview;10 failures from same guard.155 unit tests,3 builds and exact Financing visual pairs pass. Identical existing Admin/Realization guard condition confirmed by source inspection.",
       "agent": "frontend_t038"
     },
     {

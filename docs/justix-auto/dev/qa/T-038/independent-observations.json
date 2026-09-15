@@ -1,0 +1,1817 @@
+{
+  "sha": "c1b0b50eed76902bf024fc6c5d9c5e4f032f642b",
+  "checks": [
+    "all existing lock package records byte-equivalent JSON",
+    "exact two workspace lock additions",
+    "projected viewport PNG exact equality 1440",
+    "geometry and computed styles 1440",
+    "sidebar breakpoint 1440",
+    "catalog order 1440",
+    "all navigation native disabled 1440",
+    "no link or active item 1440",
+    "no invented page 1440",
+    "disabled keyboard/click cannot navigate 1440",
+    "disabled controls skipped by Tab 1440",
+    "revocation removes shell and identity 1440",
+    "no identity fallback 1440",
+    "re-admission restores explicit display 1440",
+    "mount query client isolation 1440",
+    "projected viewport PNG exact equality 1180",
+    "geometry and computed styles 1180",
+    "sidebar breakpoint 1180",
+    "catalog order 1180",
+    "all navigation native disabled 1180",
+    "no link or active item 1180",
+    "no invented page 1180",
+    "disabled keyboard/click cannot navigate 1180",
+    "disabled controls skipped by Tab 1180",
+    "revocation removes shell and identity 1180",
+    "no identity fallback 1180",
+    "re-admission restores explicit display 1180",
+    "mount query client isolation 1180",
+    "projected viewport PNG exact equality 600",
+    "geometry and computed styles 600",
+    "sidebar breakpoint 600",
+    "catalog order 600",
+    "all navigation native disabled 600",
+    "no link or active item 600",
+    "no invented page 600",
+    "disabled keyboard/click cannot navigate 600",
+    "disabled controls skipped by Tab 600",
+    "revocation removes shell and identity 600",
+    "no identity fallback 600",
+    "re-admission restores explicit display 600",
+    "mount query client isolation 600",
+    "route 4482 GET / {\"Accept\":\"text/html\"}",
+    "404 no HTML 1",
+    "route 4482 GET /admin/ {\"Accept\":\"text/html\"}",
+    "404 no HTML 2",
+    "route 4482 GET /insurance/ {\"Accept\":\"text/html\"}",
+    "404 no HTML 3",
+    "route 4482 GET /finances/ {\"Accept\":\"text/html\"}",
+    "404 no HTML 4",
+    "route 4482 GET /api/session {\"Accept\":\"text/html\"}",
+    "404 no HTML 5",
+    "route 4482 GET /finance/api/session {\"Accept\":\"text/html\"}",
+    "404 no HTML 6",
+    "route 4482 GET /finance/assets/missing {\"Accept\":\"text/html\"}",
+    "404 no HTML 7",
+    "route 4482 GET /finance/missing.js {\"Accept\":\"text/html\"}",
+    "404 no HTML 8",
+    "route 4482 GET /finance/src/missing {\"Accept\":\"text/html\"}",
+    "404 no HTML 9",
+    "route 4482 GET /finance/node_modules/missing {\"Accept\":\"text/html\"}",
+    "404 no HTML 10",
+    "route 4482 GET /finance/%61pi {\"Accept\":\"text/html\"}",
+    "404 no HTML 11",
+    "route 4482 GET /finance/missing.svg?x=1 {\"Accept\":\"text/html\"}",
+    "404 no HTML 12",
+    "route 4482 GET /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "route 4482 HEAD /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "route 4482 POST /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 15",
+    "route 4482 PUT /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 16",
+    "route 4482 PATCH /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 17",
+    "route 4482 DELETE /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 18",
+    "route 4482 GET /finance/applications/synthetic {\"Accept\":\"application/json\"}",
+    "404 no HTML 19",
+    "actual entry closed 4482/finance/",
+    "actual entry closed 4482/finance/applications/synthetic",
+    "actual entry closed 4482/finance/index.html",
+    "default runtime errors 4482",
+    "route 4483 GET / {\"Accept\":\"text/html\"}",
+    "404 no HTML 23",
+    "route 4483 GET /admin/ {\"Accept\":\"text/html\"}",
+    "404 no HTML 24",
+    "route 4483 GET /insurance/ {\"Accept\":\"text/html\"}",
+    "404 no HTML 25",
+    "route 4483 GET /finances/ {\"Accept\":\"text/html\"}",
+    "404 no HTML 26",
+    "route 4483 GET /api/session {\"Accept\":\"text/html\"}",
+    "404 no HTML 27",
+    "route 4483 GET /finance/api/session {\"Accept\":\"text/html\"}",
+    "404 no HTML 28",
+    "route 4483 GET /finance/assets/missing {\"Accept\":\"text/html\"}",
+    "404 no HTML 29",
+    "route 4483 GET /finance/missing.js {\"Accept\":\"text/html\"}",
+    "404 no HTML 30",
+    "route 4483 GET /finance/src/missing {\"Accept\":\"text/html\"}",
+    "404 no HTML 31",
+    "route 4483 GET /finance/node_modules/missing {\"Accept\":\"text/html\"}",
+    "404 no HTML 32",
+    "route 4483 GET /finance/%61pi {\"Accept\":\"text/html\"}",
+    "404 no HTML 33",
+    "route 4483 GET /finance/missing.svg?x=1 {\"Accept\":\"text/html\"}",
+    "404 no HTML 34",
+    "route 4483 GET /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "route 4483 HEAD /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "route 4483 POST /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 37",
+    "route 4483 PUT /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 38",
+    "route 4483 PATCH /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 39",
+    "route 4483 DELETE /finance/applications/synthetic {\"Accept\":\"text/html\"}",
+    "404 no HTML 40",
+    "route 4483 GET /finance/applications/synthetic {\"Accept\":\"application/json\"}",
+    "404 no HTML 41",
+    "actual entry closed 4483/finance/",
+    "actual entry closed 4483/finance/applications/synthetic",
+    "actual entry closed 4483/finance/index.html",
+    "default runtime errors 4483",
+    "no dynamic app requests",
+    "no browser persistence",
+    "injected text escaped"
+  ],
+  "failures": [
+    {
+      "name": "route 4482 GET /finance/missing-resource {\"Accept\":\"*/*\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+      "actual": 200,
+      "expected": 404
+    },
+    {
+      "name": "404 no HTML 20",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "name": "route 4482 GET /finance/missing-resource {\"Accept\":\"*/*\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+      "actual": 200,
+      "expected": 404
+    },
+    {
+      "name": "404 no HTML 21",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "name": "actual non-document browser fetch rejected 4482",
+      "actual": 200,
+      "expected": 404
+    },
+    {
+      "name": "route 4483 GET /finance/missing-resource {\"Accept\":\"*/*\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+      "actual": 200,
+      "expected": 404
+    },
+    {
+      "name": "404 no HTML 42",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "name": "route 4483 GET /finance/missing-resource {\"Accept\":\"*/*\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+      "actual": 200,
+      "expected": 404
+    },
+    {
+      "name": "404 no HTML 43",
+      "actual": false,
+      "expected": true
+    },
+    {
+      "name": "actual non-document browser fetch rejected 4483",
+      "actual": 200,
+      "expected": 404
+    }
+  ],
+  "routes": [
+    {
+      "port": 4482,
+      "path": "/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/admin/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/insurance/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finances/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/api/session",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/api/session",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/assets/missing",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/missing.js",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/src/missing",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/node_modules/missing",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/%61pi",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/missing.svg?x=1",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "method": "GET",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 200,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "method": "HEAD",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 200,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "method": "POST",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "method": "PUT",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "method": "PATCH",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "method": "DELETE",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/applications/synthetic",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4482,
+      "path": "/finance/missing-resource",
+      "headers": {
+        "Accept": "*/*",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "want": 404,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4482,
+      "path": "/finance/missing-resource",
+      "headers": {
+        "Accept": "*/*",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "want": 404,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4482,
+      "kind": "actual browser fetch with automatic headers",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4483,
+      "path": "/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/admin/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/insurance/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finances/",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/api/session",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/api/session",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/assets/missing",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/missing.js",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/src/missing",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/node_modules/missing",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/%61pi",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/missing.svg?x=1",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "method": "GET",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 200,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "method": "HEAD",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 200,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "method": "POST",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "method": "PUT",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "method": "PATCH",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "method": "DELETE",
+      "headers": {
+        "Accept": "text/html"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/applications/synthetic",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "want": 404,
+      "status": 404,
+      "type": "text/plain; charset=utf-8",
+      "html": false
+    },
+    {
+      "port": 4483,
+      "path": "/finance/missing-resource",
+      "headers": {
+        "Accept": "*/*",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "want": 404,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4483,
+      "path": "/finance/missing-resource",
+      "headers": {
+        "Accept": "*/*",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "want": 404,
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    },
+    {
+      "port": 4483,
+      "kind": "actual browser fetch with automatic headers",
+      "status": 200,
+      "type": "text/html; charset=utf-8",
+      "html": true
+    }
+  ],
+  "comparisons": [
+    {
+      "width": 1440,
+      "reference": {
+        "side": {
+          "rect": [
+            0,
+            0,
+            232,
+            1000
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "brand": {
+          "rect": [
+            16,
+            20,
+            199,
+            63.140625
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "organization": {
+          "rect": [
+            16,
+            83.140625,
+            199,
+            54.78125
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(240, 242, 245)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "header": {
+          "rect": [
+            232,
+            0,
+            1208,
+            64
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "select": {
+          "rect": [
+            362.09375,
+            11.5,
+            190,
+            40
+          ],
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(217, 222, 231)",
+          "radius": "6px",
+          "overflow": "clip"
+        },
+        "navigation": [
+          {
+            "rect": [
+              16,
+              191.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              234.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              277.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              320.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              363.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          }
+        ],
+        "seller": {
+          "rect": [
+            16,
+            942,
+            174.21875,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "notification": {
+          "rect": [
+            1086.1875,
+            12.5,
+            125.0625,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "scrollWidth": 1440,
+        "bodyFont": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      "candidate": {
+        "side": {
+          "rect": [
+            0,
+            0,
+            232,
+            1000
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "brand": {
+          "rect": [
+            16,
+            20,
+            199,
+            63.140625
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "organization": {
+          "rect": [
+            16,
+            83.140625,
+            199,
+            54.78125
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(240, 242, 245)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "header": {
+          "rect": [
+            232,
+            0,
+            1208,
+            64
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "select": {
+          "rect": [
+            362.09375,
+            11.5,
+            190,
+            40
+          ],
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(217, 222, 231)",
+          "radius": "6px",
+          "overflow": "clip"
+        },
+        "navigation": [
+          {
+            "rect": [
+              16,
+              191.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              234.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              277.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              320.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              16,
+              363.859375,
+              199,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          }
+        ],
+        "seller": {
+          "rect": [
+            16,
+            942,
+            174.21875,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "notification": {
+          "rect": [
+            1086.1875,
+            12.5,
+            125.0625,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "scrollWidth": 1440,
+        "bodyFont": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "width": 1180,
+      "reference": {
+        "side": {
+          "rect": [
+            0,
+            0,
+            76,
+            1000
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "brand": {
+          "rect": [
+            12,
+            20,
+            51,
+            63.140625
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "organization": {
+          "rect": [
+            12,
+            83.140625,
+            51,
+            48
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(240, 242, 245)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "header": {
+          "rect": [
+            76,
+            0,
+            1104,
+            64
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "select": {
+          "rect": [
+            200.09375,
+            11.5,
+            190,
+            40
+          ],
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(217, 222, 231)",
+          "radius": "6px",
+          "overflow": "clip"
+        },
+        "navigation": [
+          {
+            "rect": [
+              12,
+              151.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              194.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              237.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              280.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              323.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          }
+        ],
+        "seller": {
+          "rect": [
+            12,
+            942,
+            174.21875,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "notification": {
+          "rect": [
+            832.1875,
+            12.5,
+            125.0625,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "scrollWidth": 1180,
+        "bodyFont": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      "candidate": {
+        "side": {
+          "rect": [
+            0,
+            0,
+            76,
+            1000
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "brand": {
+          "rect": [
+            12,
+            20,
+            51,
+            63.140625
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "organization": {
+          "rect": [
+            12,
+            83.140625,
+            51,
+            48
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(240, 242, 245)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "header": {
+          "rect": [
+            76,
+            0,
+            1104,
+            64
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "select": {
+          "rect": [
+            200.09375,
+            11.5,
+            190,
+            40
+          ],
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(217, 222, 231)",
+          "radius": "6px",
+          "overflow": "clip"
+        },
+        "navigation": [
+          {
+            "rect": [
+              12,
+              151.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              194.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              237.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              280.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              323.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          }
+        ],
+        "seller": {
+          "rect": [
+            12,
+            942,
+            174.21875,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "notification": {
+          "rect": [
+            832.1875,
+            12.5,
+            125.0625,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "scrollWidth": 1180,
+        "bodyFont": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    },
+    {
+      "width": 600,
+      "reference": {
+        "side": {
+          "rect": [
+            0,
+            0,
+            76,
+            1000
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "brand": {
+          "rect": [
+            12,
+            20,
+            51,
+            63.140625
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "organization": {
+          "rect": [
+            12,
+            83.140625,
+            51,
+            48
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(240, 242, 245)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "header": {
+          "rect": [
+            76,
+            0,
+            524,
+            64
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "select": {
+          "rect": [
+            94,
+            11.5,
+            190,
+            40
+          ],
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(217, 222, 231)",
+          "radius": "6px",
+          "overflow": "clip"
+        },
+        "navigation": [
+          {
+            "rect": [
+              12,
+              151.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              194.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              237.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              280.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              323.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          }
+        ],
+        "seller": {
+          "rect": [
+            12,
+            942,
+            174.21875,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "notification": {
+          "rect": [
+            296,
+            12.5,
+            125.0625,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "scrollWidth": 600,
+        "bodyFont": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      "candidate": {
+        "side": {
+          "rect": [
+            0,
+            0,
+            76,
+            1000
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "brand": {
+          "rect": [
+            12,
+            20,
+            51,
+            63.140625
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "organization": {
+          "rect": [
+            12,
+            83.140625,
+            51,
+            48
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(240, 242, 245)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "header": {
+          "rect": [
+            76,
+            0,
+            524,
+            64
+          ],
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px",
+          "overflow": "visible"
+        },
+        "select": {
+          "rect": [
+            94,
+            11.5,
+            190,
+            40
+          ],
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(217, 222, 231)",
+          "radius": "6px",
+          "overflow": "clip"
+        },
+        "navigation": [
+          {
+            "rect": [
+              12,
+              151.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              194.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              237.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              280.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          },
+          {
+            "rect": [
+              12,
+              323.140625,
+              80.453125,
+              40
+            ],
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(94, 106, 125)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(94, 106, 125)",
+            "radius": "6px",
+            "overflow": "visible"
+          }
+        ],
+        "seller": {
+          "rect": [
+            12,
+            942,
+            174.21875,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "notification": {
+          "rect": [
+            296,
+            12.5,
+            125.0625,
+            38
+          ],
+          "font": "600 14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(185, 193, 206)",
+          "radius": "6px",
+          "overflow": "visible"
+        },
+        "scrollWidth": 600,
+        "bodyFont": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    }
+  ],
+  "hashes": {
+    "finance/index.html": "1d4f0f97fac4f52570542d8eb9ecb8efe8ca8c3bed011590f1f6bc3f2a4a125e",
+    "finance/workspace.js": "84f9eb509d79b124eba58709c5341ec4c77174e9dfd31d1d2471f5d3cfccf36e",
+    "finance/workspace.css": "dfe6be9c09d3a3db9875fff7be50ef7f9d412875761652d3f3d00f84a76b397a",
+    "common.css": "b8d33fc6f0ed224ff38f27f3d640f5850bd2f9103b5db759e6f3fbb2a76d1cd5",
+    "styles.css": "af11793c14c738af22b45922752d3dae40c677c94ec6b2508b69d3621c6fc99b"
+  },
+  "lockAdded": [
+    "node_modules/@justixauto/financing",
+    "web/apps/financing"
+  ]
+}
