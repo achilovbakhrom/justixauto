@@ -78,10 +78,12 @@ type Envelope struct {
 }
 
 var (
-	ErrInvalidEnvelope   = errors.New("invalid event envelope")
-	ErrSensitivePayload  = errors.New("event payload contains secret or raw PII")
-	eventTypePattern     = regexp.MustCompile(`^([a-z][a-z0-9-]*)(?:\.[a-z][a-z0-9-]*)+\.v([1-9][0-9]*)$`)
-	aggregateTypePattern = regexp.MustCompile(`^[a-z][a-z0-9-]*$`)
+	ErrInvalidEnvelope       = errors.New("invalid event envelope")
+	ErrSensitivePayload      = errors.New("event payload contains secret or raw PII")
+	ErrPayloadSchemaMismatch = errors.New("event payload schema mismatch")
+	ErrInvalidPayload        = errors.New("invalid event payload")
+	eventTypePattern         = regexp.MustCompile(`^([a-z][a-z0-9-]*)(?:\.[a-z][a-z0-9-]*)+\.v([1-9][0-9]*)$`)
+	aggregateTypePattern     = regexp.MustCompile(`^[a-z][a-z0-9-]*$`)
 )
 
 func NewEnvelope(input EnvelopeInput, data any) (Envelope, error) {
@@ -155,8 +157,8 @@ func validateMetadata(input EnvelopeInput) (Owner, error) {
 		return "", fmt.Errorf("%w: integrationSequence must be positive", ErrInvalidEnvelope)
 	}
 	if input.CompanyID == nil {
-		if owner != OwnerIdentity {
-			return "", fmt.Errorf("%w: companyId may be null only for identity events", ErrInvalidEnvelope)
+		if owner != OwnerIdentity || !isGlobalIdentityAggregate(input.AggregateType) {
+			return "", fmt.Errorf("%w: companyId may be null only for approved global identity aggregates", ErrInvalidEnvelope)
 		}
 	} else if !isCanonicalUUID(*input.CompanyID) {
 		return "", fmt.Errorf("%w: companyId must be a canonical UUID", ErrInvalidEnvelope)
@@ -230,7 +232,7 @@ func inspectPayload(value any, path string) error {
 func isSensitivePayloadKey(key string) bool {
 	normalized := strings.ToLower(strings.NewReplacer("_", "", "-", "").Replace(key))
 	switch normalized {
-	case "nationalid", "passportnumber", "taxid", "personalid", "dateofbirth":
+	case "nationalid", "passportnumber", "taxid", "personalid", "dateofbirth", "birthdate", "surname", "mobile":
 		return true
 	}
 	if strings.HasSuffix(normalized, "ref") || strings.HasSuffix(normalized, "refs") ||
@@ -244,6 +246,15 @@ func isSensitivePayloadKey(key string) bool {
 	}
 	switch normalized {
 	case "email", "phone", "address", "firstname", "lastname", "fullname", "displayname", "legalname", "pii", "note":
+		return true
+	default:
+		return false
+	}
+}
+
+func isGlobalIdentityAggregate(aggregateType string) bool {
+	switch aggregateType {
+	case "user", "role", "permission", "session", "credential", "mfa-factor", "recovery-token", "platform-access-guard":
 		return true
 	default:
 		return false
@@ -296,18 +307,51 @@ func (e Envelope) CompanyID() (string, bool) {
 
 func (e Envelope) Data() json.RawMessage { return bytes.Clone(e.data) }
 
-// DecodeData decodes the immutable payload as one exact schema. Unknown fields
-// are rejected so a consumer cannot silently interpret a newer payload version
-// using an older Go type.
-func DecodeData[T any](e Envelope) (T, error) {
+// PayloadDecoder binds a Go payload type and validator to one exact event schema.
+// Owner packages supply the event name and required-field validation; this
+// shared package does not define business event types.
+type PayloadDecoder[T any] struct {
+	eventType     string
+	schemaVersion uint32
+	validate      func(T) error
+}
+
+func NewPayloadDecoder[T any](eventType string, schemaVersion uint32, validate func(T) error) (PayloadDecoder[T], error) {
+	matches := eventTypePattern.FindStringSubmatch(eventType)
+	if matches == nil {
+		return PayloadDecoder[T]{}, fmt.Errorf("%w: decoder eventType must be owner-qualified and versioned", ErrInvalidEnvelope)
+	}
+	owner := Owner(matches[1])
+	version, err := strconv.ParseUint(matches[2], 10, 32)
+	if !owner.Valid() || err != nil || version != uint64(schemaVersion) || schemaVersion == 0 {
+		return PayloadDecoder[T]{}, fmt.Errorf("%w: decoder eventType and schemaVersion must match", ErrInvalidEnvelope)
+	}
+	if validate == nil {
+		return PayloadDecoder[T]{}, fmt.Errorf("%w: decoder requires payload validation", ErrInvalidEnvelope)
+	}
+	return PayloadDecoder[T]{eventType: eventType, schemaVersion: schemaVersion, validate: validate}, nil
+}
+
+// DecodeData decodes the immutable payload through an explicitly bound schema.
+func DecodeData[T any](e Envelope, decoder PayloadDecoder[T]) (T, error) {
 	var target T
-	decoder := json.NewDecoder(bytes.NewReader(e.data))
-	decoder.DisallowUnknownFields()
-	if err := decoder.Decode(&target); err != nil {
+	if decoder.eventType == "" || decoder.schemaVersion == 0 || decoder.validate == nil {
+		return target, fmt.Errorf("%w: uninitialized decoder", ErrPayloadSchemaMismatch)
+	}
+	if e.eventType != decoder.eventType || e.schemaVersion != decoder.schemaVersion {
+		return target, fmt.Errorf("%w: envelope is %s schema v%d, decoder is %s schema v%d",
+			ErrPayloadSchemaMismatch, e.eventType, e.schemaVersion, decoder.eventType, decoder.schemaVersion)
+	}
+	jsonDecoder := json.NewDecoder(bytes.NewReader(e.data))
+	jsonDecoder.DisallowUnknownFields()
+	if err := jsonDecoder.Decode(&target); err != nil {
 		return target, fmt.Errorf("decode %s schema v%d: %w", e.eventType, e.schemaVersion, err)
 	}
-	if err := requireJSONEOF(decoder); err != nil {
+	if err := requireJSONEOF(jsonDecoder); err != nil {
 		return target, err
+	}
+	if err := decoder.validate(target); err != nil {
+		return target, fmt.Errorf("%w: %s schema v%d: %v", ErrInvalidPayload, e.eventType, e.schemaVersion, err)
 	}
 	return target, nil
 }

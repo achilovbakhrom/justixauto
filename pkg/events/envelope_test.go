@@ -27,6 +27,23 @@ type reservationGrantedV1 struct {
 	EvidenceRef string `json:"evidenceRef,omitempty"`
 }
 
+func reservationGrantedDecoder(t *testing.T) PayloadDecoder[reservationGrantedV1] {
+	t.Helper()
+	decoder, err := NewPayloadDecoder("inventory.reservation.granted.v1", 1, func(payload reservationGrantedV1) error {
+		if payload.Holder.Service == "" {
+			return errors.New("holder.service is required")
+		}
+		if !isCanonicalUUID(payload.Holder.ID) {
+			return errors.New("holder.id must be a canonical UUID")
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("NewPayloadDecoder: %v", err)
+	}
+	return decoder
+}
+
 func validEnvelopeInput() EnvelopeInput {
 	aggregateVersion, _ := ParseRevision("5")
 	integrationSequence, _ := ParseRevision("2")
@@ -75,7 +92,7 @@ func TestEnvelopeRoundTripPreservesContractFields(t *testing.T) {
 	if err := json.Unmarshal(wire, &decoded); err != nil {
 		t.Fatalf("Unmarshal: %v", err)
 	}
-	payload, err := DecodeData[reservationGrantedV1](decoded)
+	payload, err := DecodeData(decoded, reservationGrantedDecoder(t))
 	if err != nil {
 		t.Fatalf("DecodeData: %v", err)
 	}
@@ -134,7 +151,8 @@ func TestEnvelopeMetadataValidation(t *testing.T) {
 
 func TestGlobalIdentityEventMayHaveNullCompany(t *testing.T) {
 	input := validEnvelopeInput()
-	input.EventType = "identity.platform.bootstrap-recorded.v1"
+	input.EventType = "identity.platform-access-guard.bootstrap-recorded.v1"
+	input.AggregateType = "platform-access-guard"
 	input.CompanyID = nil
 	envelope, err := NewEnvelope(input, struct {
 		BootstrapRef string `json:"bootstrapRef"`
@@ -147,6 +165,18 @@ func TestGlobalIdentityEventMayHaveNullCompany(t *testing.T) {
 	}
 }
 
+func TestTenantIdentityEventRequiresCompany(t *testing.T) {
+	input := validEnvelopeInput()
+	input.EventType = "identity.branch.created.v1"
+	input.AggregateType = "branch"
+	input.CompanyID = nil
+	if _, err := NewEnvelope(input, struct {
+		BranchID string `json:"branchId"`
+	}{BranchID: aggregateID}); !errors.Is(err, ErrInvalidEnvelope) {
+		t.Fatalf("tenant identity event error = %v, want ErrInvalidEnvelope", err)
+	}
+}
+
 func TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively(t *testing.T) {
 	for _, raw := range []string{
 		`{"password":"unsafe"}`,
@@ -156,6 +186,9 @@ func TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively(t *testing.T) {
 		`{"sessionHandle":"unsafe"}`,
 		`{"api_key":"unsafe"}`,
 		`{"nationalId":"AA1234567"}`,
+		`{"nested":[{"BirthDate":"2000-01-01"}]}`,
+		`{"nested":[{"surname":"Person"}]}`,
+		`{"nested":[{"mobile":"+998000000000"}]}`,
 	} {
 		if _, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(raw)); !errors.Is(err, ErrSensitivePayload) {
 			t.Errorf("payload %s error = %v, want ErrSensitivePayload", raw, err)
@@ -170,6 +203,36 @@ func TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively(t *testing.T) {
 		if _, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(raw)); err != nil {
 			t.Errorf("safe reference payload %s rejected: %v", raw, err)
 		}
+	}
+}
+
+func TestPayloadDecoderBindsEventTypeAndVersion(t *testing.T) {
+	input := validEnvelopeInput()
+	input.EventType = "inventory.reservation.granted.v2"
+	input.SchemaVersion = 2
+	envelope, err := NewEnvelope(input, validPayload())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := DecodeData(envelope, reservationGrantedDecoder(t)); !errors.Is(err, ErrPayloadSchemaMismatch) {
+		t.Fatalf("DecodeData mismatch error = %v, want ErrPayloadSchemaMismatch", err)
+	}
+
+	if _, err := NewPayloadDecoder[reservationGrantedV1]("inventory.reservation.granted.v2", 1, func(reservationGrantedV1) error { return nil }); !errors.Is(err, ErrInvalidEnvelope) {
+		t.Fatalf("NewPayloadDecoder mismatch error = %v, want ErrInvalidEnvelope", err)
+	}
+	if _, err := NewPayloadDecoder[reservationGrantedV1]("inventory.reservation.granted.v1", 1, nil); !errors.Is(err, ErrInvalidEnvelope) {
+		t.Fatalf("NewPayloadDecoder nil validator error = %v, want ErrInvalidEnvelope", err)
+	}
+}
+
+func TestPayloadDecoderRejectsMissingRequiredFields(t *testing.T) {
+	envelope, err := NewEnvelopeJSON(validEnvelopeInput(), json.RawMessage(`{}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := DecodeData(envelope, reservationGrantedDecoder(t)); !errors.Is(err, ErrInvalidPayload) {
+		t.Fatalf("DecodeData missing required field error = %v, want ErrInvalidPayload", err)
 	}
 }
 
@@ -194,7 +257,7 @@ func TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields(t *testin
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := DecodeData[reservationGrantedV1](withUnknownData); err == nil {
+	if _, err := DecodeData(withUnknownData, reservationGrantedDecoder(t)); err == nil {
 		t.Fatal("DecodeData accepted a field outside the selected schema")
 	}
 
@@ -224,13 +287,14 @@ func TestEnvelopeConcurrentDecodeIsReadOnly(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	decoder := reservationGrantedDecoder(t)
 	var wait sync.WaitGroup
 	for i := 0; i < 32; i++ {
 		wait.Add(1)
 		go func() {
 			defer wait.Done()
 			for j := 0; j < 100; j++ {
-				payload, decodeErr := DecodeData[reservationGrantedV1](envelope)
+				payload, decodeErr := DecodeData(envelope, decoder)
 				if decodeErr != nil || payload.Holder.Service != "retail" {
 					t.Errorf("DecodeData = (%+v, %v)", payload, decodeErr)
 					return
