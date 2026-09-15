@@ -25519,7 +25519,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-001"
       ],
@@ -25537,9 +25537,9 @@
       "scope": "Define inert owner feature-factory registration, explicit composition-root dependency injection, duplicate route/consumer rejection and fail-closed missing-feature behavior. No init-time I/O/business effects or service-locator domain coupling. Frontend registry discovers completed owner-local route exports without requiring absent feature files. Contract review precedes runtime implementation; this is an implementation convention within approved hexagonal boundaries, not new domain authority.",
       "worktree": ".worktrees/T-746",
       "base_sha": "537b662af02db56611bf6377fc42b16086a037dd",
-      "reviewed_sha": null,
+      "reviewed_sha": "ddeec749c68ab3d4edba428a1e2b0eeb7b1fdb88",
       "agent": "architect/t746_registration_contract",
-      "execution_note": "First QA BOUNCE found missing inert consumer claims. Corrected promoted contract ddeec749c68ab3d4edba428a1e2b0eeb7b1fdb88 now under independent re-review; source draft and snapshot preserved."
+      "execution_note": "Independent qa/T-746-r2.md GREEN closes inert-claim gap. Coordinator approves the exact registration convention within existing ADRs; runtime behavior remains downstream."
     },
     {
       "id": "T-747",

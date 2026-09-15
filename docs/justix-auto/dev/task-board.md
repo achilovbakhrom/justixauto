@@ -745,7 +745,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-743](tasks/T-743.md) | B-17 | Generate private inventory branch attachments DTO and client fixtures | implementation / 2 | inventory | todo | T-640, T-287 | `task/T-743-inventory-attachment-clients` | ENV-GIT |
 | [T-744](tasks/T-744.md) | B-28 | Generate private commerce allocations DTO and client fixtures | implementation / 2 | commerce | todo | T-640, T-695 | `task/T-744-commerce-allocation-clients` | ENV-GIT |
 | [T-745](tasks/T-745.md) | B-29 | Generate private inventory shipment receipts DTO and client fixtures | implementation / 2 | inventory | todo | T-640, T-696 | `task/T-745-inventory-receipt-clients` | ENV-GIT |
-| [T-746](tasks/T-746.md) | B-01 | Specify incremental typed owner and app feature registration | contract / 3 | contracts-foundation | ready-for-qa | T-001 | `task/T-746-runtime-registration-contract` | dependencies only |
+| [T-746](tasks/T-746.md) | B-01 | Specify incremental typed owner and app feature registration | contract / 3 | contracts-foundation | qa-green | T-001 | `task/T-746-runtime-registration-contract` | dependencies only |
 | [T-747](tasks/T-747.md) | B-02 | Project subscribe and register the credentials slice | implementation / 3 | identity | todo | T-060, T-580 | `task/T-747-credentials-registration` | ENV-GIT |
 | [T-748](tasks/T-748.md) | B-02 | Project subscribe and register the mfa slice | implementation / 3 | identity | todo | T-061, T-580 | `task/T-748-mfa-registration` | ENV-GIT |
 | [T-749](tasks/T-749.md) | B-02 | Project subscribe and register the bootstrap slice | implementation / 3 | identity | todo | T-062, T-580 | `task/T-749-bootstrap-registration` | ENV-GIT |
