@@ -1,0 +1,967 @@
+[
+  {
+    "app": "realization",
+    "url": "http://127.0.0.1:4183/",
+    "width": 1440,
+    "headings": [
+      "Дашборд",
+      "Быстрые действия",
+      "Последние продажи партнёрам"
+    ],
+    "styles": [
+      {
+        "class": "app-shell dealer-shell unified-shell",
+        "width": "1440px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "244px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "20px 16px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "1196px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px 24px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "1196px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "28px 32px 56px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "232px"
+  },
+  {
+    "app": "realization",
+    "url": "http://127.0.0.1:4183/",
+    "width": 1180,
+    "headings": [
+      "Дашборд",
+      "Быстрые действия",
+      "Последние продажи партнёрам"
+    ],
+    "styles": [
+      {
+        "class": "app-shell dealer-shell unified-shell",
+        "width": "1180px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "244px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "936px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "936px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "28px 32px 56px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "realization",
+    "url": "http://127.0.0.1:4183/",
+    "width": 900,
+    "headings": [
+      "Дашборд",
+      "Быстрые действия",
+      "Последние продажи партнёрам"
+    ],
+    "styles": [
+      {
+        "class": "app-shell dealer-shell unified-shell",
+        "width": "900px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "244px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "656px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "656px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "realization",
+    "url": "http://127.0.0.1:4183/",
+    "width": 600,
+    "headings": [
+      "Дашборд",
+      "Быстрые действия",
+      "Последние продажи партнёрам"
+    ],
+    "styles": [
+      {
+        "class": "app-shell dealer-shell unified-shell",
+        "width": "600px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "244px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "356px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "356px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "realization",
+    "url": "http://127.0.0.1:4183/",
+    "width": 580,
+    "headings": [
+      "Дашборд",
+      "Быстрые действия",
+      "Последние продажи партнёрам"
+    ],
+    "styles": [
+      {
+        "class": "app-shell dealer-shell unified-shell",
+        "width": "580px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "244px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "336px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "336px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "244px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "financing",
+    "url": "http://127.0.0.1:4183/finance/",
+    "width": 1440,
+    "headings": [
+      "Обзор",
+      "Требуют внимания",
+      "Начать работу"
+    ],
+    "styles": [
+      {
+        "class": "app-shell",
+        "width": "1440px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "232px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "20px 16px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "1208px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "0px 24px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "1208px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "28px 32px 56px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "232px"
+  },
+  {
+    "app": "financing",
+    "url": "http://127.0.0.1:4183/finance/",
+    "width": 1180,
+    "headings": [
+      "Обзор",
+      "Требуют внимания",
+      "Начать работу"
+    ],
+    "styles": [
+      {
+        "class": "app-shell",
+        "width": "1180px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "76px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "1104px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "1104px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 32px 56px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "financing",
+    "url": "http://127.0.0.1:4183/finance/",
+    "width": 900,
+    "headings": [
+      "Обзор",
+      "Требуют внимания",
+      "Начать работу"
+    ],
+    "styles": [
+      {
+        "class": "app-shell",
+        "width": "900px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "76px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "824px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "824px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "financing",
+    "url": "http://127.0.0.1:4183/finance/",
+    "width": 600,
+    "headings": [
+      "Обзор",
+      "Требуют внимания",
+      "Начать работу"
+    ],
+    "styles": [
+      {
+        "class": "app-shell",
+        "width": "600px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "76px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "524px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "524px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "financing",
+    "url": "http://127.0.0.1:4183/finance/",
+    "width": 580,
+    "headings": [
+      "Обзор",
+      "Требуют внимания",
+      "Начать работу"
+    ],
+    "styles": [
+      {
+        "class": "app-shell",
+        "width": "580px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "sidebar",
+        "width": "76px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 12px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "topbar",
+        "width": "504px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "0px 18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page",
+        "width": "504px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "insurance",
+    "url": "http://127.0.0.1:4183/insurance/",
+    "width": 1440,
+    "headings": [
+      "Обзор"
+    ],
+    "styles": [
+      {
+        "class": "ins-workspace",
+        "width": "1440px",
+        "display": "grid",
+        "columns": "248px 1192px",
+        "sidebar": "232px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-sidebar",
+        "width": "248px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-account",
+        "width": "1192px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "18px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page ins-page",
+        "width": "1192px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "28px 32px 56px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "232px"
+  },
+  {
+    "app": "insurance",
+    "url": "http://127.0.0.1:4183/insurance/",
+    "width": 1180,
+    "headings": [
+      "Обзор"
+    ],
+    "styles": [
+      {
+        "class": "ins-workspace",
+        "width": "1180px",
+        "display": "grid",
+        "columns": "248px 932px",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-sidebar",
+        "width": "248px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-account",
+        "width": "932px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "18px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page ins-page",
+        "width": "932px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 32px 56px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "insurance",
+    "url": "http://127.0.0.1:4183/insurance/",
+    "width": 900,
+    "headings": [
+      "Обзор"
+    ],
+    "styles": [
+      {
+        "class": "ins-workspace",
+        "width": "900px",
+        "display": "grid",
+        "columns": "180px 720px",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-sidebar",
+        "width": "180px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-account",
+        "width": "720px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "18px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page ins-page",
+        "width": "720px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "insurance",
+    "url": "http://127.0.0.1:4183/insurance/",
+    "width": 600,
+    "headings": [
+      "Обзор"
+    ],
+    "styles": [
+      {
+        "class": "ins-workspace",
+        "width": "600px",
+        "display": "block",
+        "columns": "180px minmax(0px, 1fr)",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-sidebar",
+        "width": "600px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "16px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-account",
+        "width": "600px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "18px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page ins-page",
+        "width": "600px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "insurance",
+    "url": "http://127.0.0.1:4183/insurance/",
+    "width": 580,
+    "headings": [
+      "Обзор"
+    ],
+    "styles": [
+      {
+        "class": "ins-workspace",
+        "width": "580px",
+        "display": "block",
+        "columns": "180px minmax(0px, 1fr)",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-sidebar",
+        "width": "580px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "16px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "ins-account",
+        "width": "580px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "18px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "page ins-page",
+        "width": "580px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "24px 20px 48px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "admin",
+    "url": "http://127.0.0.1:4183/admin/",
+    "width": 1440,
+    "headings": [
+      "Обзор",
+      "Последние действия"
+    ],
+    "styles": [
+      {
+        "class": "admin-shell",
+        "width": "1440px",
+        "display": "grid",
+        "columns": "248px 1192px",
+        "sidebar": "232px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-sidebar",
+        "width": "248px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-topbar",
+        "width": "1192px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "232px",
+        "padding": "20px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-page",
+        "width": "1192px",
+        "display": "grid",
+        "columns": "1128px",
+        "sidebar": "232px",
+        "padding": "32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "232px"
+  },
+  {
+    "app": "admin",
+    "url": "http://127.0.0.1:4183/admin/",
+    "width": 1180,
+    "headings": [
+      "Обзор",
+      "Последние действия"
+    ],
+    "styles": [
+      {
+        "class": "admin-shell",
+        "width": "1180px",
+        "display": "grid",
+        "columns": "248px 932px",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-sidebar",
+        "width": "248px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-topbar",
+        "width": "932px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-page",
+        "width": "932px",
+        "display": "grid",
+        "columns": "868px",
+        "sidebar": "76px",
+        "padding": "32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "admin",
+    "url": "http://127.0.0.1:4183/admin/",
+    "width": 900,
+    "headings": [
+      "Обзор",
+      "Последние действия"
+    ],
+    "styles": [
+      {
+        "class": "admin-shell",
+        "width": "900px",
+        "display": "grid",
+        "columns": "248px 652px",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-sidebar",
+        "width": "248px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-topbar",
+        "width": "652px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-page",
+        "width": "652px",
+        "display": "grid",
+        "columns": "588px",
+        "sidebar": "76px",
+        "padding": "32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "admin",
+    "url": "http://127.0.0.1:4183/admin/",
+    "width": 600,
+    "headings": [
+      "Обзор",
+      "Последние действия"
+    ],
+    "styles": [
+      {
+        "class": "admin-shell",
+        "width": "600px",
+        "display": "grid",
+        "columns": "180px 420px",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-sidebar",
+        "width": "180px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "28px 20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-topbar",
+        "width": "420px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "20px 32px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-page",
+        "width": "420px",
+        "display": "grid",
+        "columns": "380px",
+        "sidebar": "76px",
+        "padding": "20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  },
+  {
+    "app": "admin",
+    "url": "http://127.0.0.1:4183/admin/",
+    "width": 580,
+    "headings": [
+      "Обзор",
+      "Последние действия"
+    ],
+    "styles": [
+      {
+        "class": "admin-shell",
+        "width": "580px",
+        "display": "block",
+        "columns": "180px minmax(0px, 1fr)",
+        "sidebar": "76px",
+        "padding": "0px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-sidebar",
+        "width": "580px",
+        "display": "block",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "18px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-topbar",
+        "width": "580px",
+        "display": "flex",
+        "columns": "none",
+        "sidebar": "76px",
+        "padding": "16px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      },
+      {
+        "class": "admin-page",
+        "width": "580px",
+        "display": "grid",
+        "columns": "540px",
+        "sidebar": "76px",
+        "padding": "20px",
+        "font": "Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif"
+      }
+    ],
+    "rootSidebar": "76px"
+  }
+]

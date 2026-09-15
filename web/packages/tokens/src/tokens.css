@@ -1,0 +1,164 @@
+/* Extracted from the immutable HTML references; see reference.test.ts for
+ * declaration-level provenance. Import @justixauto/tokens/tokens.css once.
+ * Keep the matching shell class on each application root (and portalled
+ * dialogs) to inherit its scoped values. These are values, not component
+ * styles, navigation, font downloads, or a replacement for existing SVGs.
+ */
+:root {
+  --canvas: #f6f7f9;
+  --surface: #ffffff;
+  --surface-subtle: #f0f2f5;
+  --border: #d9dee7;
+  --border-strong: #b9c1ce;
+  --text: #18212f;
+  --text-secondary: #5e6a7d;
+  --text-muted: #8994a6;
+  --primary: #1769e0;
+  --primary-hover: #1258bf;
+  --primary-soft: #eaf2ff;
+  --success: #147a55;
+  --success-soft: #e8f6f0;
+  --warning: #a85c00;
+  --warning-soft: #fff3df;
+  --danger: #c23b43;
+  --danger-soft: #fdecef;
+  --info: #3165a8;
+  --info-soft: #eaf2fb;
+  --radius: 6px;
+  --shadow-overlay: 0 8px 24px rgba(24, 33, 47, 0.12);
+  --sidebar: 232px;
+  --topbar: 64px;
+
+  /* common.css: body, .sidebar, .topbar, .page, table, th, td, .modal*. */
+  --font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size: 14px;
+  --line-height: 1.45;
+  --sidebar-padding: 20px 16px;
+  --topbar-padding: 0 24px;
+  --page-padding: 28px 32px 56px;
+  --table-width: 100%;
+  --table-layout: fixed;
+  --table-heading-height: 42px;
+  --table-heading-padding: 0 14px;
+  --table-row-height: 60px;
+  --table-cell-padding: 9px 14px;
+  --dialog-width: min(600px, 100%);
+  --dialog-compact-width: min(480px, 100%);
+  --dialog-wide-width: min(760px, 100%);
+  --dialog-max-height: calc(100vh - 64px);
+  --dialog-radius: 8px;
+  --dialog-backdrop: rgba(24, 33, 47, .34);
+  --dialog-overlay-padding: 32px;
+  --dialog-overlay-z-index: 100;
+  --dialog-header-padding: 24px 24px 0;
+  --dialog-body-padding: 20px 24px 24px;
+  --dialog-footer-padding: 18px 24px;
+  --field-focus-outline: 2px solid rgba(23, 105, 224, .16);
+}
+
+/* styles.css overrides the inherited root even at <=1180px. Do not collapse
+ * this to the financing shell's 76px sidebar: measured M-R01 remains 244px. */
+.dealer-shell {
+  --sidebar: 244px;
+}
+
+/* finance/workspace.css. */
+.finance-workspace {
+  --dialog-wide-width: min(900px, 100%);
+}
+
+/* insurance.css: distinct grid shell, navigation, table and dialog values. */
+.ins-workspace {
+  --shell-columns: 248px minmax(0, 1fr);
+  --shell-display: grid;
+  --sidebar-padding: 28px 20px;
+  --topbar-padding: 18px 32px;
+  --shell-border: #dce2ec;
+  --nav-text: #64748b;
+  --nav-active-text: #1765d9;
+  --nav-active-background: #eaf2ff;
+  --table-layout: auto;
+  --dialog-width: 680px;
+  --dialog-max-height: calc(100dvh - 48px);
+  --dialog-radius: 14px;
+  --dialog-backdrop: #17233766;
+  --dialog-overlay-padding: 24px;
+  --dialog-overlay-z-index: 1000;
+  --shadow-overlay: 0 24px 70px #0f172a33;
+  --dialog-header-padding: 22px 28px;
+  --dialog-body-padding: 28px;
+  --dialog-footer-padding: 20px 28px;
+}
+
+/* admin/admin.css: independent shell and modal geometry. */
+.admin-shell {
+  --shell-columns: 248px minmax(0, 1fr);
+  --shell-display: grid;
+  --sidebar-padding: 28px 20px;
+  --topbar-padding: 20px 32px;
+  --page-padding: 32px;
+  --shell-border: #dce2ec;
+  --nav-text: #64748b;
+  --nav-active-text: #1765d9;
+  --nav-active-background: #eaf2ff;
+  --table-layout: auto;
+  --dialog-width: 700px;
+  --dialog-max-height: calc(100dvh - 48px);
+  --dialog-radius: 14px;
+  --dialog-backdrop: #18233366;
+  --dialog-overlay-padding: 24px;
+  --dialog-overlay-z-index: 1000;
+  --shadow-overlay: 0 25px 80px #18233333;
+  --dialog-header-padding: 24px;
+  --dialog-footer-padding: 20px 24px;
+}
+
+/* Literal media queries intentionally preserve the reference conditions;
+ * CSS custom properties cannot be substituted into media queries. */
+@media (max-width: 1180px) {
+  :root {
+    --sidebar: 76px;
+    --sidebar-padding: 20px 12px;
+    --topbar-padding: 0 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --page-padding: 24px 20px 48px;
+    --dialog-overlay-padding: 16px;
+    --dialog-wide-width: 100%;
+  }
+
+  .ins-workspace {
+    --shell-columns: 180px minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .admin-shell {
+    --shell-columns: 180px minmax(0, 1fr);
+    --page-padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ins-workspace {
+    --shell-display: block;
+    --sidebar-padding: 16px;
+    --dialog-header-padding: 18px;
+    --dialog-body-padding: 18px;
+    --dialog-footer-padding: 18px;
+    --dialog-overlay-padding: 12px;
+    --dialog-max-height: calc(100dvh - 24px);
+  }
+}
+
+@media (max-width: 580px) {
+  .admin-shell {
+    --shell-display: block;
+    --sidebar-padding: 18px;
+    --topbar-padding: 16px;
+    --dialog-overlay-padding: 12px;
+  }
+}
