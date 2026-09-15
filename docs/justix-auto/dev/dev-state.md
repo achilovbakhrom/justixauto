@@ -62,9 +62,12 @@ The confirmed outbox relay, transaction-bound sequence/gap adapters, explicit
 owner-history SQL template and deterministic Go/TypeScript contract generator
 are integrated. Generator checks use the approved Node toolchain and installed
 TypeScript; the checked-in config stays empty until concrete owner schemas are
-approved and registered. Auth response metadata/429/raw JSON decoding and the
-retained all-space generation-label forward correction remain assigned handoffs.
-Owner profiles and the actual migration driver/runner are still separate tasks.
+approved and registered. Sealed owner persistence profiles/read-only checks and
+the strict raw response JSON decoder are now independently integrated. Auth
+Fetch metadata/429 composition is T-936; the generation-label correction remains
+inside T-928's reviewed storage fix cycle. Compatible UOW binding and the actual
+migration driver/runner, concrete baseline manifests/default provisioning and
+custody profile support remain separate tasks with their explicit prerequisites.
 
 Historical preflight below predates the authorized Git setup on 2026-09-14.
 `doctor` checks the independent Git root and initial commit.
