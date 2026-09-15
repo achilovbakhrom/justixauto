@@ -1003,7 +1003,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-924](tasks/T-924.md) | B-01 | Restrict activated broker routes and separate relay and intake principals | implementation / 3 | foundation | integrated | T-006, T-001, T-925 | `task/T-924-messaging-broker-roles` | ENV-GIT |
 | [T-925](tasks/T-925.md) | B-01 | Correct retained messaging route compatibility | implementation / 4 | foundation | integrated | T-917, T-011, T-007, T-006 | `task/T-925-messaging-route-compatibility` | ENV-GIT |
 | [T-926](tasks/T-926.md) | B-01 | Install checkpoint and gap storage with receiver fences | implementation / 4 | foundation | integrated | T-925, T-008, T-009 | `task/T-926-projection-checkpoint-storage` | ENV-GIT |
-| [T-927](tasks/T-927.md) | B-01 | Install protected quarantine and redrive evidence storage | implementation / 4 | foundation | in-progress | T-926, T-013 | `task/T-927-quarantine-evidence-storage` | ENV-GIT |
+| [T-927](tasks/T-927.md) | B-01 | Install protected quarantine and redrive evidence storage | implementation / 4 | foundation | ready-for-qa | T-926, T-013 | `task/T-927-quarantine-evidence-storage` | ENV-GIT |
 | [T-928](tasks/T-928.md) | B-01 | Install projection generation and pointer evidence storage | implementation / 4 | foundation | todo | T-927 | `task/T-928-projection-generation-storage` | ENV-GIT |
 
 ## Approved owner migration compatibility tasks — 2026-09-15
@@ -1011,7 +1011,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
 | [T-929](tasks/T-929.md) | B-01 | Install immutable owner migration history | implementation / 4 | foundation | integrated | T-008, T-024 | `task/T-929-owner-migration-history` | ENV-GIT |
-| [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | todo | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
+| [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | in-progress | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | todo | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | todo | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
 | [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
