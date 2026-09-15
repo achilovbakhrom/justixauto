@@ -776,7 +776,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-011",
         "T-006",
@@ -803,7 +803,8 @@
       "base_sha": "7d6516d34ef1b68d4a8e48c8796a199bdb736c5d",
       "reviewed_sha": "e76fe6c410a23ac35e3fb80ffaae7b3119f0452d",
       "agent": "qa_t012",
-      "execution_note": "Confirmed recipient relay and bounded exponential jitter committed; independent exact-commit live PostgreSQL and RabbitMQ QA assigned."
+      "execution_note": "Exact e76fe6c independent QA GREEN, eight report/evidence artifacts byte-verified, clean merge with all four source/test leaves identical. Full scoped integration race passed (outbox38.748s, live PostgreSQL/RabbitMQ and actual writer), vet and diff checks passed; qa/integration-t012.md. Consumer effects and production activation remain separate.",
+      "integration_sha": "6045153fbc3aa30db5ba126466b6e3ad6e12c127"
     },
     {
       "id": "T-013",
