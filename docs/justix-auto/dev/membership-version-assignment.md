@@ -1,6 +1,6 @@
 # Membership version storage architecture assignment
 
-2026-09-15. Status: architect fix cycle 1 complete; independent r2 QA queued; T-920 remains blocked.
+2026-09-15. Status: architect fix cycle 1 complete; independent r2 QA active; T-920 remains blocked.
 Agent: `architect_membership_storage`.
 T-920 result-only commit: `0cbc724f3171786f78aa922f179d8cfe0b75fead`.
 Worktree: `.worktrees/membership-version-storage`.
@@ -73,3 +73,11 @@ existing enrollments within SQL008's owned leaf; old trigger/function definition
 and migrations remain unchanged. Independent r2 must audit that declared catalog
 delta, missing-link enforcement, ordinary future intake and inert retained state.
 Original BOUNCE evidence remains unchanged; no canonical contract adoption yet.
+
+Independent r2 assigned to `qa_membership_storage` in detached
+`.worktrees/membership-version-storage-r2-qa` at the exact revised commit above.
+Own only NEW `dev/qa/membership-version-storage-r2.md` and its evidence directory.
+Recheck the original counterexample, every lifecycle/provenance/missing-link
+boundary, declared additive trigger and exact alias/dependency/ownership delta.
+Preserve all original artifacts; independent GREEN and canonical promotion QA
+must precede dependent implementation.
