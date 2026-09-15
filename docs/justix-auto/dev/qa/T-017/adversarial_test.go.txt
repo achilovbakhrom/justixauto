@@ -1,0 +1,61 @@
+package commands
+
+import (
+ "context"
+ "errors"
+ "fmt"
+ "strings"
+ "testing"
+ "github.com/google/uuid"
+)
+
+func TestQAReceiptCorruptionAndSecrets(t *testing.T) {
+ id, op := uuid.NewString(), uuid.NewString()
+ data := `{"id":"`+id+`","state":"created"}`
+ for _, revision := range []string{`null`, `0`, `""`, `"01"`, `"-1"`, `"9223372036854775808"`} {
+  body := `{"data":`+data+`,"operationId":"`+op+`","revision":`+revision+`}`
+  if _, err := decodeReceipt(Receipt[outcome]{201, []byte(body)}, validate); err == nil { t.Errorf("accepted revision %s", revision) }
+ }
+ for _, body := range []string{
+  `{"data":null,"operationId":"`+op+`","revision":"1"}`,
+  `{"data":`+data+`,"operationId":"`+op+`","revision":"1","extra":true}`,
+  `{"data":{"id":"`+id+`","state":"created","nested":[]},"operationId":"`+op+`","revision":"1"}`,
+  `{"operationId":"`+op+`","status":"done"}`,
+ } {
+  for _, status := range []int{200,201,202} { if _, err := decodeReceipt(Receipt[outcome]{status, []byte(body)}, validate); err == nil { t.Errorf("accepted corrupt status %d body %s",status,body) } }
+ }
+ for _, key := range []string{"Pass_Word_Confirmation", "AUTHORIZATION", "client-secret", "session.handle", "mfa/code"} {
+  body := []byte(fmt.Sprintf(`{"safe":[{"%s":"synthetic-only"}]}`,key))
+  if safeObject(body) { t.Errorf("secret key admitted: %s", key) }
+ }
+ good := receipt(t,201)
+ if _, err := decodeReceipt(Receipt[outcome]{201,append(good.Bytes(),[]byte(` {}`)...)},validate); err == nil { t.Error("trailing JSON accepted") }
+}
+
+func TestQACorruptStoredReceiptAndRuntimePermissions(t *testing.T) {
+ db := fixtureDB(t)
+ ctx := context.Background()
+ s := schema(t)
+ digest, err := s.digest(request); if err != nil { t.Fatal(err) }
+ bodies := []string{
+  `{"data":{},"revision":"1","operationId":"`+uuid.NewString()+`"}`,
+  `{"data":{"id":"`+uuid.NewString()+`","state":"created"},"revision":null,"operationId":"`+uuid.NewString()+`"}`,
+  `{"data":{"id":"`+uuid.NewString()+`","state":"created","password":"synthetic-only"},"revision":"1","operationId":"`+uuid.NewString()+`"}`,
+ }
+ for _, body := range bodies {
+  p := scope()
+  err := db.Exec(`INSERT INTO eventstore.command_receipts(receipt_id,actor_id,company_id,command_name,target_id,idempotency_key,request_hash,http_status,receipt) VALUES (?, ?, ?, ?, NULL, ?, ?, 201, ?::jsonb)`,uuid.NewString(),p.ActorID,p.CompanyID,s.command,p.Key,digest[:],body).Error
+  if err != nil { t.Fatal(err) }
+  _,found,err := Recover(ctx,db,s,p)
+  if found || !errors.Is(err,ErrCorruptReceipt) { t.Fatalf("corrupt recovery found=%v err=%v",found,err) }
+  called:=false
+  err=run(db,s).Run(ctx,func(u ports)error{
+   _,_,err:=u.ledger.Execute(ctx,p,request,nil,func(context.Context)(Receipt[outcome],error){called=true;return receipt(t,201),nil});return err
+  })
+  if called || !errors.Is(err,ErrCorruptReceipt) { t.Fatalf("corrupt replay executed work=%v err=%v",called,err) }
+  if strings.Contains(err.Error(),"synthetic-only") { t.Fatal("secret in error") }
+ }
+ for _, query := range []string{`UPDATE eventstore.command_receipts SET http_status=200`, `DELETE FROM eventstore.command_receipts`} {
+  if err:=db.Exec(query).Error;err==nil { t.Fatalf("runtime mutated immutable receipt: %s",query) }
+ }
+}

@@ -784,7 +784,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-009"
       ],
@@ -806,9 +806,9 @@
       "scope": "actor+company+command+target key, canonical nonsecret hash, same request receipt and changed request409; no secret bodies; 201/200/202 and string revisions.",
       "worktree": ".worktrees/T-017",
       "base_sha": "8f15950c234f4e09bbc4d8b585e477fa4b929af2",
-      "reviewed_sha": null,
+      "reviewed_sha": "554caced444d6c6584d27bc614e2e002a3709bd1",
       "agent": "backend/t017_receipts",
-      "execution_note": "Developer commit554caced444d6c6584d27bc614e2e002a3709bd1 passed live PostgreSQL idempotency/recovery tests,unit/contracts and vet. Independent exact-commit receipt QA active."
+      "execution_note": "Independent QA GREEN: live concurrency/lost-commit tests,malformed stored receipt and runtime immutability probes,race/vet passed. QA wrote assigned new artifacts in main; source worktree unchanged."
     },
     {
       "id": "T-018",
