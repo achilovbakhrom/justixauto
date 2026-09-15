@@ -1,0 +1,25 @@
+{
+  "name": "@justixauto/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { "./Dialog": "./src/Dialog.tsx", "./Field": "./src/Field.tsx", "./Button": "./src/Button.tsx" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit false --outDir dist --declaration"
+  },
+  "dependencies": {
+    "@justixauto/tokens": "0.1.0",
+    "@radix-ui/react-dialog": "1.1.23",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/user-event": "14.6.7",
+    "jsdom": "30.0.1"
+  }
+}
