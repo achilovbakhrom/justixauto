@@ -1356,7 +1356,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1383,9 +1383,9 @@
       "scope": "Own only retail mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later retail_wire task.",
       "worktree": ".worktrees/T-027",
       "base_sha": "a2c61e8fadd0b8a5f4d7563aa67c1383c30b134e",
-      "reviewed_sha": null,
-      "agent": "coordinator_t027",
-      "execution_note": "Coordinator implements the ready Retail owner scaffold in an isolated worktree while independent reviews proceed. Use approved typed UOW/readiness mechanics, preserve owner isolation and repair fixture lifecycle in the new owned test leaf; business features and later owner profile composition remain separate."
+      "reviewed_sha": "db5c28c6ea7fe709d874f4e2a083d891a965877b",
+      "agent": "qa_t027",
+      "execution_note": "Coordinator-authored Retail scaffold committed; live race14.342s, full scoped race Retail16.288s/contracts125.411s and vet pass. New fixture cleanup handles real lost create reply and pre-allocation refusal safely. Final result-only whitespace correction preserves raw-log reconstruction; source unchanged after checks. Independent exact-commit QA assigned; legacy-only scope, future owner profile composition remains separate."
     },
     {
       "id": "T-028",
