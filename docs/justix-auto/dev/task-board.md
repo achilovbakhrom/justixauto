@@ -81,7 +81,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | integrated | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | integrated | T-011, T-006, T-919, T-924 | `task/T-012-outbox-relay` | ENV-GIT |
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
-| [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | ready-for-qa | T-013, T-010, T-926 | `task/T-014-projection-sequence` | ENV-GIT |
+| [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | integrated | T-013, T-010, T-926 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013, T-927, T-922 | `task/T-015-quarantine` | ENV-GIT |
 | [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014, T-928, T-920 | `task/T-016-projection-rebuild` | ENV-GIT |
 | [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | integrated | T-009 | `task/T-017-receipts` | ENV-GIT |
@@ -125,7 +125,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-055](tasks/T-055.md) | B-04 | Enforce frontend context epochs and cross-tab cache clearing | implementation / 4 | frontend-shared | todo | T-032, T-070, T-643 | `task/T-055-session-client` | ENV-GIT |
 | [T-056](tasks/T-056.md) | B-07 | Implement safe command reducer and same-key receipt recovery | implementation / 4 | frontend-shared | todo | T-032, T-078, T-645 | `task/T-056-operation-reducer` | ENV-GIT |
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
-| [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | ready-for-qa | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
+| [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | integrated | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | integrated | T-001 | `task/T-058-contract-2` | dependencies only |
 | [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | todo | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
 | [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931 | `task/T-060-credentials` | ENV-GIT |
@@ -1010,7 +1010,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
-| [T-929](tasks/T-929.md) | B-01 | Install immutable owner migration history | implementation / 4 | foundation | ready-for-qa | T-008, T-024 | `task/T-929-owner-migration-history` | ENV-GIT |
+| [T-929](tasks/T-929.md) | B-01 | Install immutable owner migration history | implementation / 4 | foundation | integrated | T-008, T-024 | `task/T-929-owner-migration-history` | ENV-GIT |
 | [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | todo | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | todo | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | todo | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |

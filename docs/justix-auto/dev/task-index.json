@@ -846,7 +846,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-013",
         "T-010",
@@ -871,7 +871,8 @@
       "base_sha": "0df6cdcd7ee77f7d07a1a2c151695274af8728ba",
       "reviewed_sha": "3a166bc39ed93eed13662a951da1626fab01fcb0",
       "agent": "qa_t014_r2",
-      "execution_note": "Fix cycle1 committed exact retained identity and contiguous progress checks plus verified owned fixture volume cleanup. Full scoped race passed projection7.914s; cleanup-adjusted independent probes3.609s; original obsolete double-removal failure preserved. New exact-commit QA required, known space-only label storage limit remains."
+      "execution_note": "Exact3a166bc r2 QA GREEN resolves retained identity and fixture cleanup defects; original evidence preserved. Clean source-identical merge and combined full scoped race passed (projection9.300s), vet/diff0; qa/integration-t014-t640-t929.md. Space-only label storage correction remains unfinished and production consumer effects separate.",
+      "integration_sha": "8f79e94f95e76466e9a3ca2dcb1d38b7736aa403"
     },
     {
       "id": "T-015",
@@ -2372,7 +2373,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-004",
         "T-003",
@@ -2397,7 +2398,8 @@
       "base_sha": "8883c37",
       "reviewed_sha": "c69d52221287abecc4f1803ec7ed3532dce070f9",
       "agent": "qa_t640_r3",
-      "execution_note": "Fix cycle2 protects generated Go methods and stable transport fields, scans code tokens without wire-string false positives; full contracts race111.729s and both prior probe expectation sets pass. Third exact-commit review required; any new failure triggers scope review, no silent further fix cycle."
+      "execution_note": "Final exact c69d522 QA GREEN, original findings and both fix cycles preserved. Clean merge retains reviewed generator/config/test bytes. Combined integration full scoped race passed (contracts114.627s), vet/diff0; qa/integration-t014-t640-t929.md. Empty config and auth transport/decoder handoffs remain explicit.",
+      "integration_sha": "c4a5eea8d3f204dded592b3f34133a8514c7067d"
     },
     {
       "id": "T-058",
@@ -35486,7 +35488,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-008",
         "T-024"
@@ -35508,8 +35510,9 @@
       "worktree": ".worktrees/T-929",
       "base_sha": "8e714dc98659d2ef7c901362501d60dd7e7335db",
       "agent": "qa_t929",
-      "execution_note": "Immutable owner history SQL and real PostgreSQL tests committed; full scoped race passed eventstore32.432s, vet/diff0, retained Identity catalog/data preimages identical. Exact independent QA assigned; legacy baseline only, trusted provenance and later runner remain explicit boundaries.",
-      "reviewed_sha": "ead003147ebbde7316d903923baf83cc5f0bcecd"
+      "execution_note": "Exact ead0031 independent QA GREEN; source-identical merge and combined full scoped race passed (eventstore32.777s), vet/diff0. Retained preimages and narrow immutable history verified; qa/integration-t014-t640-t929.md. Actual driver atomic finalization, real baseline attestation and production activation remain separate.",
+      "reviewed_sha": "ead003147ebbde7316d903923baf83cc5f0bcecd",
+      "integration_sha": "476777139ffa6a470c7b3f6e79086c64f2dc7db5"
     },
     {
       "id": "T-930",
