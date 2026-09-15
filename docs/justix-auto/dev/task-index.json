@@ -1086,7 +1086,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1115,7 +1115,8 @@
       "base_sha": "e47e08b6f0aee8f432f8b6e1675619069f8160c1",
       "reviewed_sha": "da73efefa5dc62189018734dcb5a5873cbd77041",
       "agent": "backend_t025",
-      "execution_note": "Independent exact-commit QA GREEN: full project race/live Inventory12.857s,11 independent adversarial cases and vet passed. Scope and privilege boundaries verified; legacy scaffold only, populated route/custody runtime remains separate."
+      "execution_note": "Merged exact GREEN da73efef. Main full services/pkg/tests race with live Inventory13.113s and vet passed. Inventory owner persistence only; company authorization and custody/runtime activation remain explicit downstream gates.",
+      "integration_sha": "465399c0171ddcbdae7c71dcba99f30d61ff40f9"
     },
     {
       "id": "T-026",

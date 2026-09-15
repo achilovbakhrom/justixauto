@@ -27,8 +27,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-025 qa-green (`.worktrees/T-025`, `task/T-025-inventory-scaffold`); T-038 in-progress (`.worktrees/T-038`, `task/T-038-financing-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 ready-for-qa (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
-- Integrated tasks: 24/924; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-038 in-progress (`.worktrees/T-038`, `task/T-038-financing-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 ready-for-qa (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
+- Integrated tasks: 25/924; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 924 (916 reviewed baseline + eight approved messaging amendments); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -89,10 +89,10 @@ both apps; their default session boundaries render no protected children until s
 integration. Explicit synthetic QA fixtures display the empty shell. This is
 not a working business application; the Financing/Insurance shells and feature
 routes remain in their assigned tasks. Explicit SQL installation templates and
-shared Go durability primitives are integrated. Identity now has typed owner
-transaction ports, an explicit migration and fail-closed persistence readiness.
-Its composition roots, auth features and custody-mode adapter remain separate
-tasks; the scaffold does not start an Identity API or worker.
+shared Go durability primitives are integrated. Identity and Inventory now have typed owner
+transaction ports, explicit migrations and fail-closed persistence readiness.
+Their composition roots, business features and custody-mode adapters remain
+separate tasks; these scaffolds do not start service APIs or workers.
 Broad `go test ./...` from the main checkout also discovers ignored Go sources
 inside the local compiler and `node_modules`; use the project-package commands
 above until tooling relocates or isolates those development artifacts. Do not
