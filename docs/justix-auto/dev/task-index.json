@@ -1436,7 +1436,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-032",
         "T-034"
@@ -1459,12 +1459,14 @@
         "B-01.AC4"
       ],
       "scope": "Vitest/RTL+MSW fixture contract checks; Playwright same-state/viewport comparison infrastructure, no claim of browser parity until actually executed. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
-      "worktree": null,
-      "base_sha": null,
+      "worktree": ".worktrees/T-035",
+      "base_sha": "3cd4d702589ed7ec827b50c9667c2562810a6009",
       "reviewed_sha": null,
       "coordinator_files": [
         "package-lock.json"
-      ]
+      ],
+      "agent": "frontend_t035",
+      "execution_note": "T032 and T034 integrated; own-root Git passed and isolated worktree allocated. Root coordinator owns serialized dependency-lock handoff before exact-SHA QA."
     },
     {
       "id": "T-036",

@@ -143,6 +143,11 @@ The table records exact direct versions and registry SHA-512 integrity values. M
 | `@testing-library/user-event` | `14.6.7` | `sha512-MPCpX8bxe8zS+JmmTwLp8jd0dy1rAm60Te/SL8JrQM3qvQJcBOs1d7IefJMyZzqM3EWBrDn/LWDt1BCGu4ASfg==` |
 | `@testing-library/jest-dom` | `7.0.1` | `sha512-oMDTC3oA+6CXSO2JZnvOI7CA6oVub6kij5ggk9ohwye5slmkwxYDXcPOVxgMw/RQlticjtO0C1RZkR97HgrWMw==` |
 | `@playwright/test` | `1.63.0` | `sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ==` |
+| `msw` | `2.15.0` | `sha512-2wQAmKkQKxRuXvYJxVhPGG0wZNBQyD06oJvxqw90XqLvptdqxdlHrFUfEteKkpaNORX3Xzc+HtEl/q0nfmN2wQ==` |
+
+MSW pin added 2026-09-15 for the already approved §9 schema-validated fixture
+architecture and T-035. Node `>=18` and TypeScript `>=4.8.x` requirements fit
+the existing compiler pins. See the [ADR-13 amendment approval](../state/approvals/T-035-msw-pin.md).
 
 Preserve existing documentation-tool pins `clean-css` 5.3.3, `html-minifier-terser` 7.2.0 and `terser` 5.44.0, and their existing package-lock integrity entries. They are existing observations, not new production dependencies. Preserve all root `mocks:*` and `doctor` commands. Keep future workspace libraries/build tools in devDependencies unless needed by the browser app at runtime. npm itself is the package manager pin, not a new application dependency.
 
