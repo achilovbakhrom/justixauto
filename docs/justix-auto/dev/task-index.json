@@ -1297,7 +1297,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-004"
       ],
@@ -1322,12 +1322,12 @@
       "scope": "Same-origin transport, typed 401/403/404/409/412/422/503 receipts, no token storage or persistent PII; schema adapters injected by each feature. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-032",
       "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
-      "reviewed_sha": "01d0a19dcf5ca1a8dd11039239e19d5c8b917417",
+      "reviewed_sha": "caf1473b8778c6409ba5b5d120e510fedc838994",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend/t032_api_client",
-      "execution_note": "Corrected source8ca6c16 and serialized main/token lock merge reviewed as caf1473b8778c6409ba5b5d120e510fedc838994. Independent second review active; first BOUNCE evidence retained."
+      "execution_note": "Renewed independent QA GREEN in qa/T-032-r2.md: 99 workspace tests and19 adversarial checks, locked install/typecheck/lint/build. Initial BOUNCE evidence retained."
     },
     {
       "id": "T-033",

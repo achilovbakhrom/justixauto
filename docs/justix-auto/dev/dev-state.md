@@ -3,8 +3,8 @@
 - Date: 2026-09-15
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
-- Phase: development active; eight QA-gated foundation tasks integrated; event-store and shared frontend slices next
-- Default branch: `main`; integrated foundation state `5a74db0` pushed to origin
+- Phase: development active; Go event mechanics and shared React components in progress
+- Default branch: `main`; independently reviewed tasks are integrated and pushed incrementally
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
 - Git readiness: PASS; own root, clean main and origin synchronization verified.
@@ -27,7 +27,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 ready-for-qa (`.worktrees/T-002`, `task/T-002-security-release`); T-009 implementing (`.worktrees/T-009`, `task/T-009-append`); T-032 ready-for-qa (`.worktrees/T-032`, `task/T-032-api-client`); T-034 implementing (`.worktrees/T-034`, `task/T-034-dialog`); T-746 ready-for-qa (`.worktrees/T-746`, `task/T-746-runtime-registration-contract`).
+- Active task: T-002 ready-for-qa (`.worktrees/T-002`, `task/T-002-security-release`); T-009 implementing (`.worktrees/T-009`, `task/T-009-append`); T-032 qa-green (`.worktrees/T-032`, `task/T-032-api-client`); T-034 implementing (`.worktrees/T-034`, `task/T-034-dialog`); T-746 ready-for-qa (`.worktrees/T-746`, `task/T-746-runtime-registration-contract`).
 - Integrated tasks: 10/916; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 916; see task-board.md, task-index.json and backlog-coverage.md
@@ -82,9 +82,10 @@ boundary, not a missing Docker installation.
 
 ## Commands not available yet
 
-No owner service composition roots, shared local Compose runner, migrations,
-CI pipeline, or React application workspaces exist yet. Root React test/build
-commands intentionally fail until child app/package workspaces are added.
+No owner service composition roots, shared local Compose runner, owner migration
+runner, CI pipeline, or React application workspaces exist yet. Explicit SQL
+installation templates and the shared token package are integrated. Root shared
+package test/build commands work; app-specific builds await their app tasks.
 Broad `go test ./...` from the main checkout also discovers ignored Go sources
 inside the local compiler and `node_modules`; use the project-package commands
 above until tooling relocates or isolates those development artifacts. Do not
@@ -98,10 +99,10 @@ these checkpoints or regenerate the plan. `task-board.md` is the formal plan;
 `task-preview.md` remains historical examples only. Coordinator review and actual
 validation results are in `../state/planning-review.md`.
 
-Next eligible foundation work starts with T-008 owner-installable event/command
-SQL templates, followed by conditional append/replay/outbox/inbox mechanics.
-Independent frontend work may proceed through T-032 schema-validating API client
-and T-033 mock-token extraction. Follow task dependencies and resolve scoped
+T-008 owner-installable SQL templates and T-033 mock tokens are integrated.
+T-009 conditional append and T-034 shared dialog work are active; T-032's
+corrected API client awaits final renewed QA integration. Follow the live task
+dependencies for replay/outbox/inbox and the app harness, and resolve scoped
 choices only before affected tasks. No policy invention. The user explicitly
 authorized Git initialization and push on 2026-09-14 and removed that
 prohibition from AGENTS.md.

@@ -91,7 +91,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-029](tasks/T-029.md) | B-01 | Scaffold insurance typed owner ports and migration ledger | implementation / 3 | insurance | todo | T-009, T-017, T-018, T-010 | `task/T-029-insurance-scaffold` | ENV-GIT |
 | [T-030](tasks/T-030.md) | B-01 | Scaffold documents typed owner ports and migration ledger | implementation / 3 | documents | todo | T-009, T-017, T-018, T-010 | `task/T-030-documents-scaffold` | ENV-GIT |
 | [T-031](tasks/T-031.md) | B-01 | Enforce explicit authenticated internal callers and edge identity stripping | implementation / 3 | foundation | integrated | T-003 | `task/T-031-auth-transport` | ENV-GIT |
-| [T-032](tasks/T-032.md) | B-05 | Create schema-validating HTTP client and scope-key helpers | implementation / 3 | frontend-shared | ready-for-qa | T-004 | `task/T-032-api-client` | ENV-GIT |
+| [T-032](tasks/T-032.md) | B-05 | Create schema-validating HTTP client and scope-key helpers | implementation / 3 | frontend-shared | qa-green | T-004 | `task/T-032-api-client` | ENV-GIT |
 | [T-033](tasks/T-033.md) | B-05 | Extract existing HTML tokens without redesign | implementation / 2 | frontend-shared | integrated | T-004 | `task/T-033-tokens` | ENV-GIT |
 | [T-034](tasks/T-034.md) | B-05 | Implement accessible shared dialog and form primitives | implementation / 3 | frontend-shared | implementing | T-033 | `task/T-034-dialog` | ENV-GIT |
 | [T-035](tasks/T-035.md) | B-01 | Create schema-checked frontend fixture and browser harness | implementation / 3 | frontend-shared | todo | T-032, T-034 | `task/T-035-testkit` | ENV-GIT |
