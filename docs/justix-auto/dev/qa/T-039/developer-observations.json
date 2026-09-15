@@ -1,0 +1,1140 @@
+{
+  "checks": [
+    "three disabled navigation controls 1440",
+    "no feature links 1440",
+    "empty content 1440",
+    "disabled controls skipped 1440",
+    "session boundary removes all display 1440",
+    "three disabled navigation controls 900",
+    "no feature links 900",
+    "empty content 900",
+    "disabled controls skipped 900",
+    "session boundary removes all display 900",
+    "three disabled navigation controls 600",
+    "no feature links 600",
+    "empty content 600",
+    "disabled controls skipped 600",
+    "session boundary removes all display 600",
+    "non-document intent rejected 4392/insurance/applications/missing-resource{\"Accept\":\"*/*\"}",
+    "non-document intent rejected 4392/insurance/applications/missing-resource{\"Accept\":\"application/json\"}",
+    "non-document intent rejected 4392/insurance/applications/missing-resource{\"Accept\":\"text/html;q=0\"}",
+    "non-document intent rejected 4392/insurance/applications/missing-resource{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+    "non-document intent rejected 4392/insurance/applications/missing-resource{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+    "non-document intent rejected 4392/insurance/index.html{\"Accept\":\"*/*\"}",
+    "non-document intent rejected 4392/insurance/index.html{\"Accept\":\"application/json\"}",
+    "non-document intent rejected 4392/insurance/index.html{\"Accept\":\"text/html;q=0\"}",
+    "non-document intent rejected 4392/insurance/index.html{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+    "non-document intent rejected 4392/insurance/index.html{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+    "non-document intent rejected 4392/insurance/index%2ehtml{\"Accept\":\"*/*\"}",
+    "non-document intent rejected 4392/insurance/index%2ehtml{\"Accept\":\"application/json\"}",
+    "non-document intent rejected 4392/insurance/index%2ehtml{\"Accept\":\"text/html;q=0\"}",
+    "non-document intent rejected 4392/insurance/index%2ehtml{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+    "non-document intent rejected 4392/insurance/index%2ehtml{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+    "positive HTML HEAD accepted 4392",
+    "route rejected 4392/",
+    "route rejected 4392/admin/",
+    "route rejected 4392/finance/",
+    "route rejected 4392/api/session",
+    "route rejected 4392/insurance/api/session",
+    "route rejected 4392/insurance/assets/missing.js",
+    "route rejected 4392/insurance/missing.css",
+    "route rejected 4392/insurance/assets/missing",
+    "route rejected 4392/insurance/%61pi",
+    "route rejected 4392/insurance/src/missing.ts",
+    "method rejected 4392POST",
+    "method rejected 4392PUT",
+    "method rejected 4392DELETE",
+    "method rejected 4392PATCH",
+    "non-document rejected 4392",
+    "closed default entry 4392/insurance/",
+    "closed default entry 4392/insurance/applications/one",
+    "closed default entry 4392/insurance/index.html",
+    "actual browser wildcard fetch rejected 4392/insurance/missing-resource",
+    "actual browser wildcard fetch rejected 4392/insurance/index.html",
+    "actual browser wildcard fetch rejected 4392/insurance/index%2ehtml",
+    "no entry runtime errors 4392",
+    "non-document intent rejected 4393/insurance/applications/missing-resource{\"Accept\":\"*/*\"}",
+    "non-document intent rejected 4393/insurance/applications/missing-resource{\"Accept\":\"application/json\"}",
+    "non-document intent rejected 4393/insurance/applications/missing-resource{\"Accept\":\"text/html;q=0\"}",
+    "non-document intent rejected 4393/insurance/applications/missing-resource{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+    "non-document intent rejected 4393/insurance/applications/missing-resource{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+    "non-document intent rejected 4393/insurance/index.html{\"Accept\":\"*/*\"}",
+    "non-document intent rejected 4393/insurance/index.html{\"Accept\":\"application/json\"}",
+    "non-document intent rejected 4393/insurance/index.html{\"Accept\":\"text/html;q=0\"}",
+    "non-document intent rejected 4393/insurance/index.html{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+    "non-document intent rejected 4393/insurance/index.html{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+    "non-document intent rejected 4393/insurance/index%2ehtml{\"Accept\":\"*/*\"}",
+    "non-document intent rejected 4393/insurance/index%2ehtml{\"Accept\":\"application/json\"}",
+    "non-document intent rejected 4393/insurance/index%2ehtml{\"Accept\":\"text/html;q=0\"}",
+    "non-document intent rejected 4393/insurance/index%2ehtml{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"empty\",\"Sec-Fetch-Mode\":\"cors\"}",
+    "non-document intent rejected 4393/insurance/index%2ehtml{\"Accept\":\"text/html\",\"Sec-Fetch-Dest\":\"script\",\"Sec-Fetch-Mode\":\"no-cors\"}",
+    "positive HTML HEAD accepted 4393",
+    "route rejected 4393/",
+    "route rejected 4393/admin/",
+    "route rejected 4393/finance/",
+    "route rejected 4393/api/session",
+    "route rejected 4393/insurance/api/session",
+    "route rejected 4393/insurance/assets/missing.js",
+    "route rejected 4393/insurance/missing.css",
+    "route rejected 4393/insurance/assets/missing",
+    "route rejected 4393/insurance/%61pi",
+    "route rejected 4393/insurance/src/missing.ts",
+    "method rejected 4393POST",
+    "method rejected 4393PUT",
+    "method rejected 4393DELETE",
+    "method rejected 4393PATCH",
+    "non-document rejected 4393",
+    "closed default entry 4393/insurance/",
+    "closed default entry 4393/insurance/applications/one",
+    "closed default entry 4393/insurance/index.html",
+    "actual browser wildcard fetch rejected 4393/insurance/missing-resource",
+    "actual browser wildcard fetch rejected 4393/insurance/index.html",
+    "actual browser wildcard fetch rejected 4393/insurance/index%2ehtml",
+    "no entry runtime errors 4393",
+    "no app network or storage writes",
+    "no persistent browser data",
+    "shell metrics 1440",
+    "shell metrics 900",
+    "shell metrics 600"
+  ],
+  "comparisons": [
+    {
+      "width": 1440,
+      "reference": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 248,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 20,
+          "y": 28,
+          "width": 207,
+          "height": 56.734375,
+          "font": "700 22px / 31.9px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 78,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "account": {
+          "x": 1076.109375,
+          "y": 18,
+          "width": 331.890625,
+          "height": 41,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "select": {
+          "x": 1176,
+          "y": 18,
+          "width": 232,
+          "height": 41,
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(203, 213, 225)",
+          "radius": "6px"
+        },
+        "nav": [
+          {
+            "x": 20,
+            "y": 122.734375,
+            "width": 207,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 175.03125,
+            "width": 207,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 227.328125,
+            "width": 207,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          }
+        ],
+        "overflow": false
+      },
+      "candidate": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 248,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 20,
+          "y": 28,
+          "width": 207,
+          "height": 56.734375,
+          "font": "700 22px / 31.9px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 248,
+          "y": 0,
+          "width": 1192,
+          "height": 78,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "account": {
+          "x": 1076.109375,
+          "y": 18,
+          "width": 331.890625,
+          "height": 41,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "select": {
+          "x": 1176,
+          "y": 18,
+          "width": 232,
+          "height": 41,
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(203, 213, 225)",
+          "radius": "6px"
+        },
+        "nav": [
+          {
+            "x": 20,
+            "y": 122.734375,
+            "width": 207,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 175.03125,
+            "width": 207,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 227.328125,
+            "width": 207,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          }
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "width": 900,
+      "reference": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 180,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 20,
+          "y": 28,
+          "width": 139,
+          "height": 56.734375,
+          "font": "700 22px / 31.9px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 180,
+          "y": 0,
+          "width": 720,
+          "height": 78,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "account": {
+          "x": 536.109375,
+          "y": 18,
+          "width": 331.890625,
+          "height": 41,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "select": {
+          "x": 636,
+          "y": 18,
+          "width": 232,
+          "height": 41,
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(203, 213, 225)",
+          "radius": "6px"
+        },
+        "nav": [
+          {
+            "x": 20,
+            "y": 122.734375,
+            "width": 139,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 175.03125,
+            "width": 139,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 227.328125,
+            "width": 139,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          }
+        ],
+        "overflow": false
+      },
+      "candidate": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 180,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 20,
+          "y": 28,
+          "width": 139,
+          "height": 56.734375,
+          "font": "700 22px / 31.9px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 180,
+          "y": 0,
+          "width": 720,
+          "height": 78,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "account": {
+          "x": 536.109375,
+          "y": 18,
+          "width": 331.890625,
+          "height": 41,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "select": {
+          "x": 636,
+          "y": 18,
+          "width": 232,
+          "height": 41,
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(203, 213, 225)",
+          "radius": "6px"
+        },
+        "nav": [
+          {
+            "x": 20,
+            "y": 122.734375,
+            "width": 139,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 175.03125,
+            "width": 139,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 20,
+            "y": 227.328125,
+            "width": 139,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          }
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "width": 600,
+      "reference": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 149.03125,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 16,
+          "y": 16,
+          "width": 567,
+          "height": 56.734375,
+          "font": "700 22px / 31.9px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 0,
+          "y": 149.03125,
+          "width": 600,
+          "height": 118.296875,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "account": {
+          "x": 32,
+          "y": 207.328125,
+          "width": 331.890625,
+          "height": 41,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "select": {
+          "x": 131.890625,
+          "y": 207.328125,
+          "width": 232,
+          "height": 41,
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(203, 213, 225)",
+          "radius": "6px"
+        },
+        "nav": [
+          {
+            "x": 16,
+            "y": 88.734375,
+            "width": 75,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 99,
+            "y": 88.734375,
+            "width": 78.734375,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 185.734375,
+            "y": 88.734375,
+            "width": 105.359375,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          }
+        ],
+        "overflow": false
+      },
+      "candidate": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 149.03125,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 16,
+          "y": 16,
+          "width": 567,
+          "height": 56.734375,
+          "font": "700 22px / 31.9px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 0,
+          "y": 149.03125,
+          "width": 600,
+          "height": 118.296875,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "account": {
+          "x": 32,
+          "y": 207.328125,
+          "width": 331.890625,
+          "height": 41,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "select": {
+          "x": 131.890625,
+          "y": 207.328125,
+          "width": 232,
+          "height": 41,
+          "font": "14px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "smoothing": "antialiased",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "border": "1px solid rgb(203, 213, 225)",
+          "radius": "6px"
+        },
+        "nav": [
+          {
+            "x": 16,
+            "y": 88.734375,
+            "width": 75,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 99,
+            "y": 88.734375,
+            "width": 78.734375,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          },
+          {
+            "x": 185.734375,
+            "y": 88.734375,
+            "width": 105.359375,
+            "height": 44.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "smoothing": "antialiased",
+            "color": "rgb(100, 116, 139)",
+            "background": "rgb(255, 255, 255)",
+            "border": "0px none rgb(100, 116, 139)",
+            "radius": "7px"
+          }
+        ],
+        "overflow": false
+      }
+    }
+  ],
+  "routes": [
+    {
+      "port": 4392,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "*/*"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "text/html;q=0"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "*/*"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "text/html;q=0"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "*/*"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "text/html;q=0"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/admin/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/finance/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/api/session",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/api/session",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/assets/missing.js",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/missing.css",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/assets/missing",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/%61pi",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4392,
+      "path": "/insurance/src/missing.ts",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "*/*"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "text/html;q=0"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/applications/missing-resource",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "*/*"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "text/html;q=0"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index.html",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "*/*"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "application/json"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "text/html;q=0"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/index%2ehtml",
+      "headers": {
+        "Accept": "text/html",
+        "Sec-Fetch-Dest": "script",
+        "Sec-Fetch-Mode": "no-cors"
+      },
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/admin/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/finance/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/api/session",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/api/session",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/assets/missing.js",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/missing.css",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/assets/missing",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/%61pi",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4393,
+      "path": "/insurance/src/missing.ts",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    }
+  ],
+  "hashes": {
+    "insurance/index.html": "158223855181f3d75172df934c774754c778b34c166aad0abaf44a332d72ea50",
+    "insurance/workspace.js": "62777f73cf9f1059780710ab72993be625ea597dfa5e9c190df1124d9062d710",
+    "insurance.css": "e146904cd72415de5bbcdeb0cd4963b3b2c5290bf029a7652ac24ea82ddbcbd4",
+    "common.css": "b8d33fc6f0ed224ff38f27f3d640f5850bd2f9103b5db759e6f3fbb2a76d1cd5",
+    "styles.css": "af11793c14c738af22b45922752d3dae40c677c94ec6b2508b69d3621c6fc99b"
+  }
+}
