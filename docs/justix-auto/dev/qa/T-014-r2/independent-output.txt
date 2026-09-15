@@ -1,0 +1,71 @@
+=== RUN   TestIndependentT014
+    independent_qa_test.go:26: owned fixture container: justixauto-t014-01c5eeea-7227-4311-8e5a-2b18ccb343c5
+    independent_qa_test.go:26: owned fixture anonymous volume: 844fdf1212026b78287ab5f38fcbaf01a731783a8e06559ea56cfe1dac396247
+    independent_qa_test.go:26: owned PG 180006; exact T008/000002/000003/000004 artifacts; narrow runtime; random loopback
+    independent_qa_test.go:30: owned fixture anonymous volumes: [844fdf1212026b78287ab5f38fcbaf01a731783a8e06559ea56cfe1dac396247]
+=== RUN   TestIndependentT014/changed-identity-kind
+=== RUN   TestIndependentT014/changed-identity-generation
+=== RUN   TestIndependentT014/changed-identity-contract-id
+=== RUN   TestIndependentT014/changed-identity-contract-version
+=== RUN   TestIndependentT014/changed-identity-contract-digest
+=== RUN   TestIndependentT014/current-authority-and-scope-controls
+=== RUN   TestIndependentT014/runtime-history-mutation-denied
+=== NAME  TestIndependentT014
+    sequence_test.go:1406: removed own anonymous volume: 844fdf1212026b78287ab5f38fcbaf01a731783a8e06559ea56cfe1dac396247
+--- PASS: TestIndependentT014 (2.42s)
+    --- PASS: TestIndependentT014/changed-identity-kind (0.08s)
+    --- PASS: TestIndependentT014/changed-identity-generation (0.04s)
+    --- PASS: TestIndependentT014/changed-identity-contract-id (0.04s)
+    --- PASS: TestIndependentT014/changed-identity-contract-version (0.04s)
+    --- PASS: TestIndependentT014/changed-identity-contract-digest (0.04s)
+    --- PASS: TestIndependentT014/current-authority-and-scope-controls (0.05s)
+    --- PASS: TestIndependentT014/runtime-history-mutation-denied (0.03s)
+=== RUN   TestIndependentT014R2Receipts
+    independent_r2_qa_test.go:18: owned fixture container: justixauto-t014-1677d494-9ed8-491e-b6ba-64357d9c4511
+    independent_r2_qa_test.go:18: owned fixture anonymous volume: 89c6dc3f3092e7c4a7f01204362bcce737e899ea3f709b7d751cafc1fbe57f91
+    independent_r2_qa_test.go:18: owned PG 180006; exact T008/000002/000003/000004 artifacts; narrow runtime; random loopback
+=== RUN   TestIndependentT014R2Receipts/kind
+    independent_r2_qa_test.go:70: new-request: wrong kind rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:83: exact-replay-before-progress: wrong kind rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-6: wrong kind rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-7: wrong kind rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-8: wrong kind rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:97: nonzero bootstrap 5, lost-commit receipt, unchanged replay through position 8, changed payload conflict and obsolete recovery hold verified
+=== RUN   TestIndependentT014R2Receipts/generation
+    independent_r2_qa_test.go:70: new-request: wrong generation rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:83: exact-replay-before-progress: wrong generation rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-6: wrong generation rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-7: wrong generation rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-8: wrong generation rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:97: nonzero bootstrap 5, lost-commit receipt, unchanged replay through position 8, changed payload conflict and obsolete recovery hold verified
+=== RUN   TestIndependentT014R2Receipts/contract-id
+    independent_r2_qa_test.go:70: new-request: wrong contract-id rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:83: exact-replay-before-progress: wrong contract-id rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-6: wrong contract-id rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-7: wrong contract-id rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-8: wrong contract-id rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:97: nonzero bootstrap 5, lost-commit receipt, unchanged replay through position 8, changed payload conflict and obsolete recovery hold verified
+=== RUN   TestIndependentT014R2Receipts/contract-version
+    independent_r2_qa_test.go:70: new-request: wrong contract-version rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:83: exact-replay-before-progress: wrong contract-version rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-6: wrong contract-version rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-7: wrong contract-version rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-8: wrong contract-version rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:97: nonzero bootstrap 5, lost-commit receipt, unchanged replay through position 8, changed payload conflict and obsolete recovery hold verified
+=== RUN   TestIndependentT014R2Receipts/contract-digest
+    independent_r2_qa_test.go:70: new-request: wrong contract-digest rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:83: exact-replay-before-progress: wrong contract-digest rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-6: wrong contract-digest rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-7: wrong contract-digest rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:87: exact-replay-at-8: wrong contract-digest rejected; every retained attempt field unchanged
+    independent_r2_qa_test.go:97: nonzero bootstrap 5, lost-commit receipt, unchanged replay through position 8, changed payload conflict and obsolete recovery hold verified
+=== NAME  TestIndependentT014R2Receipts
+    sequence_test.go:1406: removed own anonymous volume: 89c6dc3f3092e7c4a7f01204362bcce737e899ea3f709b7d751cafc1fbe57f91
+--- PASS: TestIndependentT014R2Receipts (2.94s)
+    --- PASS: TestIndependentT014R2Receipts/kind (0.22s)
+    --- PASS: TestIndependentT014R2Receipts/generation (0.18s)
+    --- PASS: TestIndependentT014R2Receipts/contract-id (0.17s)
+    --- PASS: TestIndependentT014R2Receipts/contract-version (0.18s)
+    --- PASS: TestIndependentT014R2Receipts/contract-digest (0.16s)
+PASS
+ok  	justixauto/pkg/projection	7.076s

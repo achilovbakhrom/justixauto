@@ -1,0 +1,15 @@
+Exact SHA and bounded three-file fix diff PASS; tracked tree unchanged
+Unchanged prerequisite 86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53 pkg/eventstore/schema.sql
+Unchanged prerequisite 1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2 pkg/eventstore/migrations/000002_messaging_delivery.up.sql
+Unchanged prerequisite c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql
+Unchanged prerequisite 41536429fb95d4b60a11866843a2ccbd6a4cf723cd919884933b6bc1d8202c4c pkg/eventstore/migrations/000004_projection_checkpoint.up.sql
+Original BOUNCE report and all five original evidence files match preserved main copies
+Absent container justixauto-t014-01c5eeea-7227-4311-8e5a-2b18ccb343c5
+Absent container justixauto-t014-1677d494-9ed8-491e-b6ba-64357d9c4511
+Absent container justixauto-t014-871c162b-6b0a-4f66-83e3-4ebee1b928ad
+Absent container justixauto-t014-8d7240c5-74fd-4d64-8980-305099422206
+Absent volume 21151c3a1f9ccd47f0f0608430067275978ec7f4e05355ee1887fe842753a411
+Absent volume 844fdf1212026b78287ab5f38fcbaf01a731783a8e06559ea56cfe1dac396247
+Absent volume 89c6dc3f3092e7c4a7f01204362bcce737e899ea3f709b7d751cafc1fbe57f91
+Absent volume e86f930156fec32b3c0489e59284f6d43b1c5f9615e8bae0700b54893df7179c
+PASS: four exact owned containers and four captured anonymous volumes absent; no cleanup performed by this checker

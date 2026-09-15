@@ -1,0 +1,11 @@
+--- T-014/independent_test.go
++++ T-014-r2/independent_test.go
+@@ -20,7 +20,7 @@
+  // removed after that fixture's container is gone. No global prune occurs.
+  t.Cleanup(func() {
+   for _, v := range volumes {
+-   if out, err := exec.Command("docker", "volume", "rm", v).CombinedOutput(); err != nil { t.Errorf("own volume cleanup: %v %s", err, out) }
++   if out, err := exec.Command("docker", "volume", "inspect", v).CombinedOutput(); err == nil || !strings.Contains(string(out), "no such volume") { t.Errorf("own volume absence not verified: %v %s", err, out) }
+   }
+  })
+  f := newFixture(t)

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "baseline",
+    "args": [
+      "bash",
+      "tools/go.sh",
+      "test",
+      "-race",
+      "-count=1",
+      "-v",
+      "./tests/contracts"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "vet",
+    "args": [
+      "bash",
+      "tools/go.sh",
+      "vet",
+      "./tests/contracts"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "syntax",
+    "args": [
+      "/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin/node",
+      "--check",
+      "tools/generate-contracts.mjs"
+    ],
+    "exit": 0
+  }
+]

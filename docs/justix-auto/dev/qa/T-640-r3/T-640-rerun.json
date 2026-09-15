@@ -1,0 +1,150 @@
+{
+  "sha": "c69d52221287abecc4f1803ec7ed3532dce070f9",
+  "temporary_root": "/private/tmp/justix-t640-independent-prkw3dpq",
+  "results": [
+    {
+      "case": "dangling output symlink rejected without following",
+      "pass": true,
+      "target_created": false,
+      "target": "/private/tmp/justix-t640-independent-prkw3dpq/outside-config-created.ts",
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: symlink output is unsupported\n"
+      }
+    },
+    {
+      "case": "emitted symbol collision ApiRequest",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: ApiRequest\n"
+      },
+      "compile": null
+    },
+    {
+      "case": "emitted symbol collision ApiResult",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: TypeScript generated symbol collision: ApiResult\n"
+      },
+      "compile": null
+    },
+    {
+      "case": "emitted symbol collision NewContractClient",
+      "pass": true,
+      "generation": {
+        "exit": 1,
+        "output": "Contract generation failed: Go generated symbol collision: NewContractClient\n"
+      },
+      "compile": null
+    },
+    {
+      "case": "TS value probes",
+      "checks": [
+        {
+          "name": "valid unicode map key",
+          "expected": true,
+          "accepted": true,
+          "pass": true
+        },
+        {
+          "name": "unpaired surrogate map key",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "unknown nonenumerable property",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "unknown symbol property",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "fractional number",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "prototype map",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "missing required",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "leap date",
+          "expected": true,
+          "accepted": true,
+          "pass": true
+        },
+        {
+          "name": "nonleap date",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        },
+        {
+          "name": "hour overflow",
+          "expected": false,
+          "accepted": false,
+          "pass": true
+        }
+      ],
+      "result": {
+        "exit": 0,
+        "output": "[{\"name\":\"valid unicode map key\",\"expected\":true,\"accepted\":true,\"pass\":true},{\"name\":\"unpaired surrogate map key\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"unknown nonenumerable property\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"unknown symbol property\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"fractional number\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"prototype map\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"missing required\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"leap date\",\"expected\":true,\"accepted\":true,\"pass\":true},{\"name\":\"nonleap date\",\"expected\":false,\"accepted\":false,\"pass\":true},{\"name\":\"hour overflow\",\"expected\":false,\"accepted\":false,\"pass\":true}]\n"
+      }
+    },
+    {
+      "case": "Go map-key Unicode parity counterpart",
+      "result": {
+        "exit": 0,
+        "output": "=== RUN   TestIndependentMapKeyUnicode\n--- PASS: TestIndependentMapKeyUnicode (0.00s)\nPASS\nok  \tsynthetic\t1.473s\n"
+      }
+    }
+  ],
+  "exact_reviewed_sha": "c69d52221287abecc4f1803ec7ed3532dce070f9",
+  "expectation_summary": {
+    "passed": 6,
+    "total": 6,
+    "groups": [
+      {
+        "case": "dangling output symlink rejected without following",
+        "pass": true
+      },
+      {
+        "case": "emitted symbol collision ApiRequest",
+        "pass": true
+      },
+      {
+        "case": "emitted symbol collision ApiResult",
+        "pass": true
+      },
+      {
+        "case": "emitted symbol collision NewContractClient",
+        "pass": true
+      },
+      {
+        "case": "TS value probes",
+        "pass": true
+      },
+      {
+        "case": "Go map-key Unicode parity counterpart",
+        "pass": true
+      }
+    ]
+  }
+}

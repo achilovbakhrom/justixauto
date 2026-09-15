@@ -1,0 +1,18 @@
+=== RUN   TestQA929Independent
+    qa929_independent_test.go:15: owned fixture justixauto-t929-c3ddf5da-01e7-4aad-a10b-7710e06d71fb; image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2
+    qa929_independent_test.go:15: captured owned attached volume IDs: []
+=== RUN   TestQA929Independent/required_grants_and_ledger_shape
+=== RUN   TestQA929Independent/interrupted_install_rolls_back_every_new_object
+=== RUN   TestQA929Independent/runtime_effective_privileges_and_invoker_guards
+=== RUN   TestQA929Independent/complete_dirty_rowset_and_concurrent_receipts
+=== RUN   TestQA929Independent/all_owner_signed_common_keys
+=== NAME  TestQA929Independent
+    owner_history_test.go:58: cleanup verified for owned container and 0 attached volumes
+--- PASS: TestQA929Independent (12.56s)
+    --- PASS: TestQA929Independent/required_grants_and_ledger_shape (2.32s)
+    --- PASS: TestQA929Independent/interrupted_install_rolls_back_every_new_object (5.40s)
+    --- PASS: TestQA929Independent/runtime_effective_privileges_and_invoker_guards (0.39s)
+    --- PASS: TestQA929Independent/complete_dirty_rowset_and_concurrent_receipts (0.41s)
+    --- PASS: TestQA929Independent/all_owner_signed_common_keys (0.39s)
+PASS
+ok  	justixauto/pkg/eventstore	14.375s

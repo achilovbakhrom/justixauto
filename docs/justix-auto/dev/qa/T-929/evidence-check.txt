@@ -1,0 +1,11 @@
+PASS exact commit, three assigned additions, SQL/test/base digests; every pre-existing tracked source unchanged
+PASS retained full rows/catalog/functions identity-after-install.json 9ac69f82a2086ef6039bc935aeae293b27f8cd8a3544678fff1e6b11dac1a79c
+PASS retained full rows/catalog/functions identity-before-install.json 9ac69f82a2086ef6039bc935aeae293b27f8cd8a3544678fff1e6b11dac1a79c
+PASS retained full rows/catalog/functions identity-before-rejections.json 9ac69f82a2086ef6039bc935aeae293b27f8cd8a3544678fff1e6b11dac1a79c
+PASS retained full rows/catalog/functions inventory-after-concurrent-install.json 9d10bf805d8f886390052686cd48302d67a8ff4e3c188ab6c7ae5c95333ff9d6
+PASS identity exact before-rejection/before-install/after-install byte equality for run 2350788359
+PASS retained full rows/catalog/functions identity-after-install.json 9e0a0d9f20744c57094dc51f8fe62ae18ff3d19e525497ce95e6c6e976bd5752
+PASS retained full rows/catalog/functions identity-before-install.json 9e0a0d9f20744c57094dc51f8fe62ae18ff3d19e525497ce95e6c6e976bd5752
+PASS retained full rows/catalog/functions identity-before-rejections.json 9e0a0d9f20744c57094dc51f8fe62ae18ff3d19e525497ce95e6c6e976bd5752
+PASS retained full rows/catalog/functions inventory-after-concurrent-install.json 9b0ea453dc0be03a1863fc1535f61da017ee2ccf64ba69e4eee6395951181ce8
+PASS identity exact before-rejection/before-install/after-install byte equality for run 3455070264

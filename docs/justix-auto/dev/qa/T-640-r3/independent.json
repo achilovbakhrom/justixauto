@@ -1,0 +1,628 @@
+{
+  "sha": "c69d52221287abecc4f1803ec7ed3532dce070f9",
+  "temporary_root": "/private/tmp/justix-t640-r3-independent-ky8svmkh",
+  "results": [
+    {
+      "case": "later internal Error ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Error\n"
+      }
+    },
+    {
+      "case": "later internal Error ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Error\n"
+      }
+    },
+    {
+      "case": "later internal Exchange ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      }
+    },
+    {
+      "case": "later internal Exchange ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: unique exported operationId required\n"
+      }
+    },
+    {
+      "case": "later internal Owner ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Owner\n"
+      }
+    },
+    {
+      "case": "later internal Owner ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Owner\n"
+      }
+    },
+    {
+      "case": "later internal OperationID ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: OperationID\n"
+      }
+    },
+    {
+      "case": "later internal OperationID ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: OperationID\n"
+      }
+    },
+    {
+      "case": "later internal Method ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Method\n"
+      }
+    },
+    {
+      "case": "later internal Method ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Method\n"
+      }
+    },
+    {
+      "case": "later internal Path ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Path\n"
+      }
+    },
+    {
+      "case": "later internal Path ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Path\n"
+      }
+    },
+    {
+      "case": "later internal Headers ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Headers\n"
+      }
+    },
+    {
+      "case": "later internal Headers ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Headers\n"
+      }
+    },
+    {
+      "case": "later internal Body ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Body\n"
+      }
+    },
+    {
+      "case": "later internal Body ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Body\n"
+      }
+    },
+    {
+      "case": "later internal Security ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Security\n"
+      }
+    },
+    {
+      "case": "later internal Security ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Security\n"
+      }
+    },
+    {
+      "case": "later internal Status ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Status\n"
+      }
+    },
+    {
+      "case": "later internal Status ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Status\n"
+      }
+    },
+    {
+      "case": "later internal ContentType ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: ContentType\n"
+      }
+    },
+    {
+      "case": "later internal ContentType ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: ContentType\n"
+      }
+    },
+    {
+      "case": "later internal Kind ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Kind\n"
+      }
+    },
+    {
+      "case": "later internal Kind ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Kind\n"
+      }
+    },
+    {
+      "case": "later internal UnknownOutcome ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: UnknownOutcome\n"
+      }
+    },
+    {
+      "case": "later internal UnknownOutcome ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: UnknownOutcome\n"
+      }
+    },
+    {
+      "case": "later internal Type ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Type\n"
+      }
+    },
+    {
+      "case": "later internal Type ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Type\n"
+      }
+    },
+    {
+      "case": "later internal In ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: In\n"
+      }
+    },
+    {
+      "case": "later internal In ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: In\n"
+      }
+    },
+    {
+      "case": "later internal Name ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Name\n"
+      }
+    },
+    {
+      "case": "later internal Name ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Name\n"
+      }
+    },
+    {
+      "case": "later internal Value ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Value\n"
+      }
+    },
+    {
+      "case": "later internal Value ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Value\n"
+      }
+    },
+    {
+      "case": "later internal Present ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Present\n"
+      }
+    },
+    {
+      "case": "later internal Present ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Present\n"
+      }
+    },
+    {
+      "case": "later internal Status200 ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Status200\n"
+      }
+    },
+    {
+      "case": "later internal Status200 ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Status200\n"
+      }
+    },
+    {
+      "case": "later internal Status422 ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Status422\n"
+      }
+    },
+    {
+      "case": "later internal Status422 ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go stable field symbol collision: Status422\n"
+      }
+    },
+    {
+      "case": "later internal Token ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Token\n"
+      }
+    },
+    {
+      "case": "later internal Token ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Token\n"
+      }
+    },
+    {
+      "case": "later internal UseNumber ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: UseNumber\n"
+      }
+    },
+    {
+      "case": "later internal UseNumber ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: UseNumber\n"
+      }
+    },
+    {
+      "case": "later internal More ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: More\n"
+      }
+    },
+    {
+      "case": "later internal More ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: More\n"
+      }
+    },
+    {
+      "case": "later internal SetString ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: SetString\n"
+      }
+    },
+    {
+      "case": "later internal SetString ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: SetString\n"
+      }
+    },
+    {
+      "case": "later internal IsInt ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: IsInt\n"
+      }
+    },
+    {
+      "case": "later internal IsInt ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: IsInt\n"
+      }
+    },
+    {
+      "case": "later internal Num ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Num\n"
+      }
+    },
+    {
+      "case": "later internal Num ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Num\n"
+      }
+    },
+    {
+      "case": "later internal IsInt64 ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: IsInt64\n"
+      }
+    },
+    {
+      "case": "later internal IsInt64 ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: IsInt64\n"
+      }
+    },
+    {
+      "case": "later internal Int64 ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Int64\n"
+      }
+    },
+    {
+      "case": "later internal Int64 ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Int64\n"
+      }
+    },
+    {
+      "case": "later internal String ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: String\n"
+      }
+    },
+    {
+      "case": "later internal String ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: String\n"
+      }
+    },
+    {
+      "case": "later internal MatchString ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: MatchString\n"
+      }
+    },
+    {
+      "case": "later internal MatchString ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: MatchString\n"
+      }
+    },
+    {
+      "case": "later internal Set ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Set\n"
+      }
+    },
+    {
+      "case": "later internal Set ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Set\n"
+      }
+    },
+    {
+      "case": "later internal Encode ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Encode\n"
+      }
+    },
+    {
+      "case": "later internal Encode ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go method symbol collision: Encode\n"
+      }
+    },
+    {
+      "case": "later internal ParseMediaType ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: ParseMediaType\n"
+      }
+    },
+    {
+      "case": "later internal ParseMediaType ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: ParseMediaType\n"
+      }
+    },
+    {
+      "case": "later internal PathEscape ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: PathEscape\n"
+      }
+    },
+    {
+      "case": "later internal PathEscape ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: PathEscape\n"
+      }
+    },
+    {
+      "case": "later internal NewDecoder ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: NewDecoder\n"
+      }
+    },
+    {
+      "case": "later internal NewDecoder ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: NewDecoder\n"
+      }
+    },
+    {
+      "case": "later internal RuneCountInString ()",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: RuneCountInString\n"
+      }
+    },
+    {
+      "case": "later internal RuneCountInString ('--check',)",
+      "pass": true,
+      "result": {
+        "exit": 1,
+        "output": "Contract generation failed: Go imported symbol collision: RuneCountInString\n"
+      }
+    },
+    {
+      "case": "selector-looking literals accepted",
+      "pass": true,
+      "result": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs generated, 2 changed\n"
+      }
+    },
+    {
+      "case": "accepted adapter regeneration stable",
+      "pass": true,
+      "result": {
+        "exit": 0,
+        "output": "justix-contracts/1: 2 outputs verified, 0 changed\n"
+      }
+    },
+    {
+      "case": "internal method absent from browser output",
+      "pass": true
+    },
+    {
+      "case": "independent generated Go adapter and wire execution",
+      "pass": true,
+      "go": {
+        "exit": 0,
+        "output": "=== RUN   TestIndependentAdapter\n--- PASS: TestIndependentAdapter (0.00s)\n=== RUN   TestIndependentWireData\n--- PASS: TestIndependentWireData (0.00s)\nPASS\nok  \tsynthetic\t1.423s\n"
+      },
+      "vet": {
+        "exit": 0,
+        "output": ""
+      }
+    },
+    {
+      "case": "independent generated TS wire execution",
+      "pass": true,
+      "compile": {
+        "exit": 0,
+        "output": ""
+      },
+      "runtime": {
+        "exit": 0,
+        "output": "{\"wire_values\":11,\"wire_keys\":[\"readReceipt\",\"ContractLabel\"],\"pass\":true}\n"
+      }
+    }
+  ],
+  "passed": 77,
+  "total": 77
+}
