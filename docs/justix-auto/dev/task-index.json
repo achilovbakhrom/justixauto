@@ -35739,7 +35739,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-032"
       ],
@@ -35757,8 +35757,10 @@
         "B-02.AC1"
       ],
       "scope": "One strict bounded raw-byte decoder with fatal UTF-8, decoded-key duplicate detection, scalar Unicode, safe own properties, exact safe-integer lexemes and preserved finite legacy fractions. No lossy parse before validation; no client edits.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-935",
+      "base_sha": "596627e1d17ead2a6e8a818e2db63c046823b0cd",
+      "agent": "coordinator_t935",
+      "execution_note": "Coordinator implements the strict raw response decoder in its own isolated worktree while three independent worker tasks proceed. Auth canonical review is GREEN; exact-SHA independent QA remains mandatory."
     },
     {
       "id": "T-936",
