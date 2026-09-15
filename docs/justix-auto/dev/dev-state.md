@@ -27,8 +27,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-026 in-progress (`.worktrees/T-026`, `task/T-026-commerce-scaffold`); T-039 ready-for-qa (`.worktrees/T-039`, `task/T-039-insurance-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-919 ready-for-qa (`.worktrees/T-919`, `task/T-919-messaging-outbox-plan`).
-- Integrated tasks: 29/928; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-026 in-progress (`.worktrees/T-026`, `task/T-026-commerce-scaffold`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-919 ready-for-qa (`.worktrees/T-919`, `task/T-919-messaging-outbox-plan`).
+- Integrated tasks: 30/928; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 928 (916 reviewed baseline + twelve bounded messaging/storage additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -83,12 +83,12 @@ boundary, not a missing Docker installation.
 ## Commands not available yet
 
 No owner service composition roots, shared local Compose runner, owner migration
-runner or CI pipeline exist yet. The Admin, Realization and Financing React workspaces and shared API,
+runner or CI pipeline exist yet. All four Admin, Realization, Financing and Insurance React workspaces and shared API,
 tokens, UI and test-kit packages are integrated. `npm run build:apps` builds
-all three apps; their default session boundaries render no protected children until session
+all four apps; their default session boundaries render no protected children until session
 integration. Explicit synthetic QA fixtures display the empty shell. This is
-not a working business application; the Insurance shell and feature
-routes remain in their assigned tasks. Explicit SQL installation templates and
+not a working business application; feature routes and service composition
+remain in their assigned tasks. Explicit SQL installation templates and
 shared Go durability primitives are integrated. Identity and Inventory now have typed owner
 transaction ports, explicit migrations and fail-closed persistence readiness.
 Their composition roots, business features and custody-mode adapters remain

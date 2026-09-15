@@ -1745,7 +1745,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-035"
       ],
@@ -1782,7 +1782,8 @@
         "package-lock.json"
       ],
       "agent": "qa_t039",
-      "execution_note": "Insurance implementation and serialized lock complete; all386 previous lock entries unchanged with2 workspace entries added. Independent exact-commit shell/prefix/browser QA assigned."
+      "execution_note": "Independent QA GREEN at022f663a7d492b0a1c4276be1f4bd0dac78929a1;754 independent assertions and three byte-identical projected shell PNG pairs. Main offline ci355 packages, typecheck/lint,160 unit tests and all4 app builds PASS. Four shells integrated; default protected entries remain closed pending auth/provider bindings and no feature workflow completion is claimed.",
+      "integration_sha": "7d9d77423b7e27700202234df0962b956339c4db"
     },
     {
       "id": "T-040",
