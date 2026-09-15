@@ -35739,7 +35739,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-032"
       ],
@@ -35760,7 +35760,8 @@
       "worktree": ".worktrees/T-935",
       "base_sha": "596627e1d17ead2a6e8a818e2db63c046823b0cd",
       "agent": "coordinator_t935",
-      "execution_note": "Coordinator implements the strict raw response decoder in its own isolated worktree while three independent worker tasks proceed. Auth canonical review is GREEN; exact-SHA independent QA remains mandatory."
+      "execution_note": "Implementation committed with 134 new decoder tests; full frontend suite294, workspace typecheck/lint and actual generated Go4377-vector parity/race/vet pass. Independent exact-commit QA awaits a free worker slot; implementation is not integrated.",
+      "reviewed_sha": "a71115801f57b579398f39f47b1ee4437ea2b537"
     },
     {
       "id": "T-936",
