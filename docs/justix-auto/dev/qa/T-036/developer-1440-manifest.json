@@ -1,0 +1,219 @@
+{
+  "stateId": "t036-zero-features-shell",
+  "referenceUrl": "http://127.0.0.1:4180/admin/",
+  "candidateUrl": "http://127.0.0.1:4196/docs/justix-auto/dev/qa/T-036/developer-fixture.html",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "deviceScaleFactor": 1,
+  "locale": "ru-RU",
+  "timezoneId": "Asia/Tashkent",
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "serviceWorkers": "block",
+  "clock": "2026-01-01T00:00:00.000Z",
+  "hashes": {
+    "admin/admin.js": "1a95eef0c65bcffdf5ab613e4b30e3802e6bf7fd063c4b10f194774336ffc5ea",
+    "admin/management.js": "dbee0bfa577434f2ca8b9af4186d67745f0ae506df50e905b4fd2c0601af5df7",
+    "admin/admin.css": "23fc32cbe0230cbfe4d96da16cd247148a0e1570b77ce52f810ac434e8793f84",
+    "common.css": "b8d33fc6f0ed224ff38f27f3d640f5850bd2f9103b5db759e6f3fbb2a76d1cd5",
+    "styles.css": "af11793c14c738af22b45922752d3dae40c677c94ec6b2508b69d3621c6fc99b",
+    "insurance.css": "e146904cd72415de5bbcdeb0cd4963b3b2c5290bf029a7652ac24ea82ddbcbd4"
+  },
+  "anchors": [
+    "admin/admin.js::render",
+    "admin/management.js::page"
+  ],
+  "comparison": "Shell only; raw reference retained, business content masked and active Overview cleared. Not full page parity.",
+  "referenceMetrics": {
+    "sidebar": {
+      "x": 0,
+      "y": 0,
+      "width": 248,
+      "height": 1000
+    },
+    "header": {
+      "x": 248,
+      "y": 0,
+      "width": 1192,
+      "height": 59.84375
+    },
+    "brand": {
+      "x": 20,
+      "y": 28,
+      "width": 207,
+      "height": 56.734375
+    },
+    "buttons": [
+      {
+        "label": "Обзор",
+        "x": 20,
+        "y": 120.734375,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Компании",
+        "x": 20,
+        "y": 171.03125,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Пользователи и доступ",
+        "x": 20,
+        "y": 221.328125,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Роли и разрешения",
+        "x": 20,
+        "y": 271.625,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "МФО",
+        "x": 34,
+        "y": 373.3125,
+        "width": 193,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Банки",
+        "x": 34,
+        "y": 423.609375,
+        "width": 193,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Страховые компании",
+        "x": 34,
+        "y": 473.90625,
+        "width": 193,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Журнал действий",
+        "x": 20,
+        "y": 524.203125,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      }
+    ],
+    "overflow": false
+  },
+  "candidateMetrics": {
+    "sidebar": {
+      "x": 0,
+      "y": 0,
+      "width": 248,
+      "height": 1000
+    },
+    "header": {
+      "x": 248,
+      "y": 0,
+      "width": 1192,
+      "height": 59.84375
+    },
+    "brand": {
+      "x": 20,
+      "y": 28,
+      "width": 207,
+      "height": 56.734375
+    },
+    "buttons": [
+      {
+        "label": "Обзор",
+        "x": 20,
+        "y": 120.734375,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Компании",
+        "x": 20,
+        "y": 171.03125,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Пользователи и доступ",
+        "x": 20,
+        "y": 221.328125,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Роли и разрешения",
+        "x": 20,
+        "y": 271.625,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "МФО",
+        "x": 34,
+        "y": 373.3125,
+        "width": 193,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Банки",
+        "x": 34,
+        "y": 423.609375,
+        "width": 193,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Страховые компании",
+        "x": 34,
+        "y": 473.90625,
+        "width": 193,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      },
+      {
+        "label": "Журнал действий",
+        "x": 20,
+        "y": 524.203125,
+        "width": 207,
+        "height": 44.296875,
+        "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+        "color": "rgb(100, 116, 139)"
+      }
+    ],
+    "overflow": false
+  }
+}
