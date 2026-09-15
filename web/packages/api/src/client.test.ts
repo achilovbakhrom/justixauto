@@ -89,7 +89,11 @@ describe('same-origin validated transport', () => {
     expect(String(fetcher.mock.calls[0]![0])).toBe(`${origin}/api/v1/operations/retail/${userId}?cursor=a%2Fb`);
   });
 
-  it.each(['Authorization', 'Cookie', 'X-Actor-Id', 'X_User_Id', 'X-Company-Id', 'X-Internal-Caller', 'If-Match', 'X-Context-Revision'])(
+  it.each([
+    'Authorization', 'Cookie', 'X-Actor-Id', 'X_User_Id', 'X-Company-Id', 'X-Internal-Caller', 'If-Match', 'X-Context-Revision',
+    'X-Actor', 'X_Actor_Kind', 'X-Permission', 'X-Permissions', 'X_Permissions',
+    'X-Justix-Internal-Caller', 'X_Justix_Internal_Caller',
+  ])(
     'rejects caller-supplied reserved header %s', async (name) => {
       const { client, fetcher } = setup();
       expect(await client.request({ ...request, headers: { [name]: 'spoof' } })).toEqual({ kind: 'invalid-request' });
@@ -214,6 +218,17 @@ describe('scope-isolated query keys', () => {
     const cyclic: Record<string, unknown> = {};
     cyclic.self = cyclic;
     expect(() => queryKey(scope, { ...resource, filters: cyclic } as unknown as QueryResource)).toThrow();
+  });
+
+  it('rejects wholly sparse, mixed and inherited branch slots before key creation', () => {
+    const whollySparse = new Array<string>(1);
+    const mixed = [branchA, branchB];
+    delete mixed[1];
+    const inherited = new Array<string>(1);
+    Object.setPrototypeOf(inherited, Object.assign(Object.create(Array.prototype) as object, { 0: branchA }));
+    for (const branchIds of [whollySparse, mixed, inherited]) {
+      expect(() => queryKey({ ...scope, branchScope: { mode: 'SELECTED', branchIds } }, resource)).toThrow('Invalid branch scope');
+    }
   });
 
   it.each(['0', '1', '9223372036854775807'])('preserves exact string revision %s', (revision) => {

@@ -52,9 +52,15 @@ export function queryKey(scope: QueryScope, resource: QueryResource) {
   }
   const { mode, branchIds } = scope.branchScope;
   if (!['ALL', 'SELECTED'].includes(mode) || !Array.isArray(branchIds)
-    || !branchIds.every(isId) || (mode === 'ALL' && branchIds.length !== 0)
+    || (mode === 'ALL' && branchIds.length !== 0)
     || (mode === 'SELECTED' && (branchIds.length === 0 || scope.companyId === null))) {
     throw new Error('Invalid branch scope');
+  }
+  // Array.every skips holes; SELECTED must contain actual UUID entries at every index.
+  for (let index = 0; index < branchIds.length; index++) {
+    if (!Object.hasOwn(branchIds, index) || !isId(branchIds[index])) {
+      throw new Error('Invalid branch scope');
+    }
   }
   const branches = Object.freeze([...new Set(branchIds.map((id) => id.toLowerCase()))].sort());
   return Object.freeze([

@@ -91,7 +91,7 @@ function requestHeaders(request: ApiRequest<unknown>): Headers {
   for (const key of headers.keys()) {
     const normalized = key.toLowerCase().replaceAll('_', '-');
     if (/^(authorization|proxy-authorization|cookie|host|origin|accept|content-type|idempotency-key|if-match|x-context-revision)$/.test(normalized)
-      || /^(sec-|x-(actor|user|company|branch|permission|internal|forwarded)(-|$))/.test(normalized)) {
+      || /^(sec-|x-(actor|user|company|branch|permissions?|internal|justix-internal|forwarded)(-|$))/.test(normalized)) {
       throw new Error('Reserved header');
     }
   }
