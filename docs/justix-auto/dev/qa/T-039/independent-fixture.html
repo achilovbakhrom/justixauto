@@ -1,0 +1,15 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Independent Insurance shell fixture</title></head><body><div id="root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {useQueryClient} from '@tanstack/react-query';
+import {InsuranceApp} from '/web/apps/insurance/src/app/App.tsx';
+const context=Object.freeze({organizationName:'Страховая «Ориент» · демо',accountLabel:'Демо-аккаунт'});
+if(Object.keys(context).length!==2||Object.values(context).some(v=>typeof v!=='string'||!v))throw Error('Invalid synthetic display');
+history.replaceState(null,'','/insurance/');
+let root=createRoot(document.getElementById('root'));
+let admitted=true;
+let client;
+function Boundary({children}){client=useQueryClient();return admitted?children:null;}
+window.fixture={context,render(open=true,display=context){admitted=open;root.render(React.createElement(InsuranceApp,{SessionBoundary:Boundary,...(display?{context:display}:{})}));},cache(){return client;},remount(){root.unmount();root=createRoot(document.getElementById('root'));this.render();}};
+window.fixture.render();
+</script></body></html>

@@ -1,0 +1,20 @@
+=== RUN   TestQAT919Adversarial
+=== RUN   TestQAT919Adversarial/unfenced_append_cannot_emit_even_with_explicit_empty_authority
+=== RUN   TestQAT919Adversarial/later_stream_missing_plan_rolls_back_earlier_complete_plan_and_guard
+=== RUN   TestQAT919Adversarial/rule_allowlist_rejection_rolls_back_admitted_stream
+=== RUN   TestQAT919Adversarial/foreign_owner_empty_call_cannot_use_inventory_store
+=== RUN   TestQAT919Adversarial/lost_marker_select_privilege_fails_empty_call_and_restoration_works
+=== RUN   TestQAT919Adversarial/runtime_cannot_rewrite_source_authority_or_compatibility_evidence
+=== RUN   TestQAT919Adversarial/concurrent_close_retains_committed_child_but_blocks_next_emission
+=== RUN   TestQAT919Adversarial/extra_child_attempt_aborts_full_command_after_valid_insertion
+--- PASS: TestQAT919Adversarial (2.26s)
+    --- PASS: TestQAT919Adversarial/unfenced_append_cannot_emit_even_with_explicit_empty_authority (0.02s)
+    --- PASS: TestQAT919Adversarial/later_stream_missing_plan_rolls_back_earlier_complete_plan_and_guard (0.04s)
+    --- PASS: TestQAT919Adversarial/rule_allowlist_rejection_rolls_back_admitted_stream (0.02s)
+    --- PASS: TestQAT919Adversarial/foreign_owner_empty_call_cannot_use_inventory_store (0.00s)
+    --- PASS: TestQAT919Adversarial/lost_marker_select_privilege_fails_empty_call_and_restoration_works (0.13s)
+    --- PASS: TestQAT919Adversarial/runtime_cannot_rewrite_source_authority_or_compatibility_evidence (0.01s)
+    --- PASS: TestQAT919Adversarial/concurrent_close_retains_committed_child_but_blocks_next_emission (0.16s)
+    --- PASS: TestQAT919Adversarial/extra_child_attempt_aborts_full_command_after_valid_insertion (0.03s)
+PASS
+ok  	justixauto/pkg/outbox	4.004s
