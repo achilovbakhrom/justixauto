@@ -1,0 +1,25 @@
+{
+  "outcome": "PASS: reproduced existing transport limitation",
+  "reviewedSHA": "fe3ffbfbe37d05261296a0ef5ba91cbec8edcead",
+  "results": [
+    {
+      "status": 200,
+      "kind": "success",
+      "csrfAvailable": false,
+      "responseHeadersAvailable": false
+    },
+    {
+      "status": 401,
+      "kind": "http-error",
+      "csrfAvailable": false,
+      "responseHeadersAvailable": false
+    },
+    {
+      "status": 429,
+      "kind": "unexpected-status",
+      "csrfAvailable": false,
+      "responseHeadersAvailable": false
+    }
+  ],
+  "requiredHandoff": "Assign a narrow approved auth transport/header and 429 contract before browser auth wiring; no source change made."
+}
