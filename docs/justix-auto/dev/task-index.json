@@ -503,7 +503,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-007",
         "T-005"
@@ -524,9 +524,9 @@
       "scope": "Append-only event roles, event ID and aggregate-version uniqueness, idempotency/outbox/inbox/process tables; install templates per owner database.",
       "worktree": ".worktrees/T-008",
       "base_sha": "2466601e56a0252a9a753bb6f6fa494b7bfc207a",
-      "reviewed_sha": null,
+      "reviewed_sha": "19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d",
       "agent": "backend/t008_event_schema",
-      "execution_note": "Implementation commit 19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d passed live seven-owner PostgreSQL tests. Independent QA pending."
+      "execution_note": "Independent QA GREEN at19ee699a79d9d6da3d022c4a71c8b734c8e5ca1d: live owner isolation, privilege probes, durable decisions and crash recovery passed."
     },
     {
       "id": "T-009",
@@ -25512,7 +25512,7 @@
       "parent": "B-01",
       "kind": "contract",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-001"
       ],
@@ -25528,9 +25528,11 @@
         "B-01.AC4"
       ],
       "scope": "Define inert owner feature-factory registration, explicit composition-root dependency injection, duplicate route/consumer rejection and fail-closed missing-feature behavior. No init-time I/O/business effects or service-locator domain coupling. Frontend registry discovers completed owner-local route exports without requiring absent feature files. Contract review precedes runtime implementation; this is an implementation convention within approved hexagonal boundaries, not new domain authority.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-746",
+      "base_sha": "537b662af02db56611bf6377fc42b16086a037dd",
+      "reviewed_sha": null,
+      "agent": "architect/t746_registration_contract",
+      "execution_note": "Architect assigned ancillary state/drafts/architect/runtime-registration.md; coordinator promotes to task-owned contracts draft before exact-commit QA. Base537b662af02db56611bf6377fc42b16086a037dd."
     },
     {
       "id": "T-747",
