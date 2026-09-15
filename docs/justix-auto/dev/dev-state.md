@@ -27,8 +27,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-024 qa-green (`.worktrees/T-024`, `task/T-024-identity-scaffold`); T-037 in-progress (`.worktrees/T-037`, `task/T-037-realization-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 in-progress (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
-- Integrated tasks: 22/924; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-037 in-progress (`.worktrees/T-037`, `task/T-037-realization-shell`); T-058 ready (`.worktrees/T-058`, `task/T-058-contract-2`); T-918 in-progress (`.worktrees/T-918`, `task/T-918-messaging-source-admission`).
+- Integrated tasks: 23/924; independent exact-commit QA required before each integration.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 924 (916 reviewed baseline + eight approved messaging amendments); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -52,8 +52,8 @@ npm run typecheck:config
 npm run mocks:verify
 npm run mocks:test
 npm run mocks:serve
-bash tools/go.sh test -race -mod=readonly ./pkg/... ./tests/...
-bash tools/go.sh vet ./pkg/... ./tests/...
+bash tools/go.sh test -race -mod=readonly ./services/... ./pkg/... ./tests/...
+bash tools/go.sh vet ./services/... ./pkg/... ./tests/...
 ```
 
 Historical preflight below predates the authorized Git setup on 2026-09-14.
@@ -89,7 +89,10 @@ Admin; its default session boundary renders no protected children until session
 integration. Explicit synthetic QA fixtures display the empty shell. This is
 not a working business application; the other three app shells and feature
 routes remain in their assigned tasks. Explicit SQL installation templates and
-shared Go durability primitives are integrated.
+shared Go durability primitives are integrated. Identity now has typed owner
+transaction ports, an explicit migration and fail-closed persistence readiness.
+Its composition roots, auth features and custody-mode adapter remain separate
+tasks; the scaffold does not start an Identity API or worker.
 Broad `go test ./...` from the main checkout also discovers ignored Go sources
 inside the local compiler and `node_modules`; use the project-package commands
 above until tooling relocates or isolates those development artifacts. Do not
