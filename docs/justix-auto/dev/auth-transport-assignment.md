@@ -1,12 +1,15 @@
 # Auth transport compatibility proposal assignment
 
-2026-09-15. Status: queued architecture handoff; no implementation approval.
-Proposed worktree: `.worktrees/auth-transport-compatibility`.
-Proposed branch: `task/auth-transport-compatibility`; base and agent unassigned.
+2026-09-15. Status: architecture in progress; no implementation approval.
+Assigned worktree: `.worktrees/auth-transport-compatibility`.
+Branch: `task/auth-transport-compatibility`.
+Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
+Agent: `architect_auth_transport`.
 
 Resolve [the observed transport gap](auth-client-readiness.md) against the
-approved T-058 contract and actual T-032/T-640 APIs. T-640's current fix cycle
-owns its three independent QA defects; preserve that work. This proposal owns
+approved T-058 contract and actual T-032/T-640 APIs. T-640 passed independent
+QA at `c69d52221287abecc4f1803ec7ed3532dce070f9`; its reviewed source is in
+this base, with coordinator integration checks in progress. This proposal owns
 only `state/drafts/architect/auth-transport-compatibility.md` and ancillary
 `dev/results/auth-transport-compatibility.md` in an explicitly assigned worktree.
 No application, schema, policy or canonical document edits.
