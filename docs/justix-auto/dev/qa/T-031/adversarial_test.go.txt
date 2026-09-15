@@ -1,0 +1,219 @@
+package auth
+
+import (
+	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"errors"
+	"math/big"
+	"net"
+	"net/http"
+	"net/url"
+	"reflect"
+	"sync"
+	"testing"
+	"time"
+)
+
+func TestQADuplicateIdenticalURISANFailsClosed(t *testing.T) {
+	resolver := testResolver(t)
+	caller, err := resolver.Resolve(peerState(t, retailSAN, retailSAN))
+	if !errors.Is(err, ErrAmbiguousPeerIdentity) {
+		t.Fatalf("duplicate URI SAN occurrence admitted: caller=%q err=%v", caller.Service(), err)
+	}
+	if caller.Valid() {
+		t.Fatalf("duplicate URI SAN returned valid caller %q", caller.Service())
+	}
+}
+
+func TestQAResolverIgnoresDNSCommonNameAndNonLeafIdentity(t *testing.T) {
+	resolver := testResolver(t)
+	for _, malformed := range []string{
+		"spiffe://justix-auto/service/../retail",
+		"spiffe://justix-auto/service/%2e%2e/retail",
+		"spiffe://justix-auto//service/retail",
+	} {
+		if caller, err := resolver.Resolve(peerState(t, malformed)); !errors.Is(err, ErrUnknownPeerIdentity) || caller.Valid() {
+			t.Fatalf("malformed URI path matched configured identity: URI=%q caller=%q err=%v", malformed, caller.Service(), err)
+		}
+	}
+	dnsOnly := &x509.Certificate{
+		Raw:      []byte("dns-only"),
+		Subject:  pkixName("spiffe://justix-auto/service/retail"),
+		DNSNames: []string{"retail"},
+	}
+	state := &tls.ConnectionState{
+		HandshakeComplete: true,
+		PeerCertificates:  []*x509.Certificate{dnsOnly},
+		VerifiedChains:    [][]*x509.Certificate{{dnsOnly}},
+	}
+	if caller, err := resolver.Resolve(state); !errors.Is(err, ErrUnknownPeerIdentity) || caller.Valid() {
+		t.Fatalf("DNS/CN-only identity was trusted: caller=%q err=%v", caller.Service(), err)
+	}
+
+	leaf := &x509.Certificate{Raw: []byte("leaf")}
+	intermediate := &x509.Certificate{Raw: []byte("intermediate"), URIs: []*url.URL{mustURI(t, retailSAN)}}
+	state = &tls.ConnectionState{
+		HandshakeComplete: true,
+		PeerCertificates:  []*x509.Certificate{leaf, intermediate},
+		VerifiedChains:    [][]*x509.Certificate{{leaf, intermediate}},
+	}
+	if caller, err := resolver.Resolve(state); !errors.Is(err, ErrUnknownPeerIdentity) || caller.Valid() {
+		t.Fatalf("non-leaf URI SAN was trusted: caller=%q err=%v", caller.Service(), err)
+	}
+}
+
+func pkixName(commonName string) pkix.Name { return pkix.Name{CommonName: commonName} }
+
+func TestQAHeadersRejectAndStripEveryMapVariant(t *testing.T) {
+	headers := http.Header{
+		"X-Actor":                   {"a"},
+		"x-actor":                   {"b"},
+		"X_ACTOR":                   {"c"},
+		"X-Permission":              {"d", "e"},
+		"x-permissions":             {"f"},
+		"X-Internal-Caller":         {"retail"},
+		"x-internal-caller":         {"commerce"},
+		"X_Justix_Internal_Purpose": {"sale"},
+		"x-justix-internal-purpose": {"finance"},
+		"X-Context-Revision":        {"9"},
+	}
+	found := SpoofedIdentityHeaders(headers)
+	if len(found) != 9 {
+		t.Fatalf("found %d spoof keys, want 9: %q", len(found), found)
+	}
+	if err := RejectSpoofedIdentityHeaders(headers); !errors.Is(err, ErrSpoofedIdentityHeader) {
+		t.Fatalf("spoof variants admitted: %v", err)
+	}
+	clean := SanitizedProxyHeaders(headers)
+	if leftovers := SpoofedIdentityHeaders(clean); len(leftovers) != 0 {
+		t.Fatalf("sanitized copy retained spoof keys: %q", leftovers)
+	}
+	if !reflect.DeepEqual(clean.Values("X-Context-Revision"), []string{"9"}) {
+		t.Fatalf("public context revision changed: %#v", clean)
+	}
+	if len(SpoofedIdentityHeaders(headers)) != 9 {
+		t.Fatal("sanitization mutated inbound request")
+	}
+}
+
+func TestQAAuthorizerDuplicateGrantMutationAndConcurrency(t *testing.T) {
+	grants := []Grant{
+		{Caller: ServiceRetail, Action: "inventory.acquire", Purpose: "retail-sale"},
+		{Caller: ServiceRetail, Action: "inventory.acquire", Purpose: "retail-sale"},
+	}
+	authorizer, err := NewAuthorizer(grants)
+	if err != nil {
+		t.Fatalf("exact duplicate changed semantics: %v", err)
+	}
+	grants[0].Action = "*"
+	caller, err := testResolver(t).Resolve(peerState(t, retailSAN))
+	if err != nil {
+		t.Fatal(err)
+	}
+	const workers = 64
+	var wait sync.WaitGroup
+	wait.Add(workers)
+	for range workers {
+		go func() {
+			defer wait.Done()
+			for range 200 {
+				if err := authorizer.Authorize(caller, "inventory.acquire", "retail-sale"); err != nil {
+					t.Errorf("exact grant rejected: %v", err)
+					return
+				}
+				if err := authorizer.Authorize(caller, "inventory.acquire", "retail-sale "); !errors.Is(err, ErrUnauthorized) {
+					t.Errorf("changed purpose admitted: %v", err)
+					return
+				}
+			}
+		}()
+	}
+	wait.Wait()
+}
+
+func TestQAMutualTLSRejectsMissingUntrustedAndWrongRoleClientCertificates(t *testing.T) {
+	caCertificate, caKey, caPool := testCertificateAuthority(t)
+	serverCertificate := issueCertificate(t, caCertificate, caKey, &x509.Certificate{
+		SerialNumber: big.NewInt(101),
+		Subject:      pkix.Name{CommonName: "qa-server"},
+		DNSNames:     []string{"qa-server"},
+		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+	})
+	validClient := issueCertificate(t, caCertificate, caKey, &x509.Certificate{
+		SerialNumber: big.NewInt(102),
+		Subject:      pkix.Name{CommonName: retailSAN},
+		DNSNames:     []string{"retail"},
+		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth},
+	})
+	otherCA, otherKey, _ := testCertificateAuthority(t)
+	untrustedClient := issueCertificate(t, otherCA, otherKey, &x509.Certificate{
+		SerialNumber: big.NewInt(103),
+		URIs:         []*url.URL{mustURI(t, retailSAN)},
+		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth},
+	})
+
+	serverConfig := func() *tls.Config {
+		return &tls.Config{
+			MinVersion:   tls.VersionTLS13,
+			Certificates: []tls.Certificate{serverCertificate},
+			ClientAuth:   tls.RequireAndVerifyClientCert,
+			ClientCAs:    caPool,
+		}
+	}
+	clientConfig := func(certificate *tls.Certificate) *tls.Config {
+		config := &tls.Config{MinVersion: tls.VersionTLS13, RootCAs: caPool, ServerName: "qa-server"}
+		if certificate != nil {
+			config.Certificates = []tls.Certificate{*certificate}
+		}
+		return config
+	}
+
+	for _, tc := range []struct {
+		name   string
+		client *tls.Certificate
+	}{
+		{name: "missing client certificate"},
+		{name: "untrusted client certificate", client: &untrustedClient},
+		{name: "server-only certificate used as client", client: &serverCertificate},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			_, serverErr, clientErr := qaTLSHandshake(t, serverConfig(), clientConfig(tc.client))
+			if serverErr == nil {
+				t.Fatalf("server accepted invalid client certificate (client err=%v)", clientErr)
+			}
+		})
+	}
+
+	t.Run("DNS and common-name only certificate completes TLS but has no service identity", func(t *testing.T) {
+		state, serverErr, clientErr := qaTLSHandshake(t, serverConfig(), clientConfig(&validClient))
+		if serverErr != nil || clientErr != nil {
+			t.Fatalf("valid client-auth TLS failed: server=%v client=%v", serverErr, clientErr)
+		}
+		caller, err := testResolver(t).Resolve(&state)
+		if !errors.Is(err, ErrUnknownPeerIdentity) || caller.Valid() {
+			t.Fatalf("resolver trusted DNS/CN-only peer: caller=%q err=%v", caller.Service(), err)
+		}
+	})
+}
+
+func qaTLSHandshake(t *testing.T, serverConfig, clientConfig *tls.Config) (tls.ConnectionState, error, error) {
+	t.Helper()
+	serverSide, clientSide := net.Pipe()
+	deadline := time.Now().Add(5 * time.Second)
+	if err := serverSide.SetDeadline(deadline); err != nil {
+		t.Fatal(err)
+	}
+	if err := clientSide.SetDeadline(deadline); err != nil {
+		t.Fatal(err)
+	}
+	server := tls.Server(serverSide, serverConfig)
+	client := tls.Client(clientSide, clientConfig)
+	defer server.Close()
+	defer client.Close()
+	serverResult := make(chan error, 1)
+	go func() { serverResult <- server.Handshake() }()
+	clientErr := client.Handshake()
+	serverErr := <-serverResult
+	return server.ConnectionState(), serverErr, clientErr
+}

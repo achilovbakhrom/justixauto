@@ -1256,7 +1256,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-003"
       ],
@@ -1280,7 +1280,7 @@
       "base_sha": "a6e769e1723f784a3646099b62767d301b214eb5",
       "reviewed_sha": "e39875fb207af9b88ffdfffeb9cbde8770ac58ab",
       "agent": "backend/t031_auth_transport",
-      "execution_note": "Implementation committed clean at e39875fb207af9b88ffdfffeb9cbde8770ac58ab. Developer verifies TLS 1.3 mutual handshake via net.Pipe, exact URI-SAN caller resolution, immutable deny-by-default caller/action/purpose grants, spoofed public internal-header reject/strip, full readonly race/vet/boundary checks; exact-SHA QA pending."
+      "execution_note": "Independent QA BOUNCE: resolver map-deduplicates repeated identical configured URI SANs and admits an ambiguous certificate despite the exactly-one identity rule. Fix cycle 1 assigned. Real TLS no-cert/untrusted-CA/server-EKU misuse, DNS/CN-only identity denial, header spoofing, exact grants, race/vet/boundary checks otherwise pass."
     },
     {
       "id": "T-032",
