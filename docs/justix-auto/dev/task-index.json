@@ -35208,7 +35208,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-917",
         "T-011",
@@ -35233,8 +35233,9 @@
       "worktree": ".worktrees/T-925",
       "base_sha": "fba111c583e5035b180c494ab1245f66d4d7035f",
       "agent": "qa_t925",
-      "execution_note": "Forward migration implementation complete; independent exact-commit QA assigned for actual producer route compatibility, retained data, privileges and atomic failures.",
-      "reviewed_sha": "4dbe2593bce71c045f785fc07aed9da5b4113a73"
+      "execution_note": "Independent QA GREEN at 4dbe2593bce71c045f785fc07aed9da5b4113a73. Main full project race with both route migration and inbox live flags PASS (eventstore49.041s; inbox10.273s), vet PASS. Forward route correction preserves prior migrations, actual producer bytes and privileges; writer/intake/broker/runtime activation remain dependent tasks.",
+      "reviewed_sha": "4dbe2593bce71c045f785fc07aed9da5b4113a73",
+      "integration_sha": "67c90f01ea5493e1453723e95cb92cec41c6dd3e"
     }
   ]
 }
