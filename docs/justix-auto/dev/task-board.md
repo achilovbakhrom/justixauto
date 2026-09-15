@@ -69,14 +69,14 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-007](tasks/T-007.md) | B-01 | Define typed event envelopes and decimal revision values | implementation / 3 | foundation | integrated | T-003 | `task/T-007-envelope` | ENV-GIT |
 | [T-008](tasks/T-008.md) | B-01 | Create owner-installable event and command SQL templates | implementation / 3 | foundation | integrated | T-007, T-005 | `task/T-008-event-schema` | ENV-GIT |
 | [T-009](tasks/T-009.md) | B-01 | Implement conditional event append and typed transaction boundary | implementation / 3 | foundation | integrated | T-008 | `task/T-009-append` | ENV-GIT |
-| [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | todo | T-009 | `task/T-010-replay` | ENV-GIT |
+| [T-010](tasks/T-010.md) | B-01 | Implement contiguous replay and schema upcasting | implementation / 3 | foundation | implementing | T-009 | `task/T-010-replay` | ENV-GIT |
 | [T-011](tasks/T-011.md) | B-01 | Persist integration outbox records with domain commits | implementation / 3 | foundation | todo | T-009 | `task/T-011-outbox-insert` | ENV-GIT |
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | todo | T-011, T-006 | `task/T-012-outbox-relay` | ENV-GIT |
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | todo | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | todo | T-013, T-010 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013 | `task/T-015-quarantine` | ENV-GIT |
 | [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014 | `task/T-016-projection-rebuild` | ENV-GIT |
-| [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | todo | T-009 | `task/T-017-receipts` | ENV-GIT |
+| [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | implementing | T-009 | `task/T-017-receipts` | ENV-GIT |
 | [T-018](tasks/T-018.md) | B-01 | Implement durable operation decisions and recovery scheduling | implementation / 3 | foundation | todo | T-017, T-011, T-013 | `task/T-018-process` | ENV-GIT |
 | [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | integrated | T-003 | `task/T-019-money` | ENV-GIT |
 | [T-020](tasks/T-020.md) | B-01 | Instrument safe correlation and stuck-operation signals | implementation / 3 | foundation | todo | T-018, T-015 | `task/T-020-telemetry` | ENV-GIT |
