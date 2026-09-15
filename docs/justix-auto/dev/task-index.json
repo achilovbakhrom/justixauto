@@ -1553,7 +1553,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "qa-green",
       "depends_on": [
         "T-035"
       ],
@@ -1590,7 +1590,7 @@
         "package-lock.json"
       ],
       "agent": "frontend_t037",
-      "execution_note": "Fix cycle1 restores reference font smoothing and adds computed-property assertions; T588 binder comment corrected. All150 unit and9 browser checks passed; previous evidence and lock preserved. Independent r2 pending."
+      "execution_note": "Independent r2 GREEN atd984616: actual source rendering matches reference,150 unit and96 browser assertions plus34 route checks passed; original evidence/lock preserved. Synthetic empty shell only, no Dashboard/auth claim."
     },
     {
       "id": "T-038",

@@ -1,0 +1,170 @@
+{
+  "docs/justix-auto/dev/qa/T-037/independent-1180-candidate-raw.png": {
+    "sha256": "832fd5254b7ef767d62e9d0fba1b4d16579f7389913d83a5430937b0558f4d31",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1180-candidate-viewport.png": {
+    "sha256": "832fd5254b7ef767d62e9d0fba1b4d16579f7389913d83a5430937b0558f4d31",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1180-reference-projected.png": {
+    "sha256": "3db08547c49d27c90f086eb9ed2a1a2394a91b06cc866c49b07dafba4e93e650",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1180-reference-raw.png": {
+    "sha256": "fd4e87f29c5ad750331b05b0aa34922340fc6e5ce68af525dc0d2b861df7592e",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1440-candidate-raw.png": {
+    "sha256": "baffc60608eb54024107825e74616627f148efd868abce095af9f8d2d2912bfe",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1440-candidate-smoothing-diagnostic.png": {
+    "sha256": "8070e3d33fa0d3c589467bd2f901772e077ae7f5c6c8683137fdf9c2ef90fd33",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1440-candidate-viewport.png": {
+    "sha256": "baffc60608eb54024107825e74616627f148efd868abce095af9f8d2d2912bfe",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1440-reference-projected.png": {
+    "sha256": "106289638515ad5798c58dea0ee395b43733325c8ffa424890e0c49c388b1345",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-1440-reference-raw.png": {
+    "sha256": "93d5f5f2f6952870507e7ee5c2a30503291a73b205bbc4790b290cd8f6df0dfd",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-600-candidate-raw.png": {
+    "sha256": "30be24247f3816a6745a0abb6580ee6941323e0c9347870c57451eb44ad5eb01",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-600-candidate-viewport.png": {
+    "sha256": "30be24247f3816a6745a0abb6580ee6941323e0c9347870c57451eb44ad5eb01",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-600-reference-projected.png": {
+    "sha256": "f0f43f0f56fd718eb6d6865b57ee3a13172dab2c3d6d5c57d93a494f9adf0666",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-600-reference-raw.png": {
+    "sha256": "d414d666ae2c71db81e4df61c949afd00ce8b4a3a5bf00645f2cbad02d167dfc",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-fixture.html": {
+    "sha256": "b5a742f50385221fb6b7c73298045cdbacf7ab4602d376fb141af98a0bab6f35",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-observations.json": {
+    "sha256": "0f1f3979030bcd81ebafbd17fe454156a3e27d0b46b8c052841f661a7934ad5d",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-pixel-counts.json": {
+    "sha256": "33c16dfd4b31ae4fbe663f7cb00be2fb2be46369dafa365d122ab32b1125b53c",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-run.mjs": {
+    "sha256": "ef2fc754d20db0ca852dbdb4ccfb5ad519ff3c82be45bf9c48d0df3b329e7171",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-typography.json": {
+    "sha256": "aed347067c4ec9022ed6bd742c44dbc7462d72010c1334c44353aa81229fe9ff",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/independent-typography.mjs": {
+    "sha256": "21747763b0375a96dfcd71a86c96981fa88c7e0ee09cd480ce2be5a46ab48e1e",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037.md": {
+    "sha256": "c09089b29f82a5cbf333dafd227f6a813d6fe70520906f93095e8137bc3f87d2",
+    "matchesPreservedMain": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1180-candidate-raw.png": {
+    "sha256": "832fd5254b7ef767d62e9d0fba1b4d16579f7389913d83a5430937b0558f4d31",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1180-candidate.png": {
+    "sha256": "832fd5254b7ef767d62e9d0fba1b4d16579f7389913d83a5430937b0558f4d31",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1180-long-label.png": {
+    "sha256": "a9d611585294afe418654b1d150edac18c8e58ec175d519de03d673c048a2451",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1180-manifest.json": {
+    "sha256": "5c17ca61be7cbe162426cfcdff0d14d32fac85e060ce9de2d58604e437f33ce5",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1180-reference-projected.png": {
+    "sha256": "3db08547c49d27c90f086eb9ed2a1a2394a91b06cc866c49b07dafba4e93e650",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1180-reference-raw.png": {
+    "sha256": "fd4e87f29c5ad750331b05b0aa34922340fc6e5ce68af525dc0d2b861df7592e",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1440-candidate-raw.png": {
+    "sha256": "baffc60608eb54024107825e74616627f148efd868abce095af9f8d2d2912bfe",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1440-candidate.png": {
+    "sha256": "baffc60608eb54024107825e74616627f148efd868abce095af9f8d2d2912bfe",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1440-long-label.png": {
+    "sha256": "2c042d37d2ca7325dc096f7bbe528ab04a59e690ee41405d904f64412a9a12e2",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1440-manifest.json": {
+    "sha256": "3b7daca74d676484f7e916350878dbf7fd4d863ac74b1cf0756522d732c0a16e",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1440-reference-projected.png": {
+    "sha256": "106289638515ad5798c58dea0ee395b43733325c8ffa424890e0c49c388b1345",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-1440-reference-raw.png": {
+    "sha256": "93d5f5f2f6952870507e7ee5c2a30503291a73b205bbc4790b290cd8f6df0dfd",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-600-candidate-raw.png": {
+    "sha256": "30be24247f3816a6745a0abb6580ee6941323e0c9347870c57451eb44ad5eb01",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-600-candidate.png": {
+    "sha256": "30be24247f3816a6745a0abb6580ee6941323e0c9347870c57451eb44ad5eb01",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-600-long-label.png": {
+    "sha256": "2a4689c81bf62a19ee0e7a10e193b7704889479a57da534d926d38a8e3da4b13",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-600-manifest.json": {
+    "sha256": "d35d7d90e51cee2ab19da498dd9cbad379e8285f395a831ea69817ddd5fb5d7e",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-600-reference-projected.png": {
+    "sha256": "b0f0b43f80bf65443d87b42cc8b51a2d2bfa9b288081da1eed8dabf087d8fdcf",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-600-reference-raw.png": {
+    "sha256": "d414d666ae2c71db81e4df61c949afd00ce8b4a3a5bf00645f2cbad02d167dfc",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-browser.spec.ts": {
+    "sha256": "04697ba9328c358bde493236420811a77c3c5473d1ba973f7fcb244387fc78ea",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-fixture.html": {
+    "sha256": "0e824f472ddfbf41c6db043fdbc2befba641a3afa023c4bf143f9b3e6c958245",
+    "matchesReviewedOriginalCommit": true
+  },
+  "docs/justix-auto/dev/qa/T-037/developer-playwright.config.ts": {
+    "sha256": "1bcd255923ab9cb26db515dc420a6f8f3d89c8230af21369ad1b98ae7b194d2e",
+    "matchesReviewedOriginalCommit": true
+  },
+  "package-lock.json": {
+    "sha256": "72824fb7bc31230ed36a5fc52527c5ab55d318fc4fce7df3a139162cd0cfa928",
+    "unchangedFromOriginalQA": true
+  }
+}

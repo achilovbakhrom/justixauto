@@ -1,0 +1,23 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Independent synthetic shell</title></head><body><div id="qa-root"></div><script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { useQueryClient } from '@tanstack/react-query';
+import { RealizationApp } from '/web/apps/realization/src/app/App.tsx';
+const context = Object.freeze({ company: 'Tashkent Motors', branches: 'Все филиалы', companyMark: 'TM', userMark: 'ДА', locale: 'RU' });
+if (Object.keys(context).length !== 5 || Object.values(context).some(v => typeof v !== 'string')) throw Error('Invalid explicit display fixture');
+history.replaceState(null, '', '/');
+let root = createRoot(document.getElementById('qa-root'));
+let allowed = true;
+let display = context;
+const clients = [];
+function Boundary({children}) { const client = useQueryClient(); if (!clients.includes(client)) clients.push(client); return allowed ? children : null; }
+function render() { root.render(React.createElement(RealizationApp, {SessionBoundary: Boundary, ...(display ? {context: display} : {})})); }
+window.qa = {
+  clients,
+  gate(value) {allowed = value; render();},
+  display(value) {display = value; render();},
+  remount() {root.unmount(); root = createRoot(document.getElementById('qa-root')); render();},
+  navigate(path) {history.pushState(null, '', path); dispatchEvent(new PopStateEvent('popstate'));},
+};
+render();
+</script></body></html>

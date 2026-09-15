@@ -1,0 +1,3743 @@
+{
+  "sha": "d984616c9d63760540f0127c6145c4aff87fa81f",
+  "checks": [
+    "actual source antialiased 1440",
+    "shell geometry and style 1440",
+    "eleven disabled native nav controls 1440",
+    "zero active links 1440",
+    "empty feature content 1440",
+    "disabled controls excluded from tab 1440",
+    "actual source antialiased 1180",
+    "shell geometry and style 1180",
+    "eleven disabled native nav controls 1180",
+    "zero active links 1180",
+    "empty feature content 1180",
+    "disabled controls excluded from tab 1180",
+    "actual source antialiased 600",
+    "shell geometry and style 600",
+    "eleven disabled native nav controls 600",
+    "zero active links 600",
+    "empty feature content 600",
+    "disabled controls excluded from tab 600",
+    "gate removes identity from document",
+    "same mount keeps one query context",
+    "new mount cannot read old private query",
+    "client rejects /admin",
+    "client rejects /admin/users",
+    "client rejects /finance",
+    "client rejects /finance/apps",
+    "client rejects /insurance",
+    "client rejects /insurance/apps",
+    "client rejects /api",
+    "client rejects /api/session",
+    "missing display context invents no identity",
+    "no runtime API or persistence calls",
+    "no browser cache persistence",
+    "no cookies",
+    "no uncaught browser errors",
+    "non-HTML rejected route 4237/admin",
+    "non-HTML rejected route 4237/admin/",
+    "non-HTML rejected route 4237/admin/deep",
+    "non-HTML rejected route 4237/finance",
+    "non-HTML rejected route 4237/finance/",
+    "non-HTML rejected route 4237/insurance",
+    "non-HTML rejected route 4237/insurance/",
+    "non-HTML rejected route 4237/api",
+    "non-HTML rejected route 4237/api/",
+    "non-HTML rejected route 4237/api/session",
+    "non-HTML rejected route 4237/assets/no-file",
+    "non-HTML rejected route 4237/assets/missing.js",
+    "non-HTML rejected route 4237/missing.css",
+    "non-HTML rejected route 4237/src/missing.ts",
+    "non-HTML rejected route 4237/node_modules/missing",
+    "non-HTML rejected route 4237/%61dmin/",
+    "non-HTML rejected route 4237/admin%2fusers",
+    "POST never gets fallback 4237",
+    "PUT never gets fallback 4237",
+    "DELETE never gets fallback 4237",
+    "PATCH never gets fallback 4237",
+    "JSON request never gets fallback 4237",
+    "HEAD document 4237",
+    "closed actual entry 4237/",
+    "closed reload 4237/",
+    "closed actual entry 4237/vehicles/deep?tab=details",
+    "closed reload 4237/vehicles/deep?tab=details",
+    "closed actual entry 4237/index.html",
+    "closed reload 4237/index.html",
+    "entry scripts load without errors 4237",
+    "non-HTML rejected route 4238/admin",
+    "non-HTML rejected route 4238/admin/",
+    "non-HTML rejected route 4238/admin/deep",
+    "non-HTML rejected route 4238/finance",
+    "non-HTML rejected route 4238/finance/",
+    "non-HTML rejected route 4238/insurance",
+    "non-HTML rejected route 4238/insurance/",
+    "non-HTML rejected route 4238/api",
+    "non-HTML rejected route 4238/api/",
+    "non-HTML rejected route 4238/api/session",
+    "non-HTML rejected route 4238/assets/no-file",
+    "non-HTML rejected route 4238/assets/missing.js",
+    "non-HTML rejected route 4238/missing.css",
+    "non-HTML rejected route 4238/src/missing.ts",
+    "non-HTML rejected route 4238/node_modules/missing",
+    "non-HTML rejected route 4238/%61dmin/",
+    "non-HTML rejected route 4238/admin%2fusers",
+    "POST never gets fallback 4238",
+    "PUT never gets fallback 4238",
+    "DELETE never gets fallback 4238",
+    "PATCH never gets fallback 4238",
+    "JSON request never gets fallback 4238",
+    "HEAD document 4238",
+    "closed actual entry 4238/",
+    "closed reload 4238/",
+    "closed actual entry 4238/vehicles/deep?tab=details",
+    "closed reload 4238/vehicles/deep?tab=details",
+    "closed actual entry 4238/index.html",
+    "closed reload 4238/index.html",
+    "entry scripts load without errors 4238",
+    "all existing lock entries unchanged",
+    "only two workspace lock entries added"
+  ],
+  "routes": [
+    {
+      "port": 4237,
+      "path": "/admin",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/admin/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/admin/deep",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/finance",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/finance/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/insurance",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/insurance/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/api",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/api/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/api/session",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/assets/no-file",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/assets/missing.js",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/missing.css",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/src/missing.ts",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/node_modules/missing",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/%61dmin/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4237,
+      "path": "/admin%2fusers",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/admin",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/admin/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/admin/deep",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/finance",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/finance/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/insurance",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/insurance/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/api",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/api/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/api/session",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/assets/no-file",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/assets/missing.js",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/missing.css",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/src/missing.ts",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/node_modules/missing",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/%61dmin/",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    },
+    {
+      "port": 4238,
+      "path": "/admin%2fusers",
+      "status": 404,
+      "type": "text/plain; charset=utf-8"
+    }
+  ],
+  "metrics": [
+    {
+      "width": 1440,
+      "reference": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 244,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 16,
+          "y": 20,
+          "width": 211,
+          "height": 64.390625,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 244,
+          "y": 0,
+          "width": 1196,
+          "height": 64,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "controls": [
+          {
+            "x": 268,
+            "y": 11.5,
+            "width": 210,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 490,
+            "y": 11.5,
+            "width": 210,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 806.828125,
+            "y": 11.5,
+            "width": 480,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1298.828125,
+            "y": 12.5,
+            "width": 38,
+            "height": 38,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 1348.828125,
+            "y": 21.34375,
+            "width": 19.171875,
+            "height": 20.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1380,
+            "y": 13.5,
+            "width": 36,
+            "height": 36,
+            "font": "700 12px / 17.4px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(23, 105, 224)",
+            "background": "rgb(234, 242, 255)",
+            "border": "0px none rgb(23, 105, 224)",
+            "radius": "50%"
+          }
+        ],
+        "nav": [
+          {
+            "label": "Дашборд",
+            "rect": {
+              "x": 16,
+              "y": 190.109375,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 199.109375,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 197.953125,
+              "width": 62.734375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Партнёры",
+            "rect": {
+              "x": 16,
+              "y": 257.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 266.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 264.890625,
+              "width": 67.703125,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Склады",
+            "rect": {
+              "x": 16,
+              "y": 296.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 305.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 303.890625,
+              "width": 51.484375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Автомобили",
+            "rect": {
+              "x": 16,
+              "y": 335.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 344.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 342.890625,
+              "width": 82.84375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Закупки",
+            "rect": {
+              "x": 16,
+              "y": 374.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 383.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 381.890625,
+              "width": 54.859375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Предложения",
+            "rect": {
+              "x": 16,
+              "y": 413.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 422.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 420.890625,
+              "width": 93.421875,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Продажи",
+            "rect": {
+              "x": 16,
+              "y": 452.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 461.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 459.890625,
+              "width": 62.265625,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "CRM",
+            "rect": {
+              "x": 16,
+              "y": 491.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 500.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 498.890625,
+              "width": 30.953125,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Счета и оплаты",
+            "rect": {
+              "x": 16,
+              "y": 557.984375,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 566.984375,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 565.828125,
+              "width": 104.5625,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Страхование",
+            "rect": {
+              "x": 16,
+              "y": 596.984375,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 605.984375,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 604.828125,
+              "width": 87.953125,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Настройки",
+            "rect": {
+              "x": 16,
+              "y": 860,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 869,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 867.84375,
+              "width": 73.359375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          }
+        ],
+        "external": [
+          {
+            "x": 16,
+            "y": 908,
+            "width": 178.25,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          },
+          {
+            "x": 16,
+            "y": 948,
+            "width": 164,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          }
+        ],
+        "overflow": false
+      },
+      "candidate": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 244,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 16,
+          "y": 20,
+          "width": 211,
+          "height": 64.390625,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 244,
+          "y": 0,
+          "width": 1196,
+          "height": 64,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "controls": [
+          {
+            "x": 268,
+            "y": 11.5,
+            "width": 210,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 490,
+            "y": 11.5,
+            "width": 210,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 806.828125,
+            "y": 11.5,
+            "width": 480,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1298.828125,
+            "y": 12.5,
+            "width": 38,
+            "height": 38,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 1348.828125,
+            "y": 21.34375,
+            "width": 19.171875,
+            "height": 20.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1380,
+            "y": 13.5,
+            "width": 36,
+            "height": 36,
+            "font": "700 12px / 17.4px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(23, 105, 224)",
+            "background": "rgb(234, 242, 255)",
+            "border": "0px none rgb(23, 105, 224)",
+            "radius": "50%"
+          }
+        ],
+        "nav": [
+          {
+            "label": "Дашборд",
+            "rect": {
+              "x": 16,
+              "y": 190.109375,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 199.109375,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 197.953125,
+              "width": 62.734375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Партнёры",
+            "rect": {
+              "x": 16,
+              "y": 257.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 266.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 264.890625,
+              "width": 67.703125,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Склады",
+            "rect": {
+              "x": 16,
+              "y": 296.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 305.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 303.890625,
+              "width": 51.484375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Автомобили",
+            "rect": {
+              "x": 16,
+              "y": 335.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 344.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 342.890625,
+              "width": 82.84375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Закупки",
+            "rect": {
+              "x": 16,
+              "y": 374.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 383.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 381.890625,
+              "width": 54.859375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Предложения",
+            "rect": {
+              "x": 16,
+              "y": 413.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 422.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 420.890625,
+              "width": 93.421875,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Продажи",
+            "rect": {
+              "x": 16,
+              "y": 452.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 461.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 459.890625,
+              "width": 62.265625,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "CRM",
+            "rect": {
+              "x": 16,
+              "y": 491.046875,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 500.046875,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 498.890625,
+              "width": 30.953125,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Счета и оплаты",
+            "rect": {
+              "x": 16,
+              "y": 557.984375,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 566.984375,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 565.828125,
+              "width": 104.5625,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Страхование",
+            "rect": {
+              "x": 16,
+              "y": 596.984375,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 605.984375,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 604.828125,
+              "width": 87.953125,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Настройки",
+            "rect": {
+              "x": 16,
+              "y": 860,
+              "width": 211,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 26,
+              "y": 869,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 54,
+              "y": 867.84375,
+              "width": 73.359375,
+              "height": 20.296875,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          }
+        ],
+        "external": [
+          {
+            "x": 16,
+            "y": 908,
+            "width": 178.25,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          },
+          {
+            "x": 16,
+            "y": 948,
+            "width": 164,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          }
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "width": 1180,
+      "reference": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 244,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 12,
+          "y": 20,
+          "width": 219,
+          "height": 64.390625,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 244,
+          "y": 0,
+          "width": 936,
+          "height": 64,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "controls": [
+          {
+            "x": 262,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 448,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 634,
+            "y": 11.5,
+            "width": 398.828125,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1044.828125,
+            "y": 12.5,
+            "width": 38,
+            "height": 38,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 1094.828125,
+            "y": 21.34375,
+            "width": 19.171875,
+            "height": 20.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1126,
+            "y": 13.5,
+            "width": 36,
+            "height": 36,
+            "font": "700 12px / 17.4px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(23, 105, 224)",
+            "background": "rgb(234, 242, 255)",
+            "border": "0px none rgb(23, 105, 224)",
+            "radius": "50%"
+          }
+        ],
+        "nav": [
+          {
+            "label": "Дашборд",
+            "rect": {
+              "x": 12,
+              "y": 152.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 161.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Партнёры",
+            "rect": {
+              "x": 12,
+              "y": 188.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 197.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Склады",
+            "rect": {
+              "x": 12,
+              "y": 227.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 236.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Автомобили",
+            "rect": {
+              "x": 12,
+              "y": 266.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 275.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Закупки",
+            "rect": {
+              "x": 12,
+              "y": 305.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 314.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Предложения",
+            "rect": {
+              "x": 12,
+              "y": 344.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 353.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Продажи",
+            "rect": {
+              "x": 12,
+              "y": 383.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 392.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "CRM",
+            "rect": {
+              "x": 12,
+              "y": 422.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 431.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Счета и оплаты",
+            "rect": {
+              "x": 12,
+              "y": 458.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 467.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Страхование",
+            "rect": {
+              "x": 12,
+              "y": 497.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 506.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Настройки",
+            "rect": {
+              "x": 12,
+              "y": 860,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 869,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          }
+        ],
+        "external": [
+          {
+            "x": 12,
+            "y": 908,
+            "width": 178.25,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          },
+          {
+            "x": 12,
+            "y": 948,
+            "width": 164,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          }
+        ],
+        "overflow": false
+      },
+      "candidate": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 244,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 12,
+          "y": 20,
+          "width": 219,
+          "height": 64.390625,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 244,
+          "y": 0,
+          "width": 936,
+          "height": 64,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "controls": [
+          {
+            "x": 262,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 448,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 634,
+            "y": 11.5,
+            "width": 398.828125,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1044.828125,
+            "y": 12.5,
+            "width": 38,
+            "height": 38,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 1094.828125,
+            "y": 21.34375,
+            "width": 19.171875,
+            "height": 20.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 1126,
+            "y": 13.5,
+            "width": 36,
+            "height": 36,
+            "font": "700 12px / 17.4px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(23, 105, 224)",
+            "background": "rgb(234, 242, 255)",
+            "border": "0px none rgb(23, 105, 224)",
+            "radius": "50%"
+          }
+        ],
+        "nav": [
+          {
+            "label": "Дашборд",
+            "rect": {
+              "x": 12,
+              "y": 152.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 161.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Партнёры",
+            "rect": {
+              "x": 12,
+              "y": 188.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 197.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Склады",
+            "rect": {
+              "x": 12,
+              "y": 227.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 236.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Автомобили",
+            "rect": {
+              "x": 12,
+              "y": 266.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 275.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Закупки",
+            "rect": {
+              "x": 12,
+              "y": 305.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 314.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Предложения",
+            "rect": {
+              "x": 12,
+              "y": 344.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 353.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Продажи",
+            "rect": {
+              "x": 12,
+              "y": 383.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 392.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "CRM",
+            "rect": {
+              "x": 12,
+              "y": 422.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 431.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Счета и оплаты",
+            "rect": {
+              "x": 12,
+              "y": 458.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 467.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Страхование",
+            "rect": {
+              "x": 12,
+              "y": 497.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 506.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Настройки",
+            "rect": {
+              "x": 12,
+              "y": 860,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 869,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          }
+        ],
+        "external": [
+          {
+            "x": 12,
+            "y": 908,
+            "width": 178.25,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          },
+          {
+            "x": 12,
+            "y": 948,
+            "width": 164,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          }
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "width": 600,
+      "reference": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 244,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 12,
+          "y": 20,
+          "width": 219,
+          "height": 64.390625,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 244,
+          "y": 0,
+          "width": 356,
+          "height": 64,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "controls": [
+          {
+            "x": 262,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 448,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 634,
+            "y": 12.5,
+            "width": 32,
+            "height": 38,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 678,
+            "y": 21.34375,
+            "width": 19.171875,
+            "height": 20.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 709.171875,
+            "y": 13.5,
+            "width": 18.375,
+            "height": 36,
+            "font": "700 12px / 17.4px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(23, 105, 224)",
+            "background": "rgb(234, 242, 255)",
+            "border": "0px none rgb(23, 105, 224)",
+            "radius": "50%"
+          }
+        ],
+        "nav": [
+          {
+            "label": "Дашборд",
+            "rect": {
+              "x": 12,
+              "y": 152.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 161.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Партнёры",
+            "rect": {
+              "x": 12,
+              "y": 188.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 197.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Склады",
+            "rect": {
+              "x": 12,
+              "y": 227.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 236.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Автомобили",
+            "rect": {
+              "x": 12,
+              "y": 266.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 275.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Закупки",
+            "rect": {
+              "x": 12,
+              "y": 305.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 314.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Предложения",
+            "rect": {
+              "x": 12,
+              "y": 344.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 353.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Продажи",
+            "rect": {
+              "x": 12,
+              "y": 383.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 392.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "CRM",
+            "rect": {
+              "x": 12,
+              "y": 422.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 431.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Счета и оплаты",
+            "rect": {
+              "x": 12,
+              "y": 458.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 467.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Страхование",
+            "rect": {
+              "x": 12,
+              "y": 497.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 506.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Настройки",
+            "rect": {
+              "x": 12,
+              "y": 860,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 869,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          }
+        ],
+        "external": [
+          {
+            "x": 12,
+            "y": 908,
+            "width": 178.25,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          },
+          {
+            "x": 12,
+            "y": 948,
+            "width": 164,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          }
+        ],
+        "overflow": false
+      },
+      "candidate": {
+        "side": {
+          "x": 0,
+          "y": 0,
+          "width": 244,
+          "height": 1000,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "brand": {
+          "x": 12,
+          "y": 20,
+          "width": 219,
+          "height": 64.390625,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgba(0, 0, 0, 0)",
+          "border": "0px none rgb(24, 33, 47)",
+          "radius": "0px"
+        },
+        "header": {
+          "x": 244,
+          "y": 0,
+          "width": 356,
+          "height": 64,
+          "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+          "fontSmoothing": "antialiased",
+          "color": "rgb(24, 33, 47)",
+          "background": "rgb(255, 255, 255)",
+          "border": "",
+          "radius": "0px"
+        },
+        "controls": [
+          {
+            "x": 262,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 448,
+            "y": 11.5,
+            "width": 174,
+            "height": 40,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 634,
+            "y": 12.5,
+            "width": 32,
+            "height": 38,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgb(255, 255, 255)",
+            "border": "1px solid rgb(217, 222, 231)",
+            "radius": "6px"
+          },
+          {
+            "x": 678,
+            "y": 21.34375,
+            "width": 19.171875,
+            "height": 20.296875,
+            "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(24, 33, 47)",
+            "background": "rgba(0, 0, 0, 0)",
+            "border": "0px none rgb(24, 33, 47)",
+            "radius": "0px"
+          },
+          {
+            "x": 709.171875,
+            "y": 13.5,
+            "width": 18.375,
+            "height": 36,
+            "font": "700 12px / 17.4px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(23, 105, 224)",
+            "background": "rgb(234, 242, 255)",
+            "border": "0px none rgb(23, 105, 224)",
+            "radius": "50%"
+          }
+        ],
+        "nav": [
+          {
+            "label": "Дашборд",
+            "rect": {
+              "x": 12,
+              "y": 152.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 161.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Партнёры",
+            "rect": {
+              "x": 12,
+              "y": 188.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 197.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Склады",
+            "rect": {
+              "x": 12,
+              "y": 227.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 236.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Автомобили",
+            "rect": {
+              "x": 12,
+              "y": 266.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 275.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Закупки",
+            "rect": {
+              "x": 12,
+              "y": 305.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 314.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Предложения",
+            "rect": {
+              "x": 12,
+              "y": 344.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 353.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Продажи",
+            "rect": {
+              "x": 12,
+              "y": 383.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 392.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "CRM",
+            "rect": {
+              "x": 12,
+              "y": 422.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 431.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Счета и оплаты",
+            "rect": {
+              "x": 12,
+              "y": 458.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 467.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Страхование",
+            "rect": {
+              "x": 12,
+              "y": 497.390625,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 506.390625,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          },
+          {
+            "label": "Настройки",
+            "rect": {
+              "x": 12,
+              "y": 860,
+              "width": 219,
+              "height": 36,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "6px"
+            },
+            "icon": {
+              "x": 112.5,
+              "y": 869,
+              "width": 18,
+              "height": 18,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            },
+            "text": {
+              "x": 0,
+              "y": 0,
+              "width": 0,
+              "height": 0,
+              "font": "14px / 20.3px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+              "fontSmoothing": "antialiased",
+              "color": "rgb(94, 106, 125)",
+              "background": "rgba(0, 0, 0, 0)",
+              "border": "0px none rgb(94, 106, 125)",
+              "radius": "0px"
+            }
+          }
+        ],
+        "external": [
+          {
+            "x": 12,
+            "y": 908,
+            "width": 178.25,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          },
+          {
+            "x": 12,
+            "y": 948,
+            "width": 164,
+            "height": 32,
+            "font": "600 13px / 18.85px Inter, -apple-system, \"system-ui\", \"Segoe UI\", sans-serif",
+            "fontSmoothing": "antialiased",
+            "color": "rgb(0, 0, 238)",
+            "border": "1px solid rgb(185, 193, 206)",
+            "radius": "6px"
+          }
+        ],
+        "overflow": false
+      }
+    }
+  ],
+  "hashes": {
+    "app.js": "263836a00b00d8b0916c5b3c3cf627bc398f739d137a37cacc51a18339b679be",
+    "realization.js": "032b7ecc3c264b9f49c895149db7e11dc0d6616671a58bede98133f91227ae7c",
+    "common.css": "b8d33fc6f0ed224ff38f27f3d640f5850bd2f9103b5db759e6f3fbb2a76d1cd5",
+    "styles.css": "af11793c14c738af22b45922752d3dae40c677c94ec6b2508b69d3621c6fc99b",
+    "realization.css": "2d2a591694fbc204acfddf006eea9b4bd0ebc5b93d7fce61c1fcb56b45b2c5cc",
+    "web/apps/realization/index.html": "c518496d261d4e697b5b8c15826da3cc3b11cc987a375c0f7556c698e319de1f",
+    "web/apps/realization/package.json": "87cc937fa07ff1ea4d1866ac313321580521c3a511b82361dbe695eb4f0d1e32",
+    "web/apps/realization/src/app/App.tsx": "5f12f4ff145280c2caa9608e03efe586e396973732a627b42d4bb3dad167ee35",
+    "web/apps/realization/src/app/Shell.module.css": "e6b1b6d62124357e693448432f5d5b2d35e17c1021ee564c94fb27b9e964c420",
+    "web/apps/realization/src/app/Shell.test.tsx": "92273e978efd784615fc2c0d00fb41210890a656f08a46ae3f5a0b8ba04b2344",
+    "web/apps/realization/src/app/Shell.tsx": "87bff71ad8ba6d3c0125bc61cb6df69e8cccdc17f42c9f937658e6decc290edd",
+    "web/apps/realization/src/routes/registry.ts": "f700f910c46570840aa4ae02aeec25dfe6d6219f7b41b46a2f1da1f20466e4c0",
+    "web/apps/realization/tsconfig.json": "003b3de5f6d5f4cdd571f27bb75086c1e6057d19ccb7a33fabd89460ffa1adce",
+    "web/apps/realization/vite.config.ts": "6c4f68eb9974aaf7297da4ae41c5a8bb283e2433349eae343b51a1750bc2d759",
+    "web/apps/realization/vitest.config.ts": "360b0539a1e659eb6ee2c39504d306179165e4d9bf40f5f136e36cfa38775ad9"
+  }
+}
