@@ -1550,7 +1550,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "in-progress",
       "depends_on": [
         "T-035"
       ],
@@ -1587,7 +1587,7 @@
         "package-lock.json"
       ],
       "agent": "frontend_t037",
-      "execution_note": "Independent QA BOUNCE P2: missing reference font-smoothing changes shell text weight; browser-only diagnostic confirms cause. 150 unit,93 browser assertions,34 route checks passed. Original exact evidence preserved before fix cycle1."
+      "execution_note": "Fix cycle1 assigned: restore observed M-R01 font smoothing, add visual property assertion and correct owned future binder comment to T588. Preserve all original QA evidence; no dependency changes."
     },
     {
       "id": "T-038",
