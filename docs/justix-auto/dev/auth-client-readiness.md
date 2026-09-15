@@ -58,3 +58,11 @@ be reviewable and must not invent the unapproved T-002 lifetime/rate policies.
 T-059 may preserve the approved schema declarations while the transport work
 proceeds; T-641 and dependent browser authentication must wait for the complete
 owned handoff. Approval: `../state/approvals/auth.md`.
+
+## Reviewed technical adoption
+
+Revised proposal `914fcd78cc0789e41e9091efdc99fb5afc6c5c50` passed independent r2 review. The
+[technical approval](../state/approvals/auth-transport-compatibility.md) maps ten
+bounded tasks with explicit generator serial ownership and producer/consumer
+handoffs. Canonical promotion QA precedes assignment. Earlier BOUNCE evidence
+and observed transport gaps remain; implementation is not complete.

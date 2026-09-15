@@ -371,3 +371,15 @@ project pgx database.Driver and immutable verified source, refining the original
 upstream-adapter/file-discovery guidance. Existing SQL and legacy constructors
 are preserved; actual DDL/finalization faults and later-owner follow-ups remain
 required. No schema health check supplies authorization or delivery guarantees.
+
+
+## Approved auth transport implementation handoff — 2026-09-15
+
+The [ADR-08 transport refinement](state/approvals/auth-transport-compatibility.md)
+adds strict shared response decoding, validated ephemeral header delivery,
+synchronous structural/semantic boundaries and current session tickets. Ten
+bounded tasks include six serial generator stages; partial auth profiles stay
+disabled. Terminal generation deliberately bounds newly regenerated Go bodies,
+including non-auth/internal outputs; actual network IO is separately bounded.
+T-058 security meaning and T-002 acceptance gates remain unchanged. Client
+epochs do not undo browser cookies or replace owner revocation/authority.

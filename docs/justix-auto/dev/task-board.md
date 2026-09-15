@@ -26,8 +26,8 @@ Date: 2026-09-15. Release scope and architecture approved; development authorize
 
 ## Graph metrics and lanes
 
-Current scope: 934 tasks after approved messaging/storage amendments and six
-owner migration compatibility tasks (3,102 total task-effort hours).
+Current scope: 944 tasks after approved messaging/storage/owner migration amendments
+and ten auth transport tasks (3,138 total task-effort hours).
 The metrics below describe the original reviewed 916-task baseline; no new
 antichain width or elapsed schedule is claimed. See the amendment rows and
 [approval](../state/approvals/messaging-delivery.md) for the bounded new scope.
@@ -122,13 +122,13 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-052](tasks/T-052.md) | B-09 | Confirm real document mime/size/retention/storage region/scan policy and exact production storage configuration | policy-decision / 3 | decisions | todo | — | `task/T-052-documents-policy` | OD-10 |
 | [T-053](tasks/T-053.md) | B-42 | Confirm named real provider products, eligibility/rates/currency/limits and partner-calculation approved test vectors | policy-decision / 3 | decisions | todo | — | `task/T-053-program-policy` | OD-10 |
 | [T-054](tasks/T-054.md) | B-05 | Confirm absent cross-app read and session boundary states | design-confirmation / 3 | design | todo | — | `task/T-054-boundaries-supplement` | DESIGN-BOUNDARIES |
-| [T-055](tasks/T-055.md) | B-04 | Enforce frontend context epochs and cross-tab cache clearing | implementation / 4 | frontend-shared | todo | T-032, T-070, T-643 | `task/T-055-session-client` | ENV-GIT |
+| [T-055](tasks/T-055.md) | B-04 | Enforce frontend context epochs and cross-tab cache clearing | implementation / 4 | frontend-shared | todo | T-032, T-070, T-643, T-944, T-943 | `task/T-055-session-client` | ENV-GIT |
 | [T-056](tasks/T-056.md) | B-07 | Implement safe command reducer and same-key receipt recovery | implementation / 4 | frontend-shared | todo | T-032, T-078, T-645 | `task/T-056-operation-reducer` | ENV-GIT |
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
 | [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | integrated | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | integrated | T-001 | `task/T-058-contract-2` | dependencies only |
 | [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | todo | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
-| [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931 | `task/T-060-credentials` | ENV-GIT |
+| [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931, T-943 | `task/T-060-credentials` | ENV-GIT |
 | [T-061](tasks/T-061.md) | B-02 | Implement one-use TOTP and recovery codes | implementation / 4 | identity | todo | T-059, T-024, T-641, T-060 | `task/T-061-mfa` | ENV-GIT |
 | [T-062](tasks/T-062.md) | B-02 | Implement deployment-only guarded MFA bootstrap | implementation / 4 | identity | todo | T-059, T-024, T-641, T-061 | `task/T-062-bootstrap` | ENV-GIT |
 | [T-063](tasks/T-063.md) | B-02 | Implement approved recovery and invitation proof adapters | implementation / 4 | identity | todo | T-059, T-024, T-002, T-641, T-061 | `task/T-063-recovery` | ENV-GIT |
@@ -343,7 +343,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-272](tasks/T-272.md) | B-49 | Generate insurer views schema and owner migration | implementation / 3 | insurance | todo | T-271, T-029 | `task/T-272-schema-49` | ENV-GIT |
 | [T-273](tasks/T-273.md) | B-49 | Query addressed submitted review and result queues with stable counts | implementation / 4 | insurance | todo | T-272, T-029, T-066, T-687, T-265 | `task/T-273-insurer-queue` | ENV-GIT |
 | [T-274](tasks/T-274.md) | B-49 | Read current insurer account summary without policy controls | implementation / 4 | insurance | todo | T-272, T-029, T-066, T-687, T-097 | `task/T-274-insurer-account` | ENV-GIT |
-| [T-641](tasks/T-641.md) | B-02 | Generate typed auth clients and validators | implementation / 2 | identity | todo | T-640, T-059 | `task/T-641-clients-2` | ENV-GIT |
+| [T-641](tasks/T-641.md) | B-02 | Generate typed auth clients and validators | implementation / 2 | identity | todo | T-640, T-059, T-942 | `task/T-641-clients-2` | ENV-GIT |
 | [T-642](tasks/T-642.md) | B-03 | Generate typed authorization clients and validators | implementation / 2 | identity | todo | T-640, T-065 | `task/T-642-clients-3` | ENV-GIT |
 | [T-643](tasks/T-643.md) | B-04 | Generate typed context clients and validators | implementation / 2 | identity | todo | T-640, T-071 | `task/T-643-clients-4` | ENV-GIT |
 | [T-644](tasks/T-644.md) | B-06 | Generate typed dashboard clients and validators | implementation / 2 | retail | todo | T-640, T-075 | `task/T-644-clients-6` | ENV-GIT |
@@ -1016,3 +1016,18 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | todo | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
 | [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
 | [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928 | `task/T-934-custody-persistence-profile` | ENV-GIT |
+
+## Approved auth transport compatibility tasks — 2026-09-15
+
+| ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
+|---|---|---|---|---|---|---|---|---|
+| [T-935](tasks/T-935.md) | B-02 | Decode response JSON before feature validation | implementation / 4 | foundation | todo | T-032 | `task/T-935-strict-response-json` | ENV-GIT |
+| [T-936](tasks/T-936.md) | B-02 | Validate auth response bodies and metadata before acceptance | implementation / 4 | foundation | todo | T-935, T-058, T-032 | `task/T-936-validated-auth-transport` | ENV-GIT |
+| [T-937](tasks/T-937.md) | B-01 | Parse the closed auth generation profile without activation | implementation / 2 | foundation | todo | T-936, T-640 | `task/T-937-auth-generator-profile` | ENV-GIT |
+| [T-938](tasks/T-938.md) | B-01 | Generate synchronous structural and semantic validation boundaries | implementation / 4 | foundation | todo | T-937 | `task/T-938-auth-generator-semantics` | ENV-GIT |
+| [T-939](tasks/T-939.md) | B-01 | Generate the bound TypeScript auth transport interface | implementation / 4 | foundation | todo | T-938 | `task/T-939-auth-generator-typescript` | ENV-GIT |
+| [T-940](tasks/T-940.md) | B-01 | Generate the Go auth exchange and response validation interface | implementation / 4 | foundation | todo | T-939 | `task/T-940-auth-generator-go` | ENV-GIT |
+| [T-941](tasks/T-941.md) | B-01 | Bound generated Go raw response parsing | implementation / 3 | foundation | todo | T-940 | `task/T-941-auth-generator-raw-limits` | ENV-GIT |
+| [T-942](tasks/T-942.md) | B-01 | Verify and activate the complete auth generation profile | implementation / 3 | foundation | todo | T-941 | `task/T-942-auth-generator-activation` | ENV-GIT |
+| [T-943](tasks/T-943.md) | B-02 | Bind concrete authentication semantics in Go and TypeScript | implementation / 4 | foundation | todo | T-641, T-058 | `task/T-943-auth-semantic-binders` | ENV-GIT |
+| [T-944](tasks/T-944.md) | B-04 | Fence in-memory auth acceptance by current request and session epoch | implementation / 4 | foundation | todo | T-936, T-058 | `task/T-944-auth-session-epochs` | ENV-GIT |

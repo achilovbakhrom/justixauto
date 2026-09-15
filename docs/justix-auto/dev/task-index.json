@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 934,
-    "effort_hours": 3102,
+    "task_count": 944,
+    "effort_hours": 3138,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; eighteen bounded messaging/storage/owner-migration additions do not claim a recomputed width or schedule.",
+    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; twenty-eight bounded messaging/storage/owner-migration/auth additions do not claim a recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -416,6 +416,44 @@
       "added_tasks": [],
       "added_edges": [],
       "added_files": []
+    },
+    "auth_transport_compatibility": {
+      "proposal_sha": "914fcd78cc0789e41e9091efdc99fb5afc6c5c50",
+      "proposal_sha256": "e1643c8cf36ba5733f7bfa0d32e2285604b345fe72ed506e17248fbae9af3e0c",
+      "approval": "docs/justix-auto/state/approvals/auth-transport-compatibility.md",
+      "aliases": {
+        "AT-JSON": "T-935",
+        "AT-HTTP": "T-936",
+        "AT-GEN-PROFILE": "T-937",
+        "AT-GEN-SEM": "T-938",
+        "AT-GEN-TS": "T-939",
+        "AT-GEN-GO": "T-940",
+        "AT-GEN-RAW": "T-941",
+        "AT-GEN-VERIFY": "T-942",
+        "AT-AUTH": "T-943",
+        "AT-EPOCH": "T-944"
+      },
+      "added_existing_edges": {
+        "T-641": [
+          "T-942"
+        ],
+        "T-055": [
+          "T-944",
+          "T-943"
+        ],
+        "T-060": [
+          "T-943"
+        ]
+      },
+      "generator_serial_tasks": [
+        "T-937",
+        "T-938",
+        "T-939",
+        "T-940",
+        "T-941",
+        "T-942"
+      ],
+      "root_export_serialization": "No generated/authValidation API manifest edit while T-944 owns that manifest; stage concrete export/config integration before exact dependent QA."
     }
   },
   "tasks": [
@@ -2282,7 +2320,9 @@
       "depends_on": [
         "T-032",
         "T-070",
-        "T-643"
+        "T-643",
+        "T-944",
+        "T-943"
       ],
       "branch": "task/T-055-session-client",
       "lane": "frontend-shared",
@@ -2497,7 +2537,8 @@
         "T-059",
         "T-024",
         "T-641",
-        "T-931"
+        "T-931",
+        "T-943"
       ],
       "branch": "task/T-060-credentials",
       "lane": "identity",
@@ -10149,7 +10190,8 @@
       "status": "todo",
       "depends_on": [
         "T-640",
-        "T-059"
+        "T-059",
+        "T-942"
       ],
       "branch": "task/T-641-clients-2",
       "lane": "identity",
@@ -35685,6 +35727,297 @@
         "B-01.AC1"
       ],
       "scope": "Extend the common checker after T930 to exact approved custody lineage/mode/ACLs, retaining all legacy checks. Require revoked legacy writes and immutable shared markers; success is storage compatibility only, not adapter assembly, source admission or delivery effects. Include exact revision-6 artifact and corrected bootstrap generation CHECK identity/validation in read-only custody readiness; earlier markers do not establish all-space compatibility.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-935",
+      "key": "strict_response_json",
+      "title": "Decode response JSON before feature validation",
+      "parent": "B-02",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-032"
+      ],
+      "branch": "task/T-935-strict-response-json",
+      "lane": "foundation",
+      "files_owned": [
+        "web/packages/api/src/responseJSON.ts",
+        "web/packages/api/src/responseJSON.test.ts"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-02.AC1"
+      ],
+      "scope": "One strict bounded raw-byte decoder with fatal UTF-8, decoded-key duplicate detection, scalar Unicode, safe own properties, exact safe-integer lexemes and preserved finite legacy fractions. No lossy parse before validation; no client edits.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-936",
+      "key": "validated_auth_transport",
+      "title": "Validate auth response bodies and metadata before acceptance",
+      "parent": "B-02",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-935",
+        "T-058",
+        "T-032"
+      ],
+      "branch": "task/T-936-validated-auth-transport",
+      "lane": "foundation",
+      "files_owned": [
+        "web/packages/api/src/client.ts",
+        "web/packages/api/src/client.test.ts"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-02.AC1"
+      ],
+      "scope": "Extend the one shared fetch path with typed 429, exact response contracts/version marker, bounded bytes and allowlisted ephemeral metadata. Exact endpoint semantic/body/header checks precede the synchronous current-ticket sink. Preserve generic result shapes and unknown dispatched write outcomes; no retry or secret-bearing receipts.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-937",
+      "key": "auth_generator_profile",
+      "title": "Parse the closed auth generation profile without activation",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 2,
+      "status": "todo",
+      "depends_on": [
+        "T-936",
+        "T-640"
+      ],
+      "branch": "task/T-937-auth-generator-profile",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/generate-contracts.mjs",
+        "tests/contracts/generation_reproducibility_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC4"
+      ],
+      "scope": "Parse and validate closed header/security/semantic declarations into a trusted internal model. Keep public auth generation rejected before all output writes; preserve non-auth outputs and existing guard tests.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-938",
+      "key": "auth_generator_semantics",
+      "title": "Generate synchronous structural and semantic validation boundaries",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-937"
+      ],
+      "branch": "task/T-938-auth-generator-semantics",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/generate-contracts.mjs",
+        "tests/contracts/generation_reproducibility_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC4"
+      ],
+      "scope": "Generate Go/TypeScript primitive outcomes, binding readiness, guarded per-occurrence and operation error validation. Complete structural oneOf selection precedes semantic hooks; faults cannot become branch mismatches. Execute isolated emitted-runtime probes; public auth CLI remains rejected.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-939",
+      "key": "auth_generator_typescript",
+      "title": "Generate the bound TypeScript auth transport interface",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-938"
+      ],
+      "branch": "task/T-939-auth-generator-typescript",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/generate-contracts.mjs",
+        "tests/contracts/generation_reproducibility_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC4"
+      ],
+      "scope": "Generate the bound TypeScript client and exact status/error/metadata contract delegation to the real upgraded shared client, with capability and request-scoped auth port checks. Test inert renderer output; public auth CLI remains rejected.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-940",
+      "key": "auth_generator_go",
+      "title": "Generate the Go auth exchange and response validation interface",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-939"
+      ],
+      "branch": "task/T-940-auth-generator-go",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/generate-contracts.mjs",
+        "tests/contracts/generation_reproducibility_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC4"
+      ],
+      "scope": "Generate namespaced Go exchange/version/auth ports, header multiplicity/media/429/no-body validation and conservative dispatched outcomes. Preserve internal mTLS separation and legacy APIs; public auth CLI remains rejected.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-941",
+      "key": "auth_generator_raw_limits",
+      "title": "Bound generated Go raw response parsing",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-940"
+      ],
+      "branch": "task/T-941-auth-generator-raw-limits",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/generate-contracts.mjs",
+        "tests/contracts/generation_reproducibility_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC4"
+      ],
+      "scope": "Implement and probe an inert versioned Go byte/depth/exponent path with exact numeric parity to the shared TypeScript decoder. Legacy emitted non-auth output remains unchanged here; public auth CLI remains rejected.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-942",
+      "key": "auth_generator_activation",
+      "title": "Verify and activate the complete auth generation profile",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 3,
+      "status": "todo",
+      "depends_on": [
+        "T-941"
+      ],
+      "branch": "task/T-942-auth-generator-activation",
+      "lane": "foundation",
+      "files_owned": [
+        "tools/generate-contracts.mjs",
+        "tests/contracts/generation_reproducibility_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC4"
+      ],
+      "scope": "Verify complete deterministic Go/TypeScript generation through actual shared-client and Go ports, synchronous fault/async negatives and all existing output guards, then enable the complete auth CLI profile. Explicitly apply adopted 8MiB/128-depth bounds to all newly regenerated Go outputs, including non-auth/internal; bound transport IO separately. No implementation shifted into T-641.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-943",
+      "key": "auth_semantic_binders",
+      "title": "Bind concrete authentication semantics in Go and TypeScript",
+      "parent": "B-02",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-641",
+        "T-058"
+      ],
+      "branch": "task/T-943-auth-semantic-binders",
+      "lane": "foundation",
+      "files_owned": [
+        "web/packages/api/src/authValidation.ts",
+        "web/packages/api/src/authValidation.test.ts",
+        "services/identity/contracts/openapi/auth_semantics.go",
+        "services/identity/contracts/openapi/auth_semantics_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-02.AC1",
+        "B-02.AC2",
+        "B-02.AC3",
+        "B-02.AC4"
+      ],
+      "scope": "Implement stateless typed T-058 cross-field/status/code/revision/context and variant semantics through mandatory generated bindings, structural checks and closed synchronous outcomes. Explicit immutable synthetic policy only until accepted release constraints; no browser authority, secret cache or invented security policy.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-944",
+      "key": "auth_session_epochs",
+      "title": "Fence in-memory auth acceptance by current request and session epoch",
+      "parent": "B-04",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-936",
+        "T-058"
+      ],
+      "branch": "task/T-944-auth-session-epochs",
+      "lane": "foundation",
+      "files_owned": [
+        "web/packages/api/src/authEpoch.ts",
+        "web/packages/api/src/authEpoch.test.ts",
+        "web/packages/api/package.json"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-04.AC2"
+      ],
+      "scope": "Implement the non-React controller with serialized cookie-mutating exchanges, one-shot tickets, current-epoch atomic acceptance, conservative uncertainty and explicit reacquisition. Keep tokens and one-time secrets in current closures only. Export ./authEpoch only; no generated imports, automatic retry or cross-tab cookie guarantee.",
       "worktree": null,
       "base_sha": null
     }

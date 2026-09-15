@@ -1,6 +1,6 @@
 # Auth transport compatibility proposal assignment
 
-2026-09-15. Status: revised proposal under independent r2 QA; no implementation approval.
+2026-09-15. Status: technical proposal adopted; canonical promotion QA pending before implementation assignment.
 Assigned worktree: `.worktrees/auth-transport-compatibility`.
 Branch: `task/auth-transport-compatibility`.
 Base: `476777139ffa6a470c7b3f6e79086c64f2dc7db5`.
@@ -81,3 +81,10 @@ The original generator alias is resliced into six serial aliases; ten proposed
 tasks now total 36 estimated hours. Verify exact predecessor ownership, interim
 auth rejection, terminal activation, and explicit non-auth Go resource tightening.
 Independent GREEN and canonical promotion checks precede implementation assignment.
+
+## Technical adoption
+
+Revised proposal `914fcd78cc0789e41e9091efdc99fb5afc6c5c50` is adopted after
+[independent r2 GREEN](qa/auth-transport-compatibility-r2.md).
+Ten aliases map to T-935–T-944; canonical promotion QA remains required before
+assignment. Original BOUNCE evidence is retained unchanged.

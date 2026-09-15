@@ -40,3 +40,8 @@ and real security/runtime/acceptance tests remain their assigned tasks.
 No dependency, service/data ownership, secret-publication exception or operational
 guarantee changes beyond the stated technical auth supplement. This approval does
 not complete B-02 or certify a running authentication service.
+
+The [reviewed transport refinement](auth-transport-compatibility.md) explicitly
+adopts P4 header/cache/media grammar and P6 synchronous semantic binding, without
+rewriting the exact T-058 wire document. Implementation and real cookie/owner
+race tests remain required; no release security settings are accepted.
