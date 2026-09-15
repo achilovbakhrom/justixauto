@@ -837,7 +837,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "qa-green",
+      "status": "integrated",
       "depends_on": [
         "T-003"
       ],
@@ -861,7 +861,8 @@
       "base_sha": "ba6653c80c59658d1be2776bafe20972207ccb47",
       "reviewed_sha": "a14d64fc78a32c73ee9866831a2810e40b0a9294",
       "agent": "backend/t019_money",
-      "execution_note": "Independent QA GREEN at exact a14d64fc78a32c73ee9866831a2810e40b0a9294. Full readonly race/vet/module checks and independent adversarial tests pass for 38-digit signed money, canonical JSON, immutable arithmetic, currency version/exponent mismatches, Gregorian dates and explicit policy-unresolved behavior."
+      "execution_note": "Merged exact QA-green branch as a99e33fa27671efe5aa70eaf6c48c4b172d373ae. Integrated project package race/vet tests (`./pkg/... ./tests/...`), module verification and 1,016 readiness checks pass. Broad `./...` additionally discovers ignored local Go toolchain/node_modules sources in the main checkout and fails outside project packages; this test-discovery limitation is recorded for foundation tooling follow-up.",
+      "integration_sha": "a99e33fa27671efe5aa70eaf6c48c4b172d373ae"
     },
     {
       "id": "T-020",
