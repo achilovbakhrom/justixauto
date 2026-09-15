@@ -1553,7 +1553,7 @@
       "parent": "B-05",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-035"
       ],
@@ -1585,12 +1585,12 @@
       "scope": "Base and Router basename /; verified existing shell only, no production auth/missing boundary invention; feature route contributions wired later. App shell uses injected session boundary until auth client integration. Contextual documents/payment/financing controls remain children or slots of their approved M-ID page, never new sidebar entries. Unfinished/unregistered modules must not gain active menu entries.",
       "worktree": ".worktrees/T-037",
       "base_sha": "60abf5622597aa1af77925fd7968251e0cb81be4",
-      "reviewed_sha": "a0cfcc9cef2648b954fd862cfa828dfccc5c8cae",
+      "reviewed_sha": "d984616c9d63760540f0127c6145c4aff87fa81f",
       "coordinator_files": [
         "package-lock.json"
       ],
       "agent": "frontend_t037",
-      "execution_note": "Fix cycle1 assigned: restore observed M-R01 font smoothing, add visual property assertion and correct owned future binder comment to T588. Preserve all original QA evidence; no dependency changes."
+      "execution_note": "Fix cycle1 restores reference font smoothing and adds computed-property assertions; T588 binder comment corrected. All150 unit and9 browser checks passed; previous evidence and lock preserved. Independent r2 pending."
     },
     {
       "id": "T-038",
