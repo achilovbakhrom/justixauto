@@ -321,7 +321,7 @@
       "base_sha": "d79fd44",
       "reviewed_sha": null,
       "agent": "coordinator",
-      "execution_note": "Security proposal committed at 4c6fa36; independent review pending. No security acceptance inferred; Linux benchmark and delivery gates remain."
+      "execution_note": "Initial proposal QA bounced for proof/delivery/invitation protocol gaps. Revision a262f075bd5338c03c7049141c6c9f7e674110e5 addresses them and awaits renewed review; user acceptance remains open."
     },
     {
       "id": "T-003",
@@ -536,7 +536,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "implementing",
       "depends_on": [
         "T-008"
       ],
@@ -555,9 +555,11 @@
         "B-01.AC2"
       ],
       "scope": "Expected-version append includes guards/outbox/receipt via typed transaction; competing append and rollback tests against PostgreSQL.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-009",
+      "base_sha": "1c8f8aa403deb752924209b778aaf2747ef79bbb",
+      "reviewed_sha": null,
+      "agent": "backend/t009_append",
+      "execution_note": "T008 integrated and pushed; conditional append and typed transaction implementation assigned."
     },
     {
       "id": "T-010",
