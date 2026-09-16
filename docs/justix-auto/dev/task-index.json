@@ -35622,7 +35622,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-930"
       ],
@@ -35640,8 +35640,10 @@
         "B-01.AC1"
       ],
       "scope": "Add the explicit compatible Identity UOW constructor and checks before factory binding and every actual Run. Preserve the original legacy constructor and all prior grant/owner isolation behavior; synthetic feature profile only until T059.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-931",
+      "base_sha": "7cfd21465c80390d4d33ab40091a5360d12d88af",
+      "agent": "backend_t931",
+      "execution_note": "Assign explicit Identity profile-compatible constructor after T930 integration. Two adapter/test leaves only; preserve original legacy constructor. Exact supplied profile checks before factory on every actual transaction and startup, synthetic feature fixture only; no root/policy/SQL/dependency expansion."
     },
     {
       "id": "T-932",
