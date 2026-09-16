@@ -12,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"os"
 	"path/filepath"
 	"strings"
@@ -113,9 +114,24 @@ func (d *Driver) poison(cause error) error {
 	d.poisoned = true
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	_ = d.conn.Close(ctx)
+	closeErr := d.closeOwned(ctx)
 	d.locked = false
-	return errors.Join(ErrPoisoned, cause)
+	return errors.Join(ErrPoisoned, cause, closeErr)
+}
+
+// pgx can mark a connection closed BEFORE asynchronous cleanup closes its
+// transport. Native Close then returns immediately, while cleanup may still be
+// waiting on its separate cancel request. Always close our exclusively owned
+// public native transport as well. net.Conn permits concurrent Close with that
+// cleanup. This proves client closure, not synchronous server lock release;
+// authoritative server state still belongs to fresh bounded reconciliation.
+func (d *Driver) closeOwned(ctx context.Context) error {
+	err := d.conn.Close(ctx)
+	transportErr := d.conn.PgConn().Conn().Close()
+	if errors.Is(transportErr, net.ErrClosed) {
+		transportErr = nil
+	}
+	return errors.Join(err, transportErr)
 }
 func (d *Driver) Close() error {
 	d.mu.Lock()
@@ -127,7 +143,7 @@ func (d *Driver) Close() error {
 	d.locked = false
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	return d.conn.Close(ctx)
+	return d.closeOwned(ctx)
 }
 func (d *Driver) LastAttempt() Attempt { d.mu.Lock(); defer d.mu.Unlock(); return d.last }
 

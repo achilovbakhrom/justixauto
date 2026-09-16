@@ -319,8 +319,16 @@ func (f fixture) connect(fault *wireFault) *pgx.Conn {
 			if err != nil {
 				return nil, err
 			}
-			fault.Conn = c
-			return fault, nil
+			// pgx also invokes DialFunc for its separate CancelRequest socket.
+			// Never replace the primary wrapper's transport or return that same
+			// wrapper for a second connection while cleanup is using the first.
+			fault.mu.Lock()
+			defer fault.mu.Unlock()
+			if fault.Conn == nil {
+				fault.Conn = c
+				return fault, nil
+			}
+			return c, nil
 		}
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -810,13 +818,29 @@ func TestDriverBoundedLockAndPreflight(t *testing.T) {
 	if err == nil || elapsed < 4*time.Second || elapsed > 7*time.Second {
 		t.Fatalf("lock bound: %v %s", err, elapsed)
 	}
+	// An expired query may have closed pgx asynchronously; IsClosed alone is
+	// not server release evidence. Keep the blocker held while observing bounded
+	// backend disappearance, so a pending server request cannot win a race with
+	// our subsequent unlock. A live, idle connection took the known-no-lock poll
+	// timeout path and must have no acquisition work or held lock left instead.
+	if d.conn.IsClosed() {
+		observeBackendExit(t, holder, d.conn.PgConn().PID())
+	} else {
+		var idleWithoutLock bool
+		if err := holder.QueryRow(context.Background(), `SELECT EXISTS(SELECT FROM pg_stat_activity WHERE pid=$1 AND state='idle') AND NOT EXISTS(SELECT FROM pg_locks WHERE pid=$1 AND locktype='advisory' AND granted)`, d.conn.PgConn().PID()).Scan(&idleWithoutLock); err != nil || !idleWithoutLock || d.conn.PgConn().IsBusy() || d.locked {
+			t.Fatalf("known-no-lock timeout still active: %v idle=%v", err, idleWithoutLock)
+		}
+	}
 	if _, err := holder.Exec(context.Background(), `SELECT pg_advisory_unlock($1)`, OwnerLockKey("justix_identity")); err != nil {
 		t.Fatal(err)
 	}
 	// An expired acquisition must never acquire the lock later in a goroutine.
 	var acquired bool
-	if err := holder.QueryRow(context.Background(), `SELECT pg_try_advisory_lock($1)`, OwnerLockKey("justix_identity")).Scan(&acquired); err != nil || !acquired {
-		t.Fatal("late acquisition retained lock")
+	if err := holder.QueryRow(context.Background(), `SELECT pg_try_advisory_lock($1)`, OwnerLockKey("justix_identity")).Scan(&acquired); err != nil {
+		t.Fatalf("observer reacquisition query failed: %v", err)
+	}
+	if !acquired {
+		t.Fatal("late acquisition retained lock after backend/idle confirmation")
 	}
 	_, _ = holder.Exec(context.Background(), `SELECT pg_advisory_unlock($1)`, OwnerLockKey("justix_identity"))
 	// Lock's bound also covers blocked compatibility queries after acquisition.
@@ -838,6 +862,7 @@ func TestDriverBoundedLockAndPreflight(t *testing.T) {
 	if !d.conn.IsClosed() {
 		t.Fatal("uncertain lock session remained open")
 	}
+	observeBackendExit(t, holder, d.conn.PgConn().PID())
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
 	d, err = NewDriver(ctx, f.connect(nil), cfg)
@@ -848,6 +873,26 @@ func TestDriverBoundedLockAndPreflight(t *testing.T) {
 		t.Fatal("canceled parent accepted")
 	}
 	_ = d.Close()
+}
+
+func observeBackendExit(t *testing.T, observer *pgx.Conn, pid uint32) {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	for {
+		var gone bool
+		if err := observer.QueryRow(ctx, `SELECT NOT EXISTS(SELECT FROM pg_stat_activity WHERE pid=$1) AND NOT EXISTS(SELECT FROM pg_locks WHERE pid=$1 AND locktype='advisory')`, pid).Scan(&gone); err != nil {
+			t.Fatalf("bounded server release observation for pid %d: %v", pid, err)
+		}
+		if gone {
+			return
+		}
+		select {
+		case <-ctx.Done():
+			t.Fatalf("backend %d survived bounded transport cleanup", pid)
+		case <-time.After(10 * time.Millisecond):
+		}
+	}
 }
 
 func TestDriverOwnerValidatorRuntimeCheckerParity(t *testing.T) {
@@ -958,4 +1003,113 @@ func TestDriverPendingSequenceAndCanceledEnginePipe(t *testing.T) {
 		t.Fatal("cancel lost dirty state")
 	}
 	f.retain("canceled-source.json", f.snapshot())
+}
+
+// A lost actual acquisition reply makes pgx start asynchronous cleanup. Hold
+// only its separate cancel dial, never the owned PostgreSQL socket: this proves
+// that the adapter itself closes its transport even when native IsClosed is
+// already true and native Close consequently returns without doing so.
+type cleanupProbeConn struct {
+	net.Conn
+	mu             sync.Mutex
+	armed, dropped bool
+	closed         chan struct{}
+	once           sync.Once
+}
+
+func (c *cleanupProbeConn) Write(b []byte) (int, error) {
+	if len(b) > 5 && b[0] == 'Q' && strings.Contains(string(b[5:]), "SELECT pg_try_advisory_lock") {
+		c.mu.Lock()
+		c.armed = true
+		c.mu.Unlock()
+	}
+	return c.Conn.Write(b)
+}
+func (c *cleanupProbeConn) Read(b []byte) (int, error) {
+	n, err := c.Conn.Read(b)
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if n > 0 && c.armed && !c.dropped {
+		c.dropped = true
+		return 0, io.ErrUnexpectedEOF
+	}
+	return n, err
+}
+func (c *cleanupProbeConn) Close() error {
+	c.once.Do(func() { close(c.closed) })
+	return c.Conn.Close()
+}
+
+func TestDriverPoisonClosesTransportDuringNativeAsyncCleanup(t *testing.T) {
+	f := startFixture(t)
+	f.bootstrap()
+	cfg, err := pgx.ParseConfig(fmt.Sprintf("host=127.0.0.1 port=%s user=justix_identity password=%s dbname=justix_identity sslmode=disable", f.port, f.password))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cfg.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+	releaseCancel := make(chan struct{})
+	defer close(releaseCancel)
+	cancelStarted := make(chan struct{})
+	var cancelOnce sync.Once
+	var wire *cleanupProbeConn
+	cfg.DialFunc = func(ctx context.Context, network, address string) (net.Conn, error) {
+		if wire != nil {
+			cancelOnce.Do(func() { close(cancelStarted) })
+			select {
+			case <-releaseCancel:
+				return nil, errors.New("synthetic cancel dial released")
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			}
+		}
+		raw, err := (&net.Dialer{}).DialContext(ctx, network, address)
+		if err != nil {
+			return nil, err
+		}
+		wire = &cleanupProbeConn{Conn: raw, closed: make(chan struct{})}
+		return wire, nil
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	conn, err := pgx.ConnectConfig(ctx, cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	d, err := NewDriver(context.Background(), conn, f.config(12, false))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer d.Close()
+	pid := conn.PgConn().PID()
+	err = d.Lock()
+	if err == nil || !errors.Is(err, ErrPoisoned) {
+		t.Fatalf("lost acquisition must poison: %v", err)
+	}
+	select {
+	case <-cancelStarted:
+	case <-time.After(time.Second):
+		t.Fatal("native asynchronous cleanup was not reached")
+	}
+	state := f.must(fmt.Sprintf(`SELECT jsonb_build_object('backend',EXISTS(SELECT FROM pg_stat_activity WHERE pid=%d),'advisory_locks',(SELECT count(*) FROM pg_locks WHERE pid=%d AND locktype='advisory' AND granted))`, pid, pid))
+	f.retain("native-async-close-observation.json", state)
+	select {
+	case <-wire.closed:
+	case <-time.After(10 * time.Millisecond):
+		t.Fatalf("poison returned before owned transport closure; native IsClosed=%v; server=%s", conn.IsClosed(), state)
+	}
+	// No retry of Lock/SQL is needed. Verify the server has converged while the
+	// separate native cancel dial is STILL blocked, then acquire with another
+	// connection immediately. This establishes transport closure independently
+	// of native asynchronous cleanup completion and excludes future acquisition.
+	observer := f.connect(nil)
+	observeBackendExit(t, observer, pid)
+	var acquired bool
+	if err := observer.QueryRow(context.Background(), `SELECT pg_try_advisory_lock($1)`, OwnerLockKey("justix_identity")).Scan(&acquired); err != nil || !acquired {
+		t.Fatalf("closed poisoned backend retained owner lock: %v acquired=%v", err, acquired)
+	}
+	_, _ = observer.Exec(context.Background(), `SELECT pg_advisory_unlock($1)`, OwnerLockKey("justix_identity"))
+	if d.LastAttempt().RequestID() != uuid.Nil {
+		t.Fatal("failed acquisition reached dirty write")
+	}
 }
