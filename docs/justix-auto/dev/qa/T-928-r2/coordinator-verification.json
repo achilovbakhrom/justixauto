@@ -1,0 +1,16 @@
+{
+  "reviewed_sha": "38d67c2cae8065ecccdd70ff3597d83294fd4eeb",
+  "original_qa_unchanged": [
+    "docs/justix-auto/dev/qa/T-928/evidence-check.json",
+    "docs/justix-auto/dev/qa/T-928/full-race.log",
+    "docs/justix-auto/dev/qa/T-928/independent-attempt1.log",
+    "docs/justix-auto/dev/qa/T-928/independent_probe_test.go",
+    "docs/justix-auto/dev/qa/T-928/overlay.json",
+    "docs/justix-auto/dev/qa/T-928/sha256.json",
+    "docs/justix-auto/dev/qa/T-928/verify_evidence.py",
+    "docs/justix-auto/dev/qa/T-928/vet.log",
+    "docs/justix-auto/dev/qa/T-928.md"
+  ],
+  "source_exact": true,
+  "fixture_count": 7
+}

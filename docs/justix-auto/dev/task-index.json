@@ -35521,7 +35521,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-927"
       ],
@@ -35541,8 +35541,8 @@
       "scope": "Install owner-local immutable generation/switch evidence and CAS projection heads with narrow grants. Prove pointer identity, retained history, atomic failure and immutable evidence; no owner business read model or real guard writer is introduced. Include the approved exact bootstrap generation CHECK forward correction in revision 6, preserving all labels/data and prior SQL; prove both consumer kinds and full failure atomicity.",
       "worktree": ".worktrees/T-928",
       "base_sha": "d59faa8dc5b26e13e19c47686dd47744b6d73a11",
-      "agent": "qa_t928",
-      "execution_note": "Fix cycle1 committed; all original seven independent groups and expanded full scoped race/vet pass. Independent r2 checks timing-independent xid8 head/event bookkeeping, parameter/config guard authority and required mutable grants, preserving original9 artifacts and all old SQL. Final source hash edc9ad9ce9effb5cd1e38c16086f06b5cfdaaaa6ae46e414dfcd0a6248b1d4c0.",
+      "agent": "backend_t928",
+      "execution_note": "Independent r2 found incompatible server default hidden by installer override. Completed evidence preserved; QA worker was interrupted and full audit remains incomplete. Assign final fix2 within migration/test/result, then fresh independent exact-commit review; no integration.",
       "reviewed_sha": "38d67c2cae8065ecccdd70ff3597d83294fd4eeb"
     },
     {

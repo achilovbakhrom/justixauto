@@ -1,0 +1,27 @@
+=== RUN   TestQAT928R2ServerDefaultPostgres
+    qa_t928_r2_independent_test.go:16: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2601322799
+    qa_t928_r2_independent_test.go:25: migration login mode: origin
+    qa_t928_r2_independent_test.go:26: runtime login mode: replica
+    qa_t928_r2_independent_test.go:27: runtime SET authority: f
+    qa_t928_r2_independent_test.go:32: committed missing-generation head: 73|dd3f871b-51f9-48b1-addc-a5a3466544dd
+    qa_t928_r2_independent_test.go:33: installer origin override hid server-wide replica default inherited by runtime without SET permission
+    quarantine_migration_test.go:145: validated task fixture removed and verified absent: 580890f0f503f36c837941bec09289b59c4d16c16722c84fce65eadaeca54807 justixauto-t927-83c1dc1b-f5b6-4fed-8479-caa9880ca369
+--- FAIL: TestQAT928R2ServerDefaultPostgres (2.95s)
+=== RUN   TestQAT928R2ProvenancePostgres
+    qa_t928_r2_independent_test.go:38: Recoverable synthetic migration evidence: /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2040762134
+=== RUN   TestQAT928R2ProvenancePostgres/extreme_supplied_xid_ignored_and_exact_types_readonly
+=== RUN   TestQAT928R2ProvenancePostgres/two_projections_in_one_transaction_each_activate_exactly_once
+=== RUN   TestQAT928R2ProvenancePostgres/caught_failed_second_mutation_rolls_back_only_child_and_keeps_first
+=== RUN   TestQAT928R2ProvenancePostgres/nested_savepoint_restoration_after_flushed_activation
+=== RUN   TestQAT928R2ProvenancePostgres/repeated_same_request_cannot_overwrite_provenance
+=== NAME  TestQAT928R2ProvenancePostgres
+    quarantine_migration_test.go:145: validated task fixture removed and verified absent: f0c01349c50101e378ec305ffe9ac449c0b29b7d58a9c51154b29be9ffc722d4 justixauto-t927-f482c38a-2f02-4948-9921-e87d92ab6e69
+--- PASS: TestQAT928R2ProvenancePostgres (3.84s)
+    --- PASS: TestQAT928R2ProvenancePostgres/extreme_supplied_xid_ignored_and_exact_types_readonly (0.27s)
+    --- PASS: TestQAT928R2ProvenancePostgres/two_projections_in_one_transaction_each_activate_exactly_once (0.24s)
+    --- PASS: TestQAT928R2ProvenancePostgres/caught_failed_second_mutation_rolls_back_only_child_and_keeps_first (0.39s)
+    --- PASS: TestQAT928R2ProvenancePostgres/nested_savepoint_restoration_after_flushed_activation (0.25s)
+    --- PASS: TestQAT928R2ProvenancePostgres/repeated_same_request_cannot_overwrite_provenance (0.37s)
+FAIL
+FAIL	justixauto/pkg/eventstore	7.400s
+FAIL

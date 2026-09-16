@@ -1,0 +1,10 @@
+{
+  "docs/justix-auto/dev/qa/T-928-r2/independent_probe_test.go": "8972fcfcc02187d6d333fb1dddac0f83f84090af38e72386f65bca216bef8a52",
+  "docs/justix-auto/dev/qa/T-928-r2/overlay.json": "ba65363cbe65321b40507c2ddfb24510372534b6d24d5e56fc9b84d2a0478078",
+  "docs/justix-auto/dev/qa/T-928-r2/independent-attempt1.log": "7377310a986578c8b696bfcaec9fb4e7c9f62bf9230c142a9d23bec90586a1c3",
+  "docs/justix-auto/dev/qa/T-928-r2/full-race.log": "3be9ab0b5935bd9953124830a4029ae2699c3d5b206266f9d44a471ddc78b83f",
+  "docs/justix-auto/dev/qa/T-928-r2/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/justix-auto/dev/qa/T-928-r2/fixture-absence.json": "65a6ec113e3f9016705471d0942d358e7268f84ea48fc94388e7277fa64a1d6e",
+  "docs/justix-auto/dev/qa/T-928-r2/coordinator-verification.json": "252acc883ba6feb3d19095ec67de1bccba89ecc703879a1398d7a15173210121",
+  "docs/justix-auto/dev/qa/T-928-r2.md": "80ecb2b949555c1a56807f244e1402418de8d6b102600fc610a264060d6828f3"
+}
