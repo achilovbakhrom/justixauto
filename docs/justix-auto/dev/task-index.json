@@ -35854,7 +35854,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-936",
         "T-640"
@@ -35876,8 +35876,9 @@
       "worktree": ".worktrees/T-937",
       "base_sha": "23d8cede88d228ef57fa73205c159b07e57a49b2",
       "agent": "qa_auth_transport",
-      "execution_note": "Fix cycle 1 rejects explicit null/non-array auth security and parameters before fallback. Author reports 250 model cases, full contract race 122.518s and vet; adapted original probe passes its existing matrix/negative/CLI/legacy checks plus three corrected null cases. Original eleven QA artifacts and result prefix preserved. Independent exact-commit re-review assigned; no activation or integration yet.",
-      "reviewed_sha": "1636aeb291007163f80e41855694a2390a7694f5"
+      "execution_note": "Exact fix1 1636aeb291007163f80e41855694a2390a7694f5 independently GREEN in qa/T-937-r2.md, merged unchanged. Main contract race PASS 117.255s and vet PASS; three reviewed leaves and all twenty QA artifacts byte-identical. See qa/integration-t937.md. Forty-six tasks integrated; T-938 is dependency-ready, auth CLI remains disabled.",
+      "reviewed_sha": "1636aeb291007163f80e41855694a2390a7694f5",
+      "integration_sha": "9708a2330f45547ee09d37cc67451524321775a2"
     },
     {
       "id": "T-938",
