@@ -26,8 +26,8 @@ Date: 2026-09-16. Release scope and architecture approved; development authorize
 
 ## Graph metrics and lanes
 
-Current scope: 948 tasks after approved messaging/storage/owner migration/auth
-and membership amendments (3,154 total task-effort hours).
+Current scope: 949 tasks after approved messaging/storage/owner migration/auth
+and membership amendments plus auth schema reslicing (3,158 total task-effort hours).
 The metrics below describe the original reviewed 916-task baseline; no new
 antichain width or elapsed schedule is claimed. See the amendment rows and
 [approval](../state/approvals/messaging-delivery.md) for the bounded new scope.
@@ -127,8 +127,8 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
 | [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | integrated | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | integrated | T-001 | `task/T-058-contract-2` | dependencies only |
-| [T-059](tasks/T-059.md) | B-02 | Generate auth schema and owner migration | implementation / 3 | identity | in-progress | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
-| [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931, T-943 | `task/T-060-credentials` | ENV-GIT |
+| [T-059](tasks/T-059.md) | B-02 | Encode auth wire schemas and fixtures | implementation / 3 | identity | in-progress | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
+| [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931, T-943, T-949 | `task/T-060-credentials` | ENV-GIT |
 | [T-061](tasks/T-061.md) | B-02 | Implement one-use TOTP and recovery codes | implementation / 4 | identity | todo | T-059, T-024, T-641, T-060 | `task/T-061-mfa` | ENV-GIT |
 | [T-062](tasks/T-062.md) | B-02 | Implement deployment-only guarded MFA bootstrap | implementation / 4 | identity | todo | T-059, T-024, T-641, T-061 | `task/T-062-bootstrap` | ENV-GIT |
 | [T-063](tasks/T-063.md) | B-02 | Implement approved recovery and invitation proof adapters | implementation / 4 | identity | todo | T-059, T-024, T-002, T-641, T-061 | `task/T-063-recovery` | ENV-GIT |
@@ -936,7 +936,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-915](tasks/T-915.md) | B-32 | Specify typed private fulfillment intent lookup schema and fixtures | contract / 3 | contracts-foundation | todo | T-725 | `task/T-915-fulfillment-intent-schema` | ENV-GIT |
 | [T-916](tasks/T-916.md) | B-32 | Generate private fulfillment intent lookup DTO and client | implementation / 2 | foundation | todo | T-915, T-640 | `task/T-916-fulfillment-intent-clients` | ENV-GIT |
 | [T-591](tasks/T-591.md) | B-01 | Verify complete B-01 acceptance across its contributing slices | verification / 3 | verification | todo | T-001, T-003, T-004, T-005, T-006, T-007, T-008, T-009, T-010, T-011, T-012, T-013, T-014, T-015, T-016, T-017, T-018, T-019, T-020, T-021, T-022, T-023, T-024, T-025, T-026, T-027, T-028, T-029, T-030, T-031, T-035, T-640, T-746, T-580, T-581, T-582, T-583, T-584, T-585, T-586, T-751, T-754, T-893, T-894, T-895, T-896, T-897, T-898, T-747, T-748, T-753 | `task/T-591-acceptance-1` | ENV-GIT |
-| [T-592](tasks/T-592.md) | B-02 | Verify complete B-02 acceptance across its contributing slices | verification / 3 | verification | todo | T-002, T-058, T-059, T-060, T-061, T-062, T-063, T-641, T-361, T-362, T-363, T-699, T-700, T-364, T-701, T-365, T-366, T-702, T-703, T-367, T-704, T-368, T-369, T-705, T-706, T-370, T-707, T-371, T-372, T-708, T-709, T-373, T-710, T-747, T-748, T-749, T-750, T-580, T-587, T-588, T-589, T-590, T-751, T-754, T-753 | `task/T-592-acceptance-2` | ENV-GIT |
+| [T-592](tasks/T-592.md) | B-02 | Verify complete B-02 acceptance across its contributing slices | verification / 3 | verification | todo | T-002, T-058, T-059, T-060, T-061, T-062, T-063, T-641, T-361, T-362, T-363, T-699, T-700, T-364, T-701, T-365, T-366, T-702, T-703, T-367, T-704, T-368, T-369, T-705, T-706, T-370, T-707, T-371, T-372, T-708, T-709, T-373, T-710, T-747, T-748, T-749, T-750, T-580, T-587, T-588, T-589, T-590, T-751, T-754, T-753, T-949 | `task/T-592-acceptance-2` | ENV-GIT |
 | [T-593](tasks/T-593.md) | B-03 | Verify complete B-03 acceptance across its contributing slices | verification / 3 | verification | todo | T-064, T-065, T-066, T-067, T-068, T-069, T-642, T-751, T-752, T-753, T-754, T-580, T-747, T-748 | `task/T-593-acceptance-3` | ENV-GIT |
 | [T-594](tasks/T-594.md) | B-04 | Verify complete B-04 acceptance across its contributing slices | verification / 3 | verification | todo | T-055, T-070, T-071, T-072, T-073, T-643, T-374, T-375, T-376, T-377, T-755, T-756, T-580, T-588, T-751, T-754, T-747, T-748, T-753 | `task/T-594-acceptance-4` | ENV-GIT |
 | [T-595](tasks/T-595.md) | B-05 | Verify complete B-05 acceptance across its contributing slices | verification / 3 | verification | todo | T-032, T-033, T-034, T-036, T-037, T-038, T-039, T-054, T-578, T-579, T-587, T-588, T-589, T-590, T-751, T-754, T-747, T-748, T-753 | `task/T-595-acceptance-5` | ENV-GIT |
@@ -1040,3 +1040,4 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-946](tasks/T-946.md) | B-01 | Install membership selection and enrollment evidence | implementation / 4 | foundation | todo | T-945 | `task/T-946-membership-selection-storage` | ENV-GIT |
 | [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | integrated | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
 | [T-948](tasks/T-948.md) | B-01 | Persist fenced membership selections and recovery evidence | implementation / 4 | foundation | todo | T-946, T-947, T-014 | `task/T-948-membership-state-adapter` | ENV-GIT |
+| [T-949](tasks/T-949.md) | B-02 | Install private authentication owner storage | implementation / 4 | identity | todo | T-059, T-929, T-931 | `task/T-949-auth-private-storage` |

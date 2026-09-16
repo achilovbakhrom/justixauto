@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 948,
-    "effort_hours": 3154,
+    "task_count": 949,
+    "effort_hours": 3158,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; thirty-two additions do not claim recomputed width or schedule.",
+    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; thirty-three additions do not claim recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -484,6 +484,21 @@
         ]
       },
       "canonical_promotion_qa": "GREEN at b50490b48c5f31a542b0305827c1e345c2214cf6; docs/justix-auto/dev/qa/membership-promotion.md"
+    },
+    "auth_schema_reslice": {
+      "approval": "docs/justix-auto/state/approvals/auth-schema-reslice.md",
+      "wire_task": "T-059",
+      "storage_task": "T-949",
+      "serial_test_leaf": "tests/contracts/identity_auth_test.go",
+      "added_existing_edges": {
+        "T-060": [
+          "T-949"
+        ],
+        "T-592": [
+          "T-949"
+        ]
+      },
+      "reason": "Pre-implementation estimate exceeds original three-hour bound; preserve full checks in separate bounded wire and storage tasks."
     }
   },
   "tasks": [
@@ -2533,7 +2548,7 @@
     {
       "id": "T-059",
       "key": "schema_2",
-      "title": "Generate auth schema and owner migration",
+      "title": "Encode auth wire schemas and fixtures",
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 3,
@@ -2550,9 +2565,7 @@
         "services/identity/contracts/openapi/auth.yaml",
         "services/identity/contracts/events/auth.schema.json",
         "services/identity/contracts/openapi/auth.fixtures.json",
-        "services/identity/migrations/0012_auth.up.sql",
-        "tests/contracts/identity_auth_test.go",
-        "services/identity/migrations/0012_auth.manifest.json"
+        "tests/contracts/identity_auth_test.go"
       ],
       "gates": [
         "ENV-GIT"
@@ -2564,12 +2577,12 @@
         "B-02.AC3",
         "B-02.AC4"
       ],
-      "scope": "Translate approved feature supplement into concrete OpenAPI3.1/event schemas and only this feature's owner tables/indexes. No references to another DB, credentials in events, or invented endpoints. Register schema later in sole-owner integration task.",
+      "scope": "Encode the adopted auth supplement as closed JSON-form OpenAPI3.1, safe event schema and separated structural/semantic/state fixtures. Preserve named semantic constraints and inert generation barriers. This task owns no SQL or manifest; private storage and live migration tests are T-949.",
       "worktree": ".worktrees/T-059",
       "base_sha": "f472274",
       "reviewed_sha": null,
       "agent": "backend_t928",
-      "execution_note": "Encode the adopted auth wire contract into six owned schema/fixture/migration leaves. Preserve semantic constraints and private secret storage rules; do not activate auth generation, invent security values or modify the UOW. Assess the three-hour bound before implementation."
+      "execution_note": "Scope reassessed before application edits: T-059 retains four wire/fixture/test leaves within 3h; T-949 owns private SQL/manifest and serial migration tests within 4h. No release policy or architecture contract changed."
     },
     {
       "id": "T-060",
@@ -2584,7 +2597,8 @@
         "T-024",
         "T-641",
         "T-931",
-        "T-943"
+        "T-943",
+        "T-949"
       ],
       "branch": "task/T-060-credentials",
       "lane": "identity",
@@ -32072,7 +32086,8 @@
         "T-590",
         "T-751",
         "T-754",
-        "T-753"
+        "T-753",
+        "T-949"
       ],
       "branch": "task/T-592-acceptance-2",
       "lane": "verification",
@@ -36218,6 +36233,40 @@
         "B-01.AC2"
       ],
       "scope": "Fenced storage/read/reconcile/candidate primitives, sealed CurrentSelection/ProspectiveSelection, complete enrollment/jobs and evidence links in the actual outer transaction. Head locks precede job/effect work. Historical request success differs from current readiness. No owner snapshot/network orchestration, nested Run/commit or broker ACK.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-949",
+      "key": "auth_private_storage",
+      "title": "Install private authentication owner storage",
+      "parent": "B-02",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-059",
+        "T-929",
+        "T-931"
+      ],
+      "branch": "task/T-949-auth-private-storage",
+      "lane": "identity",
+      "files_owned": [
+        "services/identity/migrations/0012_auth.up.sql",
+        "services/identity/migrations/0012_auth.manifest.json",
+        "tests/contracts/identity_auth_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-02.AC1",
+        "B-02.AC2",
+        "B-02.AC3",
+        "B-02.AC4"
+      ],
+      "scope": "Implement only the adopted Identity private auth state families, singleton/bootstrap guards and exact feature migration manifest. Preserve T-059 schema tests and append actual PostgreSQL migration, privilege, rollback and compatible-profile checks in the serially owned test leaf. No credential runtime, accepted release policy, unapproved recovery proof, baseline attestation or auth activation.",
       "worktree": null,
       "base_sha": null
     }

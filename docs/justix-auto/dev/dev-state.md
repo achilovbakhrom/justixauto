@@ -28,11 +28,11 @@
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-030 ready-for-qa (`.worktrees/T-030`, `task/T-030-documents-scaffold`); T-059 in-progress (`.worktrees/T-059`, `task/T-059-schema-2`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 blocked (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-932 ready-for-qa (`.worktrees/T-932`, `task/T-932-owner-migration-driver`); T-938 bounced (`.worktrees/T-938`, `task/T-938-auth-generator-semantics`).
-- Integrated tasks: 50/948; independent exact-commit QA required before each integration.
+- Integrated tasks: 50/949; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
 - Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. Pure membership identities (T-947) are integrated; T-945, T-946 and T-948 await their own dependencies. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
-- Formal PM task files: 948 (916 reviewed baseline + thirty-two bounded additions); see task-board.md, task-index.json and backlog-coverage.md
+- Formal PM task files: 949 (916 reviewed baseline + thirty-three bounded additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
 - Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
@@ -222,3 +222,10 @@ adds T-929–T-934 and exact T-059/060/022/580 prerequisites. Existing owner def
 remain legacy-only. Later owner roots retain OWNER-COMPATIBILITY until their
 explicit adapter/profile follow-ups are assigned and independently integrated.
 This is implementation architecture, not an executed migration or running API.
+
+### Auth schema task resliced before implementation — 2026-09-16
+
+[Coordinator reslice](../state/approvals/auth-schema-reslice.md) retains T-059
+wire/schema fixtures (3h) and assigns private SQL/manifest plus serial migration
+tests to T-949 (4h). T-060 and B-02 closure require T-949; T-641 can consume
+wire schemas independently. No release security setting or contract is changed.
