@@ -95,7 +95,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | integrated | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
 | [T-026](tasks/T-026.md) | B-01 | Scaffold commerce typed owner ports and migration ledger | implementation / 3 | commerce | integrated | T-009, T-017, T-018, T-010 | `task/T-026-commerce-scaffold` | ENV-GIT |
 | [T-027](tasks/T-027.md) | B-01 | Scaffold retail typed owner ports and migration ledger | implementation / 3 | retail | integrated | T-009, T-017, T-018, T-010 | `task/T-027-retail-scaffold` | ENV-GIT |
-| [T-028](tasks/T-028.md) | B-01 | Scaffold financing typed owner ports and migration ledger | implementation / 3 | financing | ready-for-qa | T-009, T-017, T-018, T-010 | `task/T-028-financing-scaffold` | ENV-GIT |
+| [T-028](tasks/T-028.md) | B-01 | Scaffold financing typed owner ports and migration ledger | implementation / 3 | financing | merged | T-009, T-017, T-018, T-010 | `task/T-028-financing-scaffold` | ENV-GIT |
 | [T-029](tasks/T-029.md) | B-01 | Scaffold insurance typed owner ports and migration ledger | implementation / 3 | insurance | ready-for-qa | T-009, T-017, T-018, T-010 | `task/T-029-insurance-scaffold` | ENV-GIT |
 | [T-030](tasks/T-030.md) | B-01 | Scaffold documents typed owner ports and migration ledger | implementation / 3 | documents | todo | T-009, T-017, T-018, T-010 | `task/T-030-documents-scaffold` | ENV-GIT |
 | [T-031](tasks/T-031.md) | B-01 | Enforce explicit authenticated internal callers and edge identity stripping | implementation / 3 | foundation | integrated | T-003 | `task/T-031-auth-transport` | ENV-GIT |
@@ -1013,7 +1013,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-929](tasks/T-929.md) | B-01 | Install immutable owner migration history | implementation / 4 | foundation | integrated | T-008, T-024 | `task/T-929-owner-migration-history` | ENV-GIT |
 | [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | integrated | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | integrated | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
-| [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | bounced | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
+| [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | ready-for-qa | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
 | [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
 | [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928, T-946 | `task/T-934-custody-persistence-profile` | ENV-GIT |
 
@@ -1024,7 +1024,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-935](tasks/T-935.md) | B-02 | Decode response JSON before feature validation | implementation / 4 | foundation | integrated | T-032 | `task/T-935-strict-response-json` | ENV-GIT |
 | [T-936](tasks/T-936.md) | B-02 | Validate auth response bodies and metadata before acceptance | implementation / 4 | foundation | integrated | T-935, T-058, T-032, T-640 | `task/T-936-validated-auth-transport` | ENV-GIT |
 | [T-937](tasks/T-937.md) | B-01 | Parse the closed auth generation profile without activation | implementation / 2 | foundation | integrated | T-936, T-640 | `task/T-937-auth-generator-profile` | ENV-GIT |
-| [T-938](tasks/T-938.md) | B-01 | Generate synchronous structural and semantic validation boundaries | implementation / 4 | foundation | in-progress | T-937 | `task/T-938-auth-generator-semantics` | ENV-GIT |
+| [T-938](tasks/T-938.md) | B-01 | Generate synchronous structural and semantic validation boundaries | implementation / 4 | foundation | ready-for-qa | T-937 | `task/T-938-auth-generator-semantics` | ENV-GIT |
 | [T-939](tasks/T-939.md) | B-01 | Generate the bound TypeScript auth transport interface | implementation / 4 | foundation | todo | T-938 | `task/T-939-auth-generator-typescript` | ENV-GIT |
 | [T-940](tasks/T-940.md) | B-01 | Generate the Go auth exchange and response validation interface | implementation / 4 | foundation | todo | T-939 | `task/T-940-auth-generator-go` | ENV-GIT |
 | [T-941](tasks/T-941.md) | B-01 | Bound generated Go raw response parsing | implementation / 3 | foundation | todo | T-940 | `task/T-941-auth-generator-raw-limits` | ENV-GIT |

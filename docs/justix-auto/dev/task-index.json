@@ -1428,7 +1428,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "merged",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1457,7 +1457,8 @@
       "base_sha": "6f30bbbf9144fc3d03a49fbac57bb9dd9a43afdc",
       "reviewed_sha": "0f4736a21db0d56fa17ca83934a43596a5352a35",
       "agent": "qa_t027",
-      "execution_note": "Independent exact-commit review now assigned at0f4736a21db0d56fa17ca83934a43596a5352a35 after a worker slot freed. Coordinator-authored Financing legacy mechanics; five leaves plus result, final live and scoped race/vet PASS. QA must verify exact owner separation, transactional behavior, custody refusal, privileged session refusal and recoverable evidence/fixture safety."
+      "execution_note": "Independent QA GREEN and merged main race/vet passed with the Financing live fixture. Six reviewed leaves and twenty-two QA artifacts are byte-exact; see qa/integration-t028.md.",
+      "integration_sha": "87a1d64b6cdbbffebdeb784680df0fff93d5a35f"
     },
     {
       "id": "T-029",
@@ -35693,7 +35694,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-929",
         "T-930",
@@ -35716,9 +35717,9 @@
       "scope": "Implement the actual migrate database.Driver on one owned pgx connection: bounded lock/preflight, exact pending dirty item, original complete SQL batch, and atomic artifact receipt plus clean head. Explicit fresh-v1 exception; poisoned unknown instances and retained dirty failure, no Force/Down/Drop or upstream private-field access.",
       "worktree": ".worktrees/T-932",
       "base_sha": "e4833a0b606377a5ecdd25f9743e6b9dc5a783fe",
-      "agent": "backend_t928",
-      "execution_note": "Independent candidate555480d passed QA and was merged6fecd0d, but main scoped race failed TestDriverBoundedLockAndPreflight at late acquisition retained lock (driver69.111s; contracts133.229s). Chained vet did not run. Task remains unfinished; preserve merge/evidence and investigate bounded fix cycle1 in original task worktree. See qa/integration-t932-attempt1.md. New exact-commit QA and main checks required; restricted parameter mutations remain prohibited pending authorization.",
-      "reviewed_sha": "555480d7b1c794fd5e9016545d459c975edd756f"
+      "agent": "qa_t932_fix",
+      "execution_note": "Implementation committed; independent exact-commit review assigned. Existing evidence and scoped authorization limits remain in force.",
+      "reviewed_sha": "95952e896e0ea7e47d1ac93b4f8c594594f11268"
     },
     {
       "id": "T-933",
@@ -35892,7 +35893,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-937"
       ],
@@ -35912,8 +35913,9 @@
       "scope": "Generate Go/TypeScript primitive outcomes, binding readiness, guarded per-occurrence and operation error validation. Complete structural oneOf selection precedes semantic hooks; faults cannot become branch mismatches. Execute isolated emitted-runtime probes; public auth CLI remains rejected.",
       "worktree": ".worktrees/T-938",
       "base_sha": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
-      "agent": "frontend_t936",
-      "execution_note": "T-937 integrated and main contract checks GREEN. Implement bounded Go/TypeScript semantic emission in isolated serial successor worktree; full structural oneOf selection before hooks and closed synchronous outcomes/readiness are required. Public CLI and renderer auth activation remain disabled through T-941. Only generator/test leaves plus result; no concrete auth schema, config, manifest, UI or release policy."
+      "agent": "qa_t027",
+      "execution_note": "Implementation committed; independent exact-commit review assigned. Existing evidence and scoped authorization limits remain in force.",
+      "reviewed_sha": "c45792e41fcbfa9a5316fb8b094e10821779a425"
     },
     {
       "id": "T-939",
