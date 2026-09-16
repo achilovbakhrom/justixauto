@@ -1466,7 +1466,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1493,9 +1493,9 @@
       "scope": "Own only insurance mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later insurance_wire task.",
       "worktree": ".worktrees/T-029",
       "base_sha": "6fecd0d59fba8b6f154b033279d7607560f7045e",
-      "reviewed_sha": null,
-      "agent": "coordinator",
-      "execution_note": "Coordinator begins isolated Insurance mechanics using the integrated Retail pattern and an explicit runtime session identity check. Five owned leaves only, independent QA required. Preserve seven-owner fixture isolation and exact legacy/custody distinction. No underwriting decision policy, policy issuance, coverage, premium, financial or delivery behavior; OD-08/10 remain scoped gates."
+      "reviewed_sha": "1b26785f46dcff6f2055fc1f31e2dc9ebeff95d2",
+      "agent": "qa_t027",
+      "execution_note": "Insurance scaffold candidate complete: five owner leaves plus result. Focused live race 17.016s; full scoped race Insurance 16.236s/contracts 140.272s and vet PASS. Five source/seven unchanged input hashes, four recoverable raw entries and seven additional exact fixture absence reads. Independent exact-commit review assigned; no self-approval or Insurance business policy/runtime claim."
     },
     {
       "id": "T-030",
