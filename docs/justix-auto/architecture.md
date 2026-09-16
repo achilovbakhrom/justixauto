@@ -383,3 +383,13 @@ disabled. Terminal generation deliberately bounds newly regenerated Go bodies,
 including non-auth/internal outputs; actual network IO is separately bounded.
 T-058 security meaning and T-002 acceptance gates remain unchanged. Client
 epochs do not undo browser cookies or replace owner revocation/authority.
+
+## Approved durable membership storage handoff — 2026-09-16
+
+The [technical adoption](state/approvals/membership-version-storage.md) adds four
+bounded catalog/selection/value/state tasks. Immutable owner catalogs differ
+from selected membership and per-stream evidence. Immediate SQL checks and head
+locks cover both mutation orders and early constraints; deferred checks alone
+are not commit hooks. Original SQL stays unchanged. No remote authority,
+retained-history adoption or readiness is inferred from identities. Actual
+configuration authorization, T-928 integration and full implementation QA remain.

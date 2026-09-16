@@ -1,7 +1,7 @@
 {
   "metadata": {
     "project": "justix-auto",
-    "date": "2026-09-15",
+    "date": "2026-09-16",
     "target_root": "/Users/bakhromachilov/startups/justixauto",
     "all_statuses": "mixed; see per-task status",
     "implementation_authorized": true,
@@ -10,8 +10,8 @@
     "coverage_semantics": "contributes-to; acceptance_N is the dedicated AC-closing integration verification task",
     "workers_max": 3,
     "browser_workers_max": 1,
-    "task_count": 944,
-    "effort_hours": 3138,
+    "task_count": 948,
+    "effort_hours": 3154,
     "longest_chain_ids": [
       "T-001",
       "T-003",
@@ -263,7 +263,7 @@
       "T-635"
     ],
     "weighted_critical_path_hours": 152,
-    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; twenty-eight bounded messaging/storage/owner-migration/auth additions do not claim a recomputed width or schedule.",
+    "graph_metrics_scope": "Original longest-chain/frontier/antichain metrics describe the reviewed 916-task baseline; thirty-two additions do not claim recomputed width or schedule.",
     "messaging_amendment": {
       "proposal_sha": "ba1723fdcbbfd9a0bbccdf6736e9346052d80fd7",
       "approval": "docs/justix-auto/state/approvals/messaging-delivery.md",
@@ -454,6 +454,36 @@
         "T-942"
       ],
       "root_export_serialization": "No generated/authValidation API manifest edit while T-944 owns that manifest; stage concrete export/config integration before exact dependent QA."
+    },
+    "membership_version_storage": {
+      "proposal_sha": "bb908b4425003cbf41375b46b07fb88d2a3be817",
+      "proposal_sha256": "c468216706f0b40e01dc5c5e2bf07060cac60cecd429eac54ec5616bc9886330",
+      "approval": "docs/justix-auto/state/approvals/membership-version-storage.md",
+      "aliases": {
+        "MS-CATALOG": "T-945",
+        "MS-SELECTION": "T-946",
+        "MS-IDENTITY": "T-947",
+        "MS-STATE": "T-948"
+      },
+      "added_existing_edges": {
+        "T-920": [
+          "T-948"
+        ],
+        "T-921": [
+          "T-948"
+        ],
+        "T-016": [
+          "T-948"
+        ],
+        "T-022": [
+          "T-946",
+          "T-948"
+        ],
+        "T-934": [
+          "T-946"
+        ]
+      },
+      "canonical_promotion_qa": "pending"
     }
   },
   "tasks": [
@@ -969,7 +999,8 @@
       "depends_on": [
         "T-014",
         "T-928",
-        "T-920"
+        "T-920",
+        "T-948"
       ],
       "branch": "task/T-016-projection-rebuild",
       "lane": "foundation",
@@ -1175,7 +1206,9 @@
         "T-925",
         "T-928",
         "T-933",
-        "T-934"
+        "T-934",
+        "T-946",
+        "T-948"
       ],
       "branch": "task/T-022-local-compose",
       "lane": "infra",
@@ -35260,7 +35293,8 @@
         "T-917",
         "T-009",
         "T-746",
-        "T-014"
+        "T-014",
+        "T-948"
       ],
       "branch": "task/T-920-messaging-local-membership",
       "lane": "foundation",
@@ -35293,7 +35327,8 @@
         "T-920",
         "T-013",
         "T-925",
-        "T-015"
+        "T-015",
+        "T-948"
       ],
       "branch": "task/T-921-messaging-durable-intake",
       "lane": "foundation",
@@ -35718,7 +35753,8 @@
         "T-922",
         "T-924",
         "T-925",
-        "T-928"
+        "T-928",
+        "T-946"
       ],
       "branch": "task/T-934-custody-persistence-profile",
       "lane": "foundation",
@@ -36039,6 +36075,121 @@
         "B-04.AC2"
       ],
       "scope": "Implement the non-React controller with serialized cookie-mutating exchanges, one-shot tickets, current-epoch atomic acceptance, conservative uncertainty and explicit reacquisition. Keep tokens and one-time secrets in current closures only. Export ./authEpoch only; no generated imports, automatic retry or cross-tab cookie guarantee.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-945",
+      "key": "membership_catalog_storage",
+      "title": "Install immutable owner-local membership catalogs",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-928"
+      ],
+      "branch": "task/T-945-membership-catalog-storage",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000007_membership_catalog.up.sql",
+        "pkg/eventstore/membership_catalog_migration_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Immutable complete catalog versions, consumer meanings, exact lineage/marker7 and narrow grants. No selected head or retained-history adoption is inferred.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-946",
+      "key": "membership_selection_storage",
+      "title": "Install membership selection and enrollment evidence",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-945"
+      ],
+      "branch": "task/T-946-membership-selection-storage",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/eventstore/migrations/000008_membership_selection.up.sql",
+        "pkg/eventstore/membership_selection_migration_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Immutable transition/stream/consumer snapshots, head CAS and append-only dispatch links. Immediate reverse head/link checks, retained head locks, server xid8 bookkeeping, snapshot closure and exact job-set sealing must survive constraint timing. Only two new custom old-table triggers (enrollment completeness and job INSERT sealing) plus declared FK attachments; no old definitions/columns/grants rewritten.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-947",
+      "key": "membership_catalog_identity",
+      "title": "Define canonical membership and selection identities",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-746",
+        "T-007"
+      ],
+      "branch": "task/T-947-membership-catalog-identity",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/inbox/membership_catalog.go",
+        "pkg/inbox/membership_catalog_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Exact membership-v1 canonical codec, immutable catalog/claim supplements and request/selection constructors. Distinguish complete catalog, owner selection, full finite universe and per-stream sets. Exact canonical bytes/digests and immutable meanings before binding; no SQL or authority inference.",
+      "worktree": null,
+      "base_sha": null
+    },
+    {
+      "id": "T-948",
+      "key": "membership_state_adapter",
+      "title": "Persist fenced membership selections and recovery evidence",
+      "parent": "B-01",
+      "kind": "implementation",
+      "effort_hours": 4,
+      "status": "todo",
+      "depends_on": [
+        "T-946",
+        "T-947",
+        "T-014"
+      ],
+      "branch": "task/T-948-membership-state-adapter",
+      "lane": "foundation",
+      "files_owned": [
+        "pkg/inbox/membership_state.go",
+        "pkg/inbox/membership_state_test.go"
+      ],
+      "gates": [
+        "ENV-GIT"
+      ],
+      "design_refs": [],
+      "coverage": [
+        "B-01.AC2"
+      ],
+      "scope": "Fenced storage/read/reconcile/candidate primitives, sealed CurrentSelection/ProspectiveSelection, complete enrollment/jobs and evidence links in the actual outer transaction. Head locks precede job/effect work. Historical request success differs from current readiness. No owner snapshot/network orchestration, nested Run/commit or broker ACK.",
       "worktree": null,
       "base_sha": null
     }

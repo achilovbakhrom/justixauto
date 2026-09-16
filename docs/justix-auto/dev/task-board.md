@@ -26,8 +26,8 @@ Date: 2026-09-16. Release scope and architecture approved; development authorize
 
 ## Graph metrics and lanes
 
-Current scope: 944 tasks after approved messaging/storage/owner migration amendments
-and ten auth transport tasks (3,138 total task-effort hours).
+Current scope: 948 tasks after approved messaging/storage/owner migration/auth
+and membership amendments (3,154 total task-effort hours).
 The metrics below describe the original reviewed 916-task baseline; no new
 antichain width or elapsed schedule is claimed. See the amendment rows and
 [approval](../state/approvals/messaging-delivery.md) for the bounded new scope.
@@ -83,13 +83,13 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | integrated | T-013, T-010, T-926 | `task/T-014-projection-sequence` | ENV-GIT |
 | [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013, T-927, T-922 | `task/T-015-quarantine` | ENV-GIT |
-| [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014, T-928, T-920 | `task/T-016-projection-rebuild` | ENV-GIT |
+| [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014, T-928, T-920, T-948 | `task/T-016-projection-rebuild` | ENV-GIT |
 | [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | integrated | T-009 | `task/T-017-receipts` | ENV-GIT |
 | [T-018](tasks/T-018.md) | B-01 | Implement durable operation decisions and recovery scheduling | implementation / 3 | foundation | integrated | T-017, T-011, T-013 | `task/T-018-process` | ENV-GIT |
 | [T-019](tasks/T-019.md) | B-01 | Implement fixed-precision money and policy-unresolved values | implementation / 3 | foundation | integrated | T-003 | `task/T-019-money` | ENV-GIT |
 | [T-020](tasks/T-020.md) | B-01 | Instrument safe correlation and stuck-operation signals | implementation / 3 | foundation | todo | T-018, T-015 | `task/T-020-telemetry` | ENV-GIT |
 | [T-021](tasks/T-021.md) | B-01 | Exercise messaging crash boundaries with synthetic fixtures | implementation / 4 | verification | todo | T-012, T-016, T-015, T-018, T-923 | `task/T-021-recovery-harness` | ENV-GIT |
-| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924, T-925, T-928, T-933, T-934 | `task/T-022-local-compose` | ENV-GIT |
+| [T-022](tasks/T-022.md) | B-01 | Assemble local owner services and migration readiness | implementation / 4 | infra | todo | T-005, T-006, T-008, T-917, T-924, T-925, T-928, T-933, T-934, T-946, T-948 | `task/T-022-local-compose` | ENV-GIT |
 | [T-023](tasks/T-023.md) | B-01 | Add provider-neutral verification and synthetic reset runbooks | implementation / 3 | verification | todo | T-021, T-020, T-004 | `task/T-023-verify-tools` | ENV-GIT |
 | [T-024](tasks/T-024.md) | B-01 | Scaffold identity typed owner ports and migration ledger | implementation / 3 | identity | integrated | T-009, T-017, T-018, T-010 | `task/T-024-identity-scaffold` | ENV-GIT |
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | integrated | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
@@ -996,8 +996,8 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-917](tasks/T-917.md) | B-01 | Add immutable delivery and dispatch schema with retained legacy migration | implementation / 4 | foundation | integrated | T-008 | `task/T-917-messaging-delivery-schema` | ENV-GIT |
 | [T-918](tasks/T-918.md) | B-01 | Resolve authorized source stream recipient plans in the owner transaction | implementation / 3 | foundation | integrated | T-917, T-009 | `task/T-918-messaging-source-admission` | ENV-GIT |
 | [T-919](tasks/T-919.md) | B-01 | Persist one immutable message with its complete recipient delivery set | implementation / 3 | foundation | integrated | T-918, T-011, T-925 | `task/T-919-messaging-outbox-plan` | ENV-GIT |
-| [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | blocked | T-917, T-009, T-746, T-014 | `task/T-920-messaging-local-membership` | ENV-GIT |
-| [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013, T-925, T-015 | `task/T-921-messaging-durable-intake` | ENV-GIT |
+| [T-920](tasks/T-920.md) | B-01 | Admit complete local consumer membership and bootstrap cutovers | implementation / 3 | foundation | blocked | T-917, T-009, T-746, T-014, T-948 | `task/T-920-messaging-local-membership` | ENV-GIT |
+| [T-921](tasks/T-921.md) | B-01 | Accept durable owner custody and stage every admitted consumer job | implementation / 3 | foundation | todo | T-920, T-013, T-925, T-015, T-948 | `task/T-921-messaging-durable-intake` | ENV-GIT |
 | [T-922](tasks/T-922.md) | B-01 | Expose transaction-bound inbox effects for atomic dispatch completion | implementation / 3 | foundation | integrated | T-013 | `task/T-922-messaging-transactional-inbox` | ENV-GIT |
 | [T-923](tasks/T-923.md) | B-01 | Run independently fenced logical consumer jobs with atomic completion | implementation / 4 | foundation | todo | T-921, T-922, T-014, T-015 | `task/T-923-messaging-consumer-dispatch` | ENV-GIT |
 | [T-924](tasks/T-924.md) | B-01 | Restrict activated broker routes and separate relay and intake principals | implementation / 3 | foundation | integrated | T-006, T-001, T-925 | `task/T-924-messaging-broker-roles` | ENV-GIT |
@@ -1015,7 +1015,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | in-progress | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | todo | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
 | [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
-| [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928 | `task/T-934-custody-persistence-profile` | ENV-GIT |
+| [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928, T-946 | `task/T-934-custody-persistence-profile` | ENV-GIT |
 
 ## Approved auth transport compatibility tasks — 2026-09-15
 
@@ -1031,3 +1031,12 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-942](tasks/T-942.md) | B-01 | Verify and activate the complete auth generation profile | implementation / 3 | foundation | todo | T-941 | `task/T-942-auth-generator-activation` | ENV-GIT |
 | [T-943](tasks/T-943.md) | B-02 | Bind concrete authentication semantics in Go and TypeScript | implementation / 4 | foundation | todo | T-641, T-058 | `task/T-943-auth-semantic-binders` | ENV-GIT |
 | [T-944](tasks/T-944.md) | B-04 | Fence in-memory auth acceptance by current request and session epoch | implementation / 4 | foundation | todo | T-936, T-058 | `task/T-944-auth-session-epochs` | ENV-GIT |
+
+## Approved membership version storage tasks — 2026-09-16
+
+| ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
+|---|---|---|---|---|---|---|---|---|
+| [T-945](tasks/T-945.md) | B-01 | Install immutable owner-local membership catalogs | implementation / 4 | foundation | todo | T-928 | `task/T-945-membership-catalog-storage` | ENV-GIT |
+| [T-946](tasks/T-946.md) | B-01 | Install membership selection and enrollment evidence | implementation / 4 | foundation | todo | T-945 | `task/T-946-membership-selection-storage` | ENV-GIT |
+| [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | todo | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
+| [T-948](tasks/T-948.md) | B-01 | Persist fenced membership selections and recovery evidence | implementation / 4 | foundation | todo | T-946, T-947, T-014 | `task/T-948-membership-state-adapter` | ENV-GIT |

@@ -28,11 +28,11 @@
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 blocked (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-931 in-progress (`.worktrees/T-931`, `task/T-931-identity-compatible-uow`); T-937 in-progress (`.worktrees/T-937`, `task/T-937-auth-generator-profile`).
-- Integrated tasks: 44/944; independent exact-commit QA required before each integration.
+- Integrated tasks: 44/948; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
-- Additional architecture: [durable membership version storage](membership-version-assignment.md) final fix2 proposal bb908b4 is in independent r3 review; both earlier BOUNCE rounds retained. T-920 remains blocked and no new migration or task dependency is approved yet.
+- Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal GREEN adopted as T-945–T-948; canonical promotion QA pending before assignment. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
-- Formal PM task files: 944 (916 reviewed baseline + twenty-eight bounded messaging/storage/owner-migration/auth additions); see task-board.md, task-index.json and backlog-coverage.md
+- Formal PM task files: 948 (916 reviewed baseline + thirty-two bounded additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
 - Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
@@ -64,7 +64,7 @@ are integrated. Generator checks use the approved Node toolchain and installed
 TypeScript; the checked-in config stays empty until concrete owner schemas are
 approved and registered. Sealed owner persistence profiles/read-only checks and
 the strict raw response JSON decoder are now independently integrated. Auth
-Fetch metadata/429 composition is T-936; the generation-label correction remains
+Fetch metadata/429 composition is integrated as T-936; the generation-label correction remains
 inside T-928's reviewed storage fix cycle. Compatible UOW binding and the actual
 migration driver/runner, concrete baseline manifests/default provisioning and
 custody profile support remain separate tasks with their explicit prerequisites.

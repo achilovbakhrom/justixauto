@@ -123,3 +123,12 @@ owned. Preserve all 25 earlier review artifacts; review the complete final
 contract and its declared catalog/dependency deltas. A further BOUNCE ends
 automatic fixes and requires bounded scope/root-cause review. No task IDs or
 canonical implementation contract are approved by this assignment.
+
+## Technical adoption — 2026-09-16
+
+Exact proposal `bb908b4425003cbf41375b46b07fb88d2a3be817` passed independent r3 proposal-feasibility review.
+[Approval](../state/approvals/membership-version-storage.md) maps four aliases to
+T-945–T-948 and adds six reviewed downstream edges. Canonical promotion QA is
+pending before assignment. T-928 configuration-test permission/independent
+integration and actual runtime startup are still gated. All earlier evidence is
+retained; proposal GREEN does not authorize restricted configuration mutations.
