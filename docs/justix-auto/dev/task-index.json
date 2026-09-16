@@ -36061,7 +36061,7 @@
       "parent": "B-04",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-936",
         "T-058"
@@ -36083,8 +36083,9 @@
       "scope": "Implement the non-React controller with serialized cookie-mutating exchanges, one-shot tickets, current-epoch atomic acceptance, conservative uncertainty and explicit reacquisition. Keep tokens and one-time secrets in current closures only. Export ./authEpoch only; no generated imports, automatic retry or cross-tab cookie guarantee.",
       "worktree": ".worktrees/T-944",
       "base_sha": "b2dd2bf",
-      "agent": "coordinator",
-      "execution_note": "Coordinator implements the approved pure controller in its isolated worktree while three independent workers continue. T-936 and T-058 are integrated; exact application ownership is authEpoch.ts, authEpoch.test.ts and the sole ./authEpoch API export. Independent exact-commit QA remains mandatory. No React, generated auth bindings, release-policy defaults or cross-tab guarantee is implied."
+      "agent": "qa_auth_transport",
+      "execution_note": "Coordinator implementation complete in isolated branch: pure memory-only epoch controller, forty new behavioral tests and only ./authEpoch export. Full workspace 443 tests, typecheck and lint PASS; nineteen exact command logs recoverable in result, including early failed fixture/syntax runs. Independent exact-commit QA assigned; no self-approval, React or owner cookie guarantee.",
+      "reviewed_sha": "26e2ef72ce270d0af6954caf24e2a49e18162532"
     },
     {
       "id": "T-945",
