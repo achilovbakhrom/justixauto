@@ -483,7 +483,7 @@
           "T-946"
         ]
       },
-      "canonical_promotion_qa": "pending"
+      "canonical_promotion_qa": "GREEN at b50490b48c5f31a542b0305827c1e345c2214cf6; docs/justix-auto/dev/qa/membership-promotion.md"
     }
   },
   "tasks": [

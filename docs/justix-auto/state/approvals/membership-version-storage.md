@@ -41,3 +41,11 @@ except the six dependency additions, coverage/closure, disjoint ownership,
 acyclic graph, local links and recoverable preimages before assignment.
 Snapshots: `../backups/2026-09-16-membership-promotion/`. All40earlier membership QA artifacts remain
 unchanged. T-920 remains blocked until its implementation prerequisites integrate.
+
+## Canonical promotion gate — GREEN
+
+[Independent audit](../../dev/qa/membership-promotion.md) passed the exact
+`b50490b48c5f31a542b0305827c1e345c2214cf6` promotion. All documented mapping,
+ownership, graph, coverage/closure, exact-copy and preimage checks passed.
+The bounded tasks may now be assigned when their dependencies permit. This
+does not clear T-928's configuration-test permission or any implementation gate.

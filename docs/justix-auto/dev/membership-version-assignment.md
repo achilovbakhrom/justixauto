@@ -139,3 +139,11 @@ Canonical promotion reviewer qa_membership_storage is assigned the exact
 `dev/qa/membership-promotion.md` and its evidence directory. This is a document,
 identity, graph, ownership and recoverable-preimage audit; no runtime or Docker
 configuration test is assigned. T-945–T-948 cannot start before this gate is GREEN.
+
+The [canonical promotion audit](qa/membership-promotion.md) is GREEN at exact
+`b50490b48c5f31a542b0305827c1e345c2214cf6`: exact contract, 12 recoverable
+preimages, 944 preserved predecessor records except six edges, 948-node DAG,
+eight disjoint new leaves, 1,024 local links and all 40 prior QA artifacts checked.
+This clears the documentation gate only. Individual dependencies still govern;
+T-947 pure identities can proceed, while T-945 awaits T-928 integration.
+The pending configuration-test authorization and runtime startup gates remain.

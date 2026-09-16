@@ -1,0 +1,5365 @@
+{
+  "outcome": "GREEN",
+  "reviewed_sha": "b50490b48c5f31a542b0305827c1e345c2214cf6",
+  "parent_sha": "9df6d1fb7aaef10368d8db8177351dc000e404eb",
+  "proposal_sha": "bb908b4425003cbf41375b46b07fb88d2a3be817",
+  "canonical_sha256": "c468216706f0b40e01dc5c5e2bf07060cac60cecd429eac54ec5616bc9886330",
+  "checks": 12996,
+  "promotion_paths": {
+    "docs/justix-auto/architecture.md": "M",
+    "docs/justix-auto/dev/backlog-coverage.md": "M",
+    "docs/justix-auto/dev/dev-state.md": "M",
+    "docs/justix-auto/dev/membership-version-assignment.md": "M",
+    "docs/justix-auto/dev/task-board.md": "M",
+    "docs/justix-auto/dev/task-index.json": "M",
+    "docs/justix-auto/dev/tasks/T-016.md": "M",
+    "docs/justix-auto/dev/tasks/T-022.md": "M",
+    "docs/justix-auto/dev/tasks/T-591.md": "M",
+    "docs/justix-auto/dev/tasks/T-920.md": "M",
+    "docs/justix-auto/dev/tasks/T-921.md": "M",
+    "docs/justix-auto/dev/tasks/T-934.md": "M",
+    "docs/justix-auto/dev/tasks/T-945.md": "A",
+    "docs/justix-auto/dev/tasks/T-946.md": "A",
+    "docs/justix-auto/dev/tasks/T-947.md": "A",
+    "docs/justix-auto/dev/tasks/T-948.md": "A",
+    "docs/justix-auto/state/approvals/membership-version-storage.md": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/architecture.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/backlog-coverage.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/dev-state.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/membership-version-assignment.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/task-board.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/task-index.json.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/tasks/T-016.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/tasks/T-022.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/tasks/T-591.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/tasks/T-920.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/tasks/T-921.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/docs/justix-auto/dev/tasks/T-934.md.gz": "A",
+    "docs/justix-auto/state/backups/2026-09-16-membership-promotion/manifest.json": "A",
+    "docs/justix-auto/state/drafts/contracts/membership-version-storage.md": "A"
+  },
+  "task_count": 948,
+  "effort_hours": 3154,
+  "integrated": 44,
+  "old_records_preserved_except_edges": 944,
+  "aliases": {
+    "MS-CATALOG": "T-945",
+    "MS-SELECTION": "T-946",
+    "MS-IDENTITY": "T-947",
+    "MS-STATE": "T-948"
+  },
+  "new_leaves": [
+    "pkg/eventstore/migrations/000007_membership_catalog.up.sql",
+    "pkg/eventstore/membership_catalog_migration_test.go",
+    "pkg/eventstore/migrations/000008_membership_selection.up.sql",
+    "pkg/eventstore/membership_selection_migration_test.go",
+    "pkg/inbox/membership_catalog.go",
+    "pkg/inbox/membership_catalog_test.go",
+    "pkg/inbox/membership_state.go",
+    "pkg/inbox/membership_state_test.go"
+  ],
+  "added_existing_edges": {
+    "T-920": [
+      "T-948"
+    ],
+    "T-921": [
+      "T-948"
+    ],
+    "T-016": [
+      "T-948"
+    ],
+    "T-022": [
+      "T-946",
+      "T-948"
+    ],
+    "T-934": [
+      "T-946"
+    ]
+  },
+  "closure": {
+    "T-591": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-580": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-581": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-582": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-583": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-584": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-585": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ],
+    "T-586": [
+      "T-945",
+      "T-946",
+      "T-947",
+      "T-948"
+    ]
+  },
+  "metadata_changes": [
+    "date",
+    "effort_hours",
+    "graph_metrics_scope",
+    "membership_version_storage",
+    "task_count"
+  ],
+  "preimages": [
+    {
+      "path": "docs/justix-auto/dev/task-index.json",
+      "bytes": 1480610,
+      "sha256": "3a1a943b8afc90903bbcf1e427f789b6b5a176648fa71a8a2297b7bf230b2be9"
+    },
+    {
+      "path": "docs/justix-auto/dev/task-board.md",
+      "bytes": 217601,
+      "sha256": "abb48808fb0536150b02a14c33e8dca4d86705db742ccd002209c68d055705d5"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-920.md",
+      "bytes": 3849,
+      "sha256": "c5e81883066674de329795f69a5d5c63eaf636b1433440fc590aa6655b1fd424"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-921.md",
+      "bytes": 4271,
+      "sha256": "83c7a1d18a554f910efb8f1c0499a0cf6c87fafb5924b1bd0226a0466984da21"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-016.md",
+      "bytes": 7973,
+      "sha256": "a60e175d4adcdd0dbc3fbf811b450e210524a19fcc993a87e411bdc354aa6209"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-022.md",
+      "bytes": 9602,
+      "sha256": "326791fb8ab0e111b93bf6600bcd0458cb7228cb759b37594bdeff8f91786745"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-934.md",
+      "bytes": 4186,
+      "sha256": "c803dc5c9725f8bc0cb58de2eb5440f488908faa8f733c386cf9941d58a0961c"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-591.md",
+      "bytes": 7596,
+      "sha256": "cdabd458fa4f8400ca4e43c537235af0befe7add3453c25cbe34599dad63ab7d"
+    },
+    {
+      "path": "docs/justix-auto/dev/backlog-coverage.md",
+      "bytes": 41311,
+      "sha256": "d12cf6dc2c216711fb522b48932d77201a5831b8714c63e175a698714506b113"
+    },
+    {
+      "path": "docs/justix-auto/dev/dev-state.md",
+      "bytes": 12949,
+      "sha256": "8a1df68dc6e425a71b5df3add7c6a02e7e5a1e5b1374d2a2b7e3d949d59df3b2"
+    },
+    {
+      "path": "docs/justix-auto/dev/membership-version-assignment.md",
+      "bytes": 7879,
+      "sha256": "44967b1235e9b6892b0078c33eb00eff8c181df8f5a2d2c4edfc089905be2e59"
+    },
+    {
+      "path": "docs/justix-auto/architecture.md",
+      "bytes": 47158,
+      "sha256": "fd1af930586b2f8dbc793837870e82d98e755e1571535915fc5c498986cfe2f9"
+    }
+  ],
+  "local_link_count": 1024,
+  "links": [
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "contracts/http-domain.md",
+      "resolved": "docs/justix-auto/contracts/http-domain.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "contracts/cross-owner.md",
+      "resolved": "docs/justix-auto/contracts/cross-owner.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "reference/gaze-executor-cc-reference.md",
+      "resolved": "docs/justix-auto/reference/gaze-executor-cc-reference.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/approvals/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/approvals/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/drafts/contracts/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "contracts/http-domain.md",
+      "resolved": "docs/justix-auto/contracts/http-domain.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "contracts/cross-owner.md",
+      "resolved": "docs/justix-auto/contracts/cross-owner.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/approvals/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/approvals/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/approvals/owner-migration-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/approvals/auth-transport-compatibility.md",
+      "resolved": "docs/justix-auto/state/approvals/auth-transport-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/architecture.md",
+      "target": "state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "auth-transport-assignment.md",
+      "resolved": "docs/justix-auto/dev/auth-transport-assignment.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "membership-version-assignment.md",
+      "resolved": "docs/justix-auto/dev/membership-version-assignment.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "../state/drafts/contracts/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "../state/approvals/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "../state/approvals/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "../state/drafts/contracts/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "../state/approvals/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/dev-state.md",
+      "target": "../state/approvals/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/approvals/owner-migration-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/membership-version-assignment.md",
+      "target": "membership-version-readiness.md",
+      "resolved": "docs/justix-auto/dev/membership-version-readiness.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/membership-version-assignment.md",
+      "target": "qa/membership-version-storage.md",
+      "resolved": "docs/justix-auto/dev/qa/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/membership-version-assignment.md",
+      "target": "qa/membership-version-storage-r2.md",
+      "resolved": "docs/justix-auto/dev/qa/membership-version-storage-r2.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/membership-version-assignment.md",
+      "target": "../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "../state/approvals/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-001.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-001.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-002.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-002.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-003.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-003.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-004.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-004.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-005.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-005.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-006.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-006.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-007.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-007.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-008.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-008.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-009.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-009.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-010.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-010.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-011.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-011.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-012.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-012.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-013.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-013.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-014.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-014.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-015.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-015.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-016.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-016.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-017.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-017.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-018.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-018.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-019.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-019.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-020.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-020.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-021.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-021.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-022.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-022.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-023.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-023.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-024.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-024.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-025.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-025.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-026.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-026.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-027.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-027.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-028.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-028.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-029.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-029.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-030.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-030.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-031.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-031.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-032.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-032.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-033.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-033.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-034.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-034.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-035.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-035.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-036.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-036.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-037.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-037.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-038.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-038.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-039.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-039.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-040.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-040.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-041.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-041.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-042.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-042.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-043.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-043.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-044.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-044.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-045.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-045.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-046.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-046.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-047.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-047.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-048.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-048.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-049.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-049.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-050.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-050.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-051.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-051.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-052.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-052.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-053.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-053.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-054.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-054.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-055.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-055.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-056.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-056.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-057.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-057.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-640.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-640.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-058.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-058.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-059.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-059.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-060.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-060.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-061.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-061.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-062.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-062.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-063.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-063.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-064.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-064.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-065.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-065.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-066.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-066.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-067.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-067.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-068.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-068.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-069.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-069.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-070.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-070.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-071.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-071.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-072.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-072.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-073.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-073.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-074.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-074.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-075.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-075.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-076.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-076.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-077.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-077.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-078.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-078.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-079.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-079.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-080.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-080.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-081.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-081.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-082.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-082.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-083.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-083.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-084.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-084.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-085.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-085.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-086.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-086.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-087.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-087.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-088.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-088.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-089.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-089.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-090.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-090.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-091.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-091.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-092.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-092.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-093.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-093.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-094.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-094.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-095.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-095.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-096.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-096.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-097.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-097.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-098.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-098.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-099.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-099.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-100.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-100.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-101.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-101.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-102.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-102.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-103.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-103.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-104.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-104.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-105.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-105.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-106.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-106.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-107.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-107.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-108.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-108.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-109.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-109.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-110.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-110.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-111.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-111.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-112.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-112.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-113.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-113.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-114.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-114.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-115.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-115.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-116.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-116.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-117.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-117.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-118.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-118.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-119.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-119.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-120.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-120.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-121.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-121.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-122.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-122.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-123.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-123.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-124.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-124.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-125.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-125.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-126.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-126.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-127.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-127.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-128.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-128.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-129.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-129.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-130.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-130.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-131.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-131.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-132.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-132.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-133.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-133.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-134.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-134.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-135.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-135.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-136.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-136.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-137.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-137.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-138.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-138.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-139.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-139.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-140.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-140.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-141.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-141.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-142.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-142.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-143.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-143.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-144.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-144.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-145.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-145.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-146.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-146.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-147.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-147.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-148.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-148.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-149.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-149.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-150.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-150.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-151.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-151.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-152.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-152.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-153.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-153.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-154.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-154.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-155.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-155.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-156.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-156.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-157.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-157.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-158.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-158.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-159.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-159.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-160.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-160.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-161.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-161.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-162.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-162.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-163.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-163.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-164.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-164.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-165.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-165.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-166.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-166.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-167.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-167.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-168.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-168.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-169.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-169.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-170.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-170.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-171.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-171.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-172.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-172.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-173.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-173.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-174.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-174.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-175.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-175.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-176.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-176.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-177.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-177.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-178.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-178.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-179.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-179.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-180.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-180.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-181.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-181.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-182.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-182.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-183.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-183.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-184.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-184.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-185.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-185.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-186.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-186.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-187.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-187.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-188.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-188.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-189.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-189.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-190.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-190.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-191.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-191.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-192.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-192.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-193.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-193.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-194.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-194.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-195.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-195.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-196.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-196.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-197.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-197.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-198.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-198.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-199.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-199.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-200.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-200.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-201.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-201.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-202.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-202.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-203.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-203.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-204.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-204.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-205.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-205.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-206.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-206.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-207.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-207.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-208.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-208.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-209.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-209.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-210.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-210.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-211.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-211.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-212.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-212.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-213.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-213.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-214.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-214.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-215.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-215.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-216.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-216.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-217.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-217.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-218.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-218.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-219.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-219.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-220.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-220.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-221.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-221.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-222.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-222.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-223.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-223.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-224.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-224.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-225.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-225.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-226.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-226.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-227.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-227.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-228.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-228.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-229.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-229.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-230.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-230.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-231.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-231.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-232.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-232.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-233.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-233.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-234.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-234.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-235.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-235.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-236.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-236.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-237.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-237.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-238.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-238.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-239.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-239.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-240.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-240.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-241.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-241.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-242.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-242.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-243.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-243.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-244.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-244.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-245.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-245.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-246.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-246.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-247.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-247.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-248.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-248.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-249.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-249.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-250.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-250.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-251.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-251.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-252.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-252.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-253.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-253.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-254.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-254.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-255.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-255.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-256.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-256.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-257.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-257.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-258.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-258.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-259.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-259.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-260.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-260.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-261.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-261.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-262.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-262.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-263.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-263.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-264.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-264.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-265.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-265.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-266.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-266.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-267.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-267.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-268.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-268.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-269.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-269.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-270.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-270.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-271.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-271.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-272.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-272.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-273.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-273.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-274.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-274.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-641.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-641.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-642.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-642.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-643.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-643.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-644.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-644.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-645.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-645.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-646.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-646.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-647.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-647.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-648.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-648.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-649.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-649.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-650.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-650.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-651.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-651.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-652.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-652.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-653.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-653.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-654.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-654.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-655.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-655.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-656.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-656.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-657.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-657.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-658.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-658.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-659.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-659.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-660.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-660.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-661.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-661.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-662.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-662.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-663.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-663.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-664.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-664.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-665.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-665.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-666.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-666.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-667.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-667.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-668.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-668.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-669.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-669.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-670.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-670.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-671.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-671.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-672.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-672.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-673.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-673.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-674.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-674.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-675.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-675.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-676.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-676.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-677.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-677.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-678.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-678.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-679.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-679.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-680.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-680.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-681.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-681.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-682.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-682.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-683.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-683.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-684.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-684.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-685.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-685.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-686.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-686.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-687.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-687.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-688.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-688.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-689.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-689.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-690.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-690.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-691.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-691.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-692.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-692.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-693.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-693.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-694.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-694.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-695.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-695.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-696.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-696.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-697.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-697.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-698.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-698.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-275.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-275.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-276.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-276.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-277.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-277.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-278.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-278.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-279.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-279.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-280.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-280.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-281.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-281.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-282.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-282.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-283.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-283.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-284.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-284.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-285.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-285.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-286.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-286.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-287.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-287.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-288.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-288.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-289.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-289.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-290.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-290.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-291.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-291.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-292.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-292.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-293.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-293.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-294.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-294.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-295.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-295.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-296.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-296.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-297.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-297.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-298.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-298.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-299.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-299.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-300.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-300.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-301.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-301.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-302.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-302.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-303.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-303.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-304.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-304.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-305.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-305.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-306.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-306.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-307.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-307.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-308.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-308.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-309.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-309.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-310.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-310.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-311.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-311.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-312.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-312.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-313.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-313.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-314.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-314.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-315.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-315.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-316.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-316.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-317.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-317.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-318.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-318.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-319.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-319.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-320.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-320.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-321.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-321.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-322.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-322.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-323.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-323.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-324.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-324.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-325.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-325.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-326.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-326.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-327.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-327.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-328.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-328.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-329.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-329.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-330.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-330.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-331.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-331.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-332.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-332.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-333.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-333.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-334.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-334.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-335.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-335.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-336.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-336.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-337.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-337.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-338.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-338.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-339.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-339.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-340.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-340.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-341.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-341.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-342.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-342.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-343.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-343.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-344.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-344.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-345.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-345.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-346.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-346.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-347.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-347.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-348.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-348.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-349.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-349.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-350.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-350.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-351.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-351.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-352.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-352.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-353.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-353.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-354.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-354.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-355.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-355.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-356.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-356.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-357.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-357.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-358.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-358.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-359.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-359.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-360.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-360.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-361.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-361.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-362.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-362.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-363.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-363.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-699.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-699.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-700.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-700.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-364.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-364.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-701.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-701.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-365.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-365.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-366.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-366.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-702.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-702.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-703.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-703.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-367.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-367.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-704.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-704.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-368.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-368.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-369.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-369.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-705.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-705.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-706.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-706.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-370.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-370.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-707.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-707.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-371.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-371.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-372.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-372.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-708.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-708.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-709.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-709.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-373.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-373.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-710.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-710.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-374.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-374.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-375.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-375.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-376.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-376.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-377.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-377.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-378.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-378.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-379.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-379.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-380.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-380.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-381.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-381.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-382.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-382.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-383.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-383.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-384.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-384.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-385.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-385.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-386.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-386.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-387.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-387.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-388.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-388.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-389.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-389.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-390.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-390.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-391.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-391.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-392.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-392.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-393.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-393.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-394.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-394.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-395.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-395.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-396.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-396.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-397.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-397.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-398.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-398.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-399.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-399.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-400.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-400.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-401.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-401.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-402.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-402.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-403.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-403.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-404.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-404.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-405.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-405.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-406.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-406.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-407.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-407.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-408.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-408.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-409.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-409.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-410.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-410.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-411.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-411.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-412.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-412.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-413.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-413.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-414.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-414.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-415.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-415.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-416.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-416.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-417.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-417.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-418.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-418.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-419.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-419.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-420.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-420.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-421.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-421.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-422.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-422.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-423.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-423.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-424.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-424.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-425.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-425.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-426.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-426.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-427.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-427.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-428.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-428.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-429.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-429.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-430.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-430.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-431.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-431.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-432.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-432.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-433.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-433.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-434.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-434.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-435.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-435.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-436.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-436.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-437.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-437.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-438.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-438.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-439.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-439.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-440.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-440.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-441.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-441.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-442.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-442.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-443.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-443.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-444.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-444.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-445.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-445.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-446.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-446.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-447.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-447.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-448.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-448.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-449.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-449.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-450.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-450.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-451.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-451.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-452.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-452.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-453.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-453.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-454.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-454.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-455.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-455.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-456.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-456.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-457.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-457.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-458.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-458.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-459.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-459.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-460.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-460.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-461.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-461.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-462.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-462.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-463.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-463.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-464.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-464.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-465.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-465.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-466.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-466.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-467.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-467.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-468.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-468.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-469.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-469.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-470.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-470.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-471.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-471.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-472.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-472.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-473.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-473.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-474.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-474.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-475.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-475.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-476.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-476.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-477.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-477.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-478.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-478.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-479.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-479.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-480.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-480.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-481.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-481.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-482.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-482.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-483.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-483.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-484.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-484.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-485.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-485.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-486.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-486.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-487.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-487.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-488.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-488.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-489.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-489.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-490.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-490.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-491.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-491.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-492.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-492.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-493.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-493.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-494.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-494.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-495.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-495.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-496.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-496.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-497.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-497.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-498.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-498.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-499.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-499.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-500.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-500.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-501.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-501.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-502.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-502.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-503.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-503.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-504.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-504.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-505.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-505.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-506.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-506.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-507.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-507.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-508.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-508.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-509.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-509.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-510.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-510.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-511.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-511.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-512.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-512.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-513.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-513.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-514.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-514.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-515.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-515.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-516.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-516.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-517.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-517.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-518.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-518.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-519.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-519.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-520.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-520.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-711.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-711.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-521.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-521.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-522.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-522.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-523.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-523.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-524.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-524.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-525.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-525.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-526.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-526.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-527.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-527.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-528.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-528.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-529.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-529.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-530.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-530.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-531.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-531.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-532.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-532.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-533.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-533.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-534.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-534.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-535.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-535.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-536.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-536.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-537.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-537.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-538.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-538.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-539.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-539.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-540.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-540.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-541.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-541.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-542.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-542.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-543.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-543.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-544.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-544.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-545.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-545.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-546.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-546.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-547.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-547.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-548.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-548.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-549.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-549.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-550.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-550.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-551.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-551.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-552.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-552.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-553.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-553.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-554.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-554.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-555.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-555.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-556.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-556.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-557.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-557.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-558.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-558.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-559.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-559.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-560.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-560.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-561.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-561.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-562.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-562.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-563.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-563.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-564.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-564.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-565.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-565.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-566.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-566.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-567.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-567.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-568.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-568.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-569.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-569.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-570.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-570.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-571.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-571.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-572.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-572.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-573.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-573.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-574.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-574.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-575.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-575.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-576.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-576.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-577.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-577.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-578.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-578.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-579.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-579.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-712.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-712.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-713.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-713.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-714.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-714.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-715.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-715.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-716.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-716.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-717.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-717.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-718.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-718.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-719.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-719.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-720.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-720.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-721.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-721.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-722.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-722.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-723.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-723.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-724.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-724.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-725.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-725.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-726.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-726.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-727.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-727.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-728.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-728.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-729.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-729.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-730.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-730.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-731.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-731.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-732.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-732.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-733.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-733.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-734.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-734.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-735.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-735.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-736.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-736.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-737.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-737.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-738.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-738.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-739.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-739.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-740.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-740.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-741.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-741.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-742.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-742.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-743.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-743.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-744.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-744.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-745.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-745.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-746.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-746.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-747.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-747.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-748.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-748.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-749.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-749.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-750.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-750.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-751.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-751.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-752.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-752.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-753.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-753.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-754.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-754.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-755.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-755.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-756.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-756.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-757.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-757.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-758.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-758.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-759.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-759.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-760.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-760.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-761.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-761.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-762.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-762.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-763.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-763.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-764.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-764.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-765.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-765.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-766.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-766.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-767.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-767.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-768.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-768.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-769.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-769.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-770.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-770.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-771.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-771.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-772.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-772.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-773.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-773.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-774.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-774.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-775.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-775.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-776.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-776.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-777.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-777.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-778.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-778.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-779.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-779.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-780.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-780.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-781.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-781.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-782.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-782.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-783.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-783.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-784.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-784.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-785.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-785.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-786.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-786.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-787.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-787.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-788.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-788.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-789.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-789.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-790.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-790.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-791.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-791.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-792.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-792.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-793.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-793.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-794.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-794.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-795.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-795.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-796.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-796.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-797.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-797.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-798.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-798.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-799.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-799.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-800.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-800.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-801.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-801.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-802.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-802.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-803.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-803.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-804.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-804.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-805.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-805.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-806.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-806.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-807.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-807.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-808.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-808.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-809.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-809.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-810.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-810.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-811.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-811.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-812.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-812.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-813.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-813.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-814.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-814.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-815.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-815.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-816.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-816.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-817.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-817.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-818.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-818.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-819.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-819.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-820.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-820.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-821.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-821.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-822.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-822.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-823.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-823.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-824.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-824.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-825.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-825.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-826.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-826.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-827.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-827.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-828.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-828.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-829.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-829.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-830.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-830.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-831.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-831.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-832.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-832.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-833.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-833.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-834.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-834.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-835.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-835.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-836.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-836.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-837.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-837.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-838.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-838.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-839.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-839.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-840.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-840.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-841.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-841.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-842.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-842.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-843.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-843.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-844.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-844.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-845.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-845.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-846.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-846.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-847.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-847.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-848.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-848.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-849.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-849.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-850.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-850.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-851.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-851.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-852.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-852.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-853.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-853.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-854.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-854.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-855.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-855.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-856.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-856.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-857.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-857.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-858.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-858.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-859.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-859.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-860.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-860.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-861.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-861.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-862.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-862.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-863.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-863.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-864.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-864.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-865.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-865.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-866.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-866.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-867.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-867.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-868.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-868.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-869.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-869.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-870.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-870.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-871.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-871.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-872.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-872.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-873.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-873.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-874.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-874.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-875.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-875.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-876.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-876.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-877.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-877.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-878.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-878.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-879.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-879.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-880.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-880.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-881.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-881.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-882.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-882.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-883.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-883.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-884.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-884.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-885.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-885.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-886.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-886.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-887.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-887.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-888.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-888.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-889.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-889.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-890.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-890.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-891.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-891.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-892.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-892.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-893.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-893.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-894.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-894.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-895.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-895.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-896.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-896.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-897.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-897.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-898.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-898.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-899.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-899.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-900.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-900.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-901.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-901.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-902.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-902.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-903.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-903.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-904.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-904.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-905.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-905.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-906.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-906.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-907.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-907.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-908.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-908.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-909.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-909.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-910.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-910.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-911.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-911.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-912.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-912.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-913.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-913.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-914.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-914.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-580.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-580.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-581.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-581.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-582.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-582.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-583.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-583.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-584.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-584.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-585.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-585.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-586.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-586.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-587.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-587.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-588.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-588.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-589.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-589.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-590.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-590.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-915.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-915.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-916.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-916.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-591.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-591.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-592.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-592.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-593.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-593.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-594.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-594.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-595.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-595.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-596.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-596.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-597.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-597.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-598.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-598.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-599.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-599.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-600.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-600.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-601.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-601.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-602.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-602.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-603.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-603.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-604.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-604.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-605.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-605.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-606.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-606.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-607.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-607.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-608.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-608.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-609.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-609.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-610.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-610.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-611.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-611.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-612.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-612.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-613.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-613.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-614.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-614.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-615.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-615.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-616.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-616.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-617.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-617.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-618.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-618.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-619.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-619.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-620.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-620.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-621.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-621.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-622.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-622.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-623.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-623.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-624.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-624.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-625.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-625.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-626.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-626.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-627.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-627.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-628.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-628.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-629.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-629.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-630.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-630.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-631.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-631.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-632.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-632.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-633.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-633.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-634.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-634.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-635.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-635.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-636.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-636.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-637.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-637.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-638.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-638.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-639.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-639.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-917.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-917.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-918.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-918.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-919.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-919.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-920.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-920.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-921.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-921.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-922.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-922.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-923.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-923.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-924.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-924.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-925.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-925.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-926.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-926.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-927.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-927.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-928.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-928.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-929.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-929.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-930.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-930.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-931.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-931.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-932.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-932.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-933.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-933.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-934.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-934.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-935.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-935.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-936.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-936.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-937.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-937.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-938.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-938.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-939.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-939.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-940.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-940.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-941.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-941.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-942.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-942.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-943.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-943.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-944.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-944.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-945.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-945.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-946.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-946.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-947.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-947.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/task-board.md",
+      "target": "tasks/T-948.md",
+      "resolved": "docs/justix-auto/dev/tasks/T-948.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-016.md",
+      "target": "../../state/drafts/contracts/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-016.md",
+      "target": "../../state/approvals/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-016.md",
+      "target": "../../state/drafts/contracts/projection-label-forward-correction.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-label-forward-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-016.md",
+      "target": "../../state/approvals/projection-label-forward-correction.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-label-forward-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-016.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-016.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/drafts/contracts/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/drafts/contracts/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/approvals/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/drafts/contracts/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/approvals/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/drafts/contracts/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/owner-migration-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/approvals/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/approvals/owner-migration-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-022.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-591.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-591.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-920.md",
+      "target": "../../state/drafts/contracts/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-920.md",
+      "target": "../../state/approvals/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-920.md",
+      "target": "../../state/drafts/contracts/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-920.md",
+      "target": "../../state/approvals/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-920.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-920.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/drafts/contracts/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/approvals/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/drafts/contracts/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/approvals/messaging-route-correction.md",
+      "resolved": "docs/justix-auto/state/approvals/messaging-route-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/drafts/contracts/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/approvals/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-921.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-934.md",
+      "target": "../../state/drafts/contracts/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/owner-migration-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-934.md",
+      "target": "../../state/approvals/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/approvals/owner-migration-compatibility.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-934.md",
+      "target": "../../state/drafts/contracts/projection-label-forward-correction.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-label-forward-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-934.md",
+      "target": "../../state/approvals/projection-label-forward-correction.md",
+      "resolved": "docs/justix-auto/state/approvals/projection-label-forward-correction.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-934.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-934.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-945.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-945.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-946.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-946.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-947.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-947.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-948.md",
+      "target": "../../state/drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/dev/tasks/T-948.md",
+      "target": "../../state/approvals/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/approvals/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/state/approvals/membership-version-storage.md",
+      "target": "../../dev/qa/membership-version-storage-r3.md",
+      "resolved": "docs/justix-auto/dev/qa/membership-version-storage-r3.md"
+    },
+    {
+      "from": "docs/justix-auto/state/approvals/membership-version-storage.md",
+      "target": "../drafts/contracts/membership-version-storage.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md"
+    },
+    {
+      "from": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md",
+      "target": "../contracts/messaging-delivery.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/messaging-delivery.md"
+    },
+    {
+      "from": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md",
+      "target": "../contracts/runtime-registration.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/runtime-registration.md"
+    },
+    {
+      "from": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md",
+      "target": "../contracts/projection-storage-handoff.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/projection-storage-handoff.md"
+    },
+    {
+      "from": "docs/justix-auto/state/drafts/contracts/membership-version-storage.md",
+      "target": "../contracts/owner-migration-compatibility.md",
+      "resolved": "docs/justix-auto/state/drafts/contracts/owner-migration-compatibility.md"
+    }
+  ],
+  "preserved_40_qa_artifacts": {
+    "docs/justix-auto/dev/qa/membership-version-storage.md": "b6db29a5f64116ec40323684e6f629dd4dfc7212f2f47bbc3f8a6b1d99664816",
+    "docs/justix-auto/dev/qa/membership-version-storage/audit-output.json": "553d1b73d53e8c8fc4dc20793cd07745741ea210898fd9c0b44f8aa8f4bd6354",
+    "docs/justix-auto/dev/qa/membership-version-storage/audit-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/audit.py": "a93b23bd077c4dc0dd4de162c48da3cd4b2e9aa8ccb0e651da79249acafe586d",
+    "docs/justix-auto/dev/qa/membership-version-storage/go-race.txt": "527e06ec4ca2f962a8718a6c74344b388eb4c9ed3b594c530b5a7fd4bf7f1f0c",
+    "docs/justix-auto/dev/qa/membership-version-storage/go-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/interfaces_test.go": "85d9d6041cfadb97bf2892fb1e56bd2677ae3df5e18075056e6252474b643e50",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-attempt2-output.json": "bcc616c06343adafcb0df0d6141bcb03070e1b3454fca698ecec345ef191f51f",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-attempt2-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-output.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-stderr.txt": "9fd1375fe0aa383dd4eb4da52d0180bc30a62688706fe556554c13d8300547e5",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe.py": "e6cb6e706acf58cf177835babcae6d2d83325bc3cb61deff3213f98bd6c2097a",
+    "docs/justix-auto/dev/qa/membership-version-storage/sha256.json": "3ea222dd07e7f28faa3c351efb7cef3164ea048bfad60a64bf5f460144a68fe1",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2.md": "881b06533d77cb2545edb46852229b299756a5927408a5f5cb591b7062737508",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/audit-output.json": "2ef3b81865dc5a9ccdc622d7ade7927f8ebde645e61ebfaf8cef206e0f701d77",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/audit-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/audit.py": "093170876ca60a7299d5537446df00847b47fc822cedd13249aecdb2dcf31f2c",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/go-race.txt": "58bad57208eb79dae21c5528a00f53d70c62e960effc976dd4dcefd04536caa1",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/go-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/interfaces_test.go": "85d9d6041cfadb97bf2892fb1e56bd2677ae3df5e18075056e6252474b643e50",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/recovered_lifecycle.py": "222d07307c97614f03a95dc9cebc8a2fac8a9ded3ddea6d767e72015f39ee634",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/sha256.json": "113a3d9ca6a08091f6121c5ff24f619a851d5c9133631174f6ab323f93469048",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/timing-output.json": "b2653f023b11db5faf9e17a33b678a894f4b62cd07014dd3ba9f2b3e583f4452",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/timing-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/timing_probe.py": "d2cd194b6acef3b307cea126527a1be34e6fd14fe2df67be92bf46d894225448",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3.md": "8e3e6756918bcc04c33f511239f815b6a57a787234642a8cd06d6a22e2dbce91",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/approval-limit.md": "e599dc88e1a27604f15833dcc63a393ba9f5da4e9c503ef827a718a0b08302dc",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/audit-output.json": "f12abd618127833ffce04482a84d2723b98ceca2c7e064b2a33b358172eecaca",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/audit-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/audit.py": "9290c2d64b33689942c7040468f5c1db5adee8b8a566336e93bf73d9e894d802",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/go-race.txt": "2562bafe811a726d58ae36f4c75ce357daff4cdcf3f2651152578103311ca846",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/go-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/independent_probe.py": "9a720e72e7e63dffc8c7b47423de2db60d0ff1af2aadcdd27707a74e8112ab05",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/interfaces_test.go": "85d9d6041cfadb97bf2892fb1e56bd2677ae3df5e18075056e6252474b643e50",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/recovered_lifecycle.py": "222d07307c97614f03a95dc9cebc8a2fac8a9ded3ddea6d767e72015f39ee634",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/recovered_timing.py": "fafd2ff96ac1b50a053adc411d6f4fa43a8178daf04610ef024509c33825205a",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/safe-output.json": "88201ef6ce2bfc332ecf4702a662dafab2cae4a25fd9de13d8b861c0ac4bd53b",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/safe-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/safe_probe.py": "71597dce416fd2b6188f4c27c8f39dfd9e2ec93ab24c869e1fe25b83b6039c44",
+    "docs/justix-auto/dev/qa/membership-version-storage-r3/sha256.json": "183e1a543b2457a6663cdfa8d51e678bfd58ba60795e1bfc828d72aacf100449"
+  },
+  "runtime_tests_executed": false,
+  "configuration_changes_authorized_by_audit": false
+}
