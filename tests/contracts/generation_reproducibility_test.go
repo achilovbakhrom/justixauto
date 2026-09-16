@@ -253,6 +253,15 @@ const parity=[{name:'valid',schema:'Envelope',value:validEnvelope},{name:'bad pa
  {name:'wrong status schema',schema:'Problem',value:{code:2},error:{operation:'AuthOperation0',status:401}},
  {name:'undeclared status',schema:'Problem',value:{detail:'x'},error:{operation:'AuthOperation0',status:200}}];
 for(const hook of ['ready','Leaf','Choice','Alias','Envelope','error'])for(const outcome of ['mismatch','fatal:policy','fatal:configuration','fatal:binding'])parity.push({name:hook+':'+outcome,schema:'Envelope',value:hook==='error'?{detail:'x'}:validEnvelope,hook,outcome,...(hook==='error'?{error:{operation:'AuthOperation0',status:401}}:{})});
+const unicodePairs=[['\u{10000}','supplementary'],['\uE000','bmp']];
+const unicodeEdges=[['\u{10FFFF}','scalar-last'],['\u{1F600}','emoji'],['\u{10000}','supplementary'],['\uFFFF','bmp-last'],['\uE000','bmp'],['\uD7FF','before-surrogates'],['\u0301','combining-alone'],['\u00E9','composed'],['e\u0301','decomposed'],['a\u{10000}','prefix-supplementary'],['aa','double-ascii'],['a','ascii'],['\u0000','control'],['','empty']];
+for(const [group,entries]of [['BMP/supplementary',unicodePairs],['scalar edges and combining forms',unicodeEdges]])for(const reversed of [false,true])for(const reject of [false,true]){
+ const pairs=reversed?[...entries].reverse():entries;
+ const expectedValues=['ordinary',...(group==='BMP/supplementary'?['bmp','supplementary']:['empty','control','ascii','double-ascii','prefix-supplementary','decomposed','composed','combining-alone','before-surrogates','bmp','bmp-last','supplementary','emoji','scalar-last'])];
+ const rejectionValues=reject?{bmp:'mismatch',supplementary:'fatal:policy'}:{};
+ const first=expectedValues.findIndex(value=>Object.hasOwn(rejectionValues,value));
+ parity.push({name:group+' reverse='+reversed+' reject='+reject,schema:'Envelope',value:{a:{kind:'left',value:'ordinary'},items:[],map:Object.fromEntries(pairs),z:true},rejectionValues,expectedOutcome:reject?'mismatch':'valid',expectedValues:first<0?expectedValues:expectedValues.slice(0,first+1)});
+}
 writeFileSync(resolve('corpus.json'),JSON.stringify(parity));
 assert.throws(()=>renderTS(c),/not activated/);assert.throws(()=>renderGo(c),/not activated/);
 assert(!ts.includes('fetch(')&&!go.includes('ContractExchange'),'fragment must not contain transport');
@@ -346,9 +355,9 @@ async function main(){
  for(const field of ['checkReady','validateEnvelope','validateError']){reset();const b=factory();(b as unknown as Record<string,unknown>)[field]=vm.runInNewContext('Promise.reject("field secret")');expect(()=>s.createAuthValidators(b),'fatal:binding');noHooks();}
  reset();const badProxy=new Proxy(valid,{getPrototypeOf(){throw Promise.reject('structure secret');}});expect(()=>v.EnvelopeSchema.parse(badProxy),'fatal:configuration');noHooks();
  reset();let branches=0;const branchFault=new Proxy({kind:'left',value:'x'},{getPrototypeOf(){if(++branches===2)throw Promise.reject('unselected branch secret');return Object.prototype;}});expect(()=>v.ChoiceSchema.parse(branchFault),'fatal:configuration');noHooks();assert.equal(branches,2);
- const corpus=JSON.parse(require('node:fs').readFileSync('corpus.json','utf8')) as {name:string;schema:string;value:unknown;hook?:string;outcome?:s.SemanticOutcome;error?:{operation:s.AuthOperationID;status:s.AuthErrorStatus}}[];
- const parity=corpus.map(row=>{const calls:string[]=[];let active=false;const validators=s.createAuthValidators(bindings(name=>{if(active)calls.push(name.startsWith('error:')?'error':name);return active&&(name===row.hook||name.startsWith('error:')&&row.hook==='error')?row.outcome!:'valid';}));active=true;let result:s.SemanticOutcome='valid';try{if(row.error)validators.validateError(row.error.operation,row.error.status,row.value);else (validators as unknown as Record<string,{parse(value:unknown):unknown}>)[row.schema+'Schema']!.parse(row.value);}catch(error){assert(error instanceof s.AuthValidationError);result=(error as s.AuthValidationError).outcome;}return {name:row.name,outcome:result,calls};});
- require('node:fs').writeFileSync('ts-parity.json',JSON.stringify(parity));assert.equal(parity.length,33);
+ const corpus=JSON.parse(require('node:fs').readFileSync('corpus.json','utf8')) as {name:string;schema:string;value:unknown;hook?:string;outcome?:s.SemanticOutcome;error?:{operation:s.AuthOperationID;status:s.AuthErrorStatus};rejectionValues?:Record<string,s.SemanticOutcome>;expectedValues?:string[];expectedOutcome?:s.SemanticOutcome}[];
+ const parity=corpus.map(row=>{const calls:string[]=[],values:string[]=[];let active=false;const validators=s.createAuthValidators(bindings((name,value)=>{if(active){calls.push(name.startsWith('error:')?'error':name);if(name==='Leaf'){values.push(String(value));if(row.rejectionValues&&Object.hasOwn(row.rejectionValues,String(value)))return row.rejectionValues[String(value)]!;}}return active&&(name===row.hook||name.startsWith('error:')&&row.hook==='error')?row.outcome!:'valid';}));active=true;let result:s.SemanticOutcome='valid';try{if(row.error)validators.validateError(row.error.operation,row.error.status,row.value);else{const parsed=(validators as unknown as Record<string,{parse(value:unknown):unknown}>)[row.schema+'Schema']!.parse(row.value);assert.deepEqual(parsed,row.value,'valid DTO keys/values changed');}}catch(error){assert(error instanceof s.AuthValidationError);result=(error as s.AuthValidationError).outcome;}if(row.expectedValues){assert.deepEqual(values,row.expectedValues,row.name);assert.equal(result,row.expectedOutcome,row.name);}return {name:row.name,outcome:result,calls,values};});
+ require('node:fs').writeFileSync('ts-parity.json',JSON.stringify(parity));assert.equal(parity.length,41);
  reset();s.breakConfiguration();expect(()=>v.ChoiceSchema.parse({kind:'left',value:'x'}),'fatal:configuration');noHooks();
  await tick();await tick();assert.deepEqual(unhandled,[]);assert.equal(arbitraryReads,0);assert(names.length>10);
  console.log('TS semantic validation: whole-tree/order/readiness/outcomes/capture/error bindings/native Promise disposal PASS');
@@ -400,20 +409,21 @@ func TestAuthSemantics(t *testing.T){
 }
 
 func TestAuthSemanticCrossLanguageParity(t *testing.T){
- var corpus []struct{Name,Schema,Hook,Outcome string;Value json.RawMessage;Error *struct{Operation string;Status int}}
+ var corpus []struct{Name,Schema,Hook,Outcome,ExpectedOutcome string;Value json.RawMessage;Error *struct{Operation string;Status int};RejectionValues map[string]string;ExpectedValues []string}
  data,err:=os.ReadFile("corpus.json");if err!=nil{t.Fatal(err)};if err=json.Unmarshal(data,&corpus);err!=nil{t.Fatal(err)}
  outcomes:=map[string]FixtureSemanticOutcome{"valid":FixtureSemanticValid,"mismatch":FixtureSemanticMismatch,"fatal:policy":FixtureSemanticFatalPolicy,"fatal:configuration":FixtureSemanticFatalConfiguration,"fatal:binding":FixtureSemanticFatalBinding}
  var actual []map[string]any
  for _,row:=range corpus{
-  calls:=[]string{};active:=false;binding:=&probeBinding{call:func(name string,_ any)FixtureSemanticOutcome{if active{calls=append(calls,name);if name==row.Hook{return outcomes[row.Outcome]}};return FixtureSemanticValid}}
+  calls,values:=[]string{},[]string{};active:=false;binding:=&probeBinding{call:func(name string,value any)FixtureSemanticOutcome{if active{calls=append(calls,name);if name=="Leaf"{text:=string(value.(FixtureLeaf));values=append(values,text);if result,ok:=row.RejectionValues[text];ok{return outcomes[result]}};if name==row.Hook{return outcomes[row.Outcome]}};return FixtureSemanticValid}}
   v,err:=FixtureNewAuthValidators(binding);if err!=nil{t.Fatal(err)};active=true
-  if row.Error!=nil{_,err=v.ParseError(row.Error.Operation,row.Error.Status,row.Value)}else{switch row.Schema{case "Envelope":_,err=v.ParseEnvelope(row.Value);case "Ambiguous":_,err=v.ParseAmbiguous(row.Value);case "Maybe":_,err=v.ParseMaybe(row.Value);case "Choice":_,err=v.ParseChoice(row.Value);default:t.Fatal(row.Schema)}}
+  if row.Error!=nil{_,err=v.ParseError(row.Error.Operation,row.Error.Status,row.Value)}else{switch row.Schema{case "Envelope":var parsed FixtureEnvelope;parsed,err=v.ParseEnvelope(row.Value);if err==nil&&row.ExpectedValues!=nil{encoded,encodeErr:=json.Marshal(parsed);if encodeErr!=nil{t.Fatal(encodeErr)};var actual,expected any;json.Unmarshal(encoded,&actual);json.Unmarshal(row.Value,&expected);if !reflect.DeepEqual(actual,expected){t.Fatal("valid DTO keys/values changed",row.Name)}};case "Ambiguous":_,err=v.ParseAmbiguous(row.Value);case "Maybe":_,err=v.ParseMaybe(row.Value);case "Choice":_,err=v.ParseChoice(row.Value);default:t.Fatal(row.Schema)}}
   outcome:="valid";if err!=nil{typed,ok:=err.(FixtureAuthValidationError);if !ok{t.Fatal(err)};for name,value:=range outcomes{if typed.Outcome==value{outcome=name}};if outcome=="valid"{t.Fatal("unknown outcome",err)}}
-  actual=append(actual,map[string]any{"name":row.Name,"outcome":outcome,"calls":calls})
+  if row.ExpectedValues!=nil{if !reflect.DeepEqual(values,row.ExpectedValues)||outcome!=row.ExpectedOutcome{t.Fatalf("%s: values %v / %v, outcome %s / %s",row.Name,values,row.ExpectedValues,outcome,row.ExpectedOutcome)}}
+  actual=append(actual,map[string]any{"name":row.Name,"outcome":outcome,"calls":calls,"values":values})
  }
  encoded,_:=json.Marshal(actual);var actualJSON,expectedJSON any;if err=json.Unmarshal(encoded,&actualJSON);err!=nil{t.Fatal(err)}
  expected,err:=os.ReadFile("ts-parity.json");if err!=nil{t.Fatal(err)};if err=json.Unmarshal(expected,&expectedJSON);err!=nil{t.Fatal(err)}
- if !reflect.DeepEqual(actualJSON,expectedJSON){t.Fatalf("Go/TS parity mismatch\nGo: %s\nTS: %s",encoded,expected)};t.Logf("%d identical outcome and readiness/hook traces",len(corpus))
+ if !reflect.DeepEqual(actualJSON,expectedJSON){t.Fatalf("Go/TS parity mismatch\nGo: %s\nTS: %s",encoded,expected)};t.Logf("%d identical outcome, readiness/hook and Leaf-value traces",len(corpus))
 }
 `
 

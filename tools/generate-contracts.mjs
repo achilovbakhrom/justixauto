@@ -508,7 +508,7 @@ function authStructuralTS() {
   out=replaceRuntime(out,'contractAuthStructural(schema.items as ContractSchema, value[index]);','contractAuthStructural(schema.items as ContractSchema, value[index],visits);');
   out=replaceRuntime(out,'contractAuthStructural(props[key] ?? bad(), value[key]);','contractAuthStructural(props[key] ?? (()=>{throw contractAuthConfiguration;})(), value[key],visits);');
   out=replaceRuntime(out,'contractAuthStructural(schema.additionalProperties as ContractSchema, value[key]);','contractAuthStructural(schema.additionalProperties as ContractSchema, value[key],visits);');
-  return out.replaceAll('Object.keys(value))','Object.keys(value).sort())');
+  return out.replaceAll('Object.keys(value))','Object.keys(value).sort(contractAuthCompareKeys))');
 }
 function renderAuthValidatorsTS(c) {
   const m=authSemanticModel(c);
@@ -532,6 +532,13 @@ function renderAuthValidatorsTS(c) {
 }
 const authTSBindingRuntime=String.raw`
 type ContractAuthHook=(...args:unknown[])=>unknown;
+// Lexicographic Unicode scalar order equals Go's UTF-8 byte order for valid
+// strings. UTF-16's default sort reverses some BMP/supplementary pairs. Keep
+// original keys intact: no locale collation, normalization or extra rejection.
+function contractAuthCompareKeys(left:string,right:string):number{
+ const a=left[Symbol.iterator](),b=right[Symbol.iterator]();
+ for(;;){const x=a.next(),y=b.next();if(x.done||y.done)return x.done?(y.done?0:-1):1;const difference=x.value.codePointAt(0)!-y.value.codePointAt(0)!;if(difference)return difference;}
+}
 const contractAuthThen=Promise.prototype.then;
 const contractAuthDiscard=()=>undefined;
 function contractAuthDispose(value:unknown):void{try{Reflect.apply(contractAuthThen,value,[contractAuthDiscard,contractAuthDiscard]);}catch{/* native Promise brand check only */}}
