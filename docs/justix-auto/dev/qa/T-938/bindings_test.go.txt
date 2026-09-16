@@ -1,0 +1,102 @@
+package synthetic
+
+type probeBinding struct {call func(string,any)FixtureSemanticOutcome}
+func(b *probeBinding)CheckReady()FixtureSemanticOutcome{return b.call("ready",nil)}
+func(b *probeBinding)ValidateError(op string,status int,value FixtureAuthErrorResponse)FixtureSemanticOutcome{return b.call("error",value)}
+func(b *probeBinding)ValidateAlias(value FixtureAlias)FixtureSemanticOutcome{return b.call("Alias",value)}
+func(b *probeBinding)ValidateAmbiguous(value FixtureAmbiguous)FixtureSemanticOutcome{return b.call("Ambiguous",value)}
+func(b *probeBinding)ValidateAuthOperation0Parameters(value FixtureAuthOperation0Parameters)FixtureSemanticOutcome{return b.call("AuthOperation0Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation1Parameters(value FixtureAuthOperation1Parameters)FixtureSemanticOutcome{return b.call("AuthOperation1Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation2Parameters(value FixtureAuthOperation2Parameters)FixtureSemanticOutcome{return b.call("AuthOperation2Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation3Parameters(value FixtureAuthOperation3Parameters)FixtureSemanticOutcome{return b.call("AuthOperation3Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation4Parameters(value FixtureAuthOperation4Parameters)FixtureSemanticOutcome{return b.call("AuthOperation4Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation5Parameters(value FixtureAuthOperation5Parameters)FixtureSemanticOutcome{return b.call("AuthOperation5Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation6Parameters(value FixtureAuthOperation6Parameters)FixtureSemanticOutcome{return b.call("AuthOperation6Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation7Parameters(value FixtureAuthOperation7Parameters)FixtureSemanticOutcome{return b.call("AuthOperation7Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation8Parameters(value FixtureAuthOperation8Parameters)FixtureSemanticOutcome{return b.call("AuthOperation8Parameters",value)}
+func(b *probeBinding)ValidateAuthOperation9Parameters(value FixtureAuthOperation9Parameters)FixtureSemanticOutcome{return b.call("AuthOperation9Parameters",value)}
+func(b *probeBinding)ValidateChoice(value FixtureChoice)FixtureSemanticOutcome{return b.call("Choice",value)}
+func(b *probeBinding)ValidateEnvelope(value FixtureEnvelope)FixtureSemanticOutcome{return b.call("Envelope",value)}
+func(b *probeBinding)ValidateLeaf(value FixtureLeaf)FixtureSemanticOutcome{return b.call("Leaf",value)}
+func(b *probeBinding)ValidateLeft(value FixtureLeft)FixtureSemanticOutcome{return b.call("Left",value)}
+func(b *probeBinding)ValidateMaybe(value FixtureMaybe)FixtureSemanticOutcome{return b.call("Maybe",value)}
+func(b *probeBinding)ValidateOther(value FixtureOther)FixtureSemanticOutcome{return b.call("Other",value)}
+func(b *probeBinding)ValidateOtherProblem(value FixtureOtherProblem)FixtureSemanticOutcome{return b.call("OtherProblem",value)}
+func(b *probeBinding)ValidateProblem(value FixtureProblem)FixtureSemanticOutcome{return b.call("Problem",value)}
+func(b *probeBinding)ValidateRight(value FixtureRight)FixtureSemanticOutcome{return b.call("Right",value)}
+func(b *probeBinding)ValidateTwin(value FixtureTwin)FixtureSemanticOutcome{return b.call("Twin",value)}
+type nilSlice []int
+func(nilSlice)CheckReady()FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateError(string,int,FixtureAuthErrorResponse)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAlias(FixtureAlias)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAmbiguous(FixtureAmbiguous)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation0Parameters(FixtureAuthOperation0Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation1Parameters(FixtureAuthOperation1Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation2Parameters(FixtureAuthOperation2Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation3Parameters(FixtureAuthOperation3Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation4Parameters(FixtureAuthOperation4Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation5Parameters(FixtureAuthOperation5Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation6Parameters(FixtureAuthOperation6Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation7Parameters(FixtureAuthOperation7Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation8Parameters(FixtureAuthOperation8Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateAuthOperation9Parameters(FixtureAuthOperation9Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateChoice(FixtureChoice)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateEnvelope(FixtureEnvelope)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateLeaf(FixtureLeaf)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateLeft(FixtureLeft)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateMaybe(FixtureMaybe)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateOther(FixtureOther)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateOtherProblem(FixtureOtherProblem)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateProblem(FixtureProblem)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateRight(FixtureRight)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilSlice)ValidateTwin(FixtureTwin)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+type nilMap map[string]int
+func(nilMap)CheckReady()FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateError(string,int,FixtureAuthErrorResponse)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAlias(FixtureAlias)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAmbiguous(FixtureAmbiguous)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation0Parameters(FixtureAuthOperation0Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation1Parameters(FixtureAuthOperation1Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation2Parameters(FixtureAuthOperation2Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation3Parameters(FixtureAuthOperation3Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation4Parameters(FixtureAuthOperation4Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation5Parameters(FixtureAuthOperation5Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation6Parameters(FixtureAuthOperation6Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation7Parameters(FixtureAuthOperation7Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation8Parameters(FixtureAuthOperation8Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateAuthOperation9Parameters(FixtureAuthOperation9Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateChoice(FixtureChoice)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateEnvelope(FixtureEnvelope)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateLeaf(FixtureLeaf)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateLeft(FixtureLeft)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateMaybe(FixtureMaybe)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateOther(FixtureOther)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateOtherProblem(FixtureOtherProblem)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateProblem(FixtureProblem)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateRight(FixtureRight)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilMap)ValidateTwin(FixtureTwin)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+type nilFunction func()
+func(nilFunction)CheckReady()FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateError(string,int,FixtureAuthErrorResponse)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAlias(FixtureAlias)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAmbiguous(FixtureAmbiguous)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation0Parameters(FixtureAuthOperation0Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation1Parameters(FixtureAuthOperation1Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation2Parameters(FixtureAuthOperation2Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation3Parameters(FixtureAuthOperation3Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation4Parameters(FixtureAuthOperation4Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation5Parameters(FixtureAuthOperation5Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation6Parameters(FixtureAuthOperation6Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation7Parameters(FixtureAuthOperation7Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation8Parameters(FixtureAuthOperation8Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateAuthOperation9Parameters(FixtureAuthOperation9Parameters)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateChoice(FixtureChoice)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateEnvelope(FixtureEnvelope)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateLeaf(FixtureLeaf)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateLeft(FixtureLeft)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateMaybe(FixtureMaybe)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateOther(FixtureOther)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateOtherProblem(FixtureOtherProblem)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateProblem(FixtureProblem)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateRight(FixtureRight)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}
+func(nilFunction)ValidateTwin(FixtureTwin)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}

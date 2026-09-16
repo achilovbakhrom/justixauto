@@ -35896,7 +35896,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-937"
       ],
@@ -35917,7 +35917,7 @@
       "worktree": ".worktrees/T-938",
       "base_sha": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
       "agent": "qa_t027",
-      "execution_note": "Implementation committed; independent exact-commit review assigned. Existing evidence and scoped authorization limits remain in force.",
+      "execution_note": "Independent QA reproduced a Unicode map ordering mismatch between emitted Go and TypeScript, changing mismatch versus fatal-policy outcomes. Preserve all twenty-five QA artifacts and correct traversal parity in fix cycle 1; legacy bytes and auth activation barriers remain unchanged.",
       "reviewed_sha": "c45792e41fcbfa9a5316fb8b094e10821779a425"
     },
     {

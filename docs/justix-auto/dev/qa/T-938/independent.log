@@ -1,0 +1,21 @@
+=== RUN   TestQA938UnicodeSemanticTraversalParity
+    qa_t938_test.go:22: actual Go/TS semantic fragments, deterministic emission, closed types, collision and activation guards emitted
+        
+    qa_t938_test.go:24: 
+    qa_t938_test.go:25: Actual TypeScript semantic traversal: [{"reject":false,"outcome":"valid","calls":["ordinary","supplementary","bmp"]},{"reject":true,"outcome":"fatal:policy","calls":["ordinary","supplementary"]}]
+        
+    qa_t938_test.go:31: /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/go-1.27.1/bin/go [test -race -count=1 -v ./...]: exit status 1
+        === RUN   TestQAUnicodeTraversal
+            qa_test.go:18: Actual Go semantic traversal: [{"Reject":false,"Outcome":"valid","Calls":["ordinary","bmp","supplementary"]},{"Reject":true,"Outcome":"mismatch","Calls":["ordinary","bmp"]}]
+            qa_test.go:19: semantic Go/TS Unicode parity diverges
+                Go: [{"Reject":false,"Outcome":"valid","Calls":["ordinary","bmp","supplementary"]},{"Reject":true,"Outcome":"mismatch","Calls":["ordinary","bmp"]}]
+                TS: [{"reject":false,"outcome":"valid","calls":["ordinary","supplementary","bmp"]},{"reject":true,"outcome":"fatal:policy","calls":["ordinary","supplementary"]}]
+        --- FAIL: TestQAUnicodeTraversal (0.01s)
+        FAIL
+        FAIL	synthetic	3.700s
+        ?   	synthetic/single	[no test files]
+        FAIL
+--- FAIL: TestQA938UnicodeSemanticTraversalParity (5.46s)
+FAIL
+FAIL	justixauto/tests/contracts	5.968s
+FAIL

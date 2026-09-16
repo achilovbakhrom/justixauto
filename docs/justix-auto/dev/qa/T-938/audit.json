@@ -1,0 +1,57 @@
+{
+  "target": "c45792e41fcbfa9a5316fb8b094e10821779a425",
+  "base": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
+  "changed": [
+    "docs/justix-auto/dev/results/T-938.md",
+    "tests/contracts/generation_reproducibility_test.go",
+    "tools/generate-contracts.mjs"
+  ],
+  "source": {
+    "docs/justix-auto/dev/results/T-938.md": "84db91f9886a0ff5b29f2427198a3242aaeb16fb1e5f77c01f47656ca26be3e4",
+    "tests/contracts/generation_reproducibility_test.go": "3fe00798f456fdf78ff4b72bc243dc1c4d90a86f6889b07f9c7aae69aa30de03",
+    "tools/generate-contracts.mjs": "dbafd6cf17d2acc5ebde8e67ba4feafc2d28bd0878dc9c1811fa696370521226"
+  },
+  "unchanged": {
+    "go.mod": "d240b6a3cf34d76d3c87d549db86dfe56635faab80b85f4e77aae0bf76edad0d",
+    "go.sum": "5bdef8e512d1a8d379eec0064b65e24f66b2d78eb39d1d12885c86e0d3f8af6c",
+    "package.json": "2f35ece6c1886c341305fa21e868453c233c0de2a6e1202e0f2ff5f9ec150d81",
+    "package-lock.json": "2762d9c7a705ec303251909c73a9748ec479ae2fb4adbe4ac6c69c1a2fd37404",
+    "tools/contracts-generator.config.json": "947bf67a1ae74d053ca9b9fc814656a9323ab7e8bdb78e3222ebf8fbe8593b40"
+  },
+  "author_log_entries": [
+    {
+      "name": "t938-semantic-attempt2.log",
+      "sha256": "5d8cef909f3cb521c677e51080f223656fe5ae50c96fd072a227ae333ecab0d0",
+      "bytes": 1425,
+      "final_newline": true
+    },
+    {
+      "name": "t938-semantic-attempt3.log",
+      "sha256": "aadb056c2af1b492b2f808653bc016af17fac5d912288be76c1aec5f8eeec93e",
+      "bytes": 750,
+      "final_newline": true
+    },
+    {
+      "name": "t938-semantic-attempt4.log",
+      "sha256": "ae9a120d289d9b75dafd1b37c3bf5442ddd9e436f8fe1ccd1efbc1fd46832b66",
+      "bytes": 946,
+      "final_newline": true
+    },
+    {
+      "name": "t938-contract-race.log",
+      "sha256": "5591d16d1a860569aec701b67d3a69594042eac407bd9be57bd6a782918b1ab2",
+      "bytes": 55100,
+      "final_newline": true
+    },
+    {
+      "name": "t938-contract-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "final_newline": true
+    }
+  ],
+  "author_archive_json_sha256": "7ca8b2efefa3e32dbc7aee06ebe727e3e00b0d59fa2a69d7c3a07d719c150b94",
+  "typed_error_approval_commit": "37a5b31ff7ac7d3cf83c26e6a3afc37fb6490ce8",
+  "typed_error_approval_sha256": "a60bf7b497ebd8995d6061dd6798558e5441a31bc038a1cfaa128871c36337a4",
+  "tracked_changes": []
+}

@@ -1,0 +1,5 @@
+{
+  "Replace": {
+    "/Users/bakhromachilov/startups/justixauto/.worktrees/T-938/tests/contracts/qa_t938_test.go": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-938/docs/justix-auto/dev/qa/T-938/independent_test.go"
+  }
+}

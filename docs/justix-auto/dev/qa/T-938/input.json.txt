@@ -1,0 +1,28 @@
+{
+ "openapi":"3.1.0","info":{"title":"Synthetic generation fixture","version":"1"},
+ "components":{"securitySchemes":{"OwnerTLS":{"type":"mutualTLS"},"SessionCookie":{"type":"apiKey","in":"cookie","name":"__Host-justix_session"}},"schemas":{
+  "Payload":{"type":"object","additionalProperties":false,"required":["amountMinor","nullable","revision","tags","metadata","count"],"properties":{
+   "amountMinor":{"type":"string","pattern":"^(0|[1-9][0-9]*)(?![\\s\\S])","minLength":1,"maxLength":38},
+   "revision":{"type":"string","pattern":"^(0|[1-9][0-9]*)(?![\\s\\S])","maxLength":19},
+   "nullable":{"type":["string","null"]},"note":{"type":["string","null"]},
+   "count":{"type":"integer","minimum":0,"maximum":100},
+   "tags":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+   "metadata":{"type":"object","additionalProperties":{"type":"string"}}
+  }},
+  "Ready":{"type":"object","additionalProperties":false,"required":["kind","data"],"properties":{"kind":{"type":"string","const":"ready"},"data":{"$ref":"#/components/schemas/Payload"}}},
+  "Pending":{"type":"object","additionalProperties":false,"required":["kind","operationId"],"properties":{"kind":{"type":"string","const":"pending"},"operationId":{"type":"string","format":"uuid"}}},
+  "Choice":{"oneOf":[{"$ref":"#/components/schemas/Ready"},{"$ref":"#/components/schemas/Pending"}]},
+  "Maybe":{"type":["string","null"]},
+  "LooseEnd":{"type":"string","pattern":"^x$"},
+  "Dates":{"type":"object","additionalProperties":false,"required":["date","instant"],"properties":{"date":{"type":"string","format":"date"},"instant":{"type":"string","format":"date-time"}}},
+  "Problem":{"type":"object","additionalProperties":false,"required":["error"],"properties":{"error":{"type":"object","additionalProperties":false,"required":["code","message","fields","traceId"],"properties":{"code":{"type":"string","minLength":1},"message":{"type":"string"},"fields":{"type":"object","additionalProperties":{"type":"string"}},"traceId":{"type":"string"}}}}}
+ }},
+ "paths":{
+  "/internal/v1/identity/synthetic/{id}":{"get":{"operationId":"ReadInternal","security":[{"OwnerTLS":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Internal synthetic receipt","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Payload"}}}}}}},
+  "/api/v1/identity/synthetic/{id}":{
+   "post":{"operationId":"CreateSynthetic","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string","minLength":1}},{"name":"filter","in":"query","schema":{"type":"string"}},{"name":"If-Match","in":"header","required":true,"schema":{"type":"string"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Payload"}}}},"responses":{"200":{"description":"Synthetic receipt","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Payload"}}}},"201":{"description":"Same synthetic receipt","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Payload"}}}},"422":{"description":"Synthetic validation","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Problem"}}}}}},
+   "get":{"operationId":"ReadSynthetic","security":[{"SessionCookie":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"Synthetic union","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Choice"}}}}}},
+   "delete":{"operationId":"DeleteSynthetic","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"204":{"description":"Synthetic empty"}}}
+  }
+ }
+}

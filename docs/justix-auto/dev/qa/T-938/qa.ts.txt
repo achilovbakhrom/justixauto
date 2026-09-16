@@ -1,0 +1,18 @@
+import * as s from './semantic';
+import {bindings} from './bindings';
+declare function require(name:string):any;
+const fs=require('node:fs');
+const input={a:{kind:'left',value:'ordinary'},items:[],map:{'\uE000':'bmp','\u{10000}':'supplementary'},z:true};
+const rows=[];
+for(const reject of [false,true]){
+ const calls:string[]=[];
+ const validators=s.createAuthValidators(bindings((name,value)=>{
+  if(name==='Leaf'){calls.push(String(value));if(reject&&value==='bmp')return 'mismatch';if(reject&&value==='supplementary')return 'fatal:policy';}
+  return 'valid';
+ }));
+ let outcome:s.SemanticOutcome='valid';
+ try{validators.EnvelopeSchema.parse(input);}catch(e){if(!(e instanceof s.AuthValidationError))throw e;outcome=e.outcome;}
+ rows.push({reject,outcome,calls});
+}
+fs.writeFileSync('qa-ts.json',JSON.stringify(rows)+'\n');
+console.log('Actual TypeScript semantic traversal:',JSON.stringify(rows));
