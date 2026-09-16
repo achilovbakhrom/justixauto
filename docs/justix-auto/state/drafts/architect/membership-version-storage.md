@@ -3,8 +3,11 @@
 2026-09-15. **PROPOSED; independent exact-commit proposal QA and coordinator
 canonical promotion required before implementation.** Base
 `d59faa8dc5b26e13e19c47686dd47744b6d73a11`. No task numbers reserved.
-Fix cycle1 supersedes the lifecycle ambiguity in reviewed commit
-`5996c77e3df371a3992154b639ce9ba91ffc3e75`; that proposal was BOUNCE, not approved.
+Final fix cycle2 (2026-09-16) preserves the lifecycle correction from
+`c3c0da45965c980fee22a32f43e90d7a674a55c4` and addresses its r2 constraint-timing
+BOUNCE. Both that review and the original BOUNCE at
+`5996c77e3df371a3992154b639ce9ba91ffc3e75` remain evidence, not approval.
+A further BOUNCE requires bounded scope review, not a third automatic fix.
 
 ## 1. Confirmed contract, observation and proposal boundary
 
@@ -180,7 +183,7 @@ nothing. Once committed, no claim may be appended to an existing catalog.
 | `membership_transitions` | request UUID PK; resulting epoch UNIQUE; previous request UNIQUE FK (null only first epoch); exact expected/new catalog and selection identities; complete request bytes/hash, universe bytes/hash/count, action and approval references; finite creation time; unique(request,epoch) |
 | `membership_stream_selections` | (request,S) PK; transition FK; complete canonical per-stream selection/effect manifest bytes/hash; source/universe evidence, finite bootstrap/backlog vector, expected old selection identity; explicit zero set |
 | `membership_stream_consumers` | (request,S,consumer name) PK; exact catalog-claim FK, admission root/tip and bootstrap FK, range/disposition; typed adapter checks same S/kind/generation/contract and complete equality to retained stream manifest |
-| `membership_head` | singleton PK; current request/epoch/catalog via exact composite transition FK; INSERT first epoch, then only matching previous request and epoch+1 CAS; no delete/truncate |
+| `membership_head` | singleton PK; current request/epoch/catalog via exact composite transition FK; INSERT first epoch, then only matching previous request and epoch+1 CAS; server-overwritten `last_selected_xid xid8` bookkeeping on every selection; no delete/truncate |
 | `dispatch_membership_evidence` | (event ID,enrollment ID) PK/FK to existing enrollment; exact transition/epoch/catalog/stream FK, phase initial/late, selection mode current/prospective, canonical exact consumer-set bytes/hash, server-created full transaction ID; separately append-only enrollment proof, not a frozen transition child |
 | `membership_selection_compatibility` | SELECT-only singleton: same exact owner/runtime, revision8/format1, ordered hashes through8 and external installation evidence |
 
@@ -188,13 +191,16 @@ The head references immutable evidence, not caller-chosen current strings.
 There are **two different creation lifecycles**:
 
 - Transition, stream-selection and stream-consumer rows form one frozen snapshot.
-  Their deferred guards require the transition's server-recorded full `xid8` to
-  equal `pg_current_xact_id()` when adding its snapshot children, full declared
-  set equality, and the same transaction's final head CAS. Reject incomplete
-  snapshots, orphan successors and post-commit stream/consumer additions. The
-  transition creation ID is set by the server, cannot be supplied/updated by
-  runtime grants, and is provenance only, never authorization. Do not rely only
-  on a head trigger that permits later snapshot child inserts.
+  Immediate origin guards require the transition's server-recorded full `xid8`
+  to equal `pg_current_xact_id()` when adding its snapshot children, and reject
+  additions once that transition has been selected, even in its creation
+  transaction. Deferred completeness checks require full declared set equality
+  and selection of the exact successor; they may fail early if forced before
+  the snapshot/CAS is complete. Reject orphan successors and incomplete snapshots.
+  Server BEFORE INSERT guards **overwrite** transition/evidence creation IDs
+  with `pg_current_xact_id()`; they are not caller-preserved defaults. Runtime
+  grants exclude supplying/updating those columns. These IDs are transactional
+  bookkeeping, never authorization or evidence of source approval.
 - Dispatch evidence is independently append-only. A later new enrollment may
   link to an older already committed selection. **It does not require that the
   referenced transition was created in this transaction.** It requires that
@@ -221,8 +227,9 @@ tuple's `xmin=pg_current_xact_id()::xid`, the same immediate provenance predicat
 observed in T-919; an existing committed enrollment cannot receive a new link as
 a repair. Record full xid8 only on the new evidence/transition tables; add no
 column to old tables and do not describe old xmin as a stored full xid8.
-Runtime INSERT grants exclude these server provenance columns and guards reject
-overrides; owner DDL remains trusted. The prepared Go capability additionally
+Runtime INSERT grants exclude these server provenance columns; server guards
+overwrite supplied values even in privileged synthetic SQL. Owner DDL remains
+trusted. The prepared Go capability additionally
 binds actual full transaction ID/backend/fence nonce and the insertion candidate.
 No SQL transaction ID or user-supplied `selection_mode` supplies authority.
 The writer creates no nested transaction or savepoint. A caller subtransaction
@@ -243,6 +250,78 @@ phase. Initial enrollment names can never be used for a late append. Future
 ordinary intake uses initial/current; a late enrollment requires prospective
 selection and an explicitly declared activation backlog entry.
 
+**Timing-independent guard coverage.** PostgreSQL deferred checks can run early
+through `SET CONSTRAINTS ALL` or named constraints. They are not commit hooks.
+MS-SELECTION must install the immediate guards below as ordinary enabled triggers,
+whose timing cannot be changed by `SET CONSTRAINTS`; deferred checks remain an
+additional completeness layer. This is an explicit SQL guarantee, not merely
+a cooperative Go ordering rule.
+
+| Relevant mutation | Immediate SQL obligation |
+|---|---|
+| Transition INSERT | Overwrite server creation xid8; validate immutable request/predecessor identity. Defer only pending selection/completeness, not provenance. |
+| Snapshot stream/consumer INSERT | Require current-transaction transition and not-yet-selected snapshot; validate declared membership/identity. No post-selection or post-commit children. UPDATE/DELETE/TRUNCATE remain denied. |
+| Evidence-link INSERT | Require the new enrollment and all exact jobs already present in this transaction; validate full immutable content/set. Current mode requires the exact already-committed current head, locked FOR SHARE until transaction end. Prospective mode requires the new transition's expected prior head, locked FOR UPDATE (or absent head for initial), with that transition not yet selected. It cannot link after selection. |
+| Membership head INSERT/UPDATE | Enforce exact first/CAS identity and complete proposed snapshot/effects; inspect **every new link in this transaction** and reject any request/epoch/catalog differing from NEW. Inspect newly inserted enrollments for missing/different links. Reject a second head selection in this transaction using OLD server bookkeeping, then overwrite NEW bookkeeping. |
+| Dispatch job INSERT | Require a newly inserted enrollment in this transaction and **no evidence link yet**. The evidence link seals its complete job set. Reject subsequent job INSERT, including after constraint flushing; old job work-column UPDATE retains existing guards and is not a membership mutation. |
+
+The immediate link guard validates content after the row is available (an AFTER
+INSERT ordinary trigger is suitable); its creation stamp runs before validation.
+It does **not** demand the prospective target already be the head. The sequence
+is message/enrollment, every exact job, complete evidence link, then prospective
+head CAS last. A link before all its jobs fails immediately. A head before its
+declared enrollment/link effects fails immediately. With a legitimate zero-delta
+selection and no new enrollment, head CAS is valid, but subsequent new current
+links to the former head or prospective links to the now-selected target fail.
+An unrelated enrollment inserted after selection still cannot commit without
+a valid link; its INSERT completeness check runs even if earlier checks were
+flushed. There is no alternate writer that inserts jobs after sealing.
+
+The new explicit attachment `membership_job_set_guard` is a BEFORE INSERT
+ordinary trigger on existing `eventstore.dispatch_jobs`, owned solely by
+MS-SELECTION's SQL008/test leaves. It neither replaces `messaging_job_guard` nor
+runs on existing job updates/reads. The previously declared enrollment INSERT
+constraint trigger remains. These are the **two** new custom trigger attachments
+on old tables, in addition to new-FK referential attachments; all other immediate
+guards are on new membership tables. Exact preimages must distinguish these
+additions from unchanged old trigger/function definitions and privileges.
+
+`membership_head.last_selected_xid` is written on every successful first/CAS
+selection from the server's full xid8, never from a caller value, session GUC,
+constraint setting or cached count. An UPDATE first checks OLD's value: if it
+equals the current full xid, reject even when NEW supplies another value or
+the preceding constraints were flushed. Runtime UPDATE grants exclude it.
+A rolled-back savepoint restores both pointer and marker; replacing a selection
+that was fully rolled back is one retained change. Rolling back only a failed
+second attempt cannot erase the first selection's marker. New evidence's
+server-created xid selects exactly this transaction's links for the reverse
+head check; historical committed links are intentionally excluded.
+
+This closes both temporal orders: link then head is checked again by the head
+mutation even after early link checks; head then stale link is rejected by the
+link mutation. Link sealing plus immediate job-insert rejection prevents a later
+job from invalidating a previously checked set. Snapshot child guards likewise
+prevent later changes after selection. Missing/orphan records still enqueue
+their own deferred checks on creation; flushing an incomplete state fails
+closed, and a new insert schedules a new check. `SET CONSTRAINTS` timing cannot
+disable any of the immediate checks or authorize a second selection.
+
+Retain the head row locks through transaction end: merely reading the current
+head at immediate-check time is insufficient when another transaction can
+advance it after an early constraint flush. Current link insertion takes
+`FOR SHARE`, which conflicts with a concurrent pointer UPDATE; prospective
+insertion takes `FOR UPDATE` on its prior head, and revalidates the exact expected
+request/epoch/catalog after acquiring it. For first selection with no head row,
+the immutable first-transition identity, unique singleton head INSERT and
+deferred orphan checks reject a competing initial commit. The trusted adapter
+acquires the same head lock when minting CurrentSelection/ProspectiveSelection,
+**before** job/effect row work in the approved fence order; the SQL link guard
+independently reacquires/verifies it so correctness does not rely on callers
+avoiding `SET CONSTRAINTS`. Uncoordinated SQL can deadlock or time out and abort;
+there is no global deadlock-free or unbounded-wait guarantee. A later separate
+transaction may advance the head after the current-link transaction commits,
+leaving that valid historical link unchanged.
+
 At commit the new link must reference the selected head's exact request/epoch/
 catalog. In current mode the transition must predate this transaction; in
 prospective mode it must originate here and this transaction must select it by
@@ -257,7 +336,8 @@ fences also remain mandatory typed-adapter checks. SQL shape success alone
 cannot authorize a consumer. Validate all these again on retained reads.
 
 One successful activation per owner transaction; no transient sequence of two
-heads in one commit. CAS is performed after all effects are complete. Unique
+heads in one commit, enforced by the immediate OLD-bookkeeping check as well as
+immutable successor/CAS constraints. CAS is performed after all effects are complete. Unique
 epoch/prior successor plus catalog fencing ensures distinct competing versions
 cannot both become the same successor. The immutable historical receipt remains
 queryable after the head advances; it does not have to equal today's head.
@@ -275,7 +355,8 @@ initial set; catalog absence cannot stand in for empty-set authority.
 Keep original SQL artifacts, OIDs/ACLs, rows, frozen enrollment sets, legacy
 cutovers and markers unchanged. The only permitted additions on existing table
 catalogs are the declared new-FK referential attachments and the new enrollment
-INSERT constraint trigger above; snapshot its exact function/trigger definition
+INSERT constraint trigger plus the new job INSERT ordinary trigger above;
+snapshot their exact function/trigger definitions
 and demonstrate every old function/trigger is byte-identical. No old column,
 constraint or grant changes. Record these explicit deltas in preimage tests.
 Neither migration inserts a catalog/head, adopts
@@ -296,7 +377,8 @@ Within the actual caller ReadCommitted transaction:
    catalog fence, sorted receiver S fences, then generation/guard fences. Use
    existing `PreparedFences.Require` before reads/effects. No late lock upgrade.
    A T-016 projection head lock, where applicable, follows these advisory locks;
-   membership head CAS/row lock precedes job/inbox/checkpoint/effect row work.
+   membership head FOR UPDATE lock precedes job/inbox/checkpoint/effect row work.
+   Ordinary current intake uses the same order with its head FOR SHARE lock.
 2. Verify exact shared artifacts/mode/privileges and current authority. Read the
    request history first: same ID plus byte-identical request is an existing
    committed result only when found by a fresh authoritative read; within a
@@ -312,7 +394,8 @@ Within the actual caller ReadCommitted transaction:
 4. Write proposed immutable transition and complete stream rows; append admissions
    and install typed bootstrap/snapshot/checkpoints through the **same tx/fences**.
    Enroll all required newly admitted consumers in each retained message and
-   insert all jobs/evidence links. Existing sets and obligations stay unchanged.
+   insert every enrollment's exact jobs before its sealing evidence link.
+   Existing sets and obligations stay unchanged.
    Pre-recovered missing original bytes, if permitted, enter through the same
    ordinary custody validator with an explicit sealed prospective-selection
    capability bound to this transaction/request. It cannot be used by ordinary
@@ -420,6 +503,13 @@ missing/extra lineage. A valid empty unselected store is **storage compatible**
 but membership readiness is false; the checker must not require an active head
 to run the transaction that first installs one.
 
+T-934 additionally verifies every required immediate guard is an ordinary enabled
+trigger, every required deferred guard has its declared constraint timing, the
+server bookkeeping columns/functions are exact, and no privilege/default can
+disable them. A marker or a passing prior T-928 check does not substitute for
+the actual revision7/8 guard objects. This design's reduced tests are independent
+of T-928's implementation/review and make no claim about that task's QA.
+
 Installer metadata is runtime SELECT-only. New immutable evidence tables grant
 only SELECT/INSERT on the exact content columns (not server provenance columns).
 Frozen snapshot-child guards and separately append-only enrollment-link guards
@@ -430,6 +520,51 @@ schema CREATE, DB CREATE/TEMP or unexpected default grants. Check PUBLIC and
 every transitively reachable role including NOINHERIT/SET ROLE paths and column
 grants. Trigger functions are non-security-definer with fixed pg_catalog search
 path and explicit qualified tables; invocation is via table trigger only.
+Installation and runtime compatibility checks require
+`current_setting('session_replication_role')='origin'`; deny effective SET or
+ALTER SYSTEM authority on that parameter for the runtime, PUBLIC and every
+transitively reachable role, including NOINHERIT roles reachable through SET
+ROLE. Inspect parameter ACLs/effective privileges and all applicable database,
+role and database-role defaults for non-origin replication mode. A role able
+to switch to replica could bypass ordinary triggers/FKs and is incompatible
+even when its current session is origin. Existing owner/superuser/DDL/TRIGGER
+denials also remain. Ordinary `SET CONSTRAINTS` is deliberately permitted: the
+SQL invariants must survive its ALL and named forms, not rely on denying it.
+
+An installer's origin session and role/database-default audit do **not** prove
+the runtime's effective login mode: an installer override can hide a server-wide
+or command-line default. Effective startup verification must open a fresh
+connection as the exact runtime login into the exact owner database using the
+approved connection configuration, without a session-level replication-mode
+override, and verify actual session/current identity, origin mode, parameter
+authority and applicable defaults there. T-022/T-933's outer installation/startup
+handoff owns that verification; SQL cannot certify it from an opaque evidence
+reference or the installer's own `SHOW`. Missing access to that exact effective
+configuration is an unverifiable compatibility result: do not authorize runtime
+activation or label the installation startup-compatible. Inert DDL/marker presence
+alone remains no such claim. T-934 also checks the actual supplied runtime
+handle's mode before factory binding on every compatible UOW Run, so a new
+connection with unsafe defaults fails closed. No secret or server configuration
+file is read by this proposal, and no fallback to an installer/admin connection
+may stand in for the runtime check.
+
+Revision7/8 preflight also requires the forthcoming T-928 prerequisite: the
+exact runtime role is a LOGIN role, and `pg_db_role_setting` contains exactly
+the explicit `session_replication_role=origin` setting for **that runtime role
+OID and that owner database OID**. Unrelated, inherited, installer-only,
+role-global or database-global settings are not equivalent. Reject absence,
+conflicting entries or unverifiable identity. Approved external provisioning
+establishes this role-in-database setting before the stopped/quiesced install;
+these migrations and the runtime check inspect it read-only and never repair
+it or grant the runtime parameter-setting authority. Fresh direct-runtime-login
+sessions must then pass the actual-handle verification above; a pooled installer
+session or SET ROLE substitution is not that proof. T-934 repeats this exact
+setting/identity prerequisite alongside the actual runtime session check.
+
+This aligns the dependent proposal with T-928's final proposed configuration
+contract, **pending T-928 independent approval**. MS-CATALOG remains gated on
+the actual approved/integrated T-928 artifact and contract; neither its hash nor
+its runtime guarantees may be inferred from an in-progress worktree.
 Migration owner retains trusted DDL power; runtime SQL grants are not business
 authority. Evidence stores metadata/secure manifest references, never raw private
 source snapshots or credentials. Missing approved sensitive-evidence handling
@@ -452,7 +587,7 @@ and canonical promotion QA. Tests embed fixtures in their assigned test leaf.
 | Alias | Dependencies | Exact application leaves / responsibility |
 |---|---|---|
 | MS-CATALOG | T-928 | `pkg/eventstore/migrations/000007_membership_catalog.up.sql`; `pkg/eventstore/membership_catalog_migration_test.go`: immutable complete catalogs/meanings and rev7 lineage/ACLs only |
-| MS-SELECTION | MS-CATALOG | `pkg/eventstore/migrations/000008_membership_selection.up.sql`; `pkg/eventstore/membership_selection_migration_test.go`: transition/stream/head/dispatch-link SQL constraints, the explicitly added enrollment INSERT constraint trigger and rev8 only |
+| MS-SELECTION | MS-CATALOG | `pkg/eventstore/migrations/000008_membership_selection.up.sql`; `pkg/eventstore/membership_selection_migration_test.go`: transition/stream/head/dispatch-link constraints, immediate reverse/head-lock/job-set guards, the two explicitly added old-table INSERT triggers and rev8 only |
 | MS-IDENTITY | T-746, T-007 | `pkg/inbox/membership_catalog.go`; `pkg/inbox/membership_catalog_test.go`: canonical value codec, claim supplement/full-versus-stream identities, immutable request/selection constructors, no SQL |
 | MS-STATE | MS-SELECTION, MS-IDENTITY, T-014 | `pkg/inbox/membership_state.go`; `pkg/inbox/membership_state_test.go`: fenced storage/read/reconcile/candidate, sealed current/prospective selection, complete enrollment verification and evidence-link primitives, no owner snapshot or source network orchestration |
 
@@ -464,11 +599,13 @@ T-934 remains sole serial successor of T-930's `check.go/check_test.go`; no new
 alias edits them. T-920 owns existing membership.go/test; T-921 owns intake.go/test;
 T-016 owns its existing generation adapter leaves. MS aliases do not claim those
 files, root manifests, go.mod, dependency locks or T-928's migration/test.
-Fix cycle1 retains four aliases/eight disjoint leaves and the same dependency
-delta: the added trigger belongs to the existing selection migration's missing
-link completeness responsibility, and the two capability lifecycles belong to
-the existing state adapter. No fifth task or earlier-migration source ownership
-is hidden here. The reduced lifecycle probe supports this boundary, not a time
+Final fix cycle2 retains four aliases/eight disjoint leaves and the same dependency
+delta. Immediate reverse checks, head bookkeeping, head locks and the added job
+INSERT trigger complete MS-SELECTION's existing SQL invariant responsibility;
+the two capability lifecycles and ordered head locking belong to MS-STATE.
+Parameter/default audits belong to these installers and T-934's serial checker.
+No fifth task or earlier-migration source ownership is hidden here. The reduced
+lifecycle/timing probes support this boundary, not a time
 guarantee; if either full migration/adapter cannot fit its4h bound, coordinator
 must reslice before dependent assignment. T-920 retains its separate3h limit.
 Root T-580…586 assembly additionally consumes current membership readiness and
@@ -491,6 +628,23 @@ not only the reduced proposal probe:
   prospective capability reused as current or without head CAS, stale/foreign
   transaction capability and fabricated provenance all reject. Missing-link
   failure is demonstrated by the **enrollment** trigger when no link trigger ran.
+- Flush ALL and named enrollment/link constraints immediate then deferred in
+  both mutation orders: current link then sole valid next-head CAS, and head CAS
+  then stale link. Both must reject regardless of timing. Prospective pending
+  creation remains valid in its declared order; forcing incomplete prospective
+  checks early fails closed. Append a job or snapshot child after checks/selection
+  and reject immediately. One valid head change works; a second fails even with
+  supplied bookkeeping and constraint toggles. Savepoint rollback of the whole
+  first selection permits one replacement; rollback of a failed second attempt
+  cannot clear the retained first marker. Historical later transactions work.
+- After a current link's checks are flushed, a concurrent head UPDATE must still
+  wait or time out on its head row lock. On current-link commit, a later separate
+  transaction can advance normally; failed lock/commit outcomes never fabricate
+  a selected version. Exercise the exact adapter lock order and SQL guard locks.
+- Deny direct/PUBLIC/reachable parameter SET/ALTER SYSTEM authority and unsafe
+  role/database defaults capable of disabling guards, including NOINHERIT/SET
+  ROLE paths. Runtime bookkeeping-column writes fail; privileged synthetic input
+  is overwritten by server guards, not preserved as a trusted receipt.
 - Canonical order is stable; duplicates, omitted required claims/supplements,
   mutated caller slices, changed same-version catalog and changed same-request
   bytes fail; version-only and zero-new-consumer transitions retain receipts.
@@ -510,7 +664,7 @@ not only the reduced proposal probe:
   validates original evidence; complete claim set works while an executor is down;
   required missing claim prevents readiness before Bind/consume.
 - Exact old SQL/preimages preserved except declared new-FK catalog attachments
-  and the new enrollment INSERT constraint trigger; old definitions unchanged;
+  and the new enrollment/job INSERT triggers; old definitions unchanged;
   required and forbidden direct/column/default/PUBLIC/reachable-role grants,
   wrong owner/runtime/hash/marker/constraint and lock/later transaction failure.
 - Forward installation on retained ambiguous state succeeds only as inert storage;
