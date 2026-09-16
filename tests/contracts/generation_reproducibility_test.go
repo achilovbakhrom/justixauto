@@ -300,6 +300,38 @@ reject('public mutual TLS',(d)=>{login(d).security=[{OwnerTLS:[]}];});
 reject('cookie scheme wrong name',(d)=>{d.components.securitySchemes.CSRFCookie.name='csrf';});
 reject('cookie scheme bearer',(d)=>{d.components.securitySchemes.CSRFCookie={type:'http',scheme:'bearer'};});
 reject('security object instead of alternatives',(d)=>{login(d).security={CSRFCookie:[]};});
+reject('null auth security without document requirements',(d)=>{login(d).security=null;});
+reject('null auth security with inherited document cookies',(d)=>{d.security=[{CSRFCookie:[]}];login(d).security=null;});
+reject('null auth security with empty document requirements',(d)=>{d.security=[];read(d).security=null;});
+reject('null auth document security',(d)=>{d.security=null;delete read(d).security;});
+reject('null GET auth parameters',(d)=>{read(d).parameters=null;});
+reject('null GET auth parameters with inherited security',(d)=>{d.security=[{CSRFCookie:[]}];delete read(d).security;read(d).parameters=null;});
+reject('null unsafe auth parameters',(d)=>{login(d).parameters=null;});
+for(const requirements of [undefined,[],[{}],[{CSRFCookie:[]}]])pass('omitted auth security inherits valid document '+JSON.stringify(requirements),()=>{
+ const d=authDocument();if(requirements!==undefined)d.security=requirements;
+ delete read(d).security;delete read(d).parameters;delete login(d).security;
+ const p=compile(configEntry,d);for(const op of p.operations.filter((op)=>op.path==='/api/v1/identity/session'||op.path.endsWith('/login'))){
+  assert.deepEqual(op.securityRequirements,(requirements??[]).map((alternative)=>Object.fromEntries(Object.keys(alternative).map((name)=>[name,d.components.securitySchemes[name]]))));
+  assert.equal(op.authTransport.requestCSRF===null,op.method==='GET');
+ }
+ assert.deepEqual(p.operations.find((op)=>op.method==='GET').parameters,[]);
+});
+for(const requirements of [[],[{}],[{}, {SessionCookie:[]}],[{CSRFCookie:[]}]])pass('explicit auth security overrides document '+JSON.stringify(requirements),()=>{
+ const d=authDocument();d.security=[{ChallengeCookie:[]}];read(d).security=requirements;read(d).parameters=[];login(d).security=requirements;
+ const p=compile(configEntry,d);for(const op of p.operations.filter((op)=>op.path==='/api/v1/identity/session'||op.path.endsWith('/login'))){
+  assert.deepEqual(op.securityRequirements,requirements.map((alternative)=>Object.fromEntries(Object.keys(alternative).map((name)=>[name,d.components.securitySchemes[name]]))));
+  assert.equal(op.authTransport.requestCSRF===null,op.method==='GET');
+ }
+});
+pass('legacy null operation fields retain historical fallback behavior',()=>{
+ const d=structuredClone(fixture);const read=d.paths['/api/v1/identity/synthetic/{id}'].get;
+ read.security=null;const empty=d.paths['/api/v1/identity/synthetic/{id}'].delete;
+ const withoutId=structuredClone(empty);withoutId.parameters=null;withoutId.security=null;withoutId.operationId='DeleteLegacyNull';
+ d.paths['/api/v1/identity/legacy-null']={delete:withoutId};
+ const p=compile(configEntry,d);assert.equal(p.authProfile,undefined);
+ assert.deepEqual(p.operations.find((op)=>op.id==='ReadSynthetic').securityRequirements,[]);
+ const op=p.operations.find((op)=>op.id==='DeleteLegacyNull');assert.deepEqual(op.parameters,[]);assert.deepEqual(op.securityRequirements,[]);
+});
 for(const [method,path,status,rotation] of routes){
  for(const code of [status,401,403,429]){
   reject('missing cache '+path+' '+code,(d)=>{delete d.paths['/api/v1/identity'+path][method].responses[code].headers['Cache-Control'];});

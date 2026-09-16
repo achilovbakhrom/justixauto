@@ -232,6 +232,11 @@ function compile(entry, document) {
       const authRoute=auth?authRoutes[method.toUpperCase()+' '+path]:undefined;
       if (auth&&!authRoute) fail('unsupported auth operation matrix');
       if (authSemantics&&!auth&&(path==='/api/v1/identity/session'||path.startsWith('/api/v1/identity/session/'))) fail('auth operation requires transport marker');
+      // Only omission may inherit/default an auth declaration. In particular,
+      // explicit null must reach a closed type failure before nullish fallback.
+      if (auth) for (const field of ['security','parameters']) {
+        if (Object.hasOwn(op,field)&&!Array.isArray(op[field])) fail(`auth ${field} declaration must be an array`);
+      }
       const securityRequirements=security(op.security??document.security??[],internal);
       if (!/^[A-Z][A-Za-z0-9]*$/.test(op.operationId) || reserved.test(op.operationId) || op.operationId in schemas || operations.some((item) => item.id === op.operationId)) fail('unique exported operationId required');
       const id = op.operationId, declaredParameters = op.parameters ?? [];
