@@ -1,0 +1,228 @@
+{
+  "result": "PASS",
+  "target": "aee07f4047ac293cc2c35349c5711a519e9475fc",
+  "source_checks": {
+    "base": "7cfd21465c80390d4d33ab40091a5360d12d88af",
+    "source": [
+      {
+        "path": "services/identity/adapter/postgres/unit_of_work.go",
+        "base_sha256": "b17425b99dd04ac78e49ac319fd84aaf37d84f02d5c30947f2148845bd265773",
+        "current_sha256": "f4a94426af56fe544f6736ec67e6a0602a6dc7f8e38b1332be7956a5e9b1bcdf",
+        "unchanged": false
+      },
+      {
+        "path": "services/identity/adapter/postgres/unit_of_work_test.go",
+        "base_sha256": "4e05b2de0f8a143743b355f4804bb69cf02b9fe0a039703150c2612cbddb445c",
+        "current_sha256": "27e72ef5885481edbfced4f9e860e72a40859b69c86e5415ad6ecf94114b0dbf",
+        "unchanged": false
+      },
+      {
+        "path": "services/identity/migrations/0001_mechanics.up.sql",
+        "base_sha256": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+        "current_sha256": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+        "unchanged": true
+      },
+      {
+        "path": "services/identity/port/unit_of_work.go",
+        "base_sha256": "6aac1e5a5b483ae517c06a2a13122a73024c844ae80721ecee0fa80f218d285b",
+        "current_sha256": "6aac1e5a5b483ae517c06a2a13122a73024c844ae80721ecee0fa80f218d285b",
+        "unchanged": true
+      },
+      {
+        "path": "services/identity/port/dependencies.go",
+        "base_sha256": "9d6775962ced54223d451ecb363281c26a58083c2f208799ff2ba1968dba55ad",
+        "current_sha256": "9d6775962ced54223d451ecb363281c26a58083c2f208799ff2ba1968dba55ad",
+        "unchanged": true
+      },
+      {
+        "path": "pkg/persistence/profile.go",
+        "base_sha256": "4aab89b8719edfb6638f1bfdb8e6ae6394b8fb17a8ed42eae95be798f5e7e4e9",
+        "current_sha256": "4aab89b8719edfb6638f1bfdb8e6ae6394b8fb17a8ed42eae95be798f5e7e4e9",
+        "unchanged": true
+      },
+      {
+        "path": "pkg/persistence/check.go",
+        "base_sha256": "18e56b9892acfd07aa48496fe32737e1c4974f79c430aa4ac64d6b50910426af",
+        "current_sha256": "18e56b9892acfd07aa48496fe32737e1c4974f79c430aa4ac64d6b50910426af",
+        "unchanged": true
+      },
+      {
+        "path": "pkg/eventstore/transaction.go",
+        "base_sha256": "fbeda1dbb2add4b18f5901f2124c30ff77aee565c240895820ea792eb99d386f",
+        "current_sha256": "fbeda1dbb2add4b18f5901f2124c30ff77aee565c240895820ea792eb99d386f",
+        "unchanged": true
+      },
+      {
+        "path": "pkg/eventstore/schema.sql",
+        "base_sha256": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+        "current_sha256": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+        "unchanged": true
+      },
+      {
+        "path": "pkg/eventstore/owner_history.sql",
+        "base_sha256": "1e5138d344f07c3b3f78695f7ca7167f14b6582dbbbbd95654566eb8ddb58b70",
+        "current_sha256": "1e5138d344f07c3b3f78695f7ca7167f14b6582dbbbbd95654566eb8ddb58b70",
+        "unchanged": true
+      },
+      {
+        "path": "go.mod",
+        "base_sha256": "d240b6a3cf34d76d3c87d549db86dfe56635faab80b85f4e77aae0bf76edad0d",
+        "current_sha256": "d240b6a3cf34d76d3c87d549db86dfe56635faab80b85f4e77aae0bf76edad0d",
+        "unchanged": true
+      },
+      {
+        "path": "go.sum",
+        "base_sha256": "5bdef8e512d1a8d379eec0064b65e24f66b2d78eb39d1d12885c86e0d3f8af6c",
+        "current_sha256": "5bdef8e512d1a8d379eec0064b65e24f66b2d78eb39d1d12885c86e0d3f8af6c",
+        "unchanged": true
+      }
+    ],
+    "legacy_check_body_sha256": "d2fd8b7ad7a8c6bf6bf2bf6e3aebc4822dd398d4c3a95c68869b14113fbd61a5"
+  },
+  "archive_entries": {
+    "logs/justixauto-t931-final-live.log": "e5b14849729aa3569a1fa35f4f411ca6d59e7a05462355a97da541a2896868bd",
+    "logs/justixauto-t931-final-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/justixauto-t931-full-race.log": "26ae3f13351687fa77c5b714221b24124ada903e1145731928fd7eb4be96d450",
+    "logs/justixauto-t931-live-attempt1.log": "a466f43b014d51be0f94360900b4f74c50d3dbca489f0564a804aa9b963c37a4",
+    "logs/justixauto-t931-live-attempt2.log": "96f9921dc4547ab07452d719d1e6129c2e5092fb1877e5f1d1cae18f13075e5a",
+    "logs/justixauto-t931-live-attempt3.log": "bce624c106328580698e6673a248dd01783923eea255bc897a03fa3e21adc4c1",
+    "logs/justixauto-t931-unit.log": "73b23270fe566c8f360e3b5502902719343d21321e99ae3239b2a6666c818b58",
+    "logs/justixauto-t931-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "verification/justixauto-t931-source-evidence.json": "5632b59610df744df0704b6f8fab34e3918ec3ccb2a03eb217d293f6a806a9f8",
+    "verification/justixauto-t931-evidence-check.json": "461682a82f4503916c07729503e27d6b44ca4bab1a3da5d3b2d7b5e6f0334f43",
+    "verification/justixauto-t931-evidence-verification.txt": "dab0986af7ec7dc3ee72e6ce60b828d68f379b92f839bcbf53730507a4049177",
+    "verification/justixauto-t931-verify.py": "0724d1f726fc7bce8799b7b2d74f6f22bc37b5dc4fa2e3021d18895f45ff73ad",
+    "retained/justixauto-t931-evidence-1858995510/after-readiness.json": "ea15a22a1610176c0568d432fa290a4cf5ef1341be3e05f7c33f4efa8eb4889a",
+    "retained/justixauto-t931-evidence-1858995510/after-readiness.json.sha256": "d84cc923d0f40229110c8037bf9102106330307eb0b958835adc59ffeb9dd8b9",
+    "retained/justixauto-t931-evidence-1858995510/before-readiness.json": "ea15a22a1610176c0568d432fa290a4cf5ef1341be3e05f7c33f4efa8eb4889a",
+    "retained/justixauto-t931-evidence-1858995510/before-readiness.json.sha256": "d84cc923d0f40229110c8037bf9102106330307eb0b958835adc59ffeb9dd8b9",
+    "retained/justixauto-t931-evidence-1858995510/migrations/0001_mechanics.manifest.json": "630c5196e23a998c037be5da75c6933d1f13a475b97bc5c6fa6290a3b347aca3",
+    "retained/justixauto-t931-evidence-1858995510/migrations/0001_mechanics.up.sql": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+    "retained/justixauto-t931-evidence-1858995510/migrations/0012_synthetic.manifest.json": "22ca60f5daa011939b57ec762eaa753f82b4ff1b3aea21205dd2e0fffcaf1544",
+    "retained/justixauto-t931-evidence-1858995510/migrations/0012_synthetic.up.sql": "320e7f2896207377dfd3437f47d24d8e6691c2c0250589704d2fc8eac0d1d303",
+    "retained/justixauto-t931-evidence-1858995510/profile.json": "c2ae8662fc27314473a9391ee4628c67e3fe5f2c94e2db68750bed8fe51aaba4",
+    "retained/justixauto-t931-evidence-1858995510/profile.json.sha256": "2cd45fdfb8167ad417e3e4c8d22c1f54e7af577c2e71dcb8bd291309548f93de",
+    "retained/justixauto-t931-evidence-2206865864/after-readiness.json": "2afe1f05b94c00e3a8ae3c80e78bad09b35264617cb2156b094edd3969a02474",
+    "retained/justixauto-t931-evidence-2206865864/after-readiness.json.sha256": "865836e02bfab1577a7eebf2980e8e55416603d495a23268c1b1a6a9a54510a4",
+    "retained/justixauto-t931-evidence-2206865864/before-readiness.json": "2afe1f05b94c00e3a8ae3c80e78bad09b35264617cb2156b094edd3969a02474",
+    "retained/justixauto-t931-evidence-2206865864/before-readiness.json.sha256": "865836e02bfab1577a7eebf2980e8e55416603d495a23268c1b1a6a9a54510a4",
+    "retained/justixauto-t931-evidence-2206865864/migrations/0001_mechanics.manifest.json": "630c5196e23a998c037be5da75c6933d1f13a475b97bc5c6fa6290a3b347aca3",
+    "retained/justixauto-t931-evidence-2206865864/migrations/0001_mechanics.up.sql": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+    "retained/justixauto-t931-evidence-2206865864/migrations/0012_synthetic.manifest.json": "22ca60f5daa011939b57ec762eaa753f82b4ff1b3aea21205dd2e0fffcaf1544",
+    "retained/justixauto-t931-evidence-2206865864/migrations/0012_synthetic.up.sql": "320e7f2896207377dfd3437f47d24d8e6691c2c0250589704d2fc8eac0d1d303",
+    "retained/justixauto-t931-evidence-2206865864/profile.json": "29572b081027bae90b796503d854fed33c3bbd78082479dac2d8b855b3a3499f",
+    "retained/justixauto-t931-evidence-2206865864/profile.json.sha256": "582a73af4d719ae1a1f473998a3202fcb0ad268a65d0d28cf92ed68f70b38002",
+    "retained/justixauto-t931-evidence-537484798/after-readiness.json": "063e96339ae36bf4678e0dc43e3bf10c1fc8afb950e98f7e09f4b8cc359a2583",
+    "retained/justixauto-t931-evidence-537484798/after-readiness.json.sha256": "a6903330acef4a23b4421eefacd9cc969647a1beff95b9c52ec1e4cfd03df3b0",
+    "retained/justixauto-t931-evidence-537484798/before-readiness.json": "063e96339ae36bf4678e0dc43e3bf10c1fc8afb950e98f7e09f4b8cc359a2583",
+    "retained/justixauto-t931-evidence-537484798/before-readiness.json.sha256": "a6903330acef4a23b4421eefacd9cc969647a1beff95b9c52ec1e4cfd03df3b0",
+    "retained/justixauto-t931-evidence-537484798/migrations/0001_mechanics.manifest.json": "630c5196e23a998c037be5da75c6933d1f13a475b97bc5c6fa6290a3b347aca3",
+    "retained/justixauto-t931-evidence-537484798/migrations/0001_mechanics.up.sql": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+    "retained/justixauto-t931-evidence-537484798/migrations/0012_synthetic.manifest.json": "22ca60f5daa011939b57ec762eaa753f82b4ff1b3aea21205dd2e0fffcaf1544",
+    "retained/justixauto-t931-evidence-537484798/migrations/0012_synthetic.up.sql": "320e7f2896207377dfd3437f47d24d8e6691c2c0250589704d2fc8eac0d1d303",
+    "retained/justixauto-t931-evidence-537484798/profile.json": "fb5fa9029c6655bfc2c5c6b5f126d9bad4f6ddae67b7ae670aa8e6811f8eb199",
+    "retained/justixauto-t931-evidence-537484798/profile.json.sha256": "71caf328785abcb1f74f67913f8062029c24cd306aa843e1df872c51da4a6750",
+    "preimages/unit_of_work.go": "b17425b99dd04ac78e49ac319fd84aaf37d84f02d5c30947f2148845bd265773",
+    "preimages/unit_of_work_test.go": "4e05b2de0f8a143743b355f4804bb69cf02b9fe0a039703150c2612cbddb445c"
+  },
+  "archived_sidecars": 9,
+  "archived_bundle_counts": {
+    "justixauto-t931-evidence-1858995510": {
+      "items": 0,
+      "events": 0,
+      "receipts": 0,
+      "history": 2
+    },
+    "justixauto-t931-evidence-2206865864": {
+      "items": 1,
+      "events": 1,
+      "receipts": 1,
+      "history": 2
+    },
+    "justixauto-t931-evidence-537484798": {
+      "items": 0,
+      "events": 0,
+      "receipts": 0,
+      "history": 2
+    }
+  },
+  "fresh_bundles": {
+    "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t931-evidence-1018217142": {
+      "counts": {
+        "items": 1,
+        "events": 1,
+        "receipts": 1,
+        "history": 2
+      },
+      "files": {
+        "after-readiness.json.sha256": "8b1636bb8118dd3a3b7a6634bea200b89fd7fa25beae4b451bfa8c104b395122",
+        "profile.json.sha256": "63e7d38014227c1d0f897a67b95c4ffbdda17652e46dbf6c855e23cf4f0d8d74",
+        "before-readiness.json": "0830dcad2bbae8d48327d66a4e6ade30c2352cf1331387d6112c0e42abf2a6f6",
+        "after-readiness.json": "0830dcad2bbae8d48327d66a4e6ade30c2352cf1331387d6112c0e42abf2a6f6",
+        "before-readiness.json.sha256": "8b1636bb8118dd3a3b7a6634bea200b89fd7fa25beae4b451bfa8c104b395122",
+        "profile.json": "c3e33b86cc1e7736da4491cff7baeb743454804ee261f666faa53c55615b3bf6",
+        "migrations/0001_mechanics.manifest.json": "630c5196e23a998c037be5da75c6933d1f13a475b97bc5c6fa6290a3b347aca3",
+        "migrations/0012_synthetic.manifest.json": "22ca60f5daa011939b57ec762eaa753f82b4ff1b3aea21205dd2e0fffcaf1544",
+        "migrations/0001_mechanics.up.sql": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+        "migrations/0012_synthetic.up.sql": "320e7f2896207377dfd3437f47d24d8e6691c2c0250589704d2fc8eac0d1d303"
+      }
+    },
+    "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t931-evidence-2959228395": {
+      "counts": null,
+      "files": {
+        "profile.json.sha256": "79f533af74108a838c020476220c5209b901506f113872ea8256bb9ab7a15d58",
+        "profile.json": "42d5d479d2ec642cdc373275f637f855fd7bda4fa766114887ad0a19de19ba54",
+        "migrations/0001_mechanics.manifest.json": "630c5196e23a998c037be5da75c6933d1f13a475b97bc5c6fa6290a3b347aca3",
+        "migrations/0012_synthetic.manifest.json": "22ca60f5daa011939b57ec762eaa753f82b4ff1b3aea21205dd2e0fffcaf1544",
+        "migrations/0001_mechanics.up.sql": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+        "migrations/0012_synthetic.up.sql": "320e7f2896207377dfd3437f47d24d8e6691c2c0250589704d2fc8eac0d1d303"
+      }
+    }
+  },
+  "author_fixture_refs": [
+    "10ab6ae26ade6847855801df0eaee7bc4c280212cb342c4b2adddab6e4765042",
+    "2143db76e0aea6b7c6cd783868e3ac8fb590a9fc2babda5c4726c6991a1f6c41",
+    "2c70271b0b129ec096a5cb976204dda6449f01a27f73073dcb36964a8fe17ca1",
+    "2eb4963dfba6f4c8d9c88983c7be0ff3526c4e70dbcbf370db7d969aac250ed2",
+    "33325044f62586b116cc91dba68b671664626b48b407f06116b6580a1c72241f",
+    "4c4daa38d609bc600c5c73b3fc3545f494f25d7bbba6867f5865523e2634fca1",
+    "70ce95f1f74f433491ab32cb29fe1639c1befa533fed5353a420177280f206bc",
+    "746888d48034769eec00cad8582a498b4439318f5681c3c3ac0653689dc12e34",
+    "808f01d8fba819bde646e3c27ed99b61e0bb2988821c878b6794138ac0fb40f1",
+    "828126fb28825c4255565a2321cc05c787a93b82fc0675231f908400f7903943",
+    "990d0894d9df5b1be5a58f6c6ea60af05103d06dbef933183b66103d3a900d9f",
+    "c8526c96d97df3c043a4e04612d5abd5e7de095e22ad2a3ba2b7af1e5436c6ed",
+    "d4f3fc58f740de997e1f7aee697fbbb15b882dc0fed82ef05633e828b1c4d91e",
+    "f66279967d5e612771a74dddd3e289f5ef78b01fa59f74594f0adb877e99d92f",
+    "justixauto-t931-0a890f03-1bf2-4d4b-9e6f-a58211e19d68",
+    "justixauto-t931-190abd72-48ad-43b2-8d14-4b0c3182249d",
+    "justixauto-t931-1c70eb34-8779-464c-ac27-422ac7f8794f",
+    "justixauto-t931-1e0cac2b-5631-4bd3-baff-50f38f7d550c",
+    "justixauto-t931-3085b5b0-85a1-48be-94c2-bef0621e1a8a",
+    "justixauto-t931-3d78c318-5f6b-4f1d-bc12-e39edbb017bd",
+    "justixauto-t931-504c7229-fd15-4307-9281-a506802d588e",
+    "justixauto-t931-53a0093e-99d8-4718-9a80-62b831d93f7a",
+    "justixauto-t931-674f2c9d-2d0f-4e84-8e0c-7c24b0d29633",
+    "justixauto-t931-676dbb2f-00c7-4a74-a1eb-afc74fc2de26",
+    "justixauto-t931-6c2f6ab2-618c-406c-80c5-86231a264839",
+    "justixauto-t931-91f55949-d82c-4ab1-aaad-2b6076c7d1e3",
+    "justixauto-t931-9b683322-667e-4782-9e52-30cbba176956",
+    "justixauto-t931-b19e36e0-a1e1-42ac-a4e5-6b576637d621",
+    "justixauto-t931-c96432a2-e911-48f1-9c04-2c81bf7f562e",
+    "justixauto-t931-cd3857e2-cd90-46ac-99a2-5530fd83a576",
+    "justixauto-t931-e599a514-44e6-4aa1-ba2f-12fd89a5ceab",
+    "justixauto-t931-eb209384-3536-438c-9835-0d053ac20d5d"
+  ],
+  "qa_fixture_refs": [
+    "a1557282935d45fdabf07dd562401e1905a4371003e8621b9b589d77ecc92c68",
+    "c72c03b97ab70c388b84fc21472e4c7636b83fb92cfcf254453665344464862e",
+    "cc858c4e975da78c551be975f594ecc5b5950608098ba08a033daeb783da9d50",
+    "fddab08346e11ab13871abc58f9ae7fbc4ad75b1cd7fac97c4d0ecb157d8f95f",
+    "justixauto-t931-1c4e086a-9d05-477c-8c73-00a7e9972c93",
+    "justixauto-t931-76e11282-c3cc-41cf-9e11-8ba6d3bb4312",
+    "justixauto-t931-839ae0fc-49e2-46fa-b589-b60d55aaa2df",
+    "justixauto-t931-dbdd01f3-a7e8-467d-91e8-347d25dca70b",
+    "justixauto-t931-e3c896bd-c979-4b8d-bd44-5143129c9c5b"
+  ],
+  "legacy_checker_byte_exact": true
+}

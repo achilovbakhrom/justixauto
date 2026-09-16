@@ -1,0 +1,12 @@
+Target aee07f4047ac293cc2c35349c5711a519e9475fc
+Worktree .worktrees/T-931
+Go wrapper 1.27.1; GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off
+Only live opt-in: JUSTIXAUTO_TEST_IDENTITY_MECHANICS=1
+No session_replication_role setting changes or parameter grants are used by this task fixture.
+JUSTIXAUTO_TEST_IDENTITY_MECHANICS=1 bash tools/go.sh test -race -count=1 -mod=readonly -v ./services/... ./pkg/... ./tests/...
+bash tools/go.sh vet ./services/... ./pkg/... ./tests/...
+JUSTIXAUTO_TEST_IDENTITY_MECHANICS=1 bash tools/go.sh test -race -count=1 -mod=readonly -v -overlay docs/justix-auto/dev/qa/T-931/overlay.json -run '^TestQA931Independent$' ./services/identity/adapter/postgres
+python3 docs/justix-auto/dev/qa/T-931/verify_evidence.py
+python3 docs/justix-auto/dev/qa/T-931/verify_fixture_absence.py
+git diff --check
+All commands exited 0. Source and canonical files remained unchanged; no QA commit.

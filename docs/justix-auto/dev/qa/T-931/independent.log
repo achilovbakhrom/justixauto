@@ -1,0 +1,25 @@
+=== RUN   TestQA931Independent
+    qa_independent_test.go:31: created owned fixture justixauto-t931-839ae0fc-49e2-46fa-b589-b60d55aaa2df id cc858c4e975da78c551be975f594ecc5b5950608098ba08a033daeb783da9d50 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    unit_of_work_test.go:737: retained synthetic evidence directory /private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t931-evidence-2959228395
+    unit_of_work_test.go:765: synthetic artifact migrations/0001_mechanics.up.sql sql=88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d manifest=630c5196e23a998c037be5da75c6933d1f13a475b97bc5c6fa6290a3b347aca3
+    unit_of_work_test.go:765: synthetic artifact migrations/0012_synthetic.up.sql sql=320e7f2896207377dfd3437f47d24d8e6691c2c0250589704d2fc8eac0d1d303 manifest=22ca60f5daa011939b57ec762eaa753f82b4ff1b3aea21205dd2e0fffcaf1544
+=== RUN   TestQA931Independent/transaction-check-query-1-fails-before-bind
+=== RUN   TestQA931Independent/transaction-check-query-5-fails-before-bind
+=== RUN   TestQA931Independent/nil-callback-opens-no-transaction
+=== RUN   TestQA931Independent/factory-write-error-rolls-back
+=== RUN   TestQA931Independent/callback-panic-rolls-back
+=== RUN   TestQA931Independent/active-and-ended-handle-no-fallback
+=== RUN   TestQA931Independent/constructor-profile-isolation
+=== NAME  TestQA931Independent
+    qa_independent_test.go:70: all independent failure paths preserved exact original retained snapshot
+    unit_of_work_test.go:167: validated fixture removed and absent: cc858c4e975da78c551be975f594ecc5b5950608098ba08a033daeb783da9d50 justixauto-t931-839ae0fc-49e2-46fa-b589-b60d55aaa2df; attached volume IDs []
+--- PASS: TestQA931Independent (3.32s)
+    --- PASS: TestQA931Independent/transaction-check-query-1-fails-before-bind (0.08s)
+    --- PASS: TestQA931Independent/transaction-check-query-5-fails-before-bind (0.05s)
+    --- PASS: TestQA931Independent/nil-callback-opens-no-transaction (0.00s)
+    --- PASS: TestQA931Independent/factory-write-error-rolls-back (0.09s)
+    --- PASS: TestQA931Independent/callback-panic-rolls-back (0.09s)
+    --- PASS: TestQA931Independent/active-and-ended-handle-no-fallback (0.02s)
+    --- PASS: TestQA931Independent/constructor-profile-isolation (0.05s)
+PASS
+ok  	justixauto/services/identity/adapter/postgres	4.854s

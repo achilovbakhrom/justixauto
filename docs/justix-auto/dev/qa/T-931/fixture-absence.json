@@ -1,0 +1,212 @@
+{
+  "result": "PASS",
+  "author_references": 32,
+  "qa_references": 9,
+  "checks": [
+    {
+      "reference": "10ab6ae26ade6847855801df0eaee7bc4c280212cb342c4b2adddab6e4765042",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "2143db76e0aea6b7c6cd783868e3ac8fb590a9fc2babda5c4726c6991a1f6c41",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "2c70271b0b129ec096a5cb976204dda6449f01a27f73073dcb36964a8fe17ca1",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "2eb4963dfba6f4c8d9c88983c7be0ff3526c4e70dbcbf370db7d969aac250ed2",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "33325044f62586b116cc91dba68b671664626b48b407f06116b6580a1c72241f",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "4c4daa38d609bc600c5c73b3fc3545f494f25d7bbba6867f5865523e2634fca1",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "70ce95f1f74f433491ab32cb29fe1639c1befa533fed5353a420177280f206bc",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "746888d48034769eec00cad8582a498b4439318f5681c3c3ac0653689dc12e34",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "808f01d8fba819bde646e3c27ed99b61e0bb2988821c878b6794138ac0fb40f1",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "828126fb28825c4255565a2321cc05c787a93b82fc0675231f908400f7903943",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "990d0894d9df5b1be5a58f6c6ea60af05103d06dbef933183b66103d3a900d9f",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "a1557282935d45fdabf07dd562401e1905a4371003e8621b9b589d77ecc92c68",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "c72c03b97ab70c388b84fc21472e4c7636b83fb92cfcf254453665344464862e",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "c8526c96d97df3c043a4e04612d5abd5e7de095e22ad2a3ba2b7af1e5436c6ed",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "cc858c4e975da78c551be975f594ecc5b5950608098ba08a033daeb783da9d50",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "d4f3fc58f740de997e1f7aee697fbbb15b882dc0fed82ef05633e828b1c4d91e",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "f66279967d5e612771a74dddd3e289f5ef78b01fa59f74594f0adb877e99d92f",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "fddab08346e11ab13871abc58f9ae7fbc4ad75b1cd7fac97c4d0ecb157d8f95f",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-0a890f03-1bf2-4d4b-9e6f-a58211e19d68",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-190abd72-48ad-43b2-8d14-4b0c3182249d",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-1c4e086a-9d05-477c-8c73-00a7e9972c93",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-1c70eb34-8779-464c-ac27-422ac7f8794f",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-1e0cac2b-5631-4bd3-baff-50f38f7d550c",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-3085b5b0-85a1-48be-94c2-bef0621e1a8a",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-3d78c318-5f6b-4f1d-bc12-e39edbb017bd",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-504c7229-fd15-4307-9281-a506802d588e",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-53a0093e-99d8-4718-9a80-62b831d93f7a",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-674f2c9d-2d0f-4e84-8e0c-7c24b0d29633",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-676dbb2f-00c7-4a74-a1eb-afc74fc2de26",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-6c2f6ab2-618c-406c-80c5-86231a264839",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-76e11282-c3cc-41cf-9e11-8ba6d3bb4312",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-839ae0fc-49e2-46fa-b589-b60d55aaa2df",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-91f55949-d82c-4ab1-aaad-2b6076c7d1e3",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-9b683322-667e-4782-9e52-30cbba176956",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-b19e36e0-a1e1-42ac-a4e5-6b576637d621",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-c96432a2-e911-48f1-9c04-2c81bf7f562e",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-cd3857e2-cd90-46ac-99a2-5530fd83a576",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-dbdd01f3-a7e8-467d-91e8-347d25dca70b",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-e3c896bd-c979-4b8d-bd44-5143129c9c5b",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-e599a514-44e6-4aa1-ba2f-12fd89a5ceab",
+      "absent": true,
+      "exit_code": 1
+    },
+    {
+      "reference": "justixauto-t931-eb209384-3536-438c-9835-0d053ac20d5d",
+      "absent": true,
+      "exit_code": 1
+    }
+  ]
+}
