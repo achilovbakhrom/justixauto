@@ -1,0 +1,30 @@
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-944
+Exact correction SHA: a3c291d124bae46e381faa8307d02551c26d0bc3
+Original BOUNCE SHA: 26e2ef72ce270d0af6954caf24e2a49e18162532
+Pinned Node PATH prefix:
+PATH=/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin:$PATH
+
+bash tools/check-git.sh
+PASS own worktree root.
+npm run test:unit > docs/justix-auto/dev/qa/T-944-r2/test-unit.log 2>&1
+PASS462tests/10files,3.13s.
+npm run typecheck > docs/justix-auto/dev/qa/T-944-r2/typecheck.log 2>&1
+npm run lint > docs/justix-auto/dev/qa/T-944-r2/lint.log 2>&1
+Both PASS exit0.
+
+node docs/justix-auto/dev/qa/T-944-r2/probe.mjs > docs/justix-auto/dev/qa/T-944-r2/probe-output.json 2> docs/justix-auto/dev/qa/T-944-r2/probe-stderr.log
+PASS exact correctionSHA,22old scenarios,three corrected observations,26newcases.
+Original probe kept unchanged. Wrapper updates only exactSHA and appends explicit
+healthy assertions on its observations plus additional tests in a temporary copy.
+Actual shared client/controller/decoder compiled strictly and executed. No mock
+controller or substitute implementation. Empty probe-stderr.log intentional.
+
+python3 docs/justix-auto/dev/qa/T-944-r2/scope.py > docs/justix-auto/dev/qa/T-944-r2/scope-output.json
+PASS exact3changedleaves,16901-byte result prefix,ten original QA files against
+main/809d539,three source hashes,19+9archive raw log hashes and archive checksums.
+
+git diff --check
+git diff --quiet
+git rev-parse HEAD
+PASS reviewed source/result unchanged. Only new assigned QA report/evidence;
+original QA was already untracked in this worktree and remains byte-exact.

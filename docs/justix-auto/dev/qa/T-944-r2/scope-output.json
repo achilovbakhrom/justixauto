@@ -1,0 +1,108 @@
+{
+  "sha": "a3c291d124bae46e381faa8307d02551c26d0bc3",
+  "previous": "26e2ef72ce270d0af6954caf24e2a49e18162532",
+  "changedLeaves": [
+    "web/packages/api/src/authEpoch.ts",
+    "web/packages/api/src/authEpoch.test.ts",
+    "docs/justix-auto/dev/results/T-944.md"
+  ],
+  "originalResultPrefixBytes": 16901,
+  "originalArtifacts": [
+    {
+      "path": "docs/justix-auto/dev/qa/T-944.md",
+      "sha256": "c27cf7c7f2bea25be63cfe9cc94e01e7ed80791f7aa140ea542d5765b2642fb5"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/commands.txt",
+      "sha256": "14d7df4bd0bc2891090bfda78b6426febbebeb65d0e8bcc930925b4be3f5f3ba"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/lint.log",
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/probe-output.json",
+      "sha256": "5ba6d1ffefdc00c44286a079a7f0da05b200f89aec38bee6d1bfdfe6a081201f"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/probe-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/probe.mjs",
+      "sha256": "1875cdd6fb08c25bee8829bcc80c2578f629e9b9382c27d62af23130cd85ccce"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/scope-output.json",
+      "sha256": "aa992f9132376124933032c91cd0ec63de514c6696438ae99a2108a376a9631e"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/scope.py",
+      "sha256": "45e3141819a765e433043a8e2353921c7cad6927e7b4fb1559008db815b0db51"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/test-unit.log",
+      "sha256": "8100748343dd283e08fa7aa276d3549ac6acd4adfbec8acb51e130386dd389da"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-944/typecheck.log",
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "web/packages/api/src/authEpoch.ts",
+      "sha256": "5978eb74f7f12f1ca456b338a73e866b1583b619e5cc5a86921cb044d0f60763"
+    },
+    {
+      "path": "web/packages/api/src/authEpoch.test.ts",
+      "sha256": "5d6c7e7cd113ef1e8606d3cd4252fe4b4cb6ebce45ce35ff67257e9906ae5069"
+    },
+    {
+      "path": "web/packages/api/package.json",
+      "sha256": "eaa227d055427c659b4ae7456b5a5b39b4319cc4baf6213dd19ebfa0847d5406"
+    }
+  ],
+  "archives": [
+    {
+      "count": 19,
+      "sha256": "0337ac2e7739137c57c13b926f6efb2863f330b8f0e51ebd2a1071ec559789a3",
+      "logNames": [
+        "justixauto-t944-lint-attempt1.log",
+        "justixauto-t944-lint-final.log",
+        "justixauto-t944-lint-final2.log",
+        "justixauto-t944-lint-final3.log",
+        "justixauto-t944-lint-reviewed.log",
+        "justixauto-t944-npm-ci.log",
+        "justixauto-t944-typecheck-attempt1.log",
+        "justixauto-t944-typecheck-attempt2.log",
+        "justixauto-t944-typecheck-final.log",
+        "justixauto-t944-typecheck-final2.log",
+        "justixauto-t944-typecheck-final3.log",
+        "justixauto-t944-typecheck-reviewed.log",
+        "justixauto-t944-unit-attempt1.log",
+        "justixauto-t944-unit-attempt2.log",
+        "justixauto-t944-unit-attempt3.log",
+        "justixauto-t944-unit-final.log",
+        "justixauto-t944-unit-final2.log",
+        "justixauto-t944-unit-final3.log",
+        "justixauto-t944-unit-reviewed.log"
+      ]
+    },
+    {
+      "count": 9,
+      "sha256": "667727d7fcc99883f40d0fca038f2a44f95f28da31f0117f4df1ccf6bfb06978",
+      "logNames": [
+        "justixauto-t944-fix1-lint-final.log",
+        "justixauto-t944-fix1-original-probe.json",
+        "justixauto-t944-fix1-original-probe.log",
+        "justixauto-t944-fix1-probe.json",
+        "justixauto-t944-fix1-probe.log",
+        "justixauto-t944-fix1-typecheck-final.log",
+        "justixauto-t944-fix1-typecheck.log",
+        "justixauto-t944-fix1-unit-final.log",
+        "justixauto-t944-fix1-unit.log"
+      ]
+    }
+  ]
+}

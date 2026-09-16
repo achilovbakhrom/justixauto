@@ -1,0 +1,87 @@
+{
+  "sha": "a3c291d124bae46e381faa8307d02551c26d0bc3",
+  "compiledOutput": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/t944-qa-ljpLIu",
+  "passingIndependentCases": 22,
+  "rows": [
+    "session pending -> logout",
+    "session pending -> context-change",
+    "session pending -> revocation",
+    "session pending -> unmount",
+    "login pending -> logout",
+    "login pending -> context-change",
+    "login pending -> revocation",
+    "login pending -> unmount",
+    "challenge-verify pending -> logout",
+    "challenge-verify pending -> context-change",
+    "challenge-verify pending -> revocation",
+    "challenge-verify pending -> unmount",
+    "enrollment-confirm pending -> logout",
+    "enrollment-confirm pending -> context-change",
+    "enrollment-confirm pending -> revocation",
+    "enrollment-confirm pending -> unmount",
+    "real logout sends private old token after clearing visible state",
+    "invalid classifier suppresses state and global diagnostics",
+    "invalid classifier suppresses state and global diagnostics",
+    "invalid classifier suppresses state and global diagnostics",
+    "reentrant nested execute stays busy; epoch invalidation wins",
+    "secret view clears on invalidation and receipt contains no payload"
+  ],
+  "unhandledRejections": 0,
+  "findings": [
+    {
+      "purpose": "challenge-create",
+      "status": 403,
+      "code": "CSRF_REJECTED",
+      "result": {
+        "kind": "binding-invalid"
+      },
+      "stateAfterRejectedBinding": {
+        "epoch": 1,
+        "phase": "empty",
+        "busy": false,
+        "hasView": false
+      },
+      "protectedContextStillVisible": false,
+      "subsequentUnsafeFetch": false,
+      "reusedOldToken": false
+    },
+    {
+      "purpose": "challenge-create",
+      "status": 401,
+      "code": "SESSION_EXPIRED",
+      "result": {
+        "kind": "binding-invalid"
+      },
+      "stateAfterRejectedBinding": {
+        "epoch": 1,
+        "phase": "empty",
+        "busy": false,
+        "hasView": false
+      },
+      "protectedContextStillVisible": false,
+      "subsequentUnsafeFetch": false,
+      "reusedOldToken": false
+    },
+    {
+      "purpose": "challenge-create",
+      "status": 401,
+      "code": "SESSION_REQUIRED",
+      "result": {
+        "kind": "binding-invalid"
+      },
+      "stateAfterRejectedBinding": {
+        "epoch": 1,
+        "phase": "empty",
+        "busy": false,
+        "hasView": false
+      },
+      "protectedContextStillVisible": false,
+      "subsequentUnsafeFetch": false,
+      "reusedOldToken": false
+    }
+  ],
+  "correctionCases": 26,
+  "originalProbeSHA256": "1875cdd6fb08c25bee8829bcc80c2578f629e9b9382c27d62af23130cd85ccce",
+  "adaptedProbeSHA256": "0602f512adac542a7c4f323cb3fac8618381dfd2dbd7049474349b49b483bc83",
+  "adaptation": "Original probe retained verbatim except exact SHA; added assertions on three observations and separate correction cases. No previous scenario removed."
+}
