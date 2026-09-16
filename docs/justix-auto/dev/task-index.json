@@ -1356,7 +1356,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1385,7 +1385,8 @@
       "base_sha": "a2c61e8fadd0b8a5f4d7563aa67c1383c30b134e",
       "reviewed_sha": "0dab8c7ae691d7c34cd681d4f5894c6a4a188ef4",
       "agent": "qa_t027",
-      "execution_note": "Fix cycle1 explicitly validates present legacy mode before binding; restored old grants cannot admit custody. Unchanged 19 QA cases and expanded Retail tests pass20.022s; full scoped race/vet PASS. Independent r2 review assigned."
+      "execution_note": "Independent r2 GREEN at 0dab8c7; exact Retail scaffold integrated. Main scoped race PASS Retail18.490/contracts115.486 and vet0; 6 reviewed leaves and all26 QA artifacts verified unchanged. Legacy mechanics only; explicit newer profiles and service root remain separate.",
+      "integration_sha": "11c5e74467922b0633aea3af553a620d7ee37fcd"
     },
     {
       "id": "T-028",
