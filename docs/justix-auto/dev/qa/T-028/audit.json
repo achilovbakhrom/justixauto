@@ -1,0 +1,207 @@
+{
+  "target": "0f4736a21db0d56fa17ca83934a43596a5352a35",
+  "base": "6f30bbbf9144fc3d03a49fbac57bb9dd9a43afdc",
+  "changed": [
+    "docs/justix-auto/dev/results/T-028.md",
+    "services/financing/adapter/postgres/unit_of_work.go",
+    "services/financing/adapter/postgres/unit_of_work_test.go",
+    "services/financing/migrations/0001_mechanics.up.sql",
+    "services/financing/port/dependencies.go",
+    "services/financing/port/unit_of_work.go"
+  ],
+  "source_and_inputs": {
+    "source": {
+      "services/financing/adapter/postgres/unit_of_work.go": "fb70ec7f2ef52ba9abc47151c3bcb67272bc10d53f19ab13f83bb53978caaacf",
+      "services/financing/adapter/postgres/unit_of_work_test.go": "32c5bae8791d9613222b7fe095d54959de9d3d7efc0d1ec6410f34857fab645f",
+      "services/financing/migrations/0001_mechanics.up.sql": "986392ea38b95943412f507547a04120b27075e5dd85ed1bfef310190881b04c",
+      "services/financing/port/dependencies.go": "56ce533b8af81a39c0ef24b230dd2b8ba336fa5f0e29b2d362d52d93922b85f5",
+      "services/financing/port/unit_of_work.go": "5926732f2e9dcf96dff5368a47ed4d1d01242dc3bd00f1441f17f2d6932c9a23"
+    },
+    "unchanged_inputs": {
+      "go.mod": "d240b6a3cf34d76d3c87d549db86dfe56635faab80b85f4e77aae0bf76edad0d",
+      "go.sum": "5bdef8e512d1a8d379eec0064b65e24f66b2d78eb39d1d12885c86e0d3f8af6c",
+      "infra/local/postgres/init-owners.sql": "79eaf102013af5845520deb73907aea6b2a6cc220683631d1b933fbccc20479d",
+      "pkg/eventstore/schema.sql": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+      "pkg/eventstore/migrations/000002_messaging_delivery.up.sql": "1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2",
+      "services/retail/adapter/postgres/unit_of_work.go": "5bbbbe84f6f7346ad2e59205a01784a43af0bba8025a164653dce7e63e93df51",
+      "services/retail/adapter/postgres/unit_of_work_test.go": "907b675ac27f917d15263e7e18f9321eeb6d2e84feb9db8298ef36ffa609f61c"
+    }
+  },
+  "verified_author_entries": [
+    {
+      "name": "justixauto-t028-cleanup-audit.json",
+      "sha256": "5809b2bb4fabed9fb752197d5c99ca8b7b0edc6cbb0ec27b168e2a401fcceb8b",
+      "bytes": 2740
+    },
+    {
+      "name": "justixauto-t028-full-race.log",
+      "sha256": "a13e440013c764852aa52a3ff45a7af7aac5b772b59c2ccd4c3ab6850d05b42d",
+      "bytes": 965
+    },
+    {
+      "name": "justixauto-t028-live-final.log",
+      "sha256": "d8a3584980b5faa011c6cb6a9c6f274a1e99541a5f9adc97fadc2577ba110078",
+      "bytes": 14533
+    },
+    {
+      "name": "justixauto-t028-live.log",
+      "sha256": "2801ecb52060b2034a9064fd6dbdf917c7891a609d6bbd8bce6b62081c54ae25",
+      "bytes": 14343
+    },
+    {
+      "name": "justixauto-t028-unit.log",
+      "sha256": "6ee290d1f29941e3b5be40ffe0f975a2c00fa3992e1d2fb3c5e12a35477924e5",
+      "bytes": 115
+    },
+    {
+      "name": "justixauto-t028-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "archive_sha256": "4d22fba18da379bbc28bbb3a27f7f3d697f004179d021c508aec1926c5ab3f2f",
+  "typed_port_imports": "context only",
+  "owner_bootstrap_count": 7,
+  "foreign_database_denial_count": 6,
+  "author_fixture_reference_count": 14,
+  "fresh_fixture_reference_count": 13,
+  "independent_absence_checks": [
+    {
+      "reference": "0077543cc91621d82704481a64f5a20e34bd41c2c14a835619e857c014333836",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "02a24bbbb8ba70cdcd920196f7d816f6be96e3c67c0652e1ac180c93402b5584",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "06ac28f73c9829f84d5edfd1d5dc11591768fa64381a612e816d9d3407518b3b",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "132880a2d6390ee494554006d77f848fff381acc0bb460efb8c57d5d5254cf47",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "287b4ab8199d9075a321e5a5131ca6ab84852f850f60ee0fe0ff68d7ba931252",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "3bdf59b082a54a7f1554242a486523b357beb5b829c9bac44703dafbb9b594df",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "78afc1a3786304d6ffa96f762f2669cc290398f846184bf095c2287e2adfc282",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "89dde70d43d18c2673308232f0923d39b5714d70dad0acccafc377f50592fa2e",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "944bbf5a221d5030670cea47764f64b5d6d2122bc08cbf43e8840b31da76e21b",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "a6b5abcad41a9d982afb357234546b626aa1063fdc2f330e0c20c85224dbfdfa",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "bd9275574cbb2e6d7d9b1cea16f1778a37ae0f5c2d91443419b540817775c244",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "cb0a2deac11eba9ab2ea20928590ea2bd949c275c1c657fdfa08fc192d3b488a",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-0318dc39-4e21-48f4-9ad8-8241000cd023",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-06e0a45f-1040-49f9-9bdf-68da9ec4197c",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-13584835-c356-42e7-a94c-1698674edf0d",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-20d1b421-c3b8-4e6a-b982-83abc3dca9d9",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-25b9390c-06f2-4b36-af38-df37d9cef725",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-2cef5756-0a3d-46c2-b52f-fbfd6bdd37c7",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-511e163c-a791-4a82-bd26-d0860786c7b2",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-56147761-a8d9-418e-8918-24b01b8acdf1",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-7b974ba8-395f-4791-b30b-02328f525362",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-92388b05-9781-45d6-9202-a2fd46907294",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-a3f26dc8-c04e-4fb2-a5bf-3f7a61daa650",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-c74b8384-072b-4708-ad38-1fd77d5a5846",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-d7dbef2d-af53-49b3-9eee-5c36a0b1b80a",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-dbc9a0d4-a235-42f1-af09-531f363fbfbe",
+      "exit": 1,
+      "absent": true
+    },
+    {
+      "reference": "justixauto-t028-f61dec24-e6b9-4a59-8a09-56d553a8888e",
+      "exit": 1,
+      "absent": true
+    }
+  ],
+  "populated_retained_effects": "one financing event, scoped receipt, operation; common company; clean v1",
+  "tracked_changes": []
+}

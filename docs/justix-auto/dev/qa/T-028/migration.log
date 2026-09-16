@@ -1,0 +1,15 @@
+=== RUN   TestQA028MigrationGuardsBeforeMarker
+    qa_independent_test.go:105: created owned fixture justixauto-t028-06e0a45f-1040-49f9-9bdf-68da9ec4197c id 78afc1a3786304d6ffa96f762f2669cc290398f846184bf095c2287e2adfc282 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+=== RUN   TestQA028MigrationGuardsBeforeMarker/clean-v1
+=== RUN   TestQA028MigrationGuardsBeforeMarker/wrong-version
+=== RUN   TestQA028MigrationGuardsBeforeMarker/multiple-rows
+=== RUN   TestQA028MigrationGuardsBeforeMarker/empty
+=== NAME  TestQA028MigrationGuardsBeforeMarker
+    unit_of_work_test.go:164: validated fixture removed and absent: 78afc1a3786304d6ffa96f762f2669cc290398f846184bf095c2287e2adfc282 justixauto-t028-06e0a45f-1040-49f9-9bdf-68da9ec4197c; attached volume IDs []
+--- PASS: TestQA028MigrationGuardsBeforeMarker (3.25s)
+    --- PASS: TestQA028MigrationGuardsBeforeMarker/clean-v1 (0.24s)
+    --- PASS: TestQA028MigrationGuardsBeforeMarker/wrong-version (0.22s)
+    --- PASS: TestQA028MigrationGuardsBeforeMarker/multiple-rows (0.23s)
+    --- PASS: TestQA028MigrationGuardsBeforeMarker/empty (0.19s)
+PASS
+ok  	justixauto/services/financing/adapter/postgres	5.189s

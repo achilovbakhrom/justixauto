@@ -1,0 +1,20 @@
+{
+  "target": "0f4736a21db0d56fa17ca83934a43596a5352a35",
+  "base": "6f30bbbf9144fc3d03a49fbac57bb9dd9a43afdc",
+  "changed": [
+    "docs/justix-auto/dev/results/T-028.md",
+    "services/financing/adapter/postgres/unit_of_work.go",
+    "services/financing/adapter/postgres/unit_of_work_test.go",
+    "services/financing/migrations/0001_mechanics.up.sql",
+    "services/financing/port/dependencies.go",
+    "services/financing/port/unit_of_work.go"
+  ],
+  "archive_sha256": "4d22fba18da379bbc28bbb3a27f7f3d697f004179d021c508aec1926c5ab3f2f",
+  "typed_port_imports": "context only",
+  "owner_bootstrap_count": 7,
+  "foreign_database_denial_count": 6,
+  "author_fixture_reference_count": 14,
+  "fresh_fixture_reference_count": 13,
+  "populated_retained_effects": "one financing event, scoped receipt, operation; common company; clean v1",
+  "tracked_changes": []
+}
