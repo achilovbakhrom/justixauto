@@ -27,10 +27,10 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-029 ready-for-qa (`.worktrees/T-029`, `task/T-029-insurance-scaffold`); T-030 in-progress (`.worktrees/T-030`, `task/T-030-documents-scaffold`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 blocked (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-932 ready-for-qa (`.worktrees/T-932`, `task/T-932-owner-migration-driver`); T-938 ready-for-qa (`.worktrees/T-938`, `task/T-938-auth-generator-semantics`).
-- Integrated tasks: 49/948; independent exact-commit QA required before each integration.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-030 in-progress (`.worktrees/T-030`, `task/T-030-documents-scaffold`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 blocked (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-932 ready-for-qa (`.worktrees/T-932`, `task/T-932-owner-migration-driver`); T-938 ready-for-qa (`.worktrees/T-938`, `task/T-938-auth-generator-semantics`).
+- Integrated tasks: 50/948; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
-- Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. T-945–T-948 may be assigned when their own dependencies permit; pure T-947 is eligible. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.
+- Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. Pure membership identities (T-947) are integrated; T-945, T-946 and T-948 await their own dependencies. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 948 (916 reviewed baseline + thirty-two bounded additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -67,8 +67,10 @@ the strict raw response JSON decoder are now independently integrated. Auth
 Fetch metadata/429 composition is integrated as T-936; the generation-label correction remains
 inside T-928's reviewed storage fix cycle. Identity's explicit profile-compatible
 UOW is integrated as T-931 and checks each transaction before repository binding.
-The actual migration driver/runner, concrete baseline manifests/default provisioning and
-custody profile support remain separate tasks with their explicit prerequisites.
+The migration driver's initial merge failed integration; T-932's connection
+cleanup correction is under independent review. The runner, concrete baseline
+manifests/default provisioning and custody profile support remain separate tasks
+with their explicit prerequisites.
 
 Historical preflight below predates the authorized Git setup on 2026-09-14.
 `doctor` checks the independent Git root and initial commit.
@@ -103,7 +105,8 @@ all four apps; their default session boundaries render no protected children unt
 integration. Explicit synthetic QA fixtures display the empty shell. This is
 not a working business application; feature routes and service composition
 remain in their assigned tasks. Explicit SQL installation templates and
-shared Go durability primitives are integrated. Identity, Inventory, Commerce and Retail now have typed owner
+shared Go durability primitives are integrated. Identity, Inventory, Commerce,
+Retail, Financing and Insurance now have typed owner
 transaction ports, explicit migrations and fail-closed persistence readiness.
 Their composition roots, business features and custody-mode adapters remain
 separate tasks; these scaffolds do not start service APIs or workers.
