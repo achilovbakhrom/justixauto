@@ -35854,7 +35854,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-936",
         "T-640"
@@ -35875,9 +35875,9 @@
       "scope": "Parse and validate closed header/security/semantic declarations into a trusted internal model. Keep public auth generation rejected before all output writes; preserve non-auth outputs and existing guard tests.",
       "worktree": ".worktrees/T-937",
       "base_sha": "23d8cede88d228ef57fa73205c159b07e57a49b2",
-      "agent": "frontend_t936",
-      "execution_note": "Independent BOUNCE: marked auth security:null and GET parameters:null normalize as omission into trusted model. Assign bounded auth-only presence/type correction preserving legitimate omission/inheritance and legacy output; public CLI/renderers remain correctly inactive. Original11QAartifacts retained.",
-      "reviewed_sha": "a4de45c811c8eaa7b8d3f7559df0db4c9454a3e3"
+      "agent": "qa_auth_transport",
+      "execution_note": "Fix cycle 1 rejects explicit null/non-array auth security and parameters before fallback. Author reports 250 model cases, full contract race 122.518s and vet; adapted original probe passes its existing matrix/negative/CLI/legacy checks plus three corrected null cases. Original eleven QA artifacts and result prefix preserved. Independent exact-commit re-review assigned; no activation or integration yet.",
+      "reviewed_sha": "1636aeb291007163f80e41855694a2390a7694f5"
     },
     {
       "id": "T-938",
