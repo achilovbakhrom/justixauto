@@ -35688,7 +35688,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-929",
         "T-930",
@@ -35709,8 +35709,10 @@
         "B-01.AC1"
       ],
       "scope": "Implement the actual migrate database.Driver on one owned pgx connection: bounded lock/preflight, exact pending dirty item, original complete SQL batch, and atomic artifact receipt plus clean head. Explicit fresh-v1 exception; poisoned unknown instances and retained dirty failure, no Force/Down/Drop or upstream private-field access.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-932",
+      "base_sha": "e4833a0b606377a5ecdd25f9743e6b9dc5a783fe",
+      "agent": "coordinator",
+      "execution_note": "Coordinator prepared approved migrate4.20.1 pin and exact sums in isolated branch; core builds offline, existing pgx pin preserved. Driver source is not implemented; backend assignment follows next worker slot. Root owns dependency leaf changes; combined exact task requires actual-engine QA."
     },
     {
       "id": "T-933",
