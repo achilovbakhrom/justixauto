@@ -1,0 +1,66 @@
+{
+  "result": "PASS",
+  "mode": "read-only inspection; no fixture created or removed by r3 QA",
+  "checks": [
+    {
+      "identifier": "97588978dcfc2a135f98a16b89d9e4e3ea65bc0fd0bfee3df6912b63e8575b90",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t927-691fa927-bb23-4844-8fd4-0bdc76fc2a60",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "eb339cbd6319246841c5936b5de88d40b38db367fe29c5ca1f362e2925793870",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t927-4d8f0363-21b0-4484-a7cf-af88c825c7ad",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "5ffcfedf3f096406706373f77be5a2f9db87e72658b7505c32ae15b2f8033a49",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t927-a633d523-6b59-4625-b349-1fefa77be00b",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "ec1b4ecc6332b5a7c516f05f48abe35a00c4dfaa91882726f6ae702f2f3ed954",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t927-49990e1c-ff2d-408e-b46c-1be077e2e001",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "9a3e097b6c4235700d0b749657c0de890f5252cde1fa0faa993ddd2a68bd0d00",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t927-db3c9009-848a-4f24-9754-0b0a354cf819",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "0128493e2bcda99344a530173c403cead31bf2189afb345e5c5edb94be3f73eb",
+      "exit_code": 1,
+      "absent": true
+    },
+    {
+      "identifier": "justixauto-t927-6371bc24-091b-4b55-bf3f-986b28719b5f",
+      "exit_code": 1,
+      "absent": true
+    }
+  ]
+}

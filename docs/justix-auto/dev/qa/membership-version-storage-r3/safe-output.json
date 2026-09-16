@@ -1,0 +1,353 @@
+{
+  "fixture": "justix-membership-r3-safe-fad054db-0fef-4b78-8554-fac11b82e8fd",
+  "image": "postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2",
+  "observations": [
+    {
+      "case": "pinned PostgreSQL18.6",
+      "result": "PASS"
+    },
+    {
+      "case": "inert installation needs no head and preserves old enrollment",
+      "result": "PASS"
+    },
+    {
+      "case": "old function and trigger definitions unchanged",
+      "result": "PASS"
+    },
+    {
+      "case": "new enrollment constraint trigger is additive deferred INSERT",
+      "result": "PASS"
+    },
+    {
+      "case": "R1 selection has no messages on S",
+      "result": "PASS"
+    },
+    {
+      "case": "future ordinary intake links committed R1",
+      "result": "PASS"
+    },
+    {
+      "case": "post-commit frozen stream addition",
+      "result": "REJECTED",
+      "reason": "frozen snapshot"
+    },
+    {
+      "case": "post-commit snapshot mutation",
+      "result": "REJECTED",
+      "reason": "old immutable"
+    },
+    {
+      "case": "missing link caught from enrollment INSERT",
+      "result": "REJECTED",
+      "reason": "missing enrollment link"
+    },
+    {
+      "case": "missing-link failure rolls back message enrollment jobs",
+      "result": "PASS"
+    },
+    {
+      "case": "mismatched link set",
+      "result": "REJECTED",
+      "reason": "set mismatch"
+    },
+    {
+      "case": "missing required job",
+      "result": "REJECTED",
+      "reason": "set mismatch"
+    },
+    {
+      "case": "extra consumer job",
+      "result": "REJECTED",
+      "reason": "set mismatch"
+    },
+    {
+      "case": "link cannot repair old retained enrollment",
+      "result": "REJECTED",
+      "reason": "enrollment not created here"
+    },
+    {
+      "case": "prospective mode cannot reference committed transition",
+      "result": "REJECTED",
+      "reason": "selection lifecycle"
+    },
+    {
+      "case": "runtime cannot supply full transaction marker",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "prospective late append without final selection",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "failed prospective selection leaves old set and head",
+      "result": "PASS"
+    },
+    {
+      "case": "current mode cannot use a new transition",
+      "result": "REJECTED",
+      "reason": "selection lifecycle"
+    },
+    {
+      "case": "prospective late delta and new head commit together",
+      "result": "PASS"
+    },
+    {
+      "case": "existing frozen initial enrollment remains byte-identical",
+      "result": "PASS"
+    },
+    {
+      "case": "historical redelivery reads old link without new insert or current-head condition",
+      "result": "PASS"
+    },
+    {
+      "case": "new intake cannot use stale R1",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "duplicate evidence cannot append to committed enrollment",
+      "result": "REJECTED",
+      "reason": "enrollment not created here"
+    },
+    {
+      "case": "future ordinary R2 intake stages all consumers",
+      "result": "PASS"
+    },
+    {
+      "case": "retained unknown membership still unmodified and has no invented link",
+      "result": "PASS"
+    },
+    {
+      "case": "current-link then sole CAS after all flush",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "all reverse guard rolls back link enrollment and R3",
+      "result": "PASS"
+    },
+    {
+      "case": "all link-first exact SQL",
+      "sql": "BEGIN; SET LOCAL ROLE runtime; INSERT INTO probe.message VALUES('M-all','S','E-all','V2','fixed-original-bytes');INSERT INTO probe.enrollment VALUES('E-all','M-all','S','V2','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'); INSERT INTO probe.job SELECT x->>'consumer_name','M-all','E-all',x->>'admission_id' FROM jsonb_array_elements('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'::jsonb) x;INSERT INTO probe.link(enrollment,request,stream,mode,phase,consumers,bytes,digest) SELECT 'E-all','R2','S','current','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]',convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8'),sha256(convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8')); SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED;INSERT INTO probe.transition(request,epoch,prior,catalog) VALUES('R3',3,'R2','V3'); INSERT INTO probe.stream VALUES('R3','S','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','[]'); UPDATE probe.head SET request='R3',epoch=3; COMMIT;",
+      "result": "REJECTED by immediate head guard"
+    },
+    {
+      "case": "head first then stale current link after all flush",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "all link guard rolls back head-first transaction",
+      "result": "PASS"
+    },
+    {
+      "case": "job append after sealed link and all flush",
+      "result": "REJECTED",
+      "reason": "enrollment job set sealed"
+    },
+    {
+      "case": "current-link then sole CAS after named flush",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "named reverse guard rolls back link enrollment and R3",
+      "result": "PASS"
+    },
+    {
+      "case": "named link-first exact SQL",
+      "sql": "BEGIN; SET LOCAL ROLE runtime; INSERT INTO probe.message VALUES('M-named','S','E-named','V2','fixed-original-bytes');INSERT INTO probe.enrollment VALUES('E-named','M-named','S','V2','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'); INSERT INTO probe.job SELECT x->>'consumer_name','M-named','E-named',x->>'admission_id' FROM jsonb_array_elements('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'::jsonb) x;INSERT INTO probe.link(enrollment,request,stream,mode,phase,consumers,bytes,digest) SELECT 'E-named','R2','S','current','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]',convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8'),sha256(convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8')); SET CONSTRAINTS probe.membership_enrollment_complete,probe.link_complete IMMEDIATE; SET CONSTRAINTS probe.membership_enrollment_complete,probe.link_complete DEFERRED;INSERT INTO probe.transition(request,epoch,prior,catalog) VALUES('R3',3,'R2','V3'); INSERT INTO probe.stream VALUES('R3','S','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','[]'); UPDATE probe.head SET request='R3',epoch=3; COMMIT;",
+      "result": "REJECTED by immediate head guard"
+    },
+    {
+      "case": "head first then stale current link after named flush",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "named link guard rolls back head-first transaction",
+      "result": "PASS"
+    },
+    {
+      "case": "job append after sealed link and named flush",
+      "result": "REJECTED",
+      "reason": "enrollment job set sealed"
+    },
+    {
+      "case": "reverse guard also rejects with no timing toggle",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "CAS before pending enrollment gains a link",
+      "result": "REJECTED",
+      "reason": "pending enrollment before selection"
+    },
+    {
+      "case": "new prospective link after its head was already selected",
+      "result": "REJECTED",
+      "reason": "prospective selection not pending"
+    },
+    {
+      "case": "selected snapshot cannot gain children after flush",
+      "result": "REJECTED",
+      "reason": "selected snapshot is sealed"
+    },
+    {
+      "case": "second head selection after all flush",
+      "result": "REJECTED",
+      "reason": "second head selection"
+    },
+    {
+      "case": "second head selection after named flush",
+      "result": "REJECTED",
+      "reason": "second head selection"
+    },
+    {
+      "case": "all rejected timing cases preserve R2",
+      "result": "PASS"
+    },
+    {
+      "case": "savepoint rollback permits one retained replacement head change",
+      "result": "PASS"
+    },
+    {
+      "case": "savepoint rollback cannot leave stale current link accepted",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "savepoint recovery preserves first-selection marker",
+      "result": "PASS",
+      "expected_error": "ERROR:  second head selection\nCONTEXT:  PL/pgSQL function probe.head_reverse_guard() line 4 at RAISE"
+    },
+    {
+      "case": "failed second transition rolled back while first head committed",
+      "result": "PASS"
+    },
+    {
+      "case": "one legitimate head change remains valid with timing flush",
+      "result": "PASS"
+    },
+    {
+      "case": "later separate transaction may advance head after ordinary link commit",
+      "result": "PASS"
+    },
+    {
+      "case": "historical R1 enrollment and link remain unchanged",
+      "result": "PASS"
+    },
+    {
+      "case": "supplied bookkeeping was overwritten by server guard",
+      "result": "PASS"
+    },
+    {
+      "case": "runtime cannot update head bookkeeping column",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "concurrent head cannot change after current-link constraint flush",
+      "result": "REJECTED",
+      "reason": "lock timeout"
+    },
+    {
+      "case": "current link committed while concurrent head attempt rolled back",
+      "result": "PASS"
+    },
+    {
+      "case": "head changes normally after current-link transaction ends",
+      "result": "PASS"
+    },
+    {
+      "case": "QA one named probe.membership_enrollment_complete cannot flush past reverse head guard",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "QA one named probe.membership_enrollment_complete cannot permit head-first stale intake",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "QA one named probe.membership_enrollment_complete cannot unseal an enrollment job set",
+      "result": "REJECTED",
+      "reason": "enrollment job set sealed"
+    },
+    {
+      "case": "QA one named probe.link_complete cannot flush past reverse head guard",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "QA one named probe.link_complete cannot permit head-first stale intake",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "QA one named probe.link_complete cannot unseal an enrollment job set",
+      "result": "REJECTED",
+      "reason": "enrollment job set sealed"
+    },
+    {
+      "case": "QA subtransaction enrollment fails top-level provenance before link",
+      "result": "REJECTED",
+      "reason": "job enrollment not created here"
+    },
+    {
+      "case": "QA subtransaction failure left no enrollment or message",
+      "result": "PASS"
+    },
+    {
+      "case": "QA link birth guard overwrites privileged supplied stamp",
+      "result": "PASS"
+    },
+    {
+      "case": "QA concurrent stale link revalidates head after waiting for writer commit",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "QA head-first concurrency wait measured",
+      "seconds": 1.938,
+      "result": "PASS"
+    },
+    {
+      "case": "QA head writer commits R9 and stale reader leaves no effects",
+      "result": "PASS"
+    },
+    {
+      "case": "QA named-flush current link retains SHARE lock through commit",
+      "result": "REJECTED",
+      "reason": "lock timeout"
+    },
+    {
+      "case": "QA timed-out head left no R10 while named-flush link committed",
+      "result": "PASS"
+    },
+    {
+      "case": "QA separate later transaction advances after named-flush reader",
+      "result": "PASS"
+    },
+    {
+      "case": "QA declaration attaches two extra custom old-table INSERT triggers only",
+      "result": "PASS"
+    },
+    {
+      "case": "QA default origin alone does not establish exact LOGIN/database prerequisite",
+      "result": "PASS"
+    },
+    {
+      "case": "QA fixture runtime has no effective replication parameter authority",
+      "result": "PASS"
+    },
+    {
+      "case": "exact owned fixture removed; no volume mounts",
+      "result": "PASS",
+      "id": "38a2943656e2de3dbbfcc14c89f5e0a8e38bb60afee345bd768bf534fb2219d8"
+    }
+  ],
+  "count": 76
+}

@@ -35522,7 +35522,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "blocked",
       "depends_on": [
         "T-927"
       ],
@@ -35543,7 +35543,7 @@
       "worktree": ".worktrees/T-928",
       "base_sha": "d59faa8dc5b26e13e19c47686dd47744b6d73a11",
       "agent": "qa_t027",
-      "execution_note": "Final fix2 requires exact runtime LOGIN/database origin configuration, read-only with explicit outer provisioning/fresh-session limits. Full scoped race/vet,84preimages,18retained QA artifacts and6fixture absence checks pass. Fresh independent r3 assigned; prior interrupted QA remains honestly recorded and no rejected probe is rerun.",
+      "execution_note": "Independent r3 verification BLOCKED solely on pending explicit authorization for role/parameter settings in disposable test fixtures. Safe source/84snapshot/18prior QA artifact/cleanup/nonlive checks preserved; no new code BOUNCE and no further fix requested. Same-SHA live continuation required before GREEN/integration.",
       "reviewed_sha": "c877b75c4a07969775c2a3aebce99e390de5c38d"
     },
     {

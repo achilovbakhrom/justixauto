@@ -1,0 +1,89 @@
+{
+  "reviewed_sha": "bb908b4425003cbf41375b46b07fb88d2a3be817",
+  "prior_reviewed_sha": "c3c0da45965c980fee22a32f43e90d7a674a55c4",
+  "changed": [
+    "docs/justix-auto/dev/results/membership-version-storage.md",
+    "docs/justix-auto/state/drafts/architect/membership-version-storage.md"
+  ],
+  "hashes": {
+    "docs/justix-auto/dev/results/membership-version-storage.md": "16a6e3e42515f2d7319baf481ea9a2342dc509b5145179240051d2aa59508648",
+    "docs/justix-auto/state/drafts/architect/membership-version-storage.md": "c468216706f0b40e01dc5c5e2bf07060cac60cecd429eac54ec5616bc9886330"
+  },
+  "old_result_preserved": true,
+  "nine_embedded_blocks_verified": [
+    "653b8bb6c7063fc2c67018518da22096ec121c380120c13c3d2a89bc18a36535",
+    "199cd4661aa6e6ba2148c5dbe58adaeecb7788bb82b6036343c534eec15eec3c",
+    "4c954eb5d1497e83744fa00d14017ba03e0791eb3f10f50f76a424f0be5605d8",
+    "534130dc57f22d58b9c5f1de7205969c2cfb74473ae79b8d2fd472512dea735c",
+    "189151301a2a544881fb48f10a45f6a830e84ba443a7c8889af8a6a2177f1c1b",
+    "222d07307c97614f03a95dc9cebc8a2fac8a9ded3ddea6d767e72015f39ee634",
+    "98b1816f823dd4fd0836bb942a24cdd23d46fb853805b07bccb63af2d53c3e07",
+    "fafd2ff96ac1b50a053adc411d6f4fa43a8178daf04610ef024509c33825205a",
+    "83341b44093fbf7d0bb5d2880ce325a4136d38795444071678c81e7ff49237e2"
+  ],
+  "reconstructed_outputs": [
+    {
+      "output": "first60",
+      "sha256": "e8e2115837ea863511f2b8dfae9ca9fd8faa89e9ba25a108bc862f3b54f84f93",
+      "reconstructed": true,
+      "not_reexecuted": true
+    },
+    {
+      "output": "retry60",
+      "sha256": "c55d60a8d37f2e24edbd8e6284261c03fb102ecc3af747875825b53b6c0e7788",
+      "reconstructed": true,
+      "not_reexecuted": true
+    }
+  ],
+  "graphs": [
+    {
+      "sha": "bb908b4425003cbf41375b46b07fb88d2a3be817",
+      "existing": 934,
+      "prospective": 938,
+      "acyclic": true,
+      "aliases": 4,
+      "leaves": 8,
+      "downstream_edges": 6,
+      "all_roots_and_T591_covered": true
+    },
+    {
+      "sha": "23d8cede88d228ef57fa73205c159b07e57a49b2",
+      "existing": 944,
+      "prospective": 948,
+      "acyclic": true,
+      "aliases": 4,
+      "leaves": 8,
+      "downstream_edges": 6,
+      "all_roots_and_T591_covered": true
+    }
+  ],
+  "original_25_qa_artifacts_unchanged": {
+    "docs/justix-auto/dev/qa/membership-version-storage.md": "b6db29a5f64116ec40323684e6f629dd4dfc7212f2f47bbc3f8a6b1d99664816",
+    "docs/justix-auto/dev/qa/membership-version-storage/audit-output.json": "553d1b73d53e8c8fc4dc20793cd07745741ea210898fd9c0b44f8aa8f4bd6354",
+    "docs/justix-auto/dev/qa/membership-version-storage/audit-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/audit.py": "a93b23bd077c4dc0dd4de162c48da3cd4b2e9aa8ccb0e651da79249acafe586d",
+    "docs/justix-auto/dev/qa/membership-version-storage/go-race.txt": "527e06ec4ca2f962a8718a6c74344b388eb4c9ed3b594c530b5a7fd4bf7f1f0c",
+    "docs/justix-auto/dev/qa/membership-version-storage/go-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/interfaces_test.go": "85d9d6041cfadb97bf2892fb1e56bd2677ae3df5e18075056e6252474b643e50",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-attempt2-output.json": "bcc616c06343adafcb0df0d6141bcb03070e1b3454fca698ecec345ef191f51f",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-attempt2-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-output.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe-stderr.txt": "9fd1375fe0aa383dd4eb4da52d0180bc30a62688706fe556554c13d8300547e5",
+    "docs/justix-auto/dev/qa/membership-version-storage/probe.py": "e6cb6e706acf58cf177835babcae6d2d83325bc3cb61deff3213f98bd6c2097a",
+    "docs/justix-auto/dev/qa/membership-version-storage/sha256.json": "3ea222dd07e7f28faa3c351efb7cef3164ea048bfad60a64bf5f460144a68fe1",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2.md": "881b06533d77cb2545edb46852229b299756a5927408a5f5cb591b7062737508",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/audit-output.json": "2ef3b81865dc5a9ccdc622d7ade7927f8ebde645e61ebfaf8cef206e0f701d77",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/audit-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/audit.py": "093170876ca60a7299d5537446df00847b47fc822cedd13249aecdb2dcf31f2c",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/go-race.txt": "58bad57208eb79dae21c5528a00f53d70c62e960effc976dd4dcefd04536caa1",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/go-vet.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/interfaces_test.go": "85d9d6041cfadb97bf2892fb1e56bd2677ae3df5e18075056e6252474b643e50",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/recovered_lifecycle.py": "222d07307c97614f03a95dc9cebc8a2fac8a9ded3ddea6d767e72015f39ee634",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/sha256.json": "113a3d9ca6a08091f6121c5ff24f619a851d5c9133631174f6ab323f93469048",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/timing-output.json": "b2653f023b11db5faf9e17a33b678a894f4b62cd07014dd3ba9f2b3e583f4452",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/timing-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/membership-version-storage-r2/timing_probe.py": "d2cd194b6acef3b307cea126527a1be34e6fd14fe2df67be92bf46d894225448"
+  },
+  "safe_probe_has_no_security_setting_mutations_or_dynamic_execution": true,
+  "safe_probe_sha256": "71597dce416fd2b6188f4c27c8f39dfd9e2ec93ab24c869e1fe25b83b6039c44"
+}

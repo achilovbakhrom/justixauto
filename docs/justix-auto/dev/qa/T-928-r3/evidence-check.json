@@ -1,0 +1,497 @@
+{
+  "result": "PASS for read-only integrity checks only",
+  "target": "c877b75c4a07969775c2a3aebce99e390de5c38d",
+  "source_hashes": {
+    "pkg/eventstore/migrations/000006_projection_generation.up.sql": "13706a57d6b8fccc57956043a816836d2fc621ad0c823024e347a205524b4afe",
+    "pkg/eventstore/projection_generation_migration_test.go": "6b627cfde937168671bd4b238f14fb3d09d6f287b970e2ddcb3c21e057334914",
+    "docs/justix-auto/dev/results/T-928.md": "c77684974d3e27461affb3b7bf99fdd0ca3e458e35ad235a2ce5ce337e196560",
+    "pkg/eventstore/schema.sql": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+    "pkg/eventstore/migrations/000002_messaging_delivery.up.sql": "1cb4db0d5a19490cfe7886fabfb8a681573b2a1ead411963a619f41fca127bc2",
+    "pkg/eventstore/migrations/000003_messaging_route_compatibility.up.sql": "c198af498e39056a7a251b5906d6db050ad994e04588bf6cecf8316221ea85ec",
+    "pkg/eventstore/migrations/000004_projection_checkpoint.up.sql": "41536429fb95d4b60a11866843a2ccbd6a4cf723cd919884933b6bc1d8202c4c",
+    "pkg/eventstore/migrations/000005_quarantine_evidence.up.sql": "1c1e7d17efa8ff84f2469d6d55b3b6c810143e5260aabf5f82d748797f2296a3"
+  },
+  "final_sql_addition": "  -- The installer's effective setting cannot prove a different login's startup\n  -- mode. Require a concrete administrator-provisioned role/database default:\n  -- fresh direct runtime logins apply this ahead of server-wide defaults.\n  -- This does not reset existing sessions or prove external quiescence. The\n  -- reviewed installer must stop old sessions and runtime roots must connect\n  -- directly as this LOGIN role, without a proxy role/session-auth substitution.\n  IF NOT r.rolcanlogin OR (SELECT count(*) FROM pg_db_role_setting s\n    CROSS JOIN LATERAL unnest(s.setconfig) setting\n    WHERE s.setrole=r.oid AND s.setdatabase=(SELECT oid FROM pg_database WHERE datname=current_database())\n      AND setting='session_replication_role=origin')<>1 THEN\n    RAISE EXCEPTION 'explicit runtime LOGIN database origin setting required';\n  END IF;\n",
+  "retained_test_functions": [
+    "generationScript",
+    "installGenerationScript",
+    "installGeneration",
+    "mustGeneration",
+    "generationPreimage",
+    "generationConstraints",
+    "generationLabel",
+    "generationSave",
+    "generationSubset",
+    "generationReject",
+    "generationID",
+    "generationSQL",
+    "generationEventSQL",
+    "generationPrepare",
+    "generationHeadSQL",
+    "generationSwitchSQL",
+    "TestProjectionGenerationFix1Postgres",
+    "TestProjectionGenerationFailurePostgres",
+    "TestProjectionGenerationAdversarialPostgres",
+    "TestProjectionGenerationMigrationPostgres"
+  ],
+  "original_seven_groups": [
+    "parameter trigger bypass permission",
+    "required checkpoint update missing",
+    "deferred flush allows multiple pointer changes",
+    "early inactive hold becomes active without head hold",
+    "comparator and cursor mismatch all fields",
+    "duplicate request and one root retain original",
+    "all effective default families and schema additive"
+  ],
+  "preserved_qa_hashes": {
+    "docs/justix-auto/dev/qa/T-928.md": "c6a53702fec96a9cbe3919ce38c52988457b3a170926c2b383ac32360ea4b629",
+    "docs/justix-auto/dev/qa/T-928/evidence-check.json": "efd28e3bae45a420dd216541a0a91f0911d29bf9a8a5714dea091eecae292195",
+    "docs/justix-auto/dev/qa/T-928/full-race.log": "92f870c4383709b343f063dcc5c227d0156cb80c419bb442fc5ee7d2f6bae319",
+    "docs/justix-auto/dev/qa/T-928/independent-attempt1.log": "29ca3f4b567549ea2f583a24f4bf1193ee43e1c83fc3e7ed44b462a86f17664c",
+    "docs/justix-auto/dev/qa/T-928/independent_probe_test.go": "f7a75238ec180bef57ed363eef3a2a50934e770cb0495e05deb46d55588b4ace",
+    "docs/justix-auto/dev/qa/T-928/overlay.json": "bdbb8f9d8039dd1c0b796002382f672fa7538a6e389426a6bc46dd2a3794b317",
+    "docs/justix-auto/dev/qa/T-928/sha256.json": "46fabaf2ab27058d17a6e3033a1da6ca9e5d4a761569267e16386d45c802926d",
+    "docs/justix-auto/dev/qa/T-928/verify_evidence.py": "ed7a120175d98d3dfcded26fea935b27df3cd0af6ffa80fa37954c4790227eab",
+    "docs/justix-auto/dev/qa/T-928/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/T-928-r2.md": "80ecb2b949555c1a56807f244e1402418de8d6b102600fc610a264060d6828f3",
+    "docs/justix-auto/dev/qa/T-928-r2/coordinator-verification.json": "252acc883ba6feb3d19095ec67de1bccba89ecc703879a1398d7a15173210121",
+    "docs/justix-auto/dev/qa/T-928-r2/fixture-absence.json": "65a6ec113e3f9016705471d0942d358e7268f84ea48fc94388e7277fa64a1d6e",
+    "docs/justix-auto/dev/qa/T-928-r2/full-race.log": "3be9ab0b5935bd9953124830a4029ae2699c3d5b206266f9d44a471ddc78b83f",
+    "docs/justix-auto/dev/qa/T-928-r2/independent-attempt1.log": "7377310a986578c8b696bfcaec9fb4e7c9f62bf9230c142a9d23bec90586a1c3",
+    "docs/justix-auto/dev/qa/T-928-r2/independent_probe_test.go": "8972fcfcc02187d6d333fb1dddac0f83f84090af38e72386f65bca216bef8a52",
+    "docs/justix-auto/dev/qa/T-928-r2/overlay.json": "ba65363cbe65321b40507c2ddfb24510372534b6d24d5e56fc9b84d2a0478078",
+    "docs/justix-auto/dev/qa/T-928-r2/sha256.json": "0d8ae3a221c622586af6d2acec18bbcf56c0d9733ca10179ed73b833279069fd",
+    "docs/justix-auto/dev/qa/T-928-r2/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "retained_runs": {
+    "developer_final": {
+      "log": "/private/tmp/justixauto-t928-fix2-full-race.log",
+      "sha256": "1f79727f78b9995922b8493c745e82674f5ab71a8a0f6621617a2bd0943139f9",
+      "preimages": [
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-catalog.txt",
+          "sha256": "a68549b9a764efec437ae21bd9a7868bfafe7accccb3989de6bd767e9aeeec69"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-constraints.txt",
+          "sha256": "943af3f500e4d0114989a794eef90079f22ad0bc776cee377670d7d022eb8448"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-defaults.txt",
+          "sha256": "f5d5b13124f937145d3e37058940a44a6099d9d71fbdaa1d5d37226b711215a2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-function-acls.txt",
+          "sha256": "3e36bd3e823499a6337e169bf194bb375629e56080383b6d866e29e087cfa065"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-after-rows.txt",
+          "sha256": "09b44addf87e68f703ed466074b6bbe6862951cb2b0a6ee073d7a60186537237"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-catalog.txt",
+          "sha256": "a68549b9a764efec437ae21bd9a7868bfafe7accccb3989de6bd767e9aeeec69"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-constraints.txt",
+          "sha256": "943af3f500e4d0114989a794eef90079f22ad0bc776cee377670d7d022eb8448"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-defaults.txt",
+          "sha256": "f5d5b13124f937145d3e37058940a44a6099d9d71fbdaa1d5d37226b711215a2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-function-acls.txt",
+          "sha256": "3e36bd3e823499a6337e169bf194bb375629e56080383b6d866e29e087cfa065"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-3356463250/route_0866f9c7549a-generation-late-failure-before-rows.txt",
+          "sha256": "09b44addf87e68f703ed466074b6bbe6862951cb2b0a6ee073d7a60186537237"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-catalog.txt",
+          "sha256": "4c17379694bfed2a16eb036b0115e6bf8a99ee44c7a2d16fd63922a0e2b3643b"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-constraints.txt",
+          "sha256": "dbda11333f72cee43e3138f88c0ebb9d0e951d0900882b87eff783c56db3e100"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-defaults.txt",
+          "sha256": "18c1d6f8c4e89c41be63872bef4e17550baa7833b1ce73a0f9eb0cda767e50e2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-function-acls.txt",
+          "sha256": "1a4ea0cff862f2dcea7a6daa6feb7771c727c7f707022ddbe1b97355c925d1c5"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-functions.txt",
+          "sha256": "3f1c83da58b922ed7f3bf772353152f19c6c9da39b867d63f54867c658b5096a"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-label.txt",
+          "sha256": "d392e7666178f19ba656de1b175f20c5913fe719b87a67fcaa39f274d31a6ed4"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-after-rows.txt",
+          "sha256": "0fabaa3a4bca4aca4773fafea4e7e103efcd58188bb88920abc6357c1d662360"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-catalog.txt",
+          "sha256": "5b30de872462963ed0798589f18426d6db8670b60ec92177ab93342c4a00e030"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-constraints.txt",
+          "sha256": "2bcb41d95a486ab1eeb5c39b505499ef002b94ed655334f21e23ac19e8f90080"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-defaults.txt",
+          "sha256": "18c1d6f8c4e89c41be63872bef4e17550baa7833b1ce73a0f9eb0cda767e50e2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-function-acls.txt",
+          "sha256": "08cc74d1e2bc8bb72e61982d5b7f05783782c82180503ebfeb90d7259f27890f"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1840023349/route_dc0a0c0ecdf2-generation-legacy-before-rows.txt",
+          "sha256": "0fabaa3a4bca4aca4773fafea4e7e103efcd58188bb88920abc6357c1d662360"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-catalog.txt",
+          "sha256": "97522d88a2b9839466c33d6e5bb6721a4dfa89504797733175d52afd96ebe00a"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-constraints.txt",
+          "sha256": "09d8e016502d4b08040f0a625723d1bbed10ed75a9d2f95513bdf5c0fd571dd3"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-defaults.txt",
+          "sha256": "30dfc7212d1878accdf635c24847d29e670788204d9368265db16614c46902e2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-function-acls.txt",
+          "sha256": "2d7e689e0957de0ff89c10ca32a4bc07b407d1f7f693bbd05a83bf4b9ee4b6b0"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-functions.txt",
+          "sha256": "3f1c83da58b922ed7f3bf772353152f19c6c9da39b867d63f54867c658b5096a"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-label.txt",
+          "sha256": "d392e7666178f19ba656de1b175f20c5913fe719b87a67fcaa39f274d31a6ed4"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-after-rows.txt",
+          "sha256": "8a0d4e4c273585ff351d4586e8a4b76c3639a7d6a940468251453bc5c35653c5"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-catalog.txt",
+          "sha256": "6e6620324b46fb12212e5825c97d85419c9a3fee5c392b94d815f0d0397ae2f5"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-constraints.txt",
+          "sha256": "9deac9118918dd9ac8652c49547adb7f10632252875b2fbc3fc850d4fadfdfa5"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-defaults.txt",
+          "sha256": "30dfc7212d1878accdf635c24847d29e670788204d9368265db16614c46902e2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-function-acls.txt",
+          "sha256": "b9700ebdb421cfdcdbf6c2f705ed92077596d751ff6771be6042dd49775d7cbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-1391107659/route_64c85f9f2364-generation-before-rows.txt",
+          "sha256": "8a0d4e4c273585ff351d4586e8a4b76c3639a7d6a940468251453bc5c35653c5"
+        }
+      ],
+      "fixture_ids_reported_in_log": [
+        [
+          "97588978dcfc2a135f98a16b89d9e4e3ea65bc0fd0bfee3df6912b63e8575b90",
+          "justixauto-t927-691fa927-bb23-4844-8fd4-0bdc76fc2a60"
+        ],
+        [
+          "eb339cbd6319246841c5936b5de88d40b38db367fe29c5ca1f362e2925793870",
+          "justixauto-t927-4d8f0363-21b0-4484-a7cf-af88c825c7ad"
+        ],
+        [
+          "5ffcfedf3f096406706373f77be5a2f9db87e72658b7505c32ae15b2f8033a49",
+          "justixauto-t927-a633d523-6b59-4625-b349-1fefa77be00b"
+        ],
+        [
+          "ec1b4ecc6332b5a7c516f05f48abe35a00c4dfaa91882726f6ae702f2f3ed954",
+          "justixauto-t927-49990e1c-ff2d-408e-b46c-1be077e2e001"
+        ],
+        [
+          "9a3e097b6c4235700d0b749657c0de890f5252cde1fa0faa993ddd2a68bd0d00",
+          "justixauto-t927-db3c9009-848a-4f24-9754-0b0a354cf819"
+        ],
+        [
+          "0128493e2bcda99344a530173c403cead31bf2189afb345e5c5edb94be3f73eb",
+          "justixauto-t927-6371bc24-091b-4b55-bf3f-986b28719b5f"
+        ]
+      ],
+      "process_exit": "not observed by this r3 reviewer",
+      "package_result_lines": [
+        "ok  \tjustixauto/services/commerce/adapter/postgres\t2.770s",
+        "ok  \tjustixauto/services/identity/adapter/postgres\t1.722s",
+        "ok  \tjustixauto/services/inventory/adapter/postgres\t2.262s",
+        "ok  \tjustixauto/pkg/auth\t9.169s",
+        "ok  \tjustixauto/pkg/commands\t3.718s",
+        "ok  \tjustixauto/pkg/events\t3.224s",
+        "ok  \tjustixauto/pkg/eventstore\t268.765s",
+        "ok  \tjustixauto/pkg/inbox\t4.605s",
+        "ok  \tjustixauto/pkg/money\t4.002s",
+        "ok  \tjustixauto/pkg/outbox\t5.683s",
+        "ok  \tjustixauto/pkg/projection\t5.002s",
+        "ok  \tjustixauto/tests/contracts\t120.769s",
+        "ok  \tjustixauto/tests/integration\t4.972s"
+      ]
+    },
+    "prior_interrupted_r2": {
+      "log": "/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/qa/T-928-r2/full-race.log",
+      "sha256": "3be9ab0b5935bd9953124830a4029ae2699c3d5b206266f9d44a471ddc78b83f",
+      "preimages": [
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-catalog.txt",
+          "sha256": "d59aab2d21fe8a9db8daad9c7d5aba67dad07829966134b3a8f24a5b342706e2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-constraints.txt",
+          "sha256": "1695172933b3ec35fe27c218906c0d34796add6250658bd989e48f3e8eb8cf4e"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-defaults.txt",
+          "sha256": "b1e2483effe6895569f9b515ffd30bf2c32833c08eac984cbe675b13e616fa6d"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-function-acls.txt",
+          "sha256": "8776988762ccfcea777c0a84bafbc97365ee4c7c86f2a0fc0998665b93f023cc"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-after-rows.txt",
+          "sha256": "53f7f06b773237f439aa40a2034ed00f4fa42433abae1458e7bb36cbf378644b"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-catalog.txt",
+          "sha256": "d59aab2d21fe8a9db8daad9c7d5aba67dad07829966134b3a8f24a5b342706e2"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-constraints.txt",
+          "sha256": "1695172933b3ec35fe27c218906c0d34796add6250658bd989e48f3e8eb8cf4e"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-defaults.txt",
+          "sha256": "b1e2483effe6895569f9b515ffd30bf2c32833c08eac984cbe675b13e616fa6d"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-function-acls.txt",
+          "sha256": "8776988762ccfcea777c0a84bafbc97365ee4c7c86f2a0fc0998665b93f023cc"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2012604265/route_1a1ae168e14c-generation-late-failure-before-rows.txt",
+          "sha256": "53f7f06b773237f439aa40a2034ed00f4fa42433abae1458e7bb36cbf378644b"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-catalog.txt",
+          "sha256": "386be969acb450953126278216ae9eca59c336c8d10d65dd843267c2c168a103"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-constraints.txt",
+          "sha256": "da8a5ad28d98c8cb84fedf81a42521b326c4b727b1264f188944f7b274551cfc"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-defaults.txt",
+          "sha256": "24021f3982d7385063dceecb008d7f3a795213eea109bddfca0cbb3814bd22e3"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-function-acls.txt",
+          "sha256": "b6526365ef17749b2033e52cd0edb1efdc3fffa5686c52baf67d0000d28b2dca"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-functions.txt",
+          "sha256": "3f1c83da58b922ed7f3bf772353152f19c6c9da39b867d63f54867c658b5096a"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-label.txt",
+          "sha256": "d392e7666178f19ba656de1b175f20c5913fe719b87a67fcaa39f274d31a6ed4"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-after-rows.txt",
+          "sha256": "0c35e1d902c33bd2ffdf71b8f5c9d64251045dce98d59bb1380ea69c60febf42"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-catalog.txt",
+          "sha256": "b063ba8d121c135efa300a7ecbf325f4a46dcc74a556b479dcbbd749c1281b05"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-constraints.txt",
+          "sha256": "01819672132d96368d49672098f287174db510b83ae756eff24f63dca5823a70"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-defaults.txt",
+          "sha256": "24021f3982d7385063dceecb008d7f3a795213eea109bddfca0cbb3814bd22e3"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-function-acls.txt",
+          "sha256": "17b007a3fde3c3198e5eae3d343608a190540cb48e401906f9647c4577f39d1b"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2918812758/route_09ab4d52c12f-generation-legacy-before-rows.txt",
+          "sha256": "0c35e1d902c33bd2ffdf71b8f5c9d64251045dce98d59bb1380ea69c60febf42"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-catalog.txt",
+          "sha256": "870334c622ea89b65a32443a0c52842eea070e76fe2e0b59224359cc77027746"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-constraints.txt",
+          "sha256": "f4fc02f9acd18a09ca31ab61229a4b4f614eaaf367b7e9e12000bc1573b77bff"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-defaults.txt",
+          "sha256": "f849c739f97b281d69555d8a4384058828b471e87ceb903d6bedf0579d16dc7c"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-function-acls.txt",
+          "sha256": "49b1ca478786c030ac35100101394c86da55a75fa195815a4fadef4d17ee44de"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-functions.txt",
+          "sha256": "3f1c83da58b922ed7f3bf772353152f19c6c9da39b867d63f54867c658b5096a"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-label.txt",
+          "sha256": "d392e7666178f19ba656de1b175f20c5913fe719b87a67fcaa39f274d31a6ed4"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-after-rows.txt",
+          "sha256": "1d3bf5610896054760e5f70dc4d6f7a6019d0200bef0c38e37bb3e0628b26ddd"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-catalog.txt",
+          "sha256": "ea00cbdc624a3b9aa4a69365d6c4924a00192f40293329433c0e556fd6a0494f"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-constraints.txt",
+          "sha256": "a0b18a897d4e9b8fd8cf964dd117c6a6c3a63d16292317cc949a9762bdfecae7"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-defaults.txt",
+          "sha256": "f849c739f97b281d69555d8a4384058828b471e87ceb903d6bedf0579d16dc7c"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-function-acls.txt",
+          "sha256": "752be10aebab928469b2cbffba42fa4d9a358f98fe6281d0889d72eda9675270"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-functions.txt",
+          "sha256": "ac20eba1a5d7db3c9d78becb00f058b16d146a740a0a1b9c54ff8466c3cc0da9"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-label.txt",
+          "sha256": "a4a9c943a2a3ffb7d92e6ba2f44a3996cc160588ab99ec327e6c1315b4163fbe"
+        },
+        {
+          "path": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t927-evidence-2886324317/route_d5145ba516a9-generation-before-rows.txt",
+          "sha256": "1d3bf5610896054760e5f70dc4d6f7a6019d0200bef0c38e37bb3e0628b26ddd"
+        }
+      ],
+      "fixture_ids_reported_in_log": [
+        [
+          "1721065b5615778ef41fa963723fa031f36ee32b4d1ca68a0b66a6a33a2ce76f",
+          "justixauto-t927-fe29d3ce-3b37-4060-b202-7d66f9c0771e"
+        ],
+        [
+          "8667129892cdc30ce4182b150c0c5c235a1e0263d37ddd5a662ed46c9867d70b",
+          "justixauto-t927-c0c12318-b182-479e-b32e-d68b0240877a"
+        ],
+        [
+          "402985369a370d45e55966b23b3d28b348a702a556236a5f8a2592fccc2928ac",
+          "justixauto-t927-299c0535-ad66-4af1-b7da-69baa68f9f44"
+        ],
+        [
+          "5ea4a62d35b10f129889f3f4a82f054a4f483117045eb4cb0480339639261a03",
+          "justixauto-t927-44035599-aee2-452f-8f98-b5e5cb0e8740"
+        ],
+        [
+          "e1c8fd88a4f2bcc1b2c6e0fb136df7ce076962c5488c23295c240fc07d64a01f",
+          "justixauto-t927-5245386f-454c-4fa7-bcc3-dbc58cb5fd21"
+        ]
+      ],
+      "process_exit": "not observed by this r3 reviewer",
+      "package_result_lines": [
+        "ok  \tjustixauto/services/commerce/adapter/postgres\t2.238s",
+        "ok  \tjustixauto/services/identity/adapter/postgres\t1.729s",
+        "ok  \tjustixauto/services/inventory/adapter/postgres\t2.720s",
+        "ok  \tjustixauto/pkg/auth\t8.727s",
+        "ok  \tjustixauto/pkg/commands\t3.258s",
+        "ok  \tjustixauto/pkg/events\t4.231s",
+        "ok  \tjustixauto/pkg/eventstore\t224.397s",
+        "ok  \tjustixauto/pkg/inbox\t5.093s",
+        "ok  \tjustixauto/pkg/money\t5.481s",
+        "ok  \tjustixauto/pkg/outbox\t6.011s",
+        "ok  \tjustixauto/pkg/projection\t4.989s",
+        "ok  \tjustixauto/tests/contracts\t116.484s",
+        "ok  \tjustixauto/tests/integration\t5.011s"
+      ]
+    }
+  },
+  "live_validation": "NOT RUN; provisioning authorization unresolved"
+}

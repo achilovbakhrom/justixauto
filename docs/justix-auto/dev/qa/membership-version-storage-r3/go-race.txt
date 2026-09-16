@@ -1,0 +1,14 @@
+=== RUN   TestOuterCompositionRejectsInvalidHandleBeforeFactory
+=== RUN   TestOuterCompositionRejectsInvalidHandleBeforeFactory/ordinary
+=== RUN   TestOuterCompositionRejectsInvalidHandleBeforeFactory/_
+=== RUN   TestOuterCompositionRejectsInvalidHandleBeforeFactory/_#01
+=== RUN   TestOuterCompositionRejectsInvalidHandleBeforeFactory/_padded_
+--- PASS: TestOuterCompositionRejectsInvalidHandleBeforeFactory (0.00s)
+    --- PASS: TestOuterCompositionRejectsInvalidHandleBeforeFactory/ordinary (0.00s)
+    --- PASS: TestOuterCompositionRejectsInvalidHandleBeforeFactory/_ (0.00s)
+    --- PASS: TestOuterCompositionRejectsInvalidHandleBeforeFactory/_#01 (0.00s)
+    --- PASS: TestOuterCompositionRejectsInvalidHandleBeforeFactory/_padded_ (0.00s)
+=== RUN   TestZeroHighWaterRequiresSourceProofAndVerifier
+--- PASS: TestZeroHighWaterRequiresSourceProofAndVerifier (0.00s)
+PASS
+ok  	command-line-arguments	1.733s

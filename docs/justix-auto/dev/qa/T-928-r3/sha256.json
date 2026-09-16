@@ -1,0 +1,11 @@
+{
+  "docs/justix-auto/dev/qa/T-928-r3/evidence-check.json": "413a102809e0a792a23e765ce1fd39820696da768d349b69ba2a08c5c8454b1d",
+  "docs/justix-auto/dev/qa/T-928-r3/fixture-absence.json": "bdb3b4ad262ac7c58069c9b3d6bc5717b61f6d7d19f951d95fcdc095e39df659",
+  "docs/justix-auto/dev/qa/T-928-r3/nonlive-commands.json": "0d18dd2758cb8d460709efd58d9328bc97af4f32eba1b8f79e93a12e97e08a00",
+  "docs/justix-auto/dev/qa/T-928-r3/nonlive-race.log": "4bc89d1bfe01c7e338bc5fddfeff473c8a768224c84066b53d1ec82dd9982591",
+  "docs/justix-auto/dev/qa/T-928-r3/run_nonlive.py": "c0a56416f0bcc09bce0903dbaf873ab4f9223992aefc4b9c6626decc3f6d7019",
+  "docs/justix-auto/dev/qa/T-928-r3/verify_evidence.py": "46db0aa95e2903decc9f57791a7479c4edc3c57f7f3251141236f4cfbc7b697d",
+  "docs/justix-auto/dev/qa/T-928-r3/verify_fixture_absence.py": "de93841a0f278adc32bcf9b88dd76b8b3f8b31c171e3279dd195b26ea2209f28",
+  "docs/justix-auto/dev/qa/T-928-r3/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/justix-auto/dev/qa/T-928-r3.md": "fe26fdf2569d596e7a48e2f84121185690803dc66a255b4ff09b949aaf9710df"
+}

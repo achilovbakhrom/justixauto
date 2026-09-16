@@ -1,0 +1,30 @@
+{
+  "live_opt_ins": "all JUSTIXAUTO_TEST_* removed; no live PostgreSQL cases authorized or executed",
+  "results": [
+    {
+      "command": [
+        "bash",
+        "tools/go.sh",
+        "test",
+        "-race",
+        "-count=1",
+        "-mod=readonly",
+        "-v",
+        "-overlay=docs/justix-auto/dev/qa/T-928/overlay.json",
+        "./pkg/eventstore"
+      ],
+      "log": "nonlive-race.log",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "bash",
+        "tools/go.sh",
+        "vet",
+        "./pkg/eventstore"
+      ],
+      "log": "vet.log",
+      "exit_code": 0
+    }
+  ]
+}
