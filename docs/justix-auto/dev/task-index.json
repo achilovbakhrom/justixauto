@@ -35853,7 +35853,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 2,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-936",
         "T-640"
@@ -35874,8 +35874,9 @@
       "scope": "Parse and validate closed header/security/semantic declarations into a trusted internal model. Keep public auth generation rejected before all output writes; preserve non-auth outputs and existing guard tests.",
       "worktree": ".worktrees/T-937",
       "base_sha": "23d8cede88d228ef57fa73205c159b07e57a49b2",
-      "agent": "frontend_t936",
-      "execution_note": "Assign closed internal auth generator profile parsing after T936 integration. Generator/test leaves only; public CLI must continue rejecting all auth declarations before output, no config or activation switch, unchanged non-auth rendering."
+      "agent": "qa_auth_transport",
+      "execution_note": "Closed auth profile parser committed with234internal checks, actual no-partial-output/activation negatives and byte-identical legacy outputs. Full contract race136.286/vet PASS. Exact independent review next; CLI and renderers still reject auth through T941.",
+      "reviewed_sha": "a4de45c811c8eaa7b8d3f7559df0db4c9454a3e3"
     },
     {
       "id": "T-938",
