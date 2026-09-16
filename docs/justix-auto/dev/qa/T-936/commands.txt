@@ -1,0 +1,49 @@
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-936
+Reviewed HEAD: 0adcda6d5011c6e602963d0392b1d8241fb4a5a4
+Base: 3b796c28fa04105cb0bc7154c17f27f7e47e3470
+No source mutation or new dependencies. Main task/scope approval read separately.
+
+Environment prefix for Node commands:
+PATH=/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin:$PATH
+
+bash tools/check-git.sh
+PASS own root .worktrees/T-936.
+
+npm run test:unit > docs/justix-auto/dev/qa/T-936/test-unit.log 2>&1
+Initial run concurrent with typecheck/lint and contract checks: exit 1.
+393/399 passed; five tests have approx 70s stalls and exceed 5s timeout.
+Sixth failure is subsequent Dialog typing interleaving assertion.
+No source was changed. Timing cause is not established by this run.
+
+npm run typecheck > docs/justix-auto/dev/qa/T-936/typecheck.log 2>&1
+npm run lint > docs/justix-auto/dev/qa/T-936/lint.log 2>&1
+Both exit 0.
+
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash tools/go.sh test -race -mod=readonly -count=1 ./tests/contracts > docs/justix-auto/dev/qa/T-936/go-race.log 2>&1
+Exit 0, full actual contract generator suite, 253.834s.
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash tools/go.sh vet -mod=readonly ./tests/contracts > docs/justix-auto/dev/qa/T-936/go-vet.log 2>&1
+Exit 0; empty vet log intentional.
+
+npm run test:unit > docs/justix-auto/dev/qa/T-936/test-unit-retry.log 2>&1
+Standalone unchanged-source rerun exit 0, 399/399 tests across 9 files.
+
+node docs/justix-auto/dev/qa/T-936/probe.mjs > docs/justix-auto/dev/qa/T-936/probe-output.json 2> docs/justix-auto/dev/qa/T-936/probe-stderr.log
+Exit 0 means diagnostic reproduction completed, NOT implementation GREEN.
+Probe compiles actual client.ts + imported responseJSON.ts with installed TS strict
+CommonJS compilation into a fresh OS temp directory before loading the result.
+86 focused passing scenarios plus 8 asserted unhandled-rejection reproductions.
+Expected fixed implementation: zero unhandled native Promise rejections.
+Diagnostic probe asserts current exact SHA and current broken observation; it is
+not a permissive permanent regression test. No diagnostics from real data used.
+Initial and final probe both reproduce identically; final QA-only edit removes
+unused import/dead setup closure and adds explicit count/private-marker checks.
+Empty probe-stderr.log intentional; unhandled event listener observes reasons
+without default runtime logging and is removed after all eight cases.
+
+python3 docs/justix-auto/dev/qa/T-936/scope.py > docs/justix-auto/dev/qa/T-936/scope-output.json
+Exit 0; exact diff, hashes, 15-line fixture correction and current main graph.
+
+git diff --check
+git diff --quiet
+git rev-parse HEAD
+PASS exact reviewed source remains unchanged; only new QA paths untracked.

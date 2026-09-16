@@ -1,0 +1,71 @@
+{
+  "sha": "0adcda6d5011c6e602963d0392b1d8241fb4a5a4",
+  "mainAtScopeCheck": "595041a6fc2eef081538a9df35777c0039b985e4",
+  "changedLeaves": [
+    "web/packages/api/src/client.ts",
+    "web/packages/api/src/client.test.ts",
+    "tests/contracts/generation_reproducibility_test.go",
+    "docs/justix-auto/dev/results/T-936.md"
+  ],
+  "fixtureAddedLines": 15,
+  "fixtureDeletedLines": 0,
+  "graphNodes": 944,
+  "graphHours": 3138,
+  "acyclic": true,
+  "serializedChain": [
+    "T-640",
+    "T-936",
+    "T-937"
+  ],
+  "resultHashesVerified": [
+    {
+      "path": "web/packages/api/src/client.ts",
+      "sha256": "77616941ba5d9806329b4215479623fab00b58dd5d7f6a21010830f97a5b9138"
+    },
+    {
+      "path": "web/packages/api/src/client.test.ts",
+      "sha256": "eca3228c0266c456d308b9088ec0de132024646385c602dd341450bc7d91b942"
+    },
+    {
+      "path": "tests/contracts/generation_reproducibility_test.go",
+      "sha256": "872816b246ad6199d00bbb31b212e751cc6c86fdf65b21a0f3f2a0f9c7888b1e"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-full-unit-attempt2.log",
+      "sha256": "7c76724e5ff5ce2e14987059375e9ca472245970442d56b8c87f7a4c9f6791d0"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-typecheck-final.log",
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-lint-final.log",
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-generator-final.log",
+      "sha256": "3668cf4fc82efe498cfe8b27dcc9a84fcb8c4aea4ec5e731fdd0e70ea25caf54"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-generator-attempt1.log",
+      "sha256": "7a6e37e0e2db450ef65d3065d37b6e062256a203ce2faa819f1e04f391ccc5d8"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-full-unit.log",
+      "sha256": "1ecc4f3377f6a3bf702c01c78f7f0162886205dc087955ba60a00ef31f49c97a"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-typecheck-attempt1.log",
+      "sha256": "5ac1a6bb2be8dfcc3b1c29e660c4ae354dde2e2622c92cb0578c81124fe31cad"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-lint-attempt1.log",
+      "sha256": "5dce932f01b1c62cf237443d0e33da29fe37de78e4d1614c9ba12e3b60160f6f"
+    }
+  ],
+  "unchangedDecoder": "88ec9529a314229b42345de8bcd4179e34139265b7d577c0989631c1f5d3cf6c"
+}

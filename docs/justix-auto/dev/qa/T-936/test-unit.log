@@ -1,0 +1,107 @@
+
+> justixauto-development-handoff@0.1.0 test:unit
+> vitest run --config web/vitest.workspace.ts --configLoader runner
+
+
+ RUN  v4.1.11 /Users/bakhromachilov/startups/justixauto/.worktrees/T-936
+
+ ❯ |@justixauto/insurance| src/app/Shell.test.tsx (5 tests | 1 failed) 70450ms
+     × preserves catalog order and grouping without advertising missing feature links 70378ms
+ ❯ |@justixauto/financing| src/app/Shell.test.tsx (5 tests | 1 failed) 70446ms
+     × preserves catalog order and grouping without advertising missing feature links 70386ms
+ ❯ |@justixauto/admin| src/app/Shell.test.tsx (5 tests | 1 failed) 70498ms
+     × preserves catalog order and grouping without advertising missing feature links 70418ms
+ ❯ |@justixauto/realization| src/app/Shell.test.tsx (5 tests | 1 failed) 70600ms
+     × preserves catalog order and grouping without advertising missing feature links 70407ms
+ ❯ |@justixauto/ui| src/Dialog.test.tsx (7 tests | 2 failed) 71349ms
+     × vetoes dirty Escape/outside without losing edits 70268ms
+     × vetoes processing Escape/outside without losing edits 313ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |@justixauto/ui| src/Dialog.test.tsx > Dialog accessibility and dismissal boundaries > vetoes dirty Escape/outside without losing edits
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/Dialog.test.tsx:67:44
+     65|   });
+     66|
+     67|   it.each(['dirty', 'processing'] as const)('vetoes %s Escape/outside …
+       |                                            ^
+     68|     const user = userEvent.setup();
+     69|     const blocked = vi.fn();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  |@justixauto/ui| src/Dialog.test.tsx > Dialog accessibility and dismissal boundaries > vetoes processing Escape/outside without losing edits
+AssertionError: expected 'nsaveUdn slaavbeedl label' to be 'Unsaved label' // Object.is equality
+
+Expected: "Unsaved label"
+Received: "nsaveUdn slaavbeedl label"
+
+ ❯ src/Dialog.test.tsx:77:87
+     75|     await user.click(document.querySelector('.jx-dialog-overlay')!);
+     76|     expect(blocked).toHaveBeenCalledWith('outside', state);
+     77|     expect((screen.getByRole('textbox', { name: 'Name' }) as HTMLInput…
+       |                                                                                       ^
+     78|     expect(screen.getByRole('dialog').getAttribute('aria-busy')).toBe(…
+     79|     if (state === 'dirty') {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  |@justixauto/admin| src/app/Shell.test.tsx > Admin shell boundary > preserves catalog order and grouping without advertising missing feature links
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/app/Shell.test.tsx:29:3
+     27|   });
+     28|
+     29|   it('preserves catalog order and grouping without advertising missing…
+       |   ^
+     30|     window.history.replaceState(null, '', '/admin/');
+     31|     render(<AdminApp SessionBoundary={Admit} identityLabel={fixture.la…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  |@justixauto/financing| src/app/Shell.test.tsx > Financing shell boundary > preserves catalog order and grouping without advertising missing feature links
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/app/Shell.test.tsx:31:3
+     29|   });
+     30|
+     31|   it('preserves catalog order and grouping without advertising missing…
+       |   ^
+     32|     window.history.replaceState(null, '', '/finance/');
+     33|     render(<FinancingApp SessionBoundary={Admit} context={context} />);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  |@justixauto/insurance| src/app/Shell.test.tsx > Insurance shell boundary > preserves catalog order and grouping without advertising missing feature links
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/app/Shell.test.tsx:31:3
+     29|   });
+     30|
+     31|   it('preserves catalog order and grouping without advertising missing…
+       |   ^
+     32|     window.history.replaceState(null, '', '/insurance/');
+     33|     render(<InsuranceApp SessionBoundary={Admit} context={context} />);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  |@justixauto/realization| src/app/Shell.test.tsx > Realization shell boundary > preserves catalog order and grouping without advertising missing feature links
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/app/Shell.test.tsx:29:3
+     27|   });
+     28|
+     29|   it('preserves catalog order and grouping without advertising missing…
+       |   ^
+     30|     window.history.replaceState(null, '', '/');
+     31|     render(<RealizationApp SessionBoundary={Admit} context={{ company:…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  5 failed | 4 passed (9)
+      Tests  6 failed | 393 passed (399)
+   Start at  23:51:09
+   Duration  72.86s (transform 1.38s, setup 0ms, import 3.73s, tests 354.04s, environment 5.78s)

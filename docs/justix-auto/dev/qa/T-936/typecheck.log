@@ -1,0 +1,40 @@
+
+> justixauto-development-handoff@0.1.0 typecheck
+> npm run typecheck:config && npm run typecheck --workspaces
+
+
+> justixauto-development-handoff@0.1.0 typecheck:config
+> tsc --noEmit --strict --module esnext --moduleResolution bundler --target es2022 --types node web/vitest.workspace.ts
+
+
+> @justixauto/api@0.1.0 typecheck
+> tsc --project tsconfig.json
+
+
+> @justixauto/test-kit@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @justixauto/tokens@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @justixauto/ui@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @justixauto/admin@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @justixauto/financing@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @justixauto/insurance@0.1.0 typecheck
+> tsc --noEmit
+
+
+> @justixauto/realization@0.1.0 typecheck
+> tsc --noEmit
+

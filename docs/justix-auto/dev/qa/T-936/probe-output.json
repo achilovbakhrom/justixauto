@@ -1,0 +1,177 @@
+{
+  "verdict": "BOUNCE",
+  "sha": "0adcda6d5011c6e602963d0392b1d8241fb4a5a4",
+  "compiledOutput": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/t936-independent-LUG0Xo",
+  "passingFocusedCases": 86,
+  "rows": [
+    "capture success/error class getters and receivers before IO",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@0",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@1",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@2",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@3",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@4",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@5",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@6",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@7",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@8",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@9",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@10",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@11",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@12",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@13",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@14",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@15",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@16",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@17",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@18",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@19",
+    "partition \"{\\\"x\\\":\\\"😀\\\",\\\"y\\\":1e0}\"@20",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@0",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@1",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@2",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@3",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@4",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@5",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@6",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@7",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@8",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@9",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@10",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@11",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@12",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@13",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@14",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@15",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@16",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@17",
+    "partition \"{\\\"x\\\":1,\\\"\\\\u0078\\\":2}\"@18",
+    "partition \"\\\"\\\\ud800\\\"\"@0",
+    "partition \"\\\"\\\\ud800\\\"\"@1",
+    "partition \"\\\"\\\\ud800\\\"\"@2",
+    "partition \"\\\"\\\\ud800\\\"\"@3",
+    "partition \"\\\"\\\\ud800\\\"\"@4",
+    "partition \"\\\"\\\\ud800\\\"\"@5",
+    "partition \"\\\"\\\\ud800\\\"\"@6",
+    "partition \"\\\"\\\\ud800\\\"\"@7",
+    "partition \"\\\"\\\\ud800\\\"\"@8",
+    "partition \"1.0000000000000001\"@0",
+    "partition \"1.0000000000000001\"@1",
+    "partition \"1.0000000000000001\"@2",
+    "partition \"1.0000000000000001\"@3",
+    "partition \"1.0000000000000001\"@4",
+    "partition \"1.0000000000000001\"@5",
+    "partition \"1.0000000000000001\"@6",
+    "partition \"1.0000000000000001\"@7",
+    "partition \"1.0000000000000001\"@8",
+    "partition \"1.0000000000000001\"@9",
+    "partition \"1.0000000000000001\"@10",
+    "partition \"1.0000000000000001\"@11",
+    "partition \"1.0000000000000001\"@12",
+    "partition \"1.0000000000000001\"@13",
+    "partition \"1.0000000000000001\"@14",
+    "partition \"1.0000000000000001\"@15",
+    "partition \"1.0000000000000001\"@16",
+    "partition \"1.0000000000000001\"@17",
+    "partition \"1.0000000000000001\"@18",
+    "POST fetch-error no retry",
+    "POST bad-body no retry",
+    "POST bad-metadata no retry",
+    "POST undeclared no retry",
+    "PUT fetch-error no retry",
+    "PUT bad-body no retry",
+    "PUT bad-metadata no retry",
+    "PUT undeclared no retry",
+    "PATCH fetch-error no retry",
+    "PATCH bad-body no retry",
+    "PATCH bad-metadata no retry",
+    "PATCH undeclared no retry",
+    "DELETE fetch-error no retry",
+    "DELETE bad-body no retry",
+    "DELETE bad-metadata no retry",
+    "DELETE undeclared no retry",
+    "overflow cancellation rejection is observed; reader released"
+  ],
+  "getterFindings": [
+    {
+      "hook": "success parse",
+      "foreign": false,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "success parse",
+      "foreign": true,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "error parse",
+      "foreign": false,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "error parse",
+      "foreign": true,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "prepare",
+      "foreign": false,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "prepare",
+      "foreign": true,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "accept",
+      "foreign": false,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    },
+    {
+      "hook": "accept",
+      "foreign": true,
+      "result": {
+        "kind": "invalid-request"
+      },
+      "fetch": 0,
+      "unhandled": 1,
+      "privateDiagnosticEscaped": true
+    }
+  ],
+  "unhandledCount": 8
+}
