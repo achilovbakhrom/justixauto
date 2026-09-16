@@ -2537,7 +2537,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-058",
         "T-024",
@@ -2565,9 +2565,11 @@
         "B-02.AC4"
       ],
       "scope": "Translate approved feature supplement into concrete OpenAPI3.1/event schemas and only this feature's owner tables/indexes. No references to another DB, credentials in events, or invented endpoints. Register schema later in sole-owner integration task.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-059",
+      "base_sha": "f472274",
+      "reviewed_sha": null,
+      "agent": "backend_t928",
+      "execution_note": "Encode the adopted auth wire contract into six owned schema/fixture/migration leaves. Preserve semantic constraints and private secret storage rules; do not activate auth generation, invent security values or modify the UOW. Assess the three-hour bound before implementation."
     },
     {
       "id": "T-060",
