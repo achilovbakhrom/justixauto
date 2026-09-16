@@ -95,7 +95,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-025](tasks/T-025.md) | B-01 | Scaffold inventory typed owner ports and migration ledger | implementation / 3 | inventory | integrated | T-009, T-017, T-018, T-010 | `task/T-025-inventory-scaffold` | ENV-GIT |
 | [T-026](tasks/T-026.md) | B-01 | Scaffold commerce typed owner ports and migration ledger | implementation / 3 | commerce | integrated | T-009, T-017, T-018, T-010 | `task/T-026-commerce-scaffold` | ENV-GIT |
 | [T-027](tasks/T-027.md) | B-01 | Scaffold retail typed owner ports and migration ledger | implementation / 3 | retail | integrated | T-009, T-017, T-018, T-010 | `task/T-027-retail-scaffold` | ENV-GIT |
-| [T-028](tasks/T-028.md) | B-01 | Scaffold financing typed owner ports and migration ledger | implementation / 3 | financing | in-progress | T-009, T-017, T-018, T-010 | `task/T-028-financing-scaffold` | ENV-GIT |
+| [T-028](tasks/T-028.md) | B-01 | Scaffold financing typed owner ports and migration ledger | implementation / 3 | financing | ready-for-qa | T-009, T-017, T-018, T-010 | `task/T-028-financing-scaffold` | ENV-GIT |
 | [T-029](tasks/T-029.md) | B-01 | Scaffold insurance typed owner ports and migration ledger | implementation / 3 | insurance | todo | T-009, T-017, T-018, T-010 | `task/T-029-insurance-scaffold` | ENV-GIT |
 | [T-030](tasks/T-030.md) | B-01 | Scaffold documents typed owner ports and migration ledger | implementation / 3 | documents | todo | T-009, T-017, T-018, T-010 | `task/T-030-documents-scaffold` | ENV-GIT |
 | [T-031](tasks/T-031.md) | B-01 | Enforce explicit authenticated internal callers and edge identity stripping | implementation / 3 | foundation | integrated | T-003 | `task/T-031-auth-transport` | ENV-GIT |
@@ -1030,7 +1030,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-941](tasks/T-941.md) | B-01 | Bound generated Go raw response parsing | implementation / 3 | foundation | todo | T-940 | `task/T-941-auth-generator-raw-limits` | ENV-GIT |
 | [T-942](tasks/T-942.md) | B-01 | Verify and activate the complete auth generation profile | implementation / 3 | foundation | todo | T-941 | `task/T-942-auth-generator-activation` | ENV-GIT |
 | [T-943](tasks/T-943.md) | B-02 | Bind concrete authentication semantics in Go and TypeScript | implementation / 4 | foundation | todo | T-641, T-058 | `task/T-943-auth-semantic-binders` | ENV-GIT |
-| [T-944](tasks/T-944.md) | B-04 | Fence in-memory auth acceptance by current request and session epoch | implementation / 4 | foundation | bounced | T-936, T-058 | `task/T-944-auth-session-epochs` | ENV-GIT |
+| [T-944](tasks/T-944.md) | B-04 | Fence in-memory auth acceptance by current request and session epoch | implementation / 4 | foundation | ready-for-qa | T-936, T-058 | `task/T-944-auth-session-epochs` | ENV-GIT |
 
 ## Approved membership version storage tasks — 2026-09-16
 
@@ -1038,5 +1038,5 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 |---|---|---|---|---|---|---|---|---|
 | [T-945](tasks/T-945.md) | B-01 | Install immutable owner-local membership catalogs | implementation / 4 | foundation | todo | T-928 | `task/T-945-membership-catalog-storage` | ENV-GIT |
 | [T-946](tasks/T-946.md) | B-01 | Install membership selection and enrollment evidence | implementation / 4 | foundation | todo | T-945 | `task/T-946-membership-selection-storage` | ENV-GIT |
-| [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | bounced | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
+| [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | ready-for-qa | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
 | [T-948](tasks/T-948.md) | B-01 | Persist fenced membership selections and recovery evidence | implementation / 4 | foundation | todo | T-946, T-947, T-014 | `task/T-948-membership-state-adapter` | ENV-GIT |

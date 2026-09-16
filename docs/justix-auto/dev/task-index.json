@@ -1428,7 +1428,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1455,9 +1455,9 @@
       "scope": "Own only financing mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later financing_wire task.",
       "worktree": ".worktrees/T-028",
       "base_sha": "6f30bbbf9144fc3d03a49fbac57bb9dd9a43afdc",
-      "reviewed_sha": null,
+      "reviewed_sha": "0f4736a21db0d56fa17ca83934a43596a5352a35",
       "agent": "coordinator",
-      "execution_note": "Coordinator implements Financing mechanics in an isolated worktree while three independent workers finish development/review. Dependencies T-009/017/018/010 integrated. Five assigned leaves only; derive the reviewed Retail scaffold pattern with explicit Financing ownership and full seven-owner fixture isolation. Legacy-only readiness must reject custody even if grants are restored. No finance products, arithmetic, disbursement policy, composition root or compatible-profile activation."
+      "execution_note": "Financing owner scaffold candidate complete. Final focused live race16.486s; full scoped race Financing16.596s/contracts122.703s and vet PASS. Five assigned leaves plus result; seven inputs unchanged, six recoverable raw evidence entries, fourteen additional exact fixture absence reads. Independent QA queued for a worker slot; coordinator authored and cannot self-approve. No finance business policy or running service claimed."
     },
     {
       "id": "T-029",
@@ -36066,7 +36066,7 @@
       "parent": "B-04",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-936",
         "T-058"
@@ -36088,9 +36088,9 @@
       "scope": "Implement the non-React controller with serialized cookie-mutating exchanges, one-shot tickets, current-epoch atomic acceptance, conservative uncertainty and explicit reacquisition. Keep tokens and one-time secrets in current closures only. Export ./authEpoch only; no generated imports, automatic retry or cross-tab cookie guarantee.",
       "worktree": ".worktrees/T-944",
       "base_sha": "b2dd2bf",
-      "agent": "coordinator",
-      "execution_note": "Independent review26e2ef72ce270d0af6954caf24e2a49e18162532 reproduced unchanged classification retaining protected state/token after validated403 CSRF_REJECTED and401 SESSION_REQUIRED/SESSION_EXPIRED. Ten exact QA artifacts retained. Coordinator fix cycle1 must explicitly invalidate those bindings, preserve anonymous GET acquisition and ordinary rejection semantics, then obtain renewed independent exact-commit QA.",
-      "reviewed_sha": "26e2ef72ce270d0af6954caf24e2a49e18162532"
+      "agent": "qa_auth_transport",
+      "execution_note": "Fix1 explicitly invalidates known CSRF/session binding errors while preserving anonymous GET and ordinary rejections. Final full462 tests/typecheck/lint PASS; unchanged original22-scenario probe shows all three failures corrected, no old token reuse. Original ten QA artifacts and16901-byte result prefix preserved. Independent r2 exact-commit review assigned.",
+      "reviewed_sha": "a3c291d124bae46e381faa8307d02551c26d0bc3"
     },
     {
       "id": "T-945",
@@ -36155,7 +36155,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-746",
         "T-007"
@@ -36176,9 +36176,9 @@
       "scope": "Exact membership-v1 canonical codec, immutable catalog/claim supplements and request/selection constructors. Distinguish complete catalog, owner selection, full finite universe and per-stream sets. Exact canonical bytes/digests and immutable meanings before binding; no SQL or authority inference.",
       "worktree": ".worktrees/T-947",
       "base_sha": "cdc3d7a238fd1e33bc8222f06e0d65c5cf92cf14",
-      "agent": "backend_t931",
-      "execution_note": "Independent QA at 51266880b925714483dd47cf50d59e57ec41e698 reproduced two empty initial enrollments for one event accepted by constructor and canonical decoder. Import preserves eight exact artifacts. Fix cycle 1 must enforce one supplied initial enrollment per event regardless of recipient cardinality, retain the valid empty control and legitimate late deltas, then obtain renewed independent QA.",
-      "reviewed_sha": "51266880b925714483dd47cf50d59e57ec41e698"
+      "agent": "qa_membership_storage",
+      "execution_note": "Fix1 rejects duplicate supplied initial enrollment identities for one event independently of recipient count. Unchanged QA regression and new empty/populated/late-delta controls pass; scoped race/vet PASS, original eight QA artifacts and50753-byte result prefix preserved. Independent r2 review queued for next worker slot; not yet GREEN or integrated.",
+      "reviewed_sha": "be944b633be73ba8d69942d561a379e33f01afb9"
     },
     {
       "id": "T-948",
