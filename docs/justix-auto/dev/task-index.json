@@ -36145,7 +36145,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-746",
         "T-007"
@@ -36164,8 +36164,10 @@
         "B-01.AC2"
       ],
       "scope": "Exact membership-v1 canonical codec, immutable catalog/claim supplements and request/selection constructors. Distinguish complete catalog, owner selection, full finite universe and per-stream sets. Exact canonical bytes/digests and immutable meanings before binding; no SQL or authority inference.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-947",
+      "base_sha": "cdc3d7a238fd1e33bc8222f06e0d65c5cf92cf14",
+      "agent": "backend_t931",
+      "execution_note": "Assign pure canonical membership codec/immutable values after proposal and canonical promotion GREEN. Two inbox leaves only; no SQL or authority inference. Exact catalog/selection/request distinctions and original-byte canonical validation; pending database configuration tests do not block this independent task."
     },
     {
       "id": "T-948",
