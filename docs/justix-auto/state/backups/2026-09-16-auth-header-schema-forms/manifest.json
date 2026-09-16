@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/justix-auto/state/approvals/auth-transport-compatibility.md",
+    "snapshot": "docs/justix-auto/state/approvals/auth-transport-compatibility.md.gz",
+    "bytes": 3869,
+    "sha256": "c9ff299f71492d48b69990a1e22204ba372ed69627feb9364c7714c687fb911a"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-937.md",
+    "snapshot": "docs/justix-auto/dev/tasks/T-937.md.gz",
+    "bytes": 3983,
+    "sha256": "89b51d5557a841ac1c548f3c54865b12708bd0c7b8141154ecaddce76291d5d0"
+  }
+]

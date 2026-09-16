@@ -64,3 +64,23 @@ behavior, contract, dependency pin, policy, task count or effort changes.
 The exact original proposal/canonical copy and promotion QA remain historical
 evidence; this records the subsequent bounded implementation-scope correction.
 Independent T-936 QA must verify that restriction and actual fixture regression.
+
+## Closed header schema representation — 2026-09-16
+
+T-937 makes P4/P6's exact wire values concrete in JSON-form OpenAPI. The accepted
+inline Header Object contains only `required: true`, `schema` and an optional
+string `description`. Its exact schema is one of:
+
+- X-CSRF-Token: `{"type":"string","pattern":"^[A-Za-z0-9_-]{1,4096}$"}`.
+- Retry-After: `{"type":"integer","minimum":0,"maximum":2147483647}`.
+- Cache-Control: `{"type":"string","const":"no-store"}`.
+
+Retry-After's integer schema describes its value; the trusted parsed metadata
+also fixes P4's canonical decimal wire grammar `^(0|[1-9][0-9]{0,9})$`.
+Alternate encodings, dates, refs, optional security headers, unknown schema keys
+and extra Header Object fields remain rejected. Unsafe request CSRF uses the
+same exact string schema with name/in/required as its Parameter Object; the
+transport injects it, so it must not become an ordinary generated DTO field.
+This representation introduces no new entropy, lifetime or rate policy.
+The public auth generator remains disabled through T-941; only T-942 activates
+the complete reviewed runtime. Earlier proposal bytes remain historical.
