@@ -1,0 +1,28 @@
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/explicit_array_null
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/duplicate_decoded_key
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/lone_surrogate
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/case_alias
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/trailing_object
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/noncanonical_whitespace
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/missing_stream
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/missing_zero_authority
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/duplicate_enrollment_key
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/empty_late_delta
+=== RUN   TestQAEmptyEnrollmentAndCanonicalInputs/changed_position_for_same_event
+--- PASS: TestQAEmptyEnrollmentAndCanonicalInputs (0.03s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/explicit_array_null (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/duplicate_decoded_key (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/lone_surrogate (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/case_alias (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/trailing_object (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/noncanonical_whitespace (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/missing_stream (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/missing_zero_authority (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/duplicate_enrollment_key (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/empty_late_delta (0.00s)
+    --- PASS: TestQAEmptyEnrollmentAndCanonicalInputs/changed_position_for_same_event (0.00s)
+=== RUN   TestQARejectTwoEmptyInitialEnrollmentsForOneEvent
+--- PASS: TestQARejectTwoEmptyInitialEnrollmentsForOneEvent (0.00s)
+PASS
+ok  	command-line-arguments	1.819s

@@ -1,0 +1,122 @@
+{
+  "result": "PASS",
+  "target": "be944b633be73ba8d69942d561a379e33f01afb9",
+  "prior": "51266880b925714483dd47cf50d59e57ec41e698",
+  "changed_paths": [
+    "docs/justix-auto/dev/results/T-947.md",
+    "pkg/inbox/membership_catalog.go",
+    "pkg/inbox/membership_catalog_test.go"
+  ],
+  "original_result_prefix_bytes": 50753,
+  "original_result_prefix_sha256": "493543ccf7a51def70831ed829306533e5703a43d6380d966b075c8668143170",
+  "preserved_qa_artifacts": [
+    "docs/justix-auto/dev/qa/T-947.md",
+    "docs/justix-auto/dev/qa/T-947/audit.json",
+    "docs/justix-auto/dev/qa/T-947/independent_test.go",
+    "docs/justix-auto/dev/qa/T-947/vet.log",
+    "docs/justix-auto/dev/qa/T-947/audit.py",
+    "docs/justix-auto/dev/qa/T-947/scoped-race.log",
+    "docs/justix-auto/dev/qa/T-947/independent.log",
+    "docs/justix-auto/dev/qa/T-947/SHA256SUMS"
+  ],
+  "unchanged_approved_inputs": [
+    "pkg/inbox/consume.go",
+    "pkg/events/envelope.go",
+    "pkg/events/revision.go",
+    "pkg/projection/sequence.go",
+    "docs/justix-auto/state/drafts/contracts/membership-version-storage.md",
+    "docs/justix-auto/state/drafts/contracts/runtime-registration.md",
+    "docs/justix-auto/state/approvals/membership-version-storage.md",
+    "go.mod",
+    "go.sum"
+  ],
+  "current_sources": {
+    "pkg/inbox/membership_catalog.go": "d6fe4ad9c0596bc289d2a846146826412385d15a7269bad61caa74cec74ede45",
+    "pkg/inbox/membership_catalog_test.go": "88742c61c661be535846d5f6b4e43135faf9dcc680efea2cccc69e276be115be",
+    "docs/justix-auto/state/drafts/contracts/membership-version-storage.md": "c468216706f0b40e01dc5c5e2bf07060cac60cecd429eac54ec5616bc9886330",
+    "docs/justix-auto/state/drafts/contracts/messaging-delivery.md": "97e70c29183feded9e58f702ba2c995dc67b8ad4e6896c5f3e877b49db94c7d7",
+    "tools/go.sh": "21d8dcf9580088529a7a34a9ba4fc0bd6a56646a5c5e7fe7f79b66303d0d92c3",
+    "tools/check-git.sh": "6c6375ec50d6d580ea7a411b7985f13926582b92465b38d4f8df5dfb721ac8a4",
+    "go.mod": "d240b6a3cf34d76d3c87d549db86dfe56635faab80b85f4e77aae0bf76edad0d",
+    "go.sum": "5bdef8e512d1a8d379eec0064b65e24f66b2d78eb39d1d12885c86e0d3f8af6c"
+  },
+  "original_regression_copy_byte_identical": true,
+  "archives": [
+    {
+      "sha256": "824f195f4484cd48063fa5efbbf740fe950917ffffb0a84cc0c5e03299612561",
+      "entries": [
+        {
+          "name": "justixauto-t947-final-inbox.log",
+          "sha256": "7cd5a3b32253731b1e3ac63d8b4dc34586ac50a8cdc08bdd3af6bb8a7d742c91",
+          "bytes": 15681
+        },
+        {
+          "name": "justixauto-t947-first-build.log",
+          "sha256": "ec747311aaed46f259a9a1c0f5aa3d033f645be725abd30cf3002a0c2c530062",
+          "bytes": 33
+        },
+        {
+          "name": "justixauto-t947-full-race.log",
+          "sha256": "e4423fd62d19ae89f07b4948c85f26ac5d17abe72fd3603293e52be45afc8332",
+          "bytes": 131415
+        },
+        {
+          "name": "justixauto-t947-fuzz.log",
+          "sha256": "327a3018041162377d765407b61872553f5e3127fe43b4eb2e52cdb3ca21a082",
+          "bytes": 613
+        },
+        {
+          "name": "justixauto-t947-test-attempt1.log",
+          "sha256": "6ae44a7a62970eb56a2cab1f0f50a7a2f55cd34d77e7c281a57e72f13ecc1550",
+          "bytes": 15561
+        },
+        {
+          "name": "justixauto-t947-vet.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "justixauto-t947-source-evidence.json",
+          "sha256": "c4acfb0a634c9d32541fe907e37a8a4d37f316fc668a7f38532eb2b1def66382",
+          "bytes": 2293
+        }
+      ]
+    },
+    {
+      "sha256": "7967c4dce8b86c8a523bf50084ecf964e2433d7934553e217ce3d8e6d5387c9f",
+      "entries": [
+        {
+          "name": "justixauto-t947-fix1-baseline.log",
+          "sha256": "e254055eb16b49ec4bf74fc9c85350e440ea93b19aa99783b8b28e29960e2bb2",
+          "bytes": 2145
+        },
+        {
+          "name": "justixauto-t947-fix1-regression.log",
+          "sha256": "eaca14ce25384c37fee2dccde038667fb030af4e960b7e1854b88c59fbc7ef00",
+          "bytes": 1542
+        },
+        {
+          "name": "justixauto-t947-fix1-independent.log",
+          "sha256": "ad59c8e8e701c3cc744e40d9c573f2dbc600f250275b79cc950871813361c65c",
+          "bytes": 1948
+        },
+        {
+          "name": "justixauto-t947-fix1-scoped-race.log",
+          "sha256": "968b7aad82eff17c9c234a83da2bf268d024fe085a0dbe782d2f5d75a92f1aa0",
+          "bytes": 849
+        },
+        {
+          "name": "justixauto-t947-fix1-vet.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "name": "justixauto-t947-fix1-identities.json",
+          "sha256": "611b3f7ce004cf90566552c41a02a9814209f0d1f9e88dd09b4ff846b8796993",
+          "bytes": 2540
+        }
+      ]
+    }
+  ],
+  "source_diff_after_commit": false
+}

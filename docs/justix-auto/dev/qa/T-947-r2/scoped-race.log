@@ -1,0 +1,19 @@
+ok  	justixauto/services/commerce/adapter/postgres	1.718s
+?   	justixauto/services/commerce/port	[no test files]
+ok  	justixauto/services/identity/adapter/postgres	2.226s
+?   	justixauto/services/identity/port	[no test files]
+ok  	justixauto/services/inventory/adapter/postgres	2.731s
+?   	justixauto/services/inventory/port	[no test files]
+ok  	justixauto/services/retail/adapter/postgres	3.235s
+?   	justixauto/services/retail/port	[no test files]
+ok  	justixauto/pkg/auth	8.682s
+ok  	justixauto/pkg/commands	4.107s
+ok  	justixauto/pkg/events	4.525s
+ok  	justixauto/pkg/eventstore	4.993s
+ok  	justixauto/pkg/inbox	7.966s
+ok  	justixauto/pkg/money	5.689s
+ok  	justixauto/pkg/outbox	4.966s
+ok  	justixauto/pkg/persistence	5.345s
+ok  	justixauto/pkg/projection	4.921s
+ok  	justixauto/tests/contracts	138.751s
+ok  	justixauto/tests/integration	4.368s
