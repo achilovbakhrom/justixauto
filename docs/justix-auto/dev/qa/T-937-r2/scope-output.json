@@ -1,0 +1,86 @@
+{
+  "sha": "1636aeb291007163f80e41855694a2390a7694f5",
+  "previous": "a4de45c811c8eaa7b8d3f7559df0db4c9454a3e3",
+  "insertedLines": {
+    "tools/generate-contracts.mjs": 5,
+    "tests/contracts/generation_reproducibility_test.go": 32
+  },
+  "resultPrefixBytesPreserved": 9618,
+  "originalArtifacts": [
+    {
+      "path": "docs/justix-auto/dev/qa/T-937.md",
+      "sha256": "e61e0ea5f71c1fccdb2e1bf9d611963d4bd2075544d0db6599a2469c8a3a4423"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/commands.txt",
+      "sha256": "dba7602af98b1b04ba9c662dc21ec2a124a74ef809cfe184fe1ceab6c428950f"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/go-race.log",
+      "sha256": "2e99744dbe6b416679a1c888664d7e0d058646dbcc0d67451e91736ebc48179b"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/go-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/probe-attempt1.log",
+      "sha256": "e197a83379f0cfe3e1dd66793d195f7ddb340cfb98fba3e9705d287e05194fbf"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/probe-attempt2.log",
+      "sha256": "2f770f3332876645207d6e06c7dd4f4c53e2ff517fe98a05e582f1df02e1d44b"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/probe-output.json",
+      "sha256": "73ab3524767c09e7ac5f97bc909a6072258e806cc48b8632675182d287b50910"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/probe-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/probe.mjs",
+      "sha256": "30f4a0ab6705ca81f8f37f452da8d6558b8b83062b1bc56c1f3c54ee3d839d79"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/scope-output.json",
+      "sha256": "0ed494763592358e6ac9dbfcb95d14e6e2df0adec9c13d706782ce85a2cba187"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-937/scope.py",
+      "sha256": "595eb6daa5e158efde3d3cbf8f6a1ac91ba5a4c74450862508c6b05364dee12d"
+    }
+  ],
+  "correctionHashes": [
+    {
+      "path": "tools/generate-contracts.mjs",
+      "sha256": "b76f0663901bb75f9ba134ac8c03ce811901dd4493f4b5268afcc6f21a9aea2e"
+    },
+    {
+      "path": "tests/contracts/generation_reproducibility_test.go",
+      "sha256": "007749f9b5942179ca6408bfce827a780f089bdcd7265cd19ec35450744f5da4"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-fix1-original-probe.log",
+      "sha256": "4b74d66743b9404a58fe7e8989bbcd55a371b7486556af3b662684f01d058ddb"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-fix1-probe.mjs",
+      "sha256": "6e75ba697544e3dfbf0dbc823bf5464fa1494dc7399a3ea3eef7b4175e761e72"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-fix1-probe-output.json",
+      "sha256": "d514127e0ffdc3260402cf1e85c7703659c753764958e1c797f3a679c6b4d793"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-fix1-contract-race.log",
+      "sha256": "daf87c6a2714b2c4b47f804b81b93c7ac5abf7320f6ce4e8d8bb6646d577bcf6"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-fix1-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "mainSHA": "2508ca86d9d1af59297d714c55b66632c57e89a3"
+}

@@ -1,0 +1,42 @@
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-937
+Exact correction SHA: 1636aeb291007163f80e41855694a2390a7694f5
+Original BOUNCE SHA: a4de45c811c8eaa7b8d3f7559df0db4c9454a3e3
+Pinned Node PATH prefix:
+PATH=/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin:$PATH
+Go/cache prefix:
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off
+
+bash tools/check-git.sh
+PASS own worktree root.
+bash tools/go.sh test -race -mod=readonly -count=1 -v ./tests/contracts > docs/justix-auto/dev/qa/T-937-r2/go-race.log 2>&1
+Full actual package rerun; final result/timing retained in log and report.
+bash tools/go.sh vet -mod=readonly ./tests/contracts > docs/justix-auto/dev/qa/T-937-r2/go-vet.log 2>&1
+PASS exit 0; empty vet log intentional.
+
+node docs/justix-auto/dev/qa/T-937-r2/probe.mjs > docs/justix-auto/dev/qa/T-937-r2/probe-output.json 2> docs/justix-auto/dev/qa/T-937-r2/probe-stderr.log
+PASS actual assigned SHA. New wrapper reads original probe unchanged and replaces
+only exact SHA, three accepted-null observations with assert.throws/rejected:true,
+and verdict. Original failed syntax/accepted-null logs remain untouched.
+The same 120 matrix/snapshot,410 negatives,12 actual CLI rejections and four legacy
+predecessor Go/TS comparisons pass. Original three null cases now reject.
+Additional independent34 negatives and18 controls cover six non-array values in
+GET/unsafe operation security/parameters and document security, allowed omission,
+inheritance, explicit override/anonymous alternatives, unsafe CSRF requirement,
+and legacy-null fallback with four further byte-for-byte renderer comparisons.
+Generated adaptation resides only in a fresh OS temporary directory. No shipping
+parser export, helper or activation flag added. Empty probe-stderr.log intentional.
+
+python3 docs/justix-auto/dev/qa/T-937-r2/scope.py > docs/justix-auto/dev/qa/T-937-r2/scope-output.json
+First QA checker attempt used4490519 for original QA evidence. Git correctly
+reported that T-937.md did not exist in that commit:4490519 restored task text,
+while3725e0b retained the original QA artifacts. Corrected only this evidence
+reference after git log inspection; no application/source change or QA-byte repair.
+Final PASS: eleven original QA artifacts match main and3725e0b, original result
+prefix9618bytes exact, source adds five lines and test adds32 with no deletions,
+seven correction source/retained evidence hashes match, task approval survives.
+
+git diff --check
+git diff --quiet
+git rev-parse HEAD
+Final exact-source/format checks. Original QA remains preexisting untracked in this
+worktree and was not edited; only T-937-r2 report/evidence written in this review.
