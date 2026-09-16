@@ -1038,5 +1038,5 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 |---|---|---|---|---|---|---|---|---|
 | [T-945](tasks/T-945.md) | B-01 | Install immutable owner-local membership catalogs | implementation / 4 | foundation | todo | T-928 | `task/T-945-membership-catalog-storage` | ENV-GIT |
 | [T-946](tasks/T-946.md) | B-01 | Install membership selection and enrollment evidence | implementation / 4 | foundation | todo | T-945 | `task/T-946-membership-selection-storage` | ENV-GIT |
-| [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | ready-for-qa | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
+| [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | bounced | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
 | [T-948](tasks/T-948.md) | B-01 | Persist fenced membership selections and recovery evidence | implementation / 4 | foundation | todo | T-946, T-947, T-014 | `task/T-948-membership-state-adapter` | ENV-GIT |

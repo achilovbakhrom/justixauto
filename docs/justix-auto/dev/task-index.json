@@ -36153,7 +36153,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-746",
         "T-007"
@@ -36174,8 +36174,8 @@
       "scope": "Exact membership-v1 canonical codec, immutable catalog/claim supplements and request/selection constructors. Distinguish complete catalog, owner selection, full finite universe and per-stream sets. Exact canonical bytes/digests and immutable meanings before binding; no SQL or authority inference.",
       "worktree": ".worktrees/T-947",
       "base_sha": "cdc3d7a238fd1e33bc8222f06e0d65c5cf92cf14",
-      "agent": "qa_membership_storage",
-      "execution_note": "Pure canonical membership values complete at exact candidate. Author reports full scoped race, vet and 4291 fuzz executions; seven recoverable evidence entries and eleven input/source hashes. No database/configuration actions. Independent exact-commit QA assigned; no storage or runtime readiness claimed.",
+      "agent": "backend_t931",
+      "execution_note": "Independent QA at 51266880b925714483dd47cf50d59e57ec41e698 reproduced two empty initial enrollments for one event accepted by constructor and canonical decoder. Import preserves eight exact artifacts. Fix cycle 1 must enforce one supplied initial enrollment per event regardless of recipient cardinality, retain the valid empty control and legitimate late deltas, then obtain renewed independent QA.",
       "reviewed_sha": "51266880b925714483dd47cf50d59e57ec41e698"
     },
     {
