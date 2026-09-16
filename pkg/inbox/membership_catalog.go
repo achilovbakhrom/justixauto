@@ -676,12 +676,20 @@ func newStreamSelection(in StreamSelectionSpec, x membershipStreamIdentity, limi
 	eventHashes := map[string]MembershipDigest{}
 	jobs := map[[2]string]bool{}
 	enrollments := map[string]bool{}
+	initialEvents := map[string]bool{}
 	for i := range s.Backlog {
 		v := &s.Backlog[i]
 		if !membershipUUID(v.EventID) || !membershipUUID(v.EnrollmentID) || v.Position <= 0 || v.Position > s.Boundary || zeroDigest(v.EnvelopeDigest) || zeroDigest(v.EffectDigest) || (v.Phase != "initial" && v.Phase != "late") || (v.Phase == "late" && len(v.Consumers) == 0) || enrollments[v.EnrollmentID] {
 			return StreamSelection{}, ErrMembershipIdentity
 		}
 		enrollments[v.EnrollmentID] = true
+		// An empty recipient set still has one initial enrollment identity.
+		if v.Phase == "initial" {
+			if initialEvents[v.EventID] {
+				return StreamSelection{}, ErrMembershipIdentity
+			}
+			initialEvents[v.EventID] = true
+		}
 		if event, ok := positions[v.Position]; ok && event != v.EventID {
 			return StreamSelection{}, ErrMembershipIdentity
 		}

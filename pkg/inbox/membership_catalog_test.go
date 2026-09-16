@@ -228,6 +228,94 @@ func TestMembershipCanonicalPermutationAndRoundTrip(t *testing.T) {
 	}
 }
 
+func TestMembershipInitialEnrollmentIdentityIndependentOfRecipients(t *testing.T) {
+	// The second stream excludes every selected consumer, but its message still
+	// retains a complete, explicit empty initial enrollment identity.
+	spec := mustRequest(t, requestFixture(t)).Specification()
+	empty := &spec.Streams[1]
+	empty.Boundary = 1
+	empty.Backlog = []inbox.EnrollmentEffect{{EventID: mid(301), EnrollmentID: mid(401), Position: 1, EnvelopeDigest: mh("empty-envelope"), Phase: "initial", Consumers: []inbox.EnrollmentConsumer{}, EffectDigest: mh("empty-enrollment")}}
+	base := mustRequest(t, spec)
+	if decoded, err := inbox.DecodeTransitionRequest(base.Bytes(), membershipLimits); err != nil || !bytes.Equal(decoded.Bytes(), base.Bytes()) || decoded.Digest() != base.Digest() {
+		t.Fatalf("single empty initial enrollment lost identity: %v", err)
+	}
+	encode := func(value any) []byte {
+		t.Helper()
+		var b bytes.Buffer
+		e := json.NewEncoder(&b)
+		e.SetEscapeHTML(false)
+		if err := e.Encode(value); err != nil {
+			t.Fatal(err)
+		}
+		return bytes.TrimSuffix(b.Bytes(), []byte("\n"))
+	}
+	if !bytes.Equal(encode(base.Specification()), base.Bytes()) {
+		t.Fatal("test encoder does not preserve canonical bytes")
+	}
+	catalog := mustCatalog(t, base.Specification().Catalog)
+	selection, err := inbox.NewSelection(base.Specification().Selection, catalog, membershipLimits)
+	if err != nil {
+		t.Fatal(err)
+	}
+	universe, err := inbox.NewStreamUniverse(base.Specification().Universe, membershipLimits)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, streamIndex := range []int{0, 1} {
+		for _, changedEffect := range []bool{false, true} {
+			t.Run(fmt.Sprintf("stream-%d/changed-effect-%v", streamIndex, changedEffect), func(t *testing.T) {
+				s := base.Specification()
+				stream := &s.Streams[streamIndex]
+				extra := stream.Backlog[0]
+				extra.EnrollmentID = mid(402)
+				if changedEffect {
+					extra.EffectDigest = mh("different-initial-effect")
+				}
+				stream.Backlog = append(stream.Backlog, extra)
+				if value, err := inbox.NewTransitionRequest(s, membershipLimits); !errors.Is(err, inbox.ErrMembershipIdentity) || value.Valid() {
+					t.Fatalf("request accepted second initial enrollment: %v", err)
+				}
+				if value, err := inbox.DecodeTransitionRequest(encode(s), membershipLimits); !errors.Is(err, inbox.ErrMembershipIdentity) || value.Valid() {
+					t.Fatalf("request decoder accepted second initial enrollment: %v", err)
+				}
+				if value, err := inbox.NewStreamSelection(*stream, catalog, selection, universe, membershipLimits); !errors.Is(err, inbox.ErrMembershipIdentity) || value.Valid() {
+					t.Fatalf("stream accepted second initial enrollment: %v", err)
+				}
+				if value, err := inbox.DecodeStreamSelection(encode(*stream), catalog, selection, universe, membershipLimits); !errors.Is(err, inbox.ErrMembershipIdentity) || value.Valid() {
+					t.Fatalf("stream decoder accepted second initial enrollment: %v", err)
+				}
+			})
+		}
+	}
+	t.Run("distinct-events-retain-empty-initial-identities", func(t *testing.T) {
+		s := base.Specification()
+		extra := s.Streams[1].Backlog[0]
+		extra.EventID, extra.EnrollmentID, extra.Position = mid(302), mid(402), 2
+		extra.EnvelopeDigest, extra.EffectDigest = mh("next-envelope"), mh("next-empty-enrollment")
+		s.Streams[1].Boundary = 2
+		s.Streams[1].Backlog = append(s.Streams[1].Backlog, extra)
+		r := mustRequest(t, s)
+		if decoded, err := inbox.DecodeTransitionRequest(r.Bytes(), membershipLimits); err != nil || !bytes.Equal(decoded.Bytes(), r.Bytes()) || decoded.Digest() != r.Digest() {
+			t.Fatalf("distinct empty initial identities lost: %v", err)
+		}
+	})
+	t.Run("disjoint-late-deltas-for-one-event", func(t *testing.T) {
+		s := base.Specification()
+		first := s.Streams[0].Backlog[0]
+		first.Phase = "late"
+		second := first
+		first.Consumers = first.Consumers[:1]
+		second.Consumers = second.Consumers[1:]
+		second.EnrollmentID, second.EffectDigest = mid(402), mh("second-late-delta")
+		s.Streams[0].Backlog = []inbox.EnrollmentEffect{first, second}
+		// Supplied late identities need no invented initial/history authority.
+		r := mustRequest(t, s)
+		if decoded, err := inbox.DecodeTransitionRequest(r.Bytes(), membershipLimits); err != nil || !bytes.Equal(decoded.Bytes(), r.Bytes()) || decoded.Digest() != r.Digest() {
+			t.Fatalf("legitimate late delta identities lost: %v", err)
+		}
+	})
+}
+
 func TestMembershipRawManifestRejectsNormalization(t *testing.T) {
 	r := mustRequest(t, requestFixture(t))
 	raw := string(r.Bytes())
