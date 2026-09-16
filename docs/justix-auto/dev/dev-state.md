@@ -65,8 +65,9 @@ TypeScript; the checked-in config stays empty until concrete owner schemas are
 approved and registered. Sealed owner persistence profiles/read-only checks and
 the strict raw response JSON decoder are now independently integrated. Auth
 Fetch metadata/429 composition is integrated as T-936; the generation-label correction remains
-inside T-928's reviewed storage fix cycle. Compatible UOW binding and the actual
-migration driver/runner, concrete baseline manifests/default provisioning and
+inside T-928's reviewed storage fix cycle. Identity's explicit profile-compatible
+UOW is integrated as T-931 and checks each transaction before repository binding.
+The actual migration driver/runner, concrete baseline manifests/default provisioning and
 custody profile support remain separate tasks with their explicit prerequisites.
 
 Historical preflight below predates the authorized Git setup on 2026-09-14.
@@ -144,6 +145,17 @@ Keep current mocks immutable. Use the approved contract, not raw slice alternati
   no answer has been received. The proposal stays in `.worktrees/T-002` and is
   not an approved production configuration. Delivery/target benchmarks and
   all-factor-loss/pending-user activation remain separately gated.
+
+### Pending test-environment authorization — asked 2026-09-16
+
+Automatic approval review rejected PostgreSQL role/parameter configuration
+changes in a disposable membership QA fixture before process creation. Explicit
+authorization was requested for those changes only inside newly created,
+disposable JustixAuto containers; no answer has been received. T-928 exact-commit
+live verification remains blocked. Other checks omit the restricted mutations
+and must report those exclusions; ordinary isolated fixtures and pure checks
+continue. Proposal feasibility QA used a separately approved safe probe and
+does not establish these unexecuted runtime configuration checks.
 
 ### Historical Git diagnostic — 2026-09-13
 
