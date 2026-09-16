@@ -473,6 +473,96 @@ function renderTS(c) {
   return out;
 }
 
+// Inert T-938 fragments: only private test/composition code can call these.
+// Main and both complete renderers retain their unconditional auth barriers.
+function authSemanticModel(c) {
+  if (c.authProfile?.version!==1||c.authProfile?.semantics!==1) fail('semantic fragment requires compiled auth profile');
+  const names=sorted(c.schemas), operations=c.operations.filter((op)=>op.authTransport);
+  const errorSchemas={};
+  for (const op of operations) errorSchemas[op.id]=Object.fromEntries(Object.entries(op.responses).filter(([status])=>Number(status)>=400));
+  const errorNames=[...new Set(Object.values(errorSchemas).flatMap(Object.values))].sort();
+  if (errorNames.some((name)=>!names.includes(name))) fail('auth semantic errors require named DTOs');
+  const declarations=['SemanticOutcome','SemanticValid','SemanticMismatch','SemanticFatalPolicy','SemanticFatalConfiguration','SemanticFatalBinding','AuthSemantics','AuthValidators','AuthValidationError','AuthErrorResponse','AuthOperationID','AuthErrorStatus','NewAuthValidators','createAuthValidators'];
+  const symbols=new Set([...names,...c.operations.flatMap((op)=>[op.id,op.id+'Result'])]);
+  for (const name of declarations) registerSymbol(symbols,name,'auth semantic');
+  for (const name of names) registerSymbol(symbols,name+'StructuralSchema','auth structural');
+  for (const name of ['CheckReady','ValidateError','ParseError','Outcome',...names.flatMap((name)=>['Validate'+name,'Parse'+name]),...errorNames.map((_,i)=>'Variant'+(i+1))]) {
+    if (symbols.has(name)) fail('auth semantic method/field collision: '+name);
+  }
+  return {names,errorNames,errorSchemas,operations,declarations};
+}
+function replaceRuntime(source, from, to) {
+  if (source.split(from).length!==2) fail('semantic structural runtime anchor changed');
+  return source.replace(from,to);
+}
+function authStructuralTS() {
+  let out=tsRuntime.slice(0,tsRuntime.indexOf('\nfunction contractHeader('));
+  out=out.replaceAll('contractValidate','contractAuthStructural');
+  out=replaceRuntime(out,'function contractAuthStructural(schema: ContractSchema, value: unknown): void {',
+    'function contractAuthStructural(schema: ContractSchema, value: unknown, visits: ContractAuthOccurrence[] = []): void {');
+  out=replaceRuntime(out,"const bad = (): never => { throw new Error('Invalid contract value'); };",'const bad = (): never => { throw contractAuthMismatch; };');
+  out=replaceRuntime(out,"if (typeof schema.$ref === 'string') { contractAuthStructural(contractSchemas[schema.$ref.split('/').at(-1) ?? ''] ?? bad(), value); return; }",
+    "if (typeof schema.$ref === 'string') { const name=schema.$ref.split('/').at(-1) ?? ''; if (!Object.hasOwn(contractSchemas,name)) throw contractAuthConfiguration; contractAuthStructural(contractSchemas[name]!,value,visits); visits.push({name,value}); return; }");
+  out=replaceRuntime(out,'let matches = 0; for (const variant of schema.oneOf) { try { contractAuthStructural(variant as ContractSchema, value); matches++; } catch { /* count exact alternatives */ } }\n    if (matches !== 1) bad(); return;',
+    'let matches=0; let selected: ContractAuthOccurrence[]=[]; for (const variant of schema.oneOf) { const candidate: ContractAuthOccurrence[]=[]; try { contractAuthStructural(variant as ContractSchema,value,candidate); matches++; selected=candidate; } catch (error) { if (error!==contractAuthMismatch) throw error; } }\n    if (matches!==1) bad(); for(const visit of selected)visits.push(visit); return;');
+  out=replaceRuntime(out,'contractAuthStructural(schema.items as ContractSchema, value[index]);','contractAuthStructural(schema.items as ContractSchema, value[index],visits);');
+  out=replaceRuntime(out,'contractAuthStructural(props[key] ?? bad(), value[key]);','contractAuthStructural(props[key] ?? (()=>{throw contractAuthConfiguration;})(), value[key],visits);');
+  out=replaceRuntime(out,'contractAuthStructural(schema.additionalProperties as ContractSchema, value[key]);','contractAuthStructural(schema.additionalProperties as ContractSchema, value[key],visits);');
+  return out.replaceAll('Object.keys(value))','Object.keys(value).sort())');
+}
+function renderAuthValidatorsTS(c) {
+  const m=authSemanticModel(c);
+  let out=`${banner}\n// Inert semantic fragment; no transport or auth activation.\n`;
+  out+=`const contractSchemas: Record<string, ContractSchema> = ${stable(c.schemas)};\nconst contractAuthExpectedSchemas=${JSON.stringify(stable(c.schemas))};\n`;
+  out+=`const contractAuthErrorSchemas: Readonly<Record<string,Readonly<Record<string,string>>>>=${stable(m.errorSchemas)};\n`;
+  out+=`export type SemanticOutcome='valid'|'mismatch'|'fatal:policy'|'fatal:configuration'|'fatal:binding';\nexport type AuthOperationID=${m.operations.map((op)=>JSON.stringify(op.id)).join('|')};\nexport type AuthErrorStatus=${[...new Set(Object.values(m.errorSchemas).flatMap((rows)=>Object.keys(rows)))].sort().join('|')||'never'};\n`;
+  out+=`export class AuthValidationError extends Error { constructor(readonly outcome: Exclude<SemanticOutcome,'valid'>) { super('Invalid auth validation'); } }\n`;
+  out+=`const contractAuthMismatch=Object.freeze({}); const contractAuthConfiguration=Object.freeze({});\ntype ContractAuthOccurrence={name:string;value:unknown};\n${authStructuralTS()}\n`;
+  for (const name of m.names) out+=`export type ${name} = ${tsType(c.schemas[name])};\n`;
+  out+=`export type AuthErrorResponse=${m.errorNames.join('|')||'never'};\nexport interface AuthSemantics { checkReady():SemanticOutcome;\n${m.names.map((name)=>`validate${name}(value:${name}):SemanticOutcome;`).join('\n')}\nvalidateError(operationId:AuthOperationID,status:AuthErrorStatus,value:AuthErrorResponse):SemanticOutcome; }\n`;
+  out+=authTSBindingRuntime;
+  out+=`const contractAuthNames=${stable(m.names)} as const;\n`;
+  for (const name of m.names) out+=`export const ${name}StructuralSchema=Object.freeze({parse(value:unknown):${name}{contractAuthStructure(${JSON.stringify(name)},value);return value as ${name};}});\n`;
+  out+='export function createAuthValidators(bindings:AuthSemantics) {\nconst table=contractAuthCapture(bindings); contractAuthReady(table);\n';
+  out+=`const validate=(name:string|undefined,value:unknown,error?:{operation:AuthOperationID;status:AuthErrorStatus})=>{contractAuthReady(table);if(error){if(typeof error.operation!=='string'||!Number.isInteger(error.status))throw new AuthValidationError('fatal:configuration');const statuses=Object.hasOwn(contractAuthErrorSchemas,error.operation)?contractAuthErrorSchemas[error.operation]:undefined;name=statuses&&Object.hasOwn(statuses,error.status)?statuses[error.status]:undefined;}if(!name)throw new AuthValidationError('fatal:configuration');const visits=contractAuthStructure(name,value);for(const visit of visits){contractAuthReady(table);contractAuthRequire(contractAuthInvoke(table['validate'+visit.name]!,[visit.value]));}if(error){contractAuthReady(table);contractAuthRequire(contractAuthInvoke(table.validateError!,[error.operation,error.status,value]));}};\n`;
+  out+='return Object.freeze({\n';
+  for (const name of m.names) out+=`${name}Schema:Object.freeze({parse(value:unknown):${name}{validate(${JSON.stringify(name)},value);return value as ${name};}}),\n`;
+  out+=`validateError(operation:AuthOperationID,status:AuthErrorStatus,value:unknown):AuthErrorResponse{validate(undefined,value,{operation,status});return value as AuthErrorResponse;}\n});}\nexport type AuthValidators=ReturnType<typeof createAuthValidators>;\n`;
+  return out;
+}
+const authTSBindingRuntime=String.raw`
+type ContractAuthHook=(...args:unknown[])=>unknown;
+const contractAuthThen=Promise.prototype.then;
+const contractAuthDiscard=()=>undefined;
+function contractAuthDispose(value:unknown):void{try{Reflect.apply(contractAuthThen,value,[contractAuthDiscard,contractAuthDiscard]);}catch{/* native Promise brand check only */}}
+function contractAuthInvoke(hook:ContractAuthHook,args:unknown[]):SemanticOutcome {
+ let result:unknown;try{result=Reflect.apply(hook,undefined,args);}catch(error){contractAuthDispose(error);return 'fatal:binding';}
+ if(result==='valid'||result==='mismatch'||result==='fatal:policy'||result==='fatal:configuration'||result==='fatal:binding')return result;
+ contractAuthDispose(result);return 'fatal:binding';
+}
+function contractAuthRequire(outcome:SemanticOutcome):void{if(outcome!=='valid')throw new AuthValidationError(outcome);}
+function contractAuthReady(table:Readonly<Record<string,ContractAuthHook>>):void{const outcome=contractAuthInvoke(table.checkReady!,[]);contractAuthRequire(outcome==='mismatch'?'fatal:binding':outcome);}
+function contractAuthCapture(bindings:AuthSemantics):Readonly<Record<string,ContractAuthHook>>{
+ try {
+  if(!contractRecord(bindings))throw contractAuthConfiguration;
+  const table:Record<string,ContractAuthHook>=Object.create(null) as Record<string,ContractAuthHook>;
+  const required=['checkReady',...contractAuthNames.map((name)=>'validate'+name),'validateError'];
+  const descriptors=Object.getOwnPropertyDescriptors(bindings);
+  if(Reflect.ownKeys(descriptors).some((key)=>typeof key!=='string'||!required.includes(key)))throw contractAuthConfiguration;
+  for(const name of required){const field=descriptors[name];if(!field||!('value' in field)||typeof field.value!=='function'){if(field&&'value' in field)contractAuthDispose(field.value);throw contractAuthConfiguration;}table[name]=field.value as ContractAuthHook;}
+  return Object.freeze(table);
+ }catch(error){contractAuthDispose(error);throw new AuthValidationError('fatal:binding');}
+}
+function contractAuthStructure(name:string,value:unknown):ContractAuthOccurrence[]{
+ try {
+  // Generated configuration is private and fixed. Detect a missing/changed
+  // schema anywhere, even on an otherwise unselected union alternative.
+  if(contractStable(contractSchemas)!==contractAuthExpectedSchemas||!Object.hasOwn(contractSchemas,name))throw contractAuthConfiguration;
+  const visits:ContractAuthOccurrence[]=[];contractAuthStructural(contractSchemas[name]!,value,visits);visits.push({name,value});return visits;
+ }catch(error){if(error===contractAuthMismatch)throw new AuthValidationError('mismatch');contractAuthDispose(error);throw new AuthValidationError('fatal:configuration');}
+}
+`;
+
 function goType(s) {
   if (s.$ref) return refName(s);
   let type;
@@ -565,11 +655,11 @@ func contractPath(value string)(string,error){if value=="."||value==".."||string
 func contractHeader(name,value string)error{switch name{case "Idempotency-Key":return contractValidate(map[string]any{"type":"string","format":"uuid"},value);case "X-Context-Revision","If-Match":if !regexp.MustCompile("^(0|[1-9][0-9]*)$").MatchString(value)||len(value)>19||len(value)==19&&value>"9223372036854775807"{return contractInvalid}};return nil}
 `;
 
-function renderGo(c) {
-  rejectInertAuth(c);
-  let out = `${banner}\n// Source SHA-256: ${c.digest}\npackage ${c.entry.goPackage}\nimport ("bytes";"context";"encoding/json";"errors";"io";"math";"math/big";"mime";"net/url";"regexp";"strconv";"strings";"time";"unicode";"unicode/utf8")\nconst contractSchemaJSON = ${JSON.stringify(stable(c.schemas))}\n${goRuntime}\n`;
+function renderGoDTOs(c,auth=false) {
+  let out='';
   for (const name of sorted(c.schemas)) {
     const schema = c.schemas[name];
+    if (auth&&schema.$ref) { out+=`type ${name} = ${refName(schema)}\n`; continue; }
     if (schema.oneOf) {
       out += `type ${name} struct {${schema.oneOf.map((s,i) => `Variant${i+1} *${refName(s)}`).join(';')}}\n`;
       out += `func (v ${name}) MarshalJSON()([]byte,error){count:=0;var value any;${schema.oneOf.map((_,i)=>`if v.Variant${i+1}!=nil{count++;value=v.Variant${i+1}}`).join(';')};if count!=1{return nil,contractInvalid};data,err:=json.Marshal(value);if err!=nil{return nil,contractInvalid};if err=contractCheck(${JSON.stringify(name)},data);err!=nil{return nil,err};return data,nil}\n`;
@@ -583,6 +673,12 @@ function renderGo(c) {
       out += `func(v *${name}) UnmarshalJSON(data []byte)error{if err:=contractCheck(${JSON.stringify(name)},data);err!=nil{return err};type alias ${name};var next alias;if err:=contractDecode(data,${wrapped?'&next.Value':'&next'});err!=nil{return contractInvalid};*v=${name}(next);return nil}\n`;
     }
   }
+  return out;
+}
+function renderGo(c) {
+  rejectInertAuth(c);
+  let out = `${banner}\n// Source SHA-256: ${c.digest}\npackage ${c.entry.goPackage}\nimport ("bytes";"context";"encoding/json";"errors";"io";"math";"math/big";"mime";"net/url";"regexp";"strconv";"strings";"time";"unicode";"unicode/utf8")\nconst contractSchemaJSON = ${JSON.stringify(stable(c.schemas))}\n${goRuntime}\n`;
+  out+=renderGoDTOs(c);
   for (const op of c.operations) {
     const results = Object.entries(op.responses).filter(([,name])=>name !== null);
     out += `type ${op.id}Result struct {Status int;${results.map(([status,name]) => `Status${status} *${name}`).join(';')}}\n`;
@@ -604,14 +700,17 @@ function renderGo(c) {
       : `case ${status}:if len(response.Body)!=0{return ${op.id}Result{},ContractFailure{Kind:"invalid response",UnknownOutcome:${op.method!=='GET'}}}\n`;
     out += `default:return result,ContractFailure{Kind:"unexpected status",UnknownOutcome:${op.method!=='GET'}}};return result,nil}\n`;
   }
+  return namespaceGo(c,out);
+}
+function namespaceGo(c,out,extraNames=[]) {
   // Rename identifiers only, never wire/schema strings. Separate feature files
   // can coexist in one owner Go package without shared runtime globals.
-  const publicNames = new Set([...sorted(c.schemas),...c.operations.flatMap((op)=>[op.id,`${op.id}Result`]),'NewContractClient']);
+  const publicNames = new Set([...sorted(c.schemas),...c.operations.flatMap((op)=>[op.id,`${op.id}Result`]),'NewContractClient',...extraNames]);
   // Imported package selectors must retain their spelling. The namespace pass
   // cannot reinterpret an accepted DTO/operation name as a standard-library
   // member (for example json.Marshal or context.Context).
   const code = goCode(out);
-  for (const match of code.matchAll(/\b(?:bytes|context|json|errors|io|math|big|mime|url|regexp|strconv|strings|time|unicode|utf8)\.([A-Za-z][A-Za-z0-9]*)/g)) {
+  for (const match of code.matchAll(/\b(?:bytes|context|json|errors|io|math|big|mime|url|regexp|strconv|strings|time|unicode|utf8|reflect|sort)\.([A-Za-z][A-Za-z0-9]*)/g)) {
     if (publicNames.has(match[1])) fail(`Go imported symbol collision: ${match[1]}`);
   }
   // Receiver selectors are not package selectors: d.Token(), r.IsInt() and
@@ -655,6 +754,75 @@ function renderGo(c) {
   });
   return execFileSync(resolve(goRoot(),'bin/gofmt'), [], {input:out,encoding:'utf8',maxBuffer:16*1024*1024});
 }
+
+function authStructuralGo() {
+  let out=goRuntime.slice(goRuntime.indexOf('func contractValidate('),goRuntime.indexOf('func contractCheck('));
+  out=out.replaceAll('contractValidate','contractAuthStructural').replaceAll('contractInvalid','contractAuthMismatch');
+  out=replaceRuntime(out,'func contractAuthStructural(s map[string]any,v any) error {','func contractAuthStructural(s map[string]any,v any,visits *[]contractAuthOccurrence) error {');
+  out=replaceRuntime(out,'if ref,ok:=s["$ref"].(string);ok { name:=ref[strings.LastIndex(ref,"/")+1:];next,ok:=contractSchemas[name];if !ok{return contractAuthMismatch};return contractAuthStructural(next,v) }',
+    'if ref,ok:=s["$ref"].(string);ok { name:=ref[strings.LastIndex(ref,"/")+1:];next,ok:=contractSchemas[name];if !ok{return contractAuthConfiguration};if err:=contractAuthStructural(next,v,visits);err!=nil{return err};*visits=append(*visits,contractAuthOccurrence{name,v});return nil }');
+  out=replaceRuntime(out,'if variants,ok:=s["oneOf"].([]any);ok { count:=0;for _,variant:=range variants {if contractAuthStructural(variant.(map[string]any),v)==nil{count++}};if count!=1{return contractAuthMismatch};return nil }',
+    'if variants,ok:=s["oneOf"].([]any);ok { count:=0;var selected []contractAuthOccurrence;for _,variant:=range variants {var candidate []contractAuthOccurrence;err:=contractAuthStructural(variant.(map[string]any),v,&candidate);if err==nil{count++;selected=candidate}else if err!=contractAuthMismatch{return err}};if count!=1{return contractAuthMismatch};*visits=append(*visits,selected...);return nil }');
+  out=replaceRuntime(out,'re,err:=regexp.Compile(pattern);if err!=nil||!re.MatchString(value){return contractAuthMismatch}',
+    're,err:=regexp.Compile(pattern);if err!=nil{return contractAuthConfiguration};if !re.MatchString(value){return contractAuthMismatch}');
+  for(const expression of ['s["items"].(map[string]any)','prop.(map[string]any)','s["additionalProperties"].(map[string]any)'])out=replaceRuntime(out,`contractAuthStructural(${expression},item)`,`contractAuthStructural(${expression},item,visits)`);
+  out=replaceRuntime(out,'for key,item:=range values{prop,ok:=props[key];','for _,key:=range contractAuthKeys(values){item:=values[key];prop,ok:=props[key];');
+  out=replaceRuntime(out,'else{for _,item:=range values{if err:=contractAuthStructural(s["additionalProperties"]',
+    'else{for _,key:=range contractAuthKeys(values){item:=values[key];if err:=contractAuthStructural(s["additionalProperties"]');
+  out=replaceRuntime(out,'default:return contractAuthMismatch','default:return contractAuthConfiguration');
+  return out;
+}
+function renderAuthValidatorsGo(c) {
+  const m=authSemanticModel(c);
+  const raw=goRuntime.slice(0,goRuntime.indexOf('// ContractExchange'));
+  let out=`${banner}\n// Inert structural DTOs and semantic validators; no HTTP transport.\npackage ${c.entry.goPackage}\nimport("bytes";"encoding/json";"errors";"io";"math";"math/big";"reflect";"regexp";"sort";"strconv";"strings";"time";"unicode/utf8")\nconst contractSchemaJSON=${JSON.stringify(stable(c.schemas))}\n${raw}\n${renderGoDTOs(c,true)}\n`;
+  out+=`type SemanticOutcome uint8\nconst(SemanticValid SemanticOutcome=1;SemanticMismatch SemanticOutcome=2;SemanticFatalPolicy SemanticOutcome=3;SemanticFatalConfiguration SemanticOutcome=4;SemanticFatalBinding SemanticOutcome=5)\n`;
+  out+=m.errorNames.length===1?`type AuthErrorResponse = ${m.errorNames[0]}\n`:`type AuthErrorResponse struct {${m.errorNames.map((name,i)=>`Variant${i+1} *${name}`).join(';')}}\n`;
+  out+=`type AuthSemantics interface {CheckReady() SemanticOutcome;${m.names.map((name)=>`Validate${name}(${name}) SemanticOutcome`).join(';')};ValidateError(string,int,AuthErrorResponse) SemanticOutcome}\n`;
+  out+=`type AuthValidators struct { readiness func()SemanticOutcome; builders map[string]func(any)(func()SemanticOutcome,error); errorHook func(string,int,AuthErrorResponse)SemanticOutcome }\n`;
+  out+=`func NewAuthValidators(binding AuthSemantics)(*AuthValidators,error){if binding==nil{return nil,AuthValidationError{SemanticFatalBinding}};value:=reflect.ValueOf(binding);switch value.Kind(){case reflect.Chan,reflect.Func,reflect.Interface,reflect.Map,reflect.Pointer,reflect.Slice:if value.IsNil(){return nil,AuthValidationError{SemanticFatalBinding}}};v:=&AuthValidators{readiness:binding.CheckReady,errorHook:binding.ValidateError,builders:map[string]func(any)(func()SemanticOutcome,error){}}\n`;
+  for(const name of m.names)out+=`{hook:=binding.Validate${name};v.builders[${JSON.stringify(name)}]=func(raw any)(func()SemanticOutcome,error){var value ${name};if err:=contractAuthDecode(raw,&value);err!=nil{return nil,err};return func()SemanticOutcome{return hook(value)},nil}}\n`;
+  out+='if err:=v.ready();err!=nil{return nil,err};return v,nil}\n';
+  out+=`var contractAuthErrorSchemas=map[string]map[int]string{${Object.entries(m.errorSchemas).map(([operation,statuses])=>`${JSON.stringify(operation)}:{${Object.entries(statuses).map(([status,name])=>`${status}:${JSON.stringify(name)}`).join(',')}}`).join(',')}}\n`;
+  out+=authGoBindingRuntime+authStructuralGo();
+  for(const name of m.names)out+=`func(v *AuthValidators) Parse${name}(data []byte)(${name},error){var value ${name};if err:=v.ready();err!=nil{return value,err};raw,hooks,err:=v.prepare(${JSON.stringify(name)},data);if err!=nil{return value,err};if err=contractAuthDecode(raw,&value);err!=nil{return value,err};if err=v.run(hooks);err!=nil{var empty ${name};return empty,err};return value,nil}\n`;
+  out+=`func contractAuthErrorName(operation string,status int)(string,error){name,ok:=contractAuthErrorSchemas[operation][status];if !ok{return "",AuthValidationError{SemanticFatalConfiguration}};return name,nil}\n`;
+  out+=`func contractAuthErrorValue(name string,raw any)(AuthErrorResponse,error){var result AuthErrorResponse;switch name{\n`;
+  for(const [index,name] of m.errorNames.entries())out+=m.errorNames.length===1
+    ?`case ${JSON.stringify(name)}:if err:=contractAuthDecode(raw,&result);err!=nil{return result,err};return result,nil\n`
+    :`case ${JSON.stringify(name)}:var value ${name};if err:=contractAuthDecode(raw,&value);err!=nil{return result,err};result.Variant${index+1}=&value;return result,nil\n`;
+  out+='};return result,AuthValidationError{SemanticFatalConfiguration}}\n';
+  out+=`func(v *AuthValidators) parseError(operation string,status int,data []byte)(AuthErrorResponse,error){var empty AuthErrorResponse;name,err:=contractAuthErrorName(operation,status);if err!=nil{return empty,err};raw,hooks,err:=v.prepare(name,data);if err!=nil{return empty,err};value,err:=contractAuthErrorValue(name,raw);if err!=nil{return empty,err};if err=v.run(hooks);err!=nil{return empty,err};if err=v.ready();err!=nil{return empty,err};if err=contractAuthRequire(contractAuthInvoke(func()SemanticOutcome{return v.errorHook(operation,status,value)}));err!=nil{return empty,err};return value,nil}\n`;
+  out+=`func(v *AuthValidators) ParseError(operation string,status int,data []byte)(AuthErrorResponse,error){if err:=v.ready();err!=nil{var empty AuthErrorResponse;return empty,err};return v.parseError(operation,status,data)}\n`;
+  out+=`func(v *AuthValidators) ValidateError(operation string,status int,value AuthErrorResponse)(err error){defer func(){if recover()!=nil{err=AuthValidationError{SemanticFatalConfiguration}}}();if err=v.ready();err!=nil{return err};name,err:=contractAuthErrorName(operation,status);if err!=nil{return err};var selected any\n`;
+  if(m.errorNames.length===1)out+=`if name!=${JSON.stringify(m.errorNames[0])}{return AuthValidationError{SemanticFatalConfiguration}};selected=value\n`;
+  else {out+='count:=0;';for(const[index,name]of m.errorNames.entries())out+=`if value.Variant${index+1}!=nil{count++;if name!=${JSON.stringify(name)}{return AuthValidationError{SemanticMismatch}};selected=value.Variant${index+1}};`;out+='if count!=1{return AuthValidationError{SemanticMismatch}}\n';}
+  out+=`if !contractAuthUTF8(reflect.ValueOf(selected)){return AuthValidationError{SemanticMismatch}};data,err:=json.Marshal(selected);if err!=nil{return AuthValidationError{SemanticMismatch}};_,err=v.parseError(operation,status,data);return err}\n`;
+  return namespaceGo(c,out,m.declarations.filter((name)=>!['AuthOperationID','AuthErrorStatus','createAuthValidators'].includes(name)));
+}
+const authGoBindingRuntime=String.raw`
+type AuthValidationError struct {Outcome SemanticOutcome}
+func(e AuthValidationError) Error()string{return "invalid auth validation"}
+var contractAuthMismatch=errors.New("structural mismatch")
+var contractAuthConfiguration=errors.New("structural configuration")
+type contractAuthOccurrence struct{name string;value any}
+var contractAuthExpectedSchemas=func()[]byte{data,err:=json.Marshal(contractSchemas);if err!=nil{panic("invalid generated configuration")};return data}()
+func contractAuthKeys(values map[string]any)[]string{keys:=make([]string,0,len(values));for key:=range values{keys=append(keys,key)};sort.Strings(keys);return keys}
+func contractAuthInvoke(hook func()SemanticOutcome)(outcome SemanticOutcome){outcome=SemanticFatalBinding;defer func(){if recover()!=nil{outcome=SemanticFatalBinding}}();outcome=hook();switch outcome{case SemanticValid,SemanticMismatch,SemanticFatalPolicy,SemanticFatalConfiguration,SemanticFatalBinding:return outcome};return SemanticFatalBinding}
+func contractAuthRequire(outcome SemanticOutcome)error{if outcome!=SemanticValid{return AuthValidationError{outcome}};return nil}
+func(v *AuthValidators)ready()error{if v==nil||v.readiness==nil{return AuthValidationError{SemanticFatalBinding}};outcome:=contractAuthInvoke(v.readiness);if outcome==SemanticMismatch{outcome=SemanticFatalBinding};return contractAuthRequire(outcome)}
+func contractAuthDecode(raw any,target any)(err error){defer func(){if recover()!=nil{err=AuthValidationError{SemanticFatalConfiguration}}}();data,err:=json.Marshal(raw);if err!=nil{return AuthValidationError{SemanticFatalConfiguration}};if err=json.Unmarshal(data,target);err!=nil{return AuthValidationError{SemanticFatalConfiguration}};return nil}
+func(v *AuthValidators)prepare(name string,data []byte)(raw any,hooks []func()SemanticOutcome,err error){
+ defer func(){if recover()!=nil{raw=nil;hooks=nil;err=AuthValidationError{SemanticFatalConfiguration}}}()
+ current,err:=json.Marshal(contractSchemas);if err!=nil||!bytes.Equal(current,contractAuthExpectedSchemas){return nil,nil,AuthValidationError{SemanticFatalConfiguration}}
+ schema,ok:=contractSchemas[name];if !ok{return nil,nil,AuthValidationError{SemanticFatalConfiguration}}
+ raw,err=contractRead(data);if err!=nil{return nil,nil,AuthValidationError{SemanticMismatch}}
+ var visits []contractAuthOccurrence;if err=contractAuthStructural(schema,raw,&visits);err!=nil{if err==contractAuthMismatch{return nil,nil,AuthValidationError{SemanticMismatch}};return nil,nil,AuthValidationError{SemanticFatalConfiguration}}
+ visits=append(visits,contractAuthOccurrence{name,raw});for _,visit:=range visits{builder,ok:=v.builders[visit.name];if !ok{return nil,nil,AuthValidationError{SemanticFatalBinding}};hook,err:=builder(visit.value);if err!=nil{return nil,nil,err};hooks=append(hooks,hook)};return raw,hooks,nil
+}
+func(v *AuthValidators)run(hooks []func()SemanticOutcome)error{for _,hook:=range hooks{if err:=v.ready();err!=nil{return err};if err:=contractAuthRequire(contractAuthInvoke(hook));err!=nil{return err}};return nil}
+func contractAuthUTF8(value reflect.Value)bool{if !value.IsValid(){return true};switch value.Kind(){case reflect.String:return utf8.ValidString(value.String());case reflect.Pointer,reflect.Interface:if !value.IsNil(){return contractAuthUTF8(value.Elem())};case reflect.Struct:for i:=0;i<value.NumField();i++{if !contractAuthUTF8(value.Field(i)){return false}};case reflect.Array,reflect.Slice:for i:=0;i<value.Len();i++{if !contractAuthUTF8(value.Index(i)){return false}};case reflect.Map:for _,key:=range value.MapKeys(){if !contractAuthUTF8(key)||!contractAuthUTF8(value.MapIndex(key)){return false}}};return true}
+`;
 
 function main() {
   let configPath = resolve(dirname(fileURLToPath(import.meta.url)), 'contracts-generator.config.json'), check = false;
