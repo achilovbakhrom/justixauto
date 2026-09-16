@@ -748,6 +748,34 @@ func TestRetailScopeRecoveryAndMessaging(t *testing.T) {
 		if err := runner.Run(ctx, func(fixturePorts) error { return nil }); err != nil {
 			t.Fatal(err)
 		}
+		for _, change := range []struct{ name, set, reset string }{
+			{"metadata column write", "GRANT UPDATE(mode) ON eventstore.messaging_mode TO justix_retail_runtime", "REVOKE UPDATE(mode) ON eventstore.messaging_mode FROM justix_retail_runtime"},
+			{"PUBLIC metadata write", "GRANT INSERT(mode) ON eventstore.messaging_mode TO PUBLIC", "REVOKE INSERT(mode) ON eventstore.messaging_mode FROM PUBLIC"},
+			{"RLS metadata", "ALTER TABLE eventstore.messaging_mode ENABLE ROW LEVEL SECURITY", "ALTER TABLE eventstore.messaging_mode DISABLE ROW LEVEL SECURITY"},
+			{"missing installed marker", "ALTER TABLE eventstore.messaging_mode RENAME TO hidden_mode", "ALTER TABLE eventstore.hidden_mode RENAME TO messaging_mode"},
+			{"view marker substitution", "ALTER TABLE eventstore.messaging_mode RENAME TO hidden_mode; CREATE VIEW eventstore.messaging_mode AS SELECT * FROM eventstore.hidden_mode; GRANT SELECT ON eventstore.messaging_mode TO justix_retail_runtime", "DROP VIEW eventstore.messaging_mode; ALTER TABLE eventstore.hidden_mode RENAME TO messaging_mode"},
+		} {
+			t.Run(change.name, func(t *testing.T) {
+				local := f
+				local.t = t
+				local.must("justix_retail", "justix_retail", change.set)
+				binds, calls := 0, 0
+				checked, err := retail.NewUnitOfWork(db, func(tx *gorm.DB) (fixturePorts, error) { binds++; return bindFixture(tx) })
+				if err != nil {
+					t.Fatal(err)
+				}
+				if !errors.Is(checked.Check(ctx), retail.ErrIncompatiblePersistence) {
+					t.Fatal("invalid mode metadata ready")
+				}
+				if err := checked.Run(ctx, func(fixturePorts) error { calls++; return nil }); !errors.Is(err, retail.ErrIncompatiblePersistence) || binds != 0 || calls != 0 {
+					t.Fatalf("invalid mode metadata reached feature: %v binds=%d calls=%d", err, binds, calls)
+				}
+				local.must("justix_retail", "justix_retail", change.reset)
+				if err := runner.Check(ctx); err != nil {
+					t.Fatalf("restored legacy metadata: %v", err)
+				}
+			})
+		}
 		// No legacy outbox entries and no runtimes or broker were started.
 		f.must("justix_retail", "justix_retail", "SELECT eventstore.activate_messaging_custody('"+uuid.NewString()+"',decode(repeat('ab',32),'hex'),decode(repeat('cd',32),'hex'),'synthetic-fixture-backup','no-runtimes-started','no-broker-fixture','legacy-scaffold-incompatible')")
 		if mode := f.must("justix_retail", "justix_retail_runtime", "SELECT mode FROM eventstore.messaging_mode"); mode != "custody" {
@@ -764,6 +792,17 @@ func TestRetailScopeRecoveryAndMessaging(t *testing.T) {
 		called := false
 		if err := r.Run(ctx, func(fixturePorts) error { called = true; return nil }); !errors.Is(err, retail.ErrIncompatiblePersistence) || called || binds != 0 {
 			t.Fatalf("custody reached legacy feature: %v called=%v binds=%d", err, called, binds)
+		}
+		// Configuration drift must not turn custody into a supported legacy mode.
+		f.must("justix_retail", "justix_retail", "GRANT INSERT ON eventstore.outbox TO justix_retail_runtime; GRANT UPDATE(attempts,next_attempt_at,lease_owner,lease_until,sent_at) ON eventstore.outbox TO justix_retail_runtime")
+		if mode := f.must("justix_retail", "justix_retail_runtime", "SELECT mode FROM eventstore.messaging_mode"); mode != "custody" {
+			t.Fatalf("mode changed: %s", mode)
+		}
+		if !errors.Is(r.Check(ctx), retail.ErrIncompatiblePersistence) {
+			t.Fatal("custody with restored legacy grants ready")
+		}
+		if err := r.Run(ctx, func(fixturePorts) error { called = true; return nil }); !errors.Is(err, retail.ErrIncompatiblePersistence) || called || binds != 0 {
+			t.Fatalf("restored grants reached legacy feature in custody: %v called=%v binds=%d", err, called, binds)
 		}
 	})
 }

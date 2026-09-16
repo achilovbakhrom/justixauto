@@ -114,5 +114,49 @@ func check(db *gorm.DB) error {
 	if !valid {
 		return ErrIncompatiblePersistence
 	}
+	return checkLegacyMode(db)
+}
+
+// Grants are not evidence of messaging mode: an owner can accidentally restore
+// legacy grants after custody activation. Pre-additive installations have no
+// marker; when present, the exact protected owner marker must say legacy.
+func checkLegacyMode(db *gorm.DB) error {
+	var state struct {
+		ModeExists     bool
+		AdditiveExists bool
+		SafeTable      bool
+	}
+	if err := db.Raw(`SELECT to_regclass('eventstore.messaging_mode') IS NOT NULL AS mode_exists,
+ EXISTS (SELECT FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+  WHERE n.nspname='eventstore' AND c.relname IN
+   ('outbox_messages','outbox_deliveries','messaging_cutovers','dispatch_messages')) AS additive_exists,
+ EXISTS (SELECT FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+  WHERE n.nspname='eventstore' AND c.relname='messaging_mode' AND c.relkind='r'
+   AND NOT c.relrowsecurity AND NOT c.relforcerowsecurity
+   AND pg_get_userbyid(c.relowner)='justix_retail') AS safe_table`).Scan(&state).Error; err != nil {
+		return fmt.Errorf("%w: %w", ErrIncompatiblePersistence, err)
+	}
+	if !state.ModeExists {
+		if state.AdditiveExists {
+			return ErrIncompatiblePersistence
+		}
+		return nil
+	}
+	if !state.SafeTable {
+		return ErrIncompatiblePersistence
+	}
+	var valid bool
+	if err := db.Raw(`SELECT count(*)=1 AND coalesce(bool_and(singleton
+ AND owner_service='retail' AND runtime_role::text='justix_retail_runtime'
+ AND schema_version=2 AND mode='legacy'),false)
+ AND NOT EXISTS (SELECT FROM pg_roles r WHERE pg_has_role(current_user,r.oid,'MEMBER')
+  AND (has_table_privilege(r.oid,'eventstore.messaging_mode','INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER,REFERENCES,MAINTAIN')
+   OR has_any_column_privilege(r.oid,'eventstore.messaging_mode','INSERT,UPDATE,REFERENCES')))
+ FROM eventstore.messaging_mode`).Scan(&valid).Error; err != nil {
+		return fmt.Errorf("%w: %w", ErrIncompatiblePersistence, err)
+	}
+	if !valid {
+		return ErrIncompatiblePersistence
+	}
 	return nil
 }
