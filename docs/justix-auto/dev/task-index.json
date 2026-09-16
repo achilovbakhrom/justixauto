@@ -1456,8 +1456,8 @@
       "worktree": ".worktrees/T-028",
       "base_sha": "6f30bbbf9144fc3d03a49fbac57bb9dd9a43afdc",
       "reviewed_sha": "0f4736a21db0d56fa17ca83934a43596a5352a35",
-      "agent": "coordinator",
-      "execution_note": "Financing owner scaffold candidate complete. Final focused live race16.486s; full scoped race Financing16.596s/contracts122.703s and vet PASS. Five assigned leaves plus result; seven inputs unchanged, six recoverable raw evidence entries, fourteen additional exact fixture absence reads. Independent QA queued for a worker slot; coordinator authored and cannot self-approve. No finance business policy or running service claimed."
+      "agent": "qa_t027",
+      "execution_note": "Independent exact-commit review now assigned at0f4736a21db0d56fa17ca83934a43596a5352a35 after a worker slot freed. Coordinator-authored Financing legacy mechanics; five leaves plus result, final live and scoped race/vet PASS. QA must verify exact owner separation, transactional behavior, custody refusal, privileged session refusal and recoverable evidence/fixture safety."
     },
     {
       "id": "T-029",
@@ -1466,7 +1466,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1491,9 +1491,11 @@
         "B-01.AC2"
       ],
       "scope": "Own only insurance mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later insurance_wire task.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-029",
+      "base_sha": "6fecd0d59fba8b6f154b033279d7607560f7045e",
+      "reviewed_sha": null,
+      "agent": "coordinator",
+      "execution_note": "Coordinator begins isolated Insurance mechanics using the integrated Retail pattern and an explicit runtime session identity check. Five owned leaves only, independent QA required. Preserve seven-owner fixture isolation and exact legacy/custody distinction. No underwriting decision policy, policy issuance, coverage, premium, financial or delivery behavior; OD-08/10 remain scoped gates."
     },
     {
       "id": "T-030",
