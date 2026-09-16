@@ -1428,7 +1428,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1453,9 +1453,11 @@
         "B-01.AC2"
       ],
       "scope": "Own only financing mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later financing_wire task.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-028",
+      "base_sha": "6f30bbbf9144fc3d03a49fbac57bb9dd9a43afdc",
+      "reviewed_sha": null,
+      "agent": "coordinator",
+      "execution_note": "Coordinator implements Financing mechanics in an isolated worktree while three independent workers finish development/review. Dependencies T-009/017/018/010 integrated. Five assigned leaves only; derive the reviewed Retail scaffold pattern with explicit Financing ownership and full seven-owner fixture isolation. Legacy-only readiness must reject custody even if grants are restored. No finance products, arithmetic, disbursement policy, composition root or compatible-profile activation."
     },
     {
       "id": "T-029",
