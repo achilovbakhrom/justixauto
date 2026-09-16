@@ -35775,7 +35775,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-935",
         "T-058",
@@ -35799,9 +35799,9 @@
       "scope": "Extend the one shared fetch path with typed 429, exact response contracts/version marker, bounded bytes and allowlisted ephemeral metadata. Exact endpoint semantic/body/header checks precede the synchronous current-ticket sink. Preserve generic result shapes and unknown dispatched write outcomes; no retry or secret-bearing receipts. Its isolated generator fixture also copies the imported responseJSON.ts; this third leaf is restricted to that fixture dependency update, with T-640 as predecessor and T-937 as serial successor.",
       "worktree": ".worktrees/T-936",
       "base_sha": "3b796c28fa04105cb0bc7154c17f27f7e47e3470",
-      "agent": "frontend_t936",
-      "execution_note": "Independent QA BOUNCE: rejected native Promise returned by four method getter positions escapes disposal (8 local/cross-realm cases). Original source/evidence retained; assign fix1 in same leaves preserving callable getter/prototype compatibility and no arbitrary thenable invocation.",
-      "reviewed_sha": "0adcda6d5011c6e602963d0392b1d8241fb4a5a4"
+      "agent": "qa_auth_transport",
+      "execution_note": "Fix1 disposes rejected native Promise method-getter returns before fixed failure. Full frontend403tests/typecheck/lint and affected generated-client race/vet PASS. Original13 QA artifacts preserved; independent r2 exact-commit review assigned.",
+      "reviewed_sha": "bf64253647a425f2d818ce30348bc75d91e9f2c8"
     },
     {
       "id": "T-937",

@@ -27,7 +27,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-027 ready-for-qa (`.worktrees/T-027`, `task/T-027-retail-scaffold`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 bounced (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-936 bounced (`.worktrees/T-936`, `task/T-936-validated-auth-transport`).
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-027 ready-for-qa (`.worktrees/T-027`, `task/T-027-retail-scaffold`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 bounced (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-936 ready-for-qa (`.worktrees/T-936`, `task/T-936-validated-auth-transport`).
 - Integrated tasks: 42/944; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
 - Additional architecture: [durable membership version storage](membership-version-assignment.md) independent r2 BOUNCE retained; final allowed fix cycle 2 assigned. T-920 remains blocked and no new migration or task dependency is approved yet.
