@@ -36158,7 +36158,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-746",
         "T-007"
@@ -36180,8 +36180,9 @@
       "worktree": ".worktrees/T-947",
       "base_sha": "cdc3d7a238fd1e33bc8222f06e0d65c5cf92cf14",
       "agent": "qa_membership_storage",
-      "execution_note": "Fix1 rejects duplicate supplied initial enrollment identities for one event independently of recipient count. Unchanged QA regression and new empty/populated/late-delta controls pass; scoped race/vet PASS, original eight QA artifacts and50753-byte result prefix preserved. Independent r2 review queued for next worker slot; not yet GREEN or integrated.",
-      "reviewed_sha": "be944b633be73ba8d69942d561a379e33f01afb9"
+      "execution_note": "Exact correction be944b6 independently GREEN in qa/T-947-r2.md and merged unchanged. Main scoped race PASS (inbox 7.435s, contracts 149.067s) and vet PASS; three reviewed leaves and eighteen QA files exact. See qa/integration-t947.md. Forty-eight tasks integrated. Pure identities do not clear storage/source-authority/runtime gates, pending T-928 authorization or the unrelated T-932 integration failure.",
+      "reviewed_sha": "be944b633be73ba8d69942d561a379e33f01afb9",
+      "integration_sha": "0e72709b577abc19c8ce51587ed1e1faa3e31f25"
     },
     {
       "id": "T-948",
