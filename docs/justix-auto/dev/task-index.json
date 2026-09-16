@@ -1505,7 +1505,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-009",
         "T-017",
@@ -1530,9 +1530,11 @@
         "B-01.AC2"
       ],
       "scope": "Own only documents mechanics; install shared schema using this owner's DB role, typed UOW and dependency injection ports, not domain business tables. Application composition stays in later documents_wire task.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-030",
+      "base_sha": "384c9ea",
+      "reviewed_sha": null,
+      "agent": "backend_t928",
+      "execution_note": "Implement the five Documents owner mechanics leaves using the reviewed owner scaffold pattern; no document business policy or composition root. Independent QA follows the exact commit."
     },
     {
       "id": "T-031",
