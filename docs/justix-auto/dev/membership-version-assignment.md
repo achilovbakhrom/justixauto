@@ -132,3 +132,10 @@ T-945–T-948 and adds six reviewed downstream edges. Canonical promotion QA is
 pending before assignment. T-928 configuration-test permission/independent
 integration and actual runtime startup are still gated. All earlier evidence is
 retained; proposal GREEN does not authorize restricted configuration mutations.
+
+Canonical promotion reviewer qa_membership_storage is assigned the exact
+`b50490b48c5f31a542b0305827c1e345c2214cf6` commit in detached
+`.worktrees/membership-promotion-qa`. New outputs are only
+`dev/qa/membership-promotion.md` and its evidence directory. This is a document,
+identity, graph, ownership and recoverable-preimage audit; no runtime or Docker
+configuration test is assigned. T-945–T-948 cannot start before this gate is GREEN.
