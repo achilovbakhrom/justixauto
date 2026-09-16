@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "reviewed_commit": "0dab8c7ae691d7c34cd681d4f5894c6a4a188ef4",
+  "changed_files": [
+    "docs/justix-auto/dev/results/T-027.md",
+    "services/retail/adapter/postgres/unit_of_work.go",
+    "services/retail/adapter/postgres/unit_of_work_test.go"
+  ],
+  "sources": {
+    "services/retail/adapter/postgres/unit_of_work.go": "5bbbbe84f6f7346ad2e59205a01784a43af0bba8025a164653dce7e63e93df51",
+    "services/retail/adapter/postgres/unit_of_work_test.go": "907b675ac27f917d15263e7e18f9321eeb6d2e84feb9db8298ef36ffa609f61c",
+    "services/retail/migrations/0001_mechanics.up.sql": "98d2d5514aaed88a7a187d824f52053eed555a68ed380a8e02145a5926dfa07a",
+    "services/retail/port/dependencies.go": "898dcf7881d3fd5c91538c4fa5f2525615538b547668db165b5c7aadeb221078",
+    "services/retail/port/unit_of_work.go": "7cae0dc4ea5ac88353995dfe705e4fe436114a9e306571529b6e706a33228f62"
+  },
+  "original_qa_artifacts": {
+    "docs/justix-auto/dev/qa/T-027/commands.txt": "937f57af20b639ed5270ae79cf32213e7bfa11c723529b7301deeb085aa138b3",
+    "docs/justix-auto/dev/qa/T-027/evidence-check-attempt1.txt": "2ce1fe9e346d68e9b3558acb63c9946e6d0ae361f700fd54c3b0608de12294e0",
+    "docs/justix-auto/dev/qa/T-027/fixture-absence.json": "cf363dc31ad8a4b892cafb323821af104172b4392b61520cc63df875d93da056",
+    "docs/justix-auto/dev/qa/T-027/full-race.log": "db7a9203d3b91638ff0037371719290df9013d0eeb45fbcd66e7444a38febb30",
+    "docs/justix-auto/dev/qa/T-027/independent.log": "f1f851e55ad0f105e72c590bd4f89357c4af7545f7844148358580dd2105d853",
+    "docs/justix-auto/dev/qa/T-027/independent_test.go": "fe1c0bd59dcee3938278b83341e1122d68a4883ad55f634ede02fd323015a855",
+    "docs/justix-auto/dev/qa/T-027/live-with-independent-rerun.log": "883f0312b7a1f9724e25a9f7b2720e050e1c7047c8132f829eaac4077fd5ef6a",
+    "docs/justix-auto/dev/qa/T-027/overlay.json": "74cc8b72943c0d1147f0468f19b69a63eb0e3887cc8f97d789025b9f51a2c14b",
+    "docs/justix-auto/dev/qa/T-027/source-evidence.json": "17e617d87367383e2104d4498278c26563664fdd865619478a69d6ee5c2f00e1",
+    "docs/justix-auto/dev/qa/T-027/verify_evidence.py": "e144560e0270039e97b1df9c42c2fcc1c34cc54ac7c6a72d97864454465381bc",
+    "docs/justix-auto/dev/qa/T-027/verify_fixture_absence.py": "9e545eaf25b37e4c06b36340b13e9032985398ee3010d5252b6a5833d4016bf6",
+    "docs/justix-auto/dev/qa/T-027/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/justix-auto/dev/qa/T-027.md": "cc48500a29115ff6c3cc096a114fa9a2b0d20e7b63b4f69722add432054bcef8",
+    "docs/justix-auto/dev/qa/T-027/sha256.json": "0ffc1431744a7f05008527789d385e78916c1e199b3d790e098f1b847488d4c8"
+  },
+  "decoded_developer_logs": {
+    "justixauto-t027-fix1-live.log": "ff9b9d1448581321ada306d8ef5bd9dff43fea896a84b34d893508d63423f536",
+    "justixauto-t027-fix1-full-race.log": "ddd8e834cf7ccbefe0718d98179f97b1cdd4f4441c00bebd08ca8e71347c4a09",
+    "justixauto-t027-fix1-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

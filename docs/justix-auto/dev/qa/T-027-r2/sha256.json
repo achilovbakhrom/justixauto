@@ -1,0 +1,13 @@
+{
+  "docs/justix-auto/dev/qa/T-027-r2/commands.txt": "2376c89b49296743e2392bf13e0695d05f4942d2d54707424d69e95df76c5121",
+  "docs/justix-auto/dev/qa/T-027-r2/correction_test.go": "79a4f99a2cad62ee1752233229a2909889673c21e5010262536f683b70faf7d0",
+  "docs/justix-auto/dev/qa/T-027-r2/fixture-absence.json": "c7522e37c6895b7402c595d5ea6e293e2790d7918b47f9fa1086185c53d2351d",
+  "docs/justix-auto/dev/qa/T-027-r2/full-race.log": "c464b88db6d82eb296e4800608489f80812b9dcfd966915b71e01cbed8954eaa",
+  "docs/justix-auto/dev/qa/T-027-r2/live-and-independent.log": "22b69740874b0684c1c124955dc275ad5a71456a1e911783188399692787edb0",
+  "docs/justix-auto/dev/qa/T-027-r2/overlay.json": "636e6d5ad13128db40175ff6b05ef2de6497be3357595afbd3c985c78d2ee434",
+  "docs/justix-auto/dev/qa/T-027-r2/source-evidence.json": "9aa2be864066ef6fa82b4a1240be0c8226b60fe5beca51017a4f5a683475527c",
+  "docs/justix-auto/dev/qa/T-027-r2/verify_evidence.py": "732abf34f2774948a40d662d38ddfcb057913d3c2a85d2b4fc881950986b3c51",
+  "docs/justix-auto/dev/qa/T-027-r2/verify_fixture_absence.py": "1bffc2e401e27cfc182159efe9fadf2c7f40995f97a688d88ced5cdf582899fa",
+  "docs/justix-auto/dev/qa/T-027-r2/vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "docs/justix-auto/dev/qa/T-027-r2.md": "86ea2d825e0435f90d01f7d671890b277d1ee3ba95cf748be9ad93ce47cc9cce"
+}

@@ -1,0 +1,12 @@
+Target: 0dab8c7ae691d7c34cd681d4f5894c6a4a188ef4
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-027
+Environment for Go: GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off
+Only live opt-in: JUSTIXAUTO_TEST_RETAIL_MECHANICS=1
+bash tools/go.sh test -count=1 -race -mod=readonly ./services/... ./pkg/... ./tests/...
+bash tools/go.sh vet ./services/... ./pkg/... ./tests/...
+bash tools/go.sh test -count=1 -race -mod=readonly -overlay docs/justix-auto/dev/qa/T-027-r2/overlay.json -v ./services/retail/adapter/postgres
+python3 docs/justix-auto/dev/qa/T-027-r2/verify_evidence.py
+python3 docs/justix-auto/dev/qa/T-027-r2/verify_fixture_absence.py
+git diff --check
+All commands exited 0. Original independent_test.go is referenced unchanged from T-027/ by the r2 overlay.
+No application or canonical edits; no Git commits by QA.
