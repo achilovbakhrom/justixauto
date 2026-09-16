@@ -1,0 +1,107 @@
+{
+  "sha": "bf64253647a425f2d818ce30348bc75d91e9f2c8",
+  "previousReview": "0adcda6d5011c6e602963d0392b1d8241fb4a5a4",
+  "changedLeaves": [
+    "docs/justix-auto/dev/results/T-936.md",
+    "web/packages/api/src/client.test.ts",
+    "web/packages/api/src/client.ts"
+  ],
+  "resultPrefixBytesPreserved": 9858,
+  "originalArtifacts": [
+    {
+      "path": "docs/justix-auto/dev/qa/T-936.md",
+      "sha256": "214ebbf390a7dfd764b651564b43db4c46437831b5962eaf8fc7ce163167e1d6"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/commands.txt",
+      "sha256": "a2219ee37bc73e746b4fa6b3986d059fdf037e4b1e60a6f32e2a712fbc4cdeb0"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/go-race.log",
+      "sha256": "8fca57010ddf87af1e15a90a635890b326ca6e614d7210d89906f0112bd81edd"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/go-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/lint.log",
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/probe-output.json",
+      "sha256": "78e44dd883b6a8b3dd09da673f3fe4cd90fdcc924f119962c5915da17755b375"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/probe-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/probe.mjs",
+      "sha256": "328587a9b4713e81d7ee93d29e9db08b90059b0067991ab7ebfc6f76b2d69466"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/scope-output.json",
+      "sha256": "a32587beb54b4da3be26164f6a67d0f47d4aaa7d3f8fdd835766d0a719f4f272"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/scope.py",
+      "sha256": "13779edb2fd35e9daba67a284062aee420a49d35bc3eba8f3b2cce87e838db30"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/test-unit-retry.log",
+      "sha256": "4e5cfc0d8ee9ed39e1cc0be44183f5e40d462987bd780c3812c9607b80e33206"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/test-unit.log",
+      "sha256": "887cf09afa2832bc48663d5ce551d22cf65ee0db0917693f200fe768ee49c715"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-936/typecheck.log",
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    }
+  ],
+  "fixResultHashes": [
+    {
+      "path": "web/packages/api/src/client.ts",
+      "sha256": "118010d7c371d1b2af3d8037218b767dffb0a54e79d6ace2d9f3afee36c81d96"
+    },
+    {
+      "path": "web/packages/api/src/client.test.ts",
+      "sha256": "112f899395e41c4e3ccc926cdb88457448f538e9d0af2dd07126c867135dc65d"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-original-probe.log",
+      "sha256": "6da73c1a407c923eac5da21d39b7c450b6a825498696110117ff0f362385b5c0"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-probe.mjs",
+      "sha256": "0726b47a22076b7d9bfde062f94590291444a9b32aff127b887232274bba1b4e"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-probe-output.json",
+      "sha256": "7930ad18c0b89baee17783ce79708d9c4d7071c208e5b2475dcfceb6ad2f48e1"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-full-unit.log",
+      "sha256": "7e1799d0bed8272fa961dfd18be4b54444b2e6157995d8231912178b4ab71cfb"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-typecheck.log",
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-lint.log",
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-contract-race.log",
+      "sha256": "fe3a4a650d96ada21f7659a642a257a2872c977dd130327e8a996ed942d39ed5"
+    },
+    {
+      "path": "/private/tmp/justixauto-t936-fix1-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "mainSHA": "db456586b29e5e7411ce439add175f58d52fa619"
+}

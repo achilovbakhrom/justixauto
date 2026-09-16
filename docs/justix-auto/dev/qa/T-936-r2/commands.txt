@@ -1,0 +1,36 @@
+Reviewed exact SHA: bf64253647a425f2d818ce30348bc75d91e9f2c8
+Previous BOUNCE: 0adcda6d5011c6e602963d0392b1d8241fb4a5a4
+Working directory: /Users/bakhromachilov/startups/justixauto/.worktrees/T-936
+Pinned Node PATH prefix:
+PATH=/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin:$PATH
+
+bash tools/check-git.sh
+PASS own root.
+python3 docs/justix-auto/dev/qa/T-936-r2/scope.py > docs/justix-auto/dev/qa/T-936-r2/scope-output.json
+PASS exact correction scope, old result prefix, original 13 QA files against main/ad800fc,
+and ten correction source/retained-log hashes.
+
+node docs/justix-auto/dev/qa/T-936-r2/probe.mjs > docs/justix-auto/dev/qa/T-936-r2/probe-output.json
+PASS 86 original focused cases, eight original rejected native Promise getter cases
+with corrected zero-rejection expectation, and 16 additional getter scenarios.
+The wrapper reads the unchanged original probe, makes named exact replacements,
+writes an adapted copy to a fresh OS temporary directory and compiles actual source.
+Original broken-behavior assertions/evidence remain untouched. No real secret used.
+
+npm run test:unit -- --project @justixauto/api > docs/justix-auto/dev/qa/T-936-r2/api-tests.log 2>&1
+PASS 336 tests across 2 files. Four added parameterized cases execute 24 values.
+npm run typecheck > docs/justix-auto/dev/qa/T-936-r2/typecheck.log 2>&1
+npm run lint > docs/justix-auto/dev/qa/T-936-r2/lint.log 2>&1
+Both PASS exit 0.
+
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash tools/go.sh test -race -mod=readonly -count=1 ./tests/contracts -run '^TestContractGeneration(Reproducibility|InternalOnly|SelectorLookingWireText)$' > docs/justix-auto/dev/qa/T-936-r2/go-race.log 2>&1
+PASS 15.886s. All three importing fixture sites rerun with actual generated Go/TS.
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off bash tools/go.sh vet -mod=readonly ./tests/contracts > docs/justix-auto/dev/qa/T-936-r2/go-vet.log 2>&1
+PASS exit 0; empty vet log intentional.
+
+git diff --check
+git diff --quiet
+git rev-parse HEAD
+PASS unchanged tracked correction source/result at reviewed SHA.
+Original QA files were already untracked in this worktree on assignment; they
+remain byte-exact to main. Only T-936-r2 report and evidence are new review writes.
