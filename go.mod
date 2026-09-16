@@ -5,6 +5,7 @@ go 1.27.1
 // ADR-13 / T-001 approved runtime baseline. Retain these pins while owner
 // scaffolds are introduced; do not add dummy imports to keep future packages.
 require (
+	github.com/golang-migrate/migrate/v4 v4.20.1
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.11.0
 	github.com/labstack/echo/v4 v4.15.4
