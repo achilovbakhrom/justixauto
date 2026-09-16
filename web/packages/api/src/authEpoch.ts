@@ -10,7 +10,7 @@ export type AuthAcceptance<Session, Restricted, View> =
   | { readonly kind: 'challenge'; readonly view: View }
   | { readonly kind: 'enrollment-secret'; readonly view: View }
   | { readonly kind: 'enrollment-confirmed'; readonly view: View }
-  | { readonly kind: 'clear' | 'unchanged' | 'uncertain' };
+  | { readonly kind: 'clear' | 'unchanged' | 'invalidate-binding' | 'uncertain' };
 export interface AuthOperation<T, Session, Restricted, View> {
   readonly purpose: AuthPurpose;
   /** Trusted typed adapter: a state precondition, never server authorization. */
@@ -26,7 +26,7 @@ export interface AuthTransport {
 /** Deliberately contains no response body, token, error receipt or one-time value. */
 export type AuthOutcome =
   | { readonly kind: 'accepted'; readonly epoch: number; readonly status: number }
-  | { readonly kind: 'busy' | 'invalid-request' | 'unavailable' | 'uncertain' | 'stale' | 'exhausted' };
+  | { readonly kind: 'busy' | 'invalid-request' | 'binding-invalid' | 'unavailable' | 'uncertain' | 'stale' | 'exhausted' };
 
 const phases: readonly AuthPhase[] = ['empty', 'anonymous', 'restricted', 'authenticated', 'context-unresolved', 'uncertain', 'exhausted'];
 const purposes: readonly AuthPurpose[] = ['session', 'login', 'challenge-create', 'challenge-verify', 'enrollment-start', 'enrollment-confirm', 'recovery-request', 'recovery-complete', 'revoke-all', 'logout'];
@@ -174,6 +174,7 @@ export function createAuthEpoch<Session, Restricted, View>(transport: AuthTransp
       let prepared = false;
       let acceptanceAttempted = false;
       let accepted = false;
+      let bindingRejected = false;
       const abort = () => { if (current()) invalidate('uncertain'); };
       try {
         if (signal) Reflect.apply(signalAdd, signal, ['abort', abort, { once: true }]);
@@ -202,11 +203,17 @@ export function createAuthEpoch<Session, Restricted, View>(transport: AuthTransp
               let nextView = view;
               let nextToken = csrf;
               const kind = decision.kind;
+              const bindingError = value.kind === 'http-error'
+                && ((value.status === 403 && value.receipt.error.code === 'CSRF_REJECTED')
+                  || (value.status === 401 && ['SESSION_REQUIRED', 'SESSION_EXPIRED'].includes(value.receipt.error.code)))
+                && !(purpose === 'session' && value.status === 401 && value.receipt.error.code === 'SESSION_REQUIRED' && csrfValid(meta.csrf));
               const exactKeys = kind === 'session' ? ['kind', 'session'] : kind === 'restricted' ? ['kind', 'restricted']
                 : kind === 'challenge' || kind === 'enrollment-secret' || kind === 'enrollment-confirmed' ? ['kind', 'view'] : ['kind'];
               if (Object.keys(decision).length !== exactKeys.length || Object.keys(decision).some((key) => !exactKeys.includes(key))) return false;
               if (value.kind === 'http-error' && value.status === 503 && value.receipt.error.code === 'AUTH_OUTCOME_UNKNOWN' && kind !== 'uncertain') return false;
-              if (kind === 'anonymous') {
+              if (bindingError) {
+                if (!['unchanged', 'invalidate-binding'].includes(kind as string) || meta.csrf !== undefined) return false;
+              } else if (kind === 'anonymous') {
                 if (purpose !== 'session' || value.kind !== 'http-error' || value.status !== 401 || value.receipt.error.code !== 'SESSION_REQUIRED' || !csrfValid(meta.csrf)) return false;
                 next = 'anonymous'; nextSession = undefined; nextRestricted = undefined; nextView = undefined; nextToken = meta.csrf;
               } else if (kind === 'session') {
@@ -233,13 +240,22 @@ export function createAuthEpoch<Session, Restricted, View>(transport: AuthTransp
               } else if (kind !== 'unchanged' || meta.csrf !== undefined || purpose === 'logout'
                 || (value.kind === 'success' && (purpose !== 'recovery-request' || value.status !== 202))) return false;
               if (!current() || phase !== ticketPhase || ticket.abort.signal.aborted) return false;
-              if (kind === 'uncertain') invalidate('uncertain');
+              if (bindingError) {
+                // The validated error establishes rejection, not an unknown write.
+                // Keep the ticket's slot until settlement but retire its binding.
+                ticket.prepared = false;
+                bindingRejected = true;
+                invalidate('empty');
+              } else if (kind === 'uncertain') invalidate('uncertain');
               else { phase = next; session = nextSession; restricted = nextRestricted; view = nextView; csrf = nextToken; }
               accepted = true;
               return true;
             } catch (error) { discardPromise(error); return false; }
           },
         } }]) as ApiResult<T>;
+        if (bindingRejected && slot === ticket && epoch === ticketEpoch + 1) {
+          return { kind: epoch === Number.MAX_SAFE_INTEGER ? 'exhausted' : 'binding-invalid' };
+        }
         if (!current()) return { kind: phase === 'uncertain' ? 'uncertain' : 'stale' };
         if (accepted && (result.kind === 'success' || result.kind === 'http-error')) return { kind: 'accepted', epoch, status: result.status };
         if (result.kind === 'invalid-request' && !accepted) return { kind: 'invalid-request' };

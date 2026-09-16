@@ -301,4 +301,55 @@ describe('memory-only auth epochs', () => {
     expect(await write).toEqual({ kind: 'uncertain' });
     expect(controller.state().phase).toBe('uncertain'); expect(controller.withSession(vi.fn())).toBe(false);
   });
+
+  for (const [status, code] of [[403, 'CSRF_REJECTED'], [401, 'SESSION_REQUIRED'], [401, 'SESSION_EXPIRED']] as const) {
+    for (const state of ['authenticated', 'restricted', 'one-time-view'] as const) {
+      it.each(['unchanged', 'invalidate-binding'] as const)(`${status} ${code} clears ${state} with %s and requires explicit reacquisition`, async (kind) => {
+        const { controller, fetcher, acquire } = setup();
+        await acquire(state === 'authenticated' ? 'session' : 'restricted');
+        if (state === 'one-time-view') {
+          fetcher.mockResolvedValueOnce(response(200, body, ''));
+          await controller.execute(operation('enrollment-start', { kind: 'enrollment-secret', view: { value: 'private' } }, 200, false));
+          expect(controller.state().hasView).toBe(true);
+        }
+        const rejected = operation(state === 'authenticated' ? 'challenge-create' : 'enrollment-start', { kind }, 200, false);
+        const contract = rejected.request.responseContract!;
+        const guarded: Operation = { ...rejected, request: { ...rejected.request, responseContract: {
+          ...contract,
+          errors: { ...contract.errors, [status]: { parse(value: unknown) { const error = value as ErrorReceipt; expect(error.error.code).toBe(code); return error; } } },
+          metadata: { ...contract.metadata, [status]: { csrf: 'forbidden', retryAfter: 'forbidden' } },
+        } } };
+        fetcher.mockResolvedValueOnce(response(status, receipt(code), ''));
+        expect(await controller.execute(guarded)).toEqual({ kind: 'binding-invalid' });
+        expect(controller.state()).toEqual({ epoch: 1, phase: 'empty', busy: false, hasView: false });
+        expect(controller.withSession(vi.fn())).toBe(false);
+        expect(controller.withRestricted(vi.fn())).toBe(false);
+        expect(controller.withView(vi.fn())).toBe(false);
+        const count = fetcher.mock.calls.length;
+        expect(await controller.execute(rejected)).toEqual({ kind: 'invalid-request' });
+        expect(fetcher).toHaveBeenCalledTimes(count);
+        expect(await acquire()).toEqual({ kind: 'accepted', epoch: 1, status: 401 });
+        expect(controller.state().phase).toBe('anonymous');
+      });
+    }
+  }
+
+  it('known binding rejection keeps its exact slot until the transport promise settles', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(response()).mockResolvedValueOnce(response(401, receipt('SESSION_EXPIRED'), ''));
+    const actual = createApiClient({ origin: 'https://justix.test', fetch: fetcher });
+    const gate = deferred<void>(); const accepted = deferred<void>(); let hold = false;
+    const controller = createAuthEpoch<DTO, DTO, DTO>({ responseContractVersion: 1, async request<T>(request: ApiRequest<T>) {
+      const result = await actual.request(request);
+      if (hold) { accepted.resolve(); await gate.promise; }
+      return result;
+    } });
+    await controller.execute(operation('session', { kind: 'session', session: body }));
+    hold = true;
+    const result = controller.execute(operation('challenge-create', { kind: 'invalidate-binding' }, 200, false));
+    await accepted.promise;
+    expect(controller.state()).toMatchObject({ phase: 'empty', busy: true, epoch: 1 });
+    expect(await controller.execute(operation('session', { kind: 'anonymous' }))).toEqual({ kind: 'busy' });
+    gate.resolve(); expect(await result).toEqual({ kind: 'binding-invalid' });
+    expect(controller.state().busy).toBe(false); expect(fetcher).toHaveBeenCalledTimes(2);
+  });
 });
