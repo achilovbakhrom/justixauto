@@ -132,6 +132,251 @@ func (h generationHarness) read(path string) []byte {
 	return value
 }
 
+// Exercise the actual private compiler in a temporary module, with only its
+// unconditional CLI entry point removed. The shipping tool exposes no parser
+// export, activation flag or alternate auth command. Fixtures remain synthetic.
+func TestContractGenerationInertAuthProfile(t *testing.T) {
+	h := newGenerationHarness(t)
+	source, err := os.ReadFile(filepath.Join(h.root, "tools/generate-contracts.mjs"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	entry := "\ntry { main(); } catch (error)"
+	if strings.Count(string(source), entry) != 1 {
+		t.Fatal("generator CLI entry point changed; review inert probe boundary")
+	}
+	rootJSON, _ := json.Marshal(runtime.GOROOT())
+	h.write("inert-profile.mjs", string(source[:strings.LastIndex(string(source), entry)])+"\ncachedGoRoot="+string(rootJSON)+";\n"+inertAuthProfileChecks)
+	output := h.run(true, h.node, filepath.Join(h.dir, "inert-profile.mjs"), filepath.Join(h.dir, "input.json"))
+	t.Log(strings.TrimSpace(output))
+	// The inert probe writes the full valid matrix only into its owned temp dir.
+	// Verify the unchanged public CLI rejects this complete model before output,
+	// including when a previous non-auth entry would otherwise be regenerated.
+	h.config(true)
+	h.generate(true)
+	before := map[string]string{}
+	for _, name := range []string{"fixture.gen.go", "fixture.ts", "second.gen.go", "second.ts"} {
+		before[name] = string(h.read(name))
+	}
+	config := `{"version":1,"contracts":[{"input":"input.json","goOutput":"fixture.gen.go","tsOutput":"fixture.ts","goPackage":"synthetic","owner":"identity","namespace":"Fixture"},{"input":"auth.json","goOutput":"second.gen.go","tsOutput":"second.ts","goPackage":"synthetic","owner":"identity","namespace":"Second"}]}`
+	h.write("config.json", config)
+	h.write("input.json", strings.Replace(generationFixture, "Synthetic generation fixture", "Earlier valid entry would drift", 1))
+	for _, extra := range [][]string{nil, {"--check"}, {"--auth"}, {"--enable-auth"}} {
+		output := h.generate(false, extra...)
+		if len(extra) == 0 || extra[0] == "--check" {
+			if !strings.Contains(output, "auth generation is not activated") {
+				t.Fatalf("complete auth profile did not reach fixed activation barrier: %s", output)
+			}
+		}
+		for name, content := range before {
+			if string(h.read(name)) != content {
+				t.Fatalf("auth rejection modified earlier/existing output %s", name)
+			}
+		}
+	}
+	// Config/environment candidates cannot bypass the unconditional barrier.
+	t.Setenv("JUSTIX_AUTH_GENERATION", "1")
+	t.Setenv("JUSTIX_CONTRACTS_AUTH", "1")
+	if output := h.generate(false); !strings.Contains(output, "auth generation is not activated") {
+		t.Fatal(output)
+	}
+	h.write("config.json", strings.Replace(config, `"version":1`, `"version":1,"auth":true`, 1))
+	h.generate(false)
+	for name, content := range before {
+		if string(h.read(name)) != content {
+			t.Fatalf("activation candidate modified %s", name)
+		}
+	}
+	// Absent output paths are not created either. A non-auth first plan cannot
+	// leave a partial bundle when a later auth profile is rejected.
+	h.write("config.json", strings.ReplaceAll(config, "fixture.", "absent-first."))
+	h.generate(false)
+	for _, name := range []string{"absent-first.gen.go", "absent-first.ts"} {
+		if _, err := os.Stat(filepath.Join(h.dir, name)); !os.IsNotExist(err) {
+			t.Fatalf("auth rejection created %s", name)
+		}
+	}
+}
+
+const inertAuthProfileChecks = `
+const assert=(await import('node:assert/strict')).default;
+const fixture=readJSON(process.argv[2]);
+const configEntry={input:'auth.json',goOutput:'auth.gen.go',tsOutput:'auth.ts',goPackage:'synthetic',owner:'identity',namespace:'Fixture'};
+const tokenSchema={type:'string',pattern:'^[A-Za-z0-9_-]{1,4096}$'};
+const header=(schema)=>({required:true,description:'Synthetic transport declaration',schema:structuredClone(schema)});
+const csrf=()=>header(tokenSchema);
+const cache=()=>header({type:'string',const:'no-store'});
+const retry=()=>header({type:'integer',minimum:0,maximum:2147483647});
+const requestHeader=()=>({name:'X-CSRF-Token',in:'header',...csrf()});
+const routes=[
+ ['get','/session',200,true],['post','/session/login',200,true],
+ ['post','/session/mfa/challenges',200,false],['post','/session/mfa/verify',200,true],
+ ['post','/session/logout',204,false],['post','/session/revoke-all',200,true],
+ ['post','/session/mfa/enrollment',200,false],['post','/session/mfa/enrollment/{id}/confirm',200,true],
+ ['post','/session/recovery/request',202,false],['post','/session/recovery/complete',204,false],
+];
+const response=(status,rotation=false)=>({description:'Synthetic status',headers:{'Cache-Control':cache(),...(rotation?{'X-CSRF-Token':csrf()}:{}),...(status===429?{'Retry-After':retry()}:{})},
+ ...(status===204?{}:{content:{'application/json':{schema:{$ref:'#/components/schemas/'+(status<400?'Body':'Problem')}}}})});
+function authDocument(){
+ const d={openapi:'3.1.0',info:{title:'Synthetic auth declarations',version:'1'},'x-justix-auth-semantics':1,
+ components:{schemas:{Body:{type:'object',properties:{},required:[],additionalProperties:false},Problem:{type:'object',properties:{},required:[],additionalProperties:false}},
+ securitySchemes:{SessionCookie:{type:'apiKey',in:'cookie',name:'__Host-justix_session'},ChallengeCookie:{type:'apiKey',in:'cookie',name:'__Host-justix_challenge'},CSRFCookie:{type:'apiKey',in:'cookie',name:'__Host-justix_csrf'},OwnerTLS:{type:'mutualTLS'}}},paths:{}};
+ routes.forEach(([method,path,status,rotation],index)=>{
+  const parameters=path.includes('{id}')?[{name:'id',in:'path',required:true,schema:{type:'string',format:'uuid'}}]:[];
+  if(method!=='get')parameters.push(requestHeader());
+  d.paths['/api/v1/identity'+path]={[method]:{operationId:'AuthOperation'+index,'x-justix-auth-transport':1,parameters,
+   security:method==='get'?[{}, {SessionCookie:[]},{ChallengeCookie:[]}]:[{CSRFCookie:[]}],
+   ...(method==='get'?{}:{requestBody:{required:true,content:{'application/json':{schema:{$ref:'#/components/schemas/Body'}}}}}),
+   responses:{[status]:response(status,rotation),401:response(401,method==='get'),403:response(403),429:response(429)}}};
+ });
+ return d;
+}
+let count=0;
+const rows=[];
+function pass(name,run){run();count++;rows.push(name);}
+function reject(name,change,entry=configEntry){pass(name,()=>{const d=authDocument();change(d);assert.throws(()=>compile(entry,d));});}
+const login=(d)=>d.paths['/api/v1/identity/session/login'].post;
+const read=(d)=>d.paths['/api/v1/identity/session'].get;
+const d=authDocument(),plan=compile(configEntry,d);
+pass('closed version and immutable auth profile',()=>{assert.deepEqual(plan.authProfile,{version:1,semantics:1});assert(Object.isFrozen(plan.authProfile));assert.equal(plan.operations.length,10);});
+for(const [method,path,status,rotation] of routes)pass('matrix '+method+' '+path,()=>{
+ const op=plan.operations.find((op)=>op.path==='/api/v1/identity'+path&&op.method===method.toUpperCase());
+ assert.deepEqual(op.statuses,[status]);assert.equal(op.authTransport.version,1);assert.equal(op.authTransport.semantics,1);
+ assert.equal(op.authTransport.metadata[status].csrf,rotation?'required':'forbidden');
+ assert.equal(op.authTransport.metadata[401].csrf,method==='get'?'required':'forbidden');
+ assert.equal(op.authTransport.metadata[403].csrf,'forbidden');
+ assert.equal(op.authTransport.metadata[429].retryAfter,'required');
+ assert.deepEqual(op.authTransport.metadata[429].retryAfterWire,{pattern:'^(0|[1-9][0-9]{0,9})$',maximum:2147483647});
+ assert.equal(op.authTransport.metadata[429].csrf,'forbidden');
+ assert.equal(op.authTransport.requestCSRF===null,method==='get');
+ if(method!=='get')assert.deepEqual(op.authTransport.requestCSRF,requestHeader());
+ assert(!op.parameters.some((p)=>p.name==='X-CSRF-Token'));
+ assert(!Object.hasOwn(plan.schemas[op.paramName].properties,'X-CSRF-Token'));
+ assert(!plan.schemas[op.paramName].required.includes('X-CSRF-Token'));
+ assert.deepEqual(op.securityRequirements,method==='get'?[{}, {SessionCookie:d.components.securitySchemes.SessionCookie},{ChallengeCookie:d.components.securitySchemes.ChallengeCookie}]:[{CSRFCookie:d.components.securitySchemes.CSRFCookie}]);
+ assert(Object.isFrozen(op.authTransport));assert(Object.isFrozen(op.authTransport.metadata));
+ assert(Object.isFrozen(op.authTransport.metadata[status].headers['Cache-Control'].schema));
+});
+pass('ordinary path parameters remain in parameter DTO',()=>{const op=plan.operations.find((op)=>op.path.includes('{id}'));assert.deepEqual(op.parameters.map((p)=>p.name),['id']);assert.deepEqual(plan.schemas[op.paramName].required,['id']);});
+pass('captured header declarations cannot be changed by source mutation',()=>{login(d).responses[200].headers['X-CSRF-Token'].schema.pattern='anything';const op=plan.operations.find((op)=>op.path.endsWith('/login'));assert.equal(op.authTransport.metadata[200].headers['X-CSRF-Token'].schema.pattern,tokenSchema.pattern);assert.throws(()=>{op.authTransport.requestCSRF.schema.pattern='anything';});});
+pass('auth security declarations are captured and deeply immutable',()=>{d.components.securitySchemes.CSRFCookie.name='mutated';const op=plan.operations.find((op)=>op.path.endsWith('/login'));assert.equal(op.securityRequirements[0].CSRFCookie.name,'__Host-justix_csrf');assert(Object.isFrozen(op.securityRequirements));assert(Object.isFrozen(op.securityRequirements[0].CSRFCookie));assert.throws(()=>{op.securityRequirements[0].CSRFCookie.name='mutated';});});
+pass('both renderer entry points remain blocked',()=>{assert.throws(()=>renderTS(plan),/not activated/);assert.throws(()=>renderGo(plan),/not activated/);});
+pass('declaration order does not change the internal model',()=>{const original=authDocument();const reordered=JSON.parse(stable(original));assert.equal(stable(compile(configEntry,original)),stable(compile(configEntry,reordered)));});
+for(const value of [0,2,'1',true,null,{},[]]){
+ reject('unsupported semantic version '+JSON.stringify(value),(d)=>{d['x-justix-auth-semantics']=value;});
+ reject('unsupported operation version '+JSON.stringify(value),(d)=>{login(d)['x-justix-auth-transport']=value;});
+}
+reject('missing semantic marker',(d)=>{delete d['x-justix-auth-semantics'];});
+reject('missing operation marker',(d)=>{delete login(d)['x-justix-auth-transport'];});
+reject('semantics without an auth operation',(d)=>{d.paths=structuredClone(fixture.paths);d.components=structuredClone(fixture.components);});
+reject('non Identity owner',(d)=>{}, {...configEntry,owner:'retail'});
+reject('auth marker on an internal route',(d)=>{d.paths['/internal/v1/identity/session/login']={post:login(d)};delete d.paths['/api/v1/identity/session/login'];});
+reject('unknown auth route',(d)=>{d.paths['/api/v1/identity/session/new-action']={post:login(d)};delete d.paths['/api/v1/identity/session/login'];});
+reject('wrong auth method',(d)=>{d.paths['/api/v1/identity/session/login']={put:login(d)};});
+reject('missing anonymous 401',(d)=>{delete read(d).responses[401];});
+reject('extra success status',(d)=>{login(d).responses[201]=response(201);});
+reject('wrong success status',(d)=>{login(d).responses[201]=response(201);delete login(d).responses[200];});
+reject('unsupported error status',(d)=>{login(d).responses[500]=response(500);});
+reject('noncanonical status key',(d)=>{login(d).responses['0429']=response(429);});
+reject('default response',(d)=>{login(d).responses.default=response(503);});
+reject('204 content',(d)=>{d.paths['/api/v1/identity/session/logout'].post.responses[204].content=response(200).content;});
+reject('missing response schema',(d)=>{delete login(d).responses[200].content;});
+reject('unknown response schema',(d)=>{login(d).responses[200].content['application/json'].schema.$ref='#/components/schemas/Unknown';});
+reject('missing request CSRF',(d)=>{login(d).parameters=[];});
+reject('duplicate request CSRF',(d)=>{login(d).parameters.push(requestHeader());});
+reject('GET request CSRF',(d)=>{read(d).parameters.push(requestHeader());});
+reject('request CSRF casing',(d)=>{login(d).parameters[0].name='x-csrf-token';});
+reject('request CSRF underscore alias',(d)=>{login(d).parameters[0].name='X_CSRF_Token';});
+reject('request CSRF query value',(d)=>{login(d).parameters[0].in='query';});
+reject('request optional CSRF',(d)=>{login(d).parameters[0].required=false;});
+reject('request CSRF indirection',(d)=>{login(d).parameters[0].schema={$ref:'#/components/schemas/Body'};});
+reject('request CSRF alternative bounds',(d)=>{login(d).parameters[0].schema.maxLength=4096;});
+reject('request CSRF description type',(d)=>{login(d).parameters[0].description=1;});
+reject('request CSRF unknown extension',(d)=>{login(d).parameters[0]['x-extra']=1;});
+for(const name of ['If-Match','Idempotency-Key'])reject('auth forbids business header '+name,(d)=>{login(d).parameters.push({name,in:'header',required:true,schema:{type:'string'}});});
+reject('unknown cookie scheme',(d)=>{login(d).security=[{Unknown:[]}];});
+reject('cookie scopes',(d)=>{login(d).security=[{CSRFCookie:['write']}];});
+reject('public mutual TLS',(d)=>{login(d).security=[{OwnerTLS:[]}];});
+reject('cookie scheme wrong name',(d)=>{d.components.securitySchemes.CSRFCookie.name='csrf';});
+reject('cookie scheme bearer',(d)=>{d.components.securitySchemes.CSRFCookie={type:'http',scheme:'bearer'};});
+reject('security object instead of alternatives',(d)=>{login(d).security={CSRFCookie:[]};});
+reject('null auth security without document requirements',(d)=>{login(d).security=null;});
+reject('null auth security with inherited document cookies',(d)=>{d.security=[{CSRFCookie:[]}];login(d).security=null;});
+reject('null auth security with empty document requirements',(d)=>{d.security=[];read(d).security=null;});
+reject('null auth document security',(d)=>{d.security=null;delete read(d).security;});
+reject('null GET auth parameters',(d)=>{read(d).parameters=null;});
+reject('null GET auth parameters with inherited security',(d)=>{d.security=[{CSRFCookie:[]}];delete read(d).security;read(d).parameters=null;});
+reject('null unsafe auth parameters',(d)=>{login(d).parameters=null;});
+for(const requirements of [undefined,[],[{}],[{CSRFCookie:[]}]])pass('omitted auth security inherits valid document '+JSON.stringify(requirements),()=>{
+ const d=authDocument();if(requirements!==undefined)d.security=requirements;
+ delete read(d).security;delete read(d).parameters;delete login(d).security;
+ const p=compile(configEntry,d);for(const op of p.operations.filter((op)=>op.path==='/api/v1/identity/session'||op.path.endsWith('/login'))){
+  assert.deepEqual(op.securityRequirements,(requirements??[]).map((alternative)=>Object.fromEntries(Object.keys(alternative).map((name)=>[name,d.components.securitySchemes[name]]))));
+  assert.equal(op.authTransport.requestCSRF===null,op.method==='GET');
+ }
+ assert.deepEqual(p.operations.find((op)=>op.method==='GET').parameters,[]);
+});
+for(const requirements of [[],[{}],[{}, {SessionCookie:[]}],[{CSRFCookie:[]}]])pass('explicit auth security overrides document '+JSON.stringify(requirements),()=>{
+ const d=authDocument();d.security=[{ChallengeCookie:[]}];read(d).security=requirements;read(d).parameters=[];login(d).security=requirements;
+ const p=compile(configEntry,d);for(const op of p.operations.filter((op)=>op.path==='/api/v1/identity/session'||op.path.endsWith('/login'))){
+  assert.deepEqual(op.securityRequirements,requirements.map((alternative)=>Object.fromEntries(Object.keys(alternative).map((name)=>[name,d.components.securitySchemes[name]]))));
+  assert.equal(op.authTransport.requestCSRF===null,op.method==='GET');
+ }
+});
+pass('legacy null operation fields retain historical fallback behavior',()=>{
+ const d=structuredClone(fixture);const read=d.paths['/api/v1/identity/synthetic/{id}'].get;
+ read.security=null;const empty=d.paths['/api/v1/identity/synthetic/{id}'].delete;
+ const withoutId=structuredClone(empty);withoutId.parameters=null;withoutId.security=null;withoutId.operationId='DeleteLegacyNull';
+ d.paths['/api/v1/identity/legacy-null']={delete:withoutId};
+ const p=compile(configEntry,d);assert.equal(p.authProfile,undefined);
+ assert.deepEqual(p.operations.find((op)=>op.id==='ReadSynthetic').securityRequirements,[]);
+ const op=p.operations.find((op)=>op.id==='DeleteLegacyNull');assert.deepEqual(op.parameters,[]);assert.deepEqual(op.securityRequirements,[]);
+});
+for(const [method,path,status,rotation] of routes){
+ for(const code of [status,401,403,429]){
+  reject('missing cache '+path+' '+code,(d)=>{delete d.paths['/api/v1/identity'+path][method].responses[code].headers['Cache-Control'];});
+  reject('wrong CSRF matrix '+path+' '+code,(d)=>{const headers=d.paths['/api/v1/identity'+path][method].responses[code].headers;if(Object.hasOwn(headers,'X-CSRF-Token'))delete headers['X-CSRF-Token'];else headers['X-CSRF-Token']=csrf();});
+  reject('wrong retry matrix '+path+' '+code,(d)=>{const headers=d.paths['/api/v1/identity'+path][method].responses[code].headers;if(Object.hasOwn(headers,'Retry-After'))delete headers['Retry-After'];else headers['Retry-After']=retry();});
+ }
+}
+for(const [name,status] of [['X-CSRF-Token',200],['Retry-After',429],['Cache-Control',200]]){
+ for(const [label,mutate] of [
+  ['optional',(h)=>{h.required=false;}],['missing required',(h)=>{delete h.required;}],
+  ['string required',(h)=>{h.required='true';}],['schema ref',(h)=>{h.schema={$ref:'#/components/schemas/Body'};}],
+  ['header ref',(h)=>{h.$ref='#/components/headers/Shared';}],['extra field',(h)=>{h.explode=false;}],
+  ['content encoding',(h)=>{h.content={'application/json':{schema:h.schema}};}],
+  ['extra schema',(h)=>{h.schema.description='not an accepted alternative form';}],
+  ['bad description',(h)=>{h.description={};}],['nullable',(h)=>{h.schema.type=[h.schema.type,'null'];}],
+ ])reject(name+' '+label,(d)=>mutate(login(d).responses[status].headers[name]));
+ reject(name+' lower-case field',(d)=>{const headers=login(d).responses[status].headers;headers[name.toLowerCase()]=headers[name];delete headers[name];});
+ reject(name+' duplicate case alias',(d)=>{const headers=login(d).responses[status].headers;headers[name.toLowerCase()]=headers[name];});
+}
+reject('unknown response header',(d)=>{login(d).responses[200].headers['Set-Cookie']=cache();});
+reject('token empty grammar',(d)=>{login(d).responses[200].headers['X-CSRF-Token'].schema.pattern='^[A-Za-z0-9_-]{0,4096}$';});
+reject('token alternate grammar',(d)=>{login(d).responses[200].headers['X-CSRF-Token'].schema.pattern='^[A-Za-z0-9_-]+$';});
+reject('retry string encoding',(d)=>{login(d).responses[429].headers['Retry-After'].schema={type:'string',pattern:'^(0|[1-9][0-9]{0,9})$'};});
+reject('retry bound overflow',(d)=>{login(d).responses[429].headers['Retry-After'].schema.maximum=2147483648;});
+reject('retry negative bound',(d)=>{login(d).responses[429].headers['Retry-After'].schema.minimum=-1;});
+reject('cache alternative const',(d)=>{login(d).responses[200].headers['Cache-Control'].schema.const='private, no-store';});
+reject('cache equivalent enum',(d)=>{login(d).responses[200].headers['Cache-Control'].schema={type:'string',enum:['no-store']};});
+pass('ordinary and internal security behavior stays separate',()=>{
+ const mixed=authDocument();Object.assign(mixed.paths,structuredClone(fixture.paths));Object.assign(mixed.components.schemas,structuredClone(fixture.components.schemas));
+ const mixedPlan=compile(configEntry,mixed);const internal=mixedPlan.operations.find((op)=>op.internal);
+ assert(internal);assert.equal(internal.authTransport,undefined);assert.equal(internal.securityRequirements[0].OwnerTLS.type,'mutualTLS');
+ const ordinary=mixedPlan.operations.find((op)=>op.id==='CreateSynthetic');assert.equal(ordinary.authTransport,undefined);assert(ordinary.parameters.some((p)=>p.name==='If-Match'));
+});
+pass('inherited cookie security resolves named metadata',()=>{const inherited=authDocument();inherited.security=[{CSRFCookie:[]}];delete login(inherited).security;const op=compile(configEntry,inherited).operations.find((op)=>op.path.endsWith('/login'));assert.equal(op.securityRequirements[0].CSRFCookie.name,'__Host-justix_csrf');});
+pass('header descriptions are optional but the shape is closed',()=>{const minimal=authDocument();for(const methods of Object.values(minimal.paths))for(const op of Object.values(methods)){for(const parameter of op.parameters)delete parameter.description;for(const r of Object.values(op.responses))for(const header of Object.values(r.headers))delete header.description;}assert(compile(configEntry,minimal).authProfile);});
+const legacy=compile({...configEntry,input:'input.json'},fixture);
+pass('legacy has no auth model or advertised capability',()=>{assert.equal(legacy.authProfile,undefined);assert(legacy.operations.every((op)=>op.authTransport===undefined));for(const text of [renderTS(legacy),renderGo(legacy)]){assert(!text.includes('responseContractVersion'));assert(!text.includes('AuthSemantics'));}});
+const legacyHashes={go:createHash('sha256').update(renderGo(legacy)).digest('hex'),ts:createHash('sha256').update(renderTS(legacy)).digest('hex')};
+// Captured by running the exact 23d8cede predecessor generator on generationFixture
+// with this entry/namespace and the pinned Go formatter, independently of this probe.
+pass('legacy emitted bytes match the exact pre-auth-profile baseline',()=>assert.deepEqual(legacyHashes,{go:'8ee16a5bda4e5e1866c955edb00d85b44c1500fbe0f743c0dbe075514a02aa70',ts:'0a8d2463781ffc99f9ef287aecee73e9b149751833758ce3cd5efbce10c4d866'}));
+writeFileSync(resolve(dirname(process.argv[2]),'auth.json'),JSON.stringify(authDocument()));
+console.log(JSON.stringify({passingCases:count,legacyHashes,rows}));
+`
+
 func TestContractGenerationReproducibility(t *testing.T) {
 	h := newGenerationHarness(t)
 	h.config(true)

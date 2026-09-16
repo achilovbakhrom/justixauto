@@ -22,8 +22,11 @@
  * Internal owner routes are Go-only and require declared mutualTLS security.
  * Public cookie security declarations are preserved as endpoint metadata;
  * browser credentials remain under T-032 and authorization remains server-side.
- * Response headers, 429, cookie parameters and other HTTP features
- * require an explicit transport/profile handoff. No network transport is emitted:
+ * T-937 parses the closed Identity auth profile into an inert internal model.
+ * Public auth generation remains unconditionally disabled until T-942. No CLI,
+ * environment or config setting activates incomplete auth rendering.
+ * Non-auth response headers, 429, cookie parameters and other HTTP features
+ * remain unsupported. No network transport is emitted:
  * TS delegates to T-032; Go consumes an injected owner exchange port.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync, lstatSync, realpathSync, mkdtempSync, rmSync } from 'node:fs';
@@ -126,11 +129,63 @@ function verifyPatterns(patterns) {
     for(const pattern of pending)verifiedPatterns.add(pattern);
   } finally {rmSync(directory,{recursive:true,force:true});}
 }
+
+// Closed wire declarations adopted by auth-transport-compatibility P4/P6.
+// They describe encoding, never token entropy/lifetime or a rate policy.
+const authHeaderSchemas = {
+  'X-CSRF-Token': {type:'string',pattern:'^[A-Za-z0-9_-]{1,4096}$'},
+  'Retry-After': {type:'integer',minimum:0,maximum:2147483647},
+  'Cache-Control': {type:'string',const:'no-store'},
+};
+const authRoutes = {
+  'GET /api/v1/identity/session': {success:200,csrf:true,anonymous:true},
+  'POST /api/v1/identity/session/login': {success:200,csrf:true},
+  'POST /api/v1/identity/session/mfa/challenges': {success:200,csrf:false},
+  'POST /api/v1/identity/session/mfa/verify': {success:200,csrf:true},
+  'POST /api/v1/identity/session/logout': {success:204,csrf:false},
+  'POST /api/v1/identity/session/revoke-all': {success:200,csrf:true},
+  'POST /api/v1/identity/session/mfa/enrollment': {success:200,csrf:false},
+  'POST /api/v1/identity/session/mfa/enrollment/{id}/confirm': {success:200,csrf:true},
+  'POST /api/v1/identity/session/recovery/request': {success:202,csrf:false},
+  'POST /api/v1/identity/session/recovery/complete': {success:204,csrf:false},
+};
+function frozenCopy(value) {
+  const copy=structuredClone(value);
+  function freeze(item) {
+    if (item!==null&&typeof item==='object') { for (const child of Object.values(item)) freeze(child); Object.freeze(item); }
+    return item;
+  }
+  return freeze(copy);
+}
+function authHeader(name, header, request=false) {
+  if (!Object.hasOwn(authHeaderSchemas,name)) fail('unsupported auth header');
+  keys(header,request?['name','in','required','schema','description']:['required','schema','description'],'auth header');
+  if (header.required!==true || ('description' in header&&typeof header.description!=='string')
+    || (request&&(header.name!==name||header.in!=='header'))
+    || stable(header.schema)!==stable(authHeaderSchemas[name])) fail('auth header requires exact schema and required:true');
+  return frozenCopy(header);
+}
+function authResponseHeaders(headers, route, status) {
+  keys(headers,Object.keys(authHeaderSchemas),'auth response headers');
+  const csrf=(status===route.success&&route.csrf)||(status===401&&route.anonymous===true);
+  const expected=['Cache-Control',...(csrf?['X-CSRF-Token']:[]),...(status===429?['Retry-After']:[])].sort();
+  if (stable(sorted(headers))!==stable(expected)) fail('auth response headers violate the operation/status matrix');
+  const declarations={};
+  for (const name of expected) declarations[name]=authHeader(name,headers[name]);
+  return frozenCopy({csrf:csrf?'required':'forbidden',retryAfter:status===429?'required':'forbidden',
+    cacheControl:'no-store',headers:declarations,
+    ...(status===429?{retryAfterWire:{pattern:'^(0|[1-9][0-9]{0,9})$',maximum:2147483647}}:{})});
+}
+function rejectInertAuth(plan) {
+  if (plan.authProfile) fail('auth generation is not activated: complete transport and semantic runtime verification required');
+}
 function compile(entry, document) {
   keys(entry, ['input', 'goOutput', 'tsOutput', 'goPackage', 'owner','namespace'], 'config entry');
   if (!/^[A-Z][A-Za-z0-9]*$/.test(entry.namespace)) fail('exported namespace required');
   if (!owners.includes(entry.owner) || !/^[a-z][a-z0-9]*$/.test(entry.goPackage) || ['type','map','func','package','var','range','import','interface','struct','chan','select','go','const'].includes(entry.goPackage)) fail('invalid owner/Go package');
-  keys(document, ['openapi', 'info', 'paths', 'components','security'], 'OpenAPI');
+  keys(document, ['openapi', 'info', 'paths', 'components','security','x-justix-auth-semantics'], 'OpenAPI');
+  const authSemantics=Object.hasOwn(document,'x-justix-auth-semantics');
+  if (authSemantics&&(document['x-justix-auth-semantics']!==1||entry.owner!=='identity')) fail('auth semantics version 1 requires Identity');
   if (!/^3\.1\.[0-9]+$/.test(document.openapi)) fail('OpenAPI 3.1 required');
   keys(document.info, ['title', 'version', 'description'], 'info');
   if (typeof document.info.title !== 'string' || typeof document.info.version !== 'string') fail('info title/version required');
@@ -171,21 +226,41 @@ function compile(entry, document) {
     keys(document.paths[path], ['get','post','put','patch','delete'], 'path item');
     for (const method of sorted(document.paths[path])) {
       const op = document.paths[path][method];
-      keys(op, ['operationId','summary','description','parameters','requestBody','responses','security'], 'operation');
+      keys(op, ['operationId','summary','description','parameters','requestBody','responses','security','x-justix-auth-transport'], 'operation');
+      const auth=Object.hasOwn(op,'x-justix-auth-transport');
+      if (auth&&(op['x-justix-auth-transport']!==1||!authSemantics||entry.owner!=='identity'||internal)) fail('auth transport version 1 requires public Identity and semantic binding');
+      const authRoute=auth?authRoutes[method.toUpperCase()+' '+path]:undefined;
+      if (auth&&!authRoute) fail('unsupported auth operation matrix');
+      if (authSemantics&&!auth&&(path==='/api/v1/identity/session'||path.startsWith('/api/v1/identity/session/'))) fail('auth operation requires transport marker');
+      // Only omission may inherit/default an auth declaration. In particular,
+      // explicit null must reach a closed type failure before nullish fallback.
+      if (auth) for (const field of ['security','parameters']) {
+        if (Object.hasOwn(op,field)&&!Array.isArray(op[field])) fail(`auth ${field} declaration must be an array`);
+      }
       const securityRequirements=security(op.security??document.security??[],internal);
       if (!/^[A-Z][A-Za-z0-9]*$/.test(op.operationId) || reserved.test(op.operationId) || op.operationId in schemas || operations.some((item) => item.id === op.operationId)) fail('unique exported operationId required');
-      const id = op.operationId, parameters = op.parameters ?? [];
-      if (!Array.isArray(parameters)) fail('parameters must be an array');
+      const id = op.operationId, declaredParameters = op.parameters ?? [];
+      const parameters=[];
+      let requestCSRF;
+      if (!Array.isArray(declaredParameters)) fail('parameters must be an array');
       const props = Object.create(null), required = [];
-      for (const p of parameters) {
+      for (const p of declaredParameters) {
         keys(p, ['name','in','required','schema','description'], 'parameter');
+        if (auth&&p.in==='header'&&['If-Match','Idempotency-Key'].includes(p.name)) fail('auth handshake forbids business revision/idempotency headers');
+        if (p.in==='header'&&p.name==='X-CSRF-Token') {
+          if (!auth||method==='get'||requestCSRF) fail('CSRF injection requires one unsafe auth header declaration');
+          requestCSRF=authHeader('X-CSRF-Token',p,true);
+          continue;
+        }
         if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(p.name) && p.in !== 'header') fail('unsupported parameter name');
         if (p.in === 'header' && !['X-Context-Revision','If-Match','Idempotency-Key'].includes(p.name)) fail('unsupported request header: transport handoff required');
         if (!['path','query','header'].includes(p.in) || p.name in props || (p.required !== undefined && typeof p.required !== 'boolean')) fail('invalid/duplicate parameter');
         if (p.in === 'path' && p.required !== true) fail('path parameter must be required');
         if (p.schema?.type !== 'string') fail('profile 1 parameters require string schemas');
         props[p.name] = p.schema; if (p.required) required.push(p.name);
+        parameters.push(p);
       }
+      if (auth&&method!=='get'&&!requestCSRF) fail('unsafe auth requires injected CSRF declaration');
       const placeholders = [...path.matchAll(/\{([^}]+)\}/g)].map((m) => m[1]);
       if (new Set(placeholders).size !== placeholders.length || path.replace(/\{[A-Za-z][A-Za-z0-9_]*\}/g, '').match(/[{}]/) || stable([...placeholders].sort()) !== stable(parameters.filter((p) => p.in === 'path').map((p) => p.name).sort())) fail('path parameter mismatch');
       // Header spelling is preserved on the wire; generated Go field names are explicit.
@@ -204,22 +279,26 @@ function compile(entry, document) {
         bodyName = media(op.requestBody.content, 'body');
       }
       if (!object(op.responses) || !Object.keys(op.responses).length) fail('responses required');
-      const responses = {};
+      const responses = {}, metadata={};
       for (const status of sorted(op.responses)) {
         const code = Number(status);
-        if (String(code) !== status || ![...success,...errors].includes(code)) fail(`unsupported status ${status}: shared transport handoff required`);
+        if (String(code) !== status || ![...success,...errors,...(auth?[429]:[])].includes(code)) fail(`unsupported status ${status}: shared transport handoff required`);
         const r = op.responses[status];
-        keys(r, ['description','content'], 'response (headers require transport handoff)');
+        keys(r, auth?['description','content','headers']:['description','content'], 'response (headers require transport handoff)');
         if (typeof r.description !== 'string') fail('response description required');
+        if (auth) metadata[code]=authResponseHeaders(r.headers,authRoute,code);
         if (code === 204) { if (r.content !== undefined) fail('204 cannot have content'); responses[code] = null; }
         else responses[code] = media(r.content, 'response');
       }
       const statuses = Object.keys(responses).map(Number).filter((s) => success.includes(s));
       if (!statuses.length || new Set(statuses.map((s) => responses[s])).size !== 1) fail('success statuses require one identical schema; status-aware transport handoff required');
-      operations.push({id,path,internal,securityRequirements,method:method.toUpperCase(),parameters,paramName,bodyName,responses,statuses,responseName:responses[statuses[0]]});
+      if (auth&&(statuses.length!==1||statuses[0]!==authRoute.success||(authRoute.anonymous&&!Object.hasOwn(responses,401)))) fail('auth operation requires exact success and anonymous status declarations');
+      operations.push({id,path,internal,securityRequirements:auth?frozenCopy(securityRequirements):securityRequirements,method:method.toUpperCase(),parameters,paramName,bodyName,responses,statuses,responseName:responses[statuses[0]],
+        ...(auth?{authTransport:frozenCopy({version:1,semantics:1,requestCSRF:requestCSRF??null,metadata})}:{})});
     }
   }
   if (!operations.length || !Object.keys(schemas).length) fail('concrete schemas and operations required');
+  if (authSemantics&&!operations.some((op)=>op.authTransport)) fail('auth semantic declaration requires a transport operation');
   // Enumerate actual package/module declarations, imports and referenced globals
   // before rendering. Go methods have a separate receiver scope; their result
   // types and the constructor share the DTO package scope.
@@ -289,7 +368,8 @@ function compile(entry, document) {
   for (const name of sorted(schemas)) schema(schemas[name], [name], true);
   for (const op of operations) for (const name of [op.bodyName,...Object.values(op.responses)].filter(Boolean)) if (!(name in schemas)) fail('operation refers to missing schema');
   verifyPatterns(patterns);
-  return {entry,schemas,operations,goSymbols:[...goSymbols].map((name)=>goSymbol(entry.namespace,name)),digest:createHash('sha256').update(stable(document)).digest('hex')};
+  return {entry,schemas,operations,goSymbols:[...goSymbols].map((name)=>goSymbol(entry.namespace,name)),digest:createHash('sha256').update(stable(document)).digest('hex'),
+    ...(authSemantics?{authProfile:frozenCopy({version:1,semantics:1})}:{})};
 }
 
 function tsType(s) {
@@ -368,6 +448,7 @@ function contractHeader(name: string, value: string): void {
 }
 `;
 function renderTS(c) {
+  rejectInertAuth(c);
   let out = `${banner}\n// Source SHA-256: ${c.digest}\nimport type { ${tsImports.join(', ')} } from '@justixauto/api';\n`;
   const runtime=c.operations.some((op)=>!op.internal&&op.parameters.some((p)=>p.in==='header'))?tsRuntime:tsRuntime.slice(0,tsRuntime.indexOf('\nfunction contractHeader('));
   out += `const contractSchemas: Record<string, ContractSchema> = ${stable(c.schemas)};\n${runtime}\n`;
@@ -485,6 +566,7 @@ func contractHeader(name,value string)error{switch name{case "Idempotency-Key":r
 `;
 
 function renderGo(c) {
+  rejectInertAuth(c);
   let out = `${banner}\n// Source SHA-256: ${c.digest}\npackage ${c.entry.goPackage}\nimport ("bytes";"context";"encoding/json";"errors";"io";"math";"math/big";"mime";"net/url";"regexp";"strconv";"strings";"time";"unicode";"unicode/utf8")\nconst contractSchemaJSON = ${JSON.stringify(stable(c.schemas))}\n${goRuntime}\n`;
   for (const name of sorted(c.schemas)) {
     const schema = c.schemas[name];
@@ -592,6 +674,7 @@ function main() {
     if (namespaces.has(namespace)) fail('duplicate Go output namespace'); namespaces.add(namespace);
     const input = resolve(dirname(configPath),entry.input); inputs.add(realpathSync(input));
     const plan=compile(entry,readJSON(input));
+    rejectInertAuth(plan);
     const directory=resolve(dirname(configPath),dirname(entry.goOutput));
     const symbols=packageSymbols.get(directory)??new Set();
     for (const name of plan.goSymbols) registerSymbol(symbols,name,'Go package');
