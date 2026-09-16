@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/gorm"
 	"justixauto/pkg/eventstore"
+	"justixauto/pkg/persistence"
 	"justixauto/services/identity/port"
 )
 
@@ -21,19 +22,43 @@ var ErrIncompatiblePersistence = errors.New("identity persistence is not compati
 type UnitOfWork[U any] struct {
 	db           *gorm.DB
 	transactions *eventstore.Transactions[U]
+	check        func(*gorm.DB) error
 }
 
 // NewUnitOfWork is inert: it neither connects nor queries nor migrates. Startup
 // must call Check explicitly. Run also checks within its transaction so a dirty
 // or mismatched installation cannot reach a business callback.
 func NewUnitOfWork[U any](db *gorm.DB, bind func(*gorm.DB) (U, error)) (*UnitOfWork[U], error) {
+	return newUnitOfWork(db, bind, check)
+}
+
+// NewCompatibleUnitOfWork selects an explicit, sealed Identity release profile.
+// Construction is inert; Check validates startup readiness and every Run checks
+// its actual ReadCommitted transaction before binding repositories. The profile
+// is trusted release configuration, not request input or business authority.
+// This path requires complete installation history and never falls back to the
+// original mechanics-v1 check or applies migrations to establish compatibility.
+func NewCompatibleUnitOfWork[U any](db *gorm.DB, profile persistence.Profile, bind func(*gorm.DB) (U, error)) (*UnitOfWork[U], error) {
+	spec := profile.Specification()
+	if !profile.Valid() || spec.Owner != "identity" || spec.Database != "justix_identity" || spec.RuntimeRole != "justix_identity_runtime" {
+		return nil, ErrIncompatiblePersistence
+	}
+	return newUnitOfWork(db, bind, func(tx *gorm.DB) error {
+		if err := persistence.Check(tx.Statement.Context, tx, profile); err != nil {
+			return fmt.Errorf("%w: %w", ErrIncompatiblePersistence, err)
+		}
+		return nil
+	})
+}
+
+func newUnitOfWork[U any](db *gorm.DB, bind func(*gorm.DB) (U, error), verify func(*gorm.DB) error) (*UnitOfWork[U], error) {
 	if db == nil || db.Error != nil || bind == nil {
 		return nil, ErrIncompatiblePersistence
 	}
-	r := &UnitOfWork[U]{db: db}
+	r := &UnitOfWork[U]{db: db, check: verify}
 	tx, err := eventstore.NewTransactions(db, func(tx *gorm.DB) (U, error) {
 		var zero U
-		if err := check(tx); err != nil {
+		if err := verify(tx); err != nil {
 			return zero, err
 		}
 		return bind(tx)
@@ -46,10 +71,10 @@ func NewUnitOfWork[U any](db *gorm.DB, bind func(*gorm.DB) (U, error)) (*UnitOfW
 }
 
 func (r *UnitOfWork[U]) Check(ctx context.Context) error {
-	if r == nil || r.db == nil {
+	if r == nil || r.db == nil || r.check == nil {
 		return ErrIncompatiblePersistence
 	}
-	return check(r.db.WithContext(ctx))
+	return r.check(r.db.WithContext(ctx))
 }
 
 func (r *UnitOfWork[U]) Run(ctx context.Context, work func(U) error) error {
