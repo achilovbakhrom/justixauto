@@ -36091,7 +36091,7 @@
       "worktree": ".worktrees/T-944",
       "base_sha": "b2dd2bf",
       "agent": "qa_auth_transport",
-      "execution_note": "Exact correctiona3c291d independentlyGREEN inqa/T-944-r2.md and mergedunchanged. Main462tests/10filesPASS1.91s, fulltypecheck/lintPASS; fourreviewedleaves andtwentyQAartifacts exact. Seeqa/integration-t944.md. Forty-seven tasksintegrated; concreteReact/semantic/ownerpolicygates remain. T-932 separatefailedintegration isnotcleared.",
+      "execution_note": "Exact correction a3c291d independently GREEN in qa/T-944-r2.md and merged unchanged. Main 462 tests / 10 files PASS in 1.91s; full typecheck and lint PASS. Four reviewed leaves and twenty QA artifacts are exact; see qa/integration-t944.md. Forty-seven tasks integrated. Concrete React, semantic, owner and policy gates remain. The separate T-932 failed integration is not cleared.",
       "reviewed_sha": "a3c291d124bae46e381faa8307d02551c26d0bc3",
       "integration_sha": "042a13b1a38ec9d7298fa73a287d9f2fce3422db"
     },
