@@ -105,3 +105,21 @@ The architect owns the same original draft/result leaves; both independent QA
 rounds are imported unchanged. Current task graph is 944 nodes; no alias IDs
 are reserved. Future installation checks must also deny reachable parameter
 authority to bypass triggers and account for explicit constraint timing.
+
+## Final proposal review — 2026-09-16
+
+Fix2 proposal `bb908b4425003cbf41375b46b07fb88d2a3be817` is imported exactly
+after preserving both canonical preimages. It specifies immediate bidirectional
+head/link guards, job-set sealing, snapshot closure, server xid8 bookkeeping and
+head locks through commit. The exact runtime LOGIN/database origin prerequisite
+is explicit and remains dependent on T-928's final independent approval.
+The reduced probe records 63 observations, including actual lock contention.
+This is proposal evidence, not an implemented membership subsystem.
+
+Independent r3 is assigned to qa_membership_storage in detached worktree
+`.worktrees/membership-version-storage-r3-qa` at the exact proposal above.
+Only new `qa/membership-version-storage-r3.md` and its evidence directory are
+owned. Preserve all 25 earlier review artifacts; review the complete final
+contract and its declared catalog/dependency deltas. A further BOUNCE ends
+automatic fixes and requires bounded scope/root-cause review. No task IDs or
+canonical implementation contract are approved by this assignment.

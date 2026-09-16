@@ -1,6 +1,6 @@
 # Development state
 
-- Date: 2026-09-15
+- Date: 2026-09-16
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
 - Phase: development active; Go event mechanics and shared React components in progress
@@ -30,7 +30,7 @@
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 bounced (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-936 ready-for-qa (`.worktrees/T-936`, `task/T-936-validated-auth-transport`).
 - Integrated tasks: 43/944; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
-- Additional architecture: [durable membership version storage](membership-version-assignment.md) independent r2 BOUNCE retained; final allowed fix cycle 2 assigned. T-920 remains blocked and no new migration or task dependency is approved yet.
+- Additional architecture: [durable membership version storage](membership-version-assignment.md) final fix2 proposal bb908b4 is in independent r3 review; both earlier BOUNCE rounds retained. T-920 remains blocked and no new migration or task dependency is approved yet.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 944 (916 reviewed baseline + twenty-eight bounded messaging/storage/owner-migration/auth additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
@@ -102,7 +102,7 @@ all four apps; their default session boundaries render no protected children unt
 integration. Explicit synthetic QA fixtures display the empty shell. This is
 not a working business application; feature routes and service composition
 remain in their assigned tasks. Explicit SQL installation templates and
-shared Go durability primitives are integrated. Identity, Inventory and Commerce now have typed owner
+shared Go durability primitives are integrated. Identity, Inventory, Commerce and Retail now have typed owner
 transaction ports, explicit migrations and fail-closed persistence readiness.
 Their composition roots, business features and custody-mode adapters remain
 separate tasks; these scaffolds do not start service APIs or workers.

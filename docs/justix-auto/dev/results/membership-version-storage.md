@@ -1,5 +1,10 @@
 # Membership-version storage architecture result
 
+Latest submission: **final fix cycle2, 2026-09-16; independent r3 QA required**.
+This supersedes the fix-cycle1 submission status below. Both BOUNCE rounds and
+all earlier result/evidence content remain preserved. A further BOUNCE requires
+bounded scope review rather than a third automatic fix cycle.
+
 Current submission: **fix cycle1; independent r2 QA required**. The original
 proposal at `5996c77e3df371a3992154b639ce9ba91ffc3e75` received BOUNCE.
 The original result/evidence below is preserved; the appended fix-cycle section
@@ -671,5 +676,599 @@ finally:
     }
   ],
   "count": 27
+}
+```
+
+## Final fix cycle2 — constraint timing and reverse mutation guards
+
+2026-09-16. Exact prior proposal
+`c3c0da45965c980fee22a32f43e90d7a674a55c4` received independent r2 BOUNCE:
+a valid new current R2 link, flushed ALL/named constraints, then a sole R3 CAS
+could commit with the new link still pointing to R2. Read MAIN's r2 report,
+timing_probe and recovered lifecycle source, and the updated assignment. The
+original lifecycle finding is closed; this final correction retains it and
+addresses the timing mechanism without weakening the explicit SQL guarantee.
+
+The revised draft specifies immediate ordinary guards on link insertion and
+every head mutation, with transactional server-overwritten xid8 bookkeeping
+for the one-retained-selection rule. Head mutation checks every newly inserted
+link/enrollment against its proposed target; link insertion checks the exact
+current or still-pending prospective selection and the complete existing jobs.
+A link seals the job set. MS-SELECTION explicitly owns the additional old-table
+job BEFORE INSERT trigger, alongside the earlier enrollment INSERT constraint
+trigger; old functions/triggers/artifacts remain unchanged.
+
+Snapshot additions are rejected after selection. Deferred checks remain for
+incomplete pending records/orphans and may fail early; they are not treated as
+commit hooks. ALL/named timing cannot disable the immediate guards. Savepoint
+rollback restores row bookkeeping; rolling back a failed second attempt cannot
+erase the first retained selection. Markers are bookkeeping, not authorization.
+The proposal separately retains the actual transaction/fence-bound Go capability
+and source/admission authority requirements.
+
+CurrentSelection takes a head FOR SHARE lock before job/effect work;
+ProspectiveSelection takes the prior head FOR UPDATE. The SQL link guard also
+takes/revalidates those locks and holds them through transaction end. This closes
+the cross-transaction case where a head writer would otherwise advance after
+the current link's checks were flushed. Later transactions may advance normally,
+preserving valid historical links.
+
+The parameter/default audit now explicitly covers session_replication_role SET
+and ALTER SYSTEM authority through PUBLIC/direct/NOINHERIT/SET ROLE paths and
+applicable role/database defaults. Installer session/default observations cannot
+prove effective runtime login: a server-wide default may be hidden by installer
+overrides. Exact fresh runtime-login/database/configuration verification is an
+outer T-022/T-933 startup handoff, and T-934 checks the actual runtime handle
+before compatible UOW factory binding. Unverifiable startup remains unready;
+an inert installation marker is not a runtime-login attestation. This latter
+clarification is a specification handoff, not a new executed login probe.
+
+Coordinator follow-up aligns revision7/8 read-only preflight with T-928's final
+proposed prerequisite: explicit pg_db_role_setting origin for the exact runtime
+LOGIN role and owner database, provisioned externally before quiesced install.
+Unrelated/inherited/installer settings are insufficient; fresh direct runtime
+login and actual-handle checks remain required. This T-928 configuration contract
+is pending independent approval, and MS-CATALOG remains gated on its reviewed
+integration. No extra configuration probe or provisioning was performed here.
+
+### Final reduced probe results
+
+`python3 /private/tmp/justix-membership-lifecycle-fix2.py` with the preserved
+fix1 script as its base exited0. Final run recorded **63 observations**, including
+the prior27 lifecycle observations, engine identity, exact SQL traces and cleanup;
+this does not mean63 independent business scenarios.
+
+The final probe checks:
+
+- Both temporal orders with ALL and named immediate/deferred toggles; the sole
+  conflicting CAS or stale new link rejects and rolls back. No-toggle control
+  also rejects.
+- Pending enrollment before CAS, post-selection prospective link, later snapshot
+  addition, and job addition after link sealing reject through immediate guards.
+- Second head selection rejects with both timing forms. Savepoint rollback of a
+  complete first selection permits one replacement; recovery from a failed
+  second selection retains the first marker and committed head.
+- A legitimate sole head change and normal later current intake pass. Subsequent
+  separate-transaction head advancement preserves historical R1/R5 links.
+- Supplied bookkeeping values are overwritten in privileged synthetic SQL;
+  ordinary runtime bookkeeping-column updates and replication-mode changes deny.
+  A NOINHERIT-reachable parameter grant and dangerous role default are detected.
+- A current-link transaction flushes its constraints then remains open. A
+  concurrent head UPDATE times out on its held lock; no R8 transition survives.
+  The current link commits, and a later R8 head change succeeds.
+
+This layers concrete immediate guards over the earlier reduced model, not the
+complete prospective migrations or a Go adapter. It does not prove complete
+source/bootstrap/backlog authority, full catalog codecs, all real preimage/FK
+lineage or the full privilege/default-setting matrix. It does not implement
+effective fresh runtime login verification, real COMMIT-loss injection, server
+restart, actual Go selection/fence capabilities or cross-service revocation.
+The source's trusted seed is still not retained-installation adoption. Future
+implementation QA must test the whole approved artifact and actual composition.
+
+No Go/application code changed; the existing interface probe was not rerun.
+Four aliases/eight disjoint application leaves and the existing dependency
+delta remain. All new SQL/guard work is explicitly in the proposed SQL008/test
+leaf; T-934 remains the checker successor and root/runner startup checks retain
+their assigned owners. Their at-most4h bounds and T-920's3h limit still require
+reslicing before dependent assignment if the full implementation cannot fit.
+
+### Attempts, fixture ownership and reproducible evidence
+
+The first timing-only prototype passed60 observations. A temporary editing/
+execution tool call then hit an automatic approval-review timeout; it was not
+an unsafe-action rejection. The authorized retry ran the still-unmodified
+60-observation script and passed. Inspection showed the lock extension had not
+been applied in the timed-out call; it was applied, verified in the source, and
+the final63-observation contention run passed. No executed SQL probe failed in
+this cycle. Some documentation patches with nonexistent context made no change
+before corrected patches applied.
+
+Each fixture had an independently random UUID name and label, exact pinned image,
+network none, no host ports and tmpfs-only/no-volume/no-bind mounts. Cleanup was
+armed before creation, with exact-name inspection after a lost create response.
+Name/label/64-hex ID/image/network/mounts were verified before removing that ID,
+then both ID and name absence were checked. No existing infrastructure or unknown
+volume was touched. The final source preserves these controls from the
+hash-verified fix1 model.
+
+Final fixture:
+`justix-membership-fix2-3319967c-673c-4348-b778-26a7fbdefa81`.
+Exact ID:
+`a79dde6af8bf5869ee048e3ce259a497198af965288df177f08ef7764a798288`.
+
+| Evidence | SHA-256 |
+|---|---|
+| Final wrapper source | `fafd2ff96ac1b50a053adc411d6f4fa43a8178daf04610ef024509c33825205a` |
+| Final63 output | `83341b44093fbf7d0bb5d2880ce325a4136d38795444071678c81e7ff49237e2` |
+| First60 output | `e8e2115837ea863511f2b8dfae9ca9fd8faa89e9ba25a108bc862f3b54f84f93` |
+| Retry60 output | `c55d60a8d37f2e24edbd8e6284261c03fb102ecc3af747875825b53b6c0e7788` |
+
+Both60-output files reconstruct byte-for-byte from the final JSON: remove the
+three observations named `concurrent head cannot change after current-link constraint flush`,
+`current link committed while concurrent head attempt rolled back`, and
+`head changes normally after current-link transaction ends`; set count60,
+substitute the fixture and final cleanup ID below, and serialize using
+`json.dumps(report, indent=2) + "\\n"`. Reconstruction was checked against both
+actual files and the hashes above.
+
+| Output | Fixture | Cleanup ID |
+|---|---|---|
+| First60 | `justix-membership-fix2-895878db-b8b4-489d-98ac-a497613c8a0b` | `28c0dba729e65b23af608f55c525bc9275337d7ff229edc3ab3c393a58b246bc` |
+| Retry60 | `justix-membership-fix2-36ea4022-dd47-43da-9c2c-17f2b46295df` | `ddbaa1570b5c3c238e9ae0f4717f61ef8fac5beb8456bc905be642f3da83f764` |
+
+Recover the previously embedded fix1 Python source at the wrapper's optional
+first argument, or at its default /private/tmp path. The wrapper checks that
+source's original SHA before execution. Earlier seven embedded artifacts and
+both BOUNCE rounds remain untouched. Only the original assigned draft/result
+leaves are changed; independent exact r3 QA and canonical promotion remain
+required, with bounded scope review on another BOUNCE.
+
+### Recoverable final timing/locking wrapper
+
+```python
+"""Immediate reverse guards layered over the preserved reduced lifecycle model."""
+import hashlib,pathlib,sys
+base=pathlib.Path(sys.argv[1] if len(sys.argv)>1 else '/private/tmp/justix-membership-lifecycle-fix1.py')
+source=base.read_text()
+assert hashlib.sha256(source.encode()).hexdigest()=='222d07307c97614f03a95dc9cebc8a2fac8a9ded3ddea6d767e72015f39ee634'
+source=source.replace("'justix-membership-fix1-'","'justix-membership-fix2-'")
+source=source.replace("'justixauto.arch.membership'","'justixauto.arch.membership-fix2'")
+guards=r'''
+ sql("""
+ ALTER TABLE probe.head ADD COLUMN last_selected_xid xid8;
+ CREATE FUNCTION probe.server_birth() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog AS $$ BEGIN
+ NEW.created_xid:=pg_current_xact_id(); RETURN NEW; END $$;
+ CREATE TRIGGER a_server_birth BEFORE INSERT ON probe.transition FOR EACH ROW EXECUTE FUNCTION probe.server_birth();
+ CREATE TRIGGER a_server_birth BEFORE INSERT ON probe.link FOR EACH ROW EXECUTE FUNCTION probe.server_birth();
+ CREATE FUNCTION probe.head_reverse_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog AS $$
+ DECLARE t probe.transition%ROWTYPE;
+ BEGIN
+ IF TG_OP='UPDATE' AND OLD.last_selected_xid=pg_current_xact_id() THEN RAISE EXCEPTION 'second head selection'; END IF;
+ SELECT * INTO STRICT t FROM probe.transition WHERE request=NEW.request;
+ IF t.created_xid<>pg_current_xact_id() OR t.epoch<>NEW.epoch THEN RAISE EXCEPTION 'invalid selected origin'; END IF;
+ IF TG_OP='INSERT' THEN
+  IF NEW.epoch<>1 OR t.prior IS NOT NULL THEN RAISE EXCEPTION 'invalid first head'; END IF;
+ ELSE
+  IF NEW.epoch<>OLD.epoch+1 OR t.prior IS DISTINCT FROM OLD.request THEN RAISE EXCEPTION 'bad exact head CAS'; END IF;
+ END IF;
+ IF NOT EXISTS(SELECT FROM probe.stream WHERE request=NEW.request) THEN RAISE EXCEPTION 'incomplete selected snapshot'; END IF;
+ IF EXISTS(SELECT FROM probe.link WHERE created_xid=pg_current_xact_id() AND request<>NEW.request) THEN RAISE EXCEPTION 'new link would be stale'; END IF;
+ IF EXISTS(SELECT FROM probe.enrollment e WHERE e.xmin=pg_current_xact_id()::xid AND NOT EXISTS(SELECT FROM probe.link l WHERE l.enrollment=e.id AND l.created_xid=pg_current_xact_id() AND l.request=NEW.request)) THEN RAISE EXCEPTION 'pending enrollment before selection'; END IF;
+ NEW.last_selected_xid:=pg_current_xact_id(); RETURN NEW;
+ END $$;
+ CREATE TRIGGER head_reverse_guard BEFORE INSERT OR UPDATE ON probe.head FOR EACH ROW EXECUTE FUNCTION probe.head_reverse_guard();
+ CREATE FUNCTION probe.orphan_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog AS $$ BEGIN
+ IF NOT EXISTS(SELECT FROM probe.head WHERE request=NEW.request AND epoch=NEW.epoch) THEN RAISE EXCEPTION 'stale or absent head'; END IF; RETURN NEW; END $$;
+ CREATE CONSTRAINT TRIGGER transition_selected AFTER INSERT ON probe.transition DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION probe.orphan_guard();
+ CREATE FUNCTION probe.snapshot_seal_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog AS $$ BEGIN
+ IF (SELECT created_xid FROM probe.transition WHERE request=NEW.request) IS DISTINCT FROM pg_current_xact_id() THEN RAISE EXCEPTION 'frozen snapshot'; END IF;
+ IF EXISTS(SELECT FROM probe.head WHERE request=NEW.request) THEN RAISE EXCEPTION 'selected snapshot is sealed'; END IF;
+ RETURN NEW; END $$;
+ CREATE TRIGGER snapshot_seal_guard BEFORE INSERT ON probe.stream FOR EACH ROW EXECUTE FUNCTION probe.snapshot_seal_guard();
+ CREATE FUNCTION probe.job_set_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog AS $$ BEGIN
+ IF (SELECT xmin FROM probe.enrollment WHERE id=NEW.enrollment) IS DISTINCT FROM pg_current_xact_id()::xid THEN RAISE EXCEPTION 'job enrollment not created here'; END IF;
+ IF EXISTS(SELECT FROM probe.link WHERE enrollment=NEW.enrollment) THEN RAISE EXCEPTION 'enrollment job set sealed'; END IF;
+ RETURN NEW; END $$;
+ CREATE TRIGGER membership_job_set_guard BEFORE INSERT ON probe.job FOR EACH ROW EXECUTE FUNCTION probe.job_set_guard();
+ CREATE FUNCTION probe.link_immediate_guard() RETURNS trigger LANGUAGE plpgsql SET search_path=pg_catalog AS $$
+ DECLARE e probe.enrollment%ROWTYPE; m probe.message%ROWTYPE; t probe.transition%ROWTYPE; expected jsonb; actual jsonb; selected text;
+ BEGIN
+ SELECT * INTO STRICT e FROM probe.enrollment WHERE id=NEW.enrollment;
+ SELECT * INTO STRICT m FROM probe.message WHERE id=e.event;
+ SELECT * INTO STRICT t FROM probe.transition WHERE request=NEW.request;
+ IF NEW.mode='current' THEN
+  SELECT request INTO selected FROM probe.head FOR SHARE;
+ ELSE
+  SELECT request INTO selected FROM probe.head FOR UPDATE;
+ END IF;
+ IF NEW.mode='current' AND (selected IS DISTINCT FROM NEW.request OR t.created_xid=pg_current_xact_id()) THEN RAISE EXCEPTION 'stale or absent head'; END IF;
+ IF NEW.mode='prospective' AND (t.created_xid<>pg_current_xact_id() OR selected IS DISTINCT FROM t.prior OR EXISTS(SELECT FROM probe.head WHERE last_selected_xid=pg_current_xact_id())) THEN RAISE EXCEPTION 'prospective selection not pending'; END IF;
+ IF (NEW.stream,NEW.phase) IS DISTINCT FROM (e.stream,e.phase) OR e.stream IS DISTINCT FROM m.stream THEN RAISE EXCEPTION 'stream or phase mismatch'; END IF;
+ IF (e.phase='initial') IS DISTINCT FROM (m.initial_enrollment=e.id) THEN RAISE EXCEPTION 'initial identity mismatch'; END IF;
+ IF e.version IS DISTINCT FROM t.catalog OR (e.phase='initial' AND e.version IS DISTINCT FROM m.version) THEN RAISE EXCEPTION 'catalog mismatch'; END IF;
+ SELECT CASE WHEN e.phase='initial' THEN consumers ELSE delta END INTO expected FROM probe.stream WHERE request=NEW.request AND stream=NEW.stream;
+ SELECT coalesce(jsonb_agg(jsonb_build_object('consumer_name',consumer_name,'admission_id',admission_id) ORDER BY consumer_name),'[]'::jsonb) INTO actual FROM probe.job WHERE enrollment=e.id;
+ IF expected IS DISTINCT FROM NEW.consumers OR NEW.consumers IS DISTINCT FROM e.consumers OR e.consumers IS DISTINCT FROM actual OR convert_from(NEW.bytes,'UTF8')::jsonb IS DISTINCT FROM NEW.consumers THEN RAISE EXCEPTION 'set mismatch'; END IF;
+ IF EXISTS(SELECT FROM probe.job WHERE enrollment=e.id AND (event<>e.event OR xmin<>pg_current_xact_id()::xid)) THEN RAISE EXCEPTION 'job provenance mismatch'; END IF;
+ RETURN NEW; END $$;
+ CREATE TRIGGER link_immediate_guard AFTER INSERT ON probe.link FOR EACH ROW EXECUTE FUNCTION probe.link_immediate_guard();
+ REVOKE ALL ON ALL FUNCTIONS IN SCHEMA probe FROM PUBLIC;
+ """)
+'''
+needle=" yes('inert installation needs no head and preserves old enrollment'"
+assert source.count(needle)==1
+source=source.replace(needle,guards+'\n'+needle)
+additional=r'''
+ def selection(request,epoch,prior,catalog):
+  return f"INSERT INTO probe.transition(request,epoch,prior,catalog) VALUES('{request}',{epoch},'{prior}','{catalog}'); INSERT INTO probe.stream VALUES('{request}','S','{full}','[]'); UPDATE probe.head SET request='{request}',epoch={epoch};"
+ def fresh(tag,request='R2',catalog='V2'):
+  return message('M-'+tag,'E-'+tag,catalog)+enrollment('E-'+tag,'M-'+tag,catalog,'initial',full)+link('E-'+tag,request,'current','initial',full)
+ timings=[('all','SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED;'),('named','SET CONSTRAINTS probe.membership_enrollment_complete,probe.link_complete IMMEDIATE; SET CONSTRAINTS probe.membership_enrollment_complete,probe.link_complete DEFERRED;')]
+ for label,toggle in timings:
+  q='BEGIN; SET LOCAL ROLE runtime; '+fresh(label)+' '+toggle+selection('R3',3,'R2','V3')+' COMMIT;'
+  denied('current-link then sole CAS after '+label+' flush',q,'new link would be stale')
+  yes(label+' reverse guard rolls back link enrollment and R3',"SELECT (SELECT request FROM probe.head)='R2' AND NOT EXISTS(SELECT FROM probe.transition WHERE request='R3') AND NOT EXISTS(SELECT FROM probe.enrollment WHERE id='E-"+label+"')")
+  observations.append({'case':label+' link-first exact SQL','sql':q,'result':'REJECTED by immediate head guard'})
+  q='BEGIN; SET LOCAL ROLE runtime; '+selection('R3',3,'R2','V3')+toggle+fresh('head-first-'+label)+' COMMIT;'
+  denied('head first then stale current link after '+label+' flush',q,'stale or absent head')
+  yes(label+' link guard rolls back head-first transaction',"SELECT (SELECT request FROM probe.head)='R2' AND NOT EXISTS(SELECT FROM probe.transition WHERE request='R3')")
+  q='BEGIN; SET LOCAL ROLE runtime; '+fresh('jobs-'+label)+toggle+"INSERT INTO probe.job VALUES('C','M-jobs-"+label+"','E-jobs-"+label+"','CC'); COMMIT;"
+  denied('job append after sealed link and '+label+' flush',q,'enrollment job set sealed')
+ denied('reverse guard also rejects with no timing toggle','BEGIN; SET LOCAL ROLE runtime; '+fresh('plain')+selection('R3',3,'R2','V3')+' COMMIT;','new link would be stale')
+ denied('CAS before pending enrollment gains a link','BEGIN; SET LOCAL ROLE runtime; '+message('M-pending','E-pending')+enrollment('E-pending','M-pending')+selection('R3',3,'R2','V3')+' COMMIT;','pending enrollment before selection')
+ denied('new prospective link after its head was already selected','BEGIN; SET LOCAL ROLE runtime; '+selection('R3',3,'R2','V3')+message('M-post','E-post','V3')+enrollment('E-post','M-post','V3','initial',full)+link('E-post','R3','prospective','initial',full)+' COMMIT;','prospective selection not pending')
+ denied('selected snapshot cannot gain children after flush','BEGIN; SET LOCAL ROLE runtime; '+selection('R3',3,'R2','V3')+' SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED; '+"INSERT INTO probe.stream VALUES('R3','other','[]','[]'); COMMIT;",'selected snapshot is sealed')
+ for label,toggle in timings:
+  denied('second head selection after '+label+' flush','BEGIN; SET LOCAL ROLE runtime; '+selection('R3',3,'R2','V3')+toggle+selection('R4',4,'R3','V4')+' COMMIT;','second head selection')
+ yes('all rejected timing cases preserve R2',"SELECT (SELECT request FROM probe.head)='R2' AND NOT EXISTS(SELECT FROM probe.transition WHERE request IN ('R3','R4'))")
+ # Exact bookkeeping is transactional, not an irreversible GUC counter.
+ sql('BEGIN; SET LOCAL ROLE runtime; SAVEPOINT before_selection; '+selection('R3-rolled',3,'R2','V3')+' SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED; ROLLBACK TO before_selection; '+selection('R3',3,'R2','V3')+' COMMIT;')
+ yes('savepoint rollback permits one retained replacement head change',"SELECT (SELECT request FROM probe.head)='R3' AND NOT EXISTS(SELECT FROM probe.transition WHERE request='R3-rolled')")
+ # Restore no new links after rolling back a selected head: stale input must still reject.
+ denied('savepoint rollback cannot leave stale current link accepted','BEGIN; SET LOCAL ROLE runtime; '+fresh('before-savepoint','R3','V3')+' SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED; SAVEPOINT s; '+selection('R4',4,'R3','V4')+' ROLLBACK TO s; COMMIT;','new link would be stale')
+ # Preserve the first successful selection after recovering an attempted second inside a savepoint.
+ q='BEGIN; SET LOCAL ROLE runtime; '+selection('R4',4,'R3','V4')+' SAVEPOINT bad_second;\n\\set ON_ERROR_STOP off\n'+selection('R5-bad',5,'R4','V5')+'\nROLLBACK TO bad_second;\n\\set ON_ERROR_STOP on\n'+"SELECT request='R4' AND last_selected_xid=pg_current_xact_id() FROM probe.head; COMMIT;"
+ p=sql(q); assert p.stderr.count('second head selection')==1 and '\nt\n' in p.stdout,(p.stdout,p.stderr)
+ observations.append({'case':'savepoint recovery preserves first-selection marker','result':'PASS','expected_error':p.stderr.strip()})
+ yes('failed second transition rolled back while first head committed',"SELECT (SELECT request FROM probe.head)='R4' AND NOT EXISTS(SELECT FROM probe.transition WHERE request='R5-bad')")
+ sql('BEGIN; SET LOCAL ROLE runtime; '+selection('R5',5,'R4','V5')+' SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED; COMMIT;')
+ yes('one legitimate head change remains valid with timing flush',"SELECT (SELECT request FROM probe.head)='R5'")
+ sql('BEGIN; SET LOCAL ROLE runtime; '+fresh('ordinary-final','R5','V5')+' SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED; COMMIT;')
+ sql('BEGIN; SET LOCAL ROLE runtime; '+selection('R6',6,'R5','V6')+' COMMIT;')
+ yes('later separate transaction may advance head after ordinary link commit',"SELECT l.request='R5' AND h.request='R6' AND l.created_xid<>h.last_selected_xid FROM probe.link l CROSS JOIN probe.head h WHERE l.enrollment='E-ordinary-final'")
+ yes('historical R1 enrollment and link remain unchanged',"SELECT (SELECT bytes FROM probe.original_e1)=(SELECT row_to_json(e)::text FROM probe.enrollment e WHERE id='E1') AND (SELECT request FROM probe.link WHERE enrollment='E1')='R1'")
+ # Server stamps overwrite even a privileged synthetic caller's supplied values.
+ sql("BEGIN; INSERT INTO probe.transition(request,epoch,prior,catalog,created_xid) VALUES('R7',7,'R6','V7','1'::xid8); INSERT INTO probe.stream VALUES('R7','S','"+full+"','[]'); UPDATE probe.head SET request='R7',epoch=7,last_selected_xid='1'::xid8; SELECT 1; COMMIT;")
+ yes('supplied bookkeeping was overwritten by server guard',"SELECT t.created_xid=h.last_selected_xid AND t.created_xid<>'1'::xid8 FROM probe.transition t CROSS JOIN probe.head h WHERE t.request='R7'")
+ denied('runtime cannot update head bookkeeping column',"SET ROLE runtime; UPDATE probe.head SET last_selected_xid='1'::xid8;",'permission denied')
+ denied('runtime cannot disable triggers with replication role',"SET ROLE runtime; SET session_replication_role=replica;",'permission denied')
+ yes('normal runtime has no effective replication-role authority',"SELECT current_setting('session_replication_role')='origin' AND NOT has_parameter_privilege('runtime','session_replication_role','SET') AND NOT has_parameter_privilege('runtime','session_replication_role','ALTER SYSTEM')")
+ sql("CREATE ROLE parameter_holder NOLOGIN; GRANT SET ON PARAMETER session_replication_role TO parameter_holder; GRANT parameter_holder TO runtime WITH INHERIT FALSE;")
+ yes('parameter audit finds NOINHERIT reachable SET ROLE path',"SELECT NOT has_parameter_privilege('runtime','session_replication_role','SET') AND EXISTS(SELECT FROM pg_roles p WHERE pg_has_role('runtime',p.oid,'MEMBER') AND has_parameter_privilege(p.oid,'session_replication_role','SET'))")
+ sql("REVOKE parameter_holder FROM runtime; REVOKE SET ON PARAMETER session_replication_role FROM parameter_holder; ALTER ROLE runtime SET session_replication_role=replica;")
+ yes('default-setting audit finds dangerous role setting',"SELECT EXISTS(SELECT FROM pg_db_role_setting d CROSS JOIN LATERAL unnest(d.setconfig) s WHERE d.setrole='runtime'::regrole AND s='session_replication_role=replica')")
+ sql('ALTER ROLE runtime RESET session_replication_role;')
+ yes('origin restored; ordinary SET CONSTRAINTS needs no privileged grant',"SELECT current_setting('session_replication_role')='origin'")
+ # A current-link transaction keeps the selected head locked even after early checks.
+ args=['docker','exec','-i',NAME,'psql','-X','-h','127.0.0.1','-U','postgres','-v','ON_ERROR_STOP=1','-At']
+ current_proc=subprocess.Popen(args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+ try:
+  q="SET application_name='membership-current-lock-probe'; BEGIN; SET LOCAL ROLE runtime; "+fresh('locked-current','R7','V7')+' SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED; SELECT pg_sleep(2); COMMIT;'
+  current_proc.stdin.write(q); current_proc.stdin.close()
+  for _ in range(50):
+   ready=sql("SELECT EXISTS(SELECT FROM pg_stat_activity WHERE application_name='membership-current-lock-probe' AND wait_event='PgSleep')").stdout.strip()
+   if ready=='t':break
+   time.sleep(.02)
+  else:raise AssertionError('current link did not reach held-lock interval')
+  denied('concurrent head cannot change after current-link constraint flush',"BEGIN; SET LOCAL ROLE runtime; SET LOCAL lock_timeout='150ms'; "+selection('R8',8,'R7','V8')+' COMMIT;','lock timeout')
+  current_proc.wait(timeout=10); out=current_proc.stdout.read(); err=current_proc.stderr.read()
+  assert current_proc.returncode==0,(out,err)
+ finally:
+  if current_proc.poll() is None:
+   current_proc.kill();current_proc.wait(timeout=10)
+ yes('current link committed while concurrent head attempt rolled back',"SELECT (SELECT request FROM probe.head)='R7' AND NOT EXISTS(SELECT FROM probe.transition WHERE request='R8') AND EXISTS(SELECT FROM probe.link WHERE enrollment='E-locked-current' AND request='R7')")
+ sql('BEGIN; SET LOCAL ROLE runtime; '+selection('R8',8,'R7','V8')+' COMMIT;')
+ yes('head changes normally after current-link transaction ends',"SELECT (SELECT request FROM probe.head)='R8' AND (SELECT request FROM probe.link WHERE enrollment='E-locked-current')='R7'")
+'''
+assert source.count('\nfinally:\n')==1
+source=source.replace('\nfinally:\n','\n'+additional+'\nfinally:\n')
+exec(compile(source,str(base)+'+immediate-fix2','exec'))
+```
+
+### Final timing/locking output
+
+```json
+{
+  "fixture": "justix-membership-fix2-3319967c-673c-4348-b778-26a7fbdefa81",
+  "image": "postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2",
+  "observations": [
+    {
+      "case": "pinned PostgreSQL18.6",
+      "result": "PASS"
+    },
+    {
+      "case": "inert installation needs no head and preserves old enrollment",
+      "result": "PASS"
+    },
+    {
+      "case": "old function and trigger definitions unchanged",
+      "result": "PASS"
+    },
+    {
+      "case": "new enrollment constraint trigger is additive deferred INSERT",
+      "result": "PASS"
+    },
+    {
+      "case": "R1 selection has no messages on S",
+      "result": "PASS"
+    },
+    {
+      "case": "future ordinary intake links committed R1",
+      "result": "PASS"
+    },
+    {
+      "case": "post-commit frozen stream addition",
+      "result": "REJECTED",
+      "reason": "frozen snapshot"
+    },
+    {
+      "case": "post-commit snapshot mutation",
+      "result": "REJECTED",
+      "reason": "old immutable"
+    },
+    {
+      "case": "missing link caught from enrollment INSERT",
+      "result": "REJECTED",
+      "reason": "missing enrollment link"
+    },
+    {
+      "case": "missing-link failure rolls back message enrollment jobs",
+      "result": "PASS"
+    },
+    {
+      "case": "mismatched link set",
+      "result": "REJECTED",
+      "reason": "set mismatch"
+    },
+    {
+      "case": "missing required job",
+      "result": "REJECTED",
+      "reason": "set mismatch"
+    },
+    {
+      "case": "extra consumer job",
+      "result": "REJECTED",
+      "reason": "set mismatch"
+    },
+    {
+      "case": "link cannot repair old retained enrollment",
+      "result": "REJECTED",
+      "reason": "enrollment not created here"
+    },
+    {
+      "case": "prospective mode cannot reference committed transition",
+      "result": "REJECTED",
+      "reason": "selection lifecycle"
+    },
+    {
+      "case": "runtime cannot supply full transaction marker",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "prospective late append without final selection",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "failed prospective selection leaves old set and head",
+      "result": "PASS"
+    },
+    {
+      "case": "current mode cannot use a new transition",
+      "result": "REJECTED",
+      "reason": "selection lifecycle"
+    },
+    {
+      "case": "prospective late delta and new head commit together",
+      "result": "PASS"
+    },
+    {
+      "case": "existing frozen initial enrollment remains byte-identical",
+      "result": "PASS"
+    },
+    {
+      "case": "historical redelivery reads old link without new insert or current-head condition",
+      "result": "PASS"
+    },
+    {
+      "case": "new intake cannot use stale R1",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "duplicate evidence cannot append to committed enrollment",
+      "result": "REJECTED",
+      "reason": "enrollment not created here"
+    },
+    {
+      "case": "future ordinary R2 intake stages all consumers",
+      "result": "PASS"
+    },
+    {
+      "case": "retained unknown membership still unmodified and has no invented link",
+      "result": "PASS"
+    },
+    {
+      "case": "current-link then sole CAS after all flush",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "all reverse guard rolls back link enrollment and R3",
+      "result": "PASS"
+    },
+    {
+      "case": "all link-first exact SQL",
+      "sql": "BEGIN; SET LOCAL ROLE runtime; INSERT INTO probe.message VALUES('M-all','S','E-all','V2','fixed-original-bytes');INSERT INTO probe.enrollment VALUES('E-all','M-all','S','V2','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'); INSERT INTO probe.job SELECT x->>'consumer_name','M-all','E-all',x->>'admission_id' FROM jsonb_array_elements('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'::jsonb) x;INSERT INTO probe.link(enrollment,request,stream,mode,phase,consumers,bytes,digest) SELECT 'E-all','R2','S','current','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]',convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8'),sha256(convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8')); SET CONSTRAINTS ALL IMMEDIATE; SET CONSTRAINTS ALL DEFERRED;INSERT INTO probe.transition(request,epoch,prior,catalog) VALUES('R3',3,'R2','V3'); INSERT INTO probe.stream VALUES('R3','S','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','[]'); UPDATE probe.head SET request='R3',epoch=3; COMMIT;",
+      "result": "REJECTED by immediate head guard"
+    },
+    {
+      "case": "head first then stale current link after all flush",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "all link guard rolls back head-first transaction",
+      "result": "PASS"
+    },
+    {
+      "case": "job append after sealed link and all flush",
+      "result": "REJECTED",
+      "reason": "enrollment job set sealed"
+    },
+    {
+      "case": "current-link then sole CAS after named flush",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "named reverse guard rolls back link enrollment and R3",
+      "result": "PASS"
+    },
+    {
+      "case": "named link-first exact SQL",
+      "sql": "BEGIN; SET LOCAL ROLE runtime; INSERT INTO probe.message VALUES('M-named','S','E-named','V2','fixed-original-bytes');INSERT INTO probe.enrollment VALUES('E-named','M-named','S','V2','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'); INSERT INTO probe.job SELECT x->>'consumer_name','M-named','E-named',x->>'admission_id' FROM jsonb_array_elements('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]'::jsonb) x;INSERT INTO probe.link(enrollment,request,stream,mode,phase,consumers,bytes,digest) SELECT 'E-named','R2','S','current','initial','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]',convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8'),sha256(convert_to('[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','UTF8')); SET CONSTRAINTS probe.membership_enrollment_complete,probe.link_complete IMMEDIATE; SET CONSTRAINTS probe.membership_enrollment_complete,probe.link_complete DEFERRED;INSERT INTO probe.transition(request,epoch,prior,catalog) VALUES('R3',3,'R2','V3'); INSERT INTO probe.stream VALUES('R3','S','[{\"consumer_name\":\"A\",\"admission_id\":\"AA\"},{\"consumer_name\":\"B\",\"admission_id\":\"BB\"}]','[]'); UPDATE probe.head SET request='R3',epoch=3; COMMIT;",
+      "result": "REJECTED by immediate head guard"
+    },
+    {
+      "case": "head first then stale current link after named flush",
+      "result": "REJECTED",
+      "reason": "stale or absent head"
+    },
+    {
+      "case": "named link guard rolls back head-first transaction",
+      "result": "PASS"
+    },
+    {
+      "case": "job append after sealed link and named flush",
+      "result": "REJECTED",
+      "reason": "enrollment job set sealed"
+    },
+    {
+      "case": "reverse guard also rejects with no timing toggle",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "CAS before pending enrollment gains a link",
+      "result": "REJECTED",
+      "reason": "pending enrollment before selection"
+    },
+    {
+      "case": "new prospective link after its head was already selected",
+      "result": "REJECTED",
+      "reason": "prospective selection not pending"
+    },
+    {
+      "case": "selected snapshot cannot gain children after flush",
+      "result": "REJECTED",
+      "reason": "selected snapshot is sealed"
+    },
+    {
+      "case": "second head selection after all flush",
+      "result": "REJECTED",
+      "reason": "second head selection"
+    },
+    {
+      "case": "second head selection after named flush",
+      "result": "REJECTED",
+      "reason": "second head selection"
+    },
+    {
+      "case": "all rejected timing cases preserve R2",
+      "result": "PASS"
+    },
+    {
+      "case": "savepoint rollback permits one retained replacement head change",
+      "result": "PASS"
+    },
+    {
+      "case": "savepoint rollback cannot leave stale current link accepted",
+      "result": "REJECTED",
+      "reason": "new link would be stale"
+    },
+    {
+      "case": "savepoint recovery preserves first-selection marker",
+      "result": "PASS",
+      "expected_error": "ERROR:  second head selection\nCONTEXT:  PL/pgSQL function probe.head_reverse_guard() line 4 at RAISE"
+    },
+    {
+      "case": "failed second transition rolled back while first head committed",
+      "result": "PASS"
+    },
+    {
+      "case": "one legitimate head change remains valid with timing flush",
+      "result": "PASS"
+    },
+    {
+      "case": "later separate transaction may advance head after ordinary link commit",
+      "result": "PASS"
+    },
+    {
+      "case": "historical R1 enrollment and link remain unchanged",
+      "result": "PASS"
+    },
+    {
+      "case": "supplied bookkeeping was overwritten by server guard",
+      "result": "PASS"
+    },
+    {
+      "case": "runtime cannot update head bookkeeping column",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "runtime cannot disable triggers with replication role",
+      "result": "REJECTED",
+      "reason": "permission denied"
+    },
+    {
+      "case": "normal runtime has no effective replication-role authority",
+      "result": "PASS"
+    },
+    {
+      "case": "parameter audit finds NOINHERIT reachable SET ROLE path",
+      "result": "PASS"
+    },
+    {
+      "case": "default-setting audit finds dangerous role setting",
+      "result": "PASS"
+    },
+    {
+      "case": "origin restored; ordinary SET CONSTRAINTS needs no privileged grant",
+      "result": "PASS"
+    },
+    {
+      "case": "concurrent head cannot change after current-link constraint flush",
+      "result": "REJECTED",
+      "reason": "lock timeout"
+    },
+    {
+      "case": "current link committed while concurrent head attempt rolled back",
+      "result": "PASS"
+    },
+    {
+      "case": "head changes normally after current-link transaction ends",
+      "result": "PASS"
+    },
+    {
+      "case": "exact owned fixture removed; no volume mounts",
+      "result": "PASS",
+      "id": "a79dde6af8bf5869ee048e3ce259a497198af965288df177f08ef7764a798288"
+    }
+  ],
+  "count": 63
 }
 ```
