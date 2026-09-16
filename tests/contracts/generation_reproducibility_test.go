@@ -173,6 +173,11 @@ func TestContractGenerationReproducibility(t *testing.T) {
 	}
 	h.write("client.ts", string(api))
 	h.write("check.ts", generatedTSChecks)
+	decoder, err := os.ReadFile(filepath.Join(h.root, "web/packages/api/src/responseJSON.ts"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	h.write("responseJSON.ts", string(decoder))
 	h.write("package.json", `{"type":"commonjs"}`)
 	h.write("tsconfig.json", `{"compilerOptions":{"target":"ES2022","lib":["ES2022","DOM","DOM.Iterable"],"module":"Node16","moduleResolution":"Node16","strict":true,"noUncheckedIndexedAccess":true,"exactOptionalPropertyTypes":true,"noUnusedLocals":true,"noUnusedParameters":true,"skipLibCheck":false,"types":[],"paths":{"@justixauto/api":["./client.ts"]},"outDir":"out"},"include":["*.ts"]}`)
 	h.run(true, h.node, filepath.Join(h.main, "node_modules/typescript/bin/tsc"), "-p", filepath.Join(h.dir, "tsconfig.json"))
@@ -268,6 +273,11 @@ func TestContractGenerationInternalOnly(t *testing.T) {
 		t.Fatal(err)
 	}
 	h.write("client.ts", string(api))
+	decoder, err := os.ReadFile(filepath.Join(h.root, "web/packages/api/src/responseJSON.ts"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	h.write("responseJSON.ts", string(decoder))
 	h.write("tsconfig.json", `{"compilerOptions":{"target":"ES2022","lib":["ES2022","DOM","DOM.Iterable"],"module":"Node16","moduleResolution":"Node16","strict":true,"noUnusedLocals":true,"noUnusedParameters":true,"types":[],"paths":{"@justixauto/api":["./client.ts"]},"noEmit":true},"include":["*.ts"]}`)
 	h.run(true, h.node, filepath.Join(h.main, "node_modules/typescript/bin/tsc"), "-p", filepath.Join(h.dir, "tsconfig.json"))
 }
@@ -390,6 +400,11 @@ func TestWireText(t *testing.T){
 		t.Fatal(err)
 	}
 	h.write("client.ts", string(api))
+	decoder, err := os.ReadFile(filepath.Join(h.root, "web/packages/api/src/responseJSON.ts"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	h.write("responseJSON.ts", string(decoder))
 	h.write("tsconfig.json", `{"compilerOptions":{"target":"ES2022","lib":["ES2022","DOM","DOM.Iterable"],"module":"Node16","moduleResolution":"Node16","strict":true,"types":[],"paths":{"@justixauto/api":["./client.ts"]},"outDir":"out"},"include":["*.ts"]}`)
 	h.write("wire.ts", "import { WireTextSchema } from './fixture.js';\nfor (const value of ['x.ReadReceipt(', 'strings.ReadReceipt(', '/* x.ReadReceipt( */', \"'x.ReadReceipt('\", '`x.ReadReceipt(`']) { if (WireTextSchema.parse(value) !== value || WireTextSchema.parse(JSON.parse(JSON.stringify(value))) !== value) throw new Error('wire text changed'); }\n")
 	h.run(true, h.node, filepath.Join(h.main, "node_modules/typescript/bin/tsc"), "-p", filepath.Join(h.dir, "tsconfig.json"))
