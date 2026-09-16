@@ -1,0 +1,4 @@
+# justixauto/tools/owner-migrate [justixauto/tools/owner-migrate.test]
+./docs/justix-auto/dev/qa/T-932/independent_test.go:117:94: cannot use i + 2 (value of type int) as uint32 value in struct literal
+FAIL	justixauto/tools/owner-migrate [build failed]
+FAIL

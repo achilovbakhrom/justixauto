@@ -1,0 +1,12 @@
+{
+  "target": "555480d7b1c794fd5e9016545d459c975edd756f",
+  "source_unchanged": true,
+  "author_archive_reconstructed_entries": 119,
+  "catalog_policy": "exact after documented placeholder/runtime-OID/fresh-public-schema adjustments",
+  "fresh_sidecars_count": 57,
+  "fresh_directories": 29,
+  "fresh_archive_entries": 114,
+  "fresh_archive_json_sha256": "8a558c92f5d70d176ba3090d80191c6f50553d68b33f0fbd04d07f9db7e7717a",
+  "author_fixture_references": 98,
+  "fresh_fixture_references": 58
+}

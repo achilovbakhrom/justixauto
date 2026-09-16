@@ -1,0 +1,7 @@
+=== RUN   TestQA932SharedLineageAndCustodyBoundary
+    qa_independent_test.go:105: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2866411317
+    qa_independent_test.go:105: created owned fixture justixauto-t932-343a6a0e-497f-43b5-9b60-afa1447459d9 id da006d4c2297c21f11c5be6922b62a9447426fa78b4fa093e42262582e36efee image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: da006d4c2297c21f11c5be6922b62a9447426fa78b4fa093e42262582e36efee justixauto-t932-343a6a0e-497f-43b5-9b60-afa1447459d9; attached volume IDs []
+--- PASS: TestQA932SharedLineageAndCustodyBoundary (3.33s)
+PASS
+ok  	justixauto/tools/owner-migrate	4.862s

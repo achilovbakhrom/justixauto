@@ -1,0 +1,1661 @@
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestCommercePostgresMechanics
+    unit_of_work_test.go:142: set JUSTIXAUTO_TEST_COMMERCE_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestCommercePostgresMechanics (0.00s)
+=== RUN   TestCommerceScopeRecoveryAndMessaging
+    unit_of_work_test.go:525: set JUSTIXAUTO_TEST_COMMERCE_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestCommerceScopeRecoveryAndMessaging (0.00s)
+PASS
+ok  	justixauto/services/commerce/adapter/postgres	2.606s
+?   	justixauto/services/commerce/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestIdentityPostgresMechanics
+    unit_of_work_test.go:140: set JUSTIXAUTO_TEST_IDENTITY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestIdentityPostgresMechanics (0.00s)
+PASS
+ok  	justixauto/services/identity/adapter/postgres	3.659s
+?   	justixauto/services/identity/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestInventoryPostgresMechanics
+    unit_of_work_test.go:142: set JUSTIXAUTO_TEST_INVENTORY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestInventoryPostgresMechanics (0.00s)
+=== RUN   TestInventoryScopeRecoveryAndMessaging
+    unit_of_work_test.go:453: set JUSTIXAUTO_TEST_INVENTORY_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestInventoryScopeRecoveryAndMessaging (0.00s)
+PASS
+ok  	justixauto/services/inventory/adapter/postgres	3.117s
+?   	justixauto/services/inventory/port	[no test files]
+=== RUN   TestConstructionIsInertAndRejectsMissingDependencies
+--- PASS: TestConstructionIsInertAndRejectsMissingDependencies (0.00s)
+=== RUN   TestRetailPostgresMechanics
+    unit_of_work_test.go:250: set JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestRetailPostgresMechanics (0.00s)
+=== RUN   TestRetailScopeRecoveryAndMessaging
+    unit_of_work_test.go:633: set JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 for disposable PostgreSQL
+--- SKIP: TestRetailScopeRecoveryAndMessaging (0.00s)
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/bad_id
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/no_tmpfs
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/unexpected_volume
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/writable_bind
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/different_bind
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_label
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_image
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_name
+--- PASS: TestFixtureRefusesUnownedIdentityOrMounts (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/bad_id (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/no_tmpfs (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/unexpected_volume (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/writable_bind (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/different_bind (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_label (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_image (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_name (0.00s)
+=== RUN   TestFixtureAllocationFailures
+    unit_of_work_test.go:870: owned PostgreSQL opt-in required
+--- SKIP: TestFixtureAllocationFailures (0.00s)
+PASS
+ok  	justixauto/services/retail/adapter/postgres	2.077s
+?   	justixauto/services/retail/port	[no test files]
+=== RUN   TestAuthorizerDenyByDefaultMatrix
+=== RUN   TestAuthorizerDenyByDefaultMatrix/exact_retail_grant
+=== RUN   TestAuthorizerDenyByDefaultMatrix/exact_commerce_grant
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_caller
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_action
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wrong_purpose
+=== RUN   TestAuthorizerDenyByDefaultMatrix/case_mismatch
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_caller
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_action
+=== RUN   TestAuthorizerDenyByDefaultMatrix/missing_purpose
+=== RUN   TestAuthorizerDenyByDefaultMatrix/wildcard_is_literal
+--- PASS: TestAuthorizerDenyByDefaultMatrix (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/exact_retail_grant (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/exact_commerce_grant (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_caller (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_action (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wrong_purpose (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/case_mismatch (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_caller (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_action (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/missing_purpose (0.00s)
+    --- PASS: TestAuthorizerDenyByDefaultMatrix/wildcard_is_literal (0.00s)
+=== RUN   TestAuthorizerRejectsInvalidConfiguration
+--- PASS: TestAuthorizerRejectsInvalidConfiguration (0.00s)
+=== RUN   TestAuthorizerCopiesConfigurationAndSupportsConcurrentReads
+--- PASS: TestAuthorizerCopiesConfigurationAndSupportsConcurrentReads (0.00s)
+=== RUN   TestNilAuthorizerDenies
+--- PASS: TestNilAuthorizerDenies (0.00s)
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/nil_state
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/handshake_incomplete
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unverified_certificate
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/verified_chain_for_different_leaf
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unknown_SAN
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/no_URI_SAN
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/disabled_identity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/ambiguous_identity
+=== RUN   TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/duplicate_identical_identity
+--- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/nil_state (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/handshake_incomplete (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unverified_certificate (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/verified_chain_for_different_leaf (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/unknown_SAN (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/no_URI_SAN (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/disabled_identity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/ambiguous_identity (0.00s)
+    --- PASS: TestMTLSResolverRequiresVerifiedKnownEnabledIdentity/duplicate_identical_identity (0.00s)
+=== RUN   TestMTLSResolverConfigurationIsExactAndImmutable
+--- PASS: TestMTLSResolverConfigurationIsExactAndImmutable (0.00s)
+=== RUN   TestAuthenticateCombinesPeerAndPurposeGrant
+--- PASS: TestAuthenticateCombinesPeerAndPurposeGrant (0.00s)
+=== RUN   TestResolverWithVerifiedMutualTLSHandshake
+--- PASS: TestResolverWithVerifiedMutualTLSHandshake (5.02s)
+=== RUN   TestResolverConcurrentReads
+--- PASS: TestResolverConcurrentReads (0.00s)
+=== RUN   TestPublicIdentityHeaderRejectionAndStripping
+--- PASS: TestPublicIdentityHeaderRejectionAndStripping (0.00s)
+PASS
+ok  	justixauto/pkg/auth	6.530s
+=== RUN   TestTypedCanonicalDigestAndSecretBoundary
+--- PASS: TestTypedCanonicalDigestAndSecretBoundary (0.00s)
+=== RUN   TestScopeAndReceiptValidation
+--- PASS: TestScopeAndReceiptValidation (0.00s)
+=== RUN   TestLedgerPostgres
+    ledger_test.go:244: set JUSTIXAUTO_TEST_COMMAND_LEDGER=1 for isolated PostgreSQL 18.6 fixture
+--- SKIP: TestLedgerPostgres (0.00s)
+=== RUN   TestOperationConfiguration
+--- PASS: TestOperationConfiguration (0.00s)
+=== RUN   TestOperationsPostgres
+    operation_test.go:99: set JUSTIXAUTO_TEST_OPERATIONS=1 for disposable PostgreSQL fixture
+--- SKIP: TestOperationsPostgres (0.00s)
+=== RUN   TestOperationRetryBounds
+--- PASS: TestOperationRetryBounds (0.00s)
+=== RUN   TestOperationWorkerPostgres
+    worker_test.go:48: set JUSTIXAUTO_TEST_OPERATIONS=1 for disposable PostgreSQL fixture
+--- SKIP: TestOperationWorkerPostgres (0.00s)
+PASS
+ok  	justixauto/pkg/commands	4.179s
+=== RUN   TestEnvelopeRoundTripPreservesContractFields
+--- PASS: TestEnvelopeRoundTripPreservesContractFields (0.00s)
+=== RUN   TestEnvelopeCopiesPayloadAndCompanyID
+--- PASS: TestEnvelopeCopiesPayloadAndCompanyID (0.00s)
+=== RUN   TestEnvelopeMetadataValidation
+=== RUN   TestEnvelopeMetadataValidation/zero_aggregate_revision
+=== RUN   TestEnvelopeMetadataValidation/zero_integration_sequence
+=== RUN   TestEnvelopeMetadataValidation/missing_company
+=== RUN   TestEnvelopeMetadataValidation/unknown_actor_kind
+=== RUN   TestEnvelopeMetadataValidation/non-UTC_time
+=== RUN   TestEnvelopeMetadataValidation/noncanonical_event_UUID
+--- PASS: TestEnvelopeMetadataValidation (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/zero_aggregate_revision (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/zero_integration_sequence (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/missing_company (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/unknown_actor_kind (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/non-UTC_time (0.00s)
+    --- PASS: TestEnvelopeMetadataValidation/noncanonical_event_UUID (0.00s)
+=== RUN   TestEventSchemaValidation
+=== RUN   TestEventSchemaValidation/unknown_owner
+=== RUN   TestEventSchemaValidation/schema_mismatch
+=== RUN   TestEventSchemaValidation/invalid_aggregate_type
+=== RUN   TestEventSchemaValidation/global_non-identity
+=== RUN   TestEventSchemaValidation/missing_validator
+--- PASS: TestEventSchemaValidation (0.00s)
+    --- PASS: TestEventSchemaValidation/unknown_owner (0.00s)
+    --- PASS: TestEventSchemaValidation/schema_mismatch (0.00s)
+    --- PASS: TestEventSchemaValidation/invalid_aggregate_type (0.00s)
+    --- PASS: TestEventSchemaValidation/global_non-identity (0.00s)
+    --- PASS: TestEventSchemaValidation/missing_validator (0.00s)
+=== RUN   TestGlobalIdentityEventMayHaveNullCompany
+--- PASS: TestGlobalIdentityEventMayHaveNullCompany (0.00s)
+=== RUN   TestTenantIdentityEventRequiresCompany
+--- PASS: TestTenantIdentityEventRequiresCompany (0.00s)
+=== RUN   TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively
+--- PASS: TestEnvelopeRejectsSecretAndRawPIIPayloadsRecursively (0.00s)
+=== RUN   TestPayloadDecoderBindsEventTypeAndVersion
+--- PASS: TestPayloadDecoderBindsEventTypeAndVersion (0.00s)
+=== RUN   TestPayloadDecoderRejectsMissingRequiredFields
+--- PASS: TestPayloadDecoderRejectsMissingRequiredFields (0.00s)
+=== RUN   TestSchemaRejectsAggregateAndScopeSpoofFromRawWire
+--- PASS: TestSchemaRejectsAggregateAndScopeSpoofFromRawWire (0.00s)
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/permission
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/session
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/credential
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/mfa-factor
+=== RUN   TestUnapprovedGlobalClaimsHaveNoMatchingSchema/recovery-token
+--- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/permission (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/session (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/credential (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/mfa-factor (0.00s)
+    --- PASS: TestUnapprovedGlobalClaimsHaveNoMatchingSchema/recovery-token (0.00s)
+=== RUN   TestZeroEnvelopeCannotBeSerialized
+--- PASS: TestZeroEnvelopeCannotBeSerialized (0.00s)
+=== RUN   TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields
+--- PASS: TestEnvelopeRejectsMalformedPayloadAndUnknownEnvelopeOrDataFields (0.00s)
+=== RUN   TestEnvelopeRejectsOffsetTimeOnWire
+--- PASS: TestEnvelopeRejectsOffsetTimeOnWire (0.00s)
+=== RUN   TestEnvelopeConcurrentDecodeIsReadOnly
+--- PASS: TestEnvelopeConcurrentDecodeIsReadOnly (0.03s)
+=== RUN   TestRevisionCanonicalRoundTrip
+=== RUN   TestRevisionCanonicalRoundTrip/0
+=== RUN   TestRevisionCanonicalRoundTrip/1
+=== RUN   TestRevisionCanonicalRoundTrip/9007199254740993
+=== RUN   TestRevisionCanonicalRoundTrip/9223372036854775807
+--- PASS: TestRevisionCanonicalRoundTrip (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/0 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/1 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/9007199254740993 (0.00s)
+    --- PASS: TestRevisionCanonicalRoundTrip/9223372036854775807 (0.00s)
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/#00
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/-1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/+1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/01
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/_1
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1_
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1.0
+=== RUN   TestRevisionRejectsNonCanonicalAndOutOfRangeValues/9223372036854775808
+--- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/#00 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/-1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/+1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/01 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/_1 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1_ (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/1.0 (0.00s)
+    --- PASS: TestRevisionRejectsNonCanonicalAndOutOfRangeValues/9223372036854775808 (0.00s)
+=== RUN   TestRevisionNextAndOverflow
+--- PASS: TestRevisionNextAndOverflow (0.00s)
+PASS
+ok  	justixauto/pkg/events	4.620s
+=== RUN   TestAppendRequiresTransactionAndSchema
+--- PASS: TestAppendRequiresTransactionAndSchema (0.00s)
+=== RUN   TestConditionalAppendPostgres
+    append_test.go:127: set JUSTIXAUTO_TEST_EVENTSTORE_APPEND=1 for isolated Docker/PostgreSQL append tests
+--- SKIP: TestConditionalAppendPostgres (0.00s)
+=== RUN   TestMessagingMigrationPostgres
+    messaging_migration_test.go:17: set JUSTIXAUTO_TEST_MESSAGING_MIGRATION=1 for isolated pinned PostgreSQL
+--- SKIP: TestMessagingMigrationPostgres (0.00s)
+=== RUN   TestMessagingRouteMigrationPostgres
+    messaging_route_migration_test.go:407: set JUSTIXAUTO_TEST_MESSAGING_ROUTE_MIGRATION=1 for isolated pinned PostgreSQL
+--- SKIP: TestMessagingRouteMigrationPostgres (0.00s)
+=== RUN   TestOwnerHistoryPostgres
+    owner_history_test.go:188: set JUSTIXAUTO_TEST_OWNER_HISTORY=1 for an owned PostgreSQL fixture
+--- SKIP: TestOwnerHistoryPostgres (0.00s)
+=== RUN   TestProjectionCheckpointMigrationPostgres
+    projection_checkpoint_migration_test.go:157: set JUSTIXAUTO_TEST_PROJECTION_CHECKPOINT=1 for owned PostgreSQL fixture
+--- SKIP: TestProjectionCheckpointMigrationPostgres (0.00s)
+=== RUN   TestQuarantineFixtureIdentity
+=== RUN   TestQuarantineFixtureIdentity/unexpected_volume
+=== RUN   TestQuarantineFixtureIdentity/unexpected_bind
+=== RUN   TestQuarantineFixtureIdentity/wrong_immutable_ID
+=== RUN   TestQuarantineFixtureIdentity/wrong_name
+=== RUN   TestQuarantineFixtureIdentity/wrong_image
+=== RUN   TestQuarantineFixtureIdentity/wrong_ownership_label
+=== RUN   TestQuarantineFixtureIdentity/missing_label
+=== RUN   TestQuarantineFixtureIdentity/missing_tmpfs
+--- PASS: TestQuarantineFixtureIdentity (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/unexpected_volume (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/unexpected_bind (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_immutable_ID (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_name (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_image (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/wrong_ownership_label (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/missing_label (0.00s)
+    --- PASS: TestQuarantineFixtureIdentity/missing_tmpfs (0.00s)
+=== RUN   TestQuarantineFixtureFailures
+    quarantine_migration_test.go:226: explicit task fixture opt-in required
+--- SKIP: TestQuarantineFixtureFailures (0.00s)
+=== RUN   TestQuarantineMigrationPostgres
+    quarantine_migration_test.go:430: set JUSTIXAUTO_TEST_QUARANTINE=1 for owned PostgreSQL fixture
+--- SKIP: TestQuarantineMigrationPostgres (0.00s)
+=== RUN   TestFenceRequestsAreSealedAndCanonical
+--- PASS: TestFenceRequestsAreSealedAndCanonical (0.00s)
+=== RUN   TestPreparedReceiverFencesPostgres
+    receiver_fence_test.go:101: set JUSTIXAUTO_TEST_RECEIVER_FENCES=1 for owned PostgreSQL fixture
+--- SKIP: TestPreparedReceiverFencesPostgres (0.00s)
+=== RUN   TestReplayRejectsHistoryBeforeApplying
+=== RUN   TestReplayRejectsHistoryBeforeApplying/gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/reordered
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_identity
+=== RUN   TestReplayRejectsHistoryBeforeApplying/initial_integration_gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/foreign_stream
+=== RUN   TestReplayRejectsHistoryBeforeApplying/missing_first
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_revision
+=== RUN   TestReplayRejectsHistoryBeforeApplying/integration_gap
+=== RUN   TestReplayRejectsHistoryBeforeApplying/zero_event
+=== RUN   TestReplayRejectsHistoryBeforeApplying/duplicate_registration
+=== RUN   TestReplayRejectsHistoryBeforeApplying/unknown
+=== RUN   TestReplayRejectsHistoryBeforeApplying/zero_decoder
+--- PASS: TestReplayRejectsHistoryBeforeApplying (0.01s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/reordered (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_identity (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/initial_integration_gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/foreign_stream (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/missing_first (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_revision (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/integration_gap (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/zero_event (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/duplicate_registration (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/unknown (0.00s)
+    --- PASS: TestReplayRejectsHistoryBeforeApplying/zero_decoder (0.00s)
+=== RUN   TestReplayOwnerTransitionsAndIsolation
+--- PASS: TestReplayOwnerTransitionsAndIsolation (0.00s)
+=== RUN   TestReplayLateSchemaFailuresNeverApplyPrefix
+--- PASS: TestReplayLateSchemaFailuresNeverApplyPrefix (0.00s)
+=== RUN   TestReplayPostgres
+    replay_test.go:145: set JUSTIXAUTO_TEST_EVENTSTORE_REPLAY=1 for isolated Docker/PostgreSQL replay tests
+--- SKIP: TestReplayPostgres (0.00s)
+=== RUN   TestOwnerSchemaPostgres
+    schema_test.go:32: set JUSTIXAUTO_TEST_EVENTSTORE_SCHEMA=1 for isolated Docker/PostgreSQL tests
+--- SKIP: TestOwnerSchemaPostgres (0.00s)
+=== RUN   TestTypedUpcastTombstonedReferenceReplay
+--- PASS: TestTypedUpcastTombstonedReferenceReplay (0.00s)
+=== RUN   TestUpcastRejectsInvalidMappings
+--- PASS: TestUpcastRejectsInvalidMappings (0.00s)
+PASS
+ok  	justixauto/pkg/eventstore	5.000s
+=== RUN   TestConsumerValidationBeforePersistence
+--- PASS: TestConsumerValidationBeforePersistence (0.00s)
+=== RUN   TestInboxPostgres
+    consume_test.go:171: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestInboxPostgres (0.00s)
+=== RUN   TestTransactionalConsumerRequiresTransaction
+--- PASS: TestTransactionalConsumerRequiresTransaction (0.00s)
+=== RUN   TestTransactionalInboxPostgres
+    consume_test.go:558: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestTransactionalInboxPostgres (0.00s)
+=== RUN   TestInboxCutoverLockFailurePostgres
+    consume_test.go:942: set JUSTIXAUTO_TEST_INBOX=1 for disposable PostgreSQL inbox tests
+--- SKIP: TestInboxCutoverLockFailurePostgres (0.00s)
+PASS
+ok  	justixauto/pkg/inbox	5.475s
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries
+=== PAUSE TestNewAcceptsCanonicalAmountBoundaries
+=== RUN   TestNewRejectsNonCanonicalAndOverflowAmounts
+=== PAUSE TestNewRejectsNonCanonicalAndOverflowAmounts
+=== RUN   TestCurrencyDefinitionValidationAndVersionIdentity
+=== PAUSE TestCurrencyDefinitionValidationAndVersionIdentity
+=== RUN   TestArithmeticIsExactAndChecksResultOverflow
+=== PAUSE TestArithmeticIsExactAndChecksResultOverflow
+=== RUN   TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== PAUSE TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== RUN   TestMoneyConcurrentReadsAndArithmeticDoNotMutate
+--- PASS: TestMoneyConcurrentReadsAndArithmeticDoNotMutate (0.02s)
+=== RUN   TestDecimalRateCanonicalValidation
+=== PAUSE TestDecimalRateCanonicalValidation
+=== RUN   TestDateRejectsNonCanonicalAndImpossibleDates
+=== PAUSE TestDateRejectsNonCanonicalAndImpossibleDates
+=== RUN   TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== PAUSE TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== RUN   TestPolicyValueNeverFallsBack
+=== PAUSE TestPolicyValueNeverFallsBack
+=== CONT  TestNewAcceptsCanonicalAmountBoundaries
+=== CONT  TestDecimalRateCanonicalValidation
+=== CONT  TestArithmeticIsExactAndChecksResultOverflow
+=== CONT  TestEffectivePeriodInclusiveBoundsAndOpenEnd
+=== CONT  TestPolicyValueNeverFallsBack
+=== CONT  TestDateRejectsNonCanonicalAndImpossibleDates
+=== CONT  TestCurrencyDefinitionValidationAndVersionIdentity
+=== CONT  TestJSONUsesCanonicalPublicShapeAndSelectedDefinition
+=== CONT  TestNewRejectsNonCanonicalAndOverflowAmounts
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/0
+--- PASS: TestArithmeticIsExactAndChecksResultOverflow (0.00s)
+--- PASS: TestNewRejectsNonCanonicalAndOverflowAmounts (0.00s)
+--- PASS: TestPolicyValueNeverFallsBack (0.00s)
+--- PASS: TestCurrencyDefinitionValidationAndVersionIdentity (0.00s)
+--- PASS: TestEffectivePeriodInclusiveBoundsAndOpenEnd (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/1
+--- PASS: TestDateRejectsNonCanonicalAndImpossibleDates (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/-1
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/99999999999999999999999999999999999999
+--- PASS: TestDecimalRateCanonicalValidation (0.00s)
+--- PASS: TestJSONUsesCanonicalPublicShapeAndSelectedDefinition (0.00s)
+=== RUN   TestNewAcceptsCanonicalAmountBoundaries/-99999999999999999999999999999999999999
+--- PASS: TestNewAcceptsCanonicalAmountBoundaries (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/0 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/1 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/-1 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/99999999999999999999999999999999999999 (0.00s)
+    --- PASS: TestNewAcceptsCanonicalAmountBoundaries/-99999999999999999999999999999999999999 (0.00s)
+PASS
+ok  	justixauto/pkg/money	5.810s
+=== RUN   TestSourceAdmissionValues
+--- PASS: TestSourceAdmissionValues (0.00s)
+=== RUN   TestSourceAdmissionReplay
+=== RUN   TestSourceAdmissionReplay/orphan
+=== RUN   TestSourceAdmissionReplay/branch
+=== RUN   TestSourceAdmissionReplay/resume_without_hold
+=== RUN   TestSourceAdmissionReplay/double_hold
+=== RUN   TestSourceAdmissionReplay/overlap
+=== RUN   TestSourceAdmissionReplay/unknown_action
+--- PASS: TestSourceAdmissionReplay (0.00s)
+    --- PASS: TestSourceAdmissionReplay/orphan (0.00s)
+    --- PASS: TestSourceAdmissionReplay/branch (0.00s)
+    --- PASS: TestSourceAdmissionReplay/resume_without_hold (0.00s)
+    --- PASS: TestSourceAdmissionReplay/double_hold (0.00s)
+    --- PASS: TestSourceAdmissionReplay/overlap (0.00s)
+    --- PASS: TestSourceAdmissionReplay/unknown_action (0.00s)
+=== RUN   TestSourceAdmissionPostgres
+    admission_test.go:222: set JUSTIXAUTO_TEST_SOURCE_ADMISSION=1 for pinned isolated PostgreSQL
+--- SKIP: TestSourceAdmissionPostgres (0.00s)
+=== RUN   TestAMQPReturnConfirmCorrelation
+=== RUN   TestAMQPReturnConfirmCorrelation/ack
+=== RUN   TestAMQPReturnConfirmCorrelation/return_then_ack
+=== RUN   TestAMQPReturnConfirmCorrelation/nack
+=== RUN   TestAMQPReturnConfirmCorrelation/wrong_sequence
+=== RUN   TestAMQPReturnConfirmCorrelation/wrong_return_identity
+=== RUN   TestAMQPReturnConfirmCorrelation/wrong_return_bytes
+=== RUN   TestAMQPReturnConfirmCorrelation/closed_confirms
+=== RUN   TestAMQPReturnConfirmCorrelation/closed_returns
+=== RUN   TestAMQPReturnConfirmCorrelation/closed_channel
+=== RUN   TestAMQPReturnConfirmCorrelation/timeout
+--- PASS: TestAMQPReturnConfirmCorrelation (0.02s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/ack (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/return_then_ack (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/nack (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/wrong_sequence (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/wrong_return_identity (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/wrong_return_bytes (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/closed_confirms (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/closed_returns (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/closed_channel (0.00s)
+    --- PASS: TestAMQPReturnConfirmCorrelation/timeout (0.01s)
+=== RUN   TestAMQPPublisherRejectsBeforeDialAndScrubsDialErrors
+--- PASS: TestAMQPPublisherRejectsBeforeDialAndScrubsDialErrors (0.00s)
+=== RUN   TestRelayBrokerPostgres
+    amqp_test.go:369: set JUSTIXAUTO_TEST_OUTBOX_RELAY_BROKER=1 for owned pinned PostgreSQL and RabbitMQ
+--- SKIP: TestRelayBrokerPostgres (0.00s)
+=== RUN   TestRelayConstructorClosed
+--- PASS: TestRelayConstructorClosed (0.00s)
+=== RUN   TestRelayBackoffBounds
+--- PASS: TestRelayBackoffBounds (0.00s)
+=== RUN   TestRelayPostgres
+    relay_test.go:327: set JUSTIXAUTO_TEST_OUTBOX_RELAY=1 for owned pinned PostgreSQL fixtures
+--- SKIP: TestRelayPostgres (0.00s)
+=== RUN   TestRecordRequiresTypedSchemaAndRoute
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/zero_envelope
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/unbound_schema
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/foreign_schema
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/invalid_target
+=== RUN   TestRecordRequiresTypedSchemaAndRoute/raw_unvalidated_payload
+--- PASS: TestRecordRequiresTypedSchemaAndRoute (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/zero_envelope (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/unbound_schema (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/foreign_schema (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/invalid_target (0.00s)
+    --- PASS: TestRecordRequiresTypedSchemaAndRoute/raw_unvalidated_payload (0.00s)
+=== RUN   TestInsertPostgres
+    insert_test.go:164: set JUSTIXAUTO_TEST_OUTBOX_INSERT=1 for isolated PostgreSQL outbox checks
+--- SKIP: TestInsertPostgres (0.00s)
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/zero_envelope
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/zero_schema
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/foreign_schema
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/invalid_data
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/missing_rule
+=== RUN   TestMessageRequiresTypedSchemaAndConcreteRule/other_stream
+--- PASS: TestMessageRequiresTypedSchemaAndConcreteRule (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/zero_envelope (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/zero_schema (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/foreign_schema (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/invalid_data (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/missing_rule (0.00s)
+    --- PASS: TestMessageRequiresTypedSchemaAndConcreteRule/other_stream (0.00s)
+=== RUN   TestCustodyInsertPostgres
+    insert_test.go:556: set JUSTIXAUTO_TEST_OUTBOX_INSERT=1 for isolated PostgreSQL custody insertion
+--- SKIP: TestCustodyInsertPostgres (0.00s)
+PASS
+ok  	justixauto/pkg/outbox	4.549s
+=== RUN   TestCheckIsInertOnMissingHandlesAndUnsupportedProfiles
+--- PASS: TestCheckIsInertOnMissingHandlesAndUnsupportedProfiles (0.00s)
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_image
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_name
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/bad_id
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/no_tmpfs
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/unexpected_volume
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/writable_bind
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/different_bind
+=== RUN   TestFixtureRefusesUnownedIdentityOrMounts/wrong_label
+--- PASS: TestFixtureRefusesUnownedIdentityOrMounts (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_image (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_name (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/bad_id (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/no_tmpfs (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/unexpected_volume (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/writable_bind (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/different_bind (0.00s)
+    --- PASS: TestFixtureRefusesUnownedIdentityOrMounts/wrong_label (0.00s)
+=== RUN   TestFixtureAllocationFailures
+    check_test.go:371: owned PostgreSQL opt-in required
+--- SKIP: TestFixtureAllocationFailures (0.00s)
+=== RUN   TestPersistenceProfilePostgres
+    check_test.go:454: set JUSTIXAUTO_TEST_PERSISTENCE_PROFILE=1 for owned pinned PostgreSQL
+--- SKIP: TestPersistenceProfilePostgres (0.00s)
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres
+    check_test.go:700: owned PostgreSQL opt-in required
+--- SKIP: TestPersistenceEffectiveDefaultsAndGuardsPostgres (0.00s)
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_version
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/sql_identifier_injection
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/zero_sql
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/missing_feature_set
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_column
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/shared_gap
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/history
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/reordered
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/unknown_mode
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/nil_artifacts
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/escape
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_prerequisite
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/baseline_feature
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/missing_feature
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_feature
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/oversize_ref
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/history_revision
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_object
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/metadata_grant
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/blank_ref
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/format
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/zero_version
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/shared_grant
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/contradictory_insert
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/missing_baseline
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/invalid_unicode_ref
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/missing_shared
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/role
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_file
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/empty_grant
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/shared_escape
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/head
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/zero_manifest
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/missing_predecessor
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/wrong_prerequisite
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/control_ref
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/shared_collision
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/owner
+=== RUN   TestProfileRejectsIncompleteAndContradictoryIdentity/database
+--- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_version (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/sql_identifier_injection (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/zero_sql (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/missing_feature_set (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_column (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/shared_gap (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/history (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/reordered (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/unknown_mode (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/nil_artifacts (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/escape (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_prerequisite (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/baseline_feature (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/missing_feature (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_feature (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/oversize_ref (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/history_revision (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_object (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/metadata_grant (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/blank_ref (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/format (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/zero_version (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/shared_grant (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/contradictory_insert (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/missing_baseline (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/invalid_unicode_ref (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/missing_shared (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/role (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/duplicate_file (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/empty_grant (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/shared_escape (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/head (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/zero_manifest (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/missing_predecessor (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/wrong_prerequisite (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/control_ref (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/shared_collision (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/owner (0.00s)
+    --- PASS: TestProfileRejectsIncompleteAndContradictoryIdentity/database (0.00s)
+=== RUN   TestProfileDefensiveCopiesCanonicalIdentityAndConcurrentReads
+--- PASS: TestProfileDefensiveCopiesCanonicalIdentityAndConcurrentReads (0.01s)
+=== RUN   TestVerifyAllHistoricalFilesAndRejectSymlinks
+--- PASS: TestVerifyAllHistoricalFilesAndRejectSymlinks (0.00s)
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/historical_manifest_bytes
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/missing_historical_manifest
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/manifest_symlink
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/dangling_manifest
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/wrong_owner_with_matching_hash
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/wrong_predecessor_with_matching_hash
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/unknown_field_with_matching_hash
+=== RUN   TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/trailing_JSON_with_matching_hash
+--- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired (0.01s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/historical_manifest_bytes (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/missing_historical_manifest (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/manifest_symlink (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/dangling_manifest (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/wrong_owner_with_matching_hash (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/wrong_predecessor_with_matching_hash (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/unknown_field_with_matching_hash (0.00s)
+    --- PASS: TestAdjacentManifestBytesAndTypedIdentityAreBothRequired/trailing_JSON_with_matching_hash (0.00s)
+=== RUN   TestProfileRejectsDuplicateFeatureKeysAndFilenameVersionMismatch
+--- PASS: TestProfileRejectsDuplicateFeatureKeysAndFilenameVersionMismatch (0.00s)
+=== RUN   TestProfileRejectsMarkerOnlyAndOverlappingFeatureGrants
+--- PASS: TestProfileRejectsMarkerOnlyAndOverlappingFeatureGrants (0.00s)
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/escaped_canonical_owner
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/escaped_canonical_field
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_escaped_root_key
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_nested_artifact
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_escaped_prerequisite
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_feature_identity
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_nested_unknown_object
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/raw_invalid_UTF8_overwritten
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/raw_invalid_UTF8_key
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/overlong_UTF8
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/lone_high_surrogate_overwritten
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/lone_low_surrogate_key
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/surrogate_in_nested_array
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/high_surrogate_followed_by_nonsurrogate
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/valid_astral_duplicate_decoded_keys
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/distinct_normalized_Unicode_keys
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/replacement_rune_is_valid_Unicode
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/literal_backslash_u_is_not_surrogate
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/single_wrong-case_root_field
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/conflicting_root_field_aliases
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/single_nested_wrong-case_field
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/conflicting_nested_field_aliases
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/escaped_wrong-case_prerequisite_field
+=== RUN   TestRawManifestUnicodeMembersAndExactTypedNames/feature_field_alias
+--- PASS: TestRawManifestUnicodeMembersAndExactTypedNames (0.04s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/escaped_canonical_owner (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/escaped_canonical_field (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_escaped_root_key (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_nested_artifact (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_escaped_prerequisite (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_feature_identity (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/duplicate_nested_unknown_object (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/raw_invalid_UTF8_overwritten (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/raw_invalid_UTF8_key (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/overlong_UTF8 (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/lone_high_surrogate_overwritten (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/lone_low_surrogate_key (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/surrogate_in_nested_array (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/high_surrogate_followed_by_nonsurrogate (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/valid_astral_duplicate_decoded_keys (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/distinct_normalized_Unicode_keys (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/replacement_rune_is_valid_Unicode (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/literal_backslash_u_is_not_surrogate (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/single_wrong-case_root_field (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/conflicting_root_field_aliases (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/single_nested_wrong-case_field (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/conflicting_nested_field_aliases (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/escaped_wrong-case_prerequisite_field (0.00s)
+    --- PASS: TestRawManifestUnicodeMembersAndExactTypedNames/feature_field_alias (0.00s)
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact_valid_zero_endpoints
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/null_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/missing_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/empty_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/missing_zero_last_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/one_zero_byte_only
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_null
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_unknown_object
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_array
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/null_zero_first_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/null_zero_last_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/string_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/boolean_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/object_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/array_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/fractional_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/exponent_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/negative_zero_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/negative_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/overflow_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/huge_integer_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/string_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/object_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite_valid_zero_endpoints
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/null_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/missing_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/empty_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/missing_zero_last_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/one_zero_byte_only
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_null
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_unknown_object
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_array
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/null_zero_first_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/null_zero_last_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/string_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/boolean_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/object_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/array_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/fractional_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/exponent_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/negative_zero_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/negative_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/overflow_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/huge_integer_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/string_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/object_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature_valid_zero_endpoints
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/null_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/missing_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/empty_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/missing_zero_last_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/one_zero_byte_only
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_null
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_unknown_object
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_array
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/null_zero_first_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/null_zero_last_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/string_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/boolean_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/object_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/array_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/fractional_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/exponent_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/negative_zero_representation
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/negative_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/overflow_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/huge_integer_byte
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/string_digest
+=== RUN   TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/object_digest
+--- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes (0.18s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact_valid_zero_endpoints (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/null_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/missing_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/empty_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/missing_zero_last_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/one_zero_byte_only (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_null (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_unknown_object (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/extra_array (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/null_zero_first_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/null_zero_last_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/string_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/boolean_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/object_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/array_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/fractional_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/exponent_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/negative_zero_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/negative_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/overflow_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/huge_integer_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/string_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/artifact/object_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite_valid_zero_endpoints (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/null_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/missing_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/empty_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/missing_zero_last_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/one_zero_byte_only (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_null (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_unknown_object (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/extra_array (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/null_zero_first_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/null_zero_last_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/string_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/boolean_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/object_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/array_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/fractional_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/exponent_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/negative_zero_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/negative_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/overflow_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/huge_integer_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/string_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/prerequisite/object_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature_valid_zero_endpoints (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/null_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/missing_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/empty_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/missing_zero_last_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/one_zero_byte_only (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_null (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_unknown_object (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/extra_array (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/null_zero_first_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/null_zero_last_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/string_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/boolean_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/object_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/array_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/fractional_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/exponent_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/negative_zero_representation (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/negative_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/overflow_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/huge_integer_byte (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/string_digest (0.00s)
+    --- PASS: TestManifestDigestsRequireExactly32ActualIntegerBytes/feature/object_digest (0.00s)
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_owner_missing=false
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_owner_missing=true
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_format_revision_missing=false
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_format_revision_missing=true
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_artifact_missing=false
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_artifact_missing=true
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_prerequisites_missing=false
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_prerequisites_missing=true
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_feature_contract_missing=false
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_feature_contract_missing=true
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/null
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/omitted
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/boolean
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/array
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/object
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/fraction
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/overflow
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/null
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/omitted
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/boolean
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/array
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/object
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/fraction
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/overflow
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/null
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/omitted
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/boolean
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/array
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/object
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/fraction
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/overflow
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/null
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/omitted
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/boolean
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/array
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/object
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/fraction
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/overflow
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/null
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/omitted
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/boolean
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/array
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/object
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/fraction
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/overflow
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/null
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/omitted
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/boolean
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/array
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/object
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/fraction
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/overflow
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/null_prerequisite_item
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/null_after_real_prerequisite
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/array_feature
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/array_artifact
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/string_prerequisites
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/baseline_nullable_control_empty=false
+=== RUN   TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/baseline_nullable_control_empty=true
+--- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission (0.15s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_owner_missing=false (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_owner_missing=true (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_format_revision_missing=false (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_format_revision_missing=true (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_artifact_missing=false (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_artifact_missing=true (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_prerequisites_missing=false (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_prerequisites_missing=true (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_feature_contract_missing=false (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/root_feature_contract_missing=true (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/null (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/omitted (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/boolean (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/array (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/object (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/fraction (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Version/overflow (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/null (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/omitted (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/boolean (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/array (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/object (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/fraction (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/artifact/Filename/overflow (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/null (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/omitted (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/boolean (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/array (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/object (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/fraction (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Version/overflow (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/null (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/omitted (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/boolean (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/array (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/object (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/fraction (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/prerequisite/Filename/overflow (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/null (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/omitted (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/boolean (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/array (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/object (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/fraction (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/Revision/overflow (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/null (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/omitted (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/boolean (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/array (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/object (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/fraction (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/feature/ID/overflow (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/null_prerequisite_item (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/null_after_real_prerequisite (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/array_feature (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/array_artifact (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/string_prerequisites (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/baseline_nullable_control_empty=false (0.00s)
+    --- PASS: TestManifestIdentityScalarsDoNotNormalizeNullOrOmission/baseline_nullable_control_empty=true (0.00s)
+PASS
+ok  	justixauto/pkg/persistence	4.918s
+=== RUN   TestSealedInputValidation
+--- PASS: TestSealedInputValidation (0.00s)
+=== RUN   TestCheckpointPostgres
+    sequence_test.go:319: explicit isolated PostgreSQL fixture opt-in
+--- SKIP: TestCheckpointPostgres (0.00s)
+=== RUN   TestFixtureCleanupAfterSetupFailure
+    sequence_test.go:1321: opt-in own PostgreSQL fixture
+--- SKIP: TestFixtureCleanupAfterSetupFailure (0.00s)
+PASS
+ok  	justixauto/pkg/projection	4.485s
+=== RUN   TestContractGenerationReproducibility
+--- PASS: TestContractGenerationReproducibility (8.19s)
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/inherited_required
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/429_handoff
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/discriminator
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/cookie_parameter
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/pattern_dialect
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unsafe_integer
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/open_object
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_constraint
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/missing_ref
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/recursive_ref
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/missing_internal_mTLS
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/allOf
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/mixed_map
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/TypeScript_validator_collision
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/external_ref
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/response_header_handoff
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/path_mismatch
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_security
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/old_nullable
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/floating_number
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unbounded_integer
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/foreign_owner
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/RE2_incompatible_pattern
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/general_YAML
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/Go_result_symbol_collision
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/duplicate_JSON_keys
+--- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites (19.01s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/inherited_required (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/429_handoff (0.73s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/discriminator (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/cookie_parameter (0.68s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/pattern_dialect (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unsafe_integer (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/open_object (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_constraint (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/missing_ref (0.72s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/recursive_ref (0.68s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/missing_internal_mTLS (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/allOf (0.68s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/mixed_map (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/TypeScript_validator_collision (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/external_ref (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/response_header_handoff (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/path_mismatch (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_security (0.88s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/old_nullable (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/floating_number (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unbounded_integer (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/foreign_owner (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/RE2_incompatible_pattern (1.29s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/general_YAML (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/Go_result_symbol_collision (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/duplicate_JSON_keys (0.76s)
+=== RUN   TestContractGenerationInternalOnly
+--- PASS: TestContractGenerationInternalOnly (1.68s)
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiRequest
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiResult
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_NewContractClient
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractTransport
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractOptional
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractClient
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractExchange
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_MarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_UnmarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_IsZero
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Marshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Unmarshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Context
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_PayloadSchema
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticSecurity
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticParameters
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_CreateSyntheticResult
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Record
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Readonly
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadonlyArray
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Object
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Array
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_JSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Error
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_RegExp
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Number
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Date
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Reflect
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Set
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Promise
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_AbortSignal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_URLSearchParams
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiRequest
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiResult
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ContractTransport
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_MarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_UnmarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_IsZero
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Marshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Unmarshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Context
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Record
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Readonly
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ReadonlyArray
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Object
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Array
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_JSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Error
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_RegExp
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Number
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Date
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Reflect
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Set
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Promise
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_AbortSignal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_URLSearchParams
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_PayloadSchema
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_CreateSyntheticSecurity
+--- PASS: TestContractGenerationSymbolCollisionsBeforeWrites (8.01s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiRequest (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiResult (0.06s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_NewContractClient (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractTransport (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractOptional (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractClient (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractExchange (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_IsZero (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Marshal (0.63s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Unmarshal (0.70s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Context (0.59s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_PayloadSchema (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticSecurity (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticParameters (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_CreateSyntheticResult (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Record (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Readonly (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadonlyArray (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Object (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Array (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_JSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Error (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_RegExp (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Number (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Date (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Reflect (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Set (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Promise (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_AbortSignal (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_URLSearchParams (0.07s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiRequest (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiResult (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ContractTransport (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_IsZero (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Marshal (0.61s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Unmarshal (0.60s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Context (0.61s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Record (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Readonly (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ReadonlyArray (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Object (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Array (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_JSON (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Error (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_RegExp (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Number (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Date (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Reflect (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Set (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Promise (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_AbortSignal (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_URLSearchParams (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_PayloadSchema (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_CreateSyntheticSecurity (0.04s)
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Error
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_MarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_UnmarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_IsZero
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Exchange
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Token
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_UseNumber
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_More
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_SetString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Num
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Int64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_String
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_MatchString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Set
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Encode
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Owner
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_OperationID
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Method
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Path
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Headers
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Body
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Security
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_ContentType
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Kind
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_UnknownOutcome
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Type
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_In
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Name
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Value
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Present
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status200
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status201
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status422
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Error
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnmarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsZero
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Exchange
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Token
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UseNumber
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_More
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_SetString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Num
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Int64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_String
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MatchString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Set
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Encode
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Owner
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_OperationID
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Method
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Path
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Headers
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Body
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Security
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_ContentType
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Kind
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnknownOutcome
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Type
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_In
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Name
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Value
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Present
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status200
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status201
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status422
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Error
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnmarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsZero
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Exchange
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Token
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UseNumber
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_More
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_SetString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Num
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Int64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_String
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MatchString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Set
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Encode
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Owner
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_OperationID
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Method
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Path
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Headers
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Body
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Security
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_ContentType
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Kind
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnknownOutcome
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Type
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_In
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Name
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Value
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Present
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status200
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status201
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status422
+--- PASS: TestContractGenerationGoMethodContractsBeforeWrites (59.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Error (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_IsZero (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Exchange (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Token (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_UseNumber (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_More (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_SetString (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Num (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt64 (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Int64 (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_String (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_MatchString (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Set (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Encode (0.68s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Owner (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_OperationID (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Method (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Path (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Headers (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Body (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Security (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_ContentType (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Kind (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_UnknownOutcome (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Type (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_In (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Name (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Value (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Present (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status200 (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status201 (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status422 (0.70s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Error (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MarshalJSON (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsZero (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Exchange (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Token (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UseNumber (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_More (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_SetString (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Num (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt64 (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Int64 (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_String (0.71s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MatchString (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Set (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Encode (0.68s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Owner (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_OperationID (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Method (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Path (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Headers (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Body (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Security (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_ContentType (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Kind (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnknownOutcome (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Type (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_In (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Name (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Value (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Present (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status200 (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status201 (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status422 (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Error (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnmarshalJSON (0.06s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsZero (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Exchange (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Token (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UseNumber (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_More (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_SetString (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Num (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt64 (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Int64 (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_String (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MatchString (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Set (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Encode (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Owner (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_OperationID (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Method (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Path (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Headers (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Body (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Security (0.70s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_ContentType (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Kind (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnknownOutcome (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Type (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_In (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Name (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Value (0.72s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Present (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status200 (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status201 (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status422 (0.64s)
+=== RUN   TestContractGenerationSelectorLookingWireText
+--- PASS: TestContractGenerationSelectorLookingWireText (3.72s)
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites/second.ts
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites/second.gen.go
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites/missing-parent
+--- PASS: TestContractGenerationDanglingLinksBeforeWrites (6.12s)
+    --- PASS: TestContractGenerationDanglingLinksBeforeWrites/second.ts (2.23s)
+    --- PASS: TestContractGenerationDanglingLinksBeforeWrites/second.gen.go (2.00s)
+    --- PASS: TestContractGenerationDanglingLinksBeforeWrites/missing-parent (1.90s)
+=== RUN   TestContractGenerationOutputGuards
+=== RUN   TestContractGenerationOutputGuards/empty
+=== RUN   TestContractGenerationOutputGuards/namespace
+=== RUN   TestContractGenerationOutputGuards/duplicate_output
+=== RUN   TestContractGenerationOutputGuards/input_overwrite
+=== RUN   TestContractGenerationOutputGuards/user_file
+=== RUN   TestContractGenerationOutputGuards/symlink
+=== RUN   TestContractGenerationOutputGuards/malformed_UTF8
+--- PASS: TestContractGenerationOutputGuards (3.44s)
+    --- PASS: TestContractGenerationOutputGuards/empty (0.09s)
+    --- PASS: TestContractGenerationOutputGuards/namespace (0.64s)
+    --- PASS: TestContractGenerationOutputGuards/duplicate_output (0.66s)
+    --- PASS: TestContractGenerationOutputGuards/input_overwrite (0.68s)
+    --- PASS: TestContractGenerationOutputGuards/user_file (0.63s)
+    --- PASS: TestContractGenerationOutputGuards/symlink (0.66s)
+    --- PASS: TestContractGenerationOutputGuards/malformed_UTF8 (0.09s)
+=== RUN   TestRepositoryImportBoundaries
+--- PASS: TestRepositoryImportBoundaries (0.02s)
+=== RUN   TestImportBoundaryFixtures
+=== RUN   TestImportBoundaryFixtures/domain_value
+=== RUN   TestImportBoundaryFixtures/shared_value
+=== RUN   TestImportBoundaryFixtures/app_command
+=== RUN   TestImportBoundaryFixtures/app_port
+=== RUN   TestImportBoundaryFixtures/adapter
+=== RUN   TestImportBoundaryFixtures/composition
+=== RUN   TestImportBoundaryFixtures/foreign_schema
+=== RUN   TestImportBoundaryFixtures/foreign_event
+=== RUN   TestImportBoundaryFixtures/edge_schema
+=== RUN   TestImportBoundaryFixtures/integration_test
+=== RUN   TestImportBoundaryFixtures/domain_app
+=== RUN   TestImportBoundaryFixtures/domain_adapter
+=== RUN   TestImportBoundaryFixtures/domain_port
+=== RUN   TestImportBoundaryFixtures/app_adapter
+=== RUN   TestImportBoundaryFixtures/port_app
+=== RUN   TestImportBoundaryFixtures/foreign_domain
+=== RUN   TestImportBoundaryFixtures/foreign_adapter
+=== RUN   TestImportBoundaryFixtures/foreign_app
+=== RUN   TestImportBoundaryFixtures/foreign_port
+=== RUN   TestImportBoundaryFixtures/shared_owner
+=== RUN   TestImportBoundaryFixtures/shared_contract
+=== RUN   TestImportBoundaryFixtures/shared_edge
+=== RUN   TestImportBoundaryFixtures/edge_owner
+=== RUN   TestImportBoundaryFixtures/service_edge
+=== RUN   TestImportBoundaryFixtures/invalid_owner_source
+=== RUN   TestImportBoundaryFixtures/invalid_owner_target
+=== RUN   TestImportBoundaryFixtures/invalid_layer
+=== RUN   TestImportBoundaryFixtures/contract_leak
+=== RUN   TestImportBoundaryFixtures/unapproved_public_path
+--- PASS: TestImportBoundaryFixtures (0.03s)
+    --- PASS: TestImportBoundaryFixtures/domain_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_command (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/composition (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_event (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/integration_test (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/port_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_domain (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_contract (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/service_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_source (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_target (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_layer (0.00s)
+    --- PASS: TestImportBoundaryFixtures/contract_leak (0.00s)
+    --- PASS: TestImportBoundaryFixtures/unapproved_public_path (0.00s)
+=== RUN   TestBoundaryTraversal
+--- PASS: TestBoundaryTraversal (0.01s)
+=== RUN   TestQAArchitectureRegressions
+=== RUN   TestQAArchitectureRegressions/domain_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_server
+=== RUN   TestQAArchitectureRegressions/app_AMQP_connection
+=== RUN   TestQAArchitectureRegressions/port_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_shared_infrastructure
+=== RUN   TestQAArchitectureRegressions/nested_docs_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_node_modules_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_vendor_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_testdata_cross_owner
+=== RUN   TestQAArchitectureRegressions/app_pgx_stdlib
+=== RUN   TestQAArchitectureRegressions/port_SQL_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_client
+=== RUN   TestQAArchitectureRegressions/primitive_infrastructure_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_framework_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_nested_framework
+=== RUN   TestQAArchitectureRegressions/contract_infrastructure
+=== RUN   TestQAArchitectureRegressions/adapter_gorm_implementation
+=== RUN   TestQAArchitectureRegressions/shared_eventstore_implementation
+=== RUN   TestQAArchitectureRegressions/app_technical_mechanics
+=== RUN   TestQAArchitectureRegressions/domain_immutable_event
+=== RUN   TestQAArchitectureRegressions/domain_primitive_libraries
+=== RUN   TestQAArchitectureRegressions/typed_unit_of_work_port
+--- PASS: TestQAArchitectureRegressions (0.03s)
+    --- PASS: TestQAArchitectureRegressions/domain_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_server (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_AMQP_connection (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_shared_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_docs_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_node_modules_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_vendor_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_testdata_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_pgx_stdlib (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_SQL_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_client (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_infrastructure_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_framework_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_nested_framework (0.00s)
+    --- PASS: TestQAArchitectureRegressions/contract_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/adapter_gorm_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/shared_eventstore_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_technical_mechanics (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_immutable_event (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_primitive_libraries (0.00s)
+    --- PASS: TestQAArchitectureRegressions/typed_unit_of_work_port (0.00s)
+=== RUN   TestRuntimeManifestReadonly
+--- PASS: TestRuntimeManifestReadonly (1.83s)
+=== RUN   TestGoWrapperRejectsWrongCompiler
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.27.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.28.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/devel_go1.27
+--- PASS: TestGoWrapperRejectsWrongCompiler (1.12s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.27.0 (0.38s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.28.0 (0.36s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/devel_go1.27 (0.38s)
+=== RUN   TestGoWrapperExplicitCompilerAndArguments
+--- PASS: TestGoWrapperExplicitCompilerAndArguments (0.38s)
+=== RUN   TestGoWrapperProjectToolchainDiscovery
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=false
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=true
+--- PASS: TestGoWrapperProjectToolchainDiscovery (1.35s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=false (0.83s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=true (0.51s)
+PASS
+ok  	justixauto/tests/contracts	118.858s
+=== RUN   TestBrokerDefinitionsAreDurableAndRestricted
+--- PASS: TestBrokerDefinitionsAreDurableAndRestricted (0.00s)
+=== RUN   TestBrokerRouteCompiler
+=== RUN   TestBrokerRouteCompiler/reject_malformed_and_ambiguous_contracts
+=== RUN   TestBrokerRouteCompiler/byte_boundary_repeated_owner_and_deterministic_complete_set
+=== RUN   TestBrokerRouteCompiler/quarantine_requires_an_exact_owner_source_failure_review
+--- PASS: TestBrokerRouteCompiler (0.12s)
+    --- PASS: TestBrokerRouteCompiler/reject_malformed_and_ambiguous_contracts (0.00s)
+    --- PASS: TestBrokerRouteCompiler/byte_boundary_repeated_owner_and_deterministic_complete_set (0.00s)
+    --- PASS: TestBrokerRouteCompiler/quarantine_requires_an_exact_owner_source_failure_review (0.03s)
+=== RUN   TestPinnedBrokerSplitRolesAndRetainedCutover
+    broker_topology_test.go:671: set JUSTIXAUTO_TEST_BROKER_TOPOLOGY=1 for a disposable pinned broker
+--- SKIP: TestPinnedBrokerSplitRolesAndRetainedCutover (0.00s)
+=== RUN   TestPostgresInitRejectsEveryMissingOrEmptyCredential
+    database_isolation_test.go:80: JUSTIXAUTO_TEST_POSTGRES_BOOTSTRAP=1 is required for destructive disposable-container checks
+--- SKIP: TestPostgresInitRejectsEveryMissingOrEmptyCredential (0.00s)
+=== RUN   TestPostgresOwnerCatalogIsolation
+    database_isolation_test.go:158: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresOwnerCatalogIsolation (0.00s)
+=== RUN   TestPostgresRejectsEveryCrossOwnerConnection
+    database_isolation_test.go:220: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresRejectsEveryCrossOwnerConnection (0.00s)
+=== RUN   TestPostgresOwnersWriteAndRollbackIndependently
+    database_isolation_test.go:245: JUSTIXAUTO_TEST_POSTGRES_ADMIN_DSN is not set; isolated PostgreSQL fixture not requested
+--- SKIP: TestPostgresOwnersWriteAndRollbackIndependently (0.00s)
+PASS
+ok  	justixauto/tests/integration	4.190s
+=== RUN   TestDriverActualEngineUpgradeAndRetainedHistory
+    driver_test.go:478: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3935321883
+    driver_test.go:478: created owned fixture justixauto-t932-8a565049-0bfd-4bfc-a749-5339034edc6d id 28ae4ae21a65dc7a4f02c750374a20de32954e5a7b85e9bf35564cccd9834ebe image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 28ae4ae21a65dc7a4f02c750374a20de32954e5a7b85e9bf35564cccd9834ebe justixauto-t932-8a565049-0bfd-4bfc-a749-5339034edc6d; attached volume IDs []
+--- PASS: TestDriverActualEngineUpgradeAndRetainedHistory (3.66s)
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/sql-error
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3553557487
+    driver_test.go:532: created owned fixture justixauto-t932-c5366c2b-e010-4f9c-97af-5f2e7059bf1c id 3f00161273ec7342516c36066ba2b58c2e5c182cb84ae9c4afe755d940d06398 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 3f00161273ec7342516c36066ba2b58c2e5c182cb84ae9c4afe755d940d06398 justixauto-t932-c5366c2b-e010-4f9c-97af-5f2e7059bf1c; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/unclosed-transaction
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1064911325
+    driver_test.go:532: created owned fixture justixauto-t932-426ee50c-9082-4037-90a7-dc231206a44c id 53e8c9122fdbd6b9eedd3614c69ea32668e49fd2ee794c45a611515d8651f35f image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 53e8c9122fdbd6b9eedd3614c69ea32668e49fd2ee794c45a611515d8651f35f justixauto-t932-426ee50c-9082-4037-90a7-dc231206a44c; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/wrong-source
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2767250439
+    driver_test.go:532: created owned fixture justixauto-t932-87aa17b7-e070-4dd4-bac8-1564c46671e9 id e3aba15c38c0529b535a29890153389c5517ba51645fbf4cbc339102ede0623e image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: e3aba15c38c0529b535a29890153389c5517ba51645fbf4cbc339102ede0623e justixauto-t932-87aa17b7-e070-4dd4-bac8-1564c46671e9; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/empty-source
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1191300654
+    driver_test.go:532: created owned fixture justixauto-t932-15acf4af-051a-4634-aa25-80043107864c id 2b00b08a896622e57985a0726b7562f6af4953d62759702a8b9b55883e73c1b5 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 2b00b08a896622e57985a0726b7562f6af4953d62759702a8b9b55883e73c1b5 justixauto-t932-15acf4af-051a-4634-aa25-80043107864c; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/missing-run
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3042557046
+    driver_test.go:532: created owned fixture justixauto-t932-856652b8-b37e-47a3-94b3-514b39e547d1 id 301a5a7c8b105bdd4732cd17ad4ed5eb286d33f4f2b19e22ad43521fdce37e40 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 301a5a7c8b105bdd4732cd17ad4ed5eb286d33f4f2b19e22ad43521fdce37e40 justixauto-t932-856652b8-b37e-47a3-94b3-514b39e547d1; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/missing-marker
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2908443621
+    driver_test.go:532: created owned fixture justixauto-t932-b3255319-3f65-4cf9-b1a1-ab0a4819568e id f340c325255d5546f1865e90be28b8ce2b918c8419ee4151a69bf9e5c6313756 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: f340c325255d5546f1865e90be28b8ce2b918c8419ee4151a69bf9e5c6313756 justixauto-t932-b3255319-3f65-4cf9-b1a1-ab0a4819568e; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/missing-required-grant
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-4241572657
+    driver_test.go:532: created owned fixture justixauto-t932-b609c81a-7fed-4053-810b-a6402368cb05 id 2e706b973423899b2a5d805ef2454b4d46f7cf799ff3a1d46cba05038b047dea image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 2e706b973423899b2a5d805ef2454b4d46f7cf799ff3a1d46cba05038b047dea justixauto-t932-b609c81a-7fed-4053-810b-a6402368cb05; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/released-owner-lock
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-261190371
+    driver_test.go:532: created owned fixture justixauto-t932-bcaaa6d0-7464-4ceb-ac94-8deef6d6e93c id 3b1e8dc6fa2f3261ef3d2a2648ee0d310955ba6fe985eb893f900b5e1b908173 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 3b1e8dc6fa2f3261ef3d2a2648ee0d310955ba6fe985eb893f900b5e1b908173 justixauto-t932-bcaaa6d0-7464-4ceb-ac94-8deef6d6e93c; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/receipt-failure
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1232480226
+    driver_test.go:532: created owned fixture justixauto-t932-5cdf6d51-fad4-48b1-8637-442b07650452 id 30203d6407aa950e3ddbd342cb685a3d5d857be1dffd172049c7ec8ca8caa20c image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 30203d6407aa950e3ddbd342cb685a3d5d857be1dffd172049c7ec8ca8caa20c justixauto-t932-5cdf6d51-fad4-48b1-8637-442b07650452; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/ignored-receipt-insert
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3565497217
+    driver_test.go:532: created owned fixture justixauto-t932-483ffbe1-3c1c-49ff-965d-b613c58b2a93 id e6d8732829ed21d4b44ea6f660fb1faafc761e90347bc8c75aefd30e0f634b09 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: e6d8732829ed21d4b44ea6f660fb1faafc761e90347bc8c75aefd30e0f634b09 justixauto-t932-483ffbe1-3c1c-49ff-965d-b613c58b2a93; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/clean-failure
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2929598650
+    driver_test.go:532: created owned fixture justixauto-t932-7b030e7a-127b-4cd9-bcf5-cf3ed63669d7 id 87d5cd58ac54157c2b85151c981ab25a8804bc0bfa228ce6599c49cf915b15f4 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 87d5cd58ac54157c2b85151c981ab25a8804bc0bfa228ce6599c49cf915b15f4 justixauto-t932-7b030e7a-127b-4cd9-bcf5-cf3ed63669d7; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/ignored-clean-update
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3111479250
+    driver_test.go:532: created owned fixture justixauto-t932-2f6a4960-3d2f-4188-8987-e675dd1aa338 id 2962bc896081387b918889d6fca0f06d430485e47f9d18e3f726b843972cc733 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 2962bc896081387b918889d6fca0f06d430485e47f9d18e3f726b843972cc733 justixauto-t932-2f6a4960-3d2f-4188-8987-e675dd1aa338; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-dirty-commit
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-693514221
+    driver_test.go:532: created owned fixture justixauto-t932-ae8f9327-69a3-45a1-a063-ccde38d79c03 id a1e0f603bb5ac5a3a175d22be42aa622c0b757a82497752079c7fd1b684f6c8c image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: a1e0f603bb5ac5a3a175d22be42aa622c0b757a82497752079c7fd1b684f6c8c justixauto-t932-ae8f9327-69a3-45a1-a063-ccde38d79c03; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-ddl-commit
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2512089600
+    driver_test.go:532: created owned fixture justixauto-t932-58184219-c8ff-4787-97cf-39d0a60c2dbf id 09f40204a34cc5136e453d83da63befea88e6cfbf031ebefdf2cb2c7640b2daf image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 09f40204a34cc5136e453d83da63befea88e6cfbf031ebefdf2cb2c7640b2daf justixauto-t932-58184219-c8ff-4787-97cf-39d0a60c2dbf; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-final-commit
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3814486589
+    driver_test.go:532: created owned fixture justixauto-t932-1cc4ed9c-7219-4a6e-ad74-0c8a5f921c37 id e103395990cb592fefa1b26f7b32afdae7a9228b21c521d356e114dbcce7b378 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: e103395990cb592fefa1b26f7b32afdae7a9228b21c521d356e114dbcce7b378 justixauto-t932-1cc4ed9c-7219-4a6e-ad74-0c8a5f921c37; attached volume IDs []
+=== RUN   TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-rollback
+    driver_test.go:532: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-4147523496
+    driver_test.go:532: created owned fixture justixauto-t932-d690fd73-2179-4878-9d0c-e48f77dc8fa7 id 11569c142818e7ddefe9ff4d78db9ecf751cf742be3bf0cc25c7b8dc308b74d3 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 11569c142818e7ddefe9ff4d78db9ecf751cf742be3bf0cc25c7b8dc308b74d3 justixauto-t932-d690fd73-2179-4878-9d0c-e48f77dc8fa7; attached volume IDs []
+--- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization (39.90s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/sql-error (2.48s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/unclosed-transaction (2.47s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/wrong-source (2.42s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/empty-source (2.43s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/missing-run (2.37s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/missing-marker (2.47s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/missing-required-grant (2.58s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/released-owner-lock (2.41s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/receipt-failure (2.51s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/ignored-receipt-insert (2.50s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/clean-failure (2.87s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/ignored-clean-update (2.65s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-dirty-commit (2.45s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-ddl-commit (2.41s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-final-commit (2.53s)
+    --- PASS: TestDriverDirtyOriginalBytesAndAtomicFinalization/lost-rollback (2.36s)
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary
+    driver_test.go:670: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2966633443
+    driver_test.go:670: created owned fixture justixauto-t932-5e643b16-f7b0-4cf7-992a-78561dd70c47 id c974e3f952c3418a16c86e5cbca32578f0b3268af116e658e5c838690c6b7fb7 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/changed-installed-sql
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/changed-installed-manifest
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/missing-installed-file
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/installed-symlink
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/multiple-ledger-rows
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/downgrade
+=== RUN   TestDriverCompleteBundlePreflightAndFreshBoundary/missing-prior-profile
+=== NAME  TestDriverCompleteBundlePreflightAndFreshBoundary
+    driver_test.go:198: validated fixture removed and absent: c974e3f952c3418a16c86e5cbca32578f0b3268af116e658e5c838690c6b7fb7 justixauto-t932-5e643b16-f7b0-4cf7-992a-78561dd70c47; attached volume IDs []
+--- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary (3.67s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/changed-installed-sql (0.12s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/changed-installed-manifest (0.14s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/missing-installed-file (0.14s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/installed-symlink (0.14s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/multiple-ledger-rows (0.27s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/downgrade (0.14s)
+    --- PASS: TestDriverCompleteBundlePreflightAndFreshBoundary/missing-prior-profile (0.15s)
+=== RUN   TestDriverLowerVersionInsertionRejected
+    driver_test.go:771: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3766804113
+    driver_test.go:771: created owned fixture justixauto-t932-ff5d838c-832f-46c7-839f-b4639375ceab id ba74fb5edd964a89476ce6a7d951322c2b8fa87fceebe8dd2ef70ef35ab6489f image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: ba74fb5edd964a89476ce6a7d951322c2b8fa87fceebe8dd2ef70ef35ab6489f justixauto-t932-ff5d838c-832f-46c7-839f-b4639375ceab; attached volume IDs []
+--- PASS: TestDriverLowerVersionInsertionRejected (2.50s)
+=== RUN   TestDriverBoundedLockAndPreflight
+    driver_test.go:799: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-682470439
+    driver_test.go:799: created owned fixture justixauto-t932-6a1633f5-423f-40bd-b568-b3d5d84f7f72 id e2c3a0328697d7a234cb07205184d78716bb577376b0cc37884efc9f5aed3d95 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: e2c3a0328697d7a234cb07205184d78716bb577376b0cc37884efc9f5aed3d95 justixauto-t932-6a1633f5-423f-40bd-b568-b3d5d84f7f72; attached volume IDs []
+--- PASS: TestDriverBoundedLockAndPreflight (12.17s)
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity
+    driver_test.go:854: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2116279931
+    driver_test.go:854: created owned fixture justixauto-t932-a8f439cb-0823-4818-9475-10426d25587f id bb231faf7e248128e591677e3fe557f19269286b5913b660586324519eb42144 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/missing-required-column
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/broad-update
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/public-select
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/delegable-column
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/unsafe-default-function
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/unsafe-default-type
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/disabled-history-guard
+=== RUN   TestDriverOwnerValidatorRuntimeCheckerParity/multihop-noinherit
+=== NAME  TestDriverOwnerValidatorRuntimeCheckerParity
+    driver_test.go:198: validated fixture removed and absent: bb231faf7e248128e591677e3fe557f19269286b5913b660586324519eb42144 justixauto-t932-a8f439cb-0823-4818-9475-10426d25587f; attached volume IDs []
+--- PASS: TestDriverOwnerValidatorRuntimeCheckerParity (4.57s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/missing-required-column (0.16s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/broad-update (0.15s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/public-select (0.15s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/delegable-column (0.15s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/unsafe-default-function (0.18s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/unsafe-default-type (0.16s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/disabled-history-guard (0.19s)
+    --- PASS: TestDriverOwnerValidatorRuntimeCheckerParity/multihop-noinherit (0.29s)
+=== RUN   TestDriverPendingSequenceAndCanceledEnginePipe
+    driver_test.go:912: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-388189276
+    driver_test.go:912: created owned fixture justixauto-t932-4d2fd55c-a54e-48f6-810c-bc43da6f5101 id b4935216e62e16576065ba24e809db42f0c8294fe300b32e0a21006ee906a075 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: b4935216e62e16576065ba24e809db42f0c8294fe300b32e0a21006ee906a075 justixauto-t932-4d2fd55c-a54e-48f6-810c-bc43da6f5101; attached volume IDs []
+--- PASS: TestDriverPendingSequenceAndCanceledEnginePipe (2.41s)
+PASS
+ok  	justixauto/tools/owner-migrate	72.981s

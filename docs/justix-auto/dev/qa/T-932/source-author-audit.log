@@ -1,0 +1,60 @@
+{
+  "target": "555480d7b1c794fd5e9016545d459c975edd756f",
+  "prepared_base": "45df272b986c0c6be2998bcc018c2eec277f91b0",
+  "changed": [
+    "docs/justix-auto/dev/results/T-932.md",
+    "tools/owner-migrate/driver.go",
+    "tools/owner-migrate/driver_test.go"
+  ],
+  "source": [
+    {
+      "path": "tools/owner-migrate/driver.go",
+      "sha256": "ffea1383e8313e898d9f63bf857116cbe7b9a0998ce29f08c0266f3798c49c12"
+    },
+    {
+      "path": "tools/owner-migrate/driver_test.go",
+      "sha256": "4aba951e3b7c960bb34e164de35e8d203c423e95634e59537ac54fba133b4a0e"
+    },
+    {
+      "path": "docs/justix-auto/dev/results/T-932.md",
+      "sha256": "a69f57e82aad9540ee58199503a3f029a4f4c481100b5ea7ccbe1351857ad53f"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "f56fa77420290dcdcb59c51279bf2f3cc9797541df2226a64d2c19fb93c07a8a"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "0965a4a214289f9fddf3696b5c979ede73072c1afd2d3410ef69b791cc796dce"
+    },
+    {
+      "path": "docs/justix-auto/dev/results/T-932-dependency-preparation.md",
+      "sha256": "7bc8cae62ee503970d7369ec340624108bc505736b3bca7a8402607c2b161248"
+    },
+    {
+      "path": "pkg/eventstore/schema.sql",
+      "sha256": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53"
+    },
+    {
+      "path": "pkg/eventstore/owner_history.sql",
+      "sha256": "1e5138d344f07c3b3f78695f7ca7167f14b6582dbbbbd95654566eb8ddb58b70"
+    },
+    {
+      "path": "services/identity/migrations/0001_mechanics.up.sql",
+      "sha256": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d"
+    },
+    {
+      "path": "pkg/persistence/profile.go",
+      "sha256": "4aab89b8719edfb6638f1bfdb8e6ae6394b8fb17a8ed42eae95be798f5e7e4e9"
+    },
+    {
+      "path": "pkg/persistence/check.go",
+      "sha256": "18e56b9892acfd07aa48496fe32737e1c4974f79c430aa4ac64d6b50910426af"
+    }
+  ],
+  "author_sidecars_count": 51,
+  "archive_entries": 119,
+  "archive_compressed_sha256": "16a789026527704b12f038959407550f708cb1467a56b26b5ff3d3fffbf0c85e",
+  "archive_json_sha256": "aed6587ab96a113a72c53974feb8ad19585af66422010aaa2725db12b34f628f",
+  "missing_optional_logs": []
+}

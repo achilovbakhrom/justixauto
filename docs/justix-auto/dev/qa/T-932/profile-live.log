@@ -1,0 +1,152 @@
+=== RUN   TestPersistenceProfilePostgres
+    check_test.go:456: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-4044663983
+    check_test.go:456: created owned fixture justixauto-t930-e9f6d506-749e-47d2-acae-6571ebf9f860 id 6fbb26089a9d114a85831cfae5e9d5161299474bc0d2cfe90d524525a34f1eb5 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestPersistenceProfilePostgres/valid_exact_history_is_SELECT-only_and_retained
+    check_test.go:464: retained preimage SHA256 aa86032d358c410422d6745f429b38be8c1dab9af23b0409cc2dfd3fa8561388
+=== RUN   TestPersistenceProfilePostgres/wrong_profiles_and_mode_fail_without_writes
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_SELECT_lost
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/feature_column_required
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/feature_table_SELECT_required
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_INSERT_column
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_MAINTAIN
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_REFERENCES
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/immutable_feature_column
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/broad_feature_INSERT
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/adjacent_feature_SELECT
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/PUBLIC_table_SELECT
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/PUBLIC_column_SELECT
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/delegated_required_SELECT
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/delegated_required_column
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/delegated_schema_USAGE
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/default_table_privileges
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/global_PUBLIC_default
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/schema_CREATE
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/database_TEMP
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/PUBLIC_database_CONNECT
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/database_CREATE
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/function_EXECUTE
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/foreign_schema_reach
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/missing_named_object
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/disabled_history_guard
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/history_RLS_cannot_hide_complete_rows
+=== RUN   TestPersistenceProfilePostgres/required_and_excess_permissions/wrong_feature_object_owner
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/missing_historical_receipt
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/missing_feature_marker
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/wrong_feature_marker_hash
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/broken_predecessor_hash
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/wrong_SQL_hash
+=== RUN   TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/wrong_baseline_reference
+=== RUN   TestPersistenceProfilePostgres/transitive_NOINHERIT_and_privileged_identities
+=== RUN   TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch
+=== RUN   TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/dirty
+=== RUN   TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/newer
+=== RUN   TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/extra_row
+=== RUN   TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/extra_column
+=== RUN   TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/old_hash_drift
+=== RUN   TestPersistenceProfilePostgres/approved_feature_columns_remain_independently_mutable
+=== RUN   TestPersistenceProfilePostgres/feature_column_SELECT_is_independently_exact
+=== RUN   TestPersistenceProfilePostgres/cancellation_is_fail_closed
+=== RUN   TestPersistenceProfilePostgres/complete_upgrade_preserves_prior_installing_profile_identities
+=== RUN   TestPersistenceProfilePostgres/declared_shared_lineage_remains_independent
+=== NAME  TestPersistenceProfilePostgres
+    check_test.go:691: final exact fixture profile digest 0effe8ab71722f4b5c35aa93e370d288f4abc51c2a5f5b7542dd92125c555ec0; specification bytes 11015
+    check_test.go:191: validated fixture removed and absent: 6fbb26089a9d114a85831cfae5e9d5161299474bc0d2cfe90d524525a34f1eb5 justixauto-t930-e9f6d506-749e-47d2-acae-6571ebf9f860; attached volume IDs []
+--- PASS: TestPersistenceProfilePostgres (28.37s)
+    --- PASS: TestPersistenceProfilePostgres/valid_exact_history_is_SELECT-only_and_retained (0.59s)
+    --- PASS: TestPersistenceProfilePostgres/wrong_profiles_and_mode_fail_without_writes (1.21s)
+    --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions (11.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_SELECT_lost (0.26s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/feature_column_required (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/feature_table_SELECT_required (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_INSERT_column (0.29s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_MAINTAIN (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/metadata_REFERENCES (0.30s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/immutable_feature_column (0.25s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/broad_feature_INSERT (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/adjacent_feature_SELECT (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/PUBLIC_table_SELECT (0.26s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/PUBLIC_column_SELECT (0.29s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/delegated_required_SELECT (0.26s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/delegated_required_column (0.30s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/delegated_schema_USAGE (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/default_table_privileges (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/global_PUBLIC_default (0.26s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/schema_CREATE (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/database_TEMP (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/PUBLIC_database_CONNECT (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/database_CREATE (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/function_EXECUTE (0.26s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/foreign_schema_reach (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/missing_named_object (0.13s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/disabled_history_guard (0.29s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/history_RLS_cannot_hide_complete_rows (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/required_and_excess_permissions/wrong_feature_object_owner (0.29s)
+    --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence (3.04s)
+        --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/missing_historical_receipt (0.31s)
+        --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/missing_feature_marker (0.31s)
+        --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/wrong_feature_marker_hash (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/broken_predecessor_hash (0.29s)
+        --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/wrong_SQL_hash (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/actual_incomplete_and_divergent_immutable_evidence/wrong_baseline_reference (0.54s)
+    --- PASS: TestPersistenceProfilePostgres/transitive_NOINHERIT_and_privileged_identities (1.82s)
+    --- PASS: TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch (2.52s)
+        --- PASS: TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/dirty (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/newer (0.28s)
+        --- PASS: TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/extra_row (0.27s)
+        --- PASS: TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/extra_column (0.49s)
+        --- PASS: TestPersistenceProfilePostgres/ledger_and_retained_history_mismatch/old_hash_drift (0.34s)
+    --- PASS: TestPersistenceProfilePostgres/approved_feature_columns_remain_independently_mutable (0.47s)
+    --- PASS: TestPersistenceProfilePostgres/feature_column_SELECT_is_independently_exact (0.50s)
+    --- PASS: TestPersistenceProfilePostgres/cancellation_is_fail_closed (0.00s)
+    --- PASS: TestPersistenceProfilePostgres/complete_upgrade_preserves_prior_installing_profile_identities (0.92s)
+    --- PASS: TestPersistenceProfilePostgres/declared_shared_lineage_remains_independent (3.25s)
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres
+    check_test.go:702: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-175495794
+    check_test.go:702: created owned fixture justixauto-t930-b8820c37-37fd-459e-8c19-cbf1e7cc233c id 9f436bcadb5c9ba7e26cb4614db506e24a16a3ee87c97e3cc6e59d8fe13d3373 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/implicit_function_default_survives_absent_ACL_rows_and_schema_revoke
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/private_effective_default_denies_newly_created_function
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/implicit_type_default
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TABLES
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TABLES_IN_SCHEMA_synthetic_feature
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_SEQUENCES
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_SEQUENCES_IN_SCHEMA_synthetic_feature
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_FUNCTIONS
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_FUNCTIONS_IN_SCHEMA_synthetic_feature
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TYPES
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TYPES_IN_SCHEMA_synthetic_feature
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_SCHEMAS
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_LARGE_OBJECTS
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/schema_additions_cannot_be_hidden_by_private_global_defaults
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_WHEN_false
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_WHEN_true
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_column_filter
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_unexpected_trigger_argument
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/guard_function_execution_path
+=== RUN   TestPersistenceEffectiveDefaultsAndGuardsPostgres/restored_unconditional_guard_rejects_ordinary_owner_mutation
+=== NAME  TestPersistenceEffectiveDefaultsAndGuardsPostgres
+    check_test.go:191: validated fixture removed and absent: 9f436bcadb5c9ba7e26cb4614db506e24a16a3ee87c97e3cc6e59d8fe13d3373 justixauto-t930-b8820c37-37fd-459e-8c19-cbf1e7cc233c; attached volume IDs []
+--- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres (12.86s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/implicit_function_default_survives_absent_ACL_rows_and_schema_revoke (0.50s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/private_effective_default_denies_newly_created_function (0.32s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/implicit_type_default (0.50s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TABLES (0.25s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TABLES_IN_SCHEMA_synthetic_feature (0.27s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_SEQUENCES (0.28s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_SEQUENCES_IN_SCHEMA_synthetic_feature (0.27s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_FUNCTIONS (0.29s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_FUNCTIONS_IN_SCHEMA_synthetic_feature (0.27s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TYPES (0.24s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_TYPES_IN_SCHEMA_synthetic_feature (0.28s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_SCHEMAS (0.29s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/effective_LARGE_OBJECTS (0.28s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/schema_additions_cannot_be_hidden_by_private_global_defaults (0.48s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_WHEN_false (0.48s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_WHEN_true (0.33s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_column_filter (0.46s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/immutable_execution_metadata_unexpected_trigger_argument (0.32s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/guard_function_execution_path (0.28s)
+    --- PASS: TestPersistenceEffectiveDefaultsAndGuardsPostgres/restored_unconditional_guard_rejects_ordinary_owner_mutation (0.35s)
+PASS
+ok  	justixauto/pkg/persistence	42.869s

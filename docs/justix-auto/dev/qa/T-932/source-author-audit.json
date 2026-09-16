@@ -1,0 +1,1082 @@
+{
+  "target": "555480d7b1c794fd5e9016545d459c975edd756f",
+  "prepared_base": "45df272b986c0c6be2998bcc018c2eec277f91b0",
+  "changed": [
+    "docs/justix-auto/dev/results/T-932.md",
+    "tools/owner-migrate/driver.go",
+    "tools/owner-migrate/driver_test.go"
+  ],
+  "source": [
+    {
+      "path": "tools/owner-migrate/driver.go",
+      "sha256": "ffea1383e8313e898d9f63bf857116cbe7b9a0998ce29f08c0266f3798c49c12"
+    },
+    {
+      "path": "tools/owner-migrate/driver_test.go",
+      "sha256": "4aba951e3b7c960bb34e164de35e8d203c423e95634e59537ac54fba133b4a0e"
+    },
+    {
+      "path": "docs/justix-auto/dev/results/T-932.md",
+      "sha256": "a69f57e82aad9540ee58199503a3f029a4f4c481100b5ea7ccbe1351857ad53f"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "f56fa77420290dcdcb59c51279bf2f3cc9797541df2226a64d2c19fb93c07a8a"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "0965a4a214289f9fddf3696b5c979ede73072c1afd2d3410ef69b791cc796dce"
+    },
+    {
+      "path": "docs/justix-auto/dev/results/T-932-dependency-preparation.md",
+      "sha256": "7bc8cae62ee503970d7369ec340624108bc505736b3bca7a8402607c2b161248"
+    },
+    {
+      "path": "pkg/eventstore/schema.sql",
+      "sha256": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53"
+    },
+    {
+      "path": "pkg/eventstore/owner_history.sql",
+      "sha256": "1e5138d344f07c3b3f78695f7ca7167f14b6582dbbbbd95654566eb8ddb58b70"
+    },
+    {
+      "path": "services/identity/migrations/0001_mechanics.up.sql",
+      "sha256": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d"
+    },
+    {
+      "path": "pkg/persistence/profile.go",
+      "sha256": "4aab89b8719edfb6638f1bfdb8e6ae6394b8fb17a8ed42eae95be798f5e7e4e9"
+    },
+    {
+      "path": "pkg/persistence/check.go",
+      "sha256": "18e56b9892acfd07aa48496fe32737e1c4974f79c430aa4ac64d6b50910426af"
+    }
+  ],
+  "author_sidecars": [
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1121790349/canceled-source.json",
+      "sha256": "5953a80a2051db88f4d4192690a55df6147eb19b17f07b88b6c88413308f0e8d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1132904703/after.json",
+      "sha256": "1043cce92b47ee3b2740127fd23a1b4dadcbb582b07fb12aa8062ed8614f9feb"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1132904703/before.json",
+      "sha256": "78280696fef35e9733efc6c07cf8b4e3fef7660de3a9830965734f27dc8b6f5d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1505617924/lower-insertion-denied.json",
+      "sha256": "972313672107d7062037f51cc9b5efd5dfef47db9b4df8427642dd0980101e94"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1505617924/sequence-1-17.json",
+      "sha256": "972313672107d7062037f51cc9b5efd5dfef47db9b4df8427642dd0980101e94"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/at12.json",
+      "sha256": "8b8861eb3f89619e0a7f4472d94c59b89f011522f787f22ff550e7e043c12b7d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/at17.json",
+      "sha256": "984739be894ad1e49b651386f93fb4e93231b465c831c87ecd5d5378a7c065f5"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/base.json",
+      "sha256": "dcbe12b302ab08186e492db18b18014f491d8085100b1218c8eee7936c5ead4a"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/baseline-rows.json",
+      "sha256": "786b3a519a26ceff65f3784c6fe21e83839e13d68e13a3da458616907b6a2fb5"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/feature12-after.json",
+      "sha256": "ef3b0fb90c76984ba201e775795cbf0041358cd0d24aba4899967074fff4c386"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/feature12-before.json",
+      "sha256": "ef3b0fb90c76984ba201e775795cbf0041358cd0d24aba4899967074fff4c386"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1825260305/after.json",
+      "sha256": "2f54c6bc3e2789dd23aed2fafdd40d6b77b092114ddca1e2526db5a2e714131b"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1825260305/before.json",
+      "sha256": "a20ed76e27857f0f69c65c9d5936b840ed60b8aa72789c8b8de23529f88418c4"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1885190009/after.json",
+      "sha256": "0485db79974f133fde623a593a6c899bd2f8050e6252f953e1e14357a1d0f4f5"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1885190009/before.json",
+      "sha256": "08f35d1bf9d436664951899cf95ae7fd8601611e73d293d255800126cde87f24"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1963666317/after.json",
+      "sha256": "8a63a021c467b6b79e23bd83cae57f47f3b830a08f0cd95a003172d80706f8f8"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1963666317/before.json",
+      "sha256": "c39d2069fabcf9fe6f072d150b2149aa767b5113b1b0df528df11e54dc971125"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2048109192/after.json",
+      "sha256": "bf9bb8b33cafe30ccfda20fff54f3fa75fb7d3f54752f4d42742688a58a66b0d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2048109192/before.json",
+      "sha256": "e8804c52744663613e01ca218cc17035ab074250c24424032e42969d573b091b"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2290404153/after.json",
+      "sha256": "45eb4f67d45b7420625c553968dd216a6336389e8c7af4caf623f88b8e872a80"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2290404153/before.json",
+      "sha256": "ff94648240fb537993a6265b00ec55772ee931a52e75d30b71ccb47d558597ab"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2495644982/after-grant-drift.json",
+      "sha256": "03b712ef4368a4edd29f949c4dec3f3c58112d8350f2dda12b17e111c7a72829"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2495644982/before-grant-drift.json",
+      "sha256": "03b712ef4368a4edd29f949c4dec3f3c58112d8350f2dda12b17e111c7a72829"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3140181188/after.json",
+      "sha256": "f4cd35f64c77e08fc97ed3193932589e79ef8565a212bca3165258a62486e9f6"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3140181188/before.json",
+      "sha256": "853fd399baa628ed47076d50bd18786c0980b3786a91f5656812a98469d1a054"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3182642171/after.json",
+      "sha256": "1449b67eb82d7913743e1f24ec6728c3c373f729a61412212b3c996b9305e35d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3182642171/before.json",
+      "sha256": "1cc486d641f87bc5f2aef0f201830bbf1b92f4949ef2088fdba98521992e48ae"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3286709342/after.json",
+      "sha256": "f9ed3c4faa4bad021a3488d1ed87cb59e43de9facb27f2301af3045ca6adf019"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3286709342/before.json",
+      "sha256": "bdb1fabccf1c22e00241ffe7825dac21a13727c01f92964937e9c580c9e36abe"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3376519353/after.json",
+      "sha256": "1d9642f753fe0af009b4614d7e3538751b0b325bbed3c1d6ca5a98704c066bd5"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3376519353/before.json",
+      "sha256": "1b595f6765490c9f720e3addaed08c2a538a9d506cd55bb45498c500d366c2fe"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-339959172/after-denials.json",
+      "sha256": "433de649252941c0d821765f231ffdaced1bbe141d8653d863c6bc7fb024eb1d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-339959172/before-denials.json",
+      "sha256": "433de649252941c0d821765f231ffdaced1bbe141d8653d863c6bc7fb024eb1d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-367038790/after.json",
+      "sha256": "bd01b47e2a7f2c184f24c1989af0cf9d9a0aca2b8cdf7891f126e9fc5e56eaf2"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-367038790/before.json",
+      "sha256": "c182e4f4a83eff375cc683ebc06b3b39061eeca886161975f9bce0b1a3ebfd5b"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3858736163/after.json",
+      "sha256": "97a6f5797cf720cf7ec95e23b44244a003e8cb558b18fa1c095017bebc9360bf"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3858736163/before.json",
+      "sha256": "aa5880d0c99489623496569f37380d2f39bc47f07b70ece1553fe2f5bf7a6700"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3887569792/after.json",
+      "sha256": "a9784b317a04da4ffa9c1baec508d4b5599d777821cbe914fa2b8e4e8c2cb417"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3887569792/before.json",
+      "sha256": "c3382b50c0d6950f29d388433175ccf59c7cd8046e0bb47d30c7f589496c26a9"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3937121427/after.json",
+      "sha256": "ee024f639738536b78def67daa4faeef553d9a4db0fd5444a73d10e4d9cbffcb"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3937121427/before.json",
+      "sha256": "2279b5586dce04c2d729f76917e05031eccd0eadad29abe7f4cbdad95165f1d3"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-661694058/after.json",
+      "sha256": "35c35ef63ffac7c49b6c54a38da0d62e671ae08a151277954702fea728df3c9b"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-661694058/before.json",
+      "sha256": "e2d0cec107be36aed450358e3fa7d788ef87554c9134347d05d43e60f5336e09"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-712902832/after.json",
+      "sha256": "92a459c68ca95f7122042b5a894cf147d2dfd78dc0e1f427bebcda325cfef173"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-712902832/before.json",
+      "sha256": "c9c7e8fb7f4d49f4c2860df04fd723b8e8cc1df2ea940acf399ef52a0b660328"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-267983752/effective-defaults-and-guards-final.json",
+      "sha256": "a674210f68575e7ade3b21e5d549435134be7225ac4c51a30f5dc63cbb24ca5d"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/after-readonly.json",
+      "sha256": "46f65af43b85c2ac66515bfd827a59358021cd87e95e50c997dcb1f11b7ad838"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/final-profile.json",
+      "sha256": "7ab4765f395cda04c4f8e0739de49f5402b392fd3e9e50d6da7e8136cf7afcb9"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/final-with-shared.json",
+      "sha256": "6ab37ad7db41629ccc29fa7b635881b41902fb80ef65d6df0de045430644cb98"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/initial.json",
+      "sha256": "46f65af43b85c2ac66515bfd827a59358021cd87e95e50c997dcb1f11b7ad838"
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/upgraded.json",
+      "sha256": "55ce45181da3ea0cc232e54e528f942580870824988d0b95bf909594c3adbb92"
+    }
+  ],
+  "author_sidecars_count": 51,
+  "archive_entries": 119,
+  "archive_compressed_sha256": "16a789026527704b12f038959407550f708cb1467a56b26b5ff3d3fffbf0c85e",
+  "archive_json_sha256": "aed6587ab96a113a72c53974feb8ad19585af66422010aaa2725db12b34f628f",
+  "inventory": [
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/tools/owner-migrate/driver.go",
+      "kind": "exact-reviewed-source",
+      "sha256": "ffea1383e8313e898d9f63bf857116cbe7b9a0998ce29f08c0266f3798c49c12",
+      "bytes": 40005
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/tools/owner-migrate/driver_test.go",
+      "kind": "exact-reviewed-source",
+      "sha256": "4aba951e3b7c960bb34e164de35e8d203c423e95634e59537ac54fba133b4a0e",
+      "bytes": 39037
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/docs/justix-auto/dev/results/T-932.md",
+      "kind": "exact-reviewed-source",
+      "sha256": "a69f57e82aad9540ee58199503a3f029a4f4c481100b5ea7ccbe1351857ad53f",
+      "bytes": 17415
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/go.mod",
+      "kind": "exact-reviewed-source",
+      "sha256": "f56fa77420290dcdcb59c51279bf2f3cc9797541df2226a64d2c19fb93c07a8a",
+      "bytes": 2223
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/go.sum",
+      "kind": "exact-reviewed-source",
+      "sha256": "0965a4a214289f9fddf3696b5c979ede73072c1afd2d3410ef69b791cc796dce",
+      "bytes": 16261
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/docs/justix-auto/dev/results/T-932-dependency-preparation.md",
+      "kind": "exact-reviewed-source",
+      "sha256": "7bc8cae62ee503970d7369ec340624108bc505736b3bca7a8402607c2b161248",
+      "bytes": 2343
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/pkg/eventstore/schema.sql",
+      "kind": "unchanged-contract-source",
+      "sha256": "86ce41c5ec194a8bc255ae417b4506b518877fabb4d3e4fb6306858a0ab15d53",
+      "bytes": 10821
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/pkg/eventstore/owner_history.sql",
+      "kind": "unchanged-contract-source",
+      "sha256": "1e5138d344f07c3b3f78695f7ca7167f14b6582dbbbbd95654566eb8ddb58b70",
+      "bytes": 17766
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/services/identity/migrations/0001_mechanics.up.sql",
+      "kind": "unchanged-contract-source",
+      "sha256": "88e54be54d325d62377bde0541f2a15fcc7c48f5bbc7f9d9242a830d491f4d5d",
+      "bytes": 2414
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/pkg/persistence/profile.go",
+      "kind": "unchanged-contract-source",
+      "sha256": "4aab89b8719edfb6638f1bfdb8e6ae6394b8fb17a8ed42eae95be798f5e7e4e9",
+      "bytes": 17562
+    },
+    {
+      "path": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/pkg/persistence/check.go",
+      "kind": "unchanged-contract-source",
+      "sha256": "18e56b9892acfd07aa48496fe32737e1c4974f79c430aa4ac64d6b50910426af",
+      "bytes": 21068
+    },
+    {
+      "path": "/private/tmp/justixauto-t932-reviewed-evidence-audit.json",
+      "kind": "author-inventory",
+      "sha256": "270f664f97004397079c0c845d9ba0263870388ee0c6ca06e38951e6fc9d4847",
+      "bytes": 18295
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1121790349/canceled-source.json",
+      "kind": "author-retained-data",
+      "sha256": "5953a80a2051db88f4d4192690a55df6147eb19b17f07b88b6c88413308f0e8d",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1121790349/canceled-source.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "d0be851ef90bad8e956af4ec898f2e00f1e6630fdbdf6a187b92fdbfebbdf4ab",
+      "bytes": 87
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1132904703/after.json",
+      "kind": "author-retained-data",
+      "sha256": "1043cce92b47ee3b2740127fd23a1b4dadcbb582b07fb12aa8062ed8614f9feb",
+      "bytes": 1815
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1132904703/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "e0a52c91d0cf204742753edb18a98353f8fa24fbbb83caebd21d74d22161d1fb",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1132904703/before.json",
+      "kind": "author-retained-data",
+      "sha256": "78280696fef35e9733efc6c07cf8b4e3fef7660de3a9830965734f27dc8b6f5d",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1132904703/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "8b17e93ee6b8cb5c30265f570979c7978099ba158dcbf738a34919339585a4cd",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1505617924/lower-insertion-denied.json",
+      "kind": "author-retained-data",
+      "sha256": "972313672107d7062037f51cc9b5efd5dfef47db9b4df8427642dd0980101e94",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1505617924/lower-insertion-denied.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "27a22bd821f131e25d7f3f1db8edc5730b219eb7c9a8f9a3fcd6e620b6affa5e",
+      "bytes": 94
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1505617924/sequence-1-17.json",
+      "kind": "author-retained-data",
+      "sha256": "972313672107d7062037f51cc9b5efd5dfef47db9b4df8427642dd0980101e94",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1505617924/sequence-1-17.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "33ddfcee65b59c3bfc9ef983179d69b392fb2bc4a61833c5f80ba2fe86b75c8e",
+      "bytes": 85
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/at12.json",
+      "kind": "author-retained-data",
+      "sha256": "8b8861eb3f89619e0a7f4472d94c59b89f011522f787f22ff550e7e043c12b7d",
+      "bytes": 3729
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/at12.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "f202d7300d7b78c3eb249909d0cbbd2ea0ebd2717901f6e4014aa05eaac1429f",
+      "bytes": 76
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/at17.json",
+      "kind": "author-retained-data",
+      "sha256": "984739be894ad1e49b651386f93fb4e93231b465c831c87ecd5d5378a7c065f5",
+      "bytes": 4770
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/at17.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "71f786a8afa9ec634c363883d379d93704d054872ce5e9c084807680c2db21c8",
+      "bytes": 76
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/base.json",
+      "kind": "author-retained-data",
+      "sha256": "dcbe12b302ab08186e492db18b18014f491d8085100b1218c8eee7936c5ead4a",
+      "bytes": 2692
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/base.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "99ee20616ae0a8bfedff658319ddde6882ab233308fbf2c3e5b5f0d401775271",
+      "bytes": 76
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/baseline-rows.json",
+      "kind": "author-retained-data",
+      "sha256": "786b3a519a26ceff65f3784c6fe21e83839e13d68e13a3da458616907b6a2fb5",
+      "bytes": 1086
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/baseline-rows.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "61c03e726c2b7cc78936722fe715575927fc231b28e4cf15c9a938becdc69f0a",
+      "bytes": 85
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/feature12-after.json",
+      "kind": "author-retained-data",
+      "sha256": "ef3b0fb90c76984ba201e775795cbf0041358cd0d24aba4899967074fff4c386",
+      "bytes": 107
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/feature12-after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "c307570d047819b1bfcf7923fe26172411739dac4c97fe495ecccb8d1f6b44d4",
+      "bytes": 87
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/feature12-before.json",
+      "kind": "author-retained-data",
+      "sha256": "ef3b0fb90c76984ba201e775795cbf0041358cd0d24aba4899967074fff4c386",
+      "bytes": 107
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1706922176/feature12-before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "72f8ddcd6428ed263f91498b363769d8577f2d88937814e14cef7273937ec444",
+      "bytes": 88
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1825260305/after.json",
+      "kind": "author-retained-data",
+      "sha256": "2f54c6bc3e2789dd23aed2fafdd40d6b77b092114ddca1e2526db5a2e714131b",
+      "bytes": 1815
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1825260305/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "493c7d4fbe228c4a4e14e1540594cd01454e7f1311eadd50cb33d0574394a72e",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1825260305/before.json",
+      "kind": "author-retained-data",
+      "sha256": "a20ed76e27857f0f69c65c9d5936b840ed60b8aa72789c8b8de23529f88418c4",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1825260305/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "f5844f9a03b2ca87d35528cc06e83a0c39fa1f646c0cbf5891fa2d9e1e305157",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1885190009/after.json",
+      "kind": "author-retained-data",
+      "sha256": "0485db79974f133fde623a593a6c899bd2f8050e6252f953e1e14357a1d0f4f5",
+      "bytes": 1815
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1885190009/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "4bf94ff5ffe65832bc212117bbb03271d1f3832a3cf75bc49e7c427a14985fc1",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1885190009/before.json",
+      "kind": "author-retained-data",
+      "sha256": "08f35d1bf9d436664951899cf95ae7fd8601611e73d293d255800126cde87f24",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1885190009/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "2d79245e1eac637a14f53221f44d20c0216864434ab5c6c422fedac8b0e2c71b",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1963666317/after.json",
+      "kind": "author-retained-data",
+      "sha256": "8a63a021c467b6b79e23bd83cae57f47f3b830a08f0cd95a003172d80706f8f8",
+      "bytes": 1815
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1963666317/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "7685212445d42eca82b74664cba4cb5b10d9ffed9d8a4c40e83f9ed1b3f60bdd",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1963666317/before.json",
+      "kind": "author-retained-data",
+      "sha256": "c39d2069fabcf9fe6f072d150b2149aa767b5113b1b0df528df11e54dc971125",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1963666317/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "6b969ae905dbaa9d59c4bce02e243369272cd42ef43fc6e43e4befd171bc518d",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2048109192/after.json",
+      "kind": "author-retained-data",
+      "sha256": "bf9bb8b33cafe30ccfda20fff54f3fa75fb7d3f54752f4d42742688a58a66b0d",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2048109192/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "e0c31dcbe9f67f0e066de1a92fefb0c5ff3100a4097349b2f2bb9d57e3e93cab",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2048109192/before.json",
+      "kind": "author-retained-data",
+      "sha256": "e8804c52744663613e01ca218cc17035ab074250c24424032e42969d573b091b",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2048109192/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "56d4f2c04c4983afc9aa4ba48eb5e0a4df948b28ed37640b645230095ed310d6",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2290404153/after.json",
+      "kind": "author-retained-data",
+      "sha256": "45eb4f67d45b7420625c553968dd216a6336389e8c7af4caf623f88b8e872a80",
+      "bytes": 1639
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2290404153/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "fb17ab4a6609614cccbf89978d5d6a0a06f311a547d142cc8e1c1f392ab821b6",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2290404153/before.json",
+      "kind": "author-retained-data",
+      "sha256": "ff94648240fb537993a6265b00ec55772ee931a52e75d30b71ccb47d558597ab",
+      "bytes": 1639
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2290404153/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "e0d74ecbcd4f8e40b6aabac960138a81fe6584cb74ad926c03347679f77b3e55",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2495644982/after-grant-drift.json",
+      "kind": "author-retained-data",
+      "sha256": "03b712ef4368a4edd29f949c4dec3f3c58112d8350f2dda12b17e111c7a72829",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2495644982/after-grant-drift.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "3bef0c2530bbcac26bf567e15c194332936717aa304ec838ecb586b88d467693",
+      "bytes": 89
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2495644982/before-grant-drift.json",
+      "kind": "author-retained-data",
+      "sha256": "03b712ef4368a4edd29f949c4dec3f3c58112d8350f2dda12b17e111c7a72829",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2495644982/before-grant-drift.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "0cfaf774b41db58e4a5274db748763eb76f3c7141933f3481c606fb2f2a227aa",
+      "bytes": 90
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3140181188/after.json",
+      "kind": "author-retained-data",
+      "sha256": "f4cd35f64c77e08fc97ed3193932589e79ef8565a212bca3165258a62486e9f6",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3140181188/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "ec888bf111cf94cb1e51270e3ce2e430b2ffd17e779a93ce8c5372821aa91db7",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3140181188/before.json",
+      "kind": "author-retained-data",
+      "sha256": "853fd399baa628ed47076d50bd18786c0980b3786a91f5656812a98469d1a054",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3140181188/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "0c22c6f1a0330b645ad443c941b8211cc1fdc6055537b24c829be3131856812c",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3182642171/after.json",
+      "kind": "author-retained-data",
+      "sha256": "1449b67eb82d7913743e1f24ec6728c3c373f729a61412212b3c996b9305e35d",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3182642171/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "05bd483c472e676323f3c46cfca50988f945589256d39f792542de6b6746a546",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3182642171/before.json",
+      "kind": "author-retained-data",
+      "sha256": "1cc486d641f87bc5f2aef0f201830bbf1b92f4949ef2088fdba98521992e48ae",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3182642171/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "c6dd141af40408157cf1a6e055ed5353fbe2c9bdcbd248c5cee80b044e01330b",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3286709342/after.json",
+      "kind": "author-retained-data",
+      "sha256": "f9ed3c4faa4bad021a3488d1ed87cb59e43de9facb27f2301af3045ca6adf019",
+      "bytes": 1639
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3286709342/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "c1081aac0b4d131e4a7ae0c1f25f36a41de5a966c8a69b80dd001a31e5adad33",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3286709342/before.json",
+      "kind": "author-retained-data",
+      "sha256": "bdb1fabccf1c22e00241ffe7825dac21a13727c01f92964937e9c580c9e36abe",
+      "bytes": 1639
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3286709342/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "d93c0b7f6d5c2c560f017762c1fde5ea3143df579865950594310cc33a7ad5e2",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3376519353/after.json",
+      "kind": "author-retained-data",
+      "sha256": "1d9642f753fe0af009b4614d7e3538751b0b325bbed3c1d6ca5a98704c066bd5",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3376519353/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "984af0726e12eaee9cf3a0bc657de9f4c024f7504d7592b072ee5c0733df42d2",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3376519353/before.json",
+      "kind": "author-retained-data",
+      "sha256": "1b595f6765490c9f720e3addaed08c2a538a9d506cd55bb45498c500d366c2fe",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3376519353/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "c91fb5cdd80f91de3e1041ebdee2e4f92f16f90346ba6d11f0bc6be31c482807",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-339959172/after-denials.json",
+      "kind": "author-retained-data",
+      "sha256": "433de649252941c0d821765f231ffdaced1bbe141d8653d863c6bc7fb024eb1d",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-339959172/after-denials.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "dcb7c43d209b7ff7f5fce7ec85b48c815a3a6e8c545920e067916f4d8f8928ed",
+      "bytes": 85
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-339959172/before-denials.json",
+      "kind": "author-retained-data",
+      "sha256": "433de649252941c0d821765f231ffdaced1bbe141d8653d863c6bc7fb024eb1d",
+      "bytes": 2677
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-339959172/before-denials.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "5e0acf7173741ad19f6cf375f90c4a297688fc60001867e9d7d094a05cc0a344",
+      "bytes": 86
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-367038790/after.json",
+      "kind": "author-retained-data",
+      "sha256": "bd01b47e2a7f2c184f24c1989af0cf9d9a0aca2b8cdf7891f126e9fc5e56eaf2",
+      "bytes": 1814
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-367038790/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "ced957446b448b0a58d3dee4a4102bbd713ee9f380ed701fe6f4245c08147902",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-367038790/before.json",
+      "kind": "author-retained-data",
+      "sha256": "c182e4f4a83eff375cc683ebc06b3b39061eeca886161975f9bce0b1a3ebfd5b",
+      "bytes": 1639
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-367038790/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "084cb912a79ec7311cde96a2d30ad47ec41eb4baf5cef9be8f7ee6c66c93753e",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3858736163/after.json",
+      "kind": "author-retained-data",
+      "sha256": "97a6f5797cf720cf7ec95e23b44244a003e8cb558b18fa1c095017bebc9360bf",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3858736163/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "c398d12992175730167a6352099d6d08e6fca9249d37c5fb75224d258b00d3a1",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3858736163/before.json",
+      "kind": "author-retained-data",
+      "sha256": "aa5880d0c99489623496569f37380d2f39bc47f07b70ece1553fe2f5bf7a6700",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3858736163/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "ffea3fcb15319676d4d9af818d4c1350cc36e8f33b1378bf1ffaf2f5b70c9279",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3887569792/after.json",
+      "kind": "author-retained-data",
+      "sha256": "a9784b317a04da4ffa9c1baec508d4b5599d777821cbe914fa2b8e4e8c2cb417",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3887569792/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "92ff3dbf42f2186da0c35ff1333922f50b8452956a9959a1d0fc5ec500d6e55c",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3887569792/before.json",
+      "kind": "author-retained-data",
+      "sha256": "c3382b50c0d6950f29d388433175ccf59c7cd8046e0bb47d30c7f589496c26a9",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3887569792/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "613e31312f22745a05e073645c9b4195b9d1b118e1fb72ec515010e3f86fb5db",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3937121427/after.json",
+      "kind": "author-retained-data",
+      "sha256": "ee024f639738536b78def67daa4faeef553d9a4db0fd5444a73d10e4d9cbffcb",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3937121427/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "83145f47018b3e3b6b7e24c21bc557dd43eb26f11f3cbb6d5bfa2cf14eff59e2",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3937121427/before.json",
+      "kind": "author-retained-data",
+      "sha256": "2279b5586dce04c2d729f76917e05031eccd0eadad29abe7f4cbdad95165f1d3",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-3937121427/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "5669461ac4b619cbfb3690b36116c43bb23954602525ba712d0559452f51e483",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-661694058/after.json",
+      "kind": "author-retained-data",
+      "sha256": "35c35ef63ffac7c49b6c54a38da0d62e671ae08a151277954702fea728df3c9b",
+      "bytes": 1815
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-661694058/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "2cb1353e8c3c96882474eccb7c390064621bc1aa19db8bee75aa9aca94828858",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-661694058/before.json",
+      "kind": "author-retained-data",
+      "sha256": "e2d0cec107be36aed450358e3fa7d788ef87554c9134347d05d43e60f5336e09",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-661694058/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "4ab6469112a01c6f079ef2e98727e7c0de75a9c51d296af37eed87802c687b7d",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-712902832/after.json",
+      "kind": "author-retained-data",
+      "sha256": "92a459c68ca95f7122042b5a894cf147d2dfd78dc0e1f427bebcda325cfef173",
+      "bytes": 1815
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-712902832/after.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "0655d5bfc0cca350da97eee39f2895894831912c2b88f565e367b211eb7cfd72",
+      "bytes": 77
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-712902832/before.json",
+      "kind": "author-retained-data",
+      "sha256": "c9c7e8fb7f4d49f4c2860df04fd723b8e8cc1df2ea940acf399ef52a0b660328",
+      "bytes": 1640
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-712902832/before.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "970058652cae2c1178eb397916b105a2580fae2edd9ac9bc30a1892e1c2d8a44",
+      "bytes": 78
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-267983752/effective-defaults-and-guards-final.json",
+      "kind": "author-retained-data",
+      "sha256": "a674210f68575e7ade3b21e5d549435134be7225ac4c51a30f5dc63cbb24ca5d",
+      "bytes": 195427
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-267983752/effective-defaults-and-guards-final.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "c078bc777d13e5f3c1c85c893799d31f5b1d653c0c6805ad6ba80f05739cb316",
+      "bytes": 65
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/after-readonly.json",
+      "kind": "author-retained-data",
+      "sha256": "46f65af43b85c2ac66515bfd827a59358021cd87e95e50c997dcb1f11b7ad838",
+      "bytes": 195428
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/after-readonly.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "e19f795107d91ebdafec96e031fe062e742be9f63d0a6bd001220cfa8273c73e",
+      "bytes": 65
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/final-profile.json",
+      "kind": "author-retained-data",
+      "sha256": "7ab4765f395cda04c4f8e0739de49f5402b392fd3e9e50d6da7e8136cf7afcb9",
+      "bytes": 11016
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/final-profile.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "4ddd9e69a51579aaa2ba78b0cd985195e0a3837f709ebc9bbfb38a9ba462802a",
+      "bytes": 65
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/final-with-shared.json",
+      "kind": "author-retained-data",
+      "sha256": "6ab37ad7db41629ccc29fa7b635881b41902fb80ef65d6df0de045430644cb98",
+      "bytes": 587306
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/final-with-shared.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "053145c28a54db268a22ce71bab3fa13f0ee665830c56fe432257febc951800d",
+      "bytes": 65
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/initial.json",
+      "kind": "author-retained-data",
+      "sha256": "46f65af43b85c2ac66515bfd827a59358021cd87e95e50c997dcb1f11b7ad838",
+      "bytes": 195428
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/initial.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "e19f795107d91ebdafec96e031fe062e742be9f63d0a6bd001220cfa8273c73e",
+      "bytes": 65
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/upgraded.json",
+      "kind": "author-retained-data",
+      "sha256": "55ce45181da3ea0cc232e54e528f942580870824988d0b95bf909594c3adbb92",
+      "bytes": 199267
+    },
+    {
+      "path": "/private/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t930-evidence-3621754392/upgraded.json.sha256",
+      "kind": "author-sidecar",
+      "sha256": "74da0d7e36fb77840bd787398c342477108483866d9a8effe1b8e55b8b276ab3",
+      "bytes": 65
+    },
+    {
+      "path": "/private/tmp/justixauto-t932-reviewed-driver-race.log",
+      "kind": "author-log",
+      "sha256": "48b58c41cebaffcd442473f399bed4eb905f7d6a97424b016b97989143d989ba",
+      "bytes": 20910
+    },
+    {
+      "path": "/private/tmp/justixauto-t932-profile-live.log",
+      "kind": "author-log",
+      "sha256": "754cd608435f1af670c33990a70302030472601c17cd81e734ca568d7b3e73f1",
+      "bytes": 16003
+    },
+    {
+      "path": "/private/tmp/justixauto-t932-final-scoped-race.log",
+      "kind": "author-log",
+      "sha256": "c3292ae114691da1c8593def8a9967f07518e4b85f1235e5ff24536a86127839",
+      "bytes": 136584
+    },
+    {
+      "path": "/private/tmp/justixauto-t932-reviewed-vet.log",
+      "kind": "author-log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/private/tmp/justixauto-t932-preflight.log",
+      "kind": "author-log",
+      "sha256": "3c93f68b2e049f95ab6b69cf8e9e0cc95410b8f3273e2703dac0aa77f771752b",
+      "bytes": 6011
+    }
+  ],
+  "missing_optional_logs": [],
+  "author_fixture_references": [
+    "0072b47d706dd13117a74759efb3b01d9b9da1b26eb6216dec747cc6e40b5d50",
+    "0e9bd79a16e06fb4f57d34db6579b586388065b4e4991ba2902ceb2a760512c6",
+    "12e6c63153630b6951bf4601c465187b34898177fcd3654e24a091cf135c354a",
+    "15f0dfa855d4bf74cc0d78970b89c3cde27da1c6668a284c8dfdcce506b2586c",
+    "1802cc3a8c094d90ee0c14f640b9961114eeb33ff602e17ecf86a6b0b5c8768f",
+    "1982824bfbd0ee2f45a10b929f3c16e5e3c0324aa61dae8233476d0bc95ddac7",
+    "19d687b0d5539b5a04805633e9688c027ff84f3f0b7246ebb50aaa516cb674e8",
+    "1b36026f56069f86022ea2158b36fbc871548e6fe8da7e78e7901f62d0777810",
+    "216d8a138d01e8a94536c20a7c0c4d1f5606bb1a2f0ef16ef55e5063d33c514c",
+    "24d6c5391541f1b0bfdcb8c2285c2bb01a8219e7cbee54b0ef1bb88dbf531cbb",
+    "25116702cd47fe81d228d658685c3711ffb9a09d1d7e8f63c51978f36d20cae1",
+    "280a9a6f8182fae51731ce460873207594f106ad39375d0daef9fadb8490f4ad",
+    "2ca2ff6d28721d107de5cd8d4ed36f8f5bc0ddebda1e66b87b2b4f7d0fee0c75",
+    "2d65c968f0c8641d2254f2f0fd440117d386160717090521f268e705c0adbd52",
+    "3897d01eb076d34397e6bc5aab62c7e6dcd7b5350a0cbd921274f28a60c6fa1d",
+    "4c1913d3f11e1ee09db7d6414e60ce1d9e9b1a0757cd33ef45d24290a9c712ae",
+    "53d4b8fe3b618a93edbe28412ada61df82d8d5817f526cc710d8f10e1a34ab4e",
+    "5edd279b4319d85d78d510eb797813dac4789f4b19a1fff1dac81f6d3ab4c788",
+    "72bd4fd3f259258b89890dbccb50e717c8ce3c6f448869defb2945829053d17f",
+    "737a3211759cf0117589304f53ee97bc65e34b15aada5f6e878595285721536c",
+    "74f79d1491ea99e9ed83ef53dc52f33c12366c732d4d6d8b8bfa1de770fae157",
+    "778b9accf0cdcdb911939639f82cf8181e1f10d0c6e2870b646f9a5348fb81ca",
+    "7a675912f84dd411bdc7f86469ae06bef01fa957f148e60ce5085388843bffd9",
+    "8014ab565fa9c562a35f2d5761f04d53871e0bd7dba16763b9ee8c02487b3756",
+    "8392daca23630abad1bf534a91e456ee06794e5b44e640c5ab0d8e8a9008d56a",
+    "89cde48d173364d898f18c5d56916ee68f31d40931e9b24320f7a5f86ead2e0f",
+    "902edff5f4c31bf105599f7d9da48f319943c8fdaebb8f510ffb506d5b81fbad",
+    "929998017d8c4eb0a193d275c32f3fe82a862f56bbd89872195b42fba0d7b125",
+    "96ba63c3431ab77ae5c245f5f6ce412421efbff862acf1afaa75efb2340abfb9",
+    "998a808a7ee3cbbcfc867ece2f8c8d41c4027ed1237f0a698e3e138511366a95",
+    "9d164070ed3caf199d6c324efab7359742ae805901e8d802e2c3683283a4df8e",
+    "a701c80884b55b9b4a15d202ee9a0f716d1bceb53b220cfd533cc15b0239ac5d",
+    "a9ef052b6873f9110f26618d19dcc543d363046d91d944e53cf4594abab6360c",
+    "ac674bf3c427fcf2fe3a8d9446ba03263832cb7d327c059d00bd2ba60a154a3d",
+    "af51eb6ae9e01f4d8dbeda7e723c46dd49fdecec885639c65a66b5a72fe38c47",
+    "b0f9d7ce09966cb7f3da561c743a0a3733307710d37cf6f15ec885312ee29cf2",
+    "b3462de5d9560f90aff7a748f20b18c9faf2c4f267e52e8ca721da5427d3a0e5",
+    "bc6cff0982d8b8d8c7691565403a180aa4abd4fcdcf1671460930cd0c745996a",
+    "c18c6613b2480cf5a4da1d06078e20ce0f67d558454e07ba88f64cb844bd0923",
+    "d4c3079a8c8ab22ec83899935272c3a7795347934b4f929932464bc6eb3e2a0e",
+    "d9a0e7c2eb65ea5165340d2db753812ba341c620020bd68f6433576f5b6160c4",
+    "dc0ff5352f554133a6912ba02d11fde733a315df1846cd2cfa7c12c3dc287b42",
+    "ea31f5cfcb01354479f6cdce79f63bc6609bcaff83e98a3b102afc4070702566",
+    "eafff75d5665e08ac01febbb1894b773129213cfecd94dc19f2e6f966fde6f88",
+    "eb7176af60b393ed5e8030a224a53e13ea8c9d7e7bb1c13b7be6224a29409989",
+    "ec2d319722c4e8141023f69a3717918cc02570146e4f6456b69a98d2fe6db36d",
+    "eda1a12f00266c258a7a330e9a861b9cf4735bf890a520e2bcb7ceb4fe41bb15",
+    "f3f342e34ea59d689dc526ebe7dbe6d50fffd28a7fcf9a7932a9b705e1e434db",
+    "f6757dd7404865c79333205105d8b6833e8ea421eed947254e764bf28e9eec6b",
+    "justixauto-t930-53d2f674-f59b-40f5-ada1-724be67b1015",
+    "justixauto-t930-c7ab98ad-af5e-40f1-865a-191d5485b389",
+    "justixauto-t932-08164b3c-0bde-4578-8027-9d0935161def",
+    "justixauto-t932-0a8754b5-bbc0-4f4f-9ce4-d17e75c4d61a",
+    "justixauto-t932-1618fdec-4c7d-4b0f-9475-8ccaf1c9c44c",
+    "justixauto-t932-18da2066-b4c4-4d9e-be7b-fe420e1e529a",
+    "justixauto-t932-1b1824fd-eba9-4db9-b405-71386f6dcecd",
+    "justixauto-t932-1e9bf63f-6bdd-4688-9d50-8df797a13b64",
+    "justixauto-t932-1ff4af53-52d4-4046-bfcd-6f44ee0fd7b6",
+    "justixauto-t932-2477e732-b6a2-4b8e-b104-b5cdab7abbff",
+    "justixauto-t932-3bb6fd1c-95ec-4f58-a695-607c0775f5e0",
+    "justixauto-t932-3c9e3ab3-875f-49d4-bcf1-976d8a10eee0",
+    "justixauto-t932-3eb02aa3-6d15-45c4-88b1-f0a7a7997448",
+    "justixauto-t932-40fb8ca9-d4e0-4ff1-9900-e4293e39238e",
+    "justixauto-t932-49a902c2-05aa-4f6d-a5a8-62ba13f511d6",
+    "justixauto-t932-4f695e27-f500-4fad-a3dc-46986ee3a833",
+    "justixauto-t932-5358bfad-3165-4913-be3e-f73371de6d8e",
+    "justixauto-t932-58e90b51-0b9e-4d95-910b-c5e0e77d6ebb",
+    "justixauto-t932-5b4a5076-43ec-4139-a6a1-7e81b7ad8030",
+    "justixauto-t932-5be4b348-5d4e-4612-a0fa-1e8210d33993",
+    "justixauto-t932-5d01b95f-1c7e-46fa-a8b8-5487ade0c303",
+    "justixauto-t932-5fbbf954-2f37-49a0-b4c4-746124e5b1b2",
+    "justixauto-t932-66702a82-13d7-4325-ae35-7942ba0b2b11",
+    "justixauto-t932-6f26dc06-7be4-44eb-94fb-fd11c2a570b4",
+    "justixauto-t932-71b23cc8-7c14-40d3-aa97-fd73743b8c0b",
+    "justixauto-t932-75748889-f116-42da-81ce-7fdf841f145e",
+    "justixauto-t932-761b6765-d65f-4a71-b8a8-5760e0925063",
+    "justixauto-t932-7c37447b-76fe-478f-978e-ee65752e8a0e",
+    "justixauto-t932-819fc1f7-5e8e-4514-ab26-5279bc73cd1f",
+    "justixauto-t932-833f87dc-7322-4926-8771-44200bda8768",
+    "justixauto-t932-91f9f3dc-bff2-4509-ab0c-ec6c44c5acac",
+    "justixauto-t932-95905a74-eefb-4ba9-98fc-692e372d349e",
+    "justixauto-t932-96bcf6a2-6393-4302-8a60-f59c8353d53d",
+    "justixauto-t932-9759ab0d-96ad-4ed2-85e2-3a8b96ef3249",
+    "justixauto-t932-9ea9a02b-f71b-43be-9084-813600a41f32",
+    "justixauto-t932-a0411272-ff58-427f-b238-a6d4afe5a01f",
+    "justixauto-t932-a799ef40-45e7-49b4-b235-2d7aaf55e2a8",
+    "justixauto-t932-a9671db0-a342-4d73-9ca3-e07c9bb0e5f0",
+    "justixauto-t932-ad4c85cd-53ee-452c-83d3-504dc97a05b0",
+    "justixauto-t932-b2dac114-1416-4f5b-92bf-c3d4772be3d8",
+    "justixauto-t932-b55edfb7-3ae2-40ef-aaae-79d0ea6ff18a",
+    "justixauto-t932-b9194ea5-53c8-45ec-b3dd-c156ad217e87",
+    "justixauto-t932-c79c3327-a489-43ce-b951-4c4a6b4ba940",
+    "justixauto-t932-cf34ce90-daff-4b33-ae79-debd9f2b14c5",
+    "justixauto-t932-d7f21bec-8b58-43de-a02c-bd688d4c09ee",
+    "justixauto-t932-de72f58b-6124-44c0-81a1-b0ed33ec4378",
+    "justixauto-t932-de735e11-6a9b-4278-8777-118657525856",
+    "justixauto-t932-ec5cfec8-fddf-4ec4-8f63-992d502558eb",
+    "justixauto-t932-fade9c8c-c0da-4914-9b0d-b3d2edbbaed0"
+  ]
+}

@@ -1,0 +1,37 @@
+--- runtime/check.go
++++ owner/driver.go
+@@ -1,6 +1,6 @@
+ WITH expected AS (
+- SELECT * FROM jsonb_to_recordset(?::jsonb) AS e(schema text,tbl text,sel boolean,ins boolean,upd boolean,del boolean,sc text[],ic text[],uc text[])
+-), owner AS (SELECT oid FROM pg_roles WHERE rolname=?), runtime AS (SELECT oid FROM pg_roles WHERE rolname=?),
++ SELECT * FROM jsonb_to_recordset($1::jsonb) AS e(schema text,tbl text,sel boolean,ins boolean,upd boolean,del boolean,sc text[],ic text[],uc text[])
++), owner AS (SELECT oid FROM pg_roles WHERE rolname=$2), runtime AS (SELECT oid FROM pg_roles WHERE rolname=$3),
+  roles AS (SELECT r.* FROM pg_roles r,runtime u WHERE pg_has_role(u.oid,r.oid,'MEMBER')),
+  namespaces AS (SELECT * FROM pg_namespace WHERE nspname NOT LIKE 'pg\_%' ESCAPE '\' AND nspname<>'information_schema'),
+  relations AS (SELECT c.*,n.nspname FROM pg_class c JOIN namespaces n ON n.oid=c.relnamespace WHERE c.relkind IN ('r','p','v','m','f','S')),
+@@ -9,18 +9,18 @@
+ SELECT (SELECT count(*)=1 FROM owner) AND (SELECT count(*)=1 FROM runtime)
+  AND current_setting('session_replication_role')='origin'
+  AND (SELECT datdba=(SELECT oid FROM owner) FROM pg_database WHERE datname=current_database())
+- AND has_database_privilege(current_user,current_database(),'CONNECT')
++ AND has_database_privilege((SELECT oid FROM runtime),current_database(),'CONNECT')
+  AND NOT EXISTS(SELECT FROM roles r WHERE r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolreplication OR r.rolbypassrls OR r.oid=(SELECT oid FROM owner) OR r.rolname LIKE 'pg\_%' ESCAPE '\' OR has_database_privilege(r.oid,current_database(),'CREATE,TEMPORARY') OR has_parameter_privilege(r.oid,'session_replication_role','SET,ALTER SYSTEM'))
+  AND NOT EXISTS(SELECT FROM pg_database d CROSS JOIN LATERAL aclexplode(d.datacl) a WHERE d.datname=current_database() AND (a.grantee=0 OR (a.grantee IN (SELECT oid FROM roles) AND a.is_grantable)))
+  AND NOT EXISTS(SELECT FROM pg_database d CROSS JOIN roles r WHERE d.datname LIKE 'justix\_%' ESCAPE '\' AND d.datname<>current_database() AND has_database_privilege(r.oid,d.oid,'CONNECT,CREATE,TEMPORARY'))
+- AND NOT EXISTS(SELECT FROM expected e LEFT JOIN namespaces n ON n.nspname=e.schema WHERE n.oid IS NULL OR (n.nspname<>'public' AND n.nspowner<>(SELECT oid FROM owner)) OR NOT has_schema_privilege(current_user,n.oid,'USAGE'))
+- AND NOT EXISTS(SELECT FROM namespaces n CROSS JOIN roles r WHERE has_schema_privilege(r.oid,n.oid,'CREATE') OR (has_schema_privilege(r.oid,n.oid,'USAGE') AND NOT EXISTS(SELECT FROM expected e WHERE e.schema=n.nspname)))
++ AND NOT EXISTS(SELECT FROM expected e LEFT JOIN namespaces n ON n.nspname=e.schema WHERE n.oid IS NULL OR (n.nspname<>'public' AND n.nspowner<>(SELECT oid FROM owner)) OR NOT has_schema_privilege((SELECT oid FROM runtime),n.oid,'USAGE'))
++ AND NOT EXISTS(SELECT FROM namespaces n CROSS JOIN roles r WHERE has_schema_privilege(r.oid,n.oid,'CREATE') OR (has_schema_privilege(r.oid,n.oid,'USAGE') AND n.nspname<>'public' AND NOT EXISTS(SELECT FROM expected e WHERE e.schema=n.nspname)))
+  AND NOT EXISTS(SELECT FROM namespaces n CROSS JOIN LATERAL aclexplode(n.nspacl) a WHERE (a.grantee=0 AND n.nspname<>'public') OR (a.grantee IN (SELECT oid FROM roles) AND a.is_grantable))
+  AND NOT EXISTS(SELECT FROM expected e LEFT JOIN relations c ON c.nspname=e.schema AND c.relname=e.tbl WHERE c.oid IS NULL OR c.relkind<>'r' OR c.relowner<>(SELECT oid FROM owner) OR c.relrowsecurity OR c.relforcerowsecurity
+-   OR (e.sel AND NOT has_table_privilege(current_user,c.oid,'SELECT')) OR (e.ins AND NOT has_table_privilege(current_user,c.oid,'INSERT')) OR (e.upd AND NOT has_table_privilege(current_user,c.oid,'UPDATE')) OR (e.del AND NOT has_table_privilege(current_user,c.oid,'DELETE'))
+-   OR EXISTS(SELECT FROM unnest(e.sc) col WHERE NOT EXISTS(SELECT FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped AND a.attname=col AND has_column_privilege(current_user,c.oid,a.attnum,'SELECT')))
+-   OR EXISTS(SELECT FROM unnest(e.ic) col WHERE NOT EXISTS(SELECT FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped AND a.attname=col AND has_column_privilege(current_user,c.oid,a.attnum,'INSERT')))
+-   OR EXISTS(SELECT FROM unnest(e.uc) col WHERE NOT EXISTS(SELECT FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped AND a.attname=col AND has_column_privilege(current_user,c.oid,a.attnum,'UPDATE'))))
++   OR (e.sel AND NOT has_table_privilege((SELECT oid FROM runtime),c.oid,'SELECT')) OR (e.ins AND NOT has_table_privilege((SELECT oid FROM runtime),c.oid,'INSERT')) OR (e.upd AND NOT has_table_privilege((SELECT oid FROM runtime),c.oid,'UPDATE')) OR (e.del AND NOT has_table_privilege((SELECT oid FROM runtime),c.oid,'DELETE'))
++   OR EXISTS(SELECT FROM unnest(e.sc) col WHERE NOT EXISTS(SELECT FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped AND a.attname=col AND has_column_privilege((SELECT oid FROM runtime),c.oid,a.attnum,'SELECT')))
++   OR EXISTS(SELECT FROM unnest(e.ic) col WHERE NOT EXISTS(SELECT FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped AND a.attname=col AND has_column_privilege((SELECT oid FROM runtime),c.oid,a.attnum,'INSERT')))
++   OR EXISTS(SELECT FROM unnest(e.uc) col WHERE NOT EXISTS(SELECT FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped AND a.attname=col AND has_column_privilege((SELECT oid FROM runtime),c.oid,a.attnum,'UPDATE'))))
+  AND NOT EXISTS(SELECT FROM relations c CROSS JOIN roles r LEFT JOIN expected e ON e.schema=c.nspname AND e.tbl=c.relname WHERE c.relkind<>'S' AND (
+    has_table_privilege(r.oid,c.oid,'TRUNCATE,TRIGGER,REFERENCES,MAINTAIN') OR (has_table_privilege(r.oid,c.oid,'SELECT') AND NOT coalesce(e.sel,false)) OR (has_table_privilege(r.oid,c.oid,'INSERT') AND NOT coalesce(e.ins,false)) OR (has_table_privilege(r.oid,c.oid,'UPDATE') AND NOT coalesce(e.upd,false)) OR (has_table_privilege(r.oid,c.oid,'DELETE') AND NOT coalesce(e.del,false))))
+  AND NOT EXISTS(SELECT FROM relations c CROSS JOIN roles r WHERE c.relkind='S' AND has_sequence_privilege(r.oid,c.oid,'SELECT,UPDATE,USAGE'))
