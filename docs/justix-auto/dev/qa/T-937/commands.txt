@@ -1,0 +1,38 @@
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-937
+Exact SHA: a4de45c811c8eaa7b8d3f7559df0db4c9454a3e3
+Base: 23d8cede88d228ef57fa73205c159b07e57a49b2
+Pinned Node PATH prefix:
+PATH=/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin:$PATH
+Go/cache prefix:
+GOMODCACHE=/private/tmp/justixauto-t003-modcache GOCACHE=/private/tmp/justixauto-integration-gocache GOPROXY=off
+
+bash tools/check-git.sh
+PASS own assigned worktree root.
+
+bash tools/go.sh test -race -mod=readonly -count=1 -v ./tests/contracts > docs/justix-auto/dev/qa/T-937/go-race.log 2>&1
+PASS full actual contract suite 117.205s. Uses pinned Go wrapper and offline caches.
+bash tools/go.sh vet -mod=readonly ./tests/contracts > docs/justix-auto/dev/qa/T-937/go-vet.log 2>&1
+PASS exit 0; empty vet log intentional.
+
+node docs/justix-auto/dev/qa/T-937/probe.mjs > docs/justix-auto/dev/qa/T-937/probe-output.json 2> docs/justix-auto/dev/qa/T-937/probe-stderr.log
+Attempt1: exit1 QA helper syntax error; retained probe-attempt1.log. Corrected only
+the independent legacy fixture helper's missing brace with readable construction.
+Attempt2: exit1 missing expected exception for invalid security:null; retained
+probe-attempt2.log. This is the product finding, not an incorrect oracle.
+Final: exit0 diagnostic evidence completion; verdict remains BOUNCE. Records
+the accepted-invalid null declarations explicitly and runs remaining probes.
+120 matrix/snapshot checks,410 rejection cases,12 public CLI cases,4 exact
+predecessor/current output comparisons pass. Three malformed-null observations.
+Private module copies omit only CLI invocation and inject known pinned Go root;
+no production source export/helper/activation flag is introduced.
+Raw public CLI is executed from the actual worktree generator, with temp outputs.
+No original author private corpus is reused as the independent oracle.
+
+python3 docs/justix-auto/dev/qa/T-937/scope.py > docs/justix-auto/dev/qa/T-937/scope-output.json
+PASS exact three-leaf diff, existing test line preservation,213 inserted lines,
+three decoder copies, developer retained evidence hashes and serial ownership.
+
+git diff --check
+git diff --quiet
+git rev-parse HEAD
+PASS exact reviewed source/result remain unchanged. Only assigned QA paths new.

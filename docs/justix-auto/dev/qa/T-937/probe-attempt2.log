@@ -1,0 +1,16 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Missing expected exception: invalid security null
+    at reject (file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-937/docs/justix-auto/dev/qa/T-937/probe.mjs:44:73)
+    at file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-937/docs/justix-auto/dev/qa/T-937/probe.mjs:79:80 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: undefined,
+  operator: 'throws',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

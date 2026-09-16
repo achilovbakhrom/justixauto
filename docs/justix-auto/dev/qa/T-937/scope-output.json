@@ -1,0 +1,55 @@
+{
+  "sha": "a4de45c811c8eaa7b8d3f7559df0db4c9454a3e3",
+  "base": "23d8cede88d228ef57fa73205c159b07e57a49b2",
+  "changedLeaves": [
+    "tools/generate-contracts.mjs",
+    "tests/contracts/generation_reproducibility_test.go",
+    "docs/justix-auto/dev/results/T-937.md"
+  ],
+  "existingTestLinesPreserved": true,
+  "addedTestLines": 213,
+  "decoderCopiesPreserved": 3,
+  "hashesVerified": [
+    {
+      "path": "tools/generate-contracts.mjs",
+      "sha256": "7eebf734a79f6239822814fb1bf3efa59f89d4d278c6a0ad910eca05d955e327"
+    },
+    {
+      "path": "tests/contracts/generation_reproducibility_test.go",
+      "sha256": "123b18db465db4112ca71101743c5ca2a39457c02001234378e3d3e426b123f1"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-profile-attempt1.log",
+      "sha256": "9366af89209ed5f9ca2ff0f368cb8eedfa512ff0b30068c1b078872981c93cad"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-contract-race.log",
+      "sha256": "08dc53c82acacd0fc3a4748583a863993bcc453cad8edf047262550855472711"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-contract-race-final.log",
+      "sha256": "fa66a8a49256e39d4b7eefe966448f137db2634c3bdbd13bc5a61dd1261466e6"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-vet-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-baseline.log",
+      "sha256": "8012d55d97080849bb289ea6704c80de472b102939fc48077d0ccf632232a274"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-baseline/input.json",
+      "sha256": "cca47e12e6190d8f6b4da3e6a80a373bd513f0bb9003b90d849c7d0bf6dc7acc"
+    },
+    {
+      "path": "/private/tmp/justixauto-t937-baseline/config.json",
+      "sha256": "3b720738ac6b116996fc383fab03741f3d2cf714464d57c79ee228e5692991f2"
+    }
+  ],
+  "serializedTasks": [
+    "T-936",
+    "T-937",
+    "T-938"
+  ]
+}

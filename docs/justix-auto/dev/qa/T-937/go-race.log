@@ -1,0 +1,553 @@
+=== RUN   TestContractGenerationInertAuthProfile
+    generation_reproducibility_test.go:151: {"passingCases":234,"legacyHashes":{"go":"8ee16a5bda4e5e1866c955edb00d85b44c1500fbe0f743c0dbe075514a02aa70","ts":"0a8d2463781ffc99f9ef287aecee73e9b149751833758ce3cd5efbce10c4d866"},"rows":["closed version and immutable auth profile","matrix get /session","matrix post /session/login","matrix post /session/mfa/challenges","matrix post /session/mfa/verify","matrix post /session/logout","matrix post /session/revoke-all","matrix post /session/mfa/enrollment","matrix post /session/mfa/enrollment/{id}/confirm","matrix post /session/recovery/request","matrix post /session/recovery/complete","ordinary path parameters remain in parameter DTO","captured header declarations cannot be changed by source mutation","auth security declarations are captured and deeply immutable","both renderer entry points remain blocked","declaration order does not change the internal model","unsupported semantic version 0","unsupported operation version 0","unsupported semantic version 2","unsupported operation version 2","unsupported semantic version \"1\"","unsupported operation version \"1\"","unsupported semantic version true","unsupported operation version true","unsupported semantic version null","unsupported operation version null","unsupported semantic version {}","unsupported operation version {}","unsupported semantic version []","unsupported operation version []","missing semantic marker","missing operation marker","semantics without an auth operation","non Identity owner","auth marker on an internal route","unknown auth route","wrong auth method","missing anonymous 401","extra success status","wrong success status","unsupported error status","noncanonical status key","default response","204 content","missing response schema","unknown response schema","missing request CSRF","duplicate request CSRF","GET request CSRF","request CSRF casing","request CSRF underscore alias","request CSRF query value","request optional CSRF","request CSRF indirection","request CSRF alternative bounds","request CSRF description type","request CSRF unknown extension","auth forbids business header If-Match","auth forbids business header Idempotency-Key","unknown cookie scheme","cookie scopes","public mutual TLS","cookie scheme wrong name","cookie scheme bearer","security object instead of alternatives","missing cache /session 200","wrong CSRF matrix /session 200","wrong retry matrix /session 200","missing cache /session 401","wrong CSRF matrix /session 401","wrong retry matrix /session 401","missing cache /session 403","wrong CSRF matrix /session 403","wrong retry matrix /session 403","missing cache /session 429","wrong CSRF matrix /session 429","wrong retry matrix /session 429","missing cache /session/login 200","wrong CSRF matrix /session/login 200","wrong retry matrix /session/login 200","missing cache /session/login 401","wrong CSRF matrix /session/login 401","wrong retry matrix /session/login 401","missing cache /session/login 403","wrong CSRF matrix /session/login 403","wrong retry matrix /session/login 403","missing cache /session/login 429","wrong CSRF matrix /session/login 429","wrong retry matrix /session/login 429","missing cache /session/mfa/challenges 200","wrong CSRF matrix /session/mfa/challenges 200","wrong retry matrix /session/mfa/challenges 200","missing cache /session/mfa/challenges 401","wrong CSRF matrix /session/mfa/challenges 401","wrong retry matrix /session/mfa/challenges 401","missing cache /session/mfa/challenges 403","wrong CSRF matrix /session/mfa/challenges 403","wrong retry matrix /session/mfa/challenges 403","missing cache /session/mfa/challenges 429","wrong CSRF matrix /session/mfa/challenges 429","wrong retry matrix /session/mfa/challenges 429","missing cache /session/mfa/verify 200","wrong CSRF matrix /session/mfa/verify 200","wrong retry matrix /session/mfa/verify 200","missing cache /session/mfa/verify 401","wrong CSRF matrix /session/mfa/verify 401","wrong retry matrix /session/mfa/verify 401","missing cache /session/mfa/verify 403","wrong CSRF matrix /session/mfa/verify 403","wrong retry matrix /session/mfa/verify 403","missing cache /session/mfa/verify 429","wrong CSRF matrix /session/mfa/verify 429","wrong retry matrix /session/mfa/verify 429","missing cache /session/logout 204","wrong CSRF matrix /session/logout 204","wrong retry matrix /session/logout 204","missing cache /session/logout 401","wrong CSRF matrix /session/logout 401","wrong retry matrix /session/logout 401","missing cache /session/logout 403","wrong CSRF matrix /session/logout 403","wrong retry matrix /session/logout 403","missing cache /session/logout 429","wrong CSRF matrix /session/logout 429","wrong retry matrix /session/logout 429","missing cache /session/revoke-all 200","wrong CSRF matrix /session/revoke-all 200","wrong retry matrix /session/revoke-all 200","missing cache /session/revoke-all 401","wrong CSRF matrix /session/revoke-all 401","wrong retry matrix /session/revoke-all 401","missing cache /session/revoke-all 403","wrong CSRF matrix /session/revoke-all 403","wrong retry matrix /session/revoke-all 403","missing cache /session/revoke-all 429","wrong CSRF matrix /session/revoke-all 429","wrong retry matrix /session/revoke-all 429","missing cache /session/mfa/enrollment 200","wrong CSRF matrix /session/mfa/enrollment 200","wrong retry matrix /session/mfa/enrollment 200","missing cache /session/mfa/enrollment 401","wrong CSRF matrix /session/mfa/enrollment 401","wrong retry matrix /session/mfa/enrollment 401","missing cache /session/mfa/enrollment 403","wrong CSRF matrix /session/mfa/enrollment 403","wrong retry matrix /session/mfa/enrollment 403","missing cache /session/mfa/enrollment 429","wrong CSRF matrix /session/mfa/enrollment 429","wrong retry matrix /session/mfa/enrollment 429","missing cache /session/mfa/enrollment/{id}/confirm 200","wrong CSRF matrix /session/mfa/enrollment/{id}/confirm 200","wrong retry matrix /session/mfa/enrollment/{id}/confirm 200","missing cache /session/mfa/enrollment/{id}/confirm 401","wrong CSRF matrix /session/mfa/enrollment/{id}/confirm 401","wrong retry matrix /session/mfa/enrollment/{id}/confirm 401","missing cache /session/mfa/enrollment/{id}/confirm 403","wrong CSRF matrix /session/mfa/enrollment/{id}/confirm 403","wrong retry matrix /session/mfa/enrollment/{id}/confirm 403","missing cache /session/mfa/enrollment/{id}/confirm 429","wrong CSRF matrix /session/mfa/enrollment/{id}/confirm 429","wrong retry matrix /session/mfa/enrollment/{id}/confirm 429","missing cache /session/recovery/request 202","wrong CSRF matrix /session/recovery/request 202","wrong retry matrix /session/recovery/request 202","missing cache /session/recovery/request 401","wrong CSRF matrix /session/recovery/request 401","wrong retry matrix /session/recovery/request 401","missing cache /session/recovery/request 403","wrong CSRF matrix /session/recovery/request 403","wrong retry matrix /session/recovery/request 403","missing cache /session/recovery/request 429","wrong CSRF matrix /session/recovery/request 429","wrong retry matrix /session/recovery/request 429","missing cache /session/recovery/complete 204","wrong CSRF matrix /session/recovery/complete 204","wrong retry matrix /session/recovery/complete 204","missing cache /session/recovery/complete 401","wrong CSRF matrix /session/recovery/complete 401","wrong retry matrix /session/recovery/complete 401","missing cache /session/recovery/complete 403","wrong CSRF matrix /session/recovery/complete 403","wrong retry matrix /session/recovery/complete 403","missing cache /session/recovery/complete 429","wrong CSRF matrix /session/recovery/complete 429","wrong retry matrix /session/recovery/complete 429","X-CSRF-Token optional","X-CSRF-Token missing required","X-CSRF-Token string required","X-CSRF-Token schema ref","X-CSRF-Token header ref","X-CSRF-Token extra field","X-CSRF-Token content encoding","X-CSRF-Token extra schema","X-CSRF-Token bad description","X-CSRF-Token nullable","X-CSRF-Token lower-case field","X-CSRF-Token duplicate case alias","Retry-After optional","Retry-After missing required","Retry-After string required","Retry-After schema ref","Retry-After header ref","Retry-After extra field","Retry-After content encoding","Retry-After extra schema","Retry-After bad description","Retry-After nullable","Retry-After lower-case field","Retry-After duplicate case alias","Cache-Control optional","Cache-Control missing required","Cache-Control string required","Cache-Control schema ref","Cache-Control header ref","Cache-Control extra field","Cache-Control content encoding","Cache-Control extra schema","Cache-Control bad description","Cache-Control nullable","Cache-Control lower-case field","Cache-Control duplicate case alias","unknown response header","token empty grammar","token alternate grammar","retry string encoding","retry bound overflow","retry negative bound","cache alternative const","cache equivalent enum","ordinary and internal security behavior stays separate","inherited cookie security resolves named metadata","header descriptions are optional but the shape is closed","legacy has no auth model or advertised capability","legacy emitted bytes match the exact pre-auth-profile baseline"]}
+--- PASS: TestContractGenerationInertAuthProfile (4.36s)
+=== RUN   TestContractGenerationReproducibility
+--- PASS: TestContractGenerationReproducibility (7.33s)
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/response_header_handoff
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unsafe_integer
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_constraint
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/recursive_ref
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/429_handoff
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/pattern_dialect
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/missing_internal_mTLS
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_security
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/old_nullable
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/external_ref
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/discriminator
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/unbounded_integer
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/foreign_owner
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/cookie_parameter
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/RE2_incompatible_pattern
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/allOf
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/floating_number
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/path_mismatch
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/mixed_map
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/general_YAML
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/Go_result_symbol_collision
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/TypeScript_validator_collision
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/duplicate_JSON_keys
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/open_object
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/inherited_required
+=== RUN   TestContractGenerationRejectsUnsupportedBeforeWrites/missing_ref
+--- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites (18.76s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/response_header_handoff (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unsafe_integer (0.74s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_constraint (0.72s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/recursive_ref (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/429_handoff (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/pattern_dialect (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/missing_internal_mTLS (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unknown_security (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/old_nullable (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/external_ref (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/discriminator (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/unbounded_integer (0.73s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/foreign_owner (0.70s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/cookie_parameter (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/RE2_incompatible_pattern (1.26s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/allOf (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/floating_number (0.67s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/path_mismatch (0.65s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/mixed_map (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/general_YAML (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/Go_result_symbol_collision (0.73s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/TypeScript_validator_collision (0.66s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/duplicate_JSON_keys (0.69s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/open_object (0.73s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/inherited_required (0.71s)
+    --- PASS: TestContractGenerationRejectsUnsupportedBeforeWrites/missing_ref (0.69s)
+=== RUN   TestContractGenerationInternalOnly
+--- PASS: TestContractGenerationInternalOnly (1.48s)
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiRequest
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiResult
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_NewContractClient
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractTransport
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractOptional
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractClient
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractExchange
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_MarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_UnmarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_IsZero
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Marshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Unmarshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Context
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_PayloadSchema
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticSecurity
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticParameters
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_CreateSyntheticResult
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Record
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Readonly
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadonlyArray
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Object
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Array
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_JSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Error
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_RegExp
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Number
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Date
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Reflect
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Set
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_Promise
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_AbortSignal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/schema_URLSearchParams
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiRequest
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiResult
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ContractTransport
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_MarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_UnmarshalJSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_IsZero
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Marshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Unmarshal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Context
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Record
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Readonly
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_ReadonlyArray
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Object
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Array
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_JSON
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Error
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_RegExp
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Number
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Date
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Reflect
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Set
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_Promise
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_AbortSignal
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_URLSearchParams
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_PayloadSchema
+=== RUN   TestContractGenerationSymbolCollisionsBeforeWrites/operation_CreateSyntheticSecurity
+--- PASS: TestContractGenerationSymbolCollisionsBeforeWrites (7.72s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiRequest (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ApiResult (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_NewContractClient (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractTransport (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractOptional (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractClient (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ContractExchange (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_IsZero (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Marshal (0.60s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Unmarshal (0.66s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Context (0.59s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_PayloadSchema (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticSecurity (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadSyntheticParameters (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_CreateSyntheticResult (0.06s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Record (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Readonly (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_ReadonlyArray (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Object (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Array (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_JSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Error (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_RegExp (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Number (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Date (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Reflect (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Set (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_Promise (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_AbortSignal (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/schema_URLSearchParams (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiRequest (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ApiResult (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ContractTransport (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_IsZero (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Marshal (0.58s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Unmarshal (0.57s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Context (0.63s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Record (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Readonly (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_ReadonlyArray (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Object (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Array (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_JSON (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Error (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_RegExp (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Number (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Date (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Reflect (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Set (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_Promise (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_AbortSignal (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_URLSearchParams (0.04s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_PayloadSchema (0.05s)
+    --- PASS: TestContractGenerationSymbolCollisionsBeforeWrites/operation_CreateSyntheticSecurity (0.05s)
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Error
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_MarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_UnmarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_IsZero
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Exchange
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Token
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_UseNumber
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_More
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_SetString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Num
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Int64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_String
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_MatchString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Set
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Encode
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Owner
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_OperationID
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Method
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Path
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Headers
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Body
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Security
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_ContentType
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Kind
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_UnknownOutcome
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Type
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_In
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Name
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Value
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Present
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status200
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status201
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/schema_Status422
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Error
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnmarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsZero
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Exchange
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Token
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UseNumber
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_More
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_SetString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Num
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Int64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_String
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MatchString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Set
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Encode
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Owner
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_OperationID
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Method
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Path
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Headers
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Body
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Security
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_ContentType
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Kind
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnknownOutcome
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Type
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_In
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Name
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Value
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Present
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status200
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status201
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status422
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Error
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnmarshalJSON
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsZero
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Exchange
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Token
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UseNumber
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_More
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_SetString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Num
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Int64
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_String
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MatchString
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Set
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Encode
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Owner
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_OperationID
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Method
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Path
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Headers
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Body
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Security
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_ContentType
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Kind
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnknownOutcome
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Type
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_In
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Name
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Value
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Present
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status200
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status201
+=== RUN   TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status422
+--- PASS: TestContractGenerationGoMethodContractsBeforeWrites (58.36s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Error (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_MarshalJSON (0.06s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_IsZero (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Exchange (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Token (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_UseNumber (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_More (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_SetString (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt (0.57s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Num (0.56s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_IsInt64 (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Int64 (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_String (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_MatchString (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Set (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Encode (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Owner (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_OperationID (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Method (0.70s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Path (0.68s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Headers (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Body (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Security (0.56s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_ContentType (0.57s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Kind (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_UnknownOutcome (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Type (0.57s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_In (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Name (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Value (0.70s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Present (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status200 (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status201 (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/schema_Status422 (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Error (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsZero (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Exchange (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Token (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UseNumber (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_More (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_SetString (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Num (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_IsInt64 (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Int64 (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_String (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_MatchString (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Set (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Encode (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Owner (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_OperationID (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Method (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Path (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Headers (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Body (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Security (0.70s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_ContentType (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Kind (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_UnknownOutcome (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Type (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_In (0.57s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Name (0.68s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Value (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Present (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status200 (0.68s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status201 (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/public-operation_Status422 (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Error (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MarshalJSON (0.05s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnmarshalJSON (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsZero (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Exchange (0.04s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Token (0.58s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UseNumber (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_More (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_SetString (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Num (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_IsInt64 (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Int64 (0.71s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_String (0.62s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_MatchString (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Set (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Encode (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Owner (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_OperationID (0.63s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Method (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Path (0.67s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Headers (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Body (0.66s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Security (0.59s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_ContentType (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Kind (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_UnknownOutcome (0.64s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Type (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_In (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Name (0.69s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Value (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Present (0.65s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status200 (0.61s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status201 (0.60s)
+    --- PASS: TestContractGenerationGoMethodContractsBeforeWrites/internal-operation_Status422 (0.67s)
+=== RUN   TestContractGenerationSelectorLookingWireText
+--- PASS: TestContractGenerationSelectorLookingWireText (3.55s)
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites/second.ts
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites/second.gen.go
+=== RUN   TestContractGenerationDanglingLinksBeforeWrites/missing-parent
+--- PASS: TestContractGenerationDanglingLinksBeforeWrites (5.77s)
+    --- PASS: TestContractGenerationDanglingLinksBeforeWrites/second.ts (1.93s)
+    --- PASS: TestContractGenerationDanglingLinksBeforeWrites/second.gen.go (1.89s)
+    --- PASS: TestContractGenerationDanglingLinksBeforeWrites/missing-parent (1.95s)
+=== RUN   TestContractGenerationOutputGuards
+=== RUN   TestContractGenerationOutputGuards/empty
+=== RUN   TestContractGenerationOutputGuards/namespace
+=== RUN   TestContractGenerationOutputGuards/duplicate_output
+=== RUN   TestContractGenerationOutputGuards/input_overwrite
+=== RUN   TestContractGenerationOutputGuards/user_file
+=== RUN   TestContractGenerationOutputGuards/symlink
+=== RUN   TestContractGenerationOutputGuards/malformed_UTF8
+--- PASS: TestContractGenerationOutputGuards (3.46s)
+    --- PASS: TestContractGenerationOutputGuards/empty (0.08s)
+    --- PASS: TestContractGenerationOutputGuards/namespace (0.63s)
+    --- PASS: TestContractGenerationOutputGuards/duplicate_output (0.68s)
+    --- PASS: TestContractGenerationOutputGuards/input_overwrite (0.61s)
+    --- PASS: TestContractGenerationOutputGuards/user_file (0.73s)
+    --- PASS: TestContractGenerationOutputGuards/symlink (0.65s)
+    --- PASS: TestContractGenerationOutputGuards/malformed_UTF8 (0.08s)
+=== RUN   TestRepositoryImportBoundaries
+--- PASS: TestRepositoryImportBoundaries (0.02s)
+=== RUN   TestImportBoundaryFixtures
+=== RUN   TestImportBoundaryFixtures/domain_value
+=== RUN   TestImportBoundaryFixtures/shared_value
+=== RUN   TestImportBoundaryFixtures/app_command
+=== RUN   TestImportBoundaryFixtures/app_port
+=== RUN   TestImportBoundaryFixtures/adapter
+=== RUN   TestImportBoundaryFixtures/composition
+=== RUN   TestImportBoundaryFixtures/foreign_schema
+=== RUN   TestImportBoundaryFixtures/foreign_event
+=== RUN   TestImportBoundaryFixtures/edge_schema
+=== RUN   TestImportBoundaryFixtures/integration_test
+=== RUN   TestImportBoundaryFixtures/domain_app
+=== RUN   TestImportBoundaryFixtures/domain_adapter
+=== RUN   TestImportBoundaryFixtures/domain_port
+=== RUN   TestImportBoundaryFixtures/app_adapter
+=== RUN   TestImportBoundaryFixtures/port_app
+=== RUN   TestImportBoundaryFixtures/foreign_domain
+=== RUN   TestImportBoundaryFixtures/foreign_adapter
+=== RUN   TestImportBoundaryFixtures/foreign_app
+=== RUN   TestImportBoundaryFixtures/foreign_port
+=== RUN   TestImportBoundaryFixtures/shared_owner
+=== RUN   TestImportBoundaryFixtures/shared_contract
+=== RUN   TestImportBoundaryFixtures/shared_edge
+=== RUN   TestImportBoundaryFixtures/edge_owner
+=== RUN   TestImportBoundaryFixtures/service_edge
+=== RUN   TestImportBoundaryFixtures/invalid_owner_source
+=== RUN   TestImportBoundaryFixtures/invalid_owner_target
+=== RUN   TestImportBoundaryFixtures/invalid_layer
+=== RUN   TestImportBoundaryFixtures/contract_leak
+=== RUN   TestImportBoundaryFixtures/unapproved_public_path
+--- PASS: TestImportBoundaryFixtures (0.03s)
+    --- PASS: TestImportBoundaryFixtures/domain_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_value (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_command (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/composition (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_event (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_schema (0.00s)
+    --- PASS: TestImportBoundaryFixtures/integration_test (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/domain_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/app_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/port_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_domain (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_adapter (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_app (0.00s)
+    --- PASS: TestImportBoundaryFixtures/foreign_port (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_contract (0.00s)
+    --- PASS: TestImportBoundaryFixtures/shared_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/edge_owner (0.00s)
+    --- PASS: TestImportBoundaryFixtures/service_edge (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_source (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_owner_target (0.00s)
+    --- PASS: TestImportBoundaryFixtures/invalid_layer (0.00s)
+    --- PASS: TestImportBoundaryFixtures/contract_leak (0.00s)
+    --- PASS: TestImportBoundaryFixtures/unapproved_public_path (0.00s)
+=== RUN   TestBoundaryTraversal
+--- PASS: TestBoundaryTraversal (0.01s)
+=== RUN   TestQAArchitectureRegressions
+=== RUN   TestQAArchitectureRegressions/domain_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_server
+=== RUN   TestQAArchitectureRegressions/app_AMQP_connection
+=== RUN   TestQAArchitectureRegressions/port_gorm_signature
+=== RUN   TestQAArchitectureRegressions/domain_shared_infrastructure
+=== RUN   TestQAArchitectureRegressions/nested_docs_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_node_modules_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_vendor_cross_owner
+=== RUN   TestQAArchitectureRegressions/nested_testdata_cross_owner
+=== RUN   TestQAArchitectureRegressions/app_pgx_stdlib
+=== RUN   TestQAArchitectureRegressions/port_SQL_signature
+=== RUN   TestQAArchitectureRegressions/domain_HTTP_client
+=== RUN   TestQAArchitectureRegressions/primitive_infrastructure_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_framework_trampoline
+=== RUN   TestQAArchitectureRegressions/primitive_nested_framework
+=== RUN   TestQAArchitectureRegressions/contract_infrastructure
+=== RUN   TestQAArchitectureRegressions/adapter_gorm_implementation
+=== RUN   TestQAArchitectureRegressions/shared_eventstore_implementation
+=== RUN   TestQAArchitectureRegressions/app_technical_mechanics
+=== RUN   TestQAArchitectureRegressions/domain_immutable_event
+=== RUN   TestQAArchitectureRegressions/domain_primitive_libraries
+=== RUN   TestQAArchitectureRegressions/typed_unit_of_work_port
+--- PASS: TestQAArchitectureRegressions (0.03s)
+    --- PASS: TestQAArchitectureRegressions/domain_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_server (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_AMQP_connection (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_gorm_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_shared_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_docs_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_node_modules_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_vendor_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/nested_testdata_cross_owner (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_pgx_stdlib (0.00s)
+    --- PASS: TestQAArchitectureRegressions/port_SQL_signature (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_HTTP_client (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_infrastructure_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_framework_trampoline (0.00s)
+    --- PASS: TestQAArchitectureRegressions/primitive_nested_framework (0.00s)
+    --- PASS: TestQAArchitectureRegressions/contract_infrastructure (0.00s)
+    --- PASS: TestQAArchitectureRegressions/adapter_gorm_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/shared_eventstore_implementation (0.00s)
+    --- PASS: TestQAArchitectureRegressions/app_technical_mechanics (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_immutable_event (0.00s)
+    --- PASS: TestQAArchitectureRegressions/domain_primitive_libraries (0.00s)
+    --- PASS: TestQAArchitectureRegressions/typed_unit_of_work_port (0.00s)
+=== RUN   TestRuntimeManifestReadonly
+--- PASS: TestRuntimeManifestReadonly (1.54s)
+=== RUN   TestGoWrapperRejectsWrongCompiler
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.27.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/go1.28.0
+=== RUN   TestGoWrapperRejectsWrongCompiler/devel_go1.27
+--- PASS: TestGoWrapperRejectsWrongCompiler (1.29s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.27.0 (0.45s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/go1.28.0 (0.38s)
+    --- PASS: TestGoWrapperRejectsWrongCompiler/devel_go1.27 (0.46s)
+=== RUN   TestGoWrapperExplicitCompilerAndArguments
+--- PASS: TestGoWrapperExplicitCompilerAndArguments (0.39s)
+=== RUN   TestGoWrapperProjectToolchainDiscovery
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=false
+=== RUN   TestGoWrapperProjectToolchainDiscovery/linked=true
+--- PASS: TestGoWrapperProjectToolchainDiscovery (1.43s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=false (0.83s)
+    --- PASS: TestGoWrapperProjectToolchainDiscovery/linked=true (0.59s)
+PASS
+ok  	justixauto/tests/contracts	117.205s

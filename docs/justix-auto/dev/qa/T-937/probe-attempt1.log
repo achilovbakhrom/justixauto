@@ -1,0 +1,17 @@
+file:///Users/bakhromachilov/startups/justixauto/.worktrees/T-937/docs/justix-auto/dev/qa/T-937/probe.mjs:87
+function legacy(internal=false){return {openapi:'3.1.0',info:{title:'Independent legacy fixture',version:'1'},components:{schemas:{Datum:{type:'object',additionalProperties:false,properties:{value:{type:'number'},label:{type:['string','null']}},required:['value','label']}},securitySchemes:{TLS:{type:'mutualTLS'}}},paths:{[(internal?'/internal':'/api')+'/v1/identity/ordinary']:{get:{operationId:'ReadOrdinary',...(internal?{security:[{TLS:[]}]}:{}),responses:{200:{description:'Data',content:{'application/json':{schema:{$ref:'#/components/schemas/Datum'}}}}}}}};}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^
+
+SyntaxError: Unexpected token ';'
+    at compileSourceTextModule (node:internal/modules/esm/utils:319:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:89:18)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12)
+    at node:internal/modules/esm/loader:636:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:362:14)
+
+Node.js v24.21.0
