@@ -35890,7 +35890,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-937"
       ],
@@ -35908,8 +35908,10 @@
         "B-01.AC4"
       ],
       "scope": "Generate Go/TypeScript primitive outcomes, binding readiness, guarded per-occurrence and operation error validation. Complete structural oneOf selection precedes semantic hooks; faults cannot become branch mismatches. Execute isolated emitted-runtime probes; public auth CLI remains rejected.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-938",
+      "base_sha": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
+      "agent": "frontend_t936",
+      "execution_note": "T-937 integrated and main contract checks GREEN. Implement bounded Go/TypeScript semantic emission in isolated serial successor worktree; full structural oneOf selection before hooks and closed synchronous outcomes/readiness are required. Public CLI and renderer auth activation remain disabled through T-941. Only generator/test leaves plus result; no concrete auth schema, config, manifest, UI or release policy."
     },
     {
       "id": "T-939",
