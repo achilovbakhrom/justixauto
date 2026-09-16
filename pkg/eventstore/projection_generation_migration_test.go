@@ -33,6 +33,9 @@ func generationStore(t *testing.T, f *routeFixture) *routeStore {
 	// Explicit installer prerequisite, not a change by the migration: PostgreSQL
 	// otherwise gives PUBLIC EXECUTE/USAGE via implicit global default ACLs.
 	s.must(t, s.migration, "ALTER DEFAULT PRIVILEGES REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC; ALTER DEFAULT PRIVILEGES REVOKE USAGE ON TYPES FROM PUBLIC")
+	// Explicit outer provisioning prerequisite. The migration only validates
+	// this exact runtime-login/database setting; it never changes configuration.
+	s.must(t, "postgres", "ALTER ROLE "+s.runtime+" IN DATABASE "+s.database+" SET session_replication_role=origin")
 	return s
 }
 func generationScript(t *testing.T) string {
@@ -156,6 +159,67 @@ func generationHeadSQL(g generationIdentity) string {
 }
 func generationSwitchSQL(g generationIdentity, event, previous string, epoch int64, active string) string {
 	return generationEventSQL(g, event, previous, "switch", epoch, active) + fmt.Sprintf("UPDATE eventstore.projection_heads SET active_generation_id='%s',epoch=%d,last_event_id='%s',last_switch_event_id='%s',hold_ref=NULL,updated_at=clock_timestamp() WHERE projection_name='%s' AND epoch=%d;", g.generation, epoch+1, event, event, g.projection, epoch)
+}
+
+func TestProjectionGenerationFix2Postgres(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_PROJECTION_GENERATION") != "1" {
+		t.Skip("explicit owned PostgreSQL fixture opt-in required")
+	}
+	f := newQuarantineFixture(t)
+	for _, scope := range []string{"absent", "installer-only", "runtime-role-only", "database-only", "wrong-database", "not-login"} {
+		t.Run(scope, func(t *testing.T) {
+			s := generationStore(t, f)
+			if scope != "not-login" {
+				s.must(t, "postgres", "ALTER ROLE "+s.runtime+" IN DATABASE "+s.database+" RESET session_replication_role")
+			}
+			switch scope {
+			case "installer-only":
+				s.must(t, "postgres", "ALTER ROLE "+s.migration+" IN DATABASE "+s.database+" SET session_replication_role=origin")
+			case "runtime-role-only":
+				s.must(t, "postgres", "ALTER ROLE "+s.runtime+" SET session_replication_role=origin")
+			case "database-only":
+				s.must(t, "postgres", "ALTER DATABASE "+s.database+" SET session_replication_role=origin")
+			case "wrong-database":
+				s.must(t, "postgres", "ALTER ROLE "+s.runtime+" IN DATABASE postgres SET session_replication_role=origin")
+			case "not-login":
+				s.must(t, "postgres", "ALTER ROLE "+s.runtime+" NOLOGIN")
+			}
+			// Even an origin installer connection under an ordinary server default
+			// is insufficient without the exact independently visible login contract.
+			if got := s.must(t, s.migration, "SHOW session_replication_role"); got != "origin" {
+				t.Fatal("unexpected fixture installer mode", got)
+			}
+			settingsQuery := "SELECT coalesce(jsonb_agg(to_jsonb(s) ORDER BY setdatabase,setrole),'[]') FROM pg_db_role_setting s WHERE setrole='" + s.runtime + "'::regrole OR setrole='" + s.migration + "'::regrole OR setdatabase=(SELECT oid FROM pg_database WHERE datname=current_database())"
+			settingsBefore := s.must(t, s.migration, settingsQuery)
+			generationReject(t, s, generationScript(t))
+			if out, err := installGeneration(t, s); err == nil || !strings.Contains(out, "explicit runtime LOGIN database origin setting required") {
+				t.Fatalf("missing exact startup contract: %v %s", err, out)
+			}
+			if after := s.must(t, s.migration, settingsQuery); after != settingsBefore {
+				t.Fatal("rejected installation changed startup settings")
+			}
+		})
+	}
+	t.Run("exact pair permits fresh direct runtime login and normal storage", func(t *testing.T) {
+		s := generationStore(t, f)
+		before := s.must(t, s.migration, "SELECT setconfig::text FROM pg_db_role_setting WHERE setrole='"+s.runtime+"'::regrole AND setdatabase=(SELECT oid FROM pg_database WHERE datname=current_database())")
+		mustGeneration(t, s)
+		if after := s.must(t, s.migration, "SELECT setconfig::text FROM pg_db_role_setting WHERE setrole='"+s.runtime+"'::regrole AND setdatabase=(SELECT oid FROM pg_database WHERE datname=current_database())"); after != before {
+			t.Fatal("migration rewrote startup configuration")
+		}
+		// f.sql opens a fresh connection directly as this runtime role; it does
+		// not reuse the fixture's earlier GORM pool or issue SET ROLE.
+		if got := s.must(t, s.runtime, "SELECT session_user=current_user AND current_user='"+s.runtime+"' AND current_setting('session_replication_role')='origin' AND NOT has_parameter_privilege(current_user,'session_replication_role','SET') AND NOT has_parameter_privilege(current_user,'session_replication_role','ALTER SYSTEM')"); got != "t" {
+			t.Fatal("fresh runtime login contract", got)
+		}
+		g := generationID()
+		v := generationPrepare(t, s, g)
+		s.must(t, s.runtime, generationHeadSQL(g))
+		s.must(t, s.runtime, "BEGIN;"+generationSwitchSQL(g, uuid.NewString(), v, 1, "")+"COMMIT;")
+		if got := s.must(t, s.runtime, "SELECT epoch FROM eventstore.projection_heads WHERE projection_name='"+g.projection+"'"); got != "2" {
+			t.Fatal("normal initial switch failed", got)
+		}
+	})
 }
 
 func TestProjectionGenerationFix1Postgres(t *testing.T) {

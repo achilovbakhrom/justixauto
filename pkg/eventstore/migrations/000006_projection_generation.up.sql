@@ -52,6 +52,18 @@ BEGIN
   END IF;
   SELECT * INTO r FROM pg_roles WHERE rolname=current_setting('justix.install_runtime');
   IF NOT FOUND THEN RAISE EXCEPTION 'runtime role must already exist'; END IF;
+  -- The installer's effective setting cannot prove a different login's startup
+  -- mode. Require a concrete administrator-provisioned role/database default:
+  -- fresh direct runtime logins apply this ahead of server-wide defaults.
+  -- This does not reset existing sessions or prove external quiescence. The
+  -- reviewed installer must stop old sessions and runtime roots must connect
+  -- directly as this LOGIN role, without a proxy role/session-auth substitution.
+  IF NOT r.rolcanlogin OR (SELECT count(*) FROM pg_db_role_setting s
+    CROSS JOIN LATERAL unnest(s.setconfig) setting
+    WHERE s.setrole=r.oid AND s.setdatabase=(SELECT oid FROM pg_database WHERE datname=current_database())
+      AND setting='session_replication_role=origin')<>1 THEN
+    RAISE EXCEPTION 'explicit runtime LOGIN database origin setting required';
+  END IF;
   -- Trigger/FK integrity also depends on parameter authority. PUBLIC and
   -- inherited access are included by has_parameter_privilege; MEMBER covers
   -- conservative SET ROLE reachability, including NOINHERIT chains.
