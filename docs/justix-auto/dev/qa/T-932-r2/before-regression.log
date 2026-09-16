@@ -1,0 +1,17 @@
+=== RUN   TestQA932R2PhysicalClose
+=== RUN   TestQA932R2PhysicalClose/poison-lost-lock
+    qa_r2_test.go:49: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2061339105
+    qa_r2_test.go:49: created owned fixture justixauto-t932-ad20719c-ff1f-4e71-bedf-d06185e5b6fd id 452b9a39e0a8500ffebc7f22fba763b4f760498e75fbec7f37f92f99b037547b image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    qa_r2_test.go:88: physical transport Close has not returned
+    driver_test.go:198: validated fixture removed and absent: 452b9a39e0a8500ffebc7f22fba763b4f760498e75fbec7f37f92f99b037547b justixauto-t932-ad20719c-ff1f-4e71-bedf-d06185e5b6fd; attached volume IDs []
+=== RUN   TestQA932R2PhysicalClose/ordinary-close-already-native-closed
+    qa_r2_test.go:49: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-2428842715
+    qa_r2_test.go:49: created owned fixture justixauto-t932-5eebde3e-27a5-4730-ad06-864a16a84f41 id ea70611bcd7eb9df131aa3cff507f9fb06de619fb3b091813a0409f333980e17 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    qa_r2_test.go:88: physical transport Close has not returned
+    driver_test.go:198: validated fixture removed and absent: ea70611bcd7eb9df131aa3cff507f9fb06de619fb3b091813a0409f333980e17 justixauto-t932-5eebde3e-27a5-4730-ad06-864a16a84f41; attached volume IDs []
+--- FAIL: TestQA932R2PhysicalClose (4.17s)
+    --- FAIL: TestQA932R2PhysicalClose/poison-lost-lock (2.10s)
+    --- FAIL: TestQA932R2PhysicalClose/ordinary-close-already-native-closed (2.07s)
+FAIL
+FAIL	justixauto/tools/owner-migrate	5.968s
+FAIL

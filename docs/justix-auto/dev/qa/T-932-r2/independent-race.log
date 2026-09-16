@@ -1,0 +1,64 @@
+=== RUN   TestQA932ConcurrentInstallers
+    qa_independent_test.go:22: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1780313432
+    qa_independent_test.go:22: created owned fixture justixauto-t932-13e4de1d-cd3c-4ae0-8531-9b5615b0db28 id f1f615acee28d9b0b1b0b9c365418b640ce7527bb911aeb15f732e0c86492cb9 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: f1f615acee28d9b0b1b0b9c365418b640ce7527bb911aeb15f732e0c86492cb9 justixauto-t932-13e4de1d-cd3c-4ae0-8531-9b5615b0db28; attached volume IDs []
+--- PASS: TestQA932ConcurrentInstallers (2.52s)
+=== RUN   TestQA932DriftAfterAcquiredLock
+    qa_independent_test.go:39: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1283123137
+    qa_independent_test.go:39: created owned fixture justixauto-t932-49a85dd9-3786-4cbf-9f33-24fafef51257 id 089c574a023f456b05705aa23415e11d54d1a0d0e48f31d1a3475633eeaca518 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestQA932DriftAfterAcquiredLock/installed-file
+=== RUN   TestQA932DriftAfterAcquiredLock/required-grant
+=== NAME  TestQA932DriftAfterAcquiredLock
+    driver_test.go:198: validated fixture removed and absent: 089c574a023f456b05705aa23415e11d54d1a0d0e48f31d1a3475633eeaca518 justixauto-t932-49a85dd9-3786-4cbf-9f33-24fafef51257; attached volume IDs []
+--- PASS: TestQA932DriftAfterAcquiredLock (2.83s)
+    --- PASS: TestQA932DriftAfterAcquiredLock/installed-file (0.24s)
+    --- PASS: TestQA932DriftAfterAcquiredLock/required-grant (0.41s)
+=== RUN   TestQA932OwnerParityAdditionalPrivileges
+    qa_independent_test.go:64: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-595092575
+    qa_independent_test.go:64: created owned fixture justixauto-t932-9c974ac2-8559-47a9-aa8c-ce3a2925530f id 708cd9ed73a3e3bc0695c80fa8abfa77fdfa5a775a999e72dfbc3ffdd5fab359 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+=== RUN   TestQA932OwnerParityAdditionalPrivileges/maintain
+=== RUN   TestQA932OwnerParityAdditionalPrivileges/references-column
+=== RUN   TestQA932OwnerParityAdditionalPrivileges/metadata-write
+=== RUN   TestQA932OwnerParityAdditionalPrivileges/schema-create
+=== RUN   TestQA932OwnerParityAdditionalPrivileges/database-create
+=== RUN   TestQA932OwnerParityAdditionalPrivileges/unrelated-feature
+=== NAME  TestQA932OwnerParityAdditionalPrivileges
+    driver_test.go:198: validated fixture removed and absent: 708cd9ed73a3e3bc0695c80fa8abfa77fdfa5a775a999e72dfbc3ffdd5fab359 justixauto-t932-9c974ac2-8559-47a9-aa8c-ce3a2925530f; attached volume IDs []
+--- PASS: TestQA932OwnerParityAdditionalPrivileges (4.19s)
+    --- PASS: TestQA932OwnerParityAdditionalPrivileges/maintain (0.17s)
+    --- PASS: TestQA932OwnerParityAdditionalPrivileges/references-column (0.16s)
+    --- PASS: TestQA932OwnerParityAdditionalPrivileges/metadata-write (0.15s)
+    --- PASS: TestQA932OwnerParityAdditionalPrivileges/schema-create (0.21s)
+    --- PASS: TestQA932OwnerParityAdditionalPrivileges/database-create (0.19s)
+    --- PASS: TestQA932OwnerParityAdditionalPrivileges/unrelated-feature (0.17s)
+=== RUN   TestQA932RuntimeCannotInstall
+    qa_independent_test.go:92: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-101382799
+    qa_independent_test.go:92: created owned fixture justixauto-t932-7d6a021f-6f31-499e-b410-607f64bd8a71 id 47033d6067c05de74dfa49982a46ba678fc4cdca6a90577ffc25c17f24bd2050 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 47033d6067c05de74dfa49982a46ba678fc4cdca6a90577ffc25c17f24bd2050 justixauto-t932-7d6a021f-6f31-499e-b410-607f64bd8a71; attached volume IDs []
+--- PASS: TestQA932RuntimeCannotInstall (2.35s)
+=== RUN   TestQA932SharedLineageAndCustodyBoundary
+    qa_independent_test.go:105: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-125623343
+    qa_independent_test.go:105: created owned fixture justixauto-t932-da438442-b0e7-4da5-97b3-fa0ade1daaa8 id 6f432d4b67d4a68a85a3e369e9f8bd372892c1d12bfa0f45f7c4210bcd7c2bff image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 6f432d4b67d4a68a85a3e369e9f8bd372892c1d12bfa0f45f7c4210bcd7c2bff justixauto-t932-da438442-b0e7-4da5-97b3-fa0ade1daaa8; attached volume IDs []
+--- PASS: TestQA932SharedLineageAndCustodyBoundary (3.30s)
+=== RUN   TestQA932R2PhysicalClose
+=== RUN   TestQA932R2PhysicalClose/poison-lost-lock
+    qa_r2_test.go:49: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-1184442131
+    qa_r2_test.go:49: created owned fixture justixauto-t932-16ba1161-1e44-4951-9b0f-a67a047ed93c id bc462144619b57e07f4a865179b65f6c42cbcbb08aeff4c31303bdd6dc5e5a79 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    qa_r2_test.go:108: physical socket closed, native cleanup held, backend and all locks gone, fresh reacquisition succeeded; action=poison-lost-lock
+    driver_test.go:198: validated fixture removed and absent: bc462144619b57e07f4a865179b65f6c42cbcbb08aeff4c31303bdd6dc5e5a79 justixauto-t932-16ba1161-1e44-4951-9b0f-a67a047ed93c; attached volume IDs []
+=== RUN   TestQA932R2PhysicalClose/ordinary-close-already-native-closed
+    qa_r2_test.go:49: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-952352286
+    qa_r2_test.go:49: created owned fixture justixauto-t932-aa350736-997f-4c20-9fc2-3071103f8dec id 5ca0f15c3cbf52c9b7f4955ea3c07241c3709c4f139a1825abcd0300345be541 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    qa_r2_test.go:108: physical socket closed, native cleanup held, backend and all locks gone, fresh reacquisition succeeded; action=ordinary-close-already-native-closed
+    driver_test.go:198: validated fixture removed and absent: 5ca0f15c3cbf52c9b7f4955ea3c07241c3709c4f139a1825abcd0300345be541 justixauto-t932-aa350736-997f-4c20-9fc2-3071103f8dec; attached volume IDs []
+--- PASS: TestQA932R2PhysicalClose (4.57s)
+    --- PASS: TestQA932R2PhysicalClose/poison-lost-lock (2.26s)
+    --- PASS: TestQA932R2PhysicalClose/ordinary-close-already-native-closed (2.31s)
+=== RUN   TestQA932R2OrdinaryCloseRollsBack
+    qa_r2_test.go:114: retained synthetic evidence directory /var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/justixauto-t932-evidence-475611912
+    qa_r2_test.go:114: created owned fixture justixauto-t932-b443bb8b-4336-4fe6-abbc-29aa71f8a6d2 id bab826a533cfe992b247f87b60ccd18250c91601361fbc1a5435c61e99e69dca image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: bab826a533cfe992b247f87b60ccd18250c91601361fbc1a5435c61e99e69dca justixauto-t932-b443bb8b-4336-4fe6-abbc-29aa71f8a6d2; attached volume IDs []
+--- PASS: TestQA932R2OrdinaryCloseRollsBack (2.28s)
+PASS
+ok  	justixauto/tools/owner-migrate	23.830s

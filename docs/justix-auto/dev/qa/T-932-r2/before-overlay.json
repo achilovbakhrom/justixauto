@@ -1,0 +1,6 @@
+{
+  "Replace": {
+    "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/tools/owner-migrate/driver.go": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/docs/justix-auto/dev/qa/T-932-r2/original-driver.go",
+    "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/tools/owner-migrate/qa_r2_test.go": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-932/docs/justix-auto/dev/qa/T-932-r2/cleanup_test.go"
+  }
+}
