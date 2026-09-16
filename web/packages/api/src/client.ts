@@ -192,7 +192,12 @@ function captureMethod(receiver: unknown, name: string): (...args: never[]) => u
   // Existing structural interfaces permit prototype methods and callable getters.
   // Capture once before dispatch; generated semantic tables impose their own rules.
   const method = Reflect.get(receiver as object, name) as unknown;
-  if (typeof method !== 'function') throw new Error('Missing binding');
+  if (typeof method !== 'function') {
+    // A callable getter may be misbound to a returned native Promise. Observe its
+    // rejection before replacing it with the fixed failure; never assimilate thenables.
+    disposePromise(method);
+    throw new Error('Missing binding');
+  }
   return method as (...args: never[]) => unknown;
 }
 type CapturedContract = {

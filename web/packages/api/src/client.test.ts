@@ -431,6 +431,45 @@ describe('exact response contracts and ephemeral auth acceptance', () => {
     } finally { process.off('unhandledRejection', unhandled); }
   });
 
+  it.each(['success parse', 'error parse', 'prepare', 'accept'] as const)('disposes native Promise returns from the %s getter before fixed failure', async (hook) => {
+    const unhandled = vi.fn();
+    const thenGetter = vi.fn(() => { throw new Error(token); });
+    const thenCall = vi.fn();
+    const returns = [
+      () => Promise.reject(new Error(token)),
+      () => runInNewContext('Promise.reject(new Error("fixture-only"))') as unknown,
+      () => Promise.resolve(() => true),
+      () => runInNewContext('Promise.resolve(() => true)') as unknown,
+      () => Object.defineProperty({}, 'then', { get: thenGetter }),
+      () => ({ then: thenCall }),
+    ];
+    process.on('unhandledRejection', unhandled);
+    try {
+      for (const result of returns) {
+        const test = authCase(401);
+        const getter = vi.fn(result);
+        const receiver = hook === 'success parse' ? { parse: schema.parse }
+          : hook === 'error parse' ? { parse: endpointError('SESSION_REQUIRED').parse }
+            : test.input.authExchange!;
+        Object.defineProperty(receiver, hook.endsWith('parse') ? 'parse' : hook, { get: getter });
+        const input = hook === 'success parse' ? { ...test.input, schema: receiver as Schema<{ revision: string }> }
+          : hook === 'error parse' ? { ...test.input, responseContract: { ...test.contract, errors: { 401: receiver as Schema<ErrorReceipt> } } }
+            : test.input;
+        const { client, fetcher } = setup(test.response());
+        expect(await client.request(input)).toEqual({ kind: 'invalid-request' });
+        expect(getter).toHaveBeenCalledTimes(1);
+        expect(fetcher).not.toHaveBeenCalled();
+        expect(test.prepare).not.toHaveBeenCalled();
+        expect(test.accept).not.toHaveBeenCalled();
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(unhandled).not.toHaveBeenCalled();
+      }
+      expect(thenGetter).not.toHaveBeenCalled();
+      expect(thenCall).not.toHaveBeenCalled();
+    } finally { process.off('unhandledRejection', unhandled); }
+  });
+
   it('captures callable getters once with receivers; a throwing getter fails before dispatch', async () => {
     const test = authCase();
     let calls = 0;
