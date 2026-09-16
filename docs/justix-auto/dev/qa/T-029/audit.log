@@ -1,0 +1,21 @@
+{
+  "target": "1b26785f46dcff6f2055fc1f31e2dc9ebeff95d2",
+  "base": "6fecd0d59fba8b6f154b033279d7607560f7045e",
+  "changed": [
+    "docs/justix-auto/dev/results/T-029.md",
+    "services/insurance/adapter/postgres/unit_of_work.go",
+    "services/insurance/adapter/postgres/unit_of_work_test.go",
+    "services/insurance/migrations/0001_mechanics.up.sql",
+    "services/insurance/port/dependencies.go",
+    "services/insurance/port/unit_of_work.go"
+  ],
+  "archive_sha256": "5d2ce42a0d7b1927368032710c49ff04bb0121c06727414a9fce2b8b429ffe5e",
+  "typed_port_imports": "context only",
+  "owner_bootstrap_count": 7,
+  "foreign_database_denial_count": 6,
+  "author_fixture_reference_count": 7,
+  "fresh_fixture_reference_count": 13,
+  "populated_retained_effects": "one insurance event, scoped receipt, operation; common company; clean v1",
+  "tracked_changes": []
+}
+T-028 prior QA artifacts unchanged: 22

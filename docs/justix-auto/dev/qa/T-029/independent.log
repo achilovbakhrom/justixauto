@@ -1,0 +1,44 @@
+=== RUN   TestQA029ChecksActualTransactionAndRollsBack
+    qa_independent_test.go:18: created owned fixture justixauto-t029-1e759c67-cc97-409f-a061-a9e71f9fb459 id e49a033bc57e664aab3696f6929b9f63a955dc222a333eff33de5a4093e49574 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+    unit_of_work_test.go:164: validated fixture removed and absent: e49a033bc57e664aab3696f6929b9f63a955dc222a333eff33de5a4093e49574 justixauto-t029-1e759c67-cc97-409f-a061-a9e71f9fb459; attached volume IDs []
+--- PASS: TestQA029ChecksActualTransactionAndRollsBack (3.10s)
+=== RUN   TestQA029ModeMetadataExactness
+    qa_independent_test.go:18: created owned fixture justixauto-t029-6f4a138b-bbe0-4ad6-a2d0-6c38cbbb566a id 4453d4643ea833475243788203f223a3edcd1b5ed0103ee2f43131280dacb793 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+=== RUN   TestQA029ModeMetadataExactness/wrong-owner
+=== RUN   TestQA029ModeMetadataExactness/wrong-runtime
+=== RUN   TestQA029ModeMetadataExactness/wrong-revision
+=== RUN   TestQA029ModeMetadataExactness/not-singleton
+=== RUN   TestQA029ModeMetadataExactness/empty
+=== RUN   TestQA029ModeMetadataExactness/duplicate
+=== RUN   TestQA029ModeMetadataExactness/wrong-table-owner
+=== RUN   TestQA029ModeMetadataExactness/forced-rls
+=== RUN   TestQA029ModeMetadataExactness/column-references
+=== RUN   TestQA029ModeMetadataExactness/custody-restored-legacy-grants
+=== NAME  TestQA029ModeMetadataExactness
+    unit_of_work_test.go:164: validated fixture removed and absent: 4453d4643ea833475243788203f223a3edcd1b5ed0103ee2f43131280dacb793 justixauto-t029-6f4a138b-bbe0-4ad6-a2d0-6c38cbbb566a; attached volume IDs []
+--- PASS: TestQA029ModeMetadataExactness (4.09s)
+    --- PASS: TestQA029ModeMetadataExactness/wrong-owner (0.14s)
+    --- PASS: TestQA029ModeMetadataExactness/wrong-runtime (0.13s)
+    --- PASS: TestQA029ModeMetadataExactness/wrong-revision (0.19s)
+    --- PASS: TestQA029ModeMetadataExactness/not-singleton (0.15s)
+    --- PASS: TestQA029ModeMetadataExactness/empty (0.13s)
+    --- PASS: TestQA029ModeMetadataExactness/duplicate (0.13s)
+    --- PASS: TestQA029ModeMetadataExactness/wrong-table-owner (0.12s)
+    --- PASS: TestQA029ModeMetadataExactness/forced-rls (0.11s)
+    --- PASS: TestQA029ModeMetadataExactness/column-references (0.13s)
+    --- PASS: TestQA029ModeMetadataExactness/custody-restored-legacy-grants (0.13s)
+=== RUN   TestQA029MigrationGuardsBeforeMarker
+    qa_independent_test.go:105: created owned fixture justixauto-t029-318950dd-793c-4796-80c4-d4fb61c88cbf id 692b4f61d8999d325dd995e8e6ea322f2740cce9a58ac9ffacc525db8a77445a image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; attached volume IDs []
+=== RUN   TestQA029MigrationGuardsBeforeMarker/clean-v1
+=== RUN   TestQA029MigrationGuardsBeforeMarker/wrong-version
+=== RUN   TestQA029MigrationGuardsBeforeMarker/multiple-rows
+=== RUN   TestQA029MigrationGuardsBeforeMarker/empty
+=== NAME  TestQA029MigrationGuardsBeforeMarker
+    unit_of_work_test.go:164: validated fixture removed and absent: 692b4f61d8999d325dd995e8e6ea322f2740cce9a58ac9ffacc525db8a77445a justixauto-t029-318950dd-793c-4796-80c4-d4fb61c88cbf; attached volume IDs []
+--- PASS: TestQA029MigrationGuardsBeforeMarker (3.27s)
+    --- PASS: TestQA029MigrationGuardsBeforeMarker/clean-v1 (0.25s)
+    --- PASS: TestQA029MigrationGuardsBeforeMarker/wrong-version (0.22s)
+    --- PASS: TestQA029MigrationGuardsBeforeMarker/multiple-rows (0.22s)
+    --- PASS: TestQA029MigrationGuardsBeforeMarker/empty (0.20s)
+PASS
+ok  	justixauto/services/insurance/adapter/postgres	12.272s

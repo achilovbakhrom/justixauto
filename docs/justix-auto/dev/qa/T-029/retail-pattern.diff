@@ -1,0 +1,107 @@
+--- adapted Retail port/unit_of_work.go
++++ Insurance port/unit_of_work.go
+@@ -11,9 +11,9 @@
+ // Remote calls and broker publication belong outside this boundary. An unknown
+ // commit outcome requires authoritative receipt reconciliation, not blind retry.
+ // Features must admit actor/company/branch authority before entry and bind
+-// Insurance schemas requiring company scope. Features also own branch, customer,
+-// vehicle and action admission; a company identifier alone grants no resource
+-// access. This generic boundary is not an authorization decision and does not
++// Insurance schemas requiring insurer-company scope. Features also own branch,
++// seller/insurer relationship, application and action admission; a company
++// identifier alone grants no resource access. This generic boundary is not an authorization decision and does not
+ // infer company access from a transaction.
+ type UnitOfWork[U any] interface {
+ 	Run(context.Context, func(U) error) error
+--- adapted Retail adapter/postgres/unit_of_work.go
++++ Insurance adapter/postgres/unit_of_work.go
+@@ -69,6 +69,7 @@
+ 	var valid bool
+ 	err := db.Raw(`SELECT current_database()='justix_insurance'
+ 	 AND current_user='justix_insurance_runtime'
++	 AND session_user='justix_insurance_runtime'
+ 	 AND (SELECT count(*)=1 AND bool_and(version=1 AND NOT dirty) FROM public.schema_migrations)
+ 	 AND (SELECT count(*)=1 AND bool_and(owner_service='insurance' AND mechanics_version=1)
+ 	      FROM insurance_mechanics.compatibility)
+--- adapted Retail adapter/postgres/unit_of_work_test.go
++++ Insurance adapter/postgres/unit_of_work_test.go
+@@ -163,7 +163,7 @@
+ 	// Registered before create: even a failed CLI reply may have allocated it.
+ 	t.Cleanup(func() { cleanupFixture(t, "docker", f.name, token, root) })
+ 	args := []string{"create", "--name", f.name, "--label", fixtureLabel + "=" + token, "--tmpfs", "/var/lib/postgresql:rw", "-p", "127.0.0.1::5432", "-e", "POSTGRES_PASSWORD=" + f.password, "-v", filepath.Join(root, "infra/local/postgres/init-owners.sql") + ":/docker-entrypoint-initdb.d/10-owners.sql:ro"}
+-	for _, owner := range []string{"identity", "inventory", "commerce", "insurance", "financing", "insurance", "documents"} {
++	for _, owner := range []string{"identity", "inventory", "commerce", "retail", "financing", "insurance", "documents"} {
+ 		args = append(args, "-e", "JUSTIXAUTO_"+strings.ToUpper(owner)+"_DB_PASSWORD="+f.password)
+ 	}
+ 	args = append(args, pgImage)
+@@ -246,8 +246,8 @@
+ // The fixture performs the documented runner protocol with SQL. It does not
+ // claim that a golang-migrate binary/driver or the future tools/migrate.sh ran.
+ func TestInsurancePostgresMechanics(t *testing.T) {
+-	if os.Getenv("JUSTIXAUTO_TEST_RETAIL_MECHANICS") != "1" {
+-		t.Skip("set JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 for disposable PostgreSQL")
++	if os.Getenv("JUSTIXAUTO_TEST_INSURANCE_MECHANICS") != "1" {
++		t.Skip("set JUSTIXAUTO_TEST_INSURANCE_MECHANICS=1 for disposable PostgreSQL")
+ 	}
+ 	f := start(t)
+ 	ctx := context.Background()
+@@ -405,7 +405,38 @@
+ 	if ownerRunner.Check(ctx) == nil {
+ 		t.Fatal("migration owner accepted as runtime")
+ 	}
+-	for _, owner := range []string{"identity", "inventory", "commerce", "financing", "insurance", "documents"} {
++	t.Run("privileged-session-cannot-masquerade-as-runtime", func(t *testing.T) {
++		masquerade := f.open("postgres")
++		pool, err := masquerade.DB()
++		if err != nil {
++			t.Fatal(err)
++		}
++		pool.SetMaxOpenConns(1)
++		pool.SetMaxIdleConns(1)
++		if err := masquerade.Exec("SET ROLE justix_insurance_runtime").Error; err != nil {
++			t.Fatal(err)
++		}
++		defer func() {
++			if err := masquerade.Exec("RESET ROLE").Error; err != nil {
++				t.Error(err)
++			}
++		}()
++		binds, calls := 0, 0
++		r, err := insurance.NewUnitOfWork(masquerade, func(tx *gorm.DB) (fixturePorts, error) {
++			binds++
++			return bindFixture(tx)
++		})
++		if err != nil {
++			t.Fatal(err)
++		}
++		if !errors.Is(r.Check(ctx), insurance.ErrIncompatiblePersistence) {
++			t.Fatal("privileged login passed readiness after SET ROLE")
++		}
++		if err := r.Run(ctx, func(fixturePorts) error { calls++; return nil }); !errors.Is(err, insurance.ErrIncompatiblePersistence) || binds != 0 || calls != 0 {
++			t.Fatalf("privileged session reached business boundary: err=%v binds=%d calls=%d", err, binds, calls)
++		}
++	})
++	for _, owner := range []string{"identity", "inventory", "commerce", "retail", "financing", "documents"} {
+ 		if _, err := f.sql("justix_"+owner, "justix_insurance_runtime", "SELECT 1"); err == nil {
+ 			t.Fatalf("runtime connected to %s", owner)
+ 		}
+@@ -629,8 +660,8 @@
+ }
+ 
+ func TestInsuranceScopeRecoveryAndMessaging(t *testing.T) {
+-	if os.Getenv("JUSTIXAUTO_TEST_RETAIL_MECHANICS") != "1" {
+-		t.Skip("set JUSTIXAUTO_TEST_RETAIL_MECHANICS=1 for disposable PostgreSQL")
++	if os.Getenv("JUSTIXAUTO_TEST_INSURANCE_MECHANICS") != "1" {
++		t.Skip("set JUSTIXAUTO_TEST_INSURANCE_MECHANICS=1 for disposable PostgreSQL")
+ 	}
+ 	f := start(t)
+ 	f.must("justix_insurance", "postgres", "CREATE ROLE justix_insurance_runtime LOGIN PASSWORD '"+f.password+"'; GRANT CONNECT ON DATABASE justix_insurance TO justix_insurance_runtime;")
+@@ -866,7 +897,7 @@
+ }
+ 
+ func TestFixtureAllocationFailures(t *testing.T) {
+-	if os.Getenv("JUSTIXAUTO_TEST_RETAIL_MECHANICS") != "1" {
++	if os.Getenv("JUSTIXAUTO_TEST_INSURANCE_MECHANICS") != "1" {
+ 		t.Skip("owned PostgreSQL opt-in required")
+ 	}
+ 	if os.Getenv("JUSTIXAUTO_T029_FIXTURE_CHILD") != "" {
