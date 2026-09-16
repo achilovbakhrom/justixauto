@@ -1,0 +1,32 @@
+Worktree: /Users/bakhromachilov/startups/justixauto/.worktrees/T-944
+Exact SHA: 26e2ef72ce270d0af6954caf24e2a49e18162532
+Assigned base: b2dd2bf (full SHA in scope-output.json)
+Pinned Node PATH prefix:
+PATH=/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/toolchains/node-24.21.0/bin:$PATH
+
+bash tools/check-git.sh
+PASS own worktree root.
+npm run test:unit > docs/justix-auto/dev/qa/T-944/test-unit.log 2>&1
+PASS443tests/10files,2.90s.
+npm run typecheck > docs/justix-auto/dev/qa/T-944/typecheck.log 2>&1
+npm run lint > docs/justix-auto/dev/qa/T-944/lint.log 2>&1
+Both PASS exit0.
+
+node docs/justix-auto/dev/qa/T-944/probe.mjs > docs/justix-auto/dev/qa/T-944/probe-output.json 2> docs/justix-auto/dev/qa/T-944/probe-stderr.log
+Exit0 means diagnostic evidence completed, not implementation GREEN.
+Probe asserts exactHEAD, strict-compiles actual authEpoch.ts/imported client+decoder
+into a fresh OS temp directory, and executes actual shared-client Fetch controls.
+22 focused scenarios pass; three binding-error observations retain context/token.
+The first observation pass used login; the final independent fixture strengthens
+endpoint fidelity by using full-session challenge-create, expected authenticated,
+and a synthetic exact-code error parser. Both passes reproduce retained binding.
+No source or product expectation was changed. Empty probe-stderr.log intentional.
+
+python3 docs/justix-auto/dev/qa/T-944/scope.py > docs/justix-auto/dev/qa/T-944/scope-output.json
+PASS exact4changedleaves,authEpoch-only export addition,three source hashes,
+archive JSON checksum and19individual decoded log hashes. No log archive mutation.
+
+git diff --check
+git diff --quiet
+git rev-parse HEAD
+PASS exact reviewed source/result unchanged. Only new assigned QA paths untracked.

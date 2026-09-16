@@ -36064,7 +36064,7 @@
       "parent": "B-04",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-936",
         "T-058"
@@ -36086,8 +36086,8 @@
       "scope": "Implement the non-React controller with serialized cookie-mutating exchanges, one-shot tickets, current-epoch atomic acceptance, conservative uncertainty and explicit reacquisition. Keep tokens and one-time secrets in current closures only. Export ./authEpoch only; no generated imports, automatic retry or cross-tab cookie guarantee.",
       "worktree": ".worktrees/T-944",
       "base_sha": "b2dd2bf",
-      "agent": "qa_auth_transport",
-      "execution_note": "Coordinator implementation complete in isolated branch: pure memory-only epoch controller, forty new behavioral tests and only ./authEpoch export. Full workspace 443 tests, typecheck and lint PASS; nineteen exact command logs recoverable in result, including early failed fixture/syntax runs. Independent exact-commit QA assigned; no self-approval, React or owner cookie guarantee.",
+      "agent": "coordinator",
+      "execution_note": "Independent review26e2ef72ce270d0af6954caf24e2a49e18162532 reproduced unchanged classification retaining protected state/token after validated403 CSRF_REJECTED and401 SESSION_REQUIRED/SESSION_EXPIRED. Ten exact QA artifacts retained. Coordinator fix cycle1 must explicitly invalidate those bindings, preserve anonymous GET acquisition and ordinary rejection semantics, then obtain renewed independent exact-commit QA.",
       "reviewed_sha": "26e2ef72ce270d0af6954caf24e2a49e18162532"
     },
     {

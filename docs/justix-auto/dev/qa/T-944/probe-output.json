@@ -1,0 +1,89 @@
+{
+  "sha": "26e2ef72ce270d0af6954caf24e2a49e18162532",
+  "compiledOutput": "/var/folders/yq/j2ffv8bj2f35mcvbk7v7rk3m0000gn/T/t944-qa-kPuNAK",
+  "passingIndependentCases": 22,
+  "rows": [
+    "session pending -> logout",
+    "session pending -> context-change",
+    "session pending -> revocation",
+    "session pending -> unmount",
+    "login pending -> logout",
+    "login pending -> context-change",
+    "login pending -> revocation",
+    "login pending -> unmount",
+    "challenge-verify pending -> logout",
+    "challenge-verify pending -> context-change",
+    "challenge-verify pending -> revocation",
+    "challenge-verify pending -> unmount",
+    "enrollment-confirm pending -> logout",
+    "enrollment-confirm pending -> context-change",
+    "enrollment-confirm pending -> revocation",
+    "enrollment-confirm pending -> unmount",
+    "real logout sends private old token after clearing visible state",
+    "invalid classifier suppresses state and global diagnostics",
+    "invalid classifier suppresses state and global diagnostics",
+    "invalid classifier suppresses state and global diagnostics",
+    "reentrant nested execute stays busy; epoch invalidation wins",
+    "secret view clears on invalidation and receipt contains no payload"
+  ],
+  "unhandledRejections": 0,
+  "findings": [
+    {
+      "purpose": "challenge-create",
+      "status": 403,
+      "code": "CSRF_REJECTED",
+      "result": {
+        "kind": "accepted",
+        "epoch": 0,
+        "status": 403
+      },
+      "stateAfterRejectedBinding": {
+        "epoch": 0,
+        "phase": "authenticated",
+        "busy": false,
+        "hasView": false
+      },
+      "protectedContextStillVisible": true,
+      "subsequentUnsafeFetch": true,
+      "reusedOldToken": true
+    },
+    {
+      "purpose": "challenge-create",
+      "status": 401,
+      "code": "SESSION_EXPIRED",
+      "result": {
+        "kind": "accepted",
+        "epoch": 0,
+        "status": 401
+      },
+      "stateAfterRejectedBinding": {
+        "epoch": 0,
+        "phase": "authenticated",
+        "busy": false,
+        "hasView": false
+      },
+      "protectedContextStillVisible": true,
+      "subsequentUnsafeFetch": true,
+      "reusedOldToken": true
+    },
+    {
+      "purpose": "challenge-create",
+      "status": 401,
+      "code": "SESSION_REQUIRED",
+      "result": {
+        "kind": "accepted",
+        "epoch": 0,
+        "status": 401
+      },
+      "stateAfterRejectedBinding": {
+        "epoch": 0,
+        "phase": "authenticated",
+        "busy": false,
+        "hasView": false
+      },
+      "protectedContextStillVisible": true,
+      "subsequentUnsafeFetch": true,
+      "reusedOldToken": true
+    }
+  ]
+}

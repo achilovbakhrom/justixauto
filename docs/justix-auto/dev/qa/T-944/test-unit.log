@@ -1,0 +1,13 @@
+
+> justixauto-development-handoff@0.1.0 test:unit
+> vitest run --config web/vitest.workspace.ts --configLoader runner
+
+
+ RUN  v4.1.11 /Users/bakhromachilov/startups/justixauto/.worktrees/T-944
+
+
+ Test Files  10 passed (10)
+      Tests  443 passed (443)
+   Start at  12:28:23
+   Duration  2.90s (transform 1.92s, setup 0ms, import 5.03s, tests 3.37s, environment 5.54s)
+

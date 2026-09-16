@@ -1,0 +1,4 @@
+
+> justixauto-development-handoff@0.1.0 lint
+> eslint --config web/eslint.config.js web --max-warnings 0
+

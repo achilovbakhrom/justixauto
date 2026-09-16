@@ -1,0 +1,123 @@
+{
+  "sha": "26e2ef72ce270d0af6954caf24e2a49e18162532",
+  "base": "b2dd2bf8cb32f92936d56ba55f39162121d035b7",
+  "changedLeaves": [
+    "web/packages/api/src/authEpoch.ts",
+    "web/packages/api/src/authEpoch.test.ts",
+    "web/packages/api/package.json",
+    "docs/justix-auto/dev/results/T-944.md"
+  ],
+  "onlyAuthEpochExportAdded": true,
+  "sourceHashes": [
+    {
+      "path": "web/packages/api/src/authEpoch.ts",
+      "sha256": "b178d4ffbd2a2beb7f961cdcb7b994d315d9d34f06997d261b2fdb104759fc61"
+    },
+    {
+      "path": "web/packages/api/src/authEpoch.test.ts",
+      "sha256": "47dad1e21d4f10a76ef55b2a559b69b652bc3d8159b40ca8ceb0803e55a9af41"
+    },
+    {
+      "path": "web/packages/api/package.json",
+      "sha256": "eaa227d055427c659b4ae7456b5a5b39b4319cc4baf6213dd19ebfa0847d5406"
+    }
+  ],
+  "archiveJSONSHA256": "0337ac2e7739137c57c13b926f6efb2863f330b8f0e51ebd2a1071ec559789a3",
+  "recoveredDeveloperLogs": [
+    {
+      "name": "justixauto-t944-lint-attempt1.log",
+      "bytes": 106,
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "name": "justixauto-t944-lint-final.log",
+      "bytes": 106,
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "name": "justixauto-t944-lint-final2.log",
+      "bytes": 106,
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "name": "justixauto-t944-lint-final3.log",
+      "bytes": 106,
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "name": "justixauto-t944-lint-reviewed.log",
+      "bytes": 106,
+      "sha256": "b988d0ee8dc2aee23bda9628beec0a2b44b9033c4afa67ab679bb36f78227d9d"
+    },
+    {
+      "name": "justixauto-t944-npm-ci.log",
+      "bytes": 92,
+      "sha256": "817c51ba9e0555ea648d5a41552555ae88c4e12fe74b8f8617323c285e6759f7"
+    },
+    {
+      "name": "justixauto-t944-typecheck-attempt1.log",
+      "bytes": 500,
+      "sha256": "d0568b689a91a0db3ab75a312719eea28133ea13a73e1b27a4d2cfa2193312d1"
+    },
+    {
+      "name": "justixauto-t944-typecheck-attempt2.log",
+      "bytes": 66,
+      "sha256": "ea1dc19416836ad059c34728451fb55e23a9e97adb1558ca7a46a1822222f813"
+    },
+    {
+      "name": "justixauto-t944-typecheck-final.log",
+      "bytes": 742,
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    },
+    {
+      "name": "justixauto-t944-typecheck-final2.log",
+      "bytes": 742,
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    },
+    {
+      "name": "justixauto-t944-typecheck-final3.log",
+      "bytes": 742,
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    },
+    {
+      "name": "justixauto-t944-typecheck-reviewed.log",
+      "bytes": 742,
+      "sha256": "eee7dd0d666d25e96659ca90385337d2574c698b3fd5462a0cfb3706066d012c"
+    },
+    {
+      "name": "justixauto-t944-unit-attempt1.log",
+      "bytes": 4142,
+      "sha256": "cbe572f6f57b7e7bc7fe3455bb29b80a6587969e7728a59192d4ccf14a9cb09e"
+    },
+    {
+      "name": "justixauto-t944-unit-attempt2.log",
+      "bytes": 14544,
+      "sha256": "efc595826591b8c32c44b824810189245870c1acf97763afce41075715767653"
+    },
+    {
+      "name": "justixauto-t944-unit-attempt3.log",
+      "bytes": 392,
+      "sha256": "bc6de40dcf6b8a5fb23c18a3430ffaa26f2685e58304ab1c96f2410376c1536f"
+    },
+    {
+      "name": "justixauto-t944-unit-final.log",
+      "bytes": 370,
+      "sha256": "d1b29cb9e2dbe9e3b56e45200644bf94a0713793f60b350928c3640c6591ddfe"
+    },
+    {
+      "name": "justixauto-t944-unit-final2.log",
+      "bytes": 370,
+      "sha256": "3a683454fde42389668c668efd8b3b951097586984f04fc5b7c49e2940b85412"
+    },
+    {
+      "name": "justixauto-t944-unit-final3.log",
+      "bytes": 370,
+      "sha256": "346955c953246bd9a4289225261cbe045388acf6b8c32a30a1bec4ea656b0aa4"
+    },
+    {
+      "name": "justixauto-t944-unit-reviewed.log",
+      "bytes": 370,
+      "sha256": "7c13e9032185d49ee99e90278b09a13cd3e94e5708f9b3e2c957724ac193c803"
+    }
+  ]
+}

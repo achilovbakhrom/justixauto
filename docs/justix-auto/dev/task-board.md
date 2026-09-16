@@ -1030,7 +1030,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-941](tasks/T-941.md) | B-01 | Bound generated Go raw response parsing | implementation / 3 | foundation | todo | T-940 | `task/T-941-auth-generator-raw-limits` | ENV-GIT |
 | [T-942](tasks/T-942.md) | B-01 | Verify and activate the complete auth generation profile | implementation / 3 | foundation | todo | T-941 | `task/T-942-auth-generator-activation` | ENV-GIT |
 | [T-943](tasks/T-943.md) | B-02 | Bind concrete authentication semantics in Go and TypeScript | implementation / 4 | foundation | todo | T-641, T-058 | `task/T-943-auth-semantic-binders` | ENV-GIT |
-| [T-944](tasks/T-944.md) | B-04 | Fence in-memory auth acceptance by current request and session epoch | implementation / 4 | foundation | ready-for-qa | T-936, T-058 | `task/T-944-auth-session-epochs` | ENV-GIT |
+| [T-944](tasks/T-944.md) | B-04 | Fence in-memory auth acceptance by current request and session epoch | implementation / 4 | foundation | bounced | T-936, T-058 | `task/T-944-auth-session-epochs` | ENV-GIT |
 
 ## Approved membership version storage tasks — 2026-09-16
 
