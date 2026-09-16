@@ -84,3 +84,21 @@ transport injects it, so it must not become an ordinary generated DTO field.
 This representation introduces no new entropy, lifetime or rate policy.
 The public auth generator remains disabled through T-941; only T-942 activates
 the complete reviewed runtime. Earlier proposal bytes remain historical.
+
+## Typed error binding representation — 2026-09-16
+
+T-937 permits different named error schemas per declared operation/status. For
+T-938's P6 semantic hook, the coordinator approves `AuthErrorResponse` as the
+TypeScript union of those declared DTO types. Go uses a generated typed wrapper
+with exactly one per-schema pointer field, selected by trusted compiled
+operation/status metadata; a single-schema profile may instead use a type alias
+in either language. No arbitrary payload or untyped fallback is introduced.
+
+The generated boundary rejects empty, multiple or wrong alternatives, nil and
+typed-nil values, and operation/status mismatches before the hook. Wrapper/type
+and field names participate in existing generated symbol collision checks.
+Whole-tree structural selection still precedes semantic validation; the hook
+receives the chosen typed DTO under the existing synchronous outcome/readiness
+contract. This resolves a generated binding representation only. Wire schemas,
+endpoint matrices, policy, HTTP exchange interfaces and activation gates do not
+change. Public auth output remains disabled through T-941.
