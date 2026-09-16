@@ -35778,7 +35778,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-935",
         "T-058",
@@ -35803,8 +35803,9 @@
       "worktree": ".worktrees/T-936",
       "base_sha": "3b796c28fa04105cb0bc7154c17f27f7e47e3470",
       "agent": "qa_auth_transport",
-      "execution_note": "Fix1 disposes rejected native Promise method-getter returns before fixed failure. Full frontend403tests/typecheck/lint and affected generated-client race/vet PASS. Original13 QA artifacts preserved; independent r2 exact-commit review assigned.",
-      "reviewed_sha": "bf64253647a425f2d818ce30348bc75d91e9f2c8"
+      "execution_note": "Independent r2 GREEN at bf642536; exact shared auth transport and approved fixture dependency integrated. Main403frontend tests/typecheck/lint and actual three generated-client race fixtures14.364s PASS. All4reviewed leaves and24QAartifacts unchanged; generated auth activation/semantics/epoch controller remain separate.",
+      "reviewed_sha": "bf64253647a425f2d818ce30348bc75d91e9f2c8",
+      "integration_sha": "c02f73aae83a6d67125ab0d15642fbdfcfa52129"
     },
     {
       "id": "T-937",
