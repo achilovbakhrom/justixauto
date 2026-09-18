@@ -35752,7 +35752,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-932"
       ],
@@ -35773,8 +35773,8 @@
       "worktree": ".worktrees/T-933",
       "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
       "reviewed_sha": "d4512f1c8d7aebe71a39725b536e06a73b5e6b74",
-      "agent": "qa_t933",
-      "execution_note": "Verified upward-only runner committed at d4512f1 with actual PostgreSQL phase, concurrency, retention, failure and reconciliation probes plus full race/vet. Independent exact-commit QA assigned; production migration and baseline acceptance remain separate."
+      "agent": "backend_t933_fix",
+      "execution_note": "Independent QA BOUNCE at d4512f1: partial 1-to-12-to-17 progression can report recorded completion at clean v12, and malformed resolved reports can release the evidence path. Baseline races/vet pass; preserve the live/pure regressions and fix cycle 1 before merge."
     },
     {
       "id": "T-934",
