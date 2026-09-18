@@ -1549,8 +1549,9 @@
       "worktree": ".worktrees/T-030",
       "base_sha": "384c9ea",
       "reviewed_sha": "6e96b488f8bbbde8f8f91f05cd7cd5c7d1b10e67",
-      "agent": "qa_t027",
-      "execution_note": "Documents owner mechanics committed with live PostgreSQL and scoped race/vet evidence; independent exact-commit review assigned. No document storage policy, domain feature or service composition is claimed."
+      "agent": "coordinator",
+      "execution_note": "Independent exact-commit GREEN at 6e96b48 merged unchanged through 7703350. Combined current-main race passed all owner/shared/contract/integration/driver scopes and vet passed; no document storage policy, feature or service composition is claimed.",
+      "integration_sha": "770335031257a003c2a3bf8ae95031944df43e37"
     },
     {
       "id": "T-031",
@@ -35714,7 +35715,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-929",
         "T-930",
@@ -35934,9 +35935,10 @@
       "scope": "Generate Go/TypeScript primitive outcomes, binding readiness, guarded per-occurrence and operation error validation. Complete structural oneOf selection precedes semantic hooks; faults cannot become branch mismatches. Execute isolated emitted-runtime probes; public auth CLI remains rejected.",
       "worktree": ".worktrees/T-938",
       "base_sha": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
-      "agent": "qa_t938_fix",
-      "execution_note": "Fix cycle 1 committed Unicode scalar traversal parity at 931ce802d736950e1d89f4b0cf231bebe6f6dc2f. Original twenty-five QA artifacts and legacy/auth activation barriers remain unchanged; independent exact-commit re-review assigned.",
-      "reviewed_sha": "931ce802d736950e1d89f4b0cf231bebe6f6dc2f"
+      "agent": "coordinator",
+      "execution_note": "Independent fix-cycle GREEN at 931ce80 merged unchanged through a853ce1. Original Unicode probe, 41 parity rows, 250 inert cases and legacy barriers passed; combined current-main race and vet passed. Auth activation and downstream wiring remain separate.",
+      "reviewed_sha": "931ce802d736950e1d89f4b0cf231bebe6f6dc2f",
+      "integration_sha": "a853ce1218485b0017141e0458e807eb383ae88d"
     },
     {
       "id": "T-939",
