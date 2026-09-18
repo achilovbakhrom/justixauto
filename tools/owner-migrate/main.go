@@ -30,6 +30,7 @@ const bundleFormatRevision = 1
 
 var errRunnerConfig = errors.New("invalid owner migration runner configuration")
 var errRetainedIncomplete = errors.New("owner migration retained an incomplete dirty installation")
+var errRequestedHeadNotReached = errors.New("owner migration did not reach the requested profile head")
 
 // Bundle is a release-owned, digest-bound input. It contains no connection
 // string or credential. The CLI accepts only this complete profile and never
@@ -405,6 +406,9 @@ func runPrivate(ctx context.Context, open connectionFactory, cfg Config, store r
 	}
 	result := RunResult{Status: status, Version: a.version, Request: a.request}
 	if reconciliation == RecordedCompletion {
+		if a.version != cfg.Profile.Specification().Head {
+			return result, errors.Join(errRequestedHeadNotReached, runErr)
+		}
 		return result, nil
 	}
 	return result, errors.Join(errRetainedIncomplete, runErr)
@@ -424,6 +428,57 @@ func decodeReport(b []byte) (AttemptReport, error) {
 	return r, nil
 }
 
+func validateReportCommon(r AttemptReport, cfg Config) error {
+	s := cfg.Profile.Specification()
+	if r.FormatRevision != 1 || r.Owner != s.Owner || r.Database != s.Database || r.ProfileSHA256 != digest(cfg.Profile.Digest()) {
+		return errRunnerConfig
+	}
+	return nil
+}
+
+func attemptFromReport(r AttemptReport, cfg Config) (Attempt, error) {
+	if err := validateReportCommon(r, cfg); err != nil {
+		return Attempt{}, err
+	}
+	if r.Status != StatusPending && r.Status != StatusRetainedIncomplete && r.Status != StatusRecordedCompletion {
+		return Attempt{}, errRunnerConfig
+	}
+	request, requestErr := uuid.Parse(r.RequestID)
+	profileBytes, profileErr := hex.DecodeString(r.ProfileSHA256)
+	sqlBytes, sqlErr := hex.DecodeString(r.SQLSHA256)
+	if requestErr != nil || request == uuid.Nil || profileErr != nil || sqlErr != nil || len(profileBytes) != 32 || len(sqlBytes) != 32 || r.ProvenanceRef != cfg.ProvenanceRef || !validReference(r.ProvenanceRef) {
+		return Attempt{}, errRunnerConfig
+	}
+	s := cfg.Profile.Specification()
+	var artifact *persistence.Artifact
+	for i := range s.Artifacts {
+		if s.Artifacts[i].Identity.Version == r.Version {
+			artifact = &s.Artifacts[i]
+			break
+		}
+	}
+	if artifact == nil || r.SQLSHA256 != digest(artifact.Identity.SHA256) {
+		return Attempt{}, errRunnerConfig
+	}
+	if r.Version == 1 && request != s.Baseline.RequestID {
+		return Attempt{}, errRunnerConfig
+	}
+	var profileDigest, sqlDigest persistence.Digest
+	copy(profileDigest[:], profileBytes)
+	copy(sqlDigest[:], sqlBytes)
+	return Attempt{version: r.Version, request: request, profile: profileDigest, sql: sqlDigest, provenance: r.ProvenanceRef}, nil
+}
+
+func validateNoOpReport(r AttemptReport, cfg Config) error {
+	if err := validateReportCommon(r, cfg); err != nil {
+		return err
+	}
+	if r.Status != StatusVerifiedNoOp || r.Version != cfg.Profile.Specification().Head || r.RequestID != "" || r.SQLSHA256 != "" || r.ProvenanceRef != "" {
+		return errRunnerConfig
+	}
+	return nil
+}
+
 func loadAttempt(path string, cfg Config) (Attempt, error) {
 	b, err := readRegularNoSymlink(path)
 	if err != nil {
@@ -433,17 +488,7 @@ func loadAttempt(path string, cfg Config) (Attempt, error) {
 	if err != nil {
 		return Attempt{}, err
 	}
-	s := cfg.Profile.Specification()
-	request, requestErr := uuid.Parse(r.RequestID)
-	profileBytes, profileErr := hex.DecodeString(r.ProfileSHA256)
-	sqlBytes, sqlErr := hex.DecodeString(r.SQLSHA256)
-	if r.FormatRevision != 1 || r.Owner != s.Owner || r.Database != s.Database || request == uuid.Nil || requestErr != nil || profileErr != nil || sqlErr != nil || len(profileBytes) != 32 || len(sqlBytes) != 32 || r.ProfileSHA256 != digest(cfg.Profile.Digest()) || !validReference(r.ProvenanceRef) || (r.Status != StatusPending && r.Status != StatusRetainedIncomplete && r.Status != StatusRecordedCompletion) {
-		return Attempt{}, errRunnerConfig
-	}
-	var profileDigest, sqlDigest persistence.Digest
-	copy(profileDigest[:], profileBytes)
-	copy(sqlDigest[:], sqlBytes)
-	return Attempt{version: r.Version, request: request, profile: profileDigest, sql: sqlDigest, provenance: r.ProvenanceRef}, nil
+	return attemptFromReport(r, cfg)
 }
 
 func requireResolvedReport(path string, cfg Config) error {
@@ -463,14 +508,16 @@ func requireResolvedReport(path string, cfg Config) error {
 	if err != nil {
 		return err
 	}
-	s := cfg.Profile.Specification()
-	if r.FormatRevision != 1 || r.Owner != s.Owner || r.Database != s.Database || r.ProfileSHA256 != digest(cfg.Profile.Digest()) {
-		return errRunnerConfig
-	}
 	switch r.Status {
-	case StatusRecordedCompletion, StatusVerifiedNoOp:
-		return nil
+	case StatusRecordedCompletion:
+		_, err := attemptFromReport(r, cfg)
+		return err
+	case StatusVerifiedNoOp:
+		return validateNoOpReport(r, cfg)
 	case StatusPending, StatusRetainedIncomplete:
+		if _, err := attemptFromReport(r, cfg); err != nil {
+			return err
+		}
 		return errRetainedIncomplete
 	default:
 		return errRunnerConfig
