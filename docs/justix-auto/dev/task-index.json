@@ -1521,7 +1521,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-009",
         "T-017",
@@ -35737,9 +35737,10 @@
       "scope": "Implement the actual migrate database.Driver on one owned pgx connection: bounded lock/preflight, exact pending dirty item, original complete SQL batch, and atomic artifact receipt plus clean head. Explicit fresh-v1 exception; poisoned unknown instances and retained dirty failure, no Force/Down/Drop or upstream private-field access.",
       "worktree": ".worktrees/T-932",
       "base_sha": "e4833a0b606377a5ecdd25f9743e6b9dc5a783fe",
-      "agent": "qa_t932_fix",
-      "execution_note": "Implementation committed; independent exact-commit review assigned. Existing evidence and scoped authorization limits remain in force.",
-      "reviewed_sha": "95952e896e0ea7e47d1ac93b4f8c594594f11268"
+      "agent": "coordinator",
+      "execution_note": "Independent fix-cycle GREEN at 95952e8 is integrated through 7b3f49d. Current-main services/shared/contracts/integration race scopes passed; the exact owner-migrate live package passed in 70.370s with approved Docker access and fixture absence; scoped vet passed. Restricted parameter-mutation exclusions and downstream runner/production gates remain open.",
+      "reviewed_sha": "95952e896e0ea7e47d1ac93b4f8c594594f11268",
+      "integration_sha": "7b3f49d743445d2929d8be68d5d09e31ecac8f67"
     },
     {
       "id": "T-933",
