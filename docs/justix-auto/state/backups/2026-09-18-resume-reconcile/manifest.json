@@ -1,0 +1,32 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-resume-reconcile/task-index.json.gz",
+    "bytes": 1491140,
+    "sha256": "a328c4461930a37b55991c97efa19c28598af7490807eac8a0a20880acf70033"
+  },
+  {
+    "path": "docs/justix-auto/dev/task-board.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-resume-reconcile/task-board.md.gz",
+    "bytes": 218872,
+    "sha256": "11155f8c1c968601f313e78684264d8fbcb1a6327112ee1a2cd74b57b648cea4"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-932.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-resume-reconcile/T-932.md.gz",
+    "bytes": 4243,
+    "sha256": "0b52b1fd0271d321bc2e897d8d1ef74be86e68fc53faa169e060e0cab8b01d9e"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-938.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-resume-reconcile/T-938.md.gz",
+    "bytes": 4611,
+    "sha256": "2ad8a86a6a90a93cdd32996722492367b5c1f821c8401f946bb182c1b881d2a8"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-resume-reconcile/dev-state.md.gz",
+    "bytes": 14415,
+    "sha256": "90c2ff2bdaab49aaafef25263cefe6e2cc2c4b3fa1f9e5dad68c4e98435e0cf8"
+  }
+]

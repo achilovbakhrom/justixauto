@@ -35913,7 +35913,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-937"
       ],
@@ -35933,9 +35933,9 @@
       "scope": "Generate Go/TypeScript primitive outcomes, binding readiness, guarded per-occurrence and operation error validation. Complete structural oneOf selection precedes semantic hooks; faults cannot become branch mismatches. Execute isolated emitted-runtime probes; public auth CLI remains rejected.",
       "worktree": ".worktrees/T-938",
       "base_sha": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
-      "agent": "qa_t027",
-      "execution_note": "Independent QA reproduced a Unicode map ordering mismatch between emitted Go and TypeScript, changing mismatch versus fatal-policy outcomes. Preserve all twenty-five QA artifacts and correct traversal parity in fix cycle 1; legacy bytes and auth activation barriers remain unchanged.",
-      "reviewed_sha": "c45792e41fcbfa9a5316fb8b094e10821779a425"
+      "agent": "qa_t938_fix",
+      "execution_note": "Fix cycle 1 committed Unicode scalar traversal parity at 931ce802d736950e1d89f4b0cf231bebe6f6dc2f. Original twenty-five QA artifacts and legacy/auth activation barriers remain unchanged; independent exact-commit re-review assigned.",
+      "reviewed_sha": "931ce802d736950e1d89f4b0cf231bebe6f6dc2f"
     },
     {
       "id": "T-939",

@@ -1024,7 +1024,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-935](tasks/T-935.md) | B-02 | Decode response JSON before feature validation | implementation / 4 | foundation | integrated | T-032 | `task/T-935-strict-response-json` | ENV-GIT |
 | [T-936](tasks/T-936.md) | B-02 | Validate auth response bodies and metadata before acceptance | implementation / 4 | foundation | integrated | T-935, T-058, T-032, T-640 | `task/T-936-validated-auth-transport` | ENV-GIT |
 | [T-937](tasks/T-937.md) | B-01 | Parse the closed auth generation profile without activation | implementation / 2 | foundation | integrated | T-936, T-640 | `task/T-937-auth-generator-profile` | ENV-GIT |
-| [T-938](tasks/T-938.md) | B-01 | Generate synchronous structural and semantic validation boundaries | implementation / 4 | foundation | bounced | T-937 | `task/T-938-auth-generator-semantics` | ENV-GIT |
+| [T-938](tasks/T-938.md) | B-01 | Generate synchronous structural and semantic validation boundaries | implementation / 4 | foundation | ready-for-qa | T-937 | `task/T-938-auth-generator-semantics` | ENV-GIT |
 | [T-939](tasks/T-939.md) | B-01 | Generate the bound TypeScript auth transport interface | implementation / 4 | foundation | todo | T-938 | `task/T-939-auth-generator-typescript` | ENV-GIT |
 | [T-940](tasks/T-940.md) | B-01 | Generate the Go auth exchange and response validation interface | implementation / 4 | foundation | todo | T-939 | `task/T-940-auth-generator-go` | ENV-GIT |
 | [T-941](tasks/T-941.md) | B-01 | Bound generated Go raw response parsing | implementation / 3 | foundation | todo | T-940 | `task/T-941-auth-generator-raw-limits` | ENV-GIT |
