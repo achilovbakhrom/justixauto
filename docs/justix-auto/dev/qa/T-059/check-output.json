@@ -1,0 +1,53 @@
+{
+  "task": "T-059",
+  "reviewed_sha": "a1a8f91995211be212177e7d8724e6288483f67e",
+  "outcome": "BOUNCE",
+  "worktree_clean_before_qa_artifacts": true,
+  "changed_paths": [
+    "docs/justix-auto/dev/results/T-059.md",
+    "services/identity/contracts/events/auth.schema.json",
+    "services/identity/contracts/openapi/auth.fixtures.json",
+    "services/identity/contracts/openapi/auth.yaml",
+    "tests/contracts/identity_auth_test.go"
+  ],
+  "fixture_counts": {
+    "schema_positive": 11,
+    "structural_negative": 19,
+    "semantic_negative": 9,
+    "state_transport_negative": 47
+  },
+  "checks": [
+    {
+      "command": "bash tools/check-git.sh",
+      "result": "PASS: worktree root /Users/bakhromachilov/startups/justixauto/.worktrees/T-059"
+    },
+    {
+      "command": "GOCACHE=/private/tmp/justixauto-qa-t059-gocache GOMODCACHE=/private/tmp/justixauto-t003-modcache GOPROXY=off bash tools/go.sh test -race -count=1 ./tests/contracts -run '^TestIdentityAuth' -v",
+      "result": "PASS: 3 tests, package 4.870s"
+    },
+    {
+      "command": "GOCACHE=/private/tmp/justixauto-qa-t059-gocache GOMODCACHE=/private/tmp/justixauto-t003-modcache GOPROXY=off bash tools/go.sh test -race -count=1 -mod=readonly ./services/... ./pkg/... ./tests/...",
+      "result": "PASS: all discovered packages; tests/contracts 177.895s, tests/integration 4.681s"
+    },
+    {
+      "command": "GOCACHE=/private/tmp/justixauto-qa-t059-vetcache GOMODCACHE=/private/tmp/justixauto-t003-modcache GOPROXY=off bash tools/go.sh vet ./services/... ./pkg/... ./tests/...",
+      "result": "PASS"
+    },
+    {
+      "command": "jq -e . on auth.yaml, auth.fixtures.json and auth.schema.json; git diff --check reviewed_sha^ reviewed_sha",
+      "result": "PASS"
+    },
+    {
+      "command": "jq -e '.paths[\"/api/v1/identity/session\"].get.responses | has(\"400\")' services/identity/contracts/openapi/auth.yaml",
+      "result": "FAIL (exit 1): false"
+    },
+    {
+      "command": "inspect enrollment confirmation id parameter schema",
+      "result": "FAIL: schema is only {type:string, format:uuid}; it declares neither canonical lower-case nor nonzero ID constraints"
+    }
+  ],
+  "untested_boundaries": [
+    "No authentication runtime, database, broker, cookie jar, browser, production security policy, recovery adapter or generated auth client is implemented by T-059.",
+    "State/transport negative rows are executable catalog/schema assertions, not runtime fault-injection proof."
+  ]
+}

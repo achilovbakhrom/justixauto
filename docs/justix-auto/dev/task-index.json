@@ -977,7 +977,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-013",
         "T-927",
@@ -1002,8 +1002,8 @@
       "worktree": ".worktrees/T-015",
       "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
       "reviewed_sha": "b71337b3419f27e0d6f52891a0ba7c7c31a7553b",
-      "agent": "qa_t015",
-      "execution_note": "Implementation committed with focused live PostgreSQL and project-wide race/vet evidence. Exact commit b71337b awaits independent QA; production keys/retention, composition/broker behavior and B-01 closure remain separate."
+      "agent": "backend_t015_fix",
+      "execution_note": "Independent QA BOUNCE at b71337b: a ticket from another evidence store can invoke the ordinary effect before the missing local request chain rejects. Existing live PostgreSQL/race/vet checks pass; preserve the new isolation regression and fix before any merge."
     },
     {
       "id": "T-016",
@@ -2555,7 +2555,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "bounced",
       "depends_on": [
         "T-058",
         "T-024",
@@ -2584,8 +2584,8 @@
       "worktree": ".worktrees/T-059",
       "base_sha": "f472274",
       "reviewed_sha": "a1a8f91995211be212177e7d8724e6288483f67e",
-      "agent": "qa_t059",
-      "execution_note": "Wire schemas, safe event contract, separated fixtures and schema tests committed at a1a8f91 with full race/vet and JSON checks passing. Independent QA assigned; activation, semantic binders, private storage and security policy remain gated."
+      "agent": "backend_t059_fix",
+      "execution_note": "Independent QA BOUNCE at a1a8f91: GET /session must declare the required invalid-query 400, and enrollment path IDs must enforce canonical lowercase nonzero UUIDs with negative fixtures. All other targeted/full race, vet, JSON and diff checks passed; fix cycle 1 assigned."
     },
     {
       "id": "T-060",
@@ -35752,7 +35752,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-932"
       ],
@@ -35772,9 +35772,9 @@
       "scope": "Compose actual migrate.NewWithInstance with verified immutable upward-only source and project driver. Explicit bootstrap/shared-template phases and lock ownership, complete bundle preflight, retained incremental upgrades, verified no-op and authoritative unknown-outcome reconciliation. No automatic dirty repair or silent lower-version skipping.",
       "worktree": ".worktrees/T-933",
       "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
-      "reviewed_sha": null,
-      "agent": "backend_t933",
-      "execution_note": "Dependency-ready after T-932 GREEN integration; isolated worktree assigned for the bounded verified upward-only runner with actual engine probes."
+      "reviewed_sha": "d4512f1c8d7aebe71a39725b536e06a73b5e6b74",
+      "agent": "qa_t933",
+      "execution_note": "Verified upward-only runner committed at d4512f1 with actual PostgreSQL phase, concurrency, retention, failure and reconciliation probes plus full race/vet. Independent exact-commit QA assigned; production migration and baseline acceptance remain separate."
     },
     {
       "id": "T-934",

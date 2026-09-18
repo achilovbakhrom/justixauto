@@ -1,0 +1,5 @@
+{
+  "Replace": {
+    "/Users/bakhromachilov/startups/justixauto/.worktrees/T-015/pkg/inbox/t015_qa_test.go": "/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/qa/T-015/independent_test.go"
+  }
+}
