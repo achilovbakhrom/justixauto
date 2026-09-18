@@ -977,7 +977,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-013",
         "T-927",
@@ -1001,9 +1001,9 @@
       "scope": "Unsupported/malformed events quarantine durably before ACK; failed quarantine remains unacked; redrive uses ordinary dedup and retains repair audit.",
       "worktree": ".worktrees/T-015",
       "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
-      "reviewed_sha": "b71337b3419f27e0d6f52891a0ba7c7c31a7553b",
-      "agent": "backend_t015_fix",
-      "execution_note": "Independent QA BOUNCE at b71337b: a ticket from another evidence store can invoke the ordinary effect before the missing local request chain rejects. Existing live PostgreSQL/race/vet checks pass; preserve the new isolation regression and fix before any merge."
+      "reviewed_sha": "de6502c2474eac6d61d00db4b3761bacf132b3ca",
+      "agent": "qa_t015_fix",
+      "execution_note": "Fix cycle 1 binds tickets to the creating Redriver and proves the exact local evidence/request before any callback or mutation. Exact QA overlay, live PostgreSQL, full race and vet pass at de6502c; independent re-QA assigned."
     },
     {
       "id": "T-016",
@@ -2555,7 +2555,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "bounced",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-058",
         "T-024",
@@ -2583,9 +2583,9 @@
       "scope": "Encode the adopted auth supplement as closed JSON-form OpenAPI3.1, safe event schema and separated structural/semantic/state fixtures. Preserve named semantic constraints and inert generation barriers. This task owns no SQL or manifest; private storage and live migration tests are T-949.",
       "worktree": ".worktrees/T-059",
       "base_sha": "f472274",
-      "reviewed_sha": "a1a8f91995211be212177e7d8724e6288483f67e",
-      "agent": "backend_t059_fix",
-      "execution_note": "Independent QA BOUNCE at a1a8f91: GET /session must declare the required invalid-query 400, and enrollment path IDs must enforce canonical lowercase nonzero UUIDs with negative fixtures. All other targeted/full race, vet, JSON and diff checks passed; fix cycle 1 assigned."
+      "reviewed_sha": "2c5e30c628a08159437be07c081121abe17b4be0",
+      "agent": "qa_t059_fix",
+      "execution_note": "Fix cycle 1 adds the typed GET-session 400, exact ten-route response matrix, lowercase UUID path structure and nonzero semantic fixtures. Full race/vet and both QA probes pass at 2c5e30c; independent re-QA assigned."
     },
     {
       "id": "T-060",
