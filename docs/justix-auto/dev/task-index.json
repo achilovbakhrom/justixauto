@@ -2555,7 +2555,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "ready-for-qa",
+      "status": "integrated",
       "depends_on": [
         "T-058",
         "T-024",
@@ -2584,8 +2584,9 @@
       "worktree": ".worktrees/T-059",
       "base_sha": "f472274",
       "reviewed_sha": "2c5e30c628a08159437be07c081121abe17b4be0",
-      "agent": "qa_t059_fix",
-      "execution_note": "Fix cycle 1 adds the typed GET-session 400, exact ten-route response matrix, lowercase UUID path structure and nonzero semantic fixtures. Full race/vet and both QA probes pass at 2c5e30c; independent re-QA assigned."
+      "agent": "coordinator",
+      "execution_note": "Independent fix-cycle GREEN at 2c5e30c merged unchanged through 6cd52da. Current-main race passed services/shared/contracts/integration and vet passed; runtime auth, semantic binders, storage, security policy and external admission remain gated.",
+      "integration_sha": "6cd52dab69d454dd4bda40d87d55bf402cb45773"
     },
     {
       "id": "T-060",

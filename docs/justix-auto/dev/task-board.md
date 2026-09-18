@@ -127,7 +127,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-057](tasks/T-057.md) | B-08 | Extract locale keys without approving translations or placement | implementation / 3 | frontend-shared | todo | T-034 | `task/T-057-locale-runtime` | ENV-GIT |
 | [T-640](tasks/T-640.md) | B-01 | Implement deterministic owner DTO and runtime client generation | implementation / 4 | foundation | integrated | T-004, T-003, T-032 | `task/T-640-contract-generator` | ENV-GIT |
 | [T-058](tasks/T-058.md) | B-02 | Freeze auth request event and fixture contract | contract / 3 | contracts-identity | integrated | T-001 | `task/T-058-contract-2` | dependencies only |
-| [T-059](tasks/T-059.md) | B-02 | Encode auth wire schemas and fixtures | implementation / 3 | identity | ready-for-qa | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
+| [T-059](tasks/T-059.md) | B-02 | Encode auth wire schemas and fixtures | implementation / 3 | identity | integrated | T-058, T-024, T-929, T-931 | `task/T-059-schema-2` | ENV-GIT |
 | [T-060](tasks/T-060.md) | B-02 | Implement private credentials and session rotation | implementation / 4 | identity | todo | T-059, T-024, T-641, T-931, T-943, T-949 | `task/T-060-credentials` | ENV-GIT |
 | [T-061](tasks/T-061.md) | B-02 | Implement one-use TOTP and recovery codes | implementation / 4 | identity | todo | T-059, T-024, T-641, T-060 | `task/T-061-mfa` | ENV-GIT |
 | [T-062](tasks/T-062.md) | B-02 | Implement deployment-only guarded MFA bootstrap | implementation / 4 | identity | todo | T-059, T-024, T-641, T-061 | `task/T-062-bootstrap` | ENV-GIT |
