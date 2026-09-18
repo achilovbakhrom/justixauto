@@ -198,6 +198,235 @@ func TestContractGenerationInertAuthProfile(t *testing.T) {
 	}
 }
 
+// Compile actual inert semantic fragments in isolated modules. No shipping
+// export, CLI switch, schema registration or transport activation is added.
+func TestContractGenerationAuthSemantics(t *testing.T) {
+	h := newGenerationHarness(t)
+	source, err := os.ReadFile(filepath.Join(h.root, "tools/generate-contracts.mjs"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	entry := "\ntry { main(); } catch (error)"
+	if strings.Count(string(source), entry) != 1 {
+		t.Fatal("generator entry changed")
+	}
+	rootJSON, _ := json.Marshal(runtime.GOROOT())
+	fixtureEnd := strings.Index(inertAuthProfileChecks, "\nlet count=0;")
+	if fixtureEnd < 0 {
+		t.Fatal("inert fixture boundary changed")
+	}
+	h.write("semantic-emitter.mjs", string(source[:strings.LastIndex(string(source), entry)])+"\ncachedGoRoot="+string(rootJSON)+";\n"+inertAuthProfileChecks[:fixtureEnd]+authSemanticEmitterChecks)
+	h.write("semantic.test.ts", authSemanticTSChecks)
+	h.write("semantic_test.go", authSemanticGoChecks)
+	h.write("go.mod", "module synthetic\n\ngo 1.27.1\n")
+	t.Log(strings.TrimSpace(h.run(true, h.node, filepath.Join(h.dir, "semantic-emitter.mjs"), filepath.Join(h.dir, "input.json"))))
+	h.write("tsconfig.json", `{"compilerOptions":{"strict":true,"exactOptionalPropertyTypes":true,"noUncheckedIndexedAccess":true,"target":"ES2022","module":"CommonJS","moduleResolution":"node","ignoreDeprecations":"6.0","skipLibCheck":true,"outDir":"dist","types":[]},"include":["semantic.ts","bindings.ts","semantic.test.ts","negative.ts"]}`)
+	t.Log(strings.TrimSpace(h.run(true, h.node, filepath.Join(h.main, "node_modules/typescript/bin/tsc"), "--project", "tsconfig.json")))
+	t.Log(strings.TrimSpace(h.run(true, h.node, "dist/semantic.test.js")))
+	t.Log(strings.TrimSpace(h.run(true, filepath.Join(runtime.GOROOT(), "bin/go"), "test", "-race", "-count=1", "-v", "./...")))
+	t.Log(strings.TrimSpace(h.run(true, filepath.Join(runtime.GOROOT(), "bin/go"), "vet", "./...")))
+}
+
+const authSemanticEmitterChecks = `
+const semanticDocument=()=>JSON.parse(JSON.stringify(authDocument()).replaceAll('"Body"','"Envelope"').replaceAll('/Body"','/Envelope"'));
+const d=semanticDocument();
+const ref=(name)=>({$ref:'#/components/schemas/'+name});
+const closed=(properties)=>({type:'object',additionalProperties:false,required:Object.keys(properties),properties});
+Object.assign(d.components.schemas,{
+ Leaf:{type:'string',minLength:1}, Other:{type:'integer',minimum:0,maximum:10},
+ Left:closed({kind:{type:'string',const:'left'},value:ref('Leaf')}),
+ Right:closed({kind:{type:'string',const:'right'},value:ref('Other')}),
+ Choice:{oneOf:[ref('Left'),ref('Right')]}, Alias:ref('Choice'),
+ Twin:{type:'string',minLength:1}, Ambiguous:{oneOf:[ref('Leaf'),ref('Twin')]},
+ Maybe:{type:['string','null']},
+ Envelope:closed({a:ref('Alias'),items:{type:'array',items:ref('Leaf')},map:{type:'object',additionalProperties:ref('Leaf')},z:{type:'boolean'}}),
+ Problem:closed({detail:ref('Leaf')}), OtherProblem:closed({code:ref('Other')})
+});
+for(const item of Object.values(d.paths))for(const op of Object.values(item))op.responses[429].content['application/json'].schema=ref('OtherProblem');
+const c=compile(configEntry,d),names=authSemanticModel(c).names;
+const ts=renderAuthValidatorsTS(c),go=renderAuthValidatorsGo(c);
+const validEnvelope={a:{kind:'left',value:'x'},items:['i','j'],map:{b:'b',a:'a'},z:true};
+const parity=[{name:'valid',schema:'Envelope',value:validEnvelope},{name:'bad parent',schema:'Envelope',value:{...validEnvelope,z:'wrong'}},{name:'ambiguity',schema:'Ambiguous',value:'x'},
+ {name:'nullable',schema:'Maybe',value:null},{name:'second branch',schema:'Choice',value:{kind:'right',value:2}},
+ {name:'error',schema:'Problem',value:{detail:'x'},error:{operation:'AuthOperation0',status:401}},
+ {name:'second error',schema:'OtherProblem',value:{code:2},error:{operation:'AuthOperation0',status:429}},
+ {name:'wrong status schema',schema:'Problem',value:{code:2},error:{operation:'AuthOperation0',status:401}},
+ {name:'undeclared status',schema:'Problem',value:{detail:'x'},error:{operation:'AuthOperation0',status:200}}];
+for(const hook of ['ready','Leaf','Choice','Alias','Envelope','error'])for(const outcome of ['mismatch','fatal:policy','fatal:configuration','fatal:binding'])parity.push({name:hook+':'+outcome,schema:'Envelope',value:hook==='error'?{detail:'x'}:validEnvelope,hook,outcome,...(hook==='error'?{error:{operation:'AuthOperation0',status:401}}:{})});
+const unicodePairs=[['\u{10000}','supplementary'],['\uE000','bmp']];
+const unicodeEdges=[['\u{10FFFF}','scalar-last'],['\u{1F600}','emoji'],['\u{10000}','supplementary'],['\uFFFF','bmp-last'],['\uE000','bmp'],['\uD7FF','before-surrogates'],['\u0301','combining-alone'],['\u00E9','composed'],['e\u0301','decomposed'],['a\u{10000}','prefix-supplementary'],['aa','double-ascii'],['a','ascii'],['\u0000','control'],['','empty']];
+for(const [group,entries]of [['BMP/supplementary',unicodePairs],['scalar edges and combining forms',unicodeEdges]])for(const reversed of [false,true])for(const reject of [false,true]){
+ const pairs=reversed?[...entries].reverse():entries;
+ const expectedValues=['ordinary',...(group==='BMP/supplementary'?['bmp','supplementary']:['empty','control','ascii','double-ascii','prefix-supplementary','decomposed','composed','combining-alone','before-surrogates','bmp','bmp-last','supplementary','emoji','scalar-last'])];
+ const rejectionValues=reject?{bmp:'mismatch',supplementary:'fatal:policy'}:{};
+ const first=expectedValues.findIndex(value=>Object.hasOwn(rejectionValues,value));
+ parity.push({name:group+' reverse='+reversed+' reject='+reject,schema:'Envelope',value:{a:{kind:'left',value:'ordinary'},items:[],map:Object.fromEntries(pairs),z:true},rejectionValues,expectedOutcome:reject?'mismatch':'valid',expectedValues:first<0?expectedValues:expectedValues.slice(0,first+1)});
+}
+writeFileSync(resolve('corpus.json'),JSON.stringify(parity));
+assert.throws(()=>renderTS(c),/not activated/);assert.throws(()=>renderGo(c),/not activated/);
+assert(!ts.includes('fetch(')&&!go.includes('ContractExchange'),'fragment must not contain transport');
+assert.equal(renderAuthValidatorsTS(compile(configEntry,JSON.parse(stable(d)))),ts);
+assert.equal(renderAuthValidatorsGo(compile(configEntry,JSON.parse(stable(d)))),go);
+writeFileSync(resolve('semantic.ts'),ts+'\nexport function breakConfiguration(){delete contractSchemas.Right;}\n');
+writeFileSync(resolve('semantic.gen.go'),go);
+writeFileSync(resolve('bindings.ts'),'import type {AuthSemantics, SemanticOutcome} from "./semantic";\nexport const names='+JSON.stringify(names)+' as const;\nexport function bindings(hook:(name:string,value?:unknown)=>SemanticOutcome):AuthSemantics{return {checkReady:()=>hook("ready"),validateError:(op,status,value)=>hook("error:"+op+":"+status,value),'+names.map((name)=>'validate'+name+':value=>hook('+JSON.stringify(name)+',value)').join(',')+'};}\n');
+let bindingGo='package synthetic\n\ntype probeBinding struct {call func(string,any)FixtureSemanticOutcome}\nfunc(b *probeBinding)CheckReady()FixtureSemanticOutcome{return b.call("ready",nil)}\nfunc(b *probeBinding)ValidateError(op string,status int,value FixtureAuthErrorResponse)FixtureSemanticOutcome{return b.call("error",value)}\n';
+for(const name of names)bindingGo+='func(b *probeBinding)Validate'+name+'(value Fixture'+name+')FixtureSemanticOutcome{return b.call('+JSON.stringify(name)+',value)}\n';
+// A nil slice/map/function can implement an interface without a nil pointer.
+for(const [kind,type]of [['Slice','[]int'],['Map','map[string]int'],['Function','func()']]){
+ bindingGo+='type nil'+kind+' '+type+'\nfunc(nil'+kind+')CheckReady()FixtureSemanticOutcome{panic("nil receiver must not be invoked")}\nfunc(nil'+kind+')ValidateError(string,int,FixtureAuthErrorResponse)FixtureSemanticOutcome{panic("nil receiver must not be invoked")}\n';
+ for(const name of names)bindingGo+='func(nil'+kind+')Validate'+name+'(Fixture'+name+')FixtureSemanticOutcome{panic("nil receiver must not be invoked")}\n';
+}
+writeFileSync(resolve('bindings_test.go'),bindingGo);
+let negative='import type {AuthSemantics,SemanticOutcome} from "./semantic";\n';
+for(const method of ['checkReady','validateEnvelope','validateError'])for(const value of ['async()=>"valid"','()=>Promise.resolve("valid")','()=>({then(){}})','()=>true','()=>{}','()=>({kind:"valid"})'])negative+='// @ts-expect-error only closed synchronous primitives are accepted\nconst invalid'+negative.length+':AuthSemantics['+JSON.stringify(method)+']='+value+';\n';
+negative+='// @ts-expect-error arbitrary strings are not outcomes\nconst invalidOutcome:SemanticOutcome="anything";\n';
+writeFileSync(resolve('negative.ts'),negative);
+for(const collision of ['AuthSemantics','SemanticOutcome','ValidateError','Variant1','ParseLeaf','Outcome','LeafStructuralSchema']){
+ const bad=structuredClone(d);bad.components.schemas[collision]={type:'string'};
+ assert.throws(()=>renderAuthValidatorsTS(compile(configEntry,bad)),/collision/);
+ assert.throws(()=>renderAuthValidatorsGo(compile(configEntry,bad)),/collision/);
+}
+// A single-error primitive alias also compiles in Go.
+for(const directory of ['single']){
+ const alternative=semanticDocument();alternative.components.schemas.Problem={type:'string'};
+ const compiled=compile(configEntry,alternative);mkdirSync(resolve(directory),{recursive:true});
+ writeFileSync(resolve(directory,'semantic.gen.go'),renderAuthValidatorsGo(compiled));
+}
+console.log('actual Go/TS semantic fragments, deterministic emission, closed types, collision and activation guards emitted');
+`
+
+const authSemanticTSChecks = `
+import * as s from './semantic';
+import {bindings,names} from './bindings';
+declare function require(name:string):any;
+declare const process:{on(name:string,fn:(value:unknown)=>void):void};
+const assert=require('node:assert/strict');
+const vm=require('node:vm');
+const tick=()=>new Promise<void>(resolve=>require('node:timers').setImmediate(resolve));
+const unhandled:unknown[]=[];process.on('unhandledRejection',value=>unhandled.push(value));
+let log:string[]=[],outcome:s.SemanticOutcome='valid',stop='',ready=0,failReady=0;
+const factory=()=>bindings((name)=>{log.push(name);if(name==='ready'){ready++;if(ready===failReady)return 'fatal:policy';}return name===stop?outcome:'valid';});
+const valid={a:{kind:'left',value:'x'},items:['i','j'],map:{b:'b',a:'a'},z:true};
+const hooks=['Leaf','Left','Choice','Alias','Leaf','Leaf','Leaf','Leaf','Envelope'];
+function reset(){log=[];ready=0;failReady=0;stop='';outcome='valid';}
+function expect(run:()=>unknown,want:s.SemanticOutcome){assert.throws(run,(e:unknown)=>e instanceof s.AuthValidationError&&e.outcome===want&&e.message==='Invalid auth validation');}
+function noHooks(){assert.deepEqual(log.filter(name=>name!=='ready'),[]);}
+async function main(){
+ reset();const table=factory(),v=s.createAuthValidators(table);assert.equal(ready,1);assert(Object.isFrozen(v));
+ reset();assert.equal(v.EnvelopeSchema.parse(valid),valid);assert.deepEqual(log.filter(x=>x!=='ready'),hooks);assert.equal(ready,1+hooks.length);
+ reset();s.EnvelopeStructuralSchema.parse(valid);noHooks();assert.equal(ready,0);
+ for(const input of [{...valid,z:'wrong'},{...valid,items:['ok',4]},{...valid,a:{kind:'unknown',value:'x'}},{...valid,extra:1}]){reset();expect(()=>v.EnvelopeSchema.parse(input),'mismatch');noHooks();assert.equal(ready,1);}
+ reset();expect(()=>v.AmbiguousSchema.parse('yes'),'mismatch');noHooks();
+ reset();assert.equal(v.MaybeSchema.parse(null),null);assert.deepEqual(log,['ready','ready','Maybe']);
+ // Structural data fields named then/constructor are ordinary JSON keys.
+ reset();v.EnvelopeSchema.parse({...valid,map:{then:'data',constructor:'data'}});
+ for(const result of ['mismatch','fatal:policy','fatal:configuration','fatal:binding'] as const){reset();stop='Leaf';outcome=result;expect(()=>v.EnvelopeSchema.parse(valid),result);assert.deepEqual(log.filter(x=>x!=='ready'),['Leaf']);}
+ reset();failReady=1;expect(()=>s.createAuthValidators(factory()),'fatal:policy');noHooks();
+ reset();failReady=2;expect(()=>v.EnvelopeSchema.parse(valid),'fatal:policy');noHooks();
+ reset();failReady=3;expect(()=>v.EnvelopeSchema.parse(valid),'fatal:policy');assert.deepEqual(log.filter(x=>x!=='ready'),['Leaf']);
+ reset();stop='ready';outcome='mismatch';expect(()=>v.EnvelopeSchema.parse(valid),'fatal:binding');noHooks();
+ reset();v.validateError('AuthOperation0',401,{detail:'x'});assert.deepEqual(log.filter(x=>x!=='ready'),['Leaf','Problem','error:AuthOperation0:401']);
+ reset();v.validateError('AuthOperation0',429,{code:2});assert.deepEqual(log.filter(x=>x!=='ready'),['Other','OtherProblem','error:AuthOperation0:429']);
+ reset();expect(()=>v.validateError('AuthOperation0',401,{code:2}),'mismatch');noHooks();
+ reset();expect(()=>v.validateError('AuthOperation0',200 as s.AuthErrorStatus,{detail:'x'}),'fatal:configuration');noHooks();
+ reset();expect(()=>v.validateError('Unknown' as s.AuthOperationID,401,{detail:'x'}),'fatal:configuration');noHooks();
+ reset();table.validateEnvelope=()=>{throw Error('later mutation');};v.EnvelopeSchema.parse(valid);
+ // Own data functions only; accessors are never read, no missing/default hook.
+ for(const name of ['checkReady','validateEnvelope','validateError']){
+  reset();let getters=0;const accessor=factory();Object.defineProperty(accessor,name,{get(){getters++;return()=> 'valid';}});expect(()=>s.createAuthValidators(accessor),'fatal:binding');assert.equal(getters,0);noHooks();
+  const missing=factory() as unknown as Record<string,unknown>;delete missing[name];expect(()=>s.createAuthValidators(missing as unknown as s.AuthSemantics),'fatal:binding');
+ }
+ reset();expect(()=>s.createAuthValidators(Object.create(factory()) as s.AuthSemantics),'fatal:binding');noHooks();
+ let arbitraryReads=0;const arbitrary={get then(){arbitraryReads++;throw Error('then getter');},get kind(){arbitraryReads++;throw Error('kind getter');}};
+ const callable=Object.assign(()=> 'valid',{then(){arbitraryReads++;}});
+ const badValues:unknown[]=[undefined,null,true,false,0,1,'other',{},arbitrary,{then(){arbitraryReads++;}},callable,new String('valid')];
+ for(const field of ['checkReady','validateLeaf','validateError'])for(const bad of badValues){
+  reset();const b=factory();(b as unknown as Record<string,unknown>)[field]=()=>bad;
+  if(field==='checkReady')expect(()=>s.createAuthValidators(b),'fatal:binding');else{const validators=s.createAuthValidators(b);expect(()=>field==='validateError'?validators.validateError('AuthOperation0',401,{detail:'x'}):validators.EnvelopeSchema.parse(valid),'fatal:binding');}
+ }
+ assert.equal(arbitraryReads,0);
+ for(const field of ['checkReady','validateLeaf','validateError'])for(const thrown of [false,true])for(const cross of [false,true])for(const rejected of [false,true]){
+  reset();const b=factory();(b as unknown as Record<string,unknown>)[field]=()=>{const p=cross?vm.runInNewContext(rejected?'Promise.reject("secret")':'Promise.resolve("valid")'):rejected?Promise.reject('secret'):Promise.resolve('valid');if(thrown)throw p;return p;};
+  if(field==='checkReady')expect(()=>s.createAuthValidators(b),'fatal:binding');else{const validators=s.createAuthValidators(b);expect(()=>field==='validateError'?validators.validateError('AuthOperation0',401,{detail:'x'}):validators.EnvelopeSchema.parse(valid),'fatal:binding');}
+ }
+ for(const field of ['checkReady','validateLeaf','validateError'])for(const rejected of [false,true]){reset();const b=factory();(b as unknown as Record<string,unknown>)[field]=async()=>{if(rejected)throw Error('async secret');return 'valid';};if(field==='checkReady')expect(()=>s.createAuthValidators(b),'fatal:binding');else{const validators=s.createAuthValidators(b);expect(()=>field==='validateError'?validators.validateError('AuthOperation0',401,{detail:'x'}):validators.EnvelopeSchema.parse(valid),'fatal:binding');}}
+ // A rejected native Promise mistakenly supplied as a data field is observed.
+ for(const field of ['checkReady','validateEnvelope','validateError']){reset();const b=factory();(b as unknown as Record<string,unknown>)[field]=vm.runInNewContext('Promise.reject("field secret")');expect(()=>s.createAuthValidators(b),'fatal:binding');noHooks();}
+ reset();const badProxy=new Proxy(valid,{getPrototypeOf(){throw Promise.reject('structure secret');}});expect(()=>v.EnvelopeSchema.parse(badProxy),'fatal:configuration');noHooks();
+ reset();let branches=0;const branchFault=new Proxy({kind:'left',value:'x'},{getPrototypeOf(){if(++branches===2)throw Promise.reject('unselected branch secret');return Object.prototype;}});expect(()=>v.ChoiceSchema.parse(branchFault),'fatal:configuration');noHooks();assert.equal(branches,2);
+ const corpus=JSON.parse(require('node:fs').readFileSync('corpus.json','utf8')) as {name:string;schema:string;value:unknown;hook?:string;outcome?:s.SemanticOutcome;error?:{operation:s.AuthOperationID;status:s.AuthErrorStatus};rejectionValues?:Record<string,s.SemanticOutcome>;expectedValues?:string[];expectedOutcome?:s.SemanticOutcome}[];
+ const parity=corpus.map(row=>{const calls:string[]=[],values:string[]=[];let active=false;const validators=s.createAuthValidators(bindings((name,value)=>{if(active){calls.push(name.startsWith('error:')?'error':name);if(name==='Leaf'){values.push(String(value));if(row.rejectionValues&&Object.hasOwn(row.rejectionValues,String(value)))return row.rejectionValues[String(value)]!;}}return active&&(name===row.hook||name.startsWith('error:')&&row.hook==='error')?row.outcome!:'valid';}));active=true;let result:s.SemanticOutcome='valid';try{if(row.error)validators.validateError(row.error.operation,row.error.status,row.value);else{const parsed=(validators as unknown as Record<string,{parse(value:unknown):unknown}>)[row.schema+'Schema']!.parse(row.value);assert.deepEqual(parsed,row.value,'valid DTO keys/values changed');}}catch(error){assert(error instanceof s.AuthValidationError);result=(error as s.AuthValidationError).outcome;}if(row.expectedValues){assert.deepEqual(values,row.expectedValues,row.name);assert.equal(result,row.expectedOutcome,row.name);}return {name:row.name,outcome:result,calls,values};});
+ require('node:fs').writeFileSync('ts-parity.json',JSON.stringify(parity));assert.equal(parity.length,41);
+ reset();s.breakConfiguration();expect(()=>v.ChoiceSchema.parse({kind:'left',value:'x'}),'fatal:configuration');noHooks();
+ await tick();await tick();assert.deepEqual(unhandled,[]);assert.equal(arbitraryReads,0);assert(names.length>10);
+ console.log('TS semantic validation: whole-tree/order/readiness/outcomes/capture/error bindings/native Promise disposal PASS');
+}
+void main().catch((error)=>{require('node:process').exitCode=1;console.error(error);});
+`
+
+const authSemanticGoChecks = `package synthetic
+
+import("encoding/json";"os";"reflect";"testing")
+
+const validEnvelope = "{\"a\":{\"kind\":\"left\",\"value\":\"x\"},\"items\":[\"i\",\"j\"],\"map\":{\"b\":\"b\",\"a\":\"a\"},\"z\":true}"
+func assertOutcome(t *testing.T,err error,want FixtureSemanticOutcome){t.Helper();got,ok:=err.(FixtureAuthValidationError);if !ok||got.Outcome!=want||err.Error()!="invalid auth validation"{t.Fatalf("outcome %v, want %v",err,want)}}
+func TestAuthSemantics(t *testing.T){
+ var log []string;ready,failReady:=0,0;stop:="";outcome:=FixtureSemanticValid
+ reset:=func(){log=nil;ready=0;failReady=0;stop="";outcome=FixtureSemanticValid}
+ named:=func()[]string{result:=[]string{};for _,name:=range log{if name!="ready"{result=append(result,name)}};return result}
+ equal:=func(want []string){t.Helper();if !reflect.DeepEqual(named(),want){t.Fatalf("hooks %v, want %v",named(),want)}}
+ b:=&probeBinding{call:func(name string,value any)FixtureSemanticOutcome{log=append(log,name);if name=="ready"{ready++;if ready==failReady{return FixtureSemanticFatalPolicy}};if name==stop{return outcome};return FixtureSemanticValid}}
+ v,err:=FixtureNewAuthValidators(b);if err!=nil||ready!=1{t.Fatal(err,ready)}
+ reset();if _,err=v.ParseEnvelope([]byte(validEnvelope));err!=nil{t.Fatal(err)};equal([]string{"Leaf","Left","Choice","Alias","Leaf","Leaf","Leaf","Leaf","Envelope"});if ready!=10{t.Fatal(ready)}
+ reset();var structural FixtureEnvelope;if err=json.Unmarshal([]byte(validEnvelope),&structural);err!=nil{t.Fatal(err)};equal([]string{});if ready!=0{t.Fatal(ready)}
+ for _,bad:=range []string{"{\"a\":{\"kind\":\"left\",\"value\":\"x\"},\"items\":[\"i\",4],\"map\":{},\"z\":true}","{\"a\":{\"kind\":\"left\",\"value\":\"x\"},\"items\":[],\"map\":{},\"z\":\"wrong\"}","{\"a\":{\"kind\":\"unknown\",\"value\":\"x\"},\"items\":[],\"map\":{},\"z\":true}"}{reset();_,err=v.ParseEnvelope([]byte(bad));assertOutcome(t,err,FixtureSemanticMismatch);equal([]string{});if ready!=1{t.Fatal(ready)}}
+ reset();_,err=v.ParseAmbiguous([]byte("\"yes\""));assertOutcome(t,err,FixtureSemanticMismatch);equal([]string{})
+ reset();if _,err=v.ParseMaybe([]byte("null"));err!=nil{t.Fatal(err)};equal([]string{"Maybe"})
+ for _,result:=range []FixtureSemanticOutcome{FixtureSemanticMismatch,FixtureSemanticFatalPolicy,FixtureSemanticFatalConfiguration,FixtureSemanticFatalBinding,0,6,255}{reset();stop="Leaf";outcome=result;_,err=v.ParseEnvelope([]byte(validEnvelope));want:=result;if result<1||result>5{want=FixtureSemanticFatalBinding};assertOutcome(t,err,want);equal([]string{"Leaf"})}
+ reset();failReady=1;_,err=FixtureNewAuthValidators(b);assertOutcome(t,err,FixtureSemanticFatalPolicy);equal([]string{})
+ reset();failReady=2;_,err=v.ParseEnvelope([]byte(validEnvelope));assertOutcome(t,err,FixtureSemanticFatalPolicy);equal([]string{})
+ reset();failReady=3;_,err=v.ParseEnvelope([]byte(validEnvelope));assertOutcome(t,err,FixtureSemanticFatalPolicy);equal([]string{"Leaf"})
+ reset();stop="ready";outcome=FixtureSemanticMismatch;_,err=v.ParseEnvelope([]byte(validEnvelope));assertOutcome(t,err,FixtureSemanticFatalBinding);equal([]string{})
+ reset();receipt,err:=v.ParseError("AuthOperation0",401,[]byte("{\"detail\":\"x\"}"));if err!=nil||receipt.Variant1!=nil||receipt.Variant2==nil{t.Fatal(receipt,err)};equal([]string{"Leaf","Problem","error"})
+ reset();if err=v.ValidateError("AuthOperation0",401,receipt);err!=nil{t.Fatal(err)};equal([]string{"Leaf","Problem","error"})
+ for _,value:=range []FixtureAuthErrorResponse{{},{Variant1:&FixtureOtherProblem{}},{Variant1:&FixtureOtherProblem{},Variant2:receipt.Variant2}}{reset();assertOutcome(t,v.ValidateError("AuthOperation0",401,value),FixtureSemanticMismatch);equal([]string{})}
+ reset();_,err=v.ParseError("AuthOperation0",401,[]byte("{\"code\":2}"));assertOutcome(t,err,FixtureSemanticMismatch);equal([]string{})
+ reset();_,err=v.ParseError("AuthOperation0",200,[]byte("{}"));assertOutcome(t,err,FixtureSemanticFatalConfiguration);equal([]string{})
+ reset();_,err=v.ParseError("Unknown",401,[]byte("{}"));assertOutcome(t,err,FixtureSemanticFatalConfiguration);equal([]string{})
+ for _,binding:=range []FixtureAuthSemantics{nil,(*probeBinding)(nil),nilSlice(nil),nilMap(nil),nilFunction(nil)}{_,err=FixtureNewAuthValidators(binding);assertOutcome(t,err,FixtureSemanticFatalBinding)}
+ for _,field:=range []string{"ready","Leaf","error"}{for _,unknown:=range []FixtureSemanticOutcome{0,6,255}{reset();stop=field;outcome=unknown;if field=="ready"{_,err=FixtureNewAuthValidators(b)}else{_,err=v.ParseError("AuthOperation0",401,[]byte("{\"detail\":\"x\"}"))};assertOutcome(t,err,FixtureSemanticFatalBinding)}}
+ for _,field:=range []string{"ready","Leaf","error"}{reset();b.call=func(name string,_ any)FixtureSemanticOutcome{if name==field{panic("secret")};return FixtureSemanticValid};if field=="ready"{_,err=FixtureNewAuthValidators(b)}else{_,err=v.ParseError("AuthOperation0",401,[]byte("{\"detail\":\"x\"}"))};assertOutcome(t,err,FixtureSemanticFatalBinding)}
+ var absent *FixtureAuthValidators;_,err=absent.ParseEnvelope([]byte(validEnvelope));assertOutcome(t,err,FixtureSemanticFatalBinding)
+ b.call=func(name string,_ any)FixtureSemanticOutcome{log=append(log,name);return FixtureSemanticValid};reset()
+ original:=fixtureContractSchemas["Right"];delete(fixtureContractSchemas,"Right");_,err=v.ParseChoice([]byte("{\"kind\":\"left\",\"value\":\"x\"}"));assertOutcome(t,err,FixtureSemanticFatalConfiguration);equal([]string{});fixtureContractSchemas["Right"]=original
+ // Malformed unselected structure must remain fatal even when the first
+ // branch matches. Update the test-only fingerprint to reach the walker.
+ fingerprint:=fixtureContractAuthExpectedSchemas;fixtureContractSchemas["Right"]=map[string]any{"type":"object","additionalProperties":false,"properties":true};fixtureContractAuthExpectedSchemas,_=json.Marshal(fixtureContractSchemas)
+ reset();_,err=v.ParseChoice([]byte("{\"kind\":\"left\",\"value\":\"x\"}"));assertOutcome(t,err,FixtureSemanticFatalConfiguration);equal([]string{});fixtureContractSchemas["Right"]=original;fixtureContractAuthExpectedSchemas=fingerprint
+ // All typed conversion/builders are prepared before any named callback.
+ builder:=v.builders["Envelope"];v.builders["Envelope"]=func(any)(func()FixtureSemanticOutcome,error){panic("conversion secret")};reset();_,err=v.ParseEnvelope([]byte(validEnvelope));assertOutcome(t,err,FixtureSemanticFatalConfiguration);equal([]string{});v.builders["Envelope"]=builder
+}
+
+func TestAuthSemanticCrossLanguageParity(t *testing.T){
+ var corpus []struct{Name,Schema,Hook,Outcome,ExpectedOutcome string;Value json.RawMessage;Error *struct{Operation string;Status int};RejectionValues map[string]string;ExpectedValues []string}
+ data,err:=os.ReadFile("corpus.json");if err!=nil{t.Fatal(err)};if err=json.Unmarshal(data,&corpus);err!=nil{t.Fatal(err)}
+ outcomes:=map[string]FixtureSemanticOutcome{"valid":FixtureSemanticValid,"mismatch":FixtureSemanticMismatch,"fatal:policy":FixtureSemanticFatalPolicy,"fatal:configuration":FixtureSemanticFatalConfiguration,"fatal:binding":FixtureSemanticFatalBinding}
+ var actual []map[string]any
+ for _,row:=range corpus{
+  calls,values:=[]string{},[]string{};active:=false;binding:=&probeBinding{call:func(name string,value any)FixtureSemanticOutcome{if active{calls=append(calls,name);if name=="Leaf"{text:=string(value.(FixtureLeaf));values=append(values,text);if result,ok:=row.RejectionValues[text];ok{return outcomes[result]}};if name==row.Hook{return outcomes[row.Outcome]}};return FixtureSemanticValid}}
+  v,err:=FixtureNewAuthValidators(binding);if err!=nil{t.Fatal(err)};active=true
+  if row.Error!=nil{_,err=v.ParseError(row.Error.Operation,row.Error.Status,row.Value)}else{switch row.Schema{case "Envelope":var parsed FixtureEnvelope;parsed,err=v.ParseEnvelope(row.Value);if err==nil&&row.ExpectedValues!=nil{encoded,encodeErr:=json.Marshal(parsed);if encodeErr!=nil{t.Fatal(encodeErr)};var actual,expected any;json.Unmarshal(encoded,&actual);json.Unmarshal(row.Value,&expected);if !reflect.DeepEqual(actual,expected){t.Fatal("valid DTO keys/values changed",row.Name)}};case "Ambiguous":_,err=v.ParseAmbiguous(row.Value);case "Maybe":_,err=v.ParseMaybe(row.Value);case "Choice":_,err=v.ParseChoice(row.Value);default:t.Fatal(row.Schema)}}
+  outcome:="valid";if err!=nil{typed,ok:=err.(FixtureAuthValidationError);if !ok{t.Fatal(err)};for name,value:=range outcomes{if typed.Outcome==value{outcome=name}};if outcome=="valid"{t.Fatal("unknown outcome",err)}}
+  if row.ExpectedValues!=nil{if !reflect.DeepEqual(values,row.ExpectedValues)||outcome!=row.ExpectedOutcome{t.Fatalf("%s: values %v / %v, outcome %s / %s",row.Name,values,row.ExpectedValues,outcome,row.ExpectedOutcome)}}
+  actual=append(actual,map[string]any{"name":row.Name,"outcome":outcome,"calls":calls,"values":values})
+ }
+ encoded,_:=json.Marshal(actual);var actualJSON,expectedJSON any;if err=json.Unmarshal(encoded,&actualJSON);err!=nil{t.Fatal(err)}
+ expected,err:=os.ReadFile("ts-parity.json");if err!=nil{t.Fatal(err)};if err=json.Unmarshal(expected,&expectedJSON);err!=nil{t.Fatal(err)}
+ if !reflect.DeepEqual(actualJSON,expectedJSON){t.Fatalf("Go/TS parity mismatch\nGo: %s\nTS: %s",encoded,expected)};t.Logf("%d identical outcome, readiness/hook and Leaf-value traces",len(corpus))
+}
+`
+
 const inertAuthProfileChecks = `
 const assert=(await import('node:assert/strict')).default;
 const fixture=readJSON(process.argv[2]);
