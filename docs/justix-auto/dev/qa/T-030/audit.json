@@ -1,0 +1,168 @@
+{
+  "target": "6e96b488f8bbbde8f8f91f05cd7cd5c7d1b10e67",
+  "base": "384c9ea59ea72fb45aeeab503c6a515ff80d7b20",
+  "changed": [
+    "docs/justix-auto/dev/results/T-030.md",
+    "services/documents/adapter/postgres/unit_of_work.go",
+    "services/documents/adapter/postgres/unit_of_work_test.go",
+    "services/documents/migrations/0001_mechanics.up.sql",
+    "services/documents/port/dependencies.go",
+    "services/documents/port/unit_of_work.go"
+  ],
+  "source_sha256": {
+    "services/documents/adapter/postgres/unit_of_work.go": "2bce39a4df3062c5361e3235b50d2ad3247e036a86d0cee84ed20888e49add5b",
+    "services/documents/adapter/postgres/unit_of_work_test.go": "54e78e92eeb007af34a297f6b88a3a0a197dd325154a6bf398c8a1fccd0f24e1",
+    "services/documents/migrations/0001_mechanics.up.sql": "9efd52cb068b74a1cadbb3f9d461a5516cf69eb95264b550835f5c9e22589612",
+    "services/documents/port/dependencies.go": "a3b5d6bd416bb3c39ddae1e2c3574ca0124bd6261d52e2fc25dc1998374520e2",
+    "services/documents/port/unit_of_work.go": "398b3bfb9255b477a407317dd1cae0475c5c53bfe9d229e499d0afecca08880a"
+  },
+  "base_preimages_checked": 3818,
+  "base_identity_manifest_sha256": "516873e726fa73d40e421839ce9d4618199bdf1a74b6b712e4f6c784f616d156",
+  "author_archive_sha256": "ccfbb7c37422642627be1922e3e25ba791d97ec423e1242541016bbc5a3144b8",
+  "author_entries": [
+    {
+      "name": "justixauto-t030-unit.log",
+      "sha256": "d0f0a879f723d3b324c88fd19778dc7dc1c0fe09f2dc52db6e23b5d66a929178",
+      "bytes": 115,
+      "final_newline": true
+    },
+    {
+      "name": "justixauto-t030-live.log",
+      "sha256": "9d1acd45056af39bc638f1a1139f8a3ec96a3e8e74db529763593874fa72a3f7",
+      "bytes": 14533,
+      "final_newline": true
+    },
+    {
+      "name": "justixauto-t030-scoped-race.log",
+      "sha256": "7b4a8044b9e21616180047ddf3f24d4af8c6e273e9a95ea7451b08a218ebe887",
+      "bytes": 1080,
+      "final_newline": true
+    },
+    {
+      "name": "justixauto-t030-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "final_newline": true
+    },
+    {
+      "name": "justixauto-t030-source-audit.json",
+      "sha256": "75604e3771a1206f21d6246b0b52625b51a18e86a73f3dfd3c117a04609363af",
+      "bytes": 835,
+      "final_newline": true
+    },
+    {
+      "name": "justixauto-t030-cleanup-audit.json",
+      "sha256": "4ecb1b3fbce104000ecd4594586d6beaddcc4588f67089591a070e8884fb2a73",
+      "bytes": 784,
+      "final_newline": true
+    }
+  ],
+  "bootstrap_owners": 7,
+  "foreign_database_denials": 6,
+  "author_fixture_references": 7,
+  "fresh_fixture_references": 13,
+  "independent_absence_checks": [
+    {
+      "reference": "0cde76c0e587565565aafa38d9ec8ea8c2e24e7cfcbdd54038560d8023eae0a0",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "34c2b238942210b12b34c296772241547485a1664ebc8b6cf9cefc627d68a415",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "4397204be98384ac0610d28fcf948e3b33ca46b192b54b8a0841d531c3b6fe85",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "4b6e8b4c853835b7c92108b6b61716c800295ce704c48984aa2904475ab8dd86",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "4c3c45e999bc600062bad293af641c626aaaec2268b3c8ee5a56a9d62fcd5a77",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "b364613e2e4a27d1667873d829a4d55b8795908cce9286a32d2dce54a14457d0",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "cbc7a45eaeaefc96f22cdf9d743b5373793dfb592b2e4d4d11fa585d748f0065",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "f26005232c53e58b13f407795ea2163a246df8f7b7e6d59bcb707fffcaac070f",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "f940ee7e21fef3defb218fbd7253959a274ce4702c5b072dab831fa44c61ca7b",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-16ad4ca3-806d-4196-973c-3f893521041b",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-26bd9067-58ba-455a-be20-95cf7a8ce65c",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-3c6ba367-37c7-4ad9-a7e3-5928238dcfa6",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-51ff5135-1ba3-46c5-b24d-26741ac25a46",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-84ac3550-8e20-4b4c-9bfa-0647f4b599fd",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-a3b9b1ce-28bf-4baa-b6b1-d7c2fa15a1cc",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-bf38958c-eda2-4fef-a48e-74055747a55a",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-c605ea0d-69c2-494b-981b-4b1714c1af5a",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-ed4411de-bde5-4137-9a73-3b3367cbdd26",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-f7624d15-b0f9-4034-8867-d03ff9237974",
+      "absent": true,
+      "exit": 1
+    },
+    {
+      "reference": "justixauto-t030-fdcee8bc-add9-4453-b7be-fbe12d649803",
+      "absent": true,
+      "exit": 1
+    }
+  ],
+  "populated_retained_rows": "one Documents event, receipt and operation; common synthetic company; clean v1",
+  "tracked_changes": []
+}

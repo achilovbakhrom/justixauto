@@ -1,0 +1,5 @@
+{
+  "Replace": {
+    "/Users/bakhromachilov/startups/justixauto/.worktrees/T-030/services/documents/adapter/postgres/qa_independent_test.go": "/Users/bakhromachilov/startups/justixauto/.worktrees/T-030/docs/justix-auto/dev/qa/T-030/independent_test.go"
+  }
+}

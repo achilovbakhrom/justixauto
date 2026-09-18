@@ -1,0 +1,20 @@
+package synthetic
+import("encoding/json";"os";"reflect";"testing")
+func TestQAUnicodeTraversal(t *testing.T){
+ input:=[]byte("{\"a\":{\"kind\":\"left\",\"value\":\"ordinary\"},\"items\":[],\"map\":{\"\uE000\":\"bmp\",\"\U00010000\":\"supplementary\"},\"z\":true}")
+ type row struct{Reject bool;Outcome string;Calls []string}
+ var rows []row
+ for _,reject:=range []bool{false,true}{
+  calls:=[]string{}
+  validators,err:=FixtureNewAuthValidators(&probeBinding{call:func(name string,value any)FixtureSemanticOutcome{
+   if name=="Leaf"{text:=string(value.(FixtureLeaf));calls=append(calls,text);if reject&&text=="bmp"{return FixtureSemanticMismatch};if reject&&text=="supplementary"{return FixtureSemanticFatalPolicy}}
+   return FixtureSemanticValid
+  }});if err!=nil{t.Fatal(err)}
+  _,err=validators.ParseEnvelope(input);outcome:="valid"
+  if err!=nil{failure,ok:=err.(FixtureAuthValidationError);if !ok{t.Fatal(err)};switch failure.Outcome{case FixtureSemanticMismatch:outcome="mismatch";case FixtureSemanticFatalPolicy:outcome="fatal:policy";default:t.Fatal(failure)}}
+  rows=append(rows,row{reject,outcome,calls})
+ }
+ raw,err:=os.ReadFile("qa-ts.json");if err!=nil{t.Fatal(err)};var expected []row;if err=json.Unmarshal(raw,&expected);err!=nil{t.Fatal(err)}
+ encoded,_:=json.Marshal(rows);t.Logf("Actual Go semantic traversal: %s",encoded)
+ if !reflect.DeepEqual(rows,expected){t.Fatalf("semantic Go/TS Unicode parity diverges\nGo: %s\nTS: %s",encoded,raw)}
+}

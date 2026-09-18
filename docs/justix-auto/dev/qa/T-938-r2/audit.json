@@ -1,0 +1,29 @@
+{
+  "target": "931ce802d736950e1d89f4b0cf231bebe6f6dc2f",
+  "parent": "c45792e41fcbfa9a5316fb8b094e10821779a425",
+  "base": "809d539a45ce4dae9a423e7f0d26ef17d478ad63",
+  "changed_from_base": [
+    "docs/justix-auto/dev/results/T-938.md",
+    "tests/contracts/generation_reproducibility_test.go",
+    "tools/generate-contracts.mjs"
+  ],
+  "changed_in_fix": [
+    "docs/justix-auto/dev/results/T-938.md",
+    "tests/contracts/generation_reproducibility_test.go",
+    "tools/generate-contracts.mjs"
+  ],
+  "source": {
+    "docs/justix-auto/dev/results/T-938.md": "985865539410d2b049ade96070ad67097d6d8f319271bb83fa29d4544350bd08",
+    "tests/contracts/generation_reproducibility_test.go": "0012be760605fa88304423488aa39a4720ae92e3cfe65c67dd27ff9e86085e5f",
+    "tools/generate-contracts.mjs": "de72fda38c34401fcbedd9c88bdd86d5cdc21598ced15751aa38eab4614691aa"
+  },
+  "unchanged": {
+    "go.mod": "d240b6a3cf34d76d3c87d549db86dfe56635faab80b85f4e77aae0bf76edad0d",
+    "go.sum": "5bdef8e512d1a8d379eec0064b65e24f66b2d78eb39d1d12885c86e0d3f8af6c",
+    "package.json": "2f35ece6c1886c341305fa21e868453c233c0de2a6e1202e0f2ff5f9ec150d81",
+    "package-lock.json": "2762d9c7a705ec303251909c73a9748ec479ae2fb4adbe4ac6c69c1a2fd37404",
+    "tools/contracts-generator.config.json": "947bf67a1ae74d053ca9b9fc814656a9323ab7e8bdb78e3222ebf8fbe8593b40"
+  },
+  "original_qa_artifacts_verified": 24,
+  "tracked_worktree_changes": []
+}

@@ -1,0 +1,56 @@
+--- adapted Financing port/unit_of_work.go
++++ Documents port/unit_of_work.go
+@@ -10,11 +10,10 @@
+ // Return every repository error; results are candidates until Run succeeds.
+ // Remote calls and broker publication belong outside this boundary. An unknown
+ // commit outcome requires authoritative receipt reconciliation, not blind retry.
+-// Features must admit actor/company/branch authority before entry and bind
+-// Documents schemas requiring provider-company scope. Features also own branch,
+-// seller/provider relationship, application and action admission; a company
+-// identifier alone grants no resource access. This generic boundary is not an authorization decision and does not
+-// infer company access from a transaction.
++// Features own fresh actor/company/branch/party admission and exact holder,
++// purpose and immutable document-version authorization before entry. A company
++// identifier alone grants no document access. This generic boundary neither
++// authorizes downloads/bindings nor chooses a document policy.
+ type UnitOfWork[U any] interface {
+ 	Run(context.Context, func(U) error) error
+ }
+--- adapted Financing adapter/postgres/unit_of_work_test.go
++++ Documents adapter/postgres/unit_of_work_test.go
+@@ -163,7 +163,7 @@
+ 	// Registered before create: even a failed CLI reply may have allocated it.
+ 	t.Cleanup(func() { cleanupFixture(t, "docker", f.name, token, root) })
+ 	args := []string{"create", "--name", f.name, "--label", fixtureLabel + "=" + token, "--tmpfs", "/var/lib/postgresql:rw", "-p", "127.0.0.1::5432", "-e", "POSTGRES_PASSWORD=" + f.password, "-v", filepath.Join(root, "infra/local/postgres/init-owners.sql") + ":/docker-entrypoint-initdb.d/10-owners.sql:ro"}
+-	for _, owner := range []string{"identity", "inventory", "commerce", "retail", "documents", "insurance", "documents"} {
++	for _, owner := range []string{"identity", "inventory", "commerce", "retail", "financing", "insurance", "documents"} {
+ 		args = append(args, "-e", "JUSTIXAUTO_"+strings.ToUpper(owner)+"_DB_PASSWORD="+f.password)
+ 	}
+ 	args = append(args, pgImage)
+@@ -436,7 +436,7 @@
+ 			t.Fatalf("privileged session reached business boundary: err=%v binds=%d calls=%d", err, binds, calls)
+ 		}
+ 	})
+-	for _, owner := range []string{"identity", "inventory", "commerce", "retail", "insurance", "documents"} {
++	for _, owner := range []string{"identity", "inventory", "commerce", "retail", "financing", "insurance"} {
+ 		if _, err := f.sql("justix_"+owner, "justix_documents_runtime", "SELECT 1"); err == nil {
+ 			t.Fatalf("runtime connected to %s", owner)
+ 		}
+@@ -582,6 +582,8 @@
+ 
+ // Synthetic feature ports demonstrate explicit DI and typed shared mechanics;
+ // these are test-only references, not invented Documents business schemas.
++// The tenant-required fixture exercises shared scoping, not a universal document
++// company/holder policy or permission to upload, bind, view or download bytes.
+ type fixtureValue struct {
+ 	ReferenceID string `json:"referenceId"`
+ }
+@@ -734,7 +736,7 @@
+ 		}
+ 		revision, _ := events.NewRevision(1)
+ 		if _, err := eventstore.NewInternalEvent(events.EnvelopeInput{EventID: uuid.NewString(), AggregateID: uuid.NewString(), AggregateVersion: revision, OccurredAt: time.Now().UTC(), Actor: events.Actor{Kind: events.ActorUser, ID: scope.ActorID}, CorrelationID: uuid.NewString(), CausationID: uuid.NewString()}, eventSchema, input); err == nil {
+-			t.Fatal("documents event without company accepted")
++			t.Fatal("tenant-required synthetic event without company accepted")
+ 		}
+ 	})
+ 	for _, committed := range []bool{false, true} {

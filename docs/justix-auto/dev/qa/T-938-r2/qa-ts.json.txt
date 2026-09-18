@@ -1,0 +1,1 @@
+[{"reject":false,"outcome":"valid","calls":["ordinary","bmp","supplementary"]},{"reject":true,"outcome":"mismatch","calls":["ordinary","bmp"]}]
