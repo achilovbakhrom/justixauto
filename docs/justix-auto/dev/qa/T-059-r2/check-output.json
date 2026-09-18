@@ -1,0 +1,57 @@
+{
+  "task": "T-059",
+  "cycle": "fix-cycle-1",
+  "reviewed_sha": "2c5e30c628a08159437be07c081121abe17b4be0",
+  "outcome": "GREEN",
+  "tracked_tree_matches_reviewed_sha": true,
+  "fixture_counts": {
+    "schema_positive": 11,
+    "structural_negative": 20,
+    "semantic_negative": 10,
+    "state_transport_negative": 48
+  },
+  "checks": [
+    {
+      "command": "bash tools/check-git.sh",
+      "result": "PASS: exact T-059 worktree root"
+    },
+    {
+      "command": "git rev-parse HEAD; test -z \"$(git diff --name-only HEAD)\"",
+      "result": "PASS: 2c5e30c628a08159437be07c081121abe17b4be0; no tracked divergence"
+    },
+    {
+      "command": "GOCACHE=/private/tmp/justixauto-qa-t059-r2-gocache GOMODCACHE=/private/tmp/justixauto-t003-modcache GOPROXY=off bash tools/go.sh test -race -count=1 ./tests/contracts -run '^TestIdentityAuth' -v",
+      "result": "PASS: 3 tests; package 3.942s"
+    },
+    {
+      "command": "direct jq probes for GET-session 400 InvalidRequestError and canonical/nonzero enrollment path-ID declaration",
+      "result": "PASS: true; true"
+    },
+    {
+      "command": "GOCACHE=/private/tmp/justixauto-qa-t059-r2-gocache GOMODCACHE=/private/tmp/justixauto-t003-modcache GOPROXY=off bash tools/go.sh test -race -count=1 -mod=readonly ./services/... ./pkg/... ./tests/...",
+      "result": "PASS: all discovered packages; tests/contracts 156.951s, tests/integration 4.385s"
+    },
+    {
+      "command": "GOCACHE=/private/tmp/justixauto-qa-t059-r2-vetcache GOMODCACHE=/private/tmp/justixauto-t003-modcache GOPROXY=off bash tools/go.sh vet ./services/... ./pkg/... ./tests/...",
+      "result": "PASS"
+    },
+    {
+      "command": "jq -e . on all three JSON-form contract files; git diff --check a1a8f919..2c5e30c",
+      "result": "PASS"
+    }
+  ],
+  "scope": {
+    "application_test_paths": [
+      "services/identity/contracts/events/auth.schema.json",
+      "services/identity/contracts/openapi/auth.fixtures.json",
+      "services/identity/contracts/openapi/auth.yaml",
+      "tests/contracts/identity_auth_test.go"
+    ],
+    "ancillary_path": "docs/justix-auto/dev/results/T-059.md",
+    "unexpected_paths": []
+  },
+  "untested_boundaries": [
+    "No authentication runtime, database, broker, cookie jar, browser, production security policy, recovery adapter or generated auth client is implemented by T-059.",
+    "State/transport fixtures are executable catalog/schema assertions, not runtime fault-injection proof."
+  ]
+}
