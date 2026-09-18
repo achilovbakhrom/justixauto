@@ -977,7 +977,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-013",
         "T-927",
@@ -1001,9 +1001,9 @@
       "scope": "Unsupported/malformed events quarantine durably before ACK; failed quarantine remains unacked; redrive uses ordinary dedup and retains repair audit.",
       "worktree": ".worktrees/T-015",
       "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
-      "reviewed_sha": null,
-      "agent": "backend_t015",
-      "execution_note": "Dependency-ready after T-927/T-922 integration; isolated worktree assigned for durable quarantine-before-ACK and ordinary-path redrive only."
+      "reviewed_sha": "b71337b3419f27e0d6f52891a0ba7c7c31a7553b",
+      "agent": "qa_t015",
+      "execution_note": "Implementation committed with focused live PostgreSQL and project-wide race/vet evidence. Exact commit b71337b awaits independent QA; production keys/retention, composition/broker behavior and B-01 closure remain separate."
     },
     {
       "id": "T-016",
@@ -2555,7 +2555,7 @@
       "parent": "B-02",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-058",
         "T-024",
@@ -2583,9 +2583,9 @@
       "scope": "Encode the adopted auth supplement as closed JSON-form OpenAPI3.1, safe event schema and separated structural/semantic/state fixtures. Preserve named semantic constraints and inert generation barriers. This task owns no SQL or manifest; private storage and live migration tests are T-949.",
       "worktree": ".worktrees/T-059",
       "base_sha": "f472274",
-      "reviewed_sha": null,
-      "agent": "backend_t928",
-      "execution_note": "Scope reassessed before application edits: T-059 retains four wire/fixture/test leaves within 3h; T-949 owns private SQL/manifest and serial migration tests within 4h. No release policy or architecture contract changed."
+      "reviewed_sha": "a1a8f91995211be212177e7d8724e6288483f67e",
+      "agent": "qa_t059",
+      "execution_note": "Wire schemas, safe event contract, separated fixtures and schema tests committed at a1a8f91 with full race/vet and JSON checks passing. Independent QA assigned; activation, semantic binders, private storage and security policy remain gated."
     },
     {
       "id": "T-060",
