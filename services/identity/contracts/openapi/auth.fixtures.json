@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "profile": "fixture-only",
+  "description": "Synthetic contract cases only. Bindings are server-side test state, never request fields or deployable policy. Secret-shaped markers are nonworking fixtures and never defaults.",
+  "schemaPositive": [
+    {
+      "id": "auth.login.valid",
+      "schema": "LoginRequest",
+      "input": {"login": "fixture-user", "password": "fixture-password"},
+      "expected": {"schemaValid": true, "status": 200, "responseSchema": "SessionRead"}
+    },
+    {
+      "id": "auth.login.challenge",
+      "schema": "LoginRequest",
+      "input": {"login": "fixture-user", "password": "fixture-password"},
+      "expected": {"schemaValid": true, "status": 200, "responseSchema": "ChallengeResult", "fullSessionIssued": false}
+    },
+    {
+      "id": "auth.bootstrap.pending",
+      "schema": "LoginRequest",
+      "input": {"login": "fixture-bootstrap", "password": "fixture-password"},
+      "expected": {"schemaValid": true, "status": 200, "responseSchema": "EnrollmentRequired", "protectedAdmission": false}
+    },
+    {
+      "id": "auth.session.full",
+      "schema": "SessionRead",
+      "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"},
+      "expected": {"schemaValid": true, "semanticValid": true}
+    },
+    {
+      "id": "auth.session.selected",
+      "schema": "SessionRead",
+      "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [{"id": "11000000-0000-4000-8000-000000000001", "name": "Synthetic Role"}], "permissions": ["crm.contacts.edit"], "mfa": {"enrolled": true, "authenticatedAt": "2026-09-15T00:00:00Z"}, "context": {"revision": "7", "companyId": "20000000-0000-4000-8000-000000000001", "branchScope": {"mode": "SELECTED", "branchIds": ["21000000-0000-4000-8000-000000000001"]}}, "accessibleCompanies": [{"id": "20000000-0000-4000-8000-000000000001", "name": "Synthetic Seller", "kind": "seller", "access": "active"}], "setup": {"next": "none", "partnershipRequiredForB2B": true}}, "revision": "7", "asOf": "2026-09-15T00:00:00Z"},
+      "expected": {"schemaValid": true, "semanticValid": true}
+    },
+    {
+      "id": "auth.verify.valid",
+      "schema": "VerifyRequest",
+      "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"},
+      "expected": {"schemaValid": true, "status": 200, "responseSchema": "SessionRead", "oldCookieRejected": true}
+    },
+    {
+      "id": "auth.logout.empty",
+      "schema": "EmptyRequest",
+      "input": {},
+      "expected": {"schemaValid": true, "status": 204, "bodyAbsent": true}
+    },
+    {
+      "id": "auth.recovery.request",
+      "schema": "RecoveryRequest",
+      "input": {"login": "fixture-user"},
+      "expected": {"schemaValid": true, "status": 202, "responseSchema": "RecoveryAccepted"}
+    },
+    {
+      "id": "auth.recovery.complete",
+      "schema": "RecoveryCompleteRequest",
+      "input": {"token": "fixture-token", "newPassword": "fixture-password", "confirmation": "fixture-password"},
+      "expected": {"schemaValid": true, "semanticValid": true, "status": 204}
+    },
+    {
+      "id": "auth.enrollment.secret",
+      "schema": "EnrollmentSecret",
+      "input": {"enrollmentId": "30000000-0000-4000-8000-000000000003", "secretOrChallenge": {"kind": "totp", "secret": "fixture-one-time-secret", "provisioningUri": "otpauth://fixture.invalid/nonworking"}},
+      "expected": {"schemaValid": true, "oneTime": true, "cacheable": false}
+    },
+    {
+      "id": "auth.event.valid",
+      "schema": "SecurityChangedData",
+      "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "2", "change": "mfa-enrolled"},
+      "expected": {"schemaValid": true, "semanticValid": true}
+    }
+  ],
+  "structuralNegative": [
+    {"id": "auth.login.unknown-field", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password", "companyId": "20000000-0000-4000-8000-000000000001"}, "expected": {"schemaValid": false, "status": 400, "code": "INVALID_REQUEST"}},
+    {"id": "auth.login.null", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": null}, "expected": {"schemaValid": false, "status": 400, "code": "INVALID_REQUEST"}},
+    {"id": "auth.login.missing", "schema": "LoginRequest", "input": {"login": "fixture-user"}, "expected": {"schemaValid": false, "status": 400, "code": "INVALID_REQUEST"}},
+    {"id": "auth.login.empty", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": ""}, "expected": {"schemaValid": false, "status": 422, "code": "VALIDATION_FAILED"}},
+    {"id": "auth.login.numeric", "schema": "LoginRequest", "input": {"login": 123, "password": "fixture-password"}, "expected": {"schemaValid": false, "status": 400, "code": "INVALID_REQUEST"}},
+    {"id": "auth.verify.body-actor", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof", "actorId": "10000000-0000-4000-8000-000000000002"}, "expected": {"schemaValid": false, "status": 400, "code": "INVALID_REQUEST"}},
+    {"id": "auth.session.extra-token", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z", "token": "fixture-forbidden"}, "expected": {"schemaValid": false, "secretAccepted": false}},
+    {"id": "auth.session.nested-role-field", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [{"id": "11000000-0000-4000-8000-000000000001", "name": "Synthetic Role", "companyId": "20000000-0000-4000-8000-000000000001"}], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"}, "expected": {"schemaValid": false}},
+    {"id": "auth.scope.all-with-ids", "schema": "Scope", "input": {"mode": "ALL", "branchIds": ["21000000-0000-4000-8000-000000000001"]}, "expected": {"schemaValid": false}},
+    {"id": "auth.scope.selected-empty", "schema": "Scope", "input": {"mode": "SELECTED", "branchIds": []}, "expected": {"schemaValid": false}},
+    {"id": "auth.scope.selected-duplicate", "schema": "Scope", "input": {"mode": "SELECTED", "branchIds": ["21000000-0000-4000-8000-000000000001", "21000000-0000-4000-8000-000000000001"]}, "expected": {"schemaValid": false}},
+    {"id": "auth.challenge.wrong-status", "schema": "ChallengeResult", "input": {"data": {"challengeId": "30000000-0000-4000-8000-000000000001", "required": "mfa-enrollment"}, "revision": "0", "operationId": "40000000-0000-4000-8000-000000000001"}, "expected": {"schemaValid": false}},
+    {"id": "auth.error.operation-id", "schema": "AuthenticationError", "input": {"error": {"code": "AUTHENTICATION_FAILED", "message": "Authentication failed", "fields": {}, "traceId": "50000000-0000-4000-8000-000000000001"}, "operationId": "40000000-0000-4000-8000-000000000001"}, "expected": {"schemaValid": false, "genericReceiptCreated": false}},
+    {"id": "auth.event.secret", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "2", "change": "mfa-enrolled", "code": "fixture-proof"}, "expected": {"schemaValid": false}},
+    {"id": "auth.event.numeric-revision", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": 2, "change": "mfa-enrolled"}, "expected": {"schemaValid": false}},
+    {"id": "auth.event.revision-overflow", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "9223372036854775808", "change": "mfa-enrolled"}, "expected": {"schemaValid": false}},
+    {"id": "auth.event.unknown-change", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "2", "change": "session-created"}, "expected": {"schemaValid": false}},
+    {"id": "auth.enrollment.codes-empty", "schema": "EnrollmentConfirmed", "input": {"data": {"enrolled": true, "recoveryCodes": []}, "revision": "2", "operationId": "40000000-0000-4000-8000-000000000001"}, "expected": {"schemaValid": false}},
+    {"id": "auth.enrollment.codes-duplicate", "schema": "EnrollmentConfirmed", "input": {"data": {"enrolled": true, "recoveryCodes": ["fixture-code", "fixture-code"]}, "revision": "2", "operationId": "40000000-0000-4000-8000-000000000001"}, "expected": {"schemaValid": false}},
+    {"id": "auth.enrollment.path-id-uppercase", "schema": "ID", "input": "30000000-0000-4000-8000-00000000000A", "bindings": {"location": "path", "operationId": "ConfirmBootstrapMfaEnrollment"}, "expected": {"schemaValid": false, "ownerUse": false}}
+  ],
+  "semanticNegative": [
+    {"id": "auth.session.revision-mismatch", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "1", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "2", "asOf": "2026-09-15T00:00:00Z"}, "expected": {"schemaValid": true, "semanticValid": false}},
+    {"id": "auth.session.null-company-selected", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "1", "companyId": null, "branchScope": {"mode": "SELECTED", "branchIds": ["21000000-0000-4000-8000-000000000001"]}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "1", "asOf": "2026-09-15T00:00:00Z"}, "expected": {"schemaValid": true, "semanticValid": false}},
+    {"id": "auth.session.mfa-time-without-enrollment", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false, "authenticatedAt": "2026-09-15T00:00:00Z"}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"}, "expected": {"schemaValid": true, "semanticValid": false}},
+    {"id": "auth.session.duplicate-role-id", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [{"id": "11000000-0000-4000-8000-000000000001", "name": "Role A"}, {"id": "11000000-0000-4000-8000-000000000001", "name": "Role B"}], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"}, "expected": {"schemaValid": true, "semanticValid": false}},
+    {"id": "auth.session.unknown-permission", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": ["fixture.unknown.permission"], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"}, "expected": {"schemaValid": true, "semanticValid": false, "authorization": "deny"}},
+    {"id": "auth.revoke.reason", "schema": "RevokeAllRequest", "input": {"reason": "  "}, "expected": {"schemaValid": true, "semanticValid": false, "status": 422, "code": "VALIDATION_FAILED"}},
+    {"id": "auth.recovery.confirmation", "schema": "RecoveryCompleteRequest", "input": {"token": "fixture-token", "newPassword": "fixture-password", "confirmation": "different-fixture"}, "expected": {"schemaValid": true, "semanticValid": false, "status": 422, "code": "VALIDATION_FAILED", "credentialChanges": 0}},
+    {"id": "auth.event.user-aggregate-mismatch", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000002", "securityRevision": "2", "change": "sessions-revoked"}, "bindings": {"aggregateId": "10000000-0000-4000-8000-000000000001"}, "expected": {"schemaValid": true, "semanticValid": false}},
+    {"id": "auth.error.wrong-status-code", "schema": "AccessError", "input": {"error": {"code": "MFA_REQUIRED", "message": "MFA required", "fields": {}, "traceId": "50000000-0000-4000-8000-000000000001"}}, "bindings": {"operationId": "LoginAuthSession", "status": 403}, "expected": {"schemaValid": true, "semanticValid": false, "sinkCalls": 0}},
+    {"id": "auth.enrollment.path-id-zero", "schema": "ID", "input": "00000000-0000-0000-0000-000000000000", "bindings": {"location": "path", "operationId": "ConfirmBootstrapMfaEnrollment"}, "expected": {"schemaValid": true, "semanticValid": false, "ownerUse": false}}
+  ],
+  "stateTransportNegative": [
+    {"id": "auth.login.no-origin", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password"}, "bindings": {"origin": "missing", "csrf": "valid"}, "expected": {"status": 403, "code": "ORIGIN_REJECTED", "credentialWork": false}},
+    {"id": "auth.login.csrf", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password"}, "bindings": {"origin": "allowed", "csrf": "stale"}, "expected": {"status": 403, "code": "CSRF_REJECTED", "credentialWork": false}},
+    {"id": "auth.session.unknown-query", "schema": "EmptyRequest", "input": {}, "bindings": {"method": "GET", "query": {"unexpected": "fixture-value"}}, "expected": {"status": 400, "code": "INVALID_REQUEST", "ownerWork": false, "requestAccepted": false}},
+    {"id": "auth.verify.concurrent", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"concurrentRequests": 2, "counter": "same-valid-unused"}, "expected": {"successfulConsumptions": 1, "newSessions": 1}},
+    {"id": "auth.verify.concurrent-challenges", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"concurrentChallenges": 2, "factorCounter": "same-valid-unused"}, "expected": {"successfulConsumptions": 1, "factorCounterUnique": true}},
+    {"id": "auth.verify.recovery-code", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-recovery-proof"}, "bindings": {"proof": "generated-unused-recovery-code", "primaryAuthentication": "satisfied", "allowedKind": "recovery-code"}, "expected": {"status": 200, "codeConsumptions": 1, "roleChange": false}},
+    {"id": "auth.verify.foreign", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000002", "code": "fixture-proof"}, "bindings": {"cookie": "other-subject"}, "expected": {"status": 404, "code": "NOT_FOUND", "consumptions": 0}},
+    {"id": "auth.verify.replay", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"counter": "already-consumed"}, "expected": {"status": 401, "code": "AUTHENTICATION_FAILED", "newSessions": 0}},
+    {"id": "auth.verify.expired", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"challenge": "expired"}, "expected": {"status": 401, "code": "AUTHENTICATION_FAILED", "newSessions": 0}},
+    {"id": "auth.verify.security-version-changed", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"challengeSecurityRevision": "1", "subjectSecurityRevision": "2"}, "expected": {"status": 401, "code": "AUTHENTICATION_FAILED", "newSessions": 0}},
+    {"id": "auth.logout.repeat", "schema": "EmptyRequest", "input": {}, "bindings": {"session": "already-revoked", "csrf": "matching-revocation-binding"}, "expected": {"status": 204, "bodyAbsent": true, "additionalEffects": 0}},
+    {"id": "auth.revoke.mfa", "schema": "RevokeAllRequest", "input": {"reason": "Synthetic revoke"}, "bindings": {"primaryAuthentication": "fresh", "mfa": "stale"}, "expected": {"status": 403, "code": "MFA_REQUIRED", "revocations": 0}},
+    {"id": "auth.recovery.disabled", "schema": "RecoveryRequest", "input": {"login": "fixture-user"}, "bindings": {"capability": "Disabled"}, "expected": {"status": 403, "code": "POLICY_UNRESOLVED", "accountLookup": false, "delivery": false}},
+    {"id": "auth.recovery.enumeration", "schema": "RecoveryRequest", "input": {"login": "fixture-user"}, "bindings": {"subjects": ["known", "unknown", "suspended", "ineligible"], "capability": "fixture-only-accepted"}, "expected": {"sameStatus": 202, "sameSchema": "RecoveryAccepted", "existenceDisclosed": false}},
+    {"id": "auth.login.enumeration", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password"}, "bindings": {"outcomes": ["unknown", "wrong-password", "suspended", "ineligible-pending"]}, "expected": {"sameStatus": 401, "sameCode": "AUTHENTICATION_FAILED", "safeMessageEqual": true}},
+    {"id": "auth.bootstrap.concurrent", "schema": "EmptyRequest", "input": {}, "bindings": {"deploymentCommands": 2, "guard": "unused", "authorization": "fixture-only"}, "expected": {"pendingBootstrapSubjects": 1, "credentialsCreated": 1, "guardConsumptions": 1}},
+    {"id": "auth.bootstrap.public-http", "schema": "EmptyRequest", "input": {}, "bindings": {"transport": "public-http"}, "expected": {"routeExists": false, "bootstrapAttempted": false}},
+    {"id": "auth.bootstrap.arbitrary-pending", "schema": "LoginRequest", "input": {"login": "fixture-pending", "password": "fixture-password"}, "bindings": {"subject": "ordinary-pending-user"}, "expected": {"status": 401, "code": "AUTHENTICATION_FAILED", "enrollmentIssued": false}},
+    {"id": "auth.enrollment.confirm-repeat", "schema": "EnrollmentConfirmRequest", "input": {"code": "fixture-proof"}, "bindings": {"enrollment": "already-consumed"}, "expected": {"status": 409, "code": "AUTH_STATE_CONFLICT", "recoveryCodesIssued": 0}},
+    {"id": "auth.scope.foreign-company", "schema": "EmptyRequest", "input": {}, "bindings": {"company": "foreign"}, "expected": {"status": 404, "authorityChanged": false}},
+    {"id": "auth.scope.foreign-branch", "schema": "EmptyRequest", "input": {}, "bindings": {"company": "current", "branch": "foreign-or-unpermitted"}, "expected": {"status": 404, "authorityChanged": false}},
+    {"id": "auth.scope.company-switch-clears-branches", "schema": "EmptyRequest", "input": {}, "bindings": {"oldCompany": "synthetic-a", "oldBranchScope": "SELECTED", "newCompany": "synthetic-b"}, "expected": {"newScope": "ALL", "newBranchIds": [], "oldBranchAuthorityRetained": false}},
+    {"id": "auth.scope.stale-revision", "schema": "EmptyRequest", "input": {}, "bindings": {"contextRevision": "stale"}, "expected": {"status": 412, "code": "STALE_REVISION", "authorityChanged": false}},
+    {"id": "auth.scope.missing-precondition", "schema": "EmptyRequest", "input": {}, "bindings": {"ifMatch": "missing"}, "expected": {"status": 428, "code": "PRECONDITION_REQUIRED", "authorityChanged": false}},
+    {"id": "auth.permission.platform-admin-partner-decision", "schema": "EmptyRequest", "input": {}, "bindings": {"globalRole": "platform-admin", "companyPermission": "missing", "ownerParty": "provider"}, "expected": {"authorized": false}},
+    {"id": "auth.permission.session-mfa-not-owner-authority", "schema": "EmptyRequest", "input": {}, "bindings": {"session": "valid", "mfa": "fresh", "ownerAction": "partner-decision", "ownerPermission": "missing"}, "expected": {"authorized": false}},
+    {"id": "auth.permission.crm-no-blanket-mfa", "schema": "EmptyRequest", "input": {}, "bindings": {"permission": "crm.contacts.edit", "mfa": "not-fresh", "ownerState": "eligible"}, "expected": {"authorized": true, "inventedMfaRequirement": false}},
+    {"id": "auth.last-admin.concurrent-protection", "schema": "EmptyRequest", "input": {}, "bindings": {"concurrentAdminBlockingCommands": 2, "activeMfaPlatformAdmins": 2}, "expected": {"successfulCommands": 1, "remainingActiveMfaPlatformAdmins": 1, "guardSerialized": true}},
+    {"id": "auth.session.revoked-cannot-admit", "schema": "EmptyRequest", "input": {}, "bindings": {"session": "revoked", "authorizationProjection": "stale-allowed"}, "expected": {"newCommandAdmitted": false, "status": 401}},
+    {"id": "auth.subject.suspended-cannot-authenticate", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password"}, "bindings": {"subject": "suspended", "credential": "otherwise-valid"}, "expected": {"status": 401, "code": "AUTHENTICATION_FAILED", "newSessions": 0}},
+    {"id": "auth.enrollment.cross-subject", "schema": "EnrollmentConfirmRequest", "input": {"code": "fixture-proof"}, "bindings": {"enrollmentSubject": "synthetic-a", "cookieSubject": "synthetic-b"}, "expected": {"status": 404, "code": "NOT_FOUND", "factorChanges": 0, "newSessions": 0}},
+    {"id": "auth.verify.invalid-proof-no-authority-change", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-invalid-proof"}, "bindings": {"proof": "invalid", "session": "restricted"}, "expected": {"status": 401, "roleChanges": 0, "membershipChanges": 0, "factorChanges": 0, "newSessions": 0}},
+    {"id": "auth.recovery.delivery-failure-uniform", "schema": "RecoveryRequest", "input": {"login": "fixture-user"}, "bindings": {"subjects": ["known", "unknown"], "deliveryAdapter": "failed", "capability": "fixture-only-accepted"}, "expected": {"existenceDisclosed": false, "completedDeliveryClaimed": false, "safeResponseEquivalent": true}},
+    {"id": "auth.secret-safety.all-sinks", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"inspect": ["errors", "events", "outbox", "generic-receipts", "logs", "traces", "operation-metadata"], "alternateEncodings": true}, "expected": {"secretOccurrences": 0, "secretBodyHashes": 0, "genericReceiptCreated": false}},
+    {"id": "auth.outcome.login-rollback", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password"}, "bindings": {"fault": "rollback-before-commit"}, "expected": {"status": 503, "code": "AUTH_OUTCOME_UNKNOWN", "falseSuccess": false, "automaticRetry": false}},
+    {"id": "auth.outcome.login-commit-lost-reply", "schema": "LoginRequest", "input": {"login": "fixture-user", "password": "fixture-password"}, "bindings": {"fault": "actual-commit-lost-reply"}, "expected": {"status": 503, "code": "AUTH_OUTCOME_UNKNOWN", "secretReceipt": false, "automaticRetry": false}},
+    {"id": "auth.outcome.verify-commit-lost-reply", "schema": "VerifyRequest", "input": {"challengeId": "30000000-0000-4000-8000-000000000001", "code": "fixture-proof"}, "bindings": {"fault": "actual-commit-lost-reply"}, "expected": {"outcome": "unknown", "proofReplayed": false, "automaticRetry": false}},
+    {"id": "auth.outcome.enrollment-secret-lost", "schema": "EmptyRequest", "input": {}, "bindings": {"fault": "actual-commit-lost-reply"}, "expected": {"priorSecretRecoverable": false, "newAttemptRequired": true, "genericReceipt": false}},
+    {"id": "auth.outcome.enrollment-confirm-lost", "schema": "EnrollmentConfirmRequest", "input": {"code": "fixture-proof"}, "bindings": {"fault": "actual-commit-lost-reply"}, "expected": {"priorRecoveryCodesRecoverable": false, "genericReceipt": false, "sessionReadMayEstablishEnrollment": true}},
+    {"id": "auth.outcome.recovery-commit-lost-reply", "schema": "RecoveryCompleteRequest", "input": {"token": "fixture-token", "newPassword": "fixture-password", "confirmation": "fixture-password"}, "bindings": {"fault": "actual-commit-lost-reply"}, "expected": {"tokenAutomaticallyReused": false, "genericReceipt": false, "freshLoginMayEstablishCredential": true}},
+    {"id": "auth.transport.invalid-csrf-on-success", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"}, "bindings": {"status": 200, "csrfHeader": "invalid padding=="}, "expected": {"accepted": false, "sinkCalls": 0, "outcome": "unknown"}},
+    {"id": "auth.transport.rate-limited", "schema": "RateLimitedError", "input": {"error": {"code": "RATE_LIMITED", "message": "Rate limited", "fields": {}, "traceId": "50000000-0000-4000-8000-000000000001"}}, "bindings": {"status": 429, "retryAfter": "0001"}, "expected": {"accepted": false, "automaticRetry": false, "sinkCalls": 0}},
+    {"id": "auth.transport.stale-ticket", "schema": "SessionRead", "input": {"data": {"user": {"id": "10000000-0000-4000-8000-000000000001", "displayName": "Synthetic User", "status": "active"}, "roles": [], "permissions": [], "mfa": {"enrolled": false}, "context": {"revision": "0", "companyId": null, "branchScope": {"mode": "ALL", "branchIds": []}}, "accessibleCompanies": [], "setup": {"next": "company", "partnershipRequiredForB2B": true}}, "revision": "0", "asOf": "2026-09-15T00:00:00Z"}, "bindings": {"ticket": "stale", "epoch": "superseded"}, "expected": {"accepted": false, "protectedContentVisible": false, "tokenAdopted": false}},
+    {"id": "auth.gated.missing-policy", "schema": "EmptyRequest", "input": {}, "bindings": {"authDeploymentPolicy": "missing"}, "expected": {"construction": "rejected", "defaultsUsed": false}},
+    {"id": "auth.gated.unapproved-security-reference", "schema": "EmptyRequest", "input": {}, "bindings": {"acceptanceRef": "unapproved-T-002"}, "expected": {"construction": "rejected", "recoveryEnabled": false}},
+    {"id": "auth.reliability.event-rollback", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "2", "change": "credential-replaced"}, "bindings": {"privateState": "rollback", "outbox": "same-transaction"}, "expected": {"eventCommitted": false, "securityRevisionCommitted": false}},
+    {"id": "auth.reliability.publication-failure", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "2", "change": "sessions-revoked"}, "bindings": {"ownerCommit": true, "publisher": "failed", "recipientPlan": "absent"}, "expected": {"securityTransitionDuplicated": false, "broadcast": false, "ownerReplayAuthoritative": true}},
+    {"id": "auth.reliability.projection-not-authority", "schema": "SecurityChangedData", "input": {"userId": "10000000-0000-4000-8000-000000000001", "securityRevision": "2", "change": "mfa-enrolled"}, "bindings": {"projection": "caught-up", "privateSessionState": "absent"}, "expected": {"newCommandAdmitted": false, "sessionMinted": false}}
+  ]
+}
