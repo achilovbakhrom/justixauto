@@ -327,6 +327,7 @@
         "security": [{}, {"SessionCookie": []}, {"ChallengeCookie": []}],
         "responses": {
           "200": {"description": "Full or restricted session state", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionResult"}}}},
+          "400": {"description": "Invalid query, header or request representation", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
           "401": {"description": "Anonymous session acquisition", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionRequiredError"}}}},
           "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
           "503": {"description": "Identity authority unavailable", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
@@ -446,7 +447,7 @@
         "operationId": "ConfirmBootstrapMfaEnrollment",
         "x-justix-auth-transport": 1,
         "parameters": [
-          {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", "description": "Canonical lower-case nonzero enrollment UUID; the mandatory auth semantic binding rejects the all-zero value before owner use."}},
           {"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}
         ],
         "security": [{"ChallengeCookie": [], "CSRFCookie": []}],

@@ -88,7 +88,20 @@ func TestIdentityAuthOpenAPIProfileAndGeneratorBarrier(t *testing.T) {
 		"POST /api/v1/identity/session/revoke-all":                  true,
 		"POST /api/v1/identity/session/mfa/enrollment/{id}/confirm": true,
 	}
+	responseMatrix := map[string][]string{
+		"GET /api/v1/identity/session":                              {"200", "400", "401", "429", "503"},
+		"POST /api/v1/identity/session/login":                       {"200", "400", "401", "403", "422", "429", "503"},
+		"POST /api/v1/identity/session/mfa/challenges":              {"200", "400", "401", "403", "409", "429", "503"},
+		"POST /api/v1/identity/session/mfa/verify":                  {"200", "400", "401", "403", "404", "409", "422", "429", "503"},
+		"POST /api/v1/identity/session/logout":                      {"204", "400", "403", "429", "503"},
+		"POST /api/v1/identity/session/revoke-all":                  {"200", "400", "401", "403", "422", "429", "503"},
+		"POST /api/v1/identity/session/mfa/enrollment":              {"200", "400", "401", "403", "409", "429", "503"},
+		"POST /api/v1/identity/session/mfa/enrollment/{id}/confirm": {"200", "400", "401", "403", "404", "409", "422", "429", "503"},
+		"POST /api/v1/identity/session/recovery/request":            {"202", "400", "403", "422", "429", "503"},
+		"POST /api/v1/identity/session/recovery/complete":           {"204", "400", "401", "403", "422", "429", "503"},
+	}
 	operationIDs := map[string]struct{}{}
+	var enrollmentPathSchema map[string]any
 	for path, rawPath := range paths {
 		pathItem := asObject(t, rawPath, path)
 		if len(pathItem) != 1 {
@@ -121,6 +134,8 @@ func TestIdentityAuthOpenAPIProfileAndGeneratorBarrier(t *testing.T) {
 					if method == "get" || parameter["in"] != "header" || parameter["required"] != true || !reflect.DeepEqual(parameter["schema"], csrfSchema) {
 						t.Fatalf("invalid request CSRF declaration on %s %s: %#v", method, path, parameter)
 					}
+				} else if name == "id" && path == "/api/v1/identity/session/mfa/enrollment/{id}/confirm" {
+					enrollmentPathSchema = objectAt(t, parameter, "schema")
 				}
 			}
 			if method == "get" && csrfParameters != 0 || method != "get" && csrfParameters != 1 {
@@ -129,6 +144,10 @@ func TestIdentityAuthOpenAPIProfileAndGeneratorBarrier(t *testing.T) {
 
 			responses := objectAt(t, operation, "responses")
 			key := strings.ToUpper(method) + " " + path
+			actualStatuses := sortedKeys(responses)
+			if !reflect.DeepEqual(actualStatuses, responseMatrix[key]) {
+				t.Fatalf("%s statuses = %v, want %v", key, actualStatuses, responseMatrix[key])
+			}
 			for status, rawResponse := range responses {
 				response := asObject(t, rawResponse, key+" "+status)
 				headers := objectAt(t, response, "headers")
@@ -168,6 +187,17 @@ func TestIdentityAuthOpenAPIProfileAndGeneratorBarrier(t *testing.T) {
 					}
 				}
 			}
+		}
+	}
+	if enrollmentPathSchema == nil {
+		t.Fatal("enrollment confirmation path ID schema is missing")
+	}
+	if enrollmentPathSchema["format"] != "uuid" || enrollmentPathSchema["pattern"] != "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" || !strings.Contains(strings.ToLower(stringValue(enrollmentPathSchema["description"])), "nonzero") {
+		t.Fatalf("enrollment path ID does not preserve canonical lower-case/nonzero handoff: %#v", enrollmentPathSchema)
+	}
+	for _, invalid := range []string{"30000000-0000-4000-8000-00000000000A", "00000000-0000-0000-0000-000000000000"} {
+		if canonicalNonzeroUUID(invalid) {
+			t.Fatalf("invalid enrollment path ID reached owner-use boundary: %s", invalid)
 		}
 	}
 
@@ -258,6 +288,7 @@ func TestIdentityAuthFixturesStructuralSemanticAndStateSeparation(t *testing.T) 
 		"auth.event.valid", "auth.event.secret", "auth.event.numeric-revision", "auth.event.revision-overflow",
 		"auth.bootstrap.concurrent", "auth.outcome.login-commit-lost-reply", "auth.outcome.verify-commit-lost-reply",
 		"auth.permission.crm-no-blanket-mfa", "auth.reliability.publication-failure", "auth.transport.rate-limited",
+		"auth.session.unknown-query", "auth.enrollment.path-id-uppercase", "auth.enrollment.path-id-zero",
 	}
 	for _, id := range requiredIDs {
 		if _, ok := seen[id]; !ok {
@@ -270,6 +301,7 @@ func TestIdentityAuthFixturesStructuralSemanticAndStateSeparation(t *testing.T) 
 	assertExpected(t, seen, fixtures.StateTransportNegative, "auth.recovery.disabled", "accountLookup", false)
 	assertExpected(t, seen, fixtures.StateTransportNegative, "auth.permission.crm-no-blanket-mfa", "inventedMfaRequirement", false)
 	assertExpected(t, seen, fixtures.StateTransportNegative, "auth.reliability.publication-failure", "broadcast", false)
+	assertExpected(t, seen, fixtures.StateTransportNegative, "auth.session.unknown-query", "status", json.Number("400"))
 
 	// The validator and loaded documents are immutable after construction. Run
 	// the whole fixture corpus concurrently so -race exercises schema reads and
@@ -455,6 +487,12 @@ func replayAuthSecurity(stream []events.Envelope, schema events.EventSchema[auth
 }
 
 func validateFixtureSemantics(fixture authFixtureCase) error {
+	if fixture.Schema == "ID" {
+		if !canonicalNonzeroUUID(stringValue(fixture.Input)) {
+			return errors.New("ID is not a canonical lower-case nonzero UUID")
+		}
+		return nil
+	}
 	value, ok := fixture.Input.(map[string]any)
 	if !ok {
 		return errors.New("fixture input is not an object")
@@ -918,6 +956,15 @@ func containsString(values []string, target string) bool {
 		}
 	}
 	return false
+}
+
+func sortedKeys(values map[string]any) []string {
+	keys := make([]string, 0, len(values))
+	for key := range values {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
 }
 
 func stringsFrom(value any) []string {
