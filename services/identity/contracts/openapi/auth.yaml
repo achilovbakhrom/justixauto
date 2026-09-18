@@ -1,0 +1,503 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "JustixAuto Identity authentication contract",
+    "version": "1",
+    "description": "Closed JSON-form OpenAPI for the adopted authentication handshake. Policy-dependent bounds and release capabilities remain external and fail closed."
+  },
+  "x-justix-auth-semantics": 1,
+  "components": {
+    "securitySchemes": {
+      "SessionCookie": {"type": "apiKey", "in": "cookie", "name": "__Host-justix_session"},
+      "ChallengeCookie": {"type": "apiKey", "in": "cookie", "name": "__Host-justix_challenge"},
+      "CSRFCookie": {"type": "apiKey", "in": "cookie", "name": "__Host-justix_csrf"}
+    },
+    "schemas": {
+      "ID": {
+        "type": "string",
+        "format": "uuid",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "description": "Canonical lower-case nonzero UUID; nonzero is enforced by the mandatory auth semantic binding."
+      },
+      "Revision": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 19,
+        "pattern": "^(0|[1-9][0-9]{0,18})$",
+        "description": "Canonical nonnegative signed-64 revision string; the 9223372036854775807 upper bound is enforced by the mandatory auth semantic binding."
+      },
+      "PositiveRevision": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 19,
+        "pattern": "^[1-9][0-9]{0,18}$",
+        "description": "Canonical positive signed-64 revision string; the exact upper bound is enforced by the mandatory auth semantic binding."
+      },
+      "Instant": {"type": "string", "format": "date-time", "description": "RFC3339 UTC instant using Z."},
+      "Text": {"type": "string", "minLength": 1, "description": "Nonempty text subject to an explicit deployment field policy."},
+      "Secret": {"type": "string", "minLength": 1, "description": "Transient secret input or one-time output; never normalized, logged, persisted in a generic receipt or emitted in an event."},
+      "ProofCode": {"type": "string", "minLength": 1, "description": "Proof matching exactly one disjoint proof syntax supplied by an accepted deployment policy."},
+      "PermissionKey": {"type": "string", "minLength": 1, "description": "Exact catalog key; unknown keys deny and wildcard expansion is forbidden."},
+      "AllScope": {
+        "type": "object",
+        "properties": {
+          "mode": {"type": "string", "const": "ALL"},
+          "branchIds": {"type": "array", "items": {"$ref": "#/components/schemas/ID"}, "maxItems": 0, "uniqueItems": true}
+        },
+        "required": ["mode", "branchIds"],
+        "additionalProperties": false
+      },
+      "SelectedScope": {
+        "type": "object",
+        "properties": {
+          "mode": {"type": "string", "const": "SELECTED"},
+          "branchIds": {"type": "array", "items": {"$ref": "#/components/schemas/ID"}, "minItems": 1, "uniqueItems": true}
+        },
+        "required": ["mode", "branchIds"],
+        "additionalProperties": false
+      },
+      "Scope": {
+        "oneOf": [
+          {"$ref": "#/components/schemas/AllScope"},
+          {"$ref": "#/components/schemas/SelectedScope"}
+        ],
+        "description": "ALL is company-local, never platform-wide. SELECTED branches require live authorization."
+      },
+      "SessionContext": {
+        "type": "object",
+        "properties": {
+          "revision": {"$ref": "#/components/schemas/Revision"},
+          "companyId": {"type": ["string", "null"], "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+          "branchScope": {"$ref": "#/components/schemas/Scope"}
+        },
+        "required": ["revision", "companyId", "branchScope"],
+        "additionalProperties": false,
+        "description": "Null company requires ALL with no branches; the semantic binding enforces that relation."
+      },
+      "SessionUser": {
+        "type": "object",
+        "properties": {
+          "id": {"$ref": "#/components/schemas/ID"},
+          "displayName": {"$ref": "#/components/schemas/Text"},
+          "status": {"type": "string", "const": "active"}
+        },
+        "required": ["id", "displayName", "status"],
+        "additionalProperties": false
+      },
+      "SessionRole": {
+        "type": "object",
+        "properties": {"id": {"$ref": "#/components/schemas/ID"}, "name": {"$ref": "#/components/schemas/Text"}},
+        "required": ["id", "name"],
+        "additionalProperties": false
+      },
+      "MfaState": {
+        "type": "object",
+        "properties": {"enrolled": {"type": "boolean"}, "authenticatedAt": {"$ref": "#/components/schemas/Instant"}},
+        "required": ["enrolled"],
+        "additionalProperties": false,
+        "description": "authenticatedAt is forbidden when enrolled is false; freshness remains a server policy decision."
+      },
+      "AccessibleCompany": {
+        "type": "object",
+        "properties": {
+          "id": {"$ref": "#/components/schemas/ID"},
+          "name": {"$ref": "#/components/schemas/Text"},
+          "kind": {"type": "string", "enum": ["seller", "bank", "mfo", "insurance"]},
+          "access": {"type": "string", "enum": ["draft", "active", "suspended"]}
+        },
+        "required": ["id", "name", "kind", "access"],
+        "additionalProperties": false
+      },
+      "SetupState": {
+        "type": "object",
+        "properties": {
+          "next": {"type": "string", "enum": ["company", "branch", "none"]},
+          "partnershipRequiredForB2B": {"type": "boolean", "const": true}
+        },
+        "required": ["next", "partnershipRequiredForB2B"],
+        "additionalProperties": false
+      },
+      "SessionView": {
+        "type": "object",
+        "properties": {
+          "user": {"$ref": "#/components/schemas/SessionUser"},
+          "roles": {"type": "array", "items": {"$ref": "#/components/schemas/SessionRole"}, "uniqueItems": true},
+          "permissions": {"type": "array", "items": {"$ref": "#/components/schemas/PermissionKey"}, "uniqueItems": true},
+          "mfa": {"$ref": "#/components/schemas/MfaState"},
+          "context": {"$ref": "#/components/schemas/SessionContext"},
+          "accessibleCompanies": {"type": "array", "items": {"$ref": "#/components/schemas/AccessibleCompany"}, "uniqueItems": true},
+          "setup": {"$ref": "#/components/schemas/SetupState"}
+        },
+        "required": ["user", "roles", "permissions", "mfa", "context", "accessibleCompanies", "setup"],
+        "additionalProperties": false,
+        "description": "Unique role/company IDs and permission keys are mandatory semantic invariants. This view never authorizes an owner command by itself."
+      },
+      "SessionRead": {
+        "type": "object",
+        "properties": {
+          "data": {"$ref": "#/components/schemas/SessionView"},
+          "revision": {"$ref": "#/components/schemas/Revision"},
+          "asOf": {"$ref": "#/components/schemas/Instant"}
+        },
+        "required": ["data", "revision", "asOf"],
+        "additionalProperties": false,
+        "description": "Outer revision must equal data.context.revision; the mandatory semantic binding enforces equality."
+      },
+      "ChallengeData": {
+        "type": "object",
+        "properties": {"challengeId": {"$ref": "#/components/schemas/ID"}, "required": {"type": "string", "const": "mfa"}},
+        "required": ["challengeId", "required"],
+        "additionalProperties": false
+      },
+      "ChallengeResult": {
+        "type": "object",
+        "properties": {"data": {"$ref": "#/components/schemas/ChallengeData"}, "revision": {"type": "string", "const": "0"}, "operationId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["data", "revision", "operationId"],
+        "additionalProperties": false
+      },
+      "EnrollmentRequiredData": {
+        "type": "object",
+        "properties": {"challengeId": {"$ref": "#/components/schemas/ID"}, "required": {"type": "string", "const": "mfa-enrollment"}},
+        "required": ["challengeId", "required"],
+        "additionalProperties": false
+      },
+      "EnrollmentRequired": {
+        "type": "object",
+        "properties": {"data": {"$ref": "#/components/schemas/EnrollmentRequiredData"}, "revision": {"type": "string", "const": "0"}, "operationId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["data", "revision", "operationId"],
+        "additionalProperties": false
+      },
+      "SessionResult": {
+        "oneOf": [
+          {"$ref": "#/components/schemas/SessionRead"},
+          {"$ref": "#/components/schemas/ChallengeResult"},
+          {"$ref": "#/components/schemas/EnrollmentRequired"}
+        ],
+        "description": "Full, restricted MFA, or restricted bootstrap-enrollment result. Structural oneOf selection precedes mandatory semantic hooks."
+      },
+      "TotpProvisioning": {
+        "type": "object",
+        "properties": {"kind": {"type": "string", "const": "totp"}, "secret": {"$ref": "#/components/schemas/Secret"}, "provisioningUri": {"$ref": "#/components/schemas/Secret"}},
+        "required": ["kind", "secret", "provisioningUri"],
+        "additionalProperties": false
+      },
+      "EnrollmentSecret": {
+        "type": "object",
+        "properties": {"enrollmentId": {"$ref": "#/components/schemas/ID"}, "secretOrChallenge": {"$ref": "#/components/schemas/TotpProvisioning"}},
+        "required": ["enrollmentId", "secretOrChallenge"],
+        "additionalProperties": false,
+        "description": "One-time response; never replayable from a receipt or trace."
+      },
+      "EnrollmentConfirmedData": {
+        "type": "object",
+        "properties": {"enrolled": {"type": "boolean", "const": true}, "recoveryCodes": {"type": "array", "items": {"$ref": "#/components/schemas/Secret"}, "minItems": 1, "uniqueItems": true}},
+        "required": ["enrolled", "recoveryCodes"],
+        "additionalProperties": false
+      },
+      "EnrollmentConfirmed": {
+        "type": "object",
+        "properties": {"data": {"$ref": "#/components/schemas/EnrollmentConfirmedData"}, "revision": {"$ref": "#/components/schemas/PositiveRevision"}, "operationId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["data", "revision", "operationId"],
+        "additionalProperties": false,
+        "description": "revision is the security revision, not the session context revision."
+      },
+      "RecoveryAcceptedData": {
+        "type": "object",
+        "properties": {"status": {"type": "string", "const": "pending"}},
+        "required": ["status"],
+        "additionalProperties": false
+      },
+      "RecoveryAccepted": {
+        "type": "object",
+        "properties": {"data": {"$ref": "#/components/schemas/RecoveryAcceptedData"}, "revision": {"type": "string", "const": "0"}, "operationId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["data", "revision", "operationId"],
+        "additionalProperties": false
+      },
+      "EmptyRequest": {"type": "object", "properties": {}, "required": [], "additionalProperties": false},
+      "LoginRequest": {
+        "type": "object",
+        "properties": {"login": {"$ref": "#/components/schemas/Text"}, "password": {"$ref": "#/components/schemas/Secret"}},
+        "required": ["login", "password"],
+        "additionalProperties": false
+      },
+      "VerifyRequest": {
+        "type": "object",
+        "properties": {"challengeId": {"$ref": "#/components/schemas/ID"}, "code": {"$ref": "#/components/schemas/ProofCode"}},
+        "required": ["challengeId", "code"],
+        "additionalProperties": false
+      },
+      "RevokeAllRequest": {
+        "type": "object",
+        "properties": {"reason": {"$ref": "#/components/schemas/Text"}},
+        "required": ["reason"],
+        "additionalProperties": false,
+        "description": "reason must contain non-whitespace text under the mandatory semantic binding."
+      },
+      "EnrollmentConfirmRequest": {
+        "type": "object",
+        "properties": {"code": {"$ref": "#/components/schemas/ProofCode"}},
+        "required": ["code"],
+        "additionalProperties": false
+      },
+      "RecoveryRequest": {
+        "type": "object",
+        "properties": {"login": {"$ref": "#/components/schemas/Text"}},
+        "required": ["login"],
+        "additionalProperties": false
+      },
+      "RecoveryCompleteRequest": {
+        "type": "object",
+        "properties": {"token": {"$ref": "#/components/schemas/Secret"}, "newPassword": {"$ref": "#/components/schemas/Secret"}, "confirmation": {"$ref": "#/components/schemas/Secret"}},
+        "required": ["token", "newPassword", "confirmation"],
+        "additionalProperties": false,
+        "description": "newPassword must exactly equal confirmation under the mandatory semantic binding."
+      },
+      "ErrorFields": {"type": "object", "additionalProperties": {"$ref": "#/components/schemas/Text"}},
+      "InvalidRequestDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "const": "INVALID_REQUEST"}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "InvalidRequestError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/InvalidRequestDetail"}}, "required": ["error"], "additionalProperties": false},
+      "SessionRequiredDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "const": "SESSION_REQUIRED"}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "SessionRequiredError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/SessionRequiredDetail"}}, "required": ["error"], "additionalProperties": false},
+      "AuthenticationDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "enum": ["SESSION_REQUIRED", "SESSION_EXPIRED", "AUTHENTICATION_FAILED"]}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "AuthenticationError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/AuthenticationDetail"}}, "required": ["error"], "additionalProperties": false},
+      "AccessDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "enum": ["ORIGIN_REJECTED", "CSRF_REJECTED", "FORBIDDEN", "MFA_REQUIRED", "POLICY_UNRESOLVED"]}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "AccessError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/AccessDetail"}}, "required": ["error"], "additionalProperties": false},
+      "NotFoundDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "const": "NOT_FOUND"}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "NotFoundError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/NotFoundDetail"}}, "required": ["error"], "additionalProperties": false},
+      "AuthStateConflictDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "const": "AUTH_STATE_CONFLICT"}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "AuthStateConflictError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/AuthStateConflictDetail"}}, "required": ["error"], "additionalProperties": false},
+      "ValidationDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "const": "VALIDATION_FAILED"}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "ValidationError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/ValidationDetail"}}, "required": ["error"], "additionalProperties": false},
+      "RateLimitedDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "const": "RATE_LIMITED"}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "RateLimitedError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/RateLimitedDetail"}}, "required": ["error"], "additionalProperties": false},
+      "AuthorityDetail": {
+        "type": "object",
+        "properties": {"code": {"type": "string", "enum": ["AUTHORITY_UNAVAILABLE", "AUTH_OUTCOME_UNKNOWN"]}, "message": {"$ref": "#/components/schemas/Text"}, "fields": {"$ref": "#/components/schemas/ErrorFields"}, "traceId": {"$ref": "#/components/schemas/ID"}},
+        "required": ["code", "message", "fields", "traceId"],
+        "additionalProperties": false
+      },
+      "AuthorityError": {"type": "object", "properties": {"error": {"$ref": "#/components/schemas/AuthorityDetail"}}, "required": ["error"], "additionalProperties": false}
+    }
+  },
+  "paths": {
+    "/api/v1/identity/session": {
+      "get": {
+        "operationId": "ReadAuthSession",
+        "x-justix-auth-transport": 1,
+        "parameters": [],
+        "security": [{}, {"SessionCookie": []}, {"ChallengeCookie": []}],
+        "responses": {
+          "200": {"description": "Full or restricted session state", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionResult"}}}},
+          "401": {"description": "Anonymous session acquisition", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionRequiredError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Identity authority unavailable", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/login": {
+      "post": {
+        "operationId": "LoginAuthSession",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/LoginRequest"}}}},
+        "responses": {
+          "200": {"description": "Full or restricted authentication result", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionResult"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Authentication rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF or policy rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "422": {"description": "Field validation failure", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/mfa/challenges": {
+      "post": {
+        "operationId": "CreateAuthMfaChallenge",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"SessionCookie": [], "CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EmptyRequest"}}}},
+        "responses": {
+          "200": {"description": "Restricted step-up challenge", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ChallengeResult"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Session rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF, permission, factor or policy rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "409": {"description": "Authentication state conflict", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthStateConflictError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/mfa/verify": {
+      "post": {
+        "operationId": "VerifyAuthMfaChallenge",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"ChallengeCookie": [], "CSRFCookie": []}, {"SessionCookie": [], "CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/VerifyRequest"}}}},
+        "responses": {
+          "200": {"description": "Rotated full session", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionRead"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Session or proof rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF or policy rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "404": {"description": "Hidden foreign or missing challenge", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NotFoundError"}}}},
+          "409": {"description": "Authentication state conflict", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthStateConflictError"}}}},
+          "422": {"description": "Proof syntax failure", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/logout": {
+      "post": {
+        "operationId": "LogoutAuthSession",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"SessionCookie": [], "CSRFCookie": []}, {"ChallengeCookie": [], "CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EmptyRequest"}}}},
+        "responses": {
+          "204": {"description": "Presented session or challenge revoked", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "403": {"description": "Origin or CSRF rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/revoke-all": {
+      "post": {
+        "operationId": "RevokeOtherAuthSessions",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"SessionCookie": [], "CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RevokeAllRequest"}}}},
+        "responses": {
+          "200": {"description": "Other sessions revoked and current session rotated", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SessionRead"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Session rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF, reauthentication, MFA, permission or policy rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "422": {"description": "Reason validation failure", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/mfa/enrollment": {
+      "post": {
+        "operationId": "StartBootstrapMfaEnrollment",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"ChallengeCookie": [], "CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EmptyRequest"}}}},
+        "responses": {
+          "200": {"description": "One-time TOTP provisioning material", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EnrollmentSecret"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Restricted session rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF, bootstrap intent or policy rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "409": {"description": "Authentication state conflict", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthStateConflictError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/mfa/enrollment/{id}/confirm": {
+      "post": {
+        "operationId": "ConfirmBootstrapMfaEnrollment",
+        "x-justix-auth-transport": 1,
+        "parameters": [
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "string", "format": "uuid"}},
+          {"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}
+        ],
+        "security": [{"ChallengeCookie": [], "CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EnrollmentConfirmRequest"}}}},
+        "responses": {
+          "200": {"description": "Enrollment committed with one-time recovery codes", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "X-CSRF-Token": {"required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EnrollmentConfirmed"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Restricted session or proof rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF, bootstrap intent or policy rejection", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "404": {"description": "Hidden foreign or missing enrollment", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/NotFoundError"}}}},
+          "409": {"description": "Consumed or conflicting enrollment", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthStateConflictError"}}}},
+          "422": {"description": "TOTP syntax or configured field validation failure", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/recovery/request": {
+      "post": {
+        "operationId": "RequestAuthRecovery",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RecoveryRequest"}}}},
+        "responses": {
+          "202": {"description": "Uniform pending recovery response", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RecoveryAccepted"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "403": {"description": "Origin, CSRF or unresolved recovery policy", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "422": {"description": "Field validation failure", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    },
+    "/api/v1/identity/session/recovery/complete": {
+      "post": {
+        "operationId": "CompleteAuthRecovery",
+        "x-justix-auth-transport": 1,
+        "parameters": [{"name": "X-CSRF-Token", "in": "header", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9_-]{1,4096}$"}}],
+        "security": [{"CSRFCookie": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RecoveryCompleteRequest"}}}},
+        "responses": {
+          "204": {"description": "Recovery proof consumed, credential replaced and sessions revoked", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}},
+          "400": {"description": "Invalid request", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InvalidRequestError"}}}},
+          "401": {"description": "Recovery proof rejected", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthenticationError"}}}},
+          "403": {"description": "Origin, CSRF or unresolved recovery policy", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AccessError"}}}},
+          "422": {"description": "Confirmation or configured field validation failure", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationError"}}}},
+          "429": {"description": "Rate limited", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}, "Retry-After": {"required": true, "schema": {"type": "integer", "minimum": 0, "maximum": 2147483647}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RateLimitedError"}}}},
+          "503": {"description": "Authority unavailable or dispatched outcome unknown", "headers": {"Cache-Control": {"required": true, "schema": {"type": "string", "const": "no-store"}}}, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/AuthorityError"}}}}
+        }
+      }
+    }
+  }
+}
