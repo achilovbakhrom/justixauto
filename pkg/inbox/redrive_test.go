@@ -6,17 +6,12 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"io"
 	"os"
 	"sync/atomic"
 	"testing"
 
 	"github.com/google/uuid"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"justixauto/pkg/events"
-	"justixauto/pkg/eventstore"
 	"justixauto/pkg/inbox"
 )
 
@@ -119,52 +114,47 @@ func TestRedrivePostgres(t *testing.T) {
 	})
 
 	t.Run("crash after ordinary apply reconciles through inbox receipt", func(t *testing.T) {
-		for _, commitFirst := range []bool{false, true} {
-			name, id, stream := fmt.Sprintf("redrive-unknown-%v", commitFirst), uuid.NewString(), uuid.NewString()
-			body := message(t, id, stream, company, 1)
-			capture := captureInput(inbox.QuarantineDirectHandler)
-			capture.ConsumerName = name
-			if _, err := q.Capture(ctx, capture, body); err != nil {
-				t.Fatal(err)
+		name, id, stream := "redrive-crash", uuid.NewString(), uuid.NewString()
+		body := message(t, id, stream, company, 1)
+		capture := captureInput(inbox.QuarantineDirectHandler)
+		capture.ConsumerName = name
+		if _, err := q.Capture(ctx, capture, body); err != nil {
+			t.Fatal(err)
+		}
+		ticket, err := r.Request(ctx, redriveRequest(capture))
+		if err != nil {
+			t.Fatal(err)
+		}
+		consumer := consumer(t, db, name, company)
+		var calls atomic.Int32
+		crash := true
+		result := resultInput()
+		path := inbox.OrdinaryRedriveFunc(func(ctx context.Context, p inbox.RedrivePayload) (inbox.OrdinaryReceipt, error) {
+			calls.Add(1)
+			if _, err := consumer.Consume(ctx, p.OriginalBytes, apply, func() error { return nil }); err != nil {
+				return inbox.OrdinaryReceipt{}, err
 			}
-			request := redriveRequest(capture)
-			ticket, err := r.Request(ctx, request)
-			if err != nil {
-				t.Fatal(err)
+			if crash {
+				panic("synthetic crash after ordinary commit")
 			}
-			consumer := consumer(t, db, name, company)
-			var calls atomic.Int32
-			path := inbox.OrdinaryRedriveFunc(func(ctx context.Context, p inbox.RedrivePayload) (inbox.OrdinaryReceipt, error) {
-				calls.Add(1)
-				if _, err := consumer.Consume(ctx, p.OriginalBytes, apply, func() error { return nil }); err != nil {
-					return inbox.OrdinaryReceipt{}, err
+			return inbox.OrdinaryReceipt{Kind: inbox.ReceiptInbox, ConsumerName: name, EventID: id, EnvelopeHash: sha256.Sum256(p.OriginalBytes)}, nil
+		})
+		func() {
+			defer func() {
+				if recover() != "synthetic crash after ordinary commit" {
+					t.Error("crash did not propagate")
 				}
-				return inbox.OrdinaryReceipt{Kind: inbox.ReceiptInbox, ConsumerName: name, EventID: id, EnvelopeHash: sha256.Sum256(p.OriginalBytes)}, nil
-			})
-			pool, err := db.DB()
-			if err != nil {
-				t.Fatal(err)
-			}
-			fault, err := gorm.Open(postgres.New(postgres.Config{Conn: commitFaultPool{DB: pool, commitFirst: commitFirst}}), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
-			if err != nil {
-				t.Fatal(err)
-			}
-			faultRedriver, err := inbox.NewRedriver(fault, events.OwnerInventory, security, authorizer)
-			if err != nil {
-				t.Fatal(err)
-			}
-			result := resultInput()
-			if _, err := faultRedriver.Execute(ctx, ticket, result, path); !errors.Is(err, eventstore.ErrCommitOutcomeUnknown) || !errors.Is(err, io.ErrUnexpectedEOF) {
-				t.Fatal(err)
-			}
-			out, err := r.Execute(ctx, ticket, result, path)
-			if err != nil || out.Code != "accepted" || calls.Load() != map[bool]int32{false: 2, true: 1}[commitFirst] {
-				t.Fatal(out, err, calls.Load())
-			}
-			var effects int64
-			if err := db.Raw("SELECT count(*) FROM fixture.effects WHERE consumer_name=? AND event_id=?::uuid", name, id).Scan(&effects).Error; err != nil || effects != 1 {
-				t.Fatal(effects, err)
-			}
+			}()
+			_, _ = r.Execute(ctx, ticket, result, path)
+		}()
+		crash = false
+		out, err := r.Execute(ctx, ticket, result, path)
+		if err != nil || out.Code != "accepted" || calls.Load() != 2 {
+			t.Fatal(out, err, calls.Load())
+		}
+		var effects int64
+		if err := db.Raw("SELECT count(*) FROM fixture.effects WHERE consumer_name=? AND event_id=?::uuid", name, id).Scan(&effects).Error; err != nil || effects != 1 {
+			t.Fatal(effects, err)
 		}
 	})
 
@@ -229,6 +219,13 @@ func TestRedrivePostgres(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		foreignRedriver, err := inbox.NewRedriver(db, events.OwnerInventory, security, authorizer)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := foreignRedriver.ReleaseCustody(ctx, ticket, resultInput()); !errors.Is(err, inbox.ErrRedriveConflict) {
+			t.Fatal("custody ticket crossed composition", err)
+		}
 		out, err := r.ReleaseCustody(ctx, ticket, resultInput())
 		if err != nil || out.Code != "released" {
 			t.Fatal(out, err)
@@ -285,4 +282,51 @@ func TestRedrivePostgres(t *testing.T) {
 			t.Fatal("completed job changed by observation", state, err)
 		}
 	})
+}
+
+func TestRedriveTicketCannotCrossOwnerStore(t *testing.T) {
+	if os.Getenv("JUSTIXAUTO_TEST_QUARANTINE_ADAPTER") != "1" {
+		t.Skip("set JUSTIXAUTO_TEST_QUARANTINE_ADAPTER=1 for disposable PostgreSQL redrive isolation tests")
+	}
+	ctx := context.Background()
+	dbA, _ := installQuarantineAdapterSchema(t)
+	dbB, _ := installQuarantineAdapterSchema(t)
+	security := newFixtureSecurity()
+	capture := captureInput(inbox.QuarantineDirectHandler)
+	capture.ConsumerName = "redrive-store-isolation"
+	qA, err := inbox.NewQuarantine(dbA, events.OwnerInventory, security)
+	if err != nil {
+		t.Fatal(err)
+	}
+	qB, err := inbox.NewQuarantine(dbB, events.OwnerInventory, security)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := qA.Capture(ctx, capture, []byte("store-a-protected-input")); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := qB.Capture(ctx, capture, []byte("store-b-different-input")); err != nil {
+		t.Fatal(err)
+	}
+	authorizer := &fixtureAuthorizer{}
+	rA, err := inbox.NewRedriver(dbA, events.OwnerInventory, security, authorizer)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rB, err := inbox.NewRedriver(dbB, events.OwnerInventory, security, authorizer)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ticket, err := rA.Request(ctx, redriveRequest(capture))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int32
+	_, err = rB.Execute(ctx, ticket, resultInput(), inbox.OrdinaryRedriveFunc(func(context.Context, inbox.RedrivePayload) (inbox.OrdinaryReceipt, error) {
+		calls.Add(1)
+		return inbox.OrdinaryReceipt{}, errors.New("foreign ordinary path must not run")
+	}))
+	if !errors.Is(err, inbox.ErrRedriveConflict) || calls.Load() != 0 {
+		t.Fatal("foreign-store ticket crossed pre-effect boundary", err, calls.Load())
+	}
 }

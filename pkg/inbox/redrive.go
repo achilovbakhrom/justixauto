@@ -92,7 +92,10 @@ type RedriveTicket struct{ value *redriveTicket }
 type redriveTicket struct {
 	request  RedriveRequestInput
 	evidence redriveEvidence
+	redriver *redriverIdentity
 }
+
+type redriverIdentity struct{ value byte }
 
 // Redriver journals authorization before touching protected content. It has no
 // broker channel and cannot bypass the injected ordinary delivery path.
@@ -102,6 +105,7 @@ type Redriver struct {
 	security   EvidenceSecurity
 	authorizer RedriveAuthorizer
 	runner     *eventstore.Transactions[*gorm.DB]
+	identity   *redriverIdentity
 }
 
 func NewRedriver(db *gorm.DB, owner events.Owner, security EvidenceSecurity, authorizer RedriveAuthorizer) (*Redriver, error) {
@@ -112,7 +116,7 @@ func NewRedriver(db *gorm.DB, owner events.Owner, security EvidenceSecurity, aut
 	if err != nil {
 		return nil, err
 	}
-	return &Redriver{db: db, owner: owner, security: security, authorizer: authorizer, runner: runner}, nil
+	return &Redriver{db: db, owner: owner, security: security, authorizer: authorizer, runner: runner, identity: &redriverIdentity{1}}, nil
 }
 
 // Request appends one authorized redrive-request to the current evidence tip.
@@ -150,7 +154,7 @@ func (r *Redriver) Request(ctx context.Context, in RedriveRequestInput) (Redrive
 		return RedriveTicket{}, err
 	}
 	in.RequiredFences = append([]eventstore.FenceRequest(nil), in.RequiredFences...)
-	return RedriveTicket{&redriveTicket{request: in, evidence: retained}}, nil
+	return RedriveTicket{&redriveTicket{request: in, evidence: retained, redriver: r.identity}}, nil
 }
 
 // Execute restores exact original bytes outside SQL and submits them to an
@@ -159,6 +163,9 @@ func (r *Redriver) Request(ctx context.Context, in RedriveRequestInput) (Redrive
 func (r *Redriver) Execute(ctx context.Context, ticket RedriveTicket, result RedriveResultInput, path OrdinaryRedrive) (RedriveOutcome, error) {
 	if r == nil || ticket.value == nil || path == nil || !validResult(result) {
 		return RedriveOutcome{}, ErrInvalidRedrive
+	}
+	if err := r.validateTicket(ctx, ticket); err != nil {
+		return RedriveOutcome{}, err
 	}
 	if out, found, err := r.existingResult(ctx, ticket, result); err != nil || found {
 		return out, err
@@ -198,6 +205,9 @@ func (r *Redriver) Execute(ctx context.Context, ticket RedriveTicket, result Red
 func (r *Redriver) ReleaseCustody(ctx context.Context, ticket RedriveTicket, result RedriveResultInput) (RedriveOutcome, error) {
 	if r == nil || ticket.value == nil || !validResult(result) || ticket.value.request.IntendedPath != QuarantineCustodyHandler {
 		return RedriveOutcome{}, ErrInvalidRedrive
+	}
+	if err := r.validateTicket(ctx, ticket); err != nil {
+		return RedriveOutcome{}, err
 	}
 	if out, found, err := r.existingResult(ctx, ticket, result); err != nil || found {
 		return out, err
@@ -307,6 +317,43 @@ func (r *Redriver) compatible(e redriveEvidence, in RedriveRequestInput) bool {
 	return consumer == in.IntendedConsumer
 }
 
+// validateTicket is the pre-effect custody boundary. The unexported instance
+// identity rejects a ticket handed to another store/composition, including one
+// with colliding UUIDs. The immutable local reads then prove that this exact
+// store retains both the ticket's evidence snapshot and its authorized request
+// before protected bytes can be restored or an ordinary callback can run.
+func (r *Redriver) validateTicket(ctx context.Context, ticket RedriveTicket) error {
+	if r == nil || r.identity == nil || ticket.value == nil || ticket.value.redriver != r.identity {
+		return ErrRedriveConflict
+	}
+	return r.runner.Run(ctx, func(tx *gorm.DB) error {
+		if err := requireQuarantineReady(ctx, tx, r.owner); err != nil {
+			return err
+		}
+		current, err := r.readEvidence(ctx, tx, ticket.value.request.EvidenceID)
+		if err != nil {
+			return err
+		}
+		if !sameRedriveEvidence(ticket.value.evidence, current) || !r.compatible(current, ticket.value.request) {
+			return ErrRedriveConflict
+		}
+		var retained redriveActionRow
+		read := tx.WithContext(ctx).Table("eventstore.quarantine_actions").
+			Where("action_id=?::uuid AND request_id=?::uuid AND evidence_id=?::uuid", ticket.value.request.ActionID, ticket.value.request.RequestID, ticket.value.request.EvidenceID).
+			Take(&retained)
+		if errors.Is(read.Error, gorm.ErrRecordNotFound) {
+			return ErrRedriveConflict
+		}
+		if read.Error != nil {
+			return read.Error
+		}
+		if !sameRedriveAction(retained, redriveRequestRow(ticket.value.request)) {
+			return ErrRedriveConflict
+		}
+		return nil
+	})
+}
+
 func authorization(e redriveEvidence, in RedriveRequestInput) RedriveAuthorization {
 	consumer, job := "", ""
 	if e.ConsumerName != nil {
@@ -347,10 +394,7 @@ func appendRedriveRequest(ctx context.Context, tx *gorm.DB, in RedriveRequestInp
 	if err := tx.WithContext(ctx).Exec("SELECT pg_advisory_xact_lock(hashtextextended(?,0))", "justixauto:quarantine-chain:"+in.EvidenceID).Error; err != nil {
 		return err
 	}
-	want := redriveActionRow{ActionID: in.ActionID, EvidenceID: in.EvidenceID, RequestID: in.RequestID, PriorActionID: &in.PriorActionID,
-		Action: "redrive-request", EvidenceFormatVersion: 1, ActorRef: in.ActorRef, AuthorityRef: in.AuthorityRef, ScopeRef: in.ScopeRef,
-		PurposeRef: in.PurposeRef, RepairRef: in.RepairRef, IntendedPath: string(in.IntendedPath), IntendedConsumer: nullableQuarantine(in.IntendedConsumer),
-		ManifestRef: in.ManifestRef, ManifestSha256: bytes.Clone(in.ManifestHash[:]), OutcomeCode: "requested"}
+	want := redriveRequestRow(in)
 	var existing redriveActionRow
 	find := tx.WithContext(ctx).Table("eventstore.quarantine_actions").Where("action_id=?::uuid OR request_id=?::uuid", in.ActionID, in.RequestID).Take(&existing)
 	if find.Error == nil {
@@ -372,6 +416,13 @@ func appendRedriveRequest(ctx context.Context, tx *gorm.DB, in RedriveRequestInp
 		return ErrRedriveConflict
 	}
 	return tx.WithContext(ctx).Table("eventstore.quarantine_actions").Create(&want).Error
+}
+
+func redriveRequestRow(in RedriveRequestInput) redriveActionRow {
+	return redriveActionRow{ActionID: in.ActionID, EvidenceID: in.EvidenceID, RequestID: in.RequestID, PriorActionID: &in.PriorActionID,
+		Action: "redrive-request", EvidenceFormatVersion: 1, ActorRef: in.ActorRef, AuthorityRef: in.AuthorityRef, ScopeRef: in.ScopeRef,
+		PurposeRef: in.PurposeRef, RepairRef: in.RepairRef, IntendedPath: string(in.IntendedPath), IntendedConsumer: nullableQuarantine(in.IntendedConsumer),
+		ManifestRef: in.ManifestRef, ManifestSha256: bytes.Clone(in.ManifestHash[:]), OutcomeCode: "requested"}
 }
 
 type redriveActionRow struct {
