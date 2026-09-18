@@ -1,0 +1,32 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-t015-t933-assigned/task-index.json.gz",
+    "bytes": 1491591,
+    "sha256": "8dbd6daf47ed0a518564fe79cc0b025d8882d0c1b3d2abfbefa0024964a332eb"
+  },
+  {
+    "path": "docs/justix-auto/dev/task-board.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-t015-t933-assigned/task-board.md.gz",
+    "bytes": 218871,
+    "sha256": "027d0d6bdb5686c56b63196fdf516e9e0d033425b4ea731caec10a71a692f2d1"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-015.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-t015-t933-assigned/T-015.md.gz",
+    "bytes": 7309,
+    "sha256": "66ac1ccea6da32b625a5955f08819e8f0ebf55b6be1829275dd173448a7b88f1"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-933.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-t015-t933-assigned/T-933.md.gz",
+    "bytes": 3912,
+    "sha256": "2b5ffe437ff6ee7cfbc8fae6681989b6c9cd699ac2096464efaf0776a81a3e8c"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-18-t015-t933-assigned/dev-state.md.gz",
+    "bytes": 14188,
+    "sha256": "65381ee7ed2d1e7c69af15f8463e08e195a4f100da0fc394afedc89d867d0427"
+  }
+]

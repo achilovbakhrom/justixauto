@@ -82,7 +82,7 @@ Longest effort-weighted chain: 152 task-effort hours (unconstrained critical-pat
 | [T-012](tasks/T-012.md) | B-01 | Relay leased outbox records through confirmed AMQP | implementation / 3 | foundation | integrated | T-011, T-006, T-919, T-924 | `task/T-012-outbox-relay` | ENV-GIT |
 | [T-013](tasks/T-013.md) | B-01 | Commit inbox deduplication and effect before acknowledgment | implementation / 3 | foundation | integrated | T-009, T-006 | `task/T-013-inbox` | ENV-GIT |
 | [T-014](tasks/T-014.md) | B-01 | Buffer sequence gaps and reconcile owner checkpoints | implementation / 3 | foundation | integrated | T-013, T-010, T-926 | `task/T-014-projection-sequence` | ENV-GIT |
-| [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | todo | T-013, T-927, T-922 | `task/T-015-quarantine` | ENV-GIT |
+| [T-015](tasks/T-015.md) | B-01 | Persist poison evidence before acknowledgment and redrive | implementation / 3 | foundation | in-progress | T-013, T-927, T-922 | `task/T-015-quarantine` | ENV-GIT |
 | [T-016](tasks/T-016.md) | B-01 | Rebuild and atomically switch projection generations | implementation / 3 | foundation | todo | T-014, T-928, T-920, T-948 | `task/T-016-projection-rebuild` | ENV-GIT |
 | [T-017](tasks/T-017.md) | B-01 | Implement idempotency ledger and typed command receipts | implementation / 3 | foundation | integrated | T-009 | `task/T-017-receipts` | ENV-GIT |
 | [T-018](tasks/T-018.md) | B-01 | Implement durable operation decisions and recovery scheduling | implementation / 3 | foundation | integrated | T-017, T-011, T-013 | `task/T-018-process` | ENV-GIT |
@@ -1014,7 +1014,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | integrated | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | integrated | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | integrated | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
-| [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | todo | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
+| [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | in-progress | T-932 | `task/T-933-owner-migration-runner` | ENV-GIT |
 | [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928, T-946 | `task/T-934-custody-persistence-profile` | ENV-GIT |
 
 ## Approved auth transport compatibility tasks — 2026-09-15

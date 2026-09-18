@@ -977,7 +977,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-013",
         "T-927",
@@ -999,9 +999,11 @@
         "B-01.AC2"
       ],
       "scope": "Unsupported/malformed events quarantine durably before ACK; failed quarantine remains unacked; redrive uses ordinary dedup and retains repair audit.",
-      "worktree": null,
-      "base_sha": null,
-      "reviewed_sha": null
+      "worktree": ".worktrees/T-015",
+      "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
+      "reviewed_sha": null,
+      "agent": "backend_t015",
+      "execution_note": "Dependency-ready after T-927/T-922 integration; isolated worktree assigned for durable quarantine-before-ACK and ordinary-path redrive only."
     },
     {
       "id": "T-016",
@@ -35750,7 +35752,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "todo",
+      "status": "in-progress",
       "depends_on": [
         "T-932"
       ],
@@ -35768,8 +35770,11 @@
         "B-01.AC1"
       ],
       "scope": "Compose actual migrate.NewWithInstance with verified immutable upward-only source and project driver. Explicit bootstrap/shared-template phases and lock ownership, complete bundle preflight, retained incremental upgrades, verified no-op and authoritative unknown-outcome reconciliation. No automatic dirty repair or silent lower-version skipping.",
-      "worktree": null,
-      "base_sha": null
+      "worktree": ".worktrees/T-933",
+      "base_sha": "a85c4c70dbd0dbfc3317779910f95c988667eb91",
+      "reviewed_sha": null,
+      "agent": "backend_t933",
+      "execution_note": "Dependency-ready after T-932 GREEN integration; isolated worktree assigned for the bounded verified upward-only runner with actual engine probes."
     },
     {
       "id": "T-934",
