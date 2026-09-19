@@ -23,9 +23,9 @@ committed, pushed, or prepared for review. `dev`, `main`, and `master` are
 always denied. `create-worktree` bases strictly on local `dev`; for a first
 setup where `dev` does not exist, `--bootstrap-base <40-character SHA>` is
 required and is used only as the new task branch's base. It does **not** create
-or move `dev`. Where `origin` is configured, the expected local `dev` SHA must
-also match `origin/dev`; a bootstrap is denied if `origin/dev` exists, and an
-origin lookup failure fails closed. A repository without `origin` is explicitly
+or move `dev`. Where `origin` is configured, `origin/dev` must exist and exactly
+match the expected local `dev` SHA; a bootstrap is denied if `origin/dev` exists,
+and an origin lookup failure fails closed. A repository without `origin` is explicitly
 local-only and has no remote freshness assertion.
 
 Commits require an expected current HEAD plus one or more exact relative file
@@ -37,6 +37,18 @@ validated immutable source SHA to `refs/heads/<current>`, never force, and valid
 local expected SHA and remote resulting SHA. `prepare-dev` is read-only and
 prints the source branch/SHA, current remote `dev` SHA, and reviewable commits.
 It deliberately has no approval flag.
+
+Commits run the project's normal hooks in a temporary linked candidate worktree.
+The tool checks that the candidate commit's complete diff is exactly the requested
+file set before atomically advancing the real task branch; an out-of-scope path
+staged by a hook cannot reach that branch. Hooks are trusted local code, not
+sandboxed: their own external side effects still run once. This explicit design
+does not silently disable or bypass project hooks. The candidate is detached, so
+branch-sensitive hooks can reject it; that rejection fails closed and preserves
+the candidate worktree path in the error for inspection. Failed candidates are
+not force-removed, so unexpected hook-created content is recoverable. A hook
+that leaves untracked or unstaged candidate content also fails closed before the
+real branch is advanced.
 
 This CLI is not a security boundary and cannot manufacture human authority.
 Development integration must happen through a human-capable external gate:

@@ -5,7 +5,10 @@
  * approval and server-side branch protection.
  */
 import { execFileSync } from 'node:child_process';
-import { lstatSync, realpathSync } from 'node:fs';
+import { copyFileSync, lstatSync, mkdirSync, readFileSync, realpathSync, rmSync } from 'node:fs';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { createHash } from 'node:crypto';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 
 const PROTECTED = new Set(['dev', 'main', 'master']);
@@ -155,7 +158,7 @@ export function createWorktree({ repo = process.cwd(), branch, path, expectedDev
     if (localDev !== expectedDev) throw new GateError(`dev moved: expected ${expectedDev}, found ${localDev}`);
     if (hasOrigin(root)) {
       const remoteDev = remoteBranchSha(root, 'dev');
-      if (remoteDev && remoteDev !== expectedDev) throw new GateError(`local dev is stale: origin has ${remoteDev}`);
+      if (remoteDev !== expectedDev) throw new GateError(`origin/dev must equal expected dev; found ${remoteDev ?? 'missing'}`);
     }
     base = expectedDev;
   }
@@ -179,12 +182,104 @@ export function commitScoped({ repo = process.cwd(), paths, message, taskId, exp
   if (!message.includes(taskId)) throw new GateError('message must include the task or packet ID');
   assertExpectedHead(root, expectedHead);
   assertOnlyScopedStaged(root, scopes);
-  git(root, ['--literal-pathspecs', 'add', '--', ...scopes]);
-  const staged = assertOnlyScopedStaged(root, scopes);
-  if (!staged.length) throw new GateError('no scoped changes staged');
-  assertExpectedHead(root, expectedHead);
-  git(root, ['commit', '-m', message]);
-  return { branch, sha: git(root, ['rev-parse', 'HEAD']), paths: staged };
+  return commitCandidate({ root, branch, scopes, message, expectedHead });
+}
+
+function syncScopes(from, to, scopes) {
+  for (const scope of scopes) {
+    const source = resolve(from, scope); const destination = resolve(to, scope);
+    if (lstatOrNull(source)) {
+      mkdirSync(dirname(destination), { recursive: true });
+      copyFileSync(source, destination);
+    } else {
+      rmSync(destination, { force: true });
+    }
+  }
+}
+
+function candidatePaths(repo, parent, sha) {
+  const parentOfCandidate = git(repo, ['rev-parse', `${sha}^`]);
+  if (parentOfCandidate !== parent) throw new GateError('candidate commit parent changed');
+  const raw = git(repo, ['diff-tree', '--no-commit-id', '--name-only', '-r', parent, sha]);
+  return raw ? raw.split('\n').filter(Boolean) : [];
+}
+
+function scopeSnapshot(repo, scopes) {
+  return new Map(scopes.map((scope) => {
+    const stat = lstatOrNull(resolve(repo, scope));
+    const digest = stat ? createHash('sha256').update(readFileSync(resolve(repo, scope))).digest('hex') : null;
+    return [scope, digest];
+  }));
+}
+
+function assertSnapshot(repo, snapshot) {
+  for (const [scope, before] of snapshot) {
+    const stat = lstatOrNull(resolve(repo, scope));
+    const after = stat ? createHash('sha256').update(readFileSync(resolve(repo, scope))).digest('hex') : null;
+    if (after !== before) throw new GateError(`scoped working file changed while hook ran: ${scope}`);
+  }
+}
+
+function treeMode(repo, sha, path) {
+  const entry = git(repo, ['--literal-pathspecs', 'ls-tree', sha, '--', path]);
+  return entry ? entry.split(/\s+/, 1)[0] : null;
+}
+
+function assertCandidatePathTypes(repo, parent, sha, paths) {
+  for (const path of paths) {
+    const stat = lstatOrNull(resolve(repo, path));
+    if (stat && !stat.isFile()) throw new GateError(`hook produced non-file candidate path: ${path}`);
+    const mode = treeMode(repo, sha, path) ?? treeMode(repo, parent, path);
+    if (!mode?.startsWith('100')) throw new GateError(`hook produced non-regular candidate path: ${path}`);
+  }
+}
+
+/**
+ * Run ordinary project hooks in an isolated linked worktree. A hook may stage
+ * files there, but the real branch only moves after its candidate diff exactly
+ * matches the caller's explicit files. This does not sandbox trusted hooks or
+ * suppress their external side effects; hooks still run once under Git.
+ */
+function commitCandidate({ root, branch, scopes, message, expectedHead }) {
+  const parent = mkdtempSync(resolve(tmpdir(), 'agent-git-candidate-'));
+  const candidate = resolve(parent, 'worktree');
+  let added = false;
+  let succeeded = false;
+  const initial = scopeSnapshot(root, scopes);
+  try {
+    git(root, ['worktree', 'add', '--detach', candidate, expectedHead]);
+    added = true;
+    syncScopes(root, candidate, scopes);
+    git(candidate, ['--literal-pathspecs', 'add', '--', ...scopes]);
+    const staged = assertOnlyScopedStaged(candidate, scopes);
+    if (!staged.length) throw new GateError('no scoped changes staged');
+    git(candidate, ['commit', '-m', message]);
+    if (git(candidate, ['status', '--porcelain=v1'])) throw new GateError('hook left candidate worktree dirty');
+    const sha = git(candidate, ['rev-parse', 'HEAD']);
+    const actualPaths = candidatePaths(candidate, expectedHead, sha);
+    if (!actualPaths.length || actualPaths.some((file) => !scopes.includes(file))) {
+      throw new GateError(`hook changed candidate outside explicit scope: ${actualPaths.join(', ') || 'empty diff'}`);
+    }
+    assertCandidatePathTypes(candidate, expectedHead, sha, actualPaths);
+    assertExpectedHead(root, expectedHead);
+    assertSnapshot(root, initial);
+    // Preserve permitted hook formatting/changes for the exact committed paths.
+    syncScopes(candidate, root, actualPaths);
+    git(root, ['update-ref', `refs/heads/${branch}`, sha, expectedHead]);
+    git(root, ['read-tree', sha]);
+    succeeded = true;
+    return { branch, sha, paths: actualPaths };
+  } catch (error) {
+    if (added && error instanceof Error) error.message = `${error.message}; candidate preserved at ${candidate}`;
+    throw error;
+  } finally {
+    if (added && succeeded) {
+      git(root, ['worktree', 'remove', candidate]);
+      rmSync(parent, { recursive: true, force: true });
+    } else if (!added) {
+      rmSync(parent, { recursive: true, force: true });
+    }
+  }
 }
 
 export function pushBranch({ repo = process.cwd(), expectedHead } = {}) {

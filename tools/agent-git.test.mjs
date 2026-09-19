@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync, mkdirSync, symlinkSync, unlinkSync, existsSync } from 'node:fs';
+import { chmodSync, mkdtempSync, writeFileSync, mkdirSync, symlinkSync, unlinkSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
@@ -39,9 +39,11 @@ test('creates an explicit allowed worktree from dev and never falls back to main
 
 test('create-worktree rejects stale local dev and bootstrap when origin/dev exists', () => {
   const stale = repo(); git(stale, 'checkout', '-q', 'dev'); writeFileSync(join(stale, 'remote-behind.txt'), 'x'); git(stale, 'add', 'remote-behind.txt'); git(stale, 'commit', '-qm', 'chore: advance dev'); git(stale, 'checkout', '-q', 'main');
-  expectGate(() => createWorktree({ repo: stale, branch: 'task/stale', path: `${stale}-wt`, expectedDev: git(stale, 'rev-parse', 'dev') }), 'stale');
+  expectGate(() => createWorktree({ repo: stale, branch: 'task/stale', path: `${stale}-wt`, expectedDev: git(stale, 'rev-parse', 'dev') }), 'origin/dev must equal');
   const remoteDev = repo(); git(remoteDev, 'branch', '-D', 'dev');
   expectGate(() => createWorktree({ repo: remoteDev, branch: 'task/bootstrap-denied', path: `${remoteDev}-wt`, bootstrapBase: head(remoteDev) }), 'origin/dev exists');
+  const missingRemoteDev = repo({ dev: false, remote: true }); git(missingRemoteDev, 'branch', 'dev');
+  expectGate(() => createWorktree({ repo: missingRemoteDev, branch: 'task/remote-missing', path: `${missingRemoteDev}-wt`, expectedDev: git(missingRemoteDev, 'rev-parse', 'dev') }), 'origin/dev must equal');
 });
 
 test('CLI end-to-end creates, commits, pushes, and prepares an uppercase task branch', () => {
@@ -58,12 +60,35 @@ test('CLI end-to-end creates, commits, pushes, and prepares an uppercase task br
 test('commit is scoped, conventional, task-labelled, and rejects protected branches', () => {
   const root = task(repo()); writeFileSync(join(root, 'good.txt'), 'good\n');
   expectGate(() => commitScoped({ repo: root, paths: ['good.txt'], taskId: 'HUB-GIT', message: 'feat(HUB-GIT): add gate' }), 'expected head');
-  const result = commitScoped({ repo: root, paths: ['good.txt'], taskId: 'HUB-GIT', message: 'feat(HUB-GIT): add gate', expectedHead: head(root) });
-  assert.match(result.sha, /^[0-9a-f]{40}$/);
+  const result = commitScoped({ repo: root, paths: ['good.txt', 'seed.txt'], taskId: 'HUB-GIT', message: 'feat(HUB-GIT): add gate', expectedHead: head(root) });
+  assert.match(result.sha, /^[0-9a-f]{40}$/); assert.deepEqual(result.paths, ['good.txt']);
   writeFileSync(join(root, 'other.txt'), 'other\n'); git(root, 'add', 'other.txt'); writeFileSync(join(root, 'next.txt'), 'x\n');
   expectGate(() => commitScoped({ repo: root, paths: ['next.txt'], taskId: 'HUB-GIT', message: 'feat(HUB-GIT): next', expectedHead: head(root) }), 'outside requested');
   git(root, 'reset', '-q'); git(root, 'checkout', '-q', 'dev'); writeFileSync(join(root, 'dev.txt'), 'x');
   expectGate(() => commitScoped({ repo: root, paths: ['dev.txt'], taskId: 'HUB-GIT', message: 'feat(HUB-GIT): denied' }), 'protected');
+});
+
+test('a project pre-commit hook cannot add an out-of-scope file to the real commit', () => {
+  const root = task(repo()); const before = head(root); writeFileSync(join(root, 'allowed.txt'), 'allowed\n');
+  const hook = join(root, '.git', 'hooks', 'pre-commit');
+  writeFileSync(hook, '#!/bin/sh\nprintf outside > outside.txt\ngit add outside.txt\n'); chmodSync(hook, 0o755);
+  expectGate(() => commitScoped({ repo: root, paths: ['allowed.txt'], taskId: 'HUB-GIT', message: 'fix(HUB-GIT): hook scope', expectedHead: before }), 'hook changed candidate outside');
+  assert.equal(head(root), before); assert.equal(existsSync(join(root, 'outside.txt')), false);
+  const staged = git(root, 'diff', '--cached', '--name-only'); assert.equal(staged, '');
+});
+
+test('post-hook candidate types are checked and scoped hook formatting is retained', () => {
+  const bad = task(repo()); const badHead = head(bad); writeFileSync(join(bad, 'allowed.txt'), 'plain\n');
+  const badHook = join(bad, '.git', 'hooks', 'pre-commit');
+  writeFileSync(badHook, '#!/bin/sh\nrm allowed.txt\nln -s missing allowed.txt\ngit add allowed.txt\n'); chmodSync(badHook, 0o755);
+  expectGate(() => commitScoped({ repo: bad, paths: ['allowed.txt'], taskId: 'HUB-GIT', message: 'fix(HUB-GIT): type', expectedHead: badHead }), 'non-file candidate');
+  assert.equal(head(bad), badHead); assert.equal(existsSync(join(bad, 'allowed.txt')), true);
+
+  const formatted = task(repo()); writeFileSync(join(formatted, 'allowed.txt'), 'raw\n');
+  const formatHook = join(formatted, '.git', 'hooks', 'pre-commit');
+  writeFileSync(formatHook, "#!/bin/sh\nprintf 'formatted\\n' > allowed.txt\ngit add allowed.txt\n"); chmodSync(formatHook, 0o755);
+  const made = commitScoped({ repo: formatted, paths: ['allowed.txt'], taskId: 'HUB-GIT', message: 'fix(HUB-GIT): format', expectedHead: head(formatted) });
+  assert.equal(git(formatted, 'show', `${made.sha}:allowed.txt`), 'formatted'); assert.equal(git(formatted, 'status', '--porcelain'), '');
 });
 
 test('rejects traversal, pathspecs, directories, and index symlinks', () => {
