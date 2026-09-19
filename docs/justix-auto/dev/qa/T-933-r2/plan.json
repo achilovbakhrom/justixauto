@@ -1,0 +1,98 @@
+{
+  "schema": 2,
+  "task_id": "T-933-REQA",
+  "planner_actor": "resume.slicer",
+  "hub_actor": "hub.application",
+  "hub": "application",
+  "base_sha": "3f3fe0339cdd9171e5ca3bdaf739c748c3e20ce9",
+  "contracts": [
+    {
+      "path": "source-lock.json",
+      "sha256": "8b4fdc7840637dc98649b2e112c83aaac4d2586cccc175f01380e6c42a9f6694"
+    },
+    {
+      "path": "common.md",
+      "sha256": "82c4907a4907862912a57244783b9eb8cf557fe7b44eb94760489bfcdf16acee"
+    },
+    {
+      "path": "overlay.json",
+      "sha256": "295b2640364e2ec6238d735a53d6fcfe7ec1966b019b6b67c06dbf7bdbedbaf6"
+    }
+  ],
+  "requirements": [
+    "REQ-IDENTITY",
+    "REQ-REPORT-SHAPE",
+    "REQ-REQUESTED-HEAD",
+    "REQ-ENGINE-PHASES",
+    "REQ-FAILURE-EVIDENCE",
+    "REQ-CONCURRENCY",
+    "REQ-FIXTURE-CUSTODY",
+    "REQ-INTEGRATION"
+  ],
+  "packets": [
+    {
+      "id": "PKT-REGRESSION",
+      "kind": "qa",
+      "depends_on": [],
+      "owned_paths": [],
+      "brief": {
+        "path": "regression.md",
+        "sha256": "636a7bd27d7f7c619e4f45c5ce98170b7214beb3da6d976624164a9ca6b4869e"
+      },
+      "acceptance": [
+        "REQ-IDENTITY",
+        "REQ-REPORT-SHAPE",
+        "REQ-ENGINE-PHASES"
+      ],
+      "resources": []
+    },
+    {
+      "id": "PKT-ENGINE",
+      "kind": "qa",
+      "depends_on": [
+        "PKT-REGRESSION"
+      ],
+      "owned_paths": [],
+      "brief": {
+        "path": "engine.md",
+        "sha256": "61076dcaaa3e72a2b8ad1c6c614f275f06fad20f4d7c73f303eff393b14d92af"
+      },
+      "acceptance": [
+        "REQ-IDENTITY",
+        "REQ-REQUESTED-HEAD",
+        "REQ-ENGINE-PHASES",
+        "REQ-FAILURE-EVIDENCE",
+        "REQ-CONCURRENCY",
+        "REQ-FIXTURE-CUSTODY"
+      ],
+      "resources": [
+        "postgres"
+      ]
+    },
+    {
+      "id": "PKT-INTEGRATION",
+      "kind": "integration",
+      "depends_on": [
+        "PKT-ENGINE"
+      ],
+      "owned_paths": [],
+      "brief": {
+        "path": "integration.md",
+        "sha256": "2d36b9283fb8dfbe11660d4e17122a16461a8db3276d812834d8dad06f27535d"
+      },
+      "acceptance": [
+        "REQ-IDENTITY",
+        "REQ-REPORT-SHAPE",
+        "REQ-REQUESTED-HEAD",
+        "REQ-ENGINE-PHASES",
+        "REQ-FAILURE-EVIDENCE",
+        "REQ-CONCURRENCY",
+        "REQ-FIXTURE-CUSTODY",
+        "REQ-INTEGRATION"
+      ],
+      "resources": [
+        "postgres"
+      ]
+    }
+  ]
+}

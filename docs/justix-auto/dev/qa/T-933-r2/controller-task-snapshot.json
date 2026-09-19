@@ -1,0 +1,239 @@
+{
+  "note": "Read-only task-state export after publication began; not a new clean-checkout audit. Aggregate remains bound to c75dfcd683f612493598c8c40973dd125cdcb090.",
+  "task": {
+    "aggregate": {
+      "actor": "qa.t933.aggregator",
+      "at": "2026-09-19T08:50:16.089Z",
+      "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/aggregation.md",
+      "final_sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+    },
+    "digest": "af43e0cf7c700b139c260fc400aa5d9a00bdc485c2e16eceb197ac8b0ec9e890",
+    "hub_acceptance": {
+      "actor": "hub.application",
+      "at": "2026-09-19T08:23:50.634Z",
+      "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/hub-acceptance.md"
+    },
+    "manifest": {
+      "base_sha": "3f3fe0339cdd9171e5ca3bdaf739c748c3e20ce9",
+      "contracts": [
+        {
+          "path": "source-lock.json",
+          "sha256": "8b4fdc7840637dc98649b2e112c83aaac4d2586cccc175f01380e6c42a9f6694"
+        },
+        {
+          "path": "common.md",
+          "sha256": "82c4907a4907862912a57244783b9eb8cf557fe7b44eb94760489bfcdf16acee"
+        },
+        {
+          "path": "overlay.json",
+          "sha256": "295b2640364e2ec6238d735a53d6fcfe7ec1966b019b6b67c06dbf7bdbedbaf6"
+        }
+      ],
+      "hub": "application",
+      "hub_actor": "hub.application",
+      "packets": [
+        {
+          "acceptance": [
+            "REQ-IDENTITY",
+            "REQ-REPORT-SHAPE",
+            "REQ-ENGINE-PHASES"
+          ],
+          "brief": {
+            "path": "regression.md",
+            "sha256": "636a7bd27d7f7c619e4f45c5ce98170b7214beb3da6d976624164a9ca6b4869e"
+          },
+          "depends_on": [],
+          "id": "PKT-REGRESSION",
+          "kind": "qa",
+          "owned_paths": [],
+          "resources": []
+        },
+        {
+          "acceptance": [
+            "REQ-IDENTITY",
+            "REQ-REQUESTED-HEAD",
+            "REQ-ENGINE-PHASES",
+            "REQ-FAILURE-EVIDENCE",
+            "REQ-CONCURRENCY",
+            "REQ-FIXTURE-CUSTODY"
+          ],
+          "brief": {
+            "path": "engine.md",
+            "sha256": "61076dcaaa3e72a2b8ad1c6c614f275f06fad20f4d7c73f303eff393b14d92af"
+          },
+          "depends_on": [
+            "PKT-REGRESSION"
+          ],
+          "id": "PKT-ENGINE",
+          "kind": "qa",
+          "owned_paths": [],
+          "resources": [
+            "postgres"
+          ]
+        },
+        {
+          "acceptance": [
+            "REQ-IDENTITY",
+            "REQ-REPORT-SHAPE",
+            "REQ-REQUESTED-HEAD",
+            "REQ-ENGINE-PHASES",
+            "REQ-FAILURE-EVIDENCE",
+            "REQ-CONCURRENCY",
+            "REQ-FIXTURE-CUSTODY",
+            "REQ-INTEGRATION"
+          ],
+          "brief": {
+            "path": "integration.md",
+            "sha256": "2d36b9283fb8dfbe11660d4e17122a16461a8db3276d812834d8dad06f27535d"
+          },
+          "depends_on": [
+            "PKT-ENGINE"
+          ],
+          "id": "PKT-INTEGRATION",
+          "kind": "integration",
+          "owned_paths": [],
+          "resources": [
+            "postgres"
+          ]
+        }
+      ],
+      "planner_actor": "resume.slicer",
+      "requirements": [
+        "REQ-IDENTITY",
+        "REQ-REPORT-SHAPE",
+        "REQ-REQUESTED-HEAD",
+        "REQ-ENGINE-PHASES",
+        "REQ-FAILURE-EVIDENCE",
+        "REQ-CONCURRENCY",
+        "REQ-FIXTURE-CUSTODY",
+        "REQ-INTEGRATION"
+      ],
+      "schema": 2,
+      "task_id": "T-933-REQA"
+    },
+    "packets": {
+      "PKT-ENGINE": {
+        "acceptance": {
+          "actor": "hub.application",
+          "at": "2026-09-19T08:36:01.348Z",
+          "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/engine/report.md",
+          "sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+        },
+        "claim": null,
+        "history": [
+          {
+            "at": "2026-09-19T08:29:22.936Z",
+            "event": "claimed",
+            "head": "c75dfcd683f612493598c8c40973dd125cdcb090",
+            "run_id": "t933-engine-20260919"
+          },
+          {
+            "at": "2026-09-19T08:36:01.145Z",
+            "event": "verify",
+            "sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+            "verdict": "GREEN"
+          },
+          {
+            "at": "2026-09-19T08:36:01.349Z",
+            "event": "accepted",
+            "sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+          }
+        ],
+        "review_base": "c75dfcd683f612493598c8c40973dd125cdcb090",
+        "status": "accepted",
+        "verification": {
+          "actor": "qa.t933.engine",
+          "at": "2026-09-19T08:36:01.144Z",
+          "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/engine/report.md",
+          "sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+          "verdict": "GREEN",
+          "worktree": "/Users/bakhromachilov/startups/justixauto"
+        }
+      },
+      "PKT-INTEGRATION": {
+        "acceptance": {
+          "actor": "hub.application",
+          "at": "2026-09-19T08:45:14.551Z",
+          "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/integration/report.md",
+          "sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+        },
+        "claim": null,
+        "history": [
+          {
+            "at": "2026-09-19T08:36:01.555Z",
+            "event": "claimed",
+            "head": "c75dfcd683f612493598c8c40973dd125cdcb090",
+            "run_id": "t933-integration-20260919"
+          },
+          {
+            "at": "2026-09-19T08:45:14.352Z",
+            "event": "verify",
+            "sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+            "verdict": "GREEN"
+          },
+          {
+            "at": "2026-09-19T08:45:14.552Z",
+            "event": "accepted",
+            "sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+          }
+        ],
+        "review_base": "c75dfcd683f612493598c8c40973dd125cdcb090",
+        "status": "accepted",
+        "verification": {
+          "actor": "qa.t933.integration",
+          "at": "2026-09-19T08:45:14.352Z",
+          "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/integration/report.md",
+          "sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+          "verdict": "GREEN",
+          "worktree": "/Users/bakhromachilov/startups/justixauto"
+        }
+      },
+      "PKT-REGRESSION": {
+        "acceptance": {
+          "actor": "hub.application",
+          "at": "2026-09-19T08:29:22.732Z",
+          "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/regression/report.md",
+          "sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+        },
+        "claim": null,
+        "history": [
+          {
+            "at": "2026-09-19T08:23:50.844Z",
+            "event": "claimed",
+            "head": "c75dfcd683f612493598c8c40973dd125cdcb090",
+            "run_id": "t933-regression-20260919"
+          },
+          {
+            "at": "2026-09-19T08:29:22.523Z",
+            "event": "verify",
+            "sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+            "verdict": "GREEN"
+          },
+          {
+            "at": "2026-09-19T08:29:22.733Z",
+            "event": "accepted",
+            "sha": "c75dfcd683f612493598c8c40973dd125cdcb090"
+          }
+        ],
+        "review_base": "c75dfcd683f612493598c8c40973dd125cdcb090",
+        "status": "accepted",
+        "verification": {
+          "actor": "qa.t933.regression",
+          "at": "2026-09-19T08:29:22.522Z",
+          "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/regression/report.md",
+          "sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+          "verdict": "GREEN",
+          "worktree": "/Users/bakhromachilov/startups/justixauto"
+        }
+      }
+    },
+    "plan_review": {
+      "actor": "t933.reviewer.plan",
+      "at": "2026-09-19T08:23:50.506Z",
+      "digest": "af43e0cf7c700b139c260fc400aa5d9a00bdc485c2e16eceb197ac8b0ec9e890",
+      "evidence": "docs/justix-auto/dev/local/execution/T-933-20260919/reviewer/report.md",
+      "verdict": "GREEN"
+    },
+    "root": "/Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "canonical_task": "T-933",
+  "execution_task": "T-933-REQA",
+  "base_sha": "3f3fe0339cdd9171e5ca3bdaf739c748c3e20ce9",
+  "fixed_task_sha": "fc6f6cd1e2219cb300eef6ab75c0f4937b56a471",
+  "checkout": "/Users/bakhromachilov/startups/justixauto",
+  "source_binding": "Bind every verification to its actual clean claim-pinned HEAD. All three packet receipts must name the same frozen HEAD descending from base_sha; scheduling-only commits may precede the first claim. Rehash every files entry before and after each packet. Any drift blocks dispatch or invalidates acceptance.",
+  "excluded_mutable_scheduling_inputs": [
+    "docs/justix-auto/dev/tasks/T-933.md",
+    "docs/justix-auto/dev/task-board.md",
+    "docs/justix-auto/dev/task-index.json",
+    "docs/justix-auto/dev/dev-state.md"
+  ],
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "9370257d8fe0f5a598b35ca1168fa039b072e6df62ddd801403a5a014cfc07e4"
+    },
+    {
+      "path": "tools/AGENTS.md",
+      "sha256": "6ccebe156aff7d7912e5c427c0e8f550185651ea0995b6f4e4955ac839cc080c"
+    },
+    {
+      "path": "tools/owner-migrate/AGENTS.md",
+      "sha256": "93f53b7b081cf3588a16cf92a09c1725a746d4de8757bb9c8fb738ab562bb70f"
+    },
+    {
+      "path": "docs/justix-auto/dev/agent-workflow.md",
+      "sha256": "ba4d7ef077c0ad57f18739955bbd7cda35e7600b75a23c2fbc561001fcddf892"
+    },
+    {
+      "path": "docs/justix-auto/state/drafts/contracts/owner-migration-compatibility.md",
+      "sha256": "87ca5a5b7b5398726a53a9f4ec52b4f63c665e08ebaf69f57003401fa9ccbd76"
+    },
+    {
+      "path": "docs/justix-auto/state/approvals/owner-migration-compatibility.md",
+      "sha256": "32936629f1ada848a159938e4457fcc13a78c3990e952c9baafafcb4a6c2aea6"
+    },
+    {
+      "path": "docs/justix-auto/dev/owner-migration-readiness.md",
+      "sha256": "5ce4603553a33c9b5ae0564275219e66931dda4e6584c48b06cfd57c74202236"
+    },
+    {
+      "path": "docs/justix-auto/dev/results/T-933.md",
+      "sha256": "8c06f256ad6c228c1e2c0f557aed868382041992d445835c30e2ce48e46d39f1"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-933.md",
+      "sha256": "7766dca8846b3d3172283fee0131c62c31fb128afe240b132cd6f95a8a351ce6"
+    },
+    {
+      "path": "docs/justix-auto/dev/qa/T-933/independent_test.go",
+      "sha256": "6e2af6254cd2053affc9ce5836bd865bacd0d4444c2ae885353f8e776279ed9c"
+    },
+    {
+      "path": "tools/owner-migrate/main.go",
+      "sha256": "69ead41b503f0ec8d4aabb41dd21931547afa39372ccec2cbbb953491c2a6fb1"
+    },
+    {
+      "path": "tools/owner-migrate/main_test.go",
+      "sha256": "3882af445038eda70eeab9fff8c55dd79120fc8985b70a9c0aa2ee498881ccdb"
+    },
+    {
+      "path": "tools/owner-migrate/driver.go",
+      "sha256": "0daeda74249eeacf8cfa7397265483ce73d4fea8bb50725a17d81d0507af1eb1"
+    },
+    {
+      "path": "tools/owner-migrate/driver_test.go",
+      "sha256": "7b2216e3b451a09b2842db623c7eb18f29f813b56b1f868f2d8e64269f3afa5e"
+    },
+    {
+      "path": "infra/local/postgres/init-owners.sql",
+      "sha256": "79eaf102013af5845520deb73907aea6b2a6cc220683631d1b933fbccc20479d"
+    },
+    {
+      "path": "tools/go.sh",
+      "sha256": "21d8dcf9580088529a7a34a9ba4fc0bd6a56646a5c5e7fe7f79b66303d0d92c3"
+    },
+    {
+      "path": "go.mod",
+      "sha256": "f56fa77420290dcdcb59c51279bf2f3cc9797541df2226a64d2c19fb93c07a8a"
+    },
+    {
+      "path": "go.sum",
+      "sha256": "0965a4a214289f9fddf3696b5c979ede73072c1afd2d3410ef69b791cc796dce"
+    }
+  ]
+}
+

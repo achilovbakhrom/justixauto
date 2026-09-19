@@ -9,7 +9,7 @@
 - Agent setup: [two-hub workflow](agent-workflow.md) is included in dev after the user's explicit push approval. [Initial handoff evidence](agent-setup-results.md) remains historical. Every subsequent dev merge/push still needs fresh human approval; main is unchanged.
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
-- Git readiness: own root verified; user-approved consolidation was pushed to origin/dev at `3f3fe03`. Current task branch starts from that exact local/tracking dev SHA. Runtime QA is GREEN at `c75dfcd`; follow-up publication changes documentation only and requires its own exact-diff check.
+- Git readiness: own root verified; user-approved consolidation was pushed to origin/dev at `3f3fe03`. Current task branch starts from that exact local/tracking dev SHA; working source is frozen for independent QA.
   Run `bash tools/check-git.sh` before assigning application tasks.
 - Confirmed: Go microservices, CQRS + Event Sourcing, Gaze reference approach;
   React; one project folder; minified four-app HTML documentation references
@@ -29,8 +29,8 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-933 is `qa-green`, awaiting human approval of the task-branch publication candidate. Independent code/plan review, regression, actual-engine QA, final-SHA integration and aggregation passed at `c75dfcd683f612493598c8c40973dd125cdcb090`; see [published re-QA](qa/T-933-r2.md). No new dev merge/push is approved. T-002/T-920 remain blocked; T-928's missing live authorization is not cleared. Do not use historical `.worktrees` paths.
-- Go preflight correction: the standard-library source files exist. The shared package index reported them missing; a fresh isolated `GOCACHE` resolved the issue without reinstalling the compiler. Independent final QA with `/private/tmp/justixauto-go-cache.Ew93Ez` passed the scoped race suite (120 top-level passes; 58 expected live-opt-in skips), all nine required migration tests without skips, and both vet checks.
+- Active task: T-933 ready for independent packet re-QA on the current task branch. T-002/T-920 remain blocked; T-928's missing live authorization is not cleared. Do not use historical `.worktrees` paths.
+- Go preflight correction: the standard-library source files exist. The existing shared package index reports them missing, while `GODEBUG=goindex=0` and a fresh isolated `GOCACHE` both resolve them. Three targeted T-933 non-live tests passed using `/private/tmp/justixauto-go-cache.Ew93Ez`; no compiler replacement or dependency change was needed. Full independent QA remains outstanding.
 - Historical integrated count reconciled to 55/949: T-938's stale index status now matches board, independent GREEN at `931ce802` and integration evidence at `a853ce12`. This corrects historical bookkeeping only, not current combined-SHA certification.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
 - Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. Pure membership identities (T-947) are integrated; T-945, T-946 and T-948 await their own dependencies. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.

@@ -1,0 +1,31 @@
+{
+  "recorded_before_edit": true,
+  "source_sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+  "files": [
+    {
+      "path": "docs/justix-auto/dev/dev-state.md",
+      "snapshot": "dev-state.md",
+      "sha256": "409bfb522b459c67a6444cc1f253b14bb0a43989975ea471f74255fa08c7b99d"
+    },
+    {
+      "path": "docs/justix-auto/dev/task-board.md",
+      "snapshot": "task-board.md",
+      "sha256": "7dcc88cd05d48ed54094ce83e457eedfae3f48db385496d42fb7c1b01d92d48e"
+    },
+    {
+      "path": "docs/justix-auto/dev/task-index.json",
+      "snapshot": "task-index.json",
+      "sha256": "13e3ab2d01be2364e0010929a57067a99da24224c7e2bbf04c30aa9ab78656c9"
+    },
+    {
+      "path": "docs/justix-auto/dev/tasks/T-933.md",
+      "snapshot": "T-933.md",
+      "sha256": "0c0feaa65d92634811acc42479ab05a0b52c45a931a5257d09842b4ca2a4c75c"
+    },
+    {
+      "path": "docs/justix-auto/dev/resume-t933-20260919.md",
+      "snapshot": "resume-t933-20260919.md",
+      "sha256": "c9b402a925f19157b597968d41b8e85f73221c355aad93d0f9285a2b1ff0db91"
+    }
+  ]
+}

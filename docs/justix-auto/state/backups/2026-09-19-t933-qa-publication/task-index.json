@@ -35754,7 +35754,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 4,
-      "status": "qa-green",
+      "status": "ready-for-qa",
       "depends_on": [
         "T-932"
       ],
@@ -35774,9 +35774,9 @@
       "scope": "Compose actual migrate.NewWithInstance with verified immutable upward-only source and project driver. Explicit bootstrap/shared-template phases and lock ownership, complete bundle preflight, retained incremental upgrades, verified no-op and authoritative unknown-outcome reconciliation. No automatic dirty repair or silent lower-version skipping.",
       "worktree": ".",
       "base_sha": "3f3fe0339cdd9171e5ca3bdaf739c748c3e20ce9",
-      "reviewed_sha": "c75dfcd683f612493598c8c40973dd125cdcb090",
+      "reviewed_sha": "fc6f6cd1e2219cb300eef6ab75c0f4937b56a471",
       "agent": "coordinator",
-      "execution_note": "Independent code/plan review, regression, real-engine QA, final-SHA integration and aggregation GREEN at c75dfcd683f612493598c8c40973dd125cdcb090; published evidence qa/T-933-r2.md. Follow-up changes publish documentation only; runtime evidence remains bound to c75dfcd. Human approval of the publication candidate is pending; no new dev integration or downstream release. Historical BOUNCE preserved."
+      "execution_note": "Resume unchanged fc6f6cd fix-cycle code already preserved in human-approved dev. Main-checkout branch only; independent regression, real-engine and integration re-QA queued. Fresh isolated Go cache resolves the stale shared-index failure; preflight is not task GREEN. Historical BOUNCE remains preserved."
     },
     {
       "id": "T-934",
