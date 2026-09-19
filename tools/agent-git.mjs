@@ -5,7 +5,7 @@
  * approval and server-side branch protection.
  */
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, lstatSync, mkdirSync, readFileSync, realpathSync, rmSync } from 'node:fs';
+import { chmodSync, copyFileSync, lstatSync, mkdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
@@ -188,9 +188,11 @@ export function commitScoped({ repo = process.cwd(), paths, message, taskId, exp
 function syncScopes(from, to, scopes) {
   for (const scope of scopes) {
     const source = resolve(from, scope); const destination = resolve(to, scope);
-    if (lstatOrNull(source)) {
+    const stat = lstatOrNull(source);
+    if (stat) {
       mkdirSync(dirname(destination), { recursive: true });
       copyFileSync(source, destination);
+      chmodSync(destination, stat.mode & 0o777);
     } else {
       rmSync(destination, { force: true });
     }
@@ -200,8 +202,8 @@ function syncScopes(from, to, scopes) {
 function candidatePaths(repo, parent, sha) {
   const parentOfCandidate = git(repo, ['rev-parse', `${sha}^`]);
   if (parentOfCandidate !== parent) throw new GateError('candidate commit parent changed');
-  const raw = git(repo, ['diff-tree', '--no-commit-id', '--name-only', '-r', parent, sha]);
-  return raw ? raw.split('\n').filter(Boolean) : [];
+  const raw = git(repo, ['diff-tree', '--no-commit-id', '--name-only', '-z', '-r', parent, sha]);
+  return raw ? raw.split('\0').filter(Boolean) : [];
 }
 
 function scopeSnapshot(repo, scopes) {
@@ -218,6 +220,19 @@ function assertSnapshot(repo, snapshot) {
     const after = stat ? createHash('sha256').update(readFileSync(resolve(repo, scope))).digest('hex') : null;
     if (after !== before) throw new GateError(`scoped working file changed while hook ran: ${scope}`);
   }
+}
+
+function persistSnapshot(repo, directory, scopes) {
+  const entries = [];
+  for (const scope of scopes) {
+    const source = resolve(repo, scope); const stat = lstatOrNull(source);
+    if (!stat) { entries.push({ scope, exists: false }); continue; }
+    const destination = resolve(directory, 'files', scope);
+    mkdirSync(dirname(destination), { recursive: true });
+    copyFileSync(source, destination); chmodSync(destination, stat.mode & 0o777);
+    entries.push({ scope, exists: true, mode: stat.mode & 0o777 });
+  }
+  writeFileSync(resolve(directory, 'manifest.json'), `${JSON.stringify(entries)}\n`, { mode: 0o600 });
 }
 
 function treeMode(repo, sha, path) {
@@ -243,9 +258,12 @@ function assertCandidatePathTypes(repo, parent, sha, paths) {
 function commitCandidate({ root, branch, scopes, message, expectedHead }) {
   const parent = mkdtempSync(resolve(tmpdir(), 'agent-git-candidate-'));
   const candidate = resolve(parent, 'worktree');
+  const original = resolve(parent, 'original');
   let added = false;
   let succeeded = false;
+  let committedSha = null;
   const initial = scopeSnapshot(root, scopes);
+  persistSnapshot(root, original, scopes);
   try {
     git(root, ['worktree', 'add', '--detach', candidate, expectedHead]);
     added = true;
@@ -263,14 +281,20 @@ function commitCandidate({ root, branch, scopes, message, expectedHead }) {
     assertCandidatePathTypes(candidate, expectedHead, sha, actualPaths);
     assertExpectedHead(root, expectedHead);
     assertSnapshot(root, initial);
+    // CAS before any real working-file update: a rejecting ref hook leaves it intact.
+    git(root, ['update-ref', `refs/heads/${branch}`, sha, expectedHead]);
+    committedSha = sha;
+    assertSnapshot(root, initial);
     // Preserve permitted hook formatting/changes for the exact committed paths.
     syncScopes(candidate, root, actualPaths);
-    git(root, ['update-ref', `refs/heads/${branch}`, sha, expectedHead]);
     git(root, ['read-tree', sha]);
     succeeded = true;
     return { branch, sha, paths: actualPaths };
   } catch (error) {
-    if (added && error instanceof Error) error.message = `${error.message}; candidate preserved at ${candidate}`;
+    if (added && error instanceof Error) {
+      const state = committedSha ? `post-CAS synchronization did not complete for committed SHA ${committedSha}` : 'candidate was not committed to the real branch';
+      error.message = `${error.message}; ${state}; candidate preserved at ${candidate}; original bytes/modes preserved at ${original}`;
+    }
     throw error;
   } finally {
     if (added && succeeded) {

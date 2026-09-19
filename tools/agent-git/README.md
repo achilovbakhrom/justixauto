@@ -50,6 +50,14 @@ not force-removed, so unexpected hook-created content is recoverable. A hook
 that leaves untracked or unstaged candidate content also fails closed before the
 real branch is advanced.
 
+Before the branch compare-and-swap, the helper persists each original requested
+file's bytes and mode beside the candidate. It does not copy hook output into
+the real worktree until that ref update succeeds, then rechecks the original
+snapshot before syncing. If a post-CAS sync/index operation fails, it does not
+claim rollback: the error names the committed SHA plus preserved candidate and
+original-snapshot paths for recovery. Candidate path discovery uses NUL-delimited
+Git output, so literal Unicode and newline filenames remain exact paths.
+
 This CLI is not a security boundary and cannot manufacture human authority.
 Development integration must happen through a human-capable external gate:
 human GitHub PR approval of the exact source head plus protected branches.

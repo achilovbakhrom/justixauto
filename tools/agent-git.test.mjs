@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { chmodSync, mkdtempSync, writeFileSync, mkdirSync, symlinkSync, unlinkSync, existsSync } from 'node:fs';
+import { chmodSync, mkdtempSync, readFileSync, writeFileSync, mkdirSync, symlinkSync, unlinkSync, existsSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import test from 'node:test';
@@ -75,6 +75,23 @@ test('a project pre-commit hook cannot add an out-of-scope file to the real comm
   expectGate(() => commitScoped({ repo: root, paths: ['allowed.txt'], taskId: 'HUB-GIT', message: 'fix(HUB-GIT): hook scope', expectedHead: before }), 'hook changed candidate outside');
   assert.equal(head(root), before); assert.equal(existsSync(join(root, 'outside.txt')), false);
   const staged = git(root, 'diff', '--cached', '--name-only'); assert.equal(staged, '');
+});
+
+test('a rejecting reference transaction hook leaves real bytes and modes untouched', () => {
+  const root = task(repo()); const before = head(root); const file = join(root, 'allowed.txt');
+  writeFileSync(file, 'raw\n'); chmodSync(file, 0o744); const originalMode = statSync(file).mode & 0o777;
+  writeFileSync(join(root, '.git', 'hooks', 'pre-commit'), "#!/bin/sh\nprintf 'formatted\\n' > allowed.txt\ngit add allowed.txt\n");
+  chmodSync(join(root, '.git', 'hooks', 'pre-commit'), 0o755);
+  writeFileSync(join(root, '.git', 'hooks', 'reference-transaction'), "#!/bin/sh\nif [ \"$1\" = prepared ]; then\n  while read old new ref; do\n    [ \"$ref\" = refs/heads/task/hub-git ] && exit 1\n  done\nfi\nexit 0\n");
+  chmodSync(join(root, '.git', 'hooks', 'reference-transaction'), 0o755);
+  expectGate(() => commitScoped({ repo: root, paths: ['allowed.txt'], taskId: 'HUB-GIT', message: 'fix(HUB-GIT): reject ref', expectedHead: before }), 'candidate was not committed');
+  assert.equal(head(root), before); assert.equal(readFileSync(file, 'utf8'), 'raw\n'); assert.equal(statSync(file).mode & 0o777, originalMode);
+});
+
+test('candidate diff preserves literal Unicode and newline filenames', () => {
+  const root = task(repo()); const name = 'café\nname.txt'; writeFileSync(join(root, name), 'x\n');
+  const made = commitScoped({ repo: root, paths: [name], taskId: 'HUB-GIT', message: 'fix(HUB-GIT): literal path', expectedHead: head(root) });
+  assert.deepEqual(made.paths, [name]);
 });
 
 test('post-hook candidate types are checked and scoped hook formatting is retained', () => {
