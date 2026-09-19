@@ -8,6 +8,11 @@ worktrees therefore share its writer lock, active-packet capacity (three), and
 Every task command names `--task`. `status` deliberately returns a compact
 summary; `audit` is the explicit full ledger/history view.
 
+The CLI resolves the shared Git common directory through its current working
+directory and deliberately requires that checkout to be clean. Run `status`,
+`audit`, plan actions and hub actions from a clean hub checkout when an
+implementation worktree has uncommitted changes.
+
 ## Manifest v2 (schema excerpt)
 
 ```json

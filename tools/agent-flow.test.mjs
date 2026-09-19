@@ -61,6 +61,12 @@ test('real CLI runs multi-task implementation, QA-only, integration, and aggrega
   env.ok('claim', 'qa', '--task', 'HUB-CTRL', '--run', 'run-qa', '--actor', 'qa.packet', '--worktree', env.repo);
   env.ok('verify', 'PKT-QA', '--task', 'HUB-CTRL', '--actor', 'qa.packet', '--verdict', 'GREEN', '--evidence', 'QA-only executable check pass', '--worktree', env.repo);
   env.ok('accept', 'PKT-QA', '--task', 'HUB-CTRL', '--actor', 'hub.owner', '--evidence', 'accept QA packet', '--worktree', env.repo);
+  env.ok('claim', 'integration', '--task', 'HUB-CTRL', '--run', 'run-integration-stale', '--actor', 'qa.integration.stale', '--worktree', env.repo);
+  env.ok('recover', 'PKT-QA', '--task', 'HUB-CTRL', '--reason', 'reopen upstream QA during integration');
+  env.bad(/active claim/, 'verify', 'PKT-INTEGRATION', '--task', 'HUB-CTRL', '--actor', 'qa.integration.stale', '--verdict', 'GREEN', '--evidence', 'must not survive upstream reopen', '--worktree', env.repo);
+  env.ok('claim', 'qa', '--task', 'HUB-CTRL', '--run', 'run-qa-two', '--actor', 'qa.packet.two', '--worktree', env.repo);
+  env.ok('verify', 'PKT-QA', '--task', 'HUB-CTRL', '--actor', 'qa.packet.two', '--verdict', 'GREEN', '--evidence', 'rechecked QA packet', '--worktree', env.repo);
+  env.ok('accept', 'PKT-QA', '--task', 'HUB-CTRL', '--actor', 'hub.owner', '--evidence', 'reaccept QA packet', '--worktree', env.repo);
   env.ok('claim', 'integration', '--task', 'HUB-CTRL', '--run', 'run-integration', '--actor', 'qa.integration', '--worktree', env.repo);
   env.ok('verify', 'PKT-INTEGRATION', '--task', 'HUB-CTRL', '--actor', 'qa.integration', '--verdict', 'GREEN', '--evidence', 'integration command pass', '--worktree', env.repo);
   env.ok('accept', 'PKT-INTEGRATION', '--task', 'HUB-CTRL', '--actor', 'hub.owner', '--evidence', 'accept integration', '--worktree', env.repo);

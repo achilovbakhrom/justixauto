@@ -287,11 +287,11 @@ function verifier(s,l,p,item,d){const i=ensureRegistered(s,d.worktree,item.claim
 
 export function report(tid,pid,phase,d,o={}){if(!['review','qa','verify'].includes(phase))fail('report phase must be review, qa, or verify');
   evidence(d);
-  return transact(stateDir(o),s=>{const l=task(s,tid),p=definition(l,pid),item=entry(l,pid);if(!active(item))fail('report requires active claim');const pinned=verifier(s,l,p,item,d);if(p.kind==='implementation'&&phase==='verify')fail('implementation uses review and qa reports');if(p.kind!=='implementation'&&phase!=='verify')fail('verification packet uses verify report');if(p.kind==='implementation'&&item.submission.actor===d.actor)fail('submitter cannot independently verify own packet');const key=phase==='verify'?'verification':phase;if(item[key])fail(`${phase} report already recorded`);if(phase==='qa'&&item.review?.actor===d.actor||phase==='review'&&item.qa?.actor===d.actor)fail('review and QA actors must be distinct');item[key]={...d,sha:pinned,at:now()};item.status=d.verdict==='GREEN'?'verifying':'failed';if(d.verdict!=='GREEN'){item.reason=`${phase} ${d.verdict}: ${d.evidence}`;item.claim=null}item.history.push({event:phase,verdict:d.verdict,sha:pinned,at:now()});return{status:item.status,sha:pinned}})}
+  return transact(stateDir(o),s=>{const l=task(s,tid),p=definition(l,pid),item=entry(l,pid);if(!active(item))fail('report requires active claim');if(!ready(l,p))fail('packet dependencies are no longer accepted');const pinned=verifier(s,l,p,item,d);if(p.kind==='implementation'&&phase==='verify')fail('implementation uses review and qa reports');if(p.kind!=='implementation'&&phase!=='verify')fail('verification packet uses verify report');if(p.kind==='implementation'&&item.submission.actor===d.actor)fail('submitter cannot independently verify own packet');const key=phase==='verify'?'verification':phase;if(item[key])fail(`${phase} report already recorded`);if(phase==='qa'&&item.review?.actor===d.actor||phase==='review'&&item.qa?.actor===d.actor)fail('review and QA actors must be distinct');item[key]={...d,sha:pinned,at:now()};item.status=d.verdict==='GREEN'?'verifying':'failed';if(d.verdict!=='GREEN'){item.reason=`${phase} ${d.verdict}: ${d.evidence}`;item.claim=null}item.history.push({event:phase,verdict:d.verdict,sha:pinned,at:now()});return{status:item.status,sha:pinned}})}
 
 export function accept(tid,pid,d,o={}){actor(d.actor);
   text(d.evidence);
-  return transact(stateDir(o),s=>{const l=task(s,tid),p=definition(l,pid),item=entry(l,pid);requireApproved(l);if(d.actor!==l.manifest.hub_actor)fail('only manifest hub_actor may accept a packet');if(!active(item))fail('accept requires active verified claim');const pinned=verifier(s,l,p,item,d);if(p.kind==='implementation'){if(item.review?.verdict!=='GREEN'||item.qa?.verdict!=='GREEN'||item.review.sha!==pinned||item.qa.sha!==pinned)fail('GREEN review and QA for exact submitted SHA required');if(new Set([item.submission.actor,item.review.actor,item.qa.actor,d.actor]).size!==4)fail('submitter, reviewer, QA, and accept actor must be distinct')}else{if(item.verification?.verdict!=='GREEN'||item.verification.sha!==pinned)fail('GREEN verify report for exact pinned SHA required');if(item.verification.actor===d.actor)fail('verification and accept actor must be distinct')}item.status='accepted';item.acceptance={actor:d.actor,evidence:d.evidence,sha:pinned,at:now()};item.claim=null;item.history.push({event:'accepted',sha:pinned,at:now()});return item.acceptance})}
+  return transact(stateDir(o),s=>{const l=task(s,tid),p=definition(l,pid),item=entry(l,pid);requireApproved(l);if(d.actor!==l.manifest.hub_actor)fail('only manifest hub_actor may accept a packet');if(!active(item))fail('accept requires active verified claim');if(!ready(l,p))fail('packet dependencies are no longer accepted');const pinned=verifier(s,l,p,item,d);if(p.kind==='implementation'){if(item.review?.verdict!=='GREEN'||item.qa?.verdict!=='GREEN'||item.review.sha!==pinned||item.qa.sha!==pinned)fail('GREEN review and QA for exact submitted SHA required');if(new Set([item.submission.actor,item.review.actor,item.qa.actor,d.actor]).size!==4)fail('submitter, reviewer, QA, and accept actor must be distinct')}else{if(item.verification?.verdict!=='GREEN'||item.verification.sha!==pinned)fail('GREEN verify report for exact pinned SHA required');if(item.verification.actor===d.actor)fail('verification and accept actor must be distinct')}item.status='accepted';item.acceptance={actor:d.actor,evidence:d.evidence,sha:pinned,at:now()};item.claim=null;item.history.push({event:'accepted',sha:pinned,at:now()});return item.acceptance})}
 
 export function recover(tid,pid,d,o={}){
   text(d.reason,'reason');
@@ -312,15 +312,19 @@ export function recover(tid,pid,d,o={}){
     const invalidate=(source)=>{
       for(const candidate of l.manifest.packets.filter(x=>x.depends_on.includes(source))){
         const dependent=entry(l,candidate.id);
-        if(dependent.status==='accepted'){
-          dependent.attempts=[...(dependent.attempts??[]),{acceptance:dependent.acceptance,verification:dependent.verification,reason:`upstream ${source} reopened`,at:now()}];
+        if(active(dependent)||dependent.status==='accepted'){
+          dependent.attempts=[...(dependent.attempts??[]),{claim:dependent.claim,submission:dependent.submission,review:dependent.review,qa:dependent.qa,acceptance:dependent.acceptance,verification:dependent.verification,reason:`upstream ${source} reopened`,at:now()}];
+          delete dependent.claim;
+          delete dependent.submission;
+          delete dependent.review;
+          delete dependent.qa;
           delete dependent.acceptance;
           delete dependent.verification;
           dependent.status='pending';
           dependent.reason=`invalidated by upstream ${source} reopening`;
           dependent.history.push({event:'invalidated',source,at:now()});
-          invalidate(candidate.id);
         }
+        invalidate(candidate.id);
       }
     };
     if(reopenVerification) invalidate(pid);
