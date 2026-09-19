@@ -1,0 +1,27 @@
+=== RUN   TestRunnerActualEnginePhasesUpgradeNoOpAndConcurrency
+    main_test.go:244: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-3231041454
+    main_test.go:244: created owned fixture justixauto-t932-1c763ee7-62b4-4abf-9127-780bc3eb4fbf id 150a7354b1895b437c6e4f8cef27ba92aea081a4ce6ee236a1627d7efbc59bab image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 150a7354b1895b437c6e4f8cef27ba92aea081a4ce6ee236a1627d7efbc59bab justixauto-t932-1c763ee7-62b4-4abf-9127-780bc3eb4fbf; attached volume IDs []
+--- PASS: TestRunnerActualEnginePhasesUpgradeNoOpAndConcurrency (8.11s)
+=== RUN   TestRunnerFailedDDLRetainsDirtyEvidenceWithoutReplay
+    main_test.go:328: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-1598394110
+    main_test.go:328: created owned fixture justixauto-t932-e32b9eb0-8e3e-47e3-912a-527b8d4712fc id 314001c7e7c279eed9d490b393ab63e9f6a54c9dcfb31ab95fb22bbd65abcc8b image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 314001c7e7c279eed9d490b393ab63e9f6a54c9dcfb31ab95fb22bbd65abcc8b justixauto-t932-e32b9eb0-8e3e-47e3-912a-527b8d4712fc; attached volume IDs []
+--- PASS: TestRunnerFailedDDLRetainsDirtyEvidenceWithoutReplay (2.29s)
+=== RUN   TestRunnerUnknownFinalCommitReconcilesAuthoritatively
+    main_test.go:363: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-51794146
+    main_test.go:363: created owned fixture justixauto-t932-300bd0de-d12e-4cbb-ae1b-cef38dbafa69 id 29a3755ef720e3ee5f04c0a2ca9eeded7619d1ddcc24c25084077e863a9c56c0 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 29a3755ef720e3ee5f04c0a2ca9eeded7619d1ddcc24c25084077e863a9c56c0 justixauto-t932-300bd0de-d12e-4cbb-ae1b-cef38dbafa69; attached volume IDs []
+--- PASS: TestRunnerUnknownFinalCommitReconcilesAuthoritatively (2.24s)
+=== RUN   TestRunnerIntermediateCompletionIsNotOverallSuccess
+    main_test.go:410: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-2430112371
+    main_test.go:410: created owned fixture justixauto-t932-fc064cf7-0ed7-4398-9773-49bc5a52fef3 id ec69c1928dfd74826a5a88f00a4b7f7f910936ec403a390a55dab53e892950bd image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: ec69c1928dfd74826a5a88f00a4b7f7f910936ec403a390a55dab53e892950bd justixauto-t932-fc064cf7-0ed7-4398-9773-49bc5a52fef3; attached volume IDs []
+--- PASS: TestRunnerIntermediateCompletionIsNotOverallSuccess (2.46s)
+=== RUN   TestQA933IntermediateCompletionIsNotOverallSuccess
+    qa_t933_test.go:21: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-1939028478
+    qa_t933_test.go:21: created owned fixture justixauto-t932-42e7cb8d-e5a3-4db3-beb3-22af63616993 id 4b42a3ca300f9541561c485fda32a7eb421cb555335045ba56962b111f8e4a07 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 4b42a3ca300f9541561c485fda32a7eb421cb555335045ba56962b111f8e4a07 justixauto-t932-42e7cb8d-e5a3-4db3-beb3-22af63616993; attached volume IDs []
+--- PASS: TestQA933IntermediateCompletionIsNotOverallSuccess (2.43s)
+PASS
+ok  	justixauto/tools/owner-migrate	19.259s

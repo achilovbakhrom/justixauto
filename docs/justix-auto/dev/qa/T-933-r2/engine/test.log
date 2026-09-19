@@ -1,0 +1,23 @@
+=== RUN   TestRunnerActualEnginePhasesUpgradeNoOpAndConcurrency
+    main_test.go:244: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-553323773
+    main_test.go:244: fresh fixture name not proven absent: fixture identity inspection: exit status 1
+--- FAIL: TestRunnerActualEnginePhasesUpgradeNoOpAndConcurrency (0.18s)
+=== RUN   TestRunnerFailedDDLRetainsDirtyEvidenceWithoutReplay
+    main_test.go:328: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-712070610
+    main_test.go:328: fresh fixture name not proven absent: fixture identity inspection: exit status 1
+--- FAIL: TestRunnerFailedDDLRetainsDirtyEvidenceWithoutReplay (0.12s)
+=== RUN   TestRunnerUnknownFinalCommitReconcilesAuthoritatively
+    main_test.go:363: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-1969478209
+    main_test.go:363: fresh fixture name not proven absent: fixture identity inspection: exit status 1
+--- FAIL: TestRunnerUnknownFinalCommitReconcilesAuthoritatively (0.12s)
+=== RUN   TestRunnerIntermediateCompletionIsNotOverallSuccess
+    main_test.go:410: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-1258607348
+    main_test.go:410: fresh fixture name not proven absent: fixture identity inspection: exit status 1
+--- FAIL: TestRunnerIntermediateCompletionIsNotOverallSuccess (0.12s)
+=== RUN   TestQA933IntermediateCompletionIsNotOverallSuccess
+    qa_t933_test.go:21: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/engine/tmp/justixauto-t932-evidence-2086102651
+    qa_t933_test.go:21: fresh fixture name not proven absent: fixture identity inspection: exit status 1
+--- FAIL: TestQA933IntermediateCompletionIsNotOverallSuccess (0.12s)
+FAIL
+FAIL	justixauto/tools/owner-migrate	1.405s
+FAIL

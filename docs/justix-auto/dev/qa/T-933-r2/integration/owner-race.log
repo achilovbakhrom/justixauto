@@ -1,0 +1,55 @@
+=== RUN   TestVerifiedSourceImmutableAndUpwardOnly
+--- PASS: TestVerifiedSourceImmutableAndUpwardOnly (0.01s)
+=== RUN   TestBundleAndAttemptReportsAreExact
+--- PASS: TestBundleAndAttemptReportsAreExact (0.03s)
+=== RUN   TestMalformedResolvedReportCannotReleasePath
+=== RUN   TestMalformedResolvedReportCannotReleasePath/recorded_wrong_version
+=== RUN   TestMalformedResolvedReportCannotReleasePath/recorded_missing_request
+=== RUN   TestMalformedResolvedReportCannotReleasePath/recorded_wrong_SQL
+=== RUN   TestMalformedResolvedReportCannotReleasePath/recorded_missing_provenance
+=== RUN   TestMalformedResolvedReportCannotReleasePath/no-op_wrong_head
+--- PASS: TestMalformedResolvedReportCannotReleasePath (0.01s)
+    --- PASS: TestMalformedResolvedReportCannotReleasePath/recorded_wrong_version (0.00s)
+    --- PASS: TestMalformedResolvedReportCannotReleasePath/recorded_missing_request (0.00s)
+    --- PASS: TestMalformedResolvedReportCannotReleasePath/recorded_wrong_SQL (0.00s)
+    --- PASS: TestMalformedResolvedReportCannotReleasePath/recorded_missing_provenance (0.00s)
+    --- PASS: TestMalformedResolvedReportCannotReleasePath/no-op_wrong_head (0.00s)
+=== RUN   TestRunnerActualEnginePhasesUpgradeNoOpAndConcurrency
+    main_test.go:244: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/integration/tmp/justixauto-t932-evidence-969739396
+    main_test.go:244: created owned fixture justixauto-t932-e17fe377-75df-4e43-8265-2f5aecd9abee id 04477baef1ab3ccea584353fd413ae339586c1ed0ed0dcf92c2c7b6887ce7991 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 04477baef1ab3ccea584353fd413ae339586c1ed0ed0dcf92c2c7b6887ce7991 justixauto-t932-e17fe377-75df-4e43-8265-2f5aecd9abee; attached volume IDs []
+--- PASS: TestRunnerActualEnginePhasesUpgradeNoOpAndConcurrency (8.01s)
+=== RUN   TestRunnerFailedDDLRetainsDirtyEvidenceWithoutReplay
+    main_test.go:328: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/integration/tmp/justixauto-t932-evidence-1858643034
+    main_test.go:328: created owned fixture justixauto-t932-f026cec2-486c-4596-b06c-723f030c9554 id 3bc8c2b0a5fd8531076a514144b01018214a8b3c324ba4d7496047c15ae72932 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 3bc8c2b0a5fd8531076a514144b01018214a8b3c324ba4d7496047c15ae72932 justixauto-t932-f026cec2-486c-4596-b06c-723f030c9554; attached volume IDs []
+--- PASS: TestRunnerFailedDDLRetainsDirtyEvidenceWithoutReplay (2.33s)
+=== RUN   TestRunnerUnknownFinalCommitReconcilesAuthoritatively
+    main_test.go:363: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/integration/tmp/justixauto-t932-evidence-3882229263
+    main_test.go:363: created owned fixture justixauto-t932-9426acb7-20fa-4ad0-b1b0-ce74946a1352 id a832580c72713f93458b153ec6c010d59898add31acb33fa23b50b9518d62aa7 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: a832580c72713f93458b153ec6c010d59898add31acb33fa23b50b9518d62aa7 justixauto-t932-9426acb7-20fa-4ad0-b1b0-ce74946a1352; attached volume IDs []
+--- PASS: TestRunnerUnknownFinalCommitReconcilesAuthoritatively (2.18s)
+=== RUN   TestRunnerIntermediateCompletionIsNotOverallSuccess
+    main_test.go:410: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/integration/tmp/justixauto-t932-evidence-2686789469
+    main_test.go:410: created owned fixture justixauto-t932-1547c15d-5d95-4327-89c8-02b38044c3e1 id 568bd74a298ab3cf5d1c67c485cb21c515ec900feda4e6f9e496b93ea2843da2 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 568bd74a298ab3cf5d1c67c485cb21c515ec900feda4e6f9e496b93ea2843da2 justixauto-t932-1547c15d-5d95-4327-89c8-02b38044c3e1; attached volume IDs []
+--- PASS: TestRunnerIntermediateCompletionIsNotOverallSuccess (2.45s)
+=== RUN   TestQA933IntermediateCompletionIsNotOverallSuccess
+    qa_t933_test.go:21: retained synthetic evidence directory /Users/bakhromachilov/startups/justixauto/docs/justix-auto/dev/local/execution/T-933-20260919/integration/tmp/justixauto-t932-evidence-3182716571
+    qa_t933_test.go:21: created owned fixture justixauto-t932-5390c4a1-b99e-48b1-a5c9-de365a9ea672 id 36c2451b87751206e04474d2df30d88433f43702c877bc25e5d1785c9d089e13 image docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2; captured attached volume IDs []
+    driver_test.go:198: validated fixture removed and absent: 36c2451b87751206e04474d2df30d88433f43702c877bc25e5d1785c9d089e13 justixauto-t932-5390c4a1-b99e-48b1-a5c9-de365a9ea672; attached volume IDs []
+--- PASS: TestQA933IntermediateCompletionIsNotOverallSuccess (2.30s)
+=== RUN   TestQA933MalformedResolvedReportCannotReleasePath
+=== RUN   TestQA933MalformedResolvedReportCannotReleasePath/recorded_wrong_version
+=== RUN   TestQA933MalformedResolvedReportCannotReleasePath/recorded_missing_request
+=== RUN   TestQA933MalformedResolvedReportCannotReleasePath/recorded_wrong_SQL
+=== RUN   TestQA933MalformedResolvedReportCannotReleasePath/recorded_missing_provenance
+=== RUN   TestQA933MalformedResolvedReportCannotReleasePath/no-op_wrong_head
+--- PASS: TestQA933MalformedResolvedReportCannotReleasePath (0.01s)
+    --- PASS: TestQA933MalformedResolvedReportCannotReleasePath/recorded_wrong_version (0.00s)
+    --- PASS: TestQA933MalformedResolvedReportCannotReleasePath/recorded_missing_request (0.00s)
+    --- PASS: TestQA933MalformedResolvedReportCannotReleasePath/recorded_wrong_SQL (0.00s)
+    --- PASS: TestQA933MalformedResolvedReportCannotReleasePath/recorded_missing_provenance (0.00s)
+    --- PASS: TestQA933MalformedResolvedReportCannotReleasePath/no-op_wrong_head (0.00s)
+PASS
+ok  	justixauto/tools/owner-migrate	19.022s
