@@ -1,7 +1,6 @@
 # Agent hubs and packet execution
 
-Status: feature-branch handoff; see [exact-commit evidence](agent-setup-results.md).
-Human approval is still required for dev creation/integration.
+Status: implementation branch, pending independent QA and human approval for dev.
 Decision authority: the user's September 2026 conversation approving this design.
 This supersedes old agent identities, inherited-model defaults and automatic
 main integration in historical task documents or installed development skills.

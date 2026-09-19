@@ -5,7 +5,7 @@
 - Target: `/Users/bakhromachilov/startups/justixauto`
 - Phase: development active; Go event mechanics and shared React components in progress
 - Branch policy: `dev` is human-approved integration/development; `main` is human-only production promotion. Remote default remains main until the human changes it. Agent task branches may be pushed independently.
-- Agent setup: [two-hub workflow](agent-workflow.md) on `feature/agent-hub-setup`; [exact-commit handoff evidence](agent-setup-results.md) records packet checks and remaining gates. Human dev approval is pending. Initial base is main `682696f2fea8e874cc9572749f9faadb2b532b4e` because remote/local dev did not exist at bootstrap. No dev/main mutation is authorized by starting this work.
+- Agent setup: [two-hub workflow](agent-workflow.md) under implementation on `feature/agent-hub-setup`; independent QA and human dev approval are pending. Initial base is main `682696f2fea8e874cc9572749f9faadb2b532b4e` because remote/local dev did not exist at bootstrap. No dev/main mutation is authorized by starting this work.
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
 - Git readiness: PASS; own root, clean main and origin synchronization verified.

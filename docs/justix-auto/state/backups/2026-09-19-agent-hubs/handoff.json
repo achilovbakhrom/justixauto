@@ -1,0 +1,8 @@
+{
+  "reason": "Point canonical status to exact-commit bootstrap handoff evidence",
+  "base_sha": "e8fc02df4468f482e30abf31838d96b4ee41177c",
+  "files": [
+    {"source": "docs/justix-auto/dev/dev-state.md", "snapshot": "dev-state.before-handoff.md", "sha256": "27ddfface22b4462539b8b8ddee3d64cc4568125785cdef3957186aee3ba0ae8"},
+    {"source": "docs/justix-auto/dev/agent-workflow.md", "snapshot": "agent-workflow.before-handoff.md", "sha256": "f35e8c71e91ef77b3c92226092f4e752940e61b11c2143ff66dbab03c9c9bc47"}
+  ]
+}
