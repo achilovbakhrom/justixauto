@@ -1,0 +1,10 @@
+{
+  "base_sha": "3f3fe0339cdd9171e5ca3bdaf739c748c3e20ce9",
+  "reason": "Resume on a task branch after human-approved dev push; reconcile historical T-938 and queue T-933 independent re-QA",
+  "files": [
+    {"source": "docs/justix-auto/dev/dev-state.md", "snapshot": "dev-state.md", "sha256": "ea49bb9a72082b6fc56da0a451039d6be238ea85fcc3cfcc39e47148bd443e02"},
+    {"source": "docs/justix-auto/dev/task-board.md", "snapshot": "task-board.md", "sha256": "036df67cac07ed89ccbcfa5025694aa049f4dd7bfe9df8e49cd3b28ae1823b5e"},
+    {"source": "docs/justix-auto/dev/task-index.json", "snapshot": "task-index.json", "sha256": "46b3e78643e7c2291db9c5b977be8b5b789becd26ae9eefeaecffd222d167d5c"},
+    {"source": "docs/justix-auto/dev/tasks/T-933.md", "snapshot": "T-933.md", "sha256": "ba4d856100c5190b70f432ee0f2074ac349f3c56254f8ab70adfc100e3065950"}
+  ]
+}

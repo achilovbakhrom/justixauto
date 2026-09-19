@@ -3,13 +3,13 @@
 - Date: 2026-09-19
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
-- Current task branch: `task/T-933-main-checkout-reqa` in the main project folder, based on human-approved `dev` at `3f3fe0339cdd9171e5ca3bdaf739c748c3e20ce9`. No worktrees. See [resume evidence](resume-t933-20260919.md) and [consolidation recovery](worktree-consolidation.md).
+- Current branch: `feature/worktree-consolidation` in this main project folder. Includes `feature/agent-hub-setup` through `ff9b2bb` and all 81 former worktree HEADs. See [consolidation and recovery](worktree-consolidation.md). Preservation does not approve blocked proposals or certify unfinished implementations.
 - Phase: development active; Go event mechanics and shared React components in progress
 - Branch policy: `dev` is human-approved integration/development; `main` is human-only production promotion. Remote default remains main until the human changes it. Agent task branches may be pushed independently.
-- Agent setup: [two-hub workflow](agent-workflow.md) is included in dev after the user's explicit push approval. [Initial handoff evidence](agent-setup-results.md) remains historical. Every subsequent dev merge/push still needs fresh human approval; main is unchanged.
+- Agent setup: [two-hub workflow](agent-workflow.md) on `feature/agent-hub-setup`; [exact-commit handoff evidence](agent-setup-results.md) records packet checks and remaining gates. Human dev approval is pending. Initial base is main `682696f2fea8e874cc9572749f9faadb2b532b4e` because remote/local dev did not exist at bootstrap. No dev/main mutation is authorized by starting this work.
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
-- Git readiness: own root verified; user-approved consolidation was pushed to origin/dev at `3f3fe03`. Current task branch starts from that exact local/tracking dev SHA; working source is frozen for independent QA.
+- Git readiness: own repository root verified; consolidation is local, with no push or dev/main mutation. Remote synchronization is not claimed for this branch.
   Run `bash tools/check-git.sh` before assigning application tasks.
 - Confirmed: Go microservices, CQRS + Event Sourcing, Gaze reference approach;
   React; one project folder; minified four-app HTML documentation references
@@ -29,9 +29,9 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-933 ready for independent packet re-QA on the current task branch. T-002/T-920 remain blocked; T-928's missing live authorization is not cleared. Do not use historical `.worktrees` paths.
-- Go preflight correction: the standard-library source files exist. The existing shared package index reports them missing, while `GODEBUG=goindex=0` and a fresh isolated `GOCACHE` both resolve them. Three targeted T-933 non-live tests passed using `/private/tmp/justixauto-go-cache.Ew93Ez`; no compiler replacement or dependency change was needed. Full independent QA remains outstanding.
-- Historical integrated count reconciled to 55/949: T-938's stale index status now matches board, independent GREEN at `931ce802` and integration evidence at `a853ce12`. This corrects historical bookkeeping only, not current combined-SHA certification.
+- Active task: T-002 and T-920 remain blocked; T-928 still needs its authorized live verification; T-933 still needs independent re-QA. Their code/proposals are now preserved in `feature/worktree-consolidation`; original task branches remain. Do not resume from historical `.worktrees` paths.
+- Consolidation check: agent-config lint and Git whitespace checks pass. Targeted T-933 Go tests fail before execution because the pinned local Go installation lacks standard packages `crypto/pbkdf2`, `encoding/xml` and `os/user`. Toolchain repair and affected QA are needed before declaring this combined candidate development-ready.
+- Historical integrated count: board/dev-state report 55/949, task-index reports 54. T-938 is integrated in board and Git but ready-for-qa in the index. Reconciliation is required before scheduling affected descendants; this setup change does not silently rewrite historical task states.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
 - Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. Pure membership identities (T-947) are integrated; T-945, T-946 and T-948 await their own dependencies. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
