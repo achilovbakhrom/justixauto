@@ -1,0 +1,10 @@
+{
+  "reason": "User-authorized two-hub agent workflow; snapshot before canonical edits",
+  "base_sha": "682696f2fea8e874cc9572749f9faadb2b532b4e",
+  "files": [
+    {"source": "AGENTS.md", "snapshot": "AGENTS.md", "sha256": "8bdd72774cb6b07b23c240006b44a51300f4ded83e895edf37ea8f4ce8140ef8"},
+    {"source": "docs/justix-auto/dev/workflow.md", "snapshot": "workflow.md", "sha256": "eb45c6850a04f6d6514b07f63a62f3b829940e0bc28a7add4aa8b22a7c0529fa"},
+    {"source": "docs/justix-auto/dev/dev-state.md", "snapshot": "dev-state.md", "sha256": "571f7f911f69e0a9998987041d8f81a82de67fa6d9a7661f27fe7fc0d0de0980"},
+    {"source": "docs/justix-auto/dev/task-board.md", "snapshot": "task-board.md", "sha256": "ba073d5ae6ef2746ff658af10ff584c6b8e824f2ce9ec9d9f724e492a7206ad1"}
+  ]
+}

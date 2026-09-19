@@ -4,8 +4,7 @@
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
 - Phase: development active; Go event mechanics and shared React components in progress
-- Branch policy: `dev` is human-approved integration/development; `main` is human-only production promotion. Remote default remains main until the human changes it. Agent task branches may be pushed independently.
-- Agent setup: [two-hub workflow](agent-workflow.md) under implementation on `feature/agent-hub-setup`; independent QA and human dev approval are pending. Initial base is main `682696f2fea8e874cc9572749f9faadb2b532b4e` because remote/local dev did not exist at bootstrap. No dev/main mutation is authorized by starting this work.
+- Default branch: `main`; independently reviewed tasks are integrated and pushed incrementally
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
 - Git readiness: PASS; own root, clean main and origin synchronization verified.
@@ -29,13 +28,13 @@
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
 - Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 blocked (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-933 blocked before re-QA by repeated model-capacity failure (`.worktrees/T-933`, `task/T-933-owner-migration-runner`).
-- Historical integrated count: board/dev-state report 55/949, task-index reports 54. T-938 is integrated in board and Git but ready-for-qa in the index. Reconciliation is required before scheduling affected descendants; this setup change does not silently rewrite historical task states.
+- Integrated tasks: 55/949; independent exact-commit QA required before each integration.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
 - Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. Pure membership identities (T-947) are integrated; T-945, T-946 and T-948 await their own dependencies. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 949 (916 reviewed baseline + thirty-three bounded additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
-- Execution limit: three delegates total across both hubs (DevOps counts as one), one writer/worktree, one browser-heavy QA and one holder per live fixture; one canonical task/branch/worktree, packet review/QA and final-SHA integration evidence
+- Execution limit: three eligible workers, one browser-heavy QA; one task/branch/worktree and independent exact-SHA QA
 
 ## Laptop preflight observed
 
@@ -68,9 +67,8 @@ the strict raw response JSON decoder are now independently integrated. Auth
 Fetch metadata/429 composition is integrated as T-936; the generation-label correction remains
 inside T-928's reviewed storage fix cycle. Identity's explicit profile-compatible
 UOW is integrated as T-931 and checks each transaction before repository binding.
-The migration driver's initial merge failed integration; the task board now lists
-T-932's connection cleanup correction integrated. Preserve historical reports.
-The runner, concrete baseline
+The migration driver's initial merge failed integration; T-932's connection
+cleanup correction is under independent review. The runner, concrete baseline
 manifests/default provisioning and custody profile support remain separate tasks
 with their explicit prerequisites.
 
@@ -129,10 +127,9 @@ Event schema/append, shared API/tokens and runtime registration convention are
 integrated. The Active task field and task-index.json carry current assignments;
 continue their exact-commit QA and dependency transitions. Follow the live task
 dependencies for replay/receipts/outbox/inbox and the app harness, and resolve scoped
-choices only before affected tasks. No policy invention. The user initially
-authorized Git initialization/push on 2026-09-14. The newer policy permits agent
-pushes to task/feature/fix/infra branches, requires human approval before every
-dev integration, and reserves main promotion to the human.
+choices only before affected tasks. No policy invention. The user explicitly
+authorized Git initialization and push on 2026-09-14 and removed that
+prohibition from AGENTS.md.
 
 Git readiness blocks application code, NOT documentation architecture/planning.
 Policy decisions block only affected operations. Release approval, PM task
