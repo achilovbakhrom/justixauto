@@ -1,15 +1,14 @@
 # Development state
 
-- Date: 2026-09-19
+- Date: 2026-09-16
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
-- Current branch: `feature/worktree-consolidation` in this main project folder. Includes `feature/agent-hub-setup` through `ff9b2bb` and all 81 former worktree HEADs. See [consolidation and recovery](worktree-consolidation.md). Preservation does not approve blocked proposals or certify unfinished implementations.
 - Phase: development active; Go event mechanics and shared React components in progress
 - Branch policy: `dev` is human-approved integration/development; `main` is human-only production promotion. Remote default remains main until the human changes it. Agent task branches may be pushed independently.
 - Agent setup: [two-hub workflow](agent-workflow.md) on `feature/agent-hub-setup`; [exact-commit handoff evidence](agent-setup-results.md) records packet checks and remaining gates. Human dev approval is pending. Initial base is main `682696f2fea8e874cc9572749f9faadb2b532b4e` because remote/local dev did not exist at bootstrap. No dev/main mutation is authorized by starting this work.
 - Remote: `git@github.com:achilovbakhrom/justixauto.git`
 - Parent repository: `/Users/bakhromachilov/startups`; must NOT be used for tasks
-- Git readiness: own repository root verified; consolidation is local, with no push or dev/main mutation. Remote synchronization is not claimed for this branch.
+- Git readiness: PASS; own root, clean main and origin synchronization verified.
   Run `bash tools/check-git.sh` before assigning application tasks.
 - Confirmed: Go microservices, CQRS + Event Sourcing, Gaze reference approach;
   React; one project folder; minified four-app HTML documentation references
@@ -29,8 +28,7 @@
 - Validation: 106 mock domain tests pass against minified JS; four entries load;
   hashes, syntax and static local dependencies pass
 - Execution authorization: user said "ok lets start" on 2026-09-14; proceed through bounded implementation and QA gates.
-- Active task: T-002 and T-920 remain blocked; T-928 still needs its authorized live verification; T-933 still needs independent re-QA. Their code/proposals are now preserved in `feature/worktree-consolidation`; original task branches remain. Do not resume from historical `.worktrees` paths.
-- Consolidation check: agent-config lint and Git whitespace checks pass. Targeted T-933 Go tests fail before execution because the pinned local Go installation lacks standard packages `crypto/pbkdf2`, `encoding/xml` and `os/user`. Toolchain repair and affected QA are needed before declaring this combined candidate development-ready.
+- Active task: T-002 blocked (`.worktrees/T-002`, `task/T-002-security-release`); T-920 blocked (`.worktrees/T-920`, `task/T-920-messaging-local-membership`); T-928 blocked (`.worktrees/T-928`, `task/T-928-projection-generation-storage`); T-933 blocked before re-QA by repeated model-capacity failure (`.worktrees/T-933`, `task/T-933-owner-migration-runner`).
 - Historical integrated count: board/dev-state report 55/949, task-index reports 54. T-938 is integrated in board and Git but ready-for-qa in the index. Reconciliation is required before scheduling affected descendants; this setup change does not silently rewrite historical task states.
 - Active architecture handoff: owner migration, retained-label and [auth transport](auth-transport-assignment.md) handoffs approved; independent auth canonical promotion QA is GREEN. T-935–T-944 may be assigned when their task dependencies and worker slots permit.
 - Additional architecture: [durable membership storage](membership-version-assignment.md) final r3 proposal and canonical promotion QA GREEN. Pure membership identities (T-947) are integrated; T-945, T-946 and T-948 await their own dependencies. T-920 remains blocked on its new state dependency. T-928 live verification authorization remains pending.

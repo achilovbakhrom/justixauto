@@ -1,0 +1,7 @@
+{
+  "reason": "User-requested single-checkout consolidation of all prior worktree branches",
+  "base_sha": "71a33da757ec4f981c94652f5347779d7559854f",
+  "source": "docs/justix-auto/dev/dev-state.md",
+  "snapshot": "dev-state.md",
+  "sha256": "54cff2ce20b77477f35e2154f45da5d1c6c91db9ed476f9d1ffb49d575d55b35"
+}
