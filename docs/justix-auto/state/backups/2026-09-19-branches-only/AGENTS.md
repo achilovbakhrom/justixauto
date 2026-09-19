@@ -43,14 +43,11 @@ infrastructure decisions. Cross-boundary contracts require both authorities.
 Use at most three concurrent delegates TOTAL across both hubs, including the
 DevOps hub itself. Nested spawning must reserve capacity with the primary first;
 where unavailable, the primary dispatches on DevOps' behalf. Leaf agents never
-spawn children. Only one writer in the main project checkout and one holder per exclusive
+spawn children. Only one writer per worktree and one holder per exclusive
 resource (browser, PostgreSQL fixture). If tools cannot enforce isolation, run
 sequentially with the same review/QA gates.
 
-- One implementation task = one branch in the main project checkout. Do not
-  create or use separate Git worktrees for development. Serialize implementation
-  tasks; never switch branches or edit source while review/QA is using it.
-  Existing worktrees are historical work to preserve, not execution locations.
+- One implementation task = one branch = one Git worktree.
 - Before any application code change run `bash tools/check-git.sh`; the Git root
   MUST equal this project, not the enclosing `/Users/bakhromachilov/startups` repo.
   Never commit to the parent repository.
@@ -61,11 +58,8 @@ sequentially with the same review/QA gates.
 - Workers write proposals/results to assigned files. Only the coordinator
   updates canonical docs and the board. Record SHA-256 + a recoverable snapshot
   before changing an existing canonical document. Never delete+add to replace it.
-- `version_control` creates/switches task branches in the main project directory
-  only after checking clean state and that no agent is using the current checkout.
-  Do not invoke legacy helper operations that create worktrees, including
-  `agent-git create-worktree` and its temporary-worktree-based `commit` operation.
-  Use explicit-path Git staging/commits in the current checkout instead.
+- Agent spawning alone does NOT create worktrees. `version_control` creates
+  and assigns each worktree after the Git gate and orchestrator instruction.
 - Slicer writes bounded packets and acceptance coverage. Independent plan review
   precedes dispatch. Worker writes code; version_control commits; reviewer checks
   the exact diff; QA verifies small behavior packets. Aggregation schedules

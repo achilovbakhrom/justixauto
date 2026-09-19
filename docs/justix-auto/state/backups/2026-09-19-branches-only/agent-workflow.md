@@ -27,7 +27,7 @@ Both hubs use the same capability pool:
 | reviewer | gpt-5.6-sol / high | Independent plan or exact-diff review, read-only |
 | qa | gpt-5.6-sol / high | Small executable verification packet and evidence |
 | qa_aggregator | gpt-5.6-sol / high | Coverage audit and final-SHA integration checks |
-| version_control | gpt-5.6-luna / medium | Branches in the main checkout, scoped commits, feature pushes |
+| version_control | gpt-5.6-luna / medium | Worktrees, scoped commits, feature pushes |
 
 Role TOML files define model defaults. The current tool catalog may still expose
 old roles until a new session loads configuration. During bootstrap use a generic
@@ -38,13 +38,9 @@ findings; ensure the selected role config does not override the intended model.
 
 One global budget permits at most three active delegates. A DevOps hub occupies
 one slot. Both hubs reserve remaining slots with the primary; never each run an
-independent three-worker pool. One implementation writer in the main checkout, one browser
+independent three-worker pool. One implementation writer per worktree, one browser
 QA and one holder of a named live fixture. Review/QA use immutable checkpoints;
 do not let an implementation worker edit the source under an active QA process.
-The latest user instruction forbids separate development worktrees. Execute code
-tasks sequentially on their branches in the main project folder; read-only planning
-may run in parallel when it does not depend on changing source. Never switch the
-shared branch while another agent uses its source. Preserve old worktrees as history.
 
 ## Persistent truth and context
 
@@ -79,7 +75,7 @@ Resume from those checkpoints and Git, not from an accumulated chat summary.
 2. Slicer decomposes implementation and verification, including cross-packet
    interfaces. Reviewer independently checks the plan and requirement coverage.
    Owning hub accepts the reviewed manifest digest before dispatch.
-3. Version control creates a task branch from dev in the main checkout. Pin source contracts
+3. Version control creates a task branch/worktree from dev. Pin source contracts
    and base SHA. Register the plan with the controller; reserve writer/resources.
 4. Worker edits its owned paths and runs checks. Version control creates a scoped
    commit. Submission records the complete before..after range, not HEAD~1.
@@ -127,13 +123,6 @@ Allowed agent branch prefixes: task/, feature/, fix/, infra/. Branches are
 independent work units based on dev; commits carry task/packet intent. Push only
 same-name origin refs at a verified SHA. No force, wildcard staging, automatic
 conflict resolution, history rewriting or cleanup of unverified worktrees.
-Do not use the legacy `agent-git create-worktree` or `agent-git commit` commands:
-both create worktrees. Use explicit-path Git commits in the main checkout, checking
-the staged diff before committing and the actual commit diff afterward. The
-helper's inspect, push and prepare-dev commands do not require extra worktrees.
-Controller `--worktree` fields are legacy names for the main checkout path; they
-do not authorize additional checkouts. Do not infer workflow permission from a
-legacy helper's available commands or disposable test fixtures.
 
 Every dev merge/push requires human approval. Prefer protected GitHub PRs with
 required checks, a human reviewer, dismissal of stale approvals and no agent

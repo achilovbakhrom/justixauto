@@ -35,7 +35,7 @@
 - Reviewed PO backlog: 52 items — 42 Must, 7 Should, 3 deferred; scope confirmed by user continuation
 - Formal PM task files: 949 (916 reviewed baseline + thirty-three bounded additions); see task-board.md, task-index.json and backlog-coverage.md
 - Coverage: 167 acceptance clauses across 49 active backlog items; one closing verification per item
-- Execution limit: three delegates total across both hubs (DevOps counts as one), one writer in the main project checkout, one browser-heavy QA and one holder per live fixture; one canonical task/branch, sequential code tasks with frozen source during review/QA. No separate development worktrees. Existing worktrees are retained historical state, not current execution locations.
+- Execution limit: three delegates total across both hubs (DevOps counts as one), one writer/worktree, one browser-heavy QA and one holder per live fixture; one canonical task/branch/worktree, packet review/QA and final-SHA integration evidence
 
 ## Laptop preflight observed
 

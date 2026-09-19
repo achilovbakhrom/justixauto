@@ -53,22 +53,21 @@ identity or UI foundation work. No task may invent a missing partner policy.
 Coordinator validates Git, integration base and dependency readiness. Slicer
 writes small implementation/QA packets with full requirement coverage; independent
 plan review and owning-hub acceptance precede dispatch. Version control creates
-one branch per canonical task from dev in the main project checkout and commits packet results.
+one branch/worktree per canonical task from dev and commits packet results.
 Generic workers receive relevant scoped Go/React/infra rules; they do not perform
-Git writes or alter shared project state. Use one implementation writer in the
-main checkout; freeze source during review/QA and never switch branches while
-another agent is using it. No separate development worktrees.
+Git writes or alter shared project state. Avoid concurrent writes in one worktree
+and overlapping shared contracts/package manifests. Spawning does not create isolation.
 
 Workspace scaffold tasks T-032…T-039 explicitly own their local tsconfig and
 Vitest config. Root npm lock updates for those workspace manifests are serialized
 serialized handoffs before QA: inspect the manifest delta, regenerate
-`package-lock.json` with approved npm/pins on that task branch in the main checkout, and commit it
+`package-lock.json` with approved npm/pins in that task worktree, and commit it
 through version_control on the task branch before assigning its exact SHA to QA. Preserve mock lock
 entries and reject unrelated dependency churn. Workers never concurrently edit
 the root lock. Any lock change after QA requires renewed QA; integration does
 not silently regenerate it.
 
-Branch convention: `task/T-NNN-short-name`; all work stays in the main project folder.
+Branch convention: `task/T-NNN-short-name`; worktree under `.worktrees/T-NNN`.
 Normal base is dev; never merge into the parent repository. The initial HUB
 bootstrap records its explicit main SHA because dev is not yet created. No
 silent main fallback. If Git is dirty or ownership overlaps, preserve and report it.
@@ -94,8 +93,8 @@ promotion is human-only. Keep existing task worktrees and branches recoverable.
 
 ## 6. Durable state and restart
 
-The controller stores packet/job state in the Git common directory, shared across
-branch switches; only its transaction interface updates that state. Hubs recover from
+The controller stores packet/job state in the Git common directory, shared by
+worktrees; only its transaction interface updates that state. Hubs recover from
 compact checkpoints, immutable report files and Git. Coordinator reconciles
 canonical task-index/task-board/dev-state only at canonical task transitions;
 packets do not multiply permanent backlog tasks. Workers write only assigned

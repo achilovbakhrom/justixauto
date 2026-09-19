@@ -1,0 +1,10 @@
+{
+  "reason": "User explicitly requires branches in the main checkout, not worktrees",
+  "base_sha": "ad6d8dfe5b2fd9b8275e07afd1e6f2288319a6d2",
+  "files": [
+    {"source": "AGENTS.md", "snapshot": "AGENTS.md", "sha256": "b977b4a61f4cb8ada8332dc4152272d515e54c4170220a5bb75a7d600ee9c744"},
+    {"source": "docs/justix-auto/dev/agent-workflow.md", "snapshot": "agent-workflow.md", "sha256": "b8250041624b9031eb66440f6dfdd788fb766ea3c08ab00c4e541eb076a8747e"},
+    {"source": "docs/justix-auto/dev/dev-state.md", "snapshot": "dev-state.md", "sha256": "7e5d15b6789f6cebe76ae3d85ac2cd5317a042238120faca51ba0399e77d3376"},
+    {"source": "docs/justix-auto/dev/workflow.md", "snapshot": "workflow.md", "sha256": "9d74ab9cf931720156c9329fc750bf292e0c1cd530eaedd1a0f879e62a179fc0"}
+  ]
+}

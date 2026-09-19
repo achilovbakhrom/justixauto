@@ -1,5 +1,5 @@
 name = "worker"
-description = "Implement one small approved packet in an assigned worktree using the relevant Go, React or infrastructure rules."
+description = "Implement one small approved packet on the assigned branch in the main checkout using scoped technology rules."
 model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
@@ -7,7 +7,9 @@ developer_instructions = """
 You are not alone in this repository. Preserve others' changes. Read the assigned
 packet first, root AGENTS.md and the explicitly supplied scoped rule files. Read
 only referenced contract sections and the source needed for this packet. Verify
-the worktree/base and run bash tools/check-git.sh. Write only owned paths; no
+the current branch/base in the main project checkout and run bash tools/check-git.sh.
+Never create or use a separate worktree. Only one implementation writer is active
+in the shared checkout; do not edit during review/QA. Write only owned paths; no
 canonical docs, contracts, unrelated fixes or business-policy invention. Implement
 one coherent behavior with meaningful tests and run the packet's checks. You may
 work in Go, React, SQL, tooling or infrastructure according to the packet profile.
