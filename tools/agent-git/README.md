@@ -1,0 +1,72 @@
+# agent-git
+
+`node tools/agent-git.mjs` is the intentionally limited Git helper for a task
+worker. It only runs at the exact root of its own repository/worktree; it never
+discovers an enclosing repository.
+
+Generic workers do not run Git. A designated version-control agent uses this
+helper to create its branch/worktree and perform only the bounded operations
+below; direct Git access by an agent is consequently a workflow violation, not
+something this local CLI can technically prevent.
+
+Supported commands:
+
+```sh
+node tools/agent-git.mjs create-worktree --repo /repo --branch task/HUB-GIT --expected-dev 0123456789abcdef0123456789abcdef01234567 --path /tmp/hub-git
+node tools/agent-git.mjs commit --expected-head 0123456789abcdef0123456789abcdef01234567 --task HUB-GIT --message 'feat(HUB-GIT): add gate' --path tools/agent-git.mjs
+node tools/agent-git.mjs push --expected-head 0123456789abcdef0123456789abcdef01234567
+node tools/agent-git.mjs prepare-dev --expected-head 0123456789abcdef0123456789abcdef01234567
+```
+
+Only `feature/`, `task/`, `fix/`, and `infra/` branches may be created,
+committed, pushed, or prepared for review. `dev`, `main`, and `master` are
+always denied. `create-worktree` bases strictly on local `dev`; for a first
+setup where `dev` does not exist, `--bootstrap-base <40-character SHA>` is
+required and is used only as the new task branch's base. It does **not** create
+or move `dev`. Where `origin` is configured, `origin/dev` must exist and exactly
+match the expected local `dev` SHA; a bootstrap is denied if `origin/dev` exists,
+and an origin lookup failure fails closed. A repository without `origin` is explicitly
+local-only and has no remote freshness assertion.
+
+Commits require an expected current HEAD plus one or more exact relative file
+paths. They use Git's literal pathspec mode and reject symlinks (including a
+dangling symlink in the index), `.git`, traversal, magic/glob paths,
+directories, and any already-staged out-of-scope file. They require a conventional
+one-line message containing the supplied task or packet ID. Push uses the
+validated immutable source SHA to `refs/heads/<current>`, never force, and validates the
+local expected SHA and remote resulting SHA. `prepare-dev` is read-only and
+prints the source branch/SHA, current remote `dev` SHA, and reviewable commits.
+It deliberately has no approval flag.
+
+Commits run the project's normal hooks in a temporary linked candidate worktree.
+The tool checks that the candidate commit's complete diff is exactly the requested
+file set before atomically advancing the real task branch; an out-of-scope path
+staged by a hook cannot reach that branch. Hooks are trusted local code, not
+sandboxed: their own external side effects still run once. This explicit design
+does not silently disable or bypass project hooks. The candidate is detached, so
+branch-sensitive hooks can reject it; that rejection fails closed and preserves
+the candidate worktree path in the error for inspection. Failed candidates are
+not force-removed, so unexpected hook-created content is recoverable. A hook
+that leaves untracked or unstaged candidate content also fails closed before the
+real branch is advanced.
+
+Before the branch compare-and-swap, the helper persists each original requested
+file's bytes and mode beside the candidate. It does not copy hook output into
+the real worktree until that ref update succeeds, then rechecks the original
+snapshot before syncing. If a post-CAS sync/index operation fails, it does not
+claim rollback: the error names the committed SHA plus preserved candidate and
+original-snapshot paths for recovery. Candidate path discovery uses NUL-delimited
+Git output, so literal Unicode and newline filenames remain exact paths.
+
+This CLI is not a security boundary and cannot manufacture human authority.
+Development integration must happen through a human-capable external gate:
+human GitHub PR approval of the exact source head plus protected branches.
+Agents must not directly write, merge, or push `dev`/`main`; promotion to
+`main` remains a human-only action. The tool makes no branch-protection changes
+and performs no deployment.
+
+Run its dependency-free integration suite with:
+
+```sh
+node --test tools/agent-git.test.mjs
+```
