@@ -72,8 +72,7 @@ sequentially with the same review/QA gates.
   pushes, automatic conflict resolution or production deployment by agents.
 - Normal branches start from `dev`. Initial HUB bootstrap is explicitly based
   on main SHA 682696f2fea8e874cc9572749f9faadb2b532b4e because dev does not yet
-  exist. Initial `dev` creation/push waits for human approval; task/feature
-  branches retain standing push authorization. This is not a general base fallback.
+  exist. Its creation/push waits for human approval; this is not a general fallback.
 - Keep status in `docs/justix-auto/dev/`; recover from files after context changes.
   Never mark unfinished architecture, tasks or implementation complete.
 

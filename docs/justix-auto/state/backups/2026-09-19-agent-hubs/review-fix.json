@@ -1,0 +1,7 @@
+{
+  "reason": "Clarify independent-review finding: human gate applies to dev, not feature pushes",
+  "base_sha": "db936f90280a77fe0fd4ecf1ba2a6385c1d7c99d",
+  "source": "AGENTS.md",
+  "snapshot": "AGENTS.before-review-fix.md",
+  "sha256": "76b4c51ffb1c583b0891195f7f413ace0429753308fccb18918110d349799943"
+}
