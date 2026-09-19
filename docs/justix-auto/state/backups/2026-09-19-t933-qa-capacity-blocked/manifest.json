@@ -1,0 +1,26 @@
+[
+  {
+    "path": "docs/justix-auto/dev/task-index.json",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-19-t933-qa-capacity-blocked/task-index.json.gz",
+    "bytes": 1492581,
+    "sha256": "cc7dff1fb67317e9a47a1ec742e2d5d53a66bf621b478624fdecdf10a52fd403"
+  },
+  {
+    "path": "docs/justix-auto/dev/task-board.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-19-t933-qa-capacity-blocked/task-board.md.gz",
+    "bytes": 218884,
+    "sha256": "431fe8d743608c17e79dd1ce329311669e9ffa4f38bf9e6308ab040f528ec496"
+  },
+  {
+    "path": "docs/justix-auto/dev/tasks/T-933.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-19-t933-qa-capacity-blocked/T-933.md.gz",
+    "bytes": 4298,
+    "sha256": "e995b854835a27ae591bbae037f6703b01dbde271673bde1b1ce65ff3c597008"
+  },
+  {
+    "path": "docs/justix-auto/dev/dev-state.md",
+    "snapshot": "docs/justix-auto/state/backups/2026-09-19-t933-qa-capacity-blocked/dev-state.md.gz",
+    "bytes": 14203,
+    "sha256": "508123e5b90c0c63fd8a7b05a81ef092cb430aab1258ed9fceabba41efbcc15e"
+  }
+]
