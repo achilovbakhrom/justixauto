@@ -36287,7 +36287,7 @@
       "parent": "B-01",
       "kind": "implementation",
       "effort_hours": 3,
-      "status": "in-progress",
+      "status": "qa-green",
       "depends_on": ["T-007"],
       "branch": "task/T-950-eventsourcing-core",
       "lane": "foundation",
@@ -36297,7 +36297,10 @@
       "coverage": ["B-01.AC2"],
       "scope": "Pure generic aggregate identity/state/revision/pending lifecycle with atomic failed-transition behavior and defensive pending slices; no storage, snapshots, broker, global bus or business schema.",
       "worktree": null,
-      "base_sha": "727d3366704710d58b54969bc7da43621bc37f31"
+      "base_sha": "727d3366704710d58b54969bc7da43621bc37f31",
+      "agent": "t950_worker",
+      "reviewed_sha": "4a6be488b1c4b0036fd9bcc8a4000b62531cee6f",
+      "execution_note": "Pure aggregate lifecycle implemented in two owned files. Independent exact-commit QA GREEN: package race/vet and import-boundary checks passed. Human dev integration approval remains pending."
     },
     {
       "id": "T-951",

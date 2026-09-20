@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-09-20",
+  "reason": "Record T-950 exact-commit QA GREEN",
+  "branch": "task/T-950-eventsourcing-core",
+  "reviewed_sha": "4a6be488b1c4b0036fd9bcc8a4000b62531cee6f",
+  "archive": {
+    "path": "preimages.tar.gz",
+    "sha256": "b32e8bec6c0f403e78d0113b75df7a872ee2e1e34293970209461ef275f6f383"
+  },
+  "preimages": {
+    "docs/justix-auto/dev/dev-state.md": "2d2c2759fa2846b90f5afae56df963f42f4aefb29bcc6ea1b5dcabe4c0f910c6",
+    "docs/justix-auto/dev/task-board.md": "5ab31af2878c15359c013c74c5dbbcdfce130d620538f3a0c62afb865cee0419",
+    "docs/justix-auto/dev/task-index.json": "8a9bc96124ddaac560f51a1cf1160005d4164e0146c87014457054cf80ea2818",
+    "docs/justix-auto/dev/tasks/T-950.md": "b759edbacc42d7c71ef1c86b5bedfcb42604e458271d7fbc9a7edbe2e1815059"
+  }
+}

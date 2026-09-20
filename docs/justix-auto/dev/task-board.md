@@ -1049,6 +1049,6 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 
 | ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
 |---|---|---|---|---|---|---|---|---|
-| [T-950](tasks/T-950.md) | B-01 | Implement the pure aggregate lifecycle | implementation / 3 | foundation | in-progress | T-007 | `task/T-950-eventsourcing-core` | ENV-GIT |
+| [T-950](tasks/T-950.md) | B-01 | Implement the pure aggregate lifecycle | implementation / 3 | foundation | qa-green | T-007 | `task/T-950-eventsourcing-core` | ENV-GIT |
 | [T-951](tasks/T-951.md) | B-01 | Bind aggregates to the durable event store | implementation / 4 | foundation | todo | T-950, T-009, T-010 | `task/T-951-aggregate-eventstore-bridge` | ENV-GIT |
 | [T-952](tasks/T-952.md) | B-01 | Prove the typed CQRS composition | implementation verification / 4 | foundation | todo | T-951, T-011, T-013, T-017 | `task/T-952-cqrs-composition-proof` | ENV-GIT |
