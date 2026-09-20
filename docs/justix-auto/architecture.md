@@ -96,6 +96,12 @@ Use Go import-boundary tests/static checks: the chosen short layout has no Go `i
 Domain events are concrete Go structs; app transactions expose a typed UnitOfWork port, not `*gorm.DB` in domain signatures.
 GORM implements PostgreSQL repositories; raw parameterized SQL is allowed inside adapters for conditional inserts/locks/guard updates.
 
+`pkg/events` also owns the pure generic aggregate lifecycle: identity, state,
+current/expected revision and command-local pending changes. It has no storage,
+transport or broker dependency. `pkg/eventstore` alone bridges that lifecycle to
+validated replay and transaction-bound append. CQRS handlers stay typed and
+owner-local under `services/<owner>/app`; there is no global command/query bus.
+
 ## 4. Technical decision record
 
 | ID | Approved architectural decision | Rationale / superseded alternative |

@@ -1017,7 +1017,7 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-930](tasks/T-930.md) | B-01 | Validate exact owner persistence profiles | implementation / 4 | foundation | integrated | T-929, T-009, T-024 | `task/T-930-owner-persistence-profile` | ENV-GIT |
 | [T-931](tasks/T-931.md) | B-01 | Bind Identity transactions to explicit migration compatibility | implementation / 4 | foundation | integrated | T-930 | `task/T-931-identity-compatible-uow` | ENV-GIT |
 | [T-932](tasks/T-932.md) | B-01 | Implement the bounded pgx migration database driver | implementation / 4 | foundation | integrated | T-929, T-930, T-001, T-005 | `task/T-932-owner-migration-driver` | ENV-GIT |
-| [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | qa-green | T-932 | `task/T-933-main-checkout-reqa` | ENV-GIT |
+| [T-933](tasks/T-933.md) | B-01 | Run verified immutable owner migration bundles | implementation / 4 | foundation | integrated | T-932 | `task/T-933-main-checkout-reqa` | ENV-GIT |
 | [T-934](tasks/T-934.md) | B-01 | Validate distinct custody persistence compatibility | implementation / 4 | foundation | todo | T-930, T-919, T-922, T-924, T-925, T-928, T-946 | `task/T-934-custody-persistence-profile` | ENV-GIT |
 
 ## Approved auth transport compatibility tasks — 2026-09-15
@@ -1043,4 +1043,12 @@ B-50 public/customer app, B-51 funding/coverage execution and B-52 expanded over
 | [T-946](tasks/T-946.md) | B-01 | Install membership selection and enrollment evidence | implementation / 4 | foundation | todo | T-945 | `task/T-946-membership-selection-storage` | ENV-GIT |
 | [T-947](tasks/T-947.md) | B-01 | Define canonical membership and selection identities | implementation / 4 | foundation | integrated | T-746, T-007 | `task/T-947-membership-catalog-identity` | ENV-GIT |
 | [T-948](tasks/T-948.md) | B-01 | Persist fenced membership selections and recovery evidence | implementation / 4 | foundation | todo | T-946, T-947, T-014 | `task/T-948-membership-state-adapter` | ENV-GIT |
-| [T-949](tasks/T-949.md) | B-02 | Install private authentication owner storage | implementation / 4 | identity | todo | T-059, T-929, T-931 | `task/T-949-auth-private-storage` |
+| [T-949](tasks/T-949.md) | B-02 | Install private authentication owner storage | implementation / 4 | identity | todo | T-059, T-929, T-931 | `task/T-949-auth-private-storage` | ENV-GIT |
+
+## Approved Event Sourcing/CQRS core correction — 2026-09-20
+
+| ID | Parent | Task | Kind / hours | Lane | Status | Depends on | Branch | Gates |
+|---|---|---|---|---|---|---|---|---|
+| [T-950](tasks/T-950.md) | B-01 | Implement the pure aggregate lifecycle | implementation / 3 | foundation | in-progress | T-007 | `task/T-950-eventsourcing-core` | ENV-GIT |
+| [T-951](tasks/T-951.md) | B-01 | Bind aggregates to the durable event store | implementation / 4 | foundation | todo | T-950, T-009, T-010 | `task/T-951-aggregate-eventstore-bridge` | ENV-GIT |
+| [T-952](tasks/T-952.md) | B-01 | Prove the typed CQRS composition | implementation verification / 4 | foundation | todo | T-951, T-011, T-013, T-017 | `task/T-952-cqrs-composition-proof` | ENV-GIT |
