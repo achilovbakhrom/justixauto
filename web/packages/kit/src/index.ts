@@ -4,3 +4,4 @@ export * from './session';
 export * from './shell';
 export * from './applications';
 export * from './icons';
+export * from './org-settings';

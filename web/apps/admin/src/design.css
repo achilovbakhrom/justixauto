@@ -1,0 +1,99 @@
+/* Design system of the approved HTML reference (docs/justix-auto/mocks: admin/admin.css).
+ * Copied rule for rule so the React apps match the reference; edit the design here, never in the mocks. */
+/* ---- admin/admin.css ---- */
+.admin-shell a.btn{color:#334155;text-decoration:none}
+.admin-shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.admin-sidebar{position:sticky;top:0;height:100dvh;overflow:auto;padding:28px 20px;background:#fff;border-right:1px solid #dce2ec}
+.admin-brand{font-size:22px;font-weight:700;margin-bottom:36px}
+.admin-brand small{display:block;margin-top:6px;font-size:13px;color:#64748b;font-weight:500}
+.admin-sidebar nav{display:grid;gap:6px}
+.admin-sidebar nav button,
+.admin-sidebar nav a{border:0;background:0 0;border-radius:7px;text-align:left;padding:12px 16px;font:inherit;color:#64748b;cursor:pointer}
+.admin-sidebar nav button.active,
+.admin-sidebar nav a.active{background:#eaf2ff;color:#1765d9;font-weight:600}
+.admin-nav-heading{color:#8491a5;font-size:12px;font-weight:600;text-transform:uppercase;padding:20px 16px 8px}
+.admin-sidebar .sub-nav{padding-left:14px}
+.admin-topbar{padding:20px 32px;background:#fff;border-bottom:1px solid #dce2ec;display:flex;justify-content:space-between;color:#64748b;font-size:13px}
+.admin-shell main{min-width:0}
+.admin-page{padding:32px;display:grid;gap:22px}
+.admin-page>.btn{justify-self:start}
+.admin-title{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.admin-title h1{font-size:28px;margin:0 0 8px}
+.admin-title p{margin:0;color:#64748b}
+.admin-toolbar{display:flex;gap:12px;align-items:center;padding:18px;border-bottom:1px solid #dce2ec}
+.admin-toolbar input{flex:1;min-width:100px}
+.admin-form input,.admin-form select,.admin-form textarea,.admin-toolbar input,.admin-toolbar select{padding:11px 12px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;font:inherit;color:#182333;min-height:42px;width:100%}
+.admin-toolbar select{width:190px}
+.admin-table{width:100%;table-layout:auto}
+.admin-table td{vertical-align:middle}
+.admin-table tr[data-open]{cursor:pointer}
+.admin-table tr[data-open]:hover{background:#f6f9ff}
+.admin-table .btn{white-space:nowrap}
+.admin-table td:last-child,.admin-table th:last-child{text-align:right}
+.admin-muted{color:#64748b;font-size:13px;margin-top:6px}
+.admin-pill{display:inline-flex;padding:5px 9px;border-radius:5px;background:#eef2f6;color:#64748b;font-size:12px;font-weight:600;white-space:nowrap}
+.admin-pill.active{background:#e6f5ee;color:#087959}
+.admin-pill.suspended{background:#fdebf0;color:#be244b}
+.admin-pill.pending{background:#fff4de;color:#986000}
+.admin-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.admin-card{padding:24px;text-align:left;font:inherit;cursor:pointer}
+.admin-card strong{display:block;font-size:30px;margin:12px 0;color:#182333}
+.admin-card span{color:#64748b}
+.admin-actions{display:flex;gap:10px;flex-wrap:wrap}
+.admin-details{padding:24px}
+.admin-details h2{margin:0 0 20px;font-size:18px}
+.admin-details dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.admin-details dt{color:#64748b;font-size:13px;margin-bottom:7px}
+.admin-details dd{margin:0;overflow-wrap:anywhere;font-weight:600}
+.admin-empty{text-align:center;padding:50px 20px;color:#64748b}
+.admin-empty h2{color:#182333;font-size:21px}
+.admin-modal-shade{position:fixed;inset:0;background:#18233366;display:flex;align-items:center;justify-content:center;padding:24px;z-index:1000}
+.admin-modal{background:#fff;border:1px solid #dce2ec;border-radius:14px;width:700px;max-width:100%;max-height:calc(100dvh - 48px);overflow:auto;box-shadow:0 25px 80px #18233333}
+.admin-modal header{padding:24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #dce2ec}
+.admin-modal h2{font-size:23px;margin:0}
+.admin-form{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px}
+.admin-form label{display:grid;gap:8px;color:#526078;font-weight:600;font-size:14px}
+.admin-form .full{grid-column:1/-1}
+.admin-account-heading{border-top:1px solid #dce2ec;padding-top:20px}
+.admin-account-heading h3{margin:0 0 8px;font-size:17px}
+.admin-account-heading p{margin:0;color:#64748b;font-size:13px;line-height:1.5}
+.admin-form label small{font-weight:400;color:#64748b}
+.admin-password-field{display:flex;align-items:center;border:1px solid #cbd5e1;border-radius:7px;background:#fff;overflow:hidden}
+.admin-password-field input{border:0;min-width:0}
+.admin-password-field button{flex-shrink:0;border:0;background:0 0;color:#1765d9;padding:10px;font:inherit;font-size:12px;cursor:pointer}
+.admin-password-field:focus-within{outline:2px solid #1765d9;outline-offset:1px}
+.admin-modal footer{position:sticky;bottom:0;background:#fff;padding:20px 24px;display:flex;justify-content:flex-end;gap:12px;border-top:1px solid #dce2ec}
+.admin-error{color:#b91c1c;font-size:14px;margin:0}
+.admin-note{border-left:3px solid #1765d9;background:#f2f6fc;padding:14px 18px;color:#526078;font-size:14px;line-height:1.6}
+.admin-notification{position:fixed;bottom:24px;right:24px;background:#182333;color:#fff;padding:16px 22px;border-radius:8px;z-index:1500}
+.admin-link{color:#1765d9;text-decoration:none}
+.admin-dialog-close{font-size:20px}
+.admin-sr{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
+.admin-checks{border:1px solid #dce2ec;border-radius:8px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.admin-checks legend{padding:0 6px;color:#526078;font-weight:600}
+.admin-checks label{display:flex;align-items:center;gap:10px;font-weight:400}
+.admin-checks input[type=checkbox]{width:18px;height:18px;min-height:18px;margin:0;flex:0 0 18px;accent-color:#1765d9}
+.admin-table tr[data-manage]{cursor:pointer}
+.admin-table tr[data-manage]:hover{background:#f6f9ff}
+.admin-table td{overflow-wrap:anywhere}
+.admin-table .admin-actions{justify-content:flex-end}
+@media(max-width:580px){.admin-sidebar{position:static;height:auto}
+.admin-checks{grid-template-columns:1fr}
+}
+@media(max-width:850px){.admin-shell{grid-template-columns:180px minmax(0,1fr)}
+.admin-page{padding:20px}
+.admin-cards{grid-template-columns:1fr}
+.admin-title,.admin-toolbar{flex-wrap:wrap}
+.admin-form{grid-template-columns:1fr}
+.admin-form label{grid-column:1}
+.admin-details dl{grid-template-columns:1fr}
+}
+@media(max-width:580px){.admin-shell{display:block}
+.admin-sidebar{padding:18px}
+.admin-brand{margin-bottom:16px}
+.admin-sidebar nav{display:flex;flex-wrap:wrap}
+.admin-sidebar .sub-nav{padding:0}
+.admin-nav-heading{display:none}
+.admin-topbar{padding:16px}
+.admin-modal-shade{padding:12px}
+}

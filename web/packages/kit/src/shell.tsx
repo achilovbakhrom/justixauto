@@ -8,7 +8,8 @@ import { Icon } from './icons';
 import type { IconName } from './icons';
 import { ChangePassword, MFASetup, SessionGate, stepUp, useSession } from './session';
 import type { Company } from './session';
-import { Button, Field, FormDialog, KitStyles, Modal, Notice, Tabs } from './ui';
+import { Button, Field, FormDialog, KitStyles, Modal, Notice, ShellVariantContext, Tabs } from './ui';
+import type { ShellVariant } from './ui';
 import type { FieldSpec } from './ui';
 
 export interface NavItem {
@@ -20,8 +21,10 @@ export interface ShellOptions {
   rootId: string; basename: string; brand: string; kinds?: Company['kind'][]; nav: NavItem[]; banner?: ReactNode;
   /** Shows the branch-scope control (Realization). */
   branches?: boolean;
-  /** Extra class of the app root from the reference (Realization: dealer-shell, Admin: admin-shell). */
+  /** Extra class of the app root from the reference (Realization: dealer-shell). */
   shellClass?: string;
+  /** Layout family: Insurance and Admin have their own reference shells. */
+  variant?: ShellVariant;
   /** Global search in the top bar: placeholder and where a query leads. */
   search?: { placeholder: string; path: (q: string) => string };
 }
@@ -50,7 +53,7 @@ const cabinets: { kinds: Company['kind'][]; label: string; href: string }[] = [
 
 const kindLabel: Record<Company['kind'], string> = { seller: 'Продавец', bank: 'Банк', mfo: 'МФО', insurance: 'Страховая компания' };
 
-function Shell({ brand, nav, banner, branches, search, kinds, shellClass }: ShellOptions) {
+function Shell({ brand, nav, banner, branches, search, kinds, shellClass, variant = 'workspace' }: ShellOptions) {
   const s = useSession();
   const items = nav.filter((n) => !n.permission || s.can(n.permission));
   const main = items.filter((n) => !n.bottom);
@@ -59,7 +62,29 @@ function Shell({ brand, nav, banner, branches, search, kinds, shellClass }: Shel
   const scope = useScopeLabel();
   const others = cabinets.filter((c) => !kinds?.some((k) => c.kinds.includes(k)) && s.view.accessibleCompanies.some((x) => c.kinds.includes(x.kind)));
   const link = (n: NavItem) => <NavLink key={n.to} to={n.to} className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}>
-    <Icon name={n.icon ?? 'info'} className="nav-icon" /><span>{n.label}</span></NavLink>;
+    {n.icon && <Icon name={n.icon} className="nav-icon" />}<span>{n.label}</span></NavLink>;
+  const routes = <Routes>
+    {items.map((n) => <Route key={n.to} path={`${n.to}/*`} element={n.element} />)}
+    <Route path="*" element={items[0] ? <Navigate to={items[0].to} replace /> : <section className="page"><p className="cell-sub">Нет доступных разделов.</p></section>} />
+  </Routes>;
+  const userMenu = <Popover align="right" button={(open) => <button className="kit-link" aria-label={`Пользователь ${s.view.user.displayName}`} aria-expanded={open}>{s.view.user.displayName}</button>}>
+    <button className="menu-option" onClick={() => setSecurity(true)}><Icon name="shield" />Безопасность</button>
+    <button className="menu-option" onClick={() => void s.logout()}><Icon name="close" />Выйти</button>
+  </Popover>;
+  const plainNav = (prefix: 'ins' | 'admin') => <nav>{groups.map((g) => {
+    const links = main.filter((n) => (n.group ?? '') === g).map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => (isActive ? 'active' : '')}>{n.label}</NavLink>);
+    return g && prefix === 'admin' ? <div key={g}><div className="admin-nav-heading">{g}</div><div className="sub-nav"><nav>{links}</nav></div></div> : <div key={g || 'main'} style={{ display: 'contents' }}>{links}</div>;
+  })}{items.filter((n) => n.bottom).map((n) => <NavLink key={n.to} to={n.to} className={({ isActive }) => (isActive ? 'active' : '')}>{n.label}</NavLink>)}</nav>;
+  if (variant === 'insurance') return <ShellVariantContext.Provider value="insurance"><div className="ins-workspace">
+    <aside className="ins-sidebar"><div className="ins-brand">JustixAuto<small>{brand}</small></div>{plainNav('ins')}</aside>
+    <main><header className="ins-account"><strong>{s.company?.name}</strong><div className="kit-row"><CompanySwitch kinds={kinds} />{userMenu}</div></header>{banner}{routes}</main>
+    {security && <SecurityDialog onClose={() => setSecurity(false)} />}<StepUpHost />
+  </div></ShellVariantContext.Provider>;
+  if (variant === 'admin') return <ShellVariantContext.Provider value="admin"><div className="admin-shell">
+    <aside className="admin-sidebar"><div className="admin-brand">JustixAuto<small>{brand}</small></div>{plainNav('admin')}</aside>
+    <main><header className="admin-topbar"><span>Управление платформой</span>{userMenu}</header>{banner}{routes}</main>
+    {security && <SecurityDialog onClose={() => setSecurity(false)} />}<StepUpHost />
+  </div></ShellVariantContext.Provider>;
   return <div className={`app-shell${shellClass ? ` ${shellClass}` : ''}`}>
     <aside className="sidebar">
       <div className="brand"><div className="brand-mark">J</div><div><div className="brand-name">JustixAuto</div><div className="brand-role">{brand}</div></div></div>
@@ -87,10 +112,7 @@ function Shell({ brand, nav, banner, branches, search, kinds, shellClass }: Shel
     </header>
     <main className="main">
       {banner}
-      <Routes>
-        {items.map((n) => <Route key={n.to} path={`${n.to}/*`} element={n.element} />)}
-        <Route path="*" element={items[0] ? <Navigate to={items[0].to} replace /> : <section className="page"><p className="cell-sub">Нет доступных разделов.</p></section>} />
-      </Routes>
+      {routes}
     </main>
     {security && <SecurityDialog onClose={() => setSecurity(false)} />}
     <StepUpHost />

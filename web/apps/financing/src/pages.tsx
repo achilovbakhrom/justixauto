@@ -1,45 +1,112 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  ActionButton, Badge, Details, FinanceDialog, FinanceTable, Modal, Page, Panel, Table, Tabs, date, get, list, percent, post,
-  useCompanyNames, useData, useFinanceApplications, useSession,
+  ActionButton, Badge, Button, Details, FinanceDialog, FinanceTable, Modal, Page, Panel, ResultMeta, Stat, Stats, Table, Tabs, Toolbar, date, get,
+  list, matches, percent, plural, post, useCompanyNames, useData, useFinanceApplications, useSearchQuery, useSession,
 } from '@justixauto/kit';
-import type { Program } from '@justixauto/kit';
+import type { FinanceApplication, Program } from '@justixauto/kit';
 import { programFields, programInput, programLabel } from './programs';
 
-const queues: [string, string][] = [['open', 'В работе'], ['submitted', 'Новые'], ['terms', 'Ждут продавца'], ['agreed', 'Согласованы'], ['closed', 'Закрыты']];
-const inQueue = (queue: string, status: string) => ({
-  open: ['submitted', 'review', 'needs-info'], submitted: ['submitted'], terms: ['terms'], agreed: ['agreed'], closed: ['declined'],
-} as Record<string, string[]>)[queue]?.includes(status) ?? false;
+const useOwnPrograms = () => useData(['programs', 'own'], () => list<Program>('/financing/programs?limit=100'));
+
+/** Program name of an application ("Авто 10 · версия 2"). */
+function useProgramName() {
+  const programs = useOwnPrograms();
+  return (a: FinanceApplication) => {
+    const p = programs.data?.find((x) => x.id === a.programId);
+    const v = p?.versions.find((x) => Number(x.number) === a.programVersion);
+    return v ? `${v.name} · версия ${v.number}` : '—';
+  };
+}
+
+const statusTabs: [string, string][] = [['submitted', 'Новая заявка'], ['review', 'На рассмотрении'], ['needs-info', 'Нужны сведения'],
+  ['terms', 'Условия отправлены'], ['agreed', 'Условия согласованы'], ['declined', 'Отказ']];
+
+export function OverviewPage() {
+  const q = useFinanceApplications();
+  const name = useCompanyNames();
+  const program = useProgramName();
+  const navigate = useNavigate();
+  const s = useSession();
+  const [open, setOpen] = useState<string | null>(null);
+  const all = q.data ?? [];
+  const n = (st: string) => all.filter((a) => a.status === st).length;
+  const attention = all.filter((a) => ['submitted', 'review'].includes(a.status));
+  return <Page title="Обзор" subtitle={`${s.company?.name ?? ''} · работа с продавцами`} actions={<Button onClick={() => navigate('/applications')}>Все заявки</Button>}>
+    <Stats>
+      <Stat label="Новые" value={n('submitted')} note="ждут, пока их возьмут в работу" />
+      <Stat label="На рассмотрении" value={n('review')} note="решение за вами" />
+      <Stat label="Ожидаем сведения" value={n('needs-info')} note="ответ продавца" />
+      <Stat label="Условия согласованы" value={n('agreed')} note="обмен документами" />
+    </Stats>
+    <Panel title="Требуют внимания">
+      <FinanceTable rows={attention} loading={q.isLoading} error={q.error} counterparty={(a) => name(a.sellerCompanyId)} programName={program} onOpen={setOpen} />
+    </Panel>
+    <Panel title="Начать работу" padded><div className="kit-row">
+      <Button onClick={() => navigate('/programs')}>Программы финансирования</Button>
+      <Button variant="primary" onClick={() => navigate('/applications')}>Открыть заявки</Button>
+    </div></Panel>
+    {open && <FinanceDialog id={open} onClose={() => setOpen(null)} />}
+  </Page>;
+}
 
 export function ApplicationsPage() {
   const q = useFinanceApplications();
   const name = useCompanyNames();
-  const [queue, setQueue] = useState('open');
+  const program = useProgramName();
+  const [tab, setTab] = useState('all');
+  const [query, setQuery] = useSearchQuery();
   const [open, setOpen] = useState<string | null>(null);
-  return <Page title="Заявки на финансирование" subtitle="Заявки продавцов по вашим программам">
-    <Tabs value={queue} onChange={setQueue} tabs={queues} />
-    <Panel><FinanceTable rows={q.data?.filter((a) => inQueue(queue, a.status))} loading={q.isLoading} error={q.error}
-      counterparty={(a) => name(a.sellerCompanyId)} onOpen={setOpen} /></Panel>
+  const all = q.data ?? [];
+  const rows = all.filter((a) => (tab === 'all' || a.status === tab)
+    && matches(query, name(a.sellerCompanyId), a.snapshot?.customer?.name, a.snapshot?.vehicle?.vin, a.snapshot?.vehicle?.model));
+  return <Page title="Заявки" subtitle="Заявки продавцов на финансирование автомобилей">
+    <Panel>
+      <Tabs value={tab} onChange={setTab} tabs={[['all', 'Все', all.length], ...statusTabs.map(([k, l]): [string, string, number] => [k, l, all.filter((a) => a.status === k).length])]} />
+      <Toolbar query={query} onQuery={setQuery} placeholder="Клиент, VIN или продавец" />
+      <ResultMeta>{plural(rows.length, ['заявка', 'заявки', 'заявок'])} · черновики продавцов вам не видны</ResultMeta>
+      <FinanceTable rows={rows} loading={q.isLoading} error={q.error} counterparty={(a) => name(a.sellerCompanyId)} programName={program} onOpen={setOpen} />
+    </Panel>
     {open && <FinanceDialog id={open} onClose={() => setOpen(null)} />}
   </Page>;
 }
 
 export function ProgramsPage() {
   const s = useSession();
-  const q = useData(['programs', 'own'], () => list<Program>('/financing/programs?limit=100'));
+  const q = useOwnPrograms();
   const [open, setOpen] = useState<string | null>(null);
   const manage = s.can('financing.programs.manage');
-  return <Page title="Программы" subtitle="Продавцы видят только опубликованную версию; новые версии не меняют поданные заявки"
-    actions={manage && <ActionButton label="Новая программа" variant="primary" fields={programFields()} refresh={[['programs']]}
+  const latest = (p: Program) => p.versions[p.versions.length - 1];
+  const shown = (p: Program) => p.versions.find((v) => Number(v.number) === p.publishedVersion) ?? latest(p);
+  return <Page title="Программы финансирования" subtitle="Условия, доступные продавцам"
+    actions={manage && <ActionButton label="Создать программу" variant="primary" fields={programFields()} refresh={[['programs']]}
       intro={<p>Расчёт: фиксированная наценка на цену автомобиля, равные ежемесячные платежи. Политика расчёта ожидает утверждения бизнесом.</p>}
       onSubmit={(v) => post('/financing/programs', programInput(v))} />}>
-    <Panel><Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(p) => p.id} onRowClick={(p) => setOpen(p.id)} columns={[
-      { title: 'Программа', render: (p) => p.versions[p.versions.length - 1]?.name },
-      { title: 'Версий', render: (p) => p.versions.length },
-      { title: 'Опубликована', render: (p) => p.publishedVersion ? `версия ${p.publishedVersion}` : '—' },
-      { title: 'Статус', render: (p) => <Badge tone={p.status === 'published' ? 'success' : undefined}>{programLabel[p.status] ?? p.status}</Badge> },
+    <Panel><Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(p) => p.id} onRowClick={(p) => setOpen(p.id)} empty="Программ пока нет" columns={[
+      { title: 'Программа', render: (p) => <div className="cell-main">{shown(p)?.name}</div> },
+      { title: 'Взнос от', render: (p) => shown(p) && percent(shown(p)!.terms.minDownPaymentBps) },
+      { title: 'Сроки', render: (p) => shown(p)?.terms.termMonths.map((m) => `${m} мес.`).join(' / ') },
+      { title: 'Наценка', render: (p) => shown(p) && percent(shown(p)!.terms.markupBps) },
+      { title: 'Версия', render: (p) => p.publishedVersion ?? `${latest(p)?.number} (черновик)` },
+      { title: 'Статус', render: (p) => <Badge tone={p.status === 'published' ? 'success' : p.status === 'withdrawn' ? 'danger' : undefined}>{programLabel[p.status] ?? p.status}</Badge> },
+      { title: 'Действия', render: (p) => <Button size="sm" onClick={() => setOpen(p.id)}>Открыть</Button> },
     ]} /></Panel>
+    <div className="kit-notice" data-kind="info">Публикация делает программу доступной продавцам. Новая версия не меняет уже отправленные заявки: они сохраняют свои условия.</div>
     {open && <ProgramDialog id={open} manage={manage} onClose={() => setOpen(null)} />}
+  </Page>;
+}
+
+export function PartnersPage() {
+  const q = useFinanceApplications();
+  const name = useCompanyNames();
+  const sellers = [...new Set((q.data ?? []).map((a) => a.sellerCompanyId))];
+  return <Page title="Партнёры" subtitle="Продавцы, которые отправляли заявки по вашим опубликованным программам">
+    <Panel title="Продавцы"><Table rows={sellers} loading={q.isLoading} error={q.error} rowKey={(id) => id} empty="Заявок от продавцов пока не было" columns={[
+      { title: 'Компания', render: (id) => name(id) },
+      { title: 'Доступ', render: () => <Badge tone="success">Программы и заявки</Badge> },
+      { title: 'Заявки', render: (id) => (q.data ?? []).filter((a) => a.sellerCompanyId === id).length },
+      { title: 'Согласовано', render: (id) => (q.data ?? []).filter((a) => a.sellerCompanyId === id && a.status === 'agreed').length },
+    ]} /></Panel>
   </Page>;
 }
 

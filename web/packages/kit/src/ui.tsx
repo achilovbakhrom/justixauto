@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useId, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import '@justixauto/tokens/tokens.css';
 import { ApiError, errorText, upload } from './http';
@@ -14,6 +14,11 @@ export const css = {
 
 const styles = `
 .sidebar a.nav-item, .sidebar a.btn { text-decoration:none }
+.ins-sidebar nav a, .admin-sidebar nav a { text-decoration:none;display:block }
+.context-control>span>.label, .context-control>span>.value { display:block }
+.context-control>span { min-width:0;text-align:left }
+.view-tabs { overflow-x:auto }
+.view-tab { white-space:nowrap;min-width:auto }
 .kit-centered { min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--canvas) }
 .kit-auth { width:min(420px,100%);padding:28px }
 .kit-auth .brand { padding:0 0 20px }
@@ -46,6 +51,10 @@ const styles = `
 export function KitStyles() { return <style>{styles}</style>; }
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'link';
+
+/** Layout family of the reference: Realization/Financing (workspace), Insurance, Admin. */
+export type ShellVariant = 'workspace' | 'insurance' | 'admin';
+export const ShellVariantContext = createContext<ShellVariant>('workspace');
 
 export function Button({ children, onClick, variant = 'secondary', type = 'button', busy, disabled, title, size, icon }: {
   children: ReactNode; onClick?: (() => void) | undefined; variant?: Variant | undefined;
@@ -89,6 +98,13 @@ export function Field({ label, value, onChange, type = 'text', error, required, 
 }
 
 export function Page({ title, subtitle, actions, children }: { title: string; subtitle?: ReactNode; actions?: ReactNode; children: ReactNode }) {
+  const variant = useContext(ShellVariantContext);
+  if (variant === 'insurance') return <section className="page ins-page">
+    <div className="ins-heading"><div><h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>{actions && <div className="page-actions">{actions}</div>}</div>
+    <div className="kit-page-body">{children}</div></section>;
+  if (variant === 'admin') return <section className="admin-page">
+    <div className="admin-title"><div><h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>{actions && <div className="page-actions">{actions}</div>}</div>
+    <div className="kit-page-body">{children}</div></section>;
   return <section className="page">
     <div className="page-header"><div><h1 className="page-title">{title}</h1>{subtitle && <div className="page-subtitle">{subtitle}</div>}</div>
       {actions && <div className="page-actions">{actions}</div>}</div>
@@ -110,10 +126,11 @@ export function Table<T>({ rows, columns, rowKey, onRowClick, loading, error, em
   rows: T[] | undefined; columns: Column<T>[]; rowKey: (row: T) => string; onRowClick?: (row: T) => void;
   loading?: boolean; error?: unknown; empty?: string;
 }) {
+  const variant = useContext(ShellVariantContext);
   if (error) return <div className="table-empty-inline"><Notice kind="danger">{errorText(error)}</Notice></div>;
   if (loading || !rows) return <div className="table-empty-inline"><span className="cell-sub">Загрузка…</span></div>;
   if (rows.length === 0) return <div className="table-empty-inline"><strong>{empty}</strong></div>;
-  return <div className={`table-wrap${onRowClick ? ' kit-clickable' : ''}`}><table>
+  return <div className={`table-wrap${onRowClick ? ' kit-clickable' : ''}`}><table className={variant === 'insurance' ? 'ins-table' : variant === 'admin' ? 'admin-table' : undefined}>
     <thead><tr>{columns.map((c, i) => <th key={i}>{c.title}</th>)}</tr></thead>
     <tbody>{rows.map((r) => <tr key={rowKey(r)} onClick={onRowClick ? () => onRowClick(r) : undefined}
       tabIndex={onRowClick ? 0 : undefined} onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter') onRowClick(r); } : undefined}>
@@ -178,12 +195,17 @@ export function plural(n: number, forms: [string, string, string]) {
 }
 
 /** One figure of a `.summary-strip`. */
-export function Stat({ label, value, note }: { label: string; value: ReactNode; note?: string | undefined }) {
+export function Stat({ label, value, note, onClick }: { label: string; value: ReactNode; note?: string | undefined; onClick?: () => void }) {
+  const variant = useContext(ShellVariantContext);
+  if (variant === 'insurance') return <button type="button" className="surface" onClick={onClick}><span>{label}</span><strong>{value}</strong></button>;
+  if (variant === 'admin') return <button type="button" className="surface admin-card" onClick={onClick}><span>{label}</span><strong>{value}</strong>{note && <span>{note}</span>}</button>;
   return <div className="summary-item"><div className="summary-label">{label}</div><div className="summary-value">{value}</div>
     {note && <div className="summary-note">{note}</div>}</div>;
 }
 
 export function Stats({ children, columns }: { children: ReactNode; columns?: number }) {
+  const variant = useContext(ShellVariantContext);
+  if (variant !== 'workspace') return <div className={variant === 'insurance' ? 'ins-metrics' : 'admin-cards'}>{children}</div>;
   return <div className="summary-strip" style={columns ? { gridTemplateColumns: `repeat(${columns},minmax(0,1fr))` } : undefined}>{children}</div>;
 }
 
