@@ -39,6 +39,7 @@ type Deal struct {
 	Status                string     // reserved | delivered | cancelled
 	ContractSignedOn      *time.Time `gorm:"type:date"`
 	ContractReference     string
+	ContractFileIDs       []byte `gorm:"type:jsonb"`
 	RegisteredOn          *time.Time `gorm:"type:date"`
 	PlateNumber           string
 	RegistrationReference string
@@ -137,7 +138,7 @@ func (r *dealRepository) Deals(ctx context.Context, companyID string, branchIDs 
 
 func (r *dealRepository) Update(ctx context.Context, d *Deal, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Deal{}, d.ID, expected, map[string]any{
-		"status": d.Status, "contract_signed_on": d.ContractSignedOn, "contract_reference": d.ContractReference,
+		"status": d.Status, "contract_signed_on": d.ContractSignedOn, "contract_reference": d.ContractReference, "contract_file_ids": d.ContractFileIDs,
 		"registered_on": d.RegisteredOn, "plate_number": d.PlateNumber, "registration_reference": d.RegistrationReference,
 		"delivered_at": d.DeliveredAt, "status_reason": d.StatusReason, "updated_at": d.UpdatedAt})
 	if err == nil {
@@ -236,7 +237,7 @@ func (s *DealService) Create(ctx context.Context, p *auth.Principal, in DealInpu
 		return nil, err
 	}
 	now := s.clock()
-	d := &Deal{ID: uuid.NewString(), CompanyID: p.CompanyID, BranchID: in.BranchID, CustomerID: in.CustomerID, LeadID: in.LeadID,
+	d := &Deal{ID: uuid.NewString(), ContractFileIDs: []byte("[]"), CompanyID: p.CompanyID, BranchID: in.BranchID, CustomerID: in.CustomerID, LeadID: in.LeadID,
 		VehicleID: in.VehicleID, PaymentScheme: in.PaymentScheme, PriceMinor: in.Price.AmountMinor, Currency: in.Price.Currency,
 		Status: "reserved", Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
 	err := s.store.InTx(ctx, func(st Store) error {
@@ -307,11 +308,28 @@ func date(v *apperr.Validation, field, s string, now time.Time) *time.Time {
 	return &t
 }
 
-// RecordContract stores the external contract fact (signed date, reference).
-func (s *DealService) RecordContract(ctx context.Context, p *auth.Principal, id string, expected int64, signedOn, reference string) (*Deal, error) {
+// RecordContract stores the external contract fact (signed date, reference)
+// and the uploaded scans; recording again replaces the previous record.
+func (s *DealService) RecordContract(ctx context.Context, p *auth.Principal, id string, expected int64, signedOn, reference string, fileIDs []string) (*Deal, error) {
+	var files []string
 	return s.update(ctx, p, id, expected, "deal.contract_recorded", func(v *apperr.Validation, d *Deal) {
 		d.ContractSignedOn = date(v, "signedOn", signedOn, s.clock())
 		d.ContractReference = validate.Text(v, "reference", reference, 1, 100)
+		files = validate.UniqueIDs(v, "bindingIds", fileIDs)
+		if len(files) > 10 {
+			v.Add("bindingIds", "at most 10 files")
+		}
+		d.ContractFileIDs, _ = json.Marshal(files)
+	}, func(ctx context.Context, st Store, d *Deal) error {
+		for _, f := range files { // must be the company's own files
+			if err := s.files.Share(st.Bind(ctx), p.CompanyID, f, p.CompanyID, "retail.contract", d.ID); err != nil {
+				if errors.Is(err, apperr.ErrNotFound) {
+					return apperr.FieldError("bindingIds", "contains files that are not yours")
+				}
+				return err
+			}
+		}
+		return nil
 	})
 }
 

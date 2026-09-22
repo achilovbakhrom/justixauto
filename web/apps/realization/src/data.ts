@@ -45,7 +45,7 @@ export interface RetailEvidence { id: string; amount: Money; paidOn: string; ext
 export interface RetailInvoice { id: string; purpose: string; amount: Money; recipientSnapshot: string; dueDate: string | null; status: string; paid: Money; pending: Money; outstanding: Money; paymentEvidence: RetailEvidence[]; revision: string }
 export interface Deal {
   id: string; branchId: string; customer: Customer; leadId: string | null; vehicleId: string; paymentScheme: string; price: Money;
-  status: string; statusReason: string; contractSignedOn: string | null; contractReference: string; registeredOn: string | null;
+  status: string; statusReason: string; contractSignedOn: string | null; contractReference: string; contractFileIds: string[]; registeredOn: string | null;
   plateNumber: string; registrationReference: string; deliveredAt: string | null; invoices?: RetailInvoice[];
   checklist?: { contract: boolean; vehiclePayment?: boolean; insuranceApproved?: boolean; firstInstallment?: boolean; registrationPaid: boolean; registered: boolean; policyResolved: boolean };
   allowedActions: string[]; history?: { type: string; occurredAt: string; reason: string }[]; revision: string; updatedAt: string;

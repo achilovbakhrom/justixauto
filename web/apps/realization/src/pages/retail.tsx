@@ -227,7 +227,7 @@ function DealDialog({ id, onClose }: { id: string; onClose: () => void }) {
     {can('record-contract') && <ActionButton label="Договор подписан" refresh={refresh} fields={[
       { name: 'signedOn', label: 'Дата подписания', type: 'date', required: true },
       { name: 'reference', label: 'Номер договора', type: 'text', required: true },
-      { name: 'file', label: 'Скан договора', type: 'file', purpose: 'retail-contract' },
+      { name: 'file', label: 'Скан договора', type: 'file', purpose: 'deal-document' },
     ]} onSubmit={(v) => post(`/retail/deals/${id}/contract-records`, { signedOn: v.signedOn, reference: v.reference, bindingIds: v.file ? [v.file] : [] }, { ifMatch: d.revision })} />}
     {can('issue-invoice') && <ActionButton label="Выставить счёт" refresh={refresh} fields={[
       { name: 'purpose', label: 'Назначение', type: 'select', required: true, options: (purposes[d.paymentScheme] ?? []).map((p) => [p, purposeLabel[p] ?? p]) },
@@ -249,7 +249,8 @@ function DealDialog({ id, onClose }: { id: string; onClose: () => void }) {
   </>}>
     {d && <>
       <Details items={[['Автомобиль', label(d.vehicleId)], ['Схема', schemeLabel[d.paymentScheme]], ['Цена', money(d.price)],
-        ['Статус', dealLabel[d.status]], ['Договор', d.contractSignedOn ? `${d.contractReference} от ${date(d.contractSignedOn)}` : '—'],
+        ['Статус', dealLabel[d.status]], ['Договор', d.contractSignedOn ? <>{d.contractReference} от {date(d.contractSignedOn)}{d.contractFileIds.map((f, i) =>
+          <span key={f}> · <a href={fileUrl(f)} target="_blank" rel="noreferrer">скан {i + 1}</a></span>)}</> : '—'],
         ['Регистрация', d.registeredOn ? `${d.plateNumber} (${d.registrationReference}) от ${date(d.registeredOn)}` : '—'],
         ['Выдан', dateTime(d.deliveredAt)], ['Причина отмены', d.statusReason || '—']]} />
       {c && d.status === 'reserved' && <Panel title="Готовность к выдаче" padded><ul className="kit-timeline">

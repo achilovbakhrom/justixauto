@@ -177,6 +177,7 @@ type dealDTO struct {
 	StatusReason          string       `json:"statusReason"`
 	ContractSignedOn      *string      `json:"contractSignedOn"`
 	ContractReference     string       `json:"contractReference"`
+	ContractFileIDs       []string     `json:"contractFileIds"`
 	RegisteredOn          *string      `json:"registeredOn"`
 	PlateNumber           string       `json:"plateNumber"`
 	RegistrationReference string       `json:"registrationReference"`
@@ -194,7 +195,7 @@ func toDeal(full bool) func(*DealView) dealDTO {
 		d := v.Deal
 		out := dealDTO{ID: d.ID, BranchID: d.BranchID, Customer: toCustomer(&v.Customer), LeadID: d.LeadID, VehicleID: d.VehicleID,
 			PaymentScheme: d.PaymentScheme, Price: d.Price(), Status: d.Status, StatusReason: d.StatusReason,
-			ContractSignedOn: dateString(d.ContractSignedOn), ContractReference: d.ContractReference,
+			ContractSignedOn: dateString(d.ContractSignedOn), ContractReference: d.ContractReference, ContractFileIDs: ids(d.ContractFileIDs),
 			RegisteredOn: dateString(d.RegisteredOn), PlateNumber: d.PlateNumber, RegistrationReference: d.RegistrationReference,
 			DeliveredAt: d.DeliveredAt, AllowedActions: []string{}, Revision: httpx.Revision(d.Version), UpdatedAt: d.UpdatedAt}
 		if full {
@@ -565,7 +566,7 @@ func (h *Handler) recordContract(c echo.Context) error {
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
-	d, err := h.deals.RecordContract(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in.SignedOn, in.Reference)
+	d, err := h.deals.RecordContract(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in.SignedOn, in.Reference, in.BindingIDs)
 	if err != nil {
 		return err
 	}

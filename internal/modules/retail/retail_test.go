@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/inventory"
 	"justixauto/internal/modules/retail"
 	"justixauto/internal/testkit"
@@ -25,7 +26,7 @@ type shop struct {
 }
 
 var perms = []string{retail.PermRead, retail.PermCRM, retail.PermListings, retail.PermDeals, retail.PermPaymentsAccept, retail.PermDeliver,
-	inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate}
+	inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, documents.PermUpload, documents.PermRead}
 
 func newShop(t *testing.T) *shop {
 	e := testkit.New(t)
@@ -123,7 +124,16 @@ func TestCashSaleToDelivery(t *testing.T) {
 	now := s.e.Clock.Now().Format(time.RFC3339)
 	c.EnrollMFA() // payment acceptance and delivery are sensitive
 	expect(t, c.Do(http.MethodPost, "/retail/deals/"+id+"/deliveries", map[string]string{"occurredAt": now}, ifMatch(rev())...), http.StatusConflict, "delivery_not_ready")
-	expect(t, c.Do(http.MethodPost, "/retail/deals/"+id+"/contract-records", map[string]string{"signedOn": "2026-09-22", "reference": "DKP-17"}, ifMatch(rev())...), http.StatusOK)
+	record := func(files ...string) testkit.Response {
+		return c.Do(http.MethodPost, "/retail/deals/"+id+"/contract-records", map[string]any{"signedOn": "2026-09-22", "reference": "DKP-17", "bindingIds": files}, ifMatch(rev())...)
+	}
+	expect(t, record("00000000-0000-4000-8000-00000000abcd"), http.StatusUnprocessableEntity) // not the company's file
+	scan := str(c.Upload("deal-document", "contract.pdf", testkit.PDF).Data(), "id")
+	signed := record(scan)
+	expect(t, signed, http.StatusOK)
+	if f := signed.Data()["contractFileIds"].([]any); len(f) != 1 || f[0] != scan {
+		t.Fatalf("contract files: %v", signed.Data()["contractFileIds"])
+	}
 	expect(t, c.Do(http.MethodPost, "/retail/deals/"+id+"/invoices", map[string]any{"purpose": "first-installment", "amount": usd("1"), "recipientSnapshot": "x"}, ifMatch(rev())...), http.StatusUnprocessableEntity)
 
 	payInvoice := func(purpose string, amount map[string]string) {
