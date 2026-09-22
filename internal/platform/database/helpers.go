@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"errors"
 
 	"gorm.io/gorm"
@@ -53,4 +54,20 @@ func Page(limit, offset int) (int, int) {
 		offset = 0
 	}
 	return limit, offset
+}
+
+type txKey struct{}
+
+// WithTx carries an open transaction in ctx so that another module called
+// through a port joins it (as a savepoint) instead of committing separately.
+func WithTx(ctx context.Context, tx *gorm.DB) context.Context {
+	return context.WithValue(ctx, txKey{}, tx)
+}
+
+// Conn returns the transaction carried by ctx, or db if there is none.
+func Conn(ctx context.Context, db *gorm.DB) *gorm.DB {
+	if tx, ok := ctx.Value(txKey{}).(*gorm.DB); ok {
+		return tx
+	}
+	return db
 }

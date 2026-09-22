@@ -700,6 +700,13 @@ func (s *DealService) CancelOrder(ctx context.Context, p *auth.Principal, id str
 		if err := st.Deals().UpdateOrder(ctx, o, expected); err != nil {
 			return err
 		}
+		// Cancellation is final only together with the exact inventory release.
+		if err := s.stock.Release(st.Bind(ctx), o.ID, nil, "order cancelled: "+why); err != nil {
+			return err
+		}
+		if err := st.Fulfilment().SetAllocationStatus(ctx, o.ID, nil, "released", nil); err != nil {
+			return err
+		}
 		return s.event(ctx, st, p, "order.cancelled", "order", o.ID, why, nil)
 	})
 	return o, err
@@ -808,11 +815,13 @@ func (s *DealService) DecideAddendum(ctx context.Context, p *auth.Principal, id,
 
 // OrderView is an order with its addenda and both parties.
 type OrderView struct {
-	Order    Order
-	Addenda  []Addendum
-	Buyer    Company
-	Supplier Company
-	Events   []Event
+	Order       Order
+	Addenda     []Addendum
+	Allocations []Allocation
+	Shipments   []Shipment
+	Buyer       Company
+	Supplier    Company
+	Events      []Event
 }
 
 func (s *DealService) orderView(ctx context.Context, o *Order, withHistory bool) (*OrderView, error) {
@@ -829,6 +838,12 @@ func (s *DealService) orderView(ctx context.Context, o *Order, withHistory bool)
 		return nil, err
 	}
 	v := &OrderView{Order: *o, Addenda: as, Buyer: *buyer, Supplier: *supplier}
+	if v.Allocations, err = s.store.Fulfilment().Allocations(ctx, o.ID); err != nil {
+		return nil, err
+	}
+	if v.Shipments, err = s.store.Fulfilment().Shipments(ctx, o.ID); err != nil {
+		return nil, err
+	}
 	if withHistory {
 		if v.Events, err = s.store.Events().ForResource(ctx, "order", o.ID); err != nil {
 			return nil, err

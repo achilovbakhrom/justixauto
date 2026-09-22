@@ -3,6 +3,7 @@ package commerce
 import (
 	"encoding/json"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -90,6 +91,20 @@ type historyDTO struct {
 	Reason     string    `json:"reason"`
 }
 
+type allocationDTO struct {
+	OrderLineID string  `json:"orderLineId"`
+	VehicleID   string  `json:"vehicleId"`
+	VIN         string  `json:"vin"`
+	Status      string  `json:"status"`
+	ShipmentID  *string `json:"shipmentId"`
+}
+
+type shipmentRef struct {
+	ID     string `json:"id"`
+	Route  string `json:"route"`
+	Status string `json:"status"`
+}
+
 type orderDTO struct {
 	ID             string          `json:"id"`
 	Party          string          `json:"party"` // buyer | supplier (the caller's side)
@@ -104,6 +119,8 @@ type orderDTO struct {
 	Status         OrderStatus     `json:"status"`
 	StatusReason   string          `json:"statusReason"`
 	Addenda        []addendumDTO   `json:"addenda"`
+	Allocations    []allocationDTO `json:"allocations"`
+	Shipments      []shipmentRef   `json:"shipments"`
 	History        []historyDTO    `json:"history,omitempty"`
 	AllowedActions []string        `json:"allowedActions"`
 	Revision       string          `json:"revision"`
@@ -128,6 +145,12 @@ func orderActions(v *OrderView, companyID string) []string {
 	case OrderAccepted, OrderFulfilling:
 		if o.Status == OrderAccepted {
 			actions = append(actions, "cancel")
+		}
+		if o.Party(companyID) == "supplier" {
+			actions = append(actions, "allocate")
+			if slices.ContainsFunc(v.Allocations, func(a Allocation) bool { return a.Status == "allocated" }) {
+				actions = append(actions, "ship")
+			}
 		}
 		switch {
 		case open == nil:
@@ -157,6 +180,13 @@ func toOrder(companyID string) func(*OrderView) orderDTO {
 			d.Addenda = append(d.Addenda, addendumDTO{ID: a.ID, Number: a.Number, Terms: at, Total: termsTotal(at), Reason: a.Reason,
 				ProposedBy: by, Status: a.Status, DecisionReason: a.DecisionReason, CreatedAt: a.CreatedAt, DecidedAt: a.DecidedAt})
 		}
+		d.Allocations, d.Shipments = []allocationDTO{}, []shipmentRef{}
+		for _, a := range v.Allocations {
+			d.Allocations = append(d.Allocations, allocationDTO{OrderLineID: a.LineID, VehicleID: a.VehicleID, VIN: a.VIN, Status: a.Status, ShipmentID: a.ShipmentID})
+		}
+		for _, sh := range v.Shipments {
+			d.Shipments = append(d.Shipments, shipmentRef{ID: sh.ID, Route: sh.Route, Status: sh.Status})
+		}
 		for _, e := range v.Events {
 			d.History = append(d.History, historyDTO{Type: e.EventType, ActorID: e.ActorUserID, OccurredAt: e.OccurredAt, Reason: e.Reason})
 		}
@@ -181,6 +211,115 @@ func (h *Handler) dealRoutes(c *echo.Group) {
 	c.POST("/orders/:id/addenda", h.proposeAddendum, auth.Require(PermTrade))
 	c.POST("/orders/:id/addenda/:addendumId/accept", h.decideAddendum(true), auth.Require(PermTrade))
 	c.POST("/orders/:id/addenda/:addendumId/reject", h.decideAddendum(false), auth.Require(PermTrade))
+	c.POST("/orders/:id/allocations", h.allocate, auth.Require(PermTrade))
+	c.POST("/orders/:id/shipments", h.ship, auth.Require(PermTrade))
+	c.GET("/shipments/:id", h.getShipment, auth.Require(PermRead))
+	c.POST("/shipments/:id/milestones", h.addMilestone, auth.Require(PermTrade))
+	c.POST("/shipments/:id/receipt-decisions", h.decideReceipt, auth.Require(PermTrade))
+}
+
+type milestoneDTO struct {
+	Type       string    `json:"milestoneType"`
+	OccurredAt time.Time `json:"occurredAt"`
+	Location   string    `json:"location"`
+	Note       string    `json:"note"`
+	RecordedBy string    `json:"recordedBy"`
+}
+
+type shipmentDTO struct {
+	ID         string          `json:"id"`
+	OrderID    string          `json:"orderId"`
+	Route      string          `json:"route"`
+	Status     string          `json:"status"`
+	Vehicles   []allocationDTO `json:"vehicles"`
+	Milestones []milestoneDTO  `json:"milestones"`
+	Revision   string          `json:"revision"`
+}
+
+func toShipment(v *ShipmentView) shipmentDTO {
+	d := shipmentDTO{ID: v.Shipment.ID, OrderID: v.Shipment.OrderID, Route: v.Shipment.Route, Status: v.Shipment.Status,
+		Vehicles: []allocationDTO{}, Milestones: []milestoneDTO{}, Revision: httpx.Revision(v.Shipment.Version)}
+	for _, a := range v.Vehicles {
+		d.Vehicles = append(d.Vehicles, allocationDTO{OrderLineID: a.LineID, VehicleID: a.VehicleID, VIN: a.VIN, Status: a.Status, ShipmentID: a.ShipmentID})
+	}
+	for _, m := range v.Milestones {
+		d.Milestones = append(d.Milestones, milestoneDTO{Type: m.MilestoneType, OccurredAt: m.OccurredAt, Location: m.Location, Note: m.Note, RecordedBy: m.RecordedBy})
+	}
+	return d
+}
+
+func (h *Handler) allocate(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in struct {
+		Items []AllocationItem `json:"items"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	o, err := h.fulfilment.Allocate(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in.Items)
+	if err != nil {
+		return err
+	}
+	return h.orderResponse(c, http.StatusOK, o)
+}
+
+func (h *Handler) ship(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in ShipmentInput
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	sh, err := h.fulfilment.Ship(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in)
+	if err != nil {
+		return err
+	}
+	v, err := h.fulfilment.GetShipment(c.Request().Context(), auth.Get(c), sh.ID)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusCreated, toShipment(v), v.Shipment.Version)
+}
+
+func (h *Handler) getShipment(c echo.Context) error {
+	v, err := h.fulfilment.GetShipment(c.Request().Context(), auth.Get(c), c.Param("id"))
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusOK, toShipment(v), v.Shipment.Version)
+}
+
+func (h *Handler) addMilestone(c echo.Context) error {
+	var in MilestoneInput
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	v, err := h.fulfilment.AddMilestone(c.Request().Context(), auth.Get(c), c.Param("id"), in)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusCreated, toShipment(v), v.Shipment.Version)
+}
+
+func (h *Handler) decideReceipt(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in ReceiptDecision
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	v, err := h.fulfilment.DecideReceipt(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusOK, toShipment(v), v.Shipment.Version)
 }
 
 func paging(c echo.Context) (int, int, error) {

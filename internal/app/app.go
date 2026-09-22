@@ -42,7 +42,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	idm.Register(api)
 	inv := inventory.New(db, cfg.Now)
 	inv.Register(api)
-	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}).Register(api)
+	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}, commerceStock{inv.Stock()}).Register(api)
 	return e, idm, nil
 }
 
@@ -67,4 +67,33 @@ func (c catalog) Model(ctx context.Context, id string) (*commerce.Model, error) 
 		return nil, err
 	}
 	return &commerce.Model{ID: m.Model.ID, Name: m.Model.Make + " " + m.Model.Model + " " + m.Model.Variant}, nil
+}
+
+// commerceStock adapts inventory reservations to commerce's Stock port;
+// commerce orders hold vehicles as "commerce-order".
+type commerceStock struct{ s *inventory.StockService }
+
+func (a commerceStock) holder(orderID string) inventory.Holder {
+	return inventory.Holder{Type: "commerce-order", ID: orderID}
+}
+
+func (a commerceStock) Vehicle(ctx context.Context, companyID, id string) (*commerce.StockVehicle, error) {
+	v, err := a.s.Vehicle(ctx, companyID, id)
+	if err != nil {
+		return nil, err
+	}
+	return &commerce.StockVehicle{ID: v.ID, VIN: v.VIN, ModelID: v.ModelID}, nil
+}
+
+func (a commerceStock) Reserve(ctx context.Context, companyID, orderID string, vehicleIDs []string) error {
+	return a.s.Reserve(ctx, companyID, a.holder(orderID), vehicleIDs)
+}
+
+func (a commerceStock) Release(ctx context.Context, orderID string, vehicleIDs []string, reason string) error {
+	return a.s.Release(ctx, a.holder(orderID), vehicleIDs, reason)
+}
+
+func (a commerceStock) Transfer(ctx context.Context, orderID string, vehicleIDs []string, toCompanyID, toWarehouseID, actorID string, at time.Time) error {
+	return a.s.Transfer(ctx, inventory.Handover{Holder: a.holder(orderID), VehicleIDs: vehicleIDs,
+		ToCompanyID: toCompanyID, ToWarehouseID: toWarehouseID, ActorUserID: actorID, At: at})
 }

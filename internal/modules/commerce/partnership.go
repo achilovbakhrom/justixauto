@@ -113,8 +113,12 @@ type Store interface {
 	Partnerships() PartnershipRepository
 	Offers() OfferRepository
 	Deals() DealRepository
+	Fulfilment() FulfilmentRepository
 	Events() EventRepository
 	InTx(ctx context.Context, fn func(Store) error) error
+	// Bind returns ctx carrying this store's transaction, so other modules
+	// called through ports commit or roll back together with it.
+	Bind(ctx context.Context) context.Context
 }
 
 type gormStore struct{ db *gorm.DB }
@@ -125,9 +129,12 @@ func (s *gormStore) Partnerships() PartnershipRepository { return &partnershipRe
 func (s *gormStore) Events() EventRepository             { return &eventRepository{s.db} }
 func (s *gormStore) Offers() OfferRepository             { return &offerRepository{s.db} }
 func (s *gormStore) Deals() DealRepository               { return &dealRepository{s.db} }
+func (s *gormStore) Fulfilment() FulfilmentRepository    { return &fulfilmentRepository{s.db} }
 func (s *gormStore) InTx(ctx context.Context, fn func(Store) error) error {
-	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&gormStore{db: tx}) })
+	return database.Conn(ctx, s.db).WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&gormStore{db: tx}) })
 }
+
+func (s *gormStore) Bind(ctx context.Context) context.Context { return database.WithTx(ctx, s.db) }
 
 type PartnershipFilter struct {
 	CompanyID string
@@ -216,6 +223,7 @@ type deps struct {
 	store     Store
 	directory Directory
 	catalog   Catalog
+	stock     Stock
 	now       func() time.Time
 }
 

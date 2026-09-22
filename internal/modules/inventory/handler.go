@@ -378,7 +378,10 @@ func (h *Handler) move(c echo.Context) error {
 
 // ---- module ----
 
-type Module struct{ handler *Handler }
+type Module struct {
+	handler *Handler
+	stock   *StockService
+}
 
 func New(db *gorm.DB, now func() time.Time) *Module {
 	if now == nil {
@@ -386,7 +389,7 @@ func New(db *gorm.DB, now func() time.Time) *Module {
 	}
 	d := deps{store: NewStore(db), now: now}
 	return &Module{handler: &Handler{models: &ModelService{d}, warehouses: &WarehouseService{d},
-		receipts: &ReceiptService{d}, vehicles: &VehicleService{d}}}
+		receipts: &ReceiptService{d}, vehicles: &VehicleService{d}}, stock: &StockService{d}}
 }
 
 // Register mounts the inventory routes under /api/v1/inventory.
@@ -397,3 +400,6 @@ func (m *Module) Register(api *echo.Group) { m.handler.Routes(api.Group("/invent
 func (m *Module) Model(ctx context.Context, id string) (*ModelDetail, error) {
 	return m.handler.models.Get(ctx, id)
 }
+
+// Stock is the reservation and hand-over service for other modules.
+func (m *Module) Stock() *StockService { return m.stock }

@@ -29,8 +29,10 @@ func (s *gormStore) Warehouses() WarehouseRepository { return &warehouseReposito
 func (s *gormStore) Vehicles() VehicleRepository     { return &vehicleRepository{s.db} }
 func (s *gormStore) Facts() FactRepository           { return &factRepository{s.db} }
 
+// InTx runs fn in a transaction; inside a caller's ambient transaction
+// (database.WithTx) it becomes a savepoint of that transaction.
 func (s *gormStore) InTx(ctx context.Context, fn func(Store) error) error {
-	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&gormStore{db: tx}) })
+	return database.Conn(ctx, s.db).WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&gormStore{db: tx}) })
 }
 
 var translate = database.Translate

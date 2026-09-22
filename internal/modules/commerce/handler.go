@@ -57,6 +57,7 @@ type Handler struct {
 	partnerships *PartnershipService
 	offers       *OfferService
 	deals        *DealService
+	fulfilment   *FulfilmentService
 }
 
 func (h *Handler) Routes(g *echo.Group) {
@@ -138,13 +139,13 @@ func (h *Handler) decidePartnership(c echo.Context) error {
 
 type Module struct{ handler *Handler }
 
-func New(db *gorm.DB, now func() time.Time, directory Directory, catalog Catalog) *Module {
+func New(db *gorm.DB, now func() time.Time, directory Directory, catalog Catalog, stock Stock) *Module {
 	if now == nil {
 		now = time.Now
 	}
-	d := deps{store: NewStore(db), directory: directory, catalog: catalog, now: now}
+	d := deps{store: NewStore(db), directory: directory, catalog: catalog, stock: stock, now: now}
 	offers := &OfferService{d}
-	return &Module{handler: &Handler{partnerships: &PartnershipService{d}, offers: offers, deals: &DealService{deps: d, offers: offers}}}
+	return &Module{handler: &Handler{partnerships: &PartnershipService{d}, offers: offers, deals: &DealService{deps: d, offers: offers}, fulfilment: &FulfilmentService{d}}}
 }
 
 // Register mounts the commerce routes under /api/v1/commerce.
