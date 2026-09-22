@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"testing"
 
+	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/financing"
 	"justixauto/internal/testkit"
 )
@@ -24,8 +25,10 @@ func program(policy string) map[string]any {
 func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	e := testkit.New(t)
 	admin := e.Admin()
-	bank := e.KindUser(admin, "bank", "Capital Bank", financing.PermRead, financing.PermPrograms, financing.PermReview, financing.PermDecide)
-	shop := e.NewShop(admin, "Seller", "XTAAA11111A50000", 1, financing.PermRead, financing.PermApply, financing.PermAgree)
+	bank := e.KindUser(admin, "bank", "Capital Bank", financing.PermRead, financing.PermPrograms, financing.PermReview, financing.PermDecide,
+		documents.PermRead, documents.PermSensitiveDownload)
+	shop := e.NewShop(admin, "Seller", "XTAAA11111A50000", 1, financing.PermRead, financing.PermApply, financing.PermAgree,
+		documents.PermRead, documents.PermUpload)
 
 	// Programs: only the documented policy; drafts are private.
 	expect(t, bank.Do(http.MethodPost, "/financing/programs", program("guess")), http.StatusUnprocessableEntity)
@@ -92,4 +95,30 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	}
 	// Agreement is not delivery: partner-finance delivery stays policy-gated.
 	expect(t, shop.Do(http.MethodPost, "/retail/deals/"+str(deal.Data(), "id")+"/deliveries", map[string]string{"occurredAt": "2026-09-22T09:00:00Z"}, ifMatch(deal.Revision())...), http.StatusForbidden, "policy_unresolved")
+
+	// After agreement: document requests with numbered submissions.
+	appID := id
+	req := bank.Do(http.MethodPost, "/financing/applications/"+appID+"/document-requests", map[string]string{"title": "Signed purchase agreement", "requirements": "PDF, all pages"})
+	expect(t, req, http.StatusCreated)
+	doc := str(req.Data(), "id")
+	other := e.CompanyUser(admin, "Other", documents.PermUpload)
+	foreign := str(other.Upload("finance-document", "x.pdf", testkit.PDF).Data(), "id")
+	expect(t, shop.Do(http.MethodPost, "/financing/document-requests/"+doc+"/submissions", map[string]string{"attachmentBindingId": foreign}, ifMatch("1")...), http.StatusUnprocessableEntity)
+	file := str(shop.Upload("finance-document", "agreement.pdf", testkit.PDF).Data(), "id")
+	if status, _ := bank.Raw("/documents/files/" + file + "/content"); status != http.StatusNotFound {
+		t.Fatal("the provider must not read the file before it is submitted")
+	}
+	expect(t, shop.Do(http.MethodPost, "/financing/document-requests/"+doc+"/submissions", map[string]string{"attachmentBindingId": file, "note": "v1"}, ifMatch("1")...), http.StatusCreated)
+	if status, _ := bank.Raw("/documents/files/" + file + "/content"); status != http.StatusOK {
+		t.Fatalf("provider download after submission: %d", status)
+	}
+	expect(t, bank.Do(http.MethodPost, "/financing/document-requests/"+doc+"/return", map[string]any{"submissionVersion": 1}, ifMatch("2")...), http.StatusUnprocessableEntity)
+	expect(t, bank.Do(http.MethodPost, "/financing/document-requests/"+doc+"/return", map[string]any{"submissionVersion": 1, "note": "Page 3 missing"}, ifMatch("2")...), http.StatusOK)
+	expect(t, shop.Do(http.MethodPost, "/financing/document-requests/"+doc+"/submissions", map[string]string{"attachmentBindingId": file, "note": "v2"}, ifMatch("3")...), http.StatusCreated)
+	expect(t, bank.Do(http.MethodPost, "/financing/document-requests/"+doc+"/accept", map[string]any{"submissionVersion": 1, "confirmation": true}, ifMatch("4")...), http.StatusConflict, "submission_changed")
+	acc := bank.Do(http.MethodPost, "/financing/document-requests/"+doc+"/accept", map[string]any{"submissionVersion": 2, "confirmation": true}, ifMatch("4")...)
+	expect(t, acc, http.StatusOK)
+	if acc.Data()["status"] != "accepted" || len(acc.Data()["submissions"].([]any)) != 2 {
+		t.Fatalf("document request: %v", acc.Data())
+	}
 }

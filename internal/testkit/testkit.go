@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"mime/multipart"
 	"net/http"
 	"net/http/cookiejar"
 	"net/http/httptest"
@@ -101,7 +102,7 @@ func New(t *testing.T) *Env {
 	clock := &Clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
 	key := make([]byte, 32)
 	_, _ = rand.Read(key)
-	e, idm, err := app.New(db, app.Config{Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
+	e, idm, err := app.New(db, app.Config{DocumentsDir: t.TempDir(), Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
 		Log: slog.New(slog.NewTextHandler(io.Discard, nil))})
 	if err != nil {
 		t.Fatal(err)
@@ -279,3 +280,41 @@ func (e *Env) KindUser(admin *Client, kind, name string, perms ...string) *Clien
 	c.UserID, c.CompanyID = userID, companyID
 	return c
 }
+
+// Upload sends a file as multipart/form-data to /api/v1/documents/files.
+func (c *Client) Upload(purpose, name string, content []byte) Response {
+	t := c.env.T
+	t.Helper()
+	var buf bytes.Buffer
+	w := multipart.NewWriter(&buf)
+	_ = w.WriteField("purpose", purpose)
+	part, _ := w.CreateFormFile("file", name)
+	_, _ = part.Write(content)
+	_ = w.Close()
+	req, _ := http.NewRequest(http.MethodPost, c.env.srv.URL+"/api/v1/documents/files", &buf)
+	req.Header.Set("Content-Type", w.FormDataContentType())
+	req.Header.Set("X-CSRF-Token", c.csrf)
+	req.Header.Set("Idempotency-Key", uuid.NewString())
+	res, err := c.http.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer res.Body.Close()
+	out := Response{Status: res.StatusCode, Header: res.Header, Body: map[string]any{}}
+	_ = json.NewDecoder(res.Body).Decode(&out.Body)
+	return out
+}
+
+// Raw performs a GET and returns status and body bytes (e.g. file downloads).
+func (c *Client) Raw(path string) (int, []byte) {
+	res, err := c.http.Get(c.env.srv.URL + "/api/v1" + path)
+	if err != nil {
+		c.env.T.Fatal(err)
+	}
+	defer res.Body.Close()
+	b, _ := io.ReadAll(res.Body)
+	return res.StatusCode, b
+}
+
+// PDF is a minimal file detected as application/pdf.
+var PDF = []byte("%PDF-1.4\n1 0 obj << /Type /Catalog >> endobj\ntrailer << /Root 1 0 R >>\n%%EOF\n")

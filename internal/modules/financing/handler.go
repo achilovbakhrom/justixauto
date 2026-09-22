@@ -147,6 +147,123 @@ func (h *Handler) Routes(g *echo.Group) {
 	c.POST("/applications/:id/information-requests", h.act("request"), auth.Require(PermReview))
 	c.POST("/applications/:id/terms", h.act("terms"), auth.Require(PermDecide))
 	c.POST("/applications/:id/decline", h.act("decline"), auth.Require(PermDecide))
+
+	c.GET("/applications/:id/document-requests", h.listDocuments, auth.Require(PermRead))
+	c.POST("/applications/:id/document-requests", h.requestDocument, auth.Require(PermReview))
+	c.GET("/document-requests/:id", h.getDocument, auth.Require(PermRead))
+	c.POST("/document-requests/:id/submissions", h.submitDocument, auth.Require(PermApply))
+	c.POST("/document-requests/:id/:action", h.decideDocument, auth.Require(PermDecide))
+}
+
+type submissionDTO struct {
+	Version   int       `json:"version"`
+	FileID    string    `json:"fileId"`
+	Note      string    `json:"note"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+type documentRequestDTO struct {
+	ID            string          `json:"id"`
+	ApplicationID string          `json:"applicationId"`
+	Title         string          `json:"title"`
+	Requirements  string          `json:"requirements"`
+	Status        string          `json:"status"`
+	StatusNote    string          `json:"statusNote"`
+	Submissions   []submissionDTO `json:"submissions"`
+	Revision      string          `json:"revision"`
+}
+
+func toDocumentRequest(v *DocumentRequestView) documentRequestDTO {
+	d := documentRequestDTO{ID: v.Request.ID, ApplicationID: v.Request.ApplicationID, Title: v.Request.Title,
+		Requirements: v.Request.Requirements, Status: v.Request.Status, StatusNote: v.Request.StatusNote,
+		Submissions: []submissionDTO{}, Revision: httpx.Revision(v.Request.Version)}
+	for _, s := range v.Submissions {
+		d.Submissions = append(d.Submissions, submissionDTO{Version: s.Number, FileID: s.FileID, Note: s.Note, CreatedAt: s.CreatedAt})
+	}
+	return d
+}
+
+func (h *Handler) documentResponse(c echo.Context, status int, id string) error {
+	v, err := h.s.DocumentRequestView(c.Request().Context(), auth.Get(c), id)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, status, toDocumentRequest(v), v.Request.Version)
+}
+
+func (h *Handler) listDocuments(c echo.Context) error {
+	vs, err := h.s.DocumentRequests(c.Request().Context(), auth.Get(c), c.Param("id"))
+	if err != nil {
+		return err
+	}
+	out := make([]documentRequestDTO, len(vs))
+	for i := range vs {
+		out[i] = toDocumentRequest(&vs[i])
+	}
+	return httpx.List(c, out, nil)
+}
+
+func (h *Handler) getDocument(c echo.Context) error {
+	return h.documentResponse(c, http.StatusOK, c.Param("id"))
+}
+
+func (h *Handler) requestDocument(c echo.Context) error {
+	var in struct {
+		Title        string `json:"title"`
+		Requirements string `json:"requirements"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	d, err := h.s.RequestDocument(c.Request().Context(), auth.Get(c), c.Param("id"), in.Title, in.Requirements)
+	if err != nil {
+		return err
+	}
+	return h.documentResponse(c, http.StatusCreated, d.ID)
+}
+
+func (h *Handler) submitDocument(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in struct {
+		AttachmentBindingID string `json:"attachmentBindingId"`
+		Note                string `json:"note"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	d, err := h.s.SubmitDocument(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in.AttachmentBindingID, in.Note)
+	if err != nil {
+		return err
+	}
+	return h.documentResponse(c, http.StatusCreated, d.ID)
+}
+
+func (h *Handler) decideDocument(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in struct {
+		SubmissionVersion int    `json:"submissionVersion"`
+		Confirmation      bool   `json:"confirmation"`
+		Note              string `json:"note"`
+		Reason            string `json:"reason"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	note := in.Note
+	if c.Param("action") == "cancel" {
+		note = in.Reason
+	}
+	d, err := h.s.DecideDocument(c.Request().Context(), auth.Get(c), c.Param("id"), expected, c.Param("action"), in.SubmissionVersion, in.Confirmation, note)
+	if err != nil {
+		return err
+	}
+	return h.documentResponse(c, http.StatusOK, d.ID)
 }
 
 func (h *Handler) programResponse(c echo.Context, status int, id string) error {
@@ -346,11 +463,11 @@ func (h *Handler) act(action string) echo.HandlerFunc {
 
 type Module struct{ handler *Handler }
 
-func New(db *gorm.DB, now func() time.Time, sales Sales, directory Directory) *Module {
+func New(db *gorm.DB, now func() time.Time, sales Sales, directory Directory, files Files) *Module {
 	if now == nil {
 		now = time.Now
 	}
-	return &Module{handler: &Handler{&Service{r: &repo{db}, sales: sales, directory: directory, now: now}}}
+	return &Module{handler: &Handler{&Service{r: &repo{db}, sales: sales, directory: directory, files: files, now: now}}}
 }
 
 // Register mounts the financing routes under /api/v1/financing.

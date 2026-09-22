@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"justixauto/internal/modules/commerce"
+	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/financing"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/modules/insurance"
@@ -21,11 +22,13 @@ import (
 )
 
 type Config struct {
-	Cookie  identity.CookieConfig
-	Session identity.SessionConfig
-	MFAKey  []byte
-	Now     func() time.Time // nil = time.Now
-	Log     *slog.Logger
+	// DocumentsDir is the private directory for uploaded files.
+	DocumentsDir string
+	Cookie       identity.CookieConfig
+	Session      identity.SessionConfig
+	MFAKey       []byte
+	Now          func() time.Time // nil = time.Now
+	Log          *slog.Logger
 }
 
 // New returns the HTTP server with all modules mounted under /api/v1.
@@ -38,6 +41,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	identity.RegisterPermissions(retail.Permissions...)
 	identity.RegisterPermissions(insurance.Permissions...)
 	identity.RegisterPermissions(financing.Permissions...)
+	identity.RegisterPermissions(documents.Permissions...)
 	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now})
 	if err != nil {
 		return nil, nil, err
@@ -57,7 +61,9 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	ins := insurance.New(db, cfg.Now, insuranceSales{ret.Deals}, insurerDirectory{idm.Companies})
 	approvals.s = ins.Service
 	ins.Register(api)
-	financing.New(db, cfg.Now, financingSales{ret.Deals}, providerDirectory{idm.Companies}).Register(api)
+	docs := documents.New(db, cfg.Now, documents.DirStorage{Root: cfg.DocumentsDir})
+	docs.Register(api)
+	financing.New(db, cfg.Now, financingSales{ret.Deals}, providerDirectory{idm.Companies}, fileShares{docs.Service}).Register(api)
 	return e, idm, nil
 }
 
@@ -190,4 +196,12 @@ func (a providerDirectory) Company(ctx context.Context, id string) (*financing.C
 		return nil, err
 	}
 	return &financing.Company{ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive}, nil
+}
+
+// fileShares adapts the documents module to other modules' Files ports.
+type fileShares struct{ s *documents.Service }
+
+func (a fileShares) Share(ctx context.Context, ownerCompanyID, fileID, withCompanyID, resourceType, resourceID string) error {
+	_, err := a.s.Share(ctx, ownerCompanyID, fileID, withCompanyID, resourceType, resourceID)
+	return err
 }

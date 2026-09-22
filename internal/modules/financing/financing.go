@@ -254,6 +254,7 @@ type Service struct {
 	r         *repo
 	sales     Sales
 	directory Directory
+	files     Files
 	now       func() time.Time
 }
 

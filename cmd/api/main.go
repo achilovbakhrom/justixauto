@@ -41,10 +41,11 @@ func run(log *slog.Logger) error {
 	defer sqlDB.Close()
 
 	e, _, err := app.New(db, app.Config{
-		Cookie:  identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
-		Session: identity.DefaultSessionConfig,
-		MFAKey:  cfg.MFAKey,
-		Log:     log,
+		DocumentsDir: cfg.DocumentsDir,
+		Cookie:       identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
+		Session:      identity.DefaultSessionConfig,
+		MFAKey:       cfg.MFAKey,
+		Log:          log,
 	})
 	if err != nil {
 		return err

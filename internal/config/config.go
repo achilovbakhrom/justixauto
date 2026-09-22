@@ -21,6 +21,8 @@ type Config struct {
 	// MFAKey (32 bytes, base64 in MFA_KEY) encrypts two-factor secrets at rest.
 	// Losing or changing it disables every enrolled authenticator.
 	MFAKey []byte
+	// DocumentsDir holds uploaded files (private; back it up with the database).
+	DocumentsDir string
 }
 
 // Load reads configuration from the environment. DATABASE_URL is required;
@@ -31,6 +33,7 @@ func Load() (Config, error) {
 		DatabaseURL:     os.Getenv("DATABASE_URL"),
 		ShutdownTimeout: 10 * time.Second,
 		CookieSecure:    getenv("COOKIE_SECURE", "true") != "false",
+		DocumentsDir:    getenv("DOCUMENTS_DIR", "var/documents"),
 	}
 	for _, o := range strings.Split(os.Getenv("ALLOWED_ORIGINS"), ",") {
 		if o = strings.TrimSpace(o); o != "" {

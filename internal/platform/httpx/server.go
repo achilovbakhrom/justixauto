@@ -24,7 +24,10 @@ func NewServer(log *slog.Logger) *echo.Echo {
 	e.HTTPErrorHandler = errorHandler(log)
 	e.Use(middleware.Recover())
 	e.Use(middleware.RequestID())
-	e.Use(middleware.BodyLimit("1M"))
+	// JSON bodies stay small; file uploads (multipart) set their own limit.
+	e.Use(middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{Limit: "1M", Skipper: func(c echo.Context) bool {
+		return strings.HasPrefix(c.Request().Header.Get("Content-Type"), "multipart/form-data")
+	}}))
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			// API responses are per-user and must never be cached.
