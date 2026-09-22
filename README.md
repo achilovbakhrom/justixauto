@@ -54,6 +54,40 @@ Administrators must set up TOTP (`POST /session/mfa/enrollment`, then
 challenge answered with `POST /session/mfa/verify`, and sensitive actions need
 a code from the last 5 minutes (`POST /session/mfa/step-up`).
 
+## Run the web apps
+
+Four cabinets share one sign-in and API: Realization (sellers, `/`), Financing
+(banks and MFOs, `/finance/`), Insurance (`/insurance/`) and Admin (platform,
+`/admin/`). Build them once and let the API serve them:
+
+```sh
+npm ci --ignore-scripts
+npm run build:apps
+WEB_DIR=web/apps bash tools/go.sh run ./cmd/api   # http://127.0.0.1:8080/
+```
+
+For UI work run one app with hot reload instead; it proxies `/api/` to the
+API (`JUSTIX_API`, default `http://127.0.0.1:8080`):
+
+```sh
+npm run dev --workspace web/apps/realization      # also: financing, insurance, admin
+```
+
+First steps after bootstrap: sign in at `/admin/`, enable two-factor
+protection (“Безопасность”), create seller / bank / MFO / insurance companies
+with their first administrator and activate them. A company administrator
+manages only company details and branches; business work needs a role — create
+one under “Роли и права” (e.g. all `inventory.*`, `commerce.*`, `retail.*`
+permissions for a seller) and assign it to the user.
+
+Shared UI code lives in `web/packages/kit` (HTTP client with CSRF,
+Idempotency-Key and If-Match, session gate with MFA, shell, forms, tables and
+the insurance/financing application views). Checks:
+
+```sh
+npm run typecheck && npm run lint && npm run test:unit && npm run build
+```
+
 Tests:
 
 ```sh
@@ -74,7 +108,7 @@ cmd/bootstrap-admin/      single-use creation of the first platform admin
 internal/modules/<name>/  one module: handler → service → repository, model
 internal/platform/        shared tech: config, database, HTTP server, errors
 migrations/               versioned SQL migrations (embedded)
-web/                      four React apps and shared packages
+web/                      four React apps and shared packages (kit = shared UI)
 docs/justix-auto/         business rules, decisions, mocks and dev state
 tools/                    Go wrapper, mock tooling, agent/Git helpers
 infra/local/              local PostgreSQL (Docker Compose)

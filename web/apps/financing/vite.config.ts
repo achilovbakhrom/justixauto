@@ -5,6 +5,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
+// Local Go API (cmd/api); override with JUSTIX_API.
+const api = process.env.JUSTIX_API ?? 'http://127.0.0.1:8080';
 
 function isDocumentRequest(req: IncomingMessage): boolean {
   // Wildcards advertise acceptable bytes, not document navigation. Legacy
@@ -24,6 +26,8 @@ function isDocumentRequest(req: IncomingMessage): boolean {
 /** Local development/preview only. Deployment routing is a separate task. */
 function prefixGuard(req: IncomingMessage, res: ServerResponse, next: () => void, allowHtmlProxy = false) {
   const path = (req.url ?? '/').split('?')[0]!;
+  // API calls go to the Go server through the dev/preview proxy.
+  if (path.startsWith('/api/')) { next(); return; }
   // Preview's static middleware can serve an explicit HTML file before the
   // fallback. Apply the same intent rule there, including encoded filenames.
   let decodedPath = '';
@@ -66,7 +70,8 @@ function htmlFallback(html: (url: string) => Promise<string>) {
 }
 
 export default defineConfig({
-  root, base: '/finance/', appType: 'custom', plugins: [react(), {
+  root, base: '/finance/', appType: 'custom',
+  server: { proxy: { '/api': api } }, preview: { proxy: { '/api': api } }, plugins: [react(), {
     name: 'finance-prefix-only-html',
     configureServer(server) {
       server.middlewares.use((req, res, next) => prefixGuard(req, res, next, true));

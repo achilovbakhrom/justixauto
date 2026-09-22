@@ -24,6 +24,8 @@ type Config struct {
 	// FileStorage is "s3" (production) or "local" (DocumentsDir, development).
 	FileStorage  string
 	DocumentsDir string
+	// WebDir is the web/apps checkout with built apps (npm run build); empty = API only.
+	WebDir string
 	S3           S3
 }
 
@@ -44,6 +46,7 @@ func Load() (Config, error) {
 		CookieSecure:    getenv("COOKIE_SECURE", "true") != "false",
 		FileStorage:     getenv("FILE_STORAGE", "local"),
 		DocumentsDir:    getenv("DOCUMENTS_DIR", "var/documents"),
+		WebDir:          os.Getenv("WEB_DIR"),
 		S3: S3{Bucket: os.Getenv("S3_BUCKET"), Region: getenv("S3_REGION", "us-east-1"), Prefix: getenv("S3_PREFIX", "documents/"),
 			Endpoint: os.Getenv("S3_ENDPOINT"), SSE: os.Getenv("S3_SSE"), PathStyle: os.Getenv("S3_FORCE_PATH_STYLE") == "true"},
 	}

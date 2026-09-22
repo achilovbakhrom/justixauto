@@ -16,6 +16,7 @@ import (
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/platform/database"
+	"justixauto/internal/platform/webui"
 )
 
 func main() {
@@ -58,6 +59,9 @@ func run(log *slog.Logger) error {
 	})
 	if err != nil {
 		return err
+	}
+	if cfg.WebDir != "" {
+		webui.Mount(e, webui.Apps(cfg.WebDir))
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)

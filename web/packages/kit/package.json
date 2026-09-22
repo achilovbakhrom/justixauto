@@ -1,0 +1,22 @@
+{
+  "name": "@justixauto/kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck"
+  },
+  "dependencies": {
+    "@justixauto/api": "0.1.0",
+    "@justixauto/tokens": "0.1.0",
+    "@justixauto/ui": "0.1.0",
+    "@tanstack/react-query": "5.102.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "7.18.3"
+  }
+}

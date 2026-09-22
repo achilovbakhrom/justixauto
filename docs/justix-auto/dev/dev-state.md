@@ -2,6 +2,8 @@
 
 > **2026-09-22 — backend reset ([ADR-14](../adr-14-classic-modular-monolith.md)).** The CQRS/ES microservice backend was removed (tag `archive/cqrs-es-backend`) and replaced by a modular monolith: `cmd/api`, `internal/modules/*` (handler → service → repository), Echo + GORM, SQL migrations. First module: `identity` companies. Backend tasks below that assume event sourcing, outbox/inbox, projections or per-owner databases are obsolete until re-planned. Entries below are historical.
 
+> **2026-09-22 — current state.** All backend modules are implemented (identity with MFA, inventory, commerce, retail, insurance, financing, documents with S3) and the four React apps were rebuilt on the shared `web/packages/kit`. `WEB_DIR=web/apps` makes `cmd/api` serve the built apps (`/`, `/finance/`, `/insurance/`, `/admin/`). Browser smoke test passed on a local stack for admin onboarding, a cash retail sale through delivery, a B2B offer → order → shipment → receipt → payment, RFQ → quotation → order, insurer approval, and bank program → application → terms → agreement → document exchange. Still open: pixel/interaction parity with the HTML mocks (independent browser QA), OD-01/OD-06/OD-12 decisions, the fixed-markup calculation policy approval, and company-level staff management (today only the platform admin assigns roles).
+
 - Date: 2026-09-20
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`

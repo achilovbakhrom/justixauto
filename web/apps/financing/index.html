@@ -7,16 +7,6 @@
   </head>
   <body>
     <div id="finance-root"></div>
-    <script type="module">
-      import React from 'react';
-      import { createRoot } from 'react-dom/client';
-      import { FinancingApp } from '/src/app/App.tsx';
-      // T-054 supplies the production session boundary. Until then, fail closed:
-      // no protected children, fake identity, login design or persisted session.
-      const UnconnectedSessionBoundary = () => null;
-      createRoot(document.getElementById('finance-root')).render(
-        React.createElement(FinancingApp, { SessionBoundary: UnconnectedSessionBoundary }),
-      );
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
