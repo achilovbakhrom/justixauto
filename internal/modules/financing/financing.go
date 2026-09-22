@@ -45,7 +45,7 @@ type Sale struct {
 	// any further personal data).
 	VIN, Model, CustomerName string
 	Price                    money.Money
-	Revision                             int64
+	Revision                 int64
 }
 
 type Sales interface {

@@ -40,7 +40,7 @@ type Sale struct {
 	// any further personal data).
 	VIN, Model, CustomerName string
 	Price                    money.Money
-	Revision                             int64
+	Revision                 int64
 }
 
 // Sales reads the seller's sales (implemented by retail).

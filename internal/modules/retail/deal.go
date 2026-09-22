@@ -39,7 +39,7 @@ type Deal struct {
 	Status                string     // reserved | delivered | cancelled
 	ContractSignedOn      *time.Time `gorm:"type:date"`
 	ContractReference     string
-	ContractFileIDs       []byte `gorm:"type:jsonb"`
+	ContractFileIDs       []byte     `gorm:"type:jsonb"`
 	RegisteredOn          *time.Time `gorm:"type:date"`
 	PlateNumber           string
 	RegistrationReference string
