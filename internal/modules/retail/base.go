@@ -113,10 +113,16 @@ func (r *eventRepository) For(ctx context.Context, resourceType, id string) ([]E
 	return es, database.Translate(err)
 }
 
+// Files checks and shares uploaded files (implemented by documents).
+type Files interface {
+	Share(ctx context.Context, ownerCompanyID, fileID, withCompanyID, resourceType, resourceID string) error
+}
+
 type deps struct {
 	store   Store
 	company Company
 	stock   Stock
+	files   Files
 	now     func() time.Time
 }
 

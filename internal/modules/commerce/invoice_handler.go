@@ -18,6 +18,7 @@ type evidenceDTO struct {
 	Amount            money.Money `json:"amount"`
 	PaidOn            string      `json:"paidOn"`
 	ExternalReference string      `json:"externalReference"`
+	AttachmentIDs     []string    `json:"attachmentIds"`
 	Status            string      `json:"status"`
 	DecisionReason    string      `json:"decisionReason"`
 	AllowedActions    []string    `json:"allowedActions"`
@@ -59,7 +60,7 @@ func toInvoice(companyID string) func(*InvoiceView) invoiceDTO {
 		}
 		for _, e := range v.Evidence {
 			ed := evidenceDTO{ID: e.ID, Amount: money.Money{AmountMinor: e.AmountMinor, Currency: e.Currency},
-				PaidOn: e.PaidOn.Format(time.DateOnly), ExternalReference: e.ExternalReference, Status: e.Status,
+				PaidOn: e.PaidOn.Format(time.DateOnly), ExternalReference: e.ExternalReference, AttachmentIDs: ids(e.AttachmentIDs), Status: e.Status,
 				DecisionReason: e.DecisionReason, AllowedActions: []string{}, Revision: httpx.Revision(e.Version),
 				CreatedAt: e.CreatedAt, DecidedAt: e.DecidedAt}
 			if supplier && e.Status == "submitted" {
@@ -168,4 +169,10 @@ func (h *Handler) decideEvidence(accept bool) echo.HandlerFunc {
 		}
 		return h.invoiceResponse(c, http.StatusOK, v)
 	}
+}
+
+func ids(raw []byte) []string {
+	out := []string{}
+	_ = json.Unmarshal(raw, &out)
+	return out
 }

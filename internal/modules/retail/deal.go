@@ -2,6 +2,7 @@ package retail
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"math/big"
 	"slices"
@@ -78,6 +79,8 @@ type Evidence struct {
 	Currency          string
 	PaidOn            time.Time `gorm:"type:date"`
 	ExternalReference string
+	AttachmentIDs     []byte `gorm:"type:jsonb"`
+	Seq               int64  `gorm:"->"`
 	Status            string
 	DecisionReason    string
 	SubmittedBy       string  `gorm:"type:uuid"`
@@ -167,7 +170,7 @@ func (r *dealRepository) AddEvidence(ctx context.Context, e *Evidence) error {
 
 func (r *dealRepository) Evidence(ctx context.Context, invoiceID string) ([]Evidence, error) {
 	es := []Evidence{}
-	err := r.db.WithContext(ctx).Where("invoice_id = ?", invoiceID).Order("created_at, id").Find(&es).Error
+	err := r.db.WithContext(ctx).Where("invoice_id = ?", invoiceID).Order("seq").Find(&es).Error
 	return es, database.Translate(err)
 }
 
@@ -488,8 +491,9 @@ func (s *DealService) SubmitEvidence(ctx context.Context, p *auth.Principal, inv
 	}
 	paidOn := date(&v, "paidOn", in.PaidOn, s.clock())
 	ref := validate.Text(&v, "externalReference", in.ExternalReference, 1, 100)
-	if len(in.AttachmentIDs) > 0 {
-		v.Add("attachmentBindingIds", "attachments are not supported yet")
+	attachments := validate.UniqueIDs(&v, "attachmentBindingIds", in.AttachmentIDs)
+	if len(attachments) > 10 {
+		v.Add("attachmentBindingIds", "at most 10 files")
 	}
 	if err := v.Err(); err != nil {
 		return nil, err
@@ -519,8 +523,17 @@ func (s *DealService) SubmitEvidence(ctx context.Context, p *auth.Principal, inv
 		if claimed.Cmp(new(big.Int).Sub(amount(view.Outstanding.AmountMinor), amount(view.Pending.AmountMinor))) > 0 {
 			return apperr.FieldError("claimedAmount", "exceeds the open amount")
 		}
+		rawIDs, _ := json.Marshal(attachments)
 		e := &Evidence{ID: uuid.NewString(), InvoiceID: i.ID, AmountMinor: claimed.String(), Currency: i.Currency, PaidOn: *paidOn,
-			ExternalReference: ref, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: s.clock()}
+			ExternalReference: ref, AttachmentIDs: rawIDs, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: s.clock()}
+		for _, f := range attachments { // must be the company's own files
+			if err := s.files.Share(st.Bind(ctx), p.CompanyID, f, p.CompanyID, "retail.payment-evidence", e.ID); err != nil {
+				if errors.Is(err, apperr.ErrNotFound) {
+					return apperr.FieldError("attachmentBindingIds", "contains files that are not yours")
+				}
+				return err
+			}
+		}
 		if err := st.Deals().AddEvidence(ctx, e); err != nil {
 			return err
 		}

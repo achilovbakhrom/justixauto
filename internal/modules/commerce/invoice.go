@@ -46,6 +46,8 @@ type Evidence struct {
 	Currency          string
 	PaidOn            time.Time `gorm:"type:date"`
 	ExternalReference string
+	AttachmentIDs     []byte `gorm:"type:jsonb"`
+	Seq               int64  `gorm:"->"`
 	Status            string // submitted | accepted | rejected
 	DecisionReason    string
 	SubmittedBy       string  `gorm:"type:uuid"`
@@ -107,7 +109,7 @@ func (r *invoiceRepository) AddEvidence(ctx context.Context, e *Evidence) error 
 
 func (r *invoiceRepository) Evidence(ctx context.Context, invoiceID string) ([]Evidence, error) {
 	es := []Evidence{}
-	err := r.db.WithContext(ctx).Where("invoice_id = ?", invoiceID).Order("created_at, id").Find(&es).Error
+	err := r.db.WithContext(ctx).Where("invoice_id = ?", invoiceID).Order("seq").Find(&es).Error
 	return es, database.Translate(err)
 }
 
@@ -289,8 +291,9 @@ func (s *InvoiceService) SubmitEvidence(ctx context.Context, p *auth.Principal, 
 		v.Add("paidOn", "a date (YYYY-MM-DD), not in the future")
 	}
 	ref := validate.Text(&v, "externalReference", in.ExternalReference, 1, 100)
-	if len(in.AttachmentIDs) > 0 {
-		v.Add("attachmentBindingIds", "attachments are not supported yet")
+	attachments := validate.UniqueIDs(&v, "attachmentBindingIds", in.AttachmentIDs)
+	if len(attachments) > 10 {
+		v.Add("attachmentBindingIds", "at most 10 files")
 	}
 	if err := v.Err(); err != nil {
 		return nil, err
@@ -319,8 +322,18 @@ func (s *InvoiceService) SubmitEvidence(ctx context.Context, p *auth.Principal, 
 			return apperr.FieldError("claimedAmount", "exceeds the open amount "+open.String())
 		}
 		now := s.clock()
+		rawIDs, _ := json.Marshal(attachments)
 		e := &Evidence{ID: uuid.NewString(), InvoiceID: i.ID, AmountMinor: claimed.String(), Currency: i.Currency, PaidOn: paidOn,
-			ExternalReference: ref, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: now}
+			ExternalReference: ref, AttachmentIDs: rawIDs, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: now}
+		// The proof files become readable by the payee for this claim.
+		for _, f := range attachments {
+			if err := s.files.Share(st.Bind(ctx), p.CompanyID, f, i.SupplierCompanyID, "commerce.payment-evidence", e.ID); err != nil {
+				if errors.Is(err, apperr.ErrNotFound) {
+					return apperr.FieldError("attachmentBindingIds", "contains files that are not yours")
+				}
+				return err
+			}
+		}
 		if err := st.Invoices().AddEvidence(ctx, e); err != nil {
 			return err
 		}

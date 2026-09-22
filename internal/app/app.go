@@ -50,20 +50,21 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	// Every request: who is calling (session cookie, CSRF, Origin), then safe retries.
 	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, cfg.Now, "/identity/session/"))
 	idm.Register(api)
+	docs := documents.New(db, cfg.Now, documents.DirStorage{Root: cfg.DocumentsDir})
+	docs.Register(api)
+	files := fileShares{docs.Service}
 	inv := inventory.New(db, cfg.Now)
 	inv.Register(api)
-	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}, commerceStock{inv.Stock()}).Register(api)
+	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}, commerceStock{inv.Stock()}, files).Register(api)
 	// Retail and insurance each ask the other a question (approval / sale
 	// facts); the approval adapter is bound once insurance exists.
 	approvals := &insuranceApprovals{}
-	ret := retail.New(db, cfg.Now, idm.Companies, retailStock{inv.Stock()}, approvals)
+	ret := retail.New(db, cfg.Now, idm.Companies, retailStock{inv.Stock()}, approvals, files)
 	ret.Register(api)
 	ins := insurance.New(db, cfg.Now, insuranceSales{ret.Deals}, insurerDirectory{idm.Companies})
 	approvals.s = ins.Service
 	ins.Register(api)
-	docs := documents.New(db, cfg.Now, documents.DirStorage{Root: cfg.DocumentsDir})
-	docs.Register(api)
-	financing.New(db, cfg.Now, financingSales{ret.Deals}, providerDirectory{idm.Companies}, fileShares{docs.Service}).Register(api)
+	financing.New(db, cfg.Now, financingSales{ret.Deals}, providerDirectory{idm.Companies}, files).Register(api)
 	return e, idm, nil
 }
 

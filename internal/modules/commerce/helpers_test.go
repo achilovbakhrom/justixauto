@@ -19,7 +19,7 @@ type trade struct {
 }
 
 var tradePerms = []string{commerce.PermRead, commerce.PermPartnershipsManage, commerce.PermOffersManage, commerce.PermTrade, commerce.PermPaymentsAccept,
-	inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, inventory.PermVehiclesMove}
+	inventory.PermRead, inventory.PermModelsEdit, "documents.read", "documents.upload", inventory.PermWarehousesManage, inventory.PermReceiptsCreate, inventory.PermVehiclesMove}
 
 func newTrade(t *testing.T) *trade {
 	e := testkit.New(t)

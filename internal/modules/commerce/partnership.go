@@ -38,6 +38,11 @@ type Company struct {
 	Active                  bool
 }
 
+// Files shares uploaded files with another company (implemented by documents).
+type Files interface {
+	Share(ctx context.Context, ownerCompanyID, fileID, withCompanyID, resourceType, resourceID string) error
+}
+
 // Directory looks up companies (implemented by the identity module).
 // It returns apperr.ErrNotFound for unknown IDs.
 type Directory interface {
@@ -227,6 +232,7 @@ type deps struct {
 	directory Directory
 	catalog   Catalog
 	stock     Stock
+	files     Files
 	now       func() time.Time
 }
 

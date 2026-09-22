@@ -119,6 +119,7 @@ type evidenceDTO struct {
 	Amount            money.Money `json:"amount"`
 	PaidOn            string      `json:"paidOn"`
 	ExternalReference string      `json:"externalReference"`
+	AttachmentIDs     []string    `json:"attachmentIds"`
 	Status            string      `json:"status"`
 	DecisionReason    string      `json:"decisionReason"`
 	Revision          string      `json:"revision"`
@@ -150,7 +151,7 @@ func toInvoice(v *InvoiceView) invoiceDTO {
 	}
 	for _, e := range v.Evidence {
 		d.Evidence = append(d.Evidence, evidenceDTO{ID: e.ID, Amount: money.Money{AmountMinor: e.AmountMinor, Currency: e.Currency},
-			PaidOn: e.PaidOn.Format(time.DateOnly), ExternalReference: e.ExternalReference, Status: e.Status,
+			PaidOn: e.PaidOn.Format(time.DateOnly), ExternalReference: e.ExternalReference, AttachmentIDs: ids(e.AttachmentIDs), Status: e.Status,
 			DecisionReason: e.DecisionReason, Revision: httpx.Revision(e.Version)})
 	}
 	return d
@@ -699,14 +700,20 @@ type Module struct {
 	Deals   *DealService
 }
 
-func New(db *gorm.DB, now func() time.Time, company Company, stock Stock, insurance Insurance) *Module {
+func New(db *gorm.DB, now func() time.Time, company Company, stock Stock, insurance Insurance, files Files) *Module {
 	if now == nil {
 		now = time.Now
 	}
-	d := deps{store: NewStore(db), company: company, stock: stock, now: now}
+	d := deps{store: NewStore(db), company: company, stock: stock, files: files, now: now}
 	deals := &DealService{deps: d, insurance: insurance}
 	return &Module{handler: &Handler{crm: &CRMService{d}, listings: &ListingService{d}, deals: deals}, Deals: deals}
 }
 
 // Register mounts the retail routes under /api/v1/retail.
 func (m *Module) Register(api *echo.Group) { m.handler.Routes(api.Group("/retail")) }
+
+func ids(raw []byte) []string {
+	out := []string{}
+	_ = json.Unmarshal(raw, &out)
+	return out
+}

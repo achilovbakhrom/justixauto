@@ -3,6 +3,8 @@ package commerce_test
 import (
 	"net/http"
 	"testing"
+
+	"justixauto/internal/testkit"
 )
 
 func TestInvoicesAndPaymentEvidence(t *testing.T) {
@@ -71,4 +73,21 @@ func TestInvoicesAndPaymentEvidence(t *testing.T) {
 	}
 	rev := b.Do(http.MethodGet, "/commerce/orders/"+order, nil).Revision()
 	expect(t, b.Do(http.MethodPost, "/commerce/orders/"+order+"/cancellations", map[string]string{"reason": "changed mind"}, ifMatch(rev)...), http.StatusConflict, "cancellation_blocked")
+
+	// Proof files: the buyer attaches its own upload; the supplier can then read it.
+	proof := str(b.Upload("payment-evidence", "transfer.pdf", testkit.PDF).Data(), "id")
+	foreign := str(s.Upload("payment-evidence", "x.pdf", testkit.PDF).Data(), "id")
+	claim := func(file string) testkit.Response {
+		return b.Do(http.MethodPost, "/commerce/invoices/"+id+"/payment-evidence", map[string]any{
+			"claimedAmount": map[string]string{"amountMinor": "1600000", "currency": "USD"}, "paidOn": "2026-09-22",
+			"externalReference": "PP-final", "attachmentBindingIds": []string{file}})
+	}
+	if st, _ := s.Raw("/documents/files/" + proof + "/content"); st != http.StatusNotFound {
+		t.Fatal("proof visible before it is attached")
+	}
+	expect(t, claim(foreign), http.StatusUnprocessableEntity)
+	expect(t, claim(proof), http.StatusCreated)
+	if st, _ := s.Raw("/documents/files/" + proof + "/content"); st != http.StatusOK {
+		t.Fatalf("supplier cannot read the attached proof: %d", st)
+	}
 }
