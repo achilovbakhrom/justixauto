@@ -29,6 +29,7 @@ var Permissions = []auth.PermissionInfo{
 	{Key: PermPartnershipsManage, Scope: "company", Assignable: true},
 	{Key: PermOffersManage, Scope: "company", Assignable: true},
 	{Key: PermTrade, Scope: "company", Assignable: true},
+	{Key: PermPaymentsAccept, Scope: "company", RequiresMFA: true, Assignable: true},
 }
 
 // Company is what commerce needs to know about another company.
@@ -114,6 +115,7 @@ type Store interface {
 	Offers() OfferRepository
 	Deals() DealRepository
 	Fulfilment() FulfilmentRepository
+	Invoices() InvoiceRepository
 	Events() EventRepository
 	InTx(ctx context.Context, fn func(Store) error) error
 	// Bind returns ctx carrying this store's transaction, so other modules
@@ -130,6 +132,7 @@ func (s *gormStore) Events() EventRepository             { return &eventReposito
 func (s *gormStore) Offers() OfferRepository             { return &offerRepository{s.db} }
 func (s *gormStore) Deals() DealRepository               { return &dealRepository{s.db} }
 func (s *gormStore) Fulfilment() FulfilmentRepository    { return &fulfilmentRepository{s.db} }
+func (s *gormStore) Invoices() InvoiceRepository         { return &invoiceRepository{s.db} }
 func (s *gormStore) InTx(ctx context.Context, fn func(Store) error) error {
 	return database.Conn(ctx, s.db).WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&gormStore{db: tx}) })
 }

@@ -18,7 +18,7 @@ type trade struct {
 	partnership     string
 }
 
-var tradePerms = []string{commerce.PermRead, commerce.PermPartnershipsManage, commerce.PermOffersManage, commerce.PermTrade,
+var tradePerms = []string{commerce.PermRead, commerce.PermPartnershipsManage, commerce.PermOffersManage, commerce.PermTrade, commerce.PermPaymentsAccept,
 	inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, inventory.PermVehiclesMove}
 
 func newTrade(t *testing.T) *trade {
