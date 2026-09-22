@@ -1,18 +1,15 @@
 # JustixAuto
 
-Development handoff for Go microservices and React. Open **this folder**, not
-the enclosing `startups` repository, as the Codex project.
-
-This delivery contains reconciled business documentation, four runnable HTML
-references, mock verification tools and project-scoped agent roles. It is not
-yet a working Go/React application. Git initialization and architecture approval
-are required before implementation.
+Go backend (modular monolith: Echo + GORM + PostgreSQL) and four React apps
+(Realization, Financing, Insurance, Admin), with the business rules and
+runnable HTML mocks they are built from. Open **this folder**, not the
+enclosing `startups` repository.
 
 ## Start here
 
+- [Backend architecture — ADR-14](docs/justix-auto/adr-14-classic-modular-monolith.md)
 - [Business logic](docs/justix-auto/business-logic.md)
 - [Open product decisions](docs/justix-auto/open-decisions.md)
-- [Gaze reference audit](docs/justix-auto/reference/gaze-reference.md)
 - [Mock navigation map](docs/justix-auto/mock-map.md)
 - [Development status](docs/justix-auto/dev/dev-state.md)
 - [Agent workflow](docs/justix-auto/dev/workflow.md)
@@ -32,47 +29,41 @@ manifest. The four apps exchange **demo** data in the same browser/origin.
 No real personal documents, passwords, financial actions or external APIs.
 Use another `MOCK_PORT` if 4180 is occupied; do not kill an unrelated server.
 
-## Before development (user action)
-
-The parent `/Users/bakhromachilov/startups` is already a Git repository. This
-project must have its own root and initial commit before agents use worktrees:
+## Run the backend
 
 ```sh
-cd /Users/bakhromachilov/startups/justixauto
-git init -b main
-git add .
-git commit -m "Prepare development workspace"
-npm run doctor
+cp .env.example .env                    # local-only credentials
+docker compose --env-file .env -f infra/local/compose.yaml up -d
+set -a && . ./.env && set +a
+bash tools/go.sh run ./cmd/migrate up   # apply SQL migrations
+bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
 ```
 
-These Git commands have **not** been executed by the assistant. No remote has
-been configured. `bash tools/go.sh version` selects an installed Go >= 1.23
-(on this laptop Homebrew Go 1.24.2, since the default here is 1.22.2).
-Use this wrapper for future Go commands, or explicitly set `JUSTIX_GO_BIN`;
-no global PATH/toolchain changes are made. Open this folder in Codex, trust it
-if prompted, and ask:
+Tests (`TEST_DATABASE_URL` must point to a **disposable** database; the
+repository tests truncate tables, and are skipped without it):
 
-> Read AGENTS.md and dev-state.md. Start architecture planning with the
-> architect agent using the current business logic and Gaze audit. Propose
-> service boundaries, event/API contracts and the React setup for approval.
-> Do not implement application features yet.
+```sh
+bash tools/go.sh vet ./...
+bash tools/go.sh test -race ./...
+TEST_DATABASE_URL=postgres://… bash tools/go.sh test -race ./...
+```
 
-After architecture/backlog approval, ask the coordinator to implement approved
-task IDs using backend/frontend workers and independent QA. No persistent Codex
-daemon, personal config edits or API-key setup is required by this handoff.
+New migration: add the next numbered pair
+`migrations/00000N_<name>.up.sql` / `.down.sql`; never edit an applied one.
 
 ## Layout
 
 ```text
-.codex/agents/             bounded architect/backend/frontend/qa roles
-AGENTS.md                 coordination, safety and evidence rules
-docs/justix-auto/          business rules, decisions, mock map and dev state
-docs/justix-auto/mocks/    minified runnable references + baseline tests
-tools/                    mock build, verify, serve and environment checks
-services/                 reserved for Go services after architecture approval
-pkg/                      reserved for Go infrastructure shared across services
-web/                      reserved for four React apps and shared UI packages
-infra/                    local infrastructure constraints, not running services
+cmd/api/                  HTTP API entry point (composition root)
+cmd/migrate/              migration CLI (up / down [N] / version)
+internal/modules/<name>/  one module: handler → service → repository, model
+internal/platform/        shared tech: config, database, HTTP server, errors
+migrations/               versioned SQL migrations (embedded)
+web/                      four React apps and shared packages
+docs/justix-auto/         business rules, decisions, mocks and dev state
+tools/                    Go wrapper, mock tooling, agent/Git helpers
+infra/local/              local PostgreSQL (Docker Compose)
+AGENTS.md / CLAUDE.md     rules for coding agents
 ```
 
 Mock rebuilding requires the original readable source path:

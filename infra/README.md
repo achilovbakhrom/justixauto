@@ -1,17 +1,13 @@
-# Local infrastructure readiness
+# Local infrastructure
 
-Reference technologies: PostgreSQL/GORM event store and read models, RabbitMQ,
-Redis where required, OpenTelemetry/Jaeger, Docker Compose. Refer to the exact
-versions observed in `docs/justix-auto/reference/gaze-reference.md`.
+`local/compose.yaml` runs the single PostgreSQL 18.6 database used by the
+modular monolith ([ADR-14](../docs/justix-auto/adr-14-classic-modular-monolith.md)),
+bound to loopback port 55432 with a named volume. Credentials come from the
+git-ignored `.env` (see `.env.example`); never commit real secrets.
 
-No Gaze Compose file, environment file, credentials, private network or database
-connection was copied. No containers, migrations or service ports were started
-by this handoff. Node serves only documentation on loopback port 4180.
+```sh
+docker compose --env-file .env -f infra/local/compose.yaml up -d     # start
+docker compose --env-file .env -f infra/local/compose.yaml stop      # stop, keep data
+```
 
-After independent Git setup and architecture approval, the first infrastructure
-task must pin supported images/tool versions; allocate collision-free loopback
-ports; generate local-only credentials; provide `.env.example`; define isolated
-volumes/networks, health checks, migration commands and a non-destructive stop
-command. Do not copy the reference's unpinned Jaeger or development gRPC version
-without review. Outbox/inbox guarantees and snapshot functionality are pending
-ADRs, not silently added as if Gaze already provided them.
+Deployment (Kubernetes, CI/CD) is not set up yet; see `AGENTS.md` in this folder.

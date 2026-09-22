@@ -1,5 +1,7 @@
 # JustixAuto — implementation architecture
 
+> **Superseded for the backend on 2026-09-22 by [ADR-14](adr-14-classic-modular-monolith.md)** (classic modular monolith). Microservices, CQRS/ES, outbox/inbox, projections and per-owner databases below no longer apply. Domain model, HTTP conventions, frontend and business sections remain useful reference.
+
 Date: 2026-09-13. Status: **ARCHITECTURE APPROVED; release scope confirmed for task planning**.
 Target: `/Users/bakhromachilov/startups/justixauto`. This is documentation, not implemented software.
 The user-confirmed direction is Go microservices + CQRS/Event Sourcing in Gaze's hexagonal shape, React and four existing HTML-reference apps.

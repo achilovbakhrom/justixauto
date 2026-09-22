@@ -21,16 +21,16 @@ No Figma prerequisite: the user selected HTML mocks as the design reference.
 
 ## Architecture constraints
 
-- Backend: Go microservices with Gaze-style hexagonal architecture, CQRS,
-  Event Sourcing, aggregate replay, projections and event-driven subscribers.
-  Use `bash tools/go.sh` to select an installed compiler meeting Go >= 1.23.
+- Backend: Go **modular monolith**, classic handler → service → repository,
+  Echo + GORM, one PostgreSQL (schema per module), SQL migrations. See
+  `docs/justix-auto/adr-14-classic-modular-monolith.md` and `internal/AGENTS.md`.
+  This supersedes the earlier microservices/CQRS/Event Sourcing design; the old
+  code is at Git tag `archive/cqrs-es-backend`. Use `bash tools/go.sh` (pinned Go).
 - Frontend: React; four apps: Realization, Financing, Insurance and Admin.
-- Replicate the reference's approach, not its trading features or credentials.
+- Do not copy Gaze trading features or credentials.
   Record changes to dependencies and operational guarantees in approved ADRs.
-- Service/data ownership, event contracts and reliability semantics must be
-  approved before dependent implementation tasks can become ready.
-- Never share mutable business tables between services by accident. Money uses
-  approved fixed-precision rules, not copied browser floating-point demo math.
+- Modules never read or write another module's tables; they call its service.
+  Money uses integer minor units + currency, never browser floating-point math.
 
 ## Coordinator and agents
 

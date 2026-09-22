@@ -1,5 +1,7 @@
 # Development state
 
+> **2026-09-22 — backend reset ([ADR-14](../adr-14-classic-modular-monolith.md)).** The CQRS/ES microservice backend was removed (tag `archive/cqrs-es-backend`) and replaced by a modular monolith: `cmd/api`, `internal/modules/*` (handler → service → repository), Echo + GORM, SQL migrations. First module: `identity` companies. Backend tasks below that assume event sourcing, outbox/inbox, projections or per-owner databases are obsolete until re-planned. Entries below are historical.
+
 - Date: 2026-09-20
 - Project: justix-auto / JustixAuto
 - Target: `/Users/bakhromachilov/startups/justixauto`
