@@ -249,14 +249,13 @@ func (e *Env) Admin() *Client {
 	return admin
 }
 
-// CompanyUser creates a company with a first administrator who additionally
+// CompanyUser creates a seller company with a first administrator who additionally
 // holds a custom role with perms, signs them in and selects the company.
 func (e *Env) CompanyUser(admin *Client, name string, perms ...string) *Client {
 	t := e.T
 	t.Helper()
 	login := strings.ToLower(strings.ReplaceAll(name, " ", "-"))
-	created := admin.Do(http.MethodPost, "/identity/admin/provider-companies", map[string]any{
-		"kind": "mfo",
+	created := admin.Do(http.MethodPost, "/identity/admin/seller-companies", map[string]any{
 		"company": map[string]any{"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
 			"registration": "REG-" + login, "email": "office@" + login + ".test"},
 		"firstAdmin": map[string]string{"displayName": name + " user", "login": login, "email": login + "@company.test",

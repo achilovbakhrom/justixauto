@@ -43,6 +43,8 @@ type Principal struct {
 	MFAEnrolled bool
 	MFAFresh    bool
 	MFARequired map[string]bool
+	// PasswordChangeRequired limits the session to changing the password.
+	PasswordChangeRequired bool
 }
 
 // Has reports whether the user's roles grant the permission.

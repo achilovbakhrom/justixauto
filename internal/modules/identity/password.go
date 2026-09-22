@@ -75,3 +75,12 @@ func validatePassword(v interface{ Add(string, string) }, field, password, confi
 		v.Add(field+"Confirmation", "does not match")
 	}
 }
+
+// validLogin trims a sign-in login: 3-100 characters without spaces.
+func validLogin(v interface{ Add(string, string) }, field, login string) string {
+	login = strings.TrimSpace(login)
+	if n := len([]rune(login)); n < 3 || n > 100 || strings.ContainsAny(login, " \t\n") {
+		v.Add(field, "3-100 characters without spaces")
+	}
+	return login
+}

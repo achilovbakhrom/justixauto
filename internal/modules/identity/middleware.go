@@ -111,9 +111,20 @@ func (a *Authenticator) Middleware(csrfExempt ...string) echo.MiddlewareFunc {
 					return apperr.New(apperr.ErrForbidden, "csrf_invalid", "missing or invalid X-CSRF-Token")
 				}
 			}
+			if p.PasswordChangeRequired && !passwordChangeAllowed(c) {
+				return apperr.New(apperr.ErrForbidden, "password_change_required", "choose a new password first")
+			}
 			auth.Set(c, p)
 			c.Set(sessionKey, sess)
 			return next(c)
 		}
 	}
+}
+
+// passwordChangeAllowed: with an administrator-set password, the session may
+// only read itself, change the password or sign out.
+func passwordChangeAllowed(c echo.Context) bool {
+	path, method := c.Path(), c.Request().Method
+	return (method == http.MethodGet && strings.HasSuffix(path, "/identity/session")) ||
+		strings.HasSuffix(path, "/identity/session/password") || strings.HasSuffix(path, "/identity/session/logout")
 }

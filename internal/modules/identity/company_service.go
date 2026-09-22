@@ -3,7 +3,6 @@ package identity
 import (
 	"context"
 	"errors"
-	"strings"
 
 	"github.com/google/uuid"
 
@@ -118,17 +117,31 @@ func (s *CompanyService) CreateProvider(ctx context.Context, actor *auth.Princip
 	if !in.Kind.Provider() {
 		v.Add("kind", "must be one of bank, mfo, insurance")
 	}
-	c := s.newCompany(&v, in.Kind, in.Company)
-	a := in.FirstAdmin
-	login := strings.TrimSpace(a.Login)
-	if n := len([]rune(login)); n < 3 || n > 100 || strings.ContainsAny(login, " \t\n") {
-		v.Add("firstAdmin.login", "3-100 characters without spaces")
-	}
+	return s.provision(ctx, actor, &v, in.Kind, in.Company, in.FirstAdmin)
+}
+
+// SellerInput creates a seller company together with its first administrator.
+type SellerInput struct {
+	Company    CompanyInput    `json:"company"`
+	FirstAdmin FirstAdminInput `json:"firstAdmin"`
+}
+
+// CreateSellerWithAdmin onboards a seller company the same way as providers:
+// draft company, first administrator with credentials, company-admin role and
+// membership, all at once.
+func (s *CompanyService) CreateSellerWithAdmin(ctx context.Context, actor *auth.Principal, in SellerInput) (*ProvisionResult, error) {
+	var v apperr.Validation
+	return s.provision(ctx, actor, &v, KindSeller, in.Company, in.FirstAdmin)
+}
+
+func (s *CompanyService) provision(ctx context.Context, actor *auth.Principal, v *apperr.Validation, kind CompanyKind, company CompanyInput, a FirstAdminInput) (*ProvisionResult, error) {
+	c := s.newCompany(v, kind, company)
+	login := validLogin(v, "firstAdmin.login", a.Login)
 	now := c.CreatedAt
-	u := &User{ID: uuid.NewString(), DisplayName: text(&v, "firstAdmin.displayName", a.DisplayName, 1, 200),
-		Email: email(&v, "firstAdmin.email", a.Email), Login: &login, Status: UserActive,
+	u := &User{ID: uuid.NewString(), DisplayName: text(v, "firstAdmin.displayName", a.DisplayName, 1, 200),
+		Email: email(v, "firstAdmin.email", a.Email), Login: &login, Status: UserActive,
 		Version: 1, CreatedAt: now, UpdatedAt: now}
-	validatePassword(&v, "firstAdmin.password", a.Password, a.PasswordConfirmation)
+	validatePassword(v, "firstAdmin.password", a.Password, a.PasswordConfirmation)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
@@ -160,13 +173,20 @@ func (s *CompanyService) CreateProvider(ctx context.Context, actor *auth.Princip
 		if err := st.Memberships().Create(ctx, m); err != nil {
 			return err
 		}
-		return s.audit(ctx, st, actor, "company.provider_provisioned", "company", c.ID, &c.ID, "",
+		return s.audit(ctx, st, actor, "company."+string(provisionAction(kind)), "company", c.ID, &c.ID, "",
 			map[string]any{"kind": c.Kind, "name": c.Name, "adminUserId": u.ID, "adminLogin": login})
 	})
 	if err != nil {
 		return nil, err
 	}
 	return &ProvisionResult{Company: c, Admin: u, Membership: m}, nil
+}
+
+func provisionAction(kind CompanyKind) string {
+	if kind == KindSeller {
+		return "seller_provisioned"
+	}
+	return "provider_provisioned"
 }
 
 // canSee: members see their company; directory readers see all companies.

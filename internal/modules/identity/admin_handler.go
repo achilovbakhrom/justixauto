@@ -21,6 +21,7 @@ type AdminHandler struct {
 func (h *AdminHandler) Routes(g *echo.Group) {
 	a := g.Group("/admin")
 	a.POST("/provider-companies", h.createProvider, auth.Require(PermPlatformCompaniesCreate))
+	a.POST("/seller-companies", h.createSeller, auth.Require(PermPlatformCompaniesCreate))
 	a.GET("/companies", h.listCompanies, auth.Require(PermPlatformDirectoryRead))
 	a.POST("/companies/:id/:action", h.companyAccess, auth.Require(PermPlatformCompaniesAccess))
 
@@ -31,6 +32,7 @@ func (h *AdminHandler) Routes(g *echo.Group) {
 	a.POST("/users/:id/suspend", h.userStatus(true), auth.Require(PermPlatformUsersManage))
 	a.POST("/users/:id/restore", h.userStatus(false), auth.Require(PermPlatformUsersManage))
 	a.POST("/users/:id/revoke-sessions", h.revokeSessions, auth.Require(PermPlatformUsersManage))
+	a.POST("/users/:id/password", h.setPassword, auth.Require(PermPlatformUsersManage))
 
 	a.GET("/users/:id/memberships", h.listMemberships, auth.Require(PermPlatformMembershipsManage))
 	a.POST("/users/:id/memberships", h.grantMembership, auth.Require(PermPlatformMembershipsManage))
@@ -58,6 +60,38 @@ func (h *AdminHandler) createProvider(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	return provisioned(c, r)
+}
+
+func (h *AdminHandler) createSeller(c echo.Context) error {
+	var in SellerInput
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	r, err := h.companies.CreateSellerWithAdmin(c.Request().Context(), auth.Get(c), in)
+	if err != nil {
+		return err
+	}
+	return provisioned(c, r)
+}
+
+func (h *AdminHandler) setPassword(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in SetPasswordInput
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	u, err := h.users.SetPassword(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusOK, toUser(u), u.User.Version)
+}
+
+func provisioned(c echo.Context, r *ProvisionResult) error {
 	data := map[string]any{
 		"company":    toCompany(r.Company),
 		"admin":      map[string]any{"id": r.Admin.ID, "login": r.Admin.Login, "displayName": r.Admin.DisplayName},

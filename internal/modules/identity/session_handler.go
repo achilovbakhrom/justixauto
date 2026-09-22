@@ -18,6 +18,7 @@ func (h *SessionHandler) Routes(g *echo.Group) {
 	g.GET("/session", h.get, auth.Require())
 	g.POST("/session/login", h.login)
 	g.POST("/session/logout", h.logout, auth.Require())
+	g.POST("/session/password", h.changePassword, auth.Require())
 	g.POST("/session/mfa/verify", h.verifyMFA)
 	g.POST("/session/mfa/enrollment", h.startEnrollment, auth.Require())
 	g.POST("/session/mfa/enrollment/:id/confirm", h.confirmEnrollment, auth.Require())
@@ -170,4 +171,24 @@ func (h *SessionHandler) setBranchScope(c echo.Context) error {
 	}
 	company := p.CompanyID
 	return httpx.Data(c, http.StatusOK, ContextView{Revision: revision(expected + 1), CompanyID: &company, BranchScope: scope}, expected+1)
+}
+
+func (h *SessionHandler) changePassword(c echo.Context) error {
+	var in struct {
+		CurrentPassword         string `json:"currentPassword"`
+		NewPassword             string `json:"newPassword"`
+		NewPasswordConfirmation string `json:"newPasswordConfirmation"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	ctx := c.Request().Context()
+	if err := h.auth.ChangePassword(ctx, auth.Get(c), in.CurrentPassword, in.NewPassword, in.NewPasswordConfirmation); err != nil {
+		return err
+	}
+	p, sess, err := h.auth.Authenticate(ctx, h.cookie.token(c))
+	if err != nil {
+		return err
+	}
+	return h.view(c, p, sess)
 }

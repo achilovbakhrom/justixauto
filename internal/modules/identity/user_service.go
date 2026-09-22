@@ -343,3 +343,70 @@ func (s *UserService) Bootstrap(ctx context.Context, in BootstrapInput) (*User, 
 	}
 	return u, nil
 }
+
+type SetPasswordInput struct {
+	Login                string `json:"login"` // required if the user has none yet
+	Password             string `json:"password"`
+	PasswordConfirmation string `json:"passwordConfirmation"`
+}
+
+// SetPassword lets an administrator give a pending user credentials, or reset
+// a forgotten password. The user must choose a new password at the next
+// sign-in; existing sessions end. Two-factor settings are not touched, so this
+// never bypasses MFA.
+func (s *UserService) SetPassword(ctx context.Context, actor *auth.Principal, id string, expected int64, in SetPasswordInput) (*UserDetail, error) {
+	if err := validID(id); err != nil {
+		return nil, err
+	}
+	if id == actor.UserID {
+		return nil, apperr.New(apperr.ErrConflict, "use_own_password_change", "change your own password in your session settings")
+	}
+	var result *UserDetail
+	err := s.store.InTx(ctx, func(st Store) error {
+		u, err := st.Users().Get(ctx, id)
+		if err != nil {
+			return err
+		}
+		if u.Version != expected {
+			return apperr.ErrStale
+		}
+		if u.Status == UserSuspended {
+			return apperr.New(apperr.ErrConflict, "user_suspended", "restore the user first")
+		}
+		var v apperr.Validation
+		if u.Login == nil || in.Login != "" {
+			login := validLogin(&v, "login", in.Login)
+			u.Login = &login
+		}
+		validatePassword(&v, "password", in.Password, in.PasswordConfirmation)
+		if err := v.Err(); err != nil {
+			return err
+		}
+		if taken, err := st.Users().LoginTaken(ctx, *u.Login, u.ID); err != nil {
+			return err
+		} else if taken {
+			return apperr.New(apperr.ErrConflict, "login_taken", "another user already has this login")
+		}
+		hash, err := hashPassword(in.Password)
+		if err != nil {
+			return err
+		}
+		now := s.clock()
+		u.PasswordHash, u.PasswordChangeRequired, u.UpdatedAt = &hash, true, now
+		if u.Status == UserPending {
+			u.Status = UserActive
+		}
+		if err := st.Users().Update(ctx, u, expected); err != nil {
+			return err
+		}
+		if err := st.Sessions().RevokeUser(ctx, id, "", now); err != nil {
+			return err
+		}
+		if err := s.audit(ctx, st, actor, "user.password_set", "user", id, nil, "", map[string]any{"login": *u.Login}); err != nil {
+			return err
+		}
+		result, err = s.detail(ctx, st, u)
+		return err
+	})
+	return result, err
+}

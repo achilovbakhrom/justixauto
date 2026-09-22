@@ -518,3 +518,51 @@ func TestIdempotencyKey(t *testing.T) {
 	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": ""}, "Idempotency-Key", bad), http.StatusUnprocessableEntity)
 	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": ""}, "Idempotency-Key", bad), http.StatusUnprocessableEntity)
 }
+
+func TestSellerOnboardingAndAdminSetPasswords(t *testing.T) {
+	e := newEnv(t)
+	admin := e.bootstrap()
+
+	seller := admin.do(http.MethodPost, "/admin/seller-companies", map[string]any{"company": company("Justix Motors", "SELL-1"),
+		"firstAdmin": map[string]string{"displayName": "Owner", "login": "owner", "email": "owner@motors.test",
+			"password": "owner-password-12", "passwordConfirmation": "owner-password-12"}})
+	expect(t, seller, http.StatusCreated)
+	if seller.data()["company"].(map[string]any)["kind"] != "seller" {
+		t.Fatalf("seller company: %v", seller.data())
+	}
+	owner := e.browser()
+	expect(t, owner.login("owner", "owner-password-12"), http.StatusOK)
+
+	// A pending staff member gets a login and an initial password from the admin.
+	u := admin.do(http.MethodPost, "/admin/users", map[string]any{"displayName": "Staff", "email": "staff@motors.test"})
+	expect(t, u, http.StatusCreated)
+	id := u.data()["id"].(string)
+	expect(t, admin.do(http.MethodPost, "/admin/users/"+id+"/password", map[string]string{"password": "initial-pass-123", "passwordConfirmation": "initial-pass-123"}, ifMatch("1")...), http.StatusUnprocessableEntity)
+	expect(t, admin.do(http.MethodPost, "/admin/users/"+id+"/password", map[string]string{"login": "OWNER", "password": "initial-pass-123", "passwordConfirmation": "initial-pass-123"}, ifMatch("1")...), http.StatusConflict, "login_taken")
+	set := admin.do(http.MethodPost, "/admin/users/"+id+"/password", map[string]string{"login": "staff", "password": "initial-pass-123", "passwordConfirmation": "initial-pass-123"}, ifMatch("1")...)
+	expect(t, set, http.StatusOK)
+	if set.data()["status"] != "active" {
+		t.Fatalf("after password set: %v", set.data())
+	}
+	me := admin.do(http.MethodGet, "/session", nil).data()["user"].(map[string]any)["id"].(string)
+	expect(t, admin.do(http.MethodPost, "/admin/users/"+me+"/password", map[string]string{"password": "x", "passwordConfirmation": "x"}, ifMatch("1")...), http.StatusConflict, "use_own_password_change")
+
+	// The staff member must choose their own password before anything else.
+	staff := e.browser()
+	s := staff.login("staff", "initial-pass-123")
+	expect(t, s, http.StatusOK)
+	if s.data()["user"].(map[string]any)["passwordChangeRequired"] != true {
+		t.Fatalf("session: %v", s.data()["user"])
+	}
+	expect(t, staff.do(http.MethodPut, "/session/context", map[string]any{"companyId": nil}, ifMatch("1")...), http.StatusForbidden, "password_change_required")
+	expect(t, staff.do(http.MethodPost, "/session/password", map[string]string{"currentPassword": "wrong-pass-1234", "newPassword": "my-own-password-1", "newPasswordConfirmation": "my-own-password-1"}), http.StatusUnprocessableEntity)
+	expect(t, staff.do(http.MethodPost, "/session/password", map[string]string{"currentPassword": "initial-pass-123", "newPassword": "initial-pass-123", "newPasswordConfirmation": "initial-pass-123"}), http.StatusUnprocessableEntity)
+	changed := staff.do(http.MethodPost, "/session/password", map[string]string{"currentPassword": "initial-pass-123", "newPassword": "my-own-password-1", "newPasswordConfirmation": "my-own-password-1"})
+	expect(t, changed, http.StatusOK)
+	if changed.data()["user"].(map[string]any)["passwordChangeRequired"] != false {
+		t.Fatalf("after change: %v", changed.data()["user"])
+	}
+	expect(t, staff.do(http.MethodPut, "/session/context", map[string]any{"companyId": nil}, ifMatch("1")...), http.StatusOK)
+	expect(t, e.browser().login("staff", "initial-pass-123"), http.StatusUnauthorized)
+	expect(t, e.browser().login("staff", "my-own-password-1"), http.StatusOK)
+}

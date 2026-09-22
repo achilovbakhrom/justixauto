@@ -72,10 +72,13 @@ type User struct {
 	Email        string
 	Login        *string
 	PasswordHash *string
-	Status       UserStatus
-	StatusReason string
-	FailedLogins int
-	LockedUntil  *time.Time
+	// PasswordChangeRequired: an administrator set the password; the user must
+	// choose their own before using anything else.
+	PasswordChangeRequired bool
+	Status                 UserStatus
+	StatusReason           string
+	FailedLogins           int
+	LockedUntil            *time.Time
 	// MFA fields change only through MFARepository, never through Update.
 	MFASecretEnc   []byte     `gorm:"column:mfa_secret_enc"`
 	MFAEnabledAt   *time.Time `gorm:"column:mfa_enabled_at"`

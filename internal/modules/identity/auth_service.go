@@ -189,7 +189,8 @@ func (s *AuthService) Authenticate(ctx context.Context, token string) (*auth.Pri
 	p := &auth.Principal{UserID: u.ID, SessionID: sess.ID, Permissions: map[string]bool{},
 		ContextRevision: sess.ContextRevision, BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}},
 		MFAEnrolled: u.MFAEnabledAt != nil, MFARequired: mfaRequired(),
-		MFAFresh: sess.MFAAuthenticatedAt != nil && now.Sub(*sess.MFAAuthenticatedAt) <= mfaFreshness}
+		MFAFresh:               sess.MFAAuthenticatedAt != nil && now.Sub(*sess.MFAAuthenticatedAt) <= mfaFreshness,
+		PasswordChangeRequired: u.PasswordChangeRequired}
 	for _, r := range roles {
 		for _, perm := range effectivePermissions(r) {
 			p.Permissions[perm] = true
@@ -229,9 +230,10 @@ type SessionView struct {
 }
 
 type SessionUser struct {
-	ID          string     `json:"id"`
-	DisplayName string     `json:"displayName"`
-	Status      UserStatus `json:"status"`
+	ID                     string     `json:"id"`
+	DisplayName            string     `json:"displayName"`
+	Status                 UserStatus `json:"status"`
+	PasswordChangeRequired bool       `json:"passwordChangeRequired"`
 }
 
 type RoleRef struct {
@@ -286,7 +288,7 @@ func (s *AuthService) View(ctx context.Context, p *auth.Principal, sess *Session
 		return nil, err
 	}
 	view := &SessionView{
-		User:                SessionUser{ID: u.ID, DisplayName: u.DisplayName, Status: u.Status},
+		User:                SessionUser{ID: u.ID, DisplayName: u.DisplayName, Status: u.Status, PasswordChangeRequired: u.PasswordChangeRequired},
 		Roles:               make([]RoleRef, len(roles)),
 		Permissions:         p.PermissionList(),
 		MFA:                 MFAView{Enrolled: u.MFAEnabledAt != nil, AuthenticatedAt: sess.MFAAuthenticatedAt},
@@ -386,3 +388,51 @@ func (s *AuthService) SetBranchScope(ctx context.Context, p *auth.Principal, exp
 }
 
 func revision(v int64) string { return strconv.FormatInt(v, 10) }
+
+// ChangePassword replaces the signed-in user's password after checking the
+// current one. Other sessions end; this one stays signed in.
+func (s *AuthService) ChangePassword(ctx context.Context, p *auth.Principal, current, next, confirmation string) error {
+	u, err := s.store.Users().Get(ctx, p.UserID)
+	if err != nil {
+		return err
+	}
+	now := s.clock()
+	if u.LockedUntil != nil && u.LockedUntil.After(now) {
+		return &apperr.RateLimitedError{RetryAfter: u.LockedUntil.Sub(now)}
+	}
+	ok, err := verifyPassword(current, *u.PasswordHash)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		if err := s.recordFailure(ctx, u); err != nil {
+			return err
+		}
+		return apperr.FieldError("currentPassword", "is incorrect")
+	}
+	var v apperr.Validation
+	validatePassword(&v, "newPassword", next, confirmation)
+	if next == current {
+		v.Add("newPassword", "must differ from the current password")
+	}
+	if err := v.Err(); err != nil {
+		return err
+	}
+	hash, err := hashPassword(next)
+	if err != nil {
+		return err
+	}
+	return s.store.InTx(ctx, func(st Store) error {
+		u.PasswordHash, u.PasswordChangeRequired, u.UpdatedAt = &hash, false, now
+		if err := st.Users().Update(ctx, u, u.Version); err != nil {
+			return err
+		}
+		if err := st.Users().SetLoginState(ctx, u.ID, 0, nil); err != nil {
+			return err
+		}
+		if err := st.Sessions().RevokeUser(ctx, u.ID, p.SessionID, now); err != nil {
+			return err
+		}
+		return s.audit(ctx, st, p, "user.password_changed", "user", u.ID, nil, "", nil)
+	})
+}

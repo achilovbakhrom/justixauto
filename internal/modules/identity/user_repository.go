@@ -13,6 +13,8 @@ type UserRepository interface {
 	FindByLogin(ctx context.Context, login string) (*User, error)
 	// EmailOrLoginTaken reports whether another user already uses the email or login.
 	EmailOrLoginTaken(ctx context.Context, email string, login *string) (bool, error)
+	// LoginTaken reports whether another user already signs in with login.
+	LoginTaken(ctx context.Context, login, exceptUserID string) (bool, error)
 	List(ctx context.Context, limit, offset int) ([]User, error)
 	Update(ctx context.Context, u *User, expected int64) error
 	// SetLoginState records failed attempts and lockouts without bumping the
@@ -51,6 +53,12 @@ func (r *userRepository) EmailOrLoginTaken(ctx context.Context, email string, lo
 	return n > 0, translate(q.Count(&n).Error)
 }
 
+func (r *userRepository) LoginTaken(ctx context.Context, login, exceptUserID string) (bool, error) {
+	var n int64
+	err := r.db.WithContext(ctx).Model(&User{}).Where("lower(login) = lower(?) AND id <> ?", login, exceptUserID).Count(&n).Error
+	return n > 0, translate(err)
+}
+
 func (r *userRepository) List(ctx context.Context, limit, offset int) ([]User, error) {
 	limit, offset = pageDefaults(limit, offset)
 	users := []User{}
@@ -60,7 +68,7 @@ func (r *userRepository) List(ctx context.Context, limit, offset int) ([]User, e
 
 func (r *userRepository) Update(ctx context.Context, u *User, expected int64) error {
 	err := updateVersioned(r.db.WithContext(ctx), &User{}, u.ID, expected, map[string]any{
-		"display_name": u.DisplayName, "email": u.Email, "login": u.Login, "password_hash": u.PasswordHash,
+		"display_name": u.DisplayName, "email": u.Email, "login": u.Login, "password_hash": u.PasswordHash, "password_change_required": u.PasswordChangeRequired,
 		"status": u.Status, "status_reason": u.StatusReason, "updated_at": u.UpdatedAt,
 	})
 	if err == nil {
