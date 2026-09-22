@@ -18,6 +18,17 @@ type BranchScope struct {
 	BranchIDs []string `json:"branchIds"`
 }
 
+// PermissionInfo is one entry of the permission catalog. Modules declare their
+// own keys (`<module>.<resource>.<action>`); the identity module owns the
+// catalog. Assignable=false keys can only be held through a system role.
+// RequiresMFA marks sensitive actions that need a recent second factor.
+type PermissionInfo struct {
+	Key         string `json:"key"`
+	Scope       string `json:"scope"` // "platform" or "company"
+	RequiresMFA bool   `json:"requiresMfa"`
+	Assignable  bool   `json:"assignable"`
+}
+
 // Principal is the signed-in user as seen by the current request.
 type Principal struct {
 	UserID      string

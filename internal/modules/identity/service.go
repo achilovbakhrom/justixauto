@@ -4,17 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"net/mail"
-	"slices"
-	"strconv"
-	"strings"
 	"time"
-	"unicode/utf8"
 
 	"github.com/google/uuid"
 
 	"justixauto/internal/platform/apperr"
 	"justixauto/internal/platform/auth"
+	"justixauto/internal/platform/validate"
 )
 
 // deps is shared by all identity services.
@@ -51,52 +47,11 @@ func (d deps) isMember(ctx context.Context, st Store, userID, companyID string) 
 	return err == nil, err
 }
 
-// validID turns malformed IDs into ErrNotFound instead of database errors.
-func validID(ids ...string) error {
-	for _, id := range ids {
-		if uuid.Validate(id) != nil {
-			return apperr.ErrNotFound
-		}
-	}
-	return nil
-}
-
-func text(v *apperr.Validation, field, value string, min, max int) string {
-	value = strings.TrimSpace(value)
-	if n := utf8.RuneCountInString(value); n < min || n > max {
-		if min > 0 {
-			v.Add(field, "required, at most "+strconv.Itoa(max)+" characters")
-		} else {
-			v.Add(field, "at most "+strconv.Itoa(max)+" characters")
-		}
-	}
-	return value
-}
-
-func email(v *apperr.Validation, field, value string) string {
-	value = strings.TrimSpace(value)
-	addr, err := mail.ParseAddress(value)
-	if err != nil || addr.Address != value || len(value) > 254 {
-		v.Add(field, "must be a valid email address")
-	}
-	return value
-}
-
-func reason(v *apperr.Validation, value string) string {
-	return text(v, "reason", value, 1, 500)
-}
-
-// uniqueIDs validates and de-duplicates a list of UUIDs.
-func uniqueIDs(v *apperr.Validation, field string, ids []string) []string {
-	out := []string{}
-	for _, id := range ids {
-		if uuid.Validate(id) != nil {
-			v.Add(field, "must contain valid IDs")
-			return out
-		}
-		if !slices.Contains(out, id) {
-			out = append(out, id)
-		}
-	}
-	return out
-}
+// Shared input checks (see internal/platform/validate).
+var (
+	validID   = validate.IDs
+	text      = validate.Text
+	email     = validate.Email
+	reason    = validate.Reason
+	uniqueIDs = validate.UniqueIDs
+)

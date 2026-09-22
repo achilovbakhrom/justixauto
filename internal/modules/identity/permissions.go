@@ -1,6 +1,10 @@
 package identity
 
-import "slices"
+import (
+	"slices"
+
+	"justixauto/internal/platform/auth"
+)
 
 // Permission keys from the HTTP contract. Other modules add their own keys to
 // the catalog as they are built (`<module>.<resource>.<action>`).
@@ -18,28 +22,21 @@ const (
 	PermBranchesEdit              = "branches.edit"
 )
 
-// PermissionInfo describes one catalog entry. Assignable=false keys can only be
-// held through a system role, which keeps the last-admin guard simple.
-// RequiresMFA marks sensitive actions; enforcement arrives with MFA.
-type PermissionInfo struct {
-	Key         string `json:"key"`
-	Scope       string `json:"scope"` // "platform" or "company"
-	RequiresMFA bool   `json:"requiresMfa"`
-	Assignable  bool   `json:"assignable"`
-}
+// PermissionInfo describes one catalog entry (see auth.PermissionInfo).
+type PermissionInfo = auth.PermissionInfo
 
 var Catalog = []PermissionInfo{
-	{PermPlatformCompaniesCreate, "platform", true, false},
-	{PermPlatformCompaniesAccess, "platform", true, false},
-	{PermPlatformUsersManage, "platform", true, false},
-	{PermPlatformMembershipsManage, "platform", true, false},
-	{PermPlatformRolesManage, "platform", true, false},
-	{PermPlatformDirectoryRead, "platform", false, true},
-	{PermPlatformAuditRead, "platform", false, true},
-	{PermCompanyCreate, "company", false, true},
-	{PermCompanyEdit, "company", false, true},
-	{PermBranchesCreate, "company", false, true},
-	{PermBranchesEdit, "company", false, true},
+	{Key: PermPlatformCompaniesCreate, Scope: "platform", RequiresMFA: true, Assignable: false},
+	{Key: PermPlatformCompaniesAccess, Scope: "platform", RequiresMFA: true, Assignable: false},
+	{Key: PermPlatformUsersManage, Scope: "platform", RequiresMFA: true, Assignable: false},
+	{Key: PermPlatformMembershipsManage, Scope: "platform", RequiresMFA: true, Assignable: false},
+	{Key: PermPlatformRolesManage, Scope: "platform", RequiresMFA: true, Assignable: false},
+	{Key: PermPlatformDirectoryRead, Scope: "platform", RequiresMFA: false, Assignable: true},
+	{Key: PermPlatformAuditRead, Scope: "platform", RequiresMFA: false, Assignable: true},
+	{Key: PermCompanyCreate, Scope: "company", RequiresMFA: false, Assignable: true},
+	{Key: PermCompanyEdit, Scope: "company", RequiresMFA: false, Assignable: true},
+	{Key: PermBranchesCreate, Scope: "company", RequiresMFA: false, Assignable: true},
+	{Key: PermBranchesEdit, Scope: "company", RequiresMFA: false, Assignable: true},
 }
 
 const (
@@ -75,4 +72,14 @@ func effectivePermissions(r Role) []string {
 		return systemRolePermissions[*r.SystemKey]
 	}
 	return r.Permissions
+}
+
+// RegisterPermissions adds another module's permission keys to the catalog.
+// Call it at startup, before serving requests; duplicates are ignored.
+func RegisterPermissions(perms ...PermissionInfo) {
+	for _, p := range perms {
+		if _, exists := permissionInfo(p.Key); !exists {
+			Catalog = append(Catalog, p)
+		}
+	}
 }

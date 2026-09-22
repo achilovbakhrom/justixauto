@@ -34,5 +34,10 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
 - Retries: authenticated POSTs require `Idempotency-Key`; the platform
   middleware replays the first 2xx response. Existing-resource writes use
   If-Match instead.
+- Module permissions live in the module (`Permissions []auth.PermissionInfo`)
+  and are registered with `identity.RegisterPermissions` in `cmd/api`.
+  Modules never import each other; shared helpers are in `internal/platform`
+  (`database`, `validate`, `jsonx`, `httpx`, `auth`, `apperr`).
 - Tests: pure logic as unit tests; behaviour end to end through HTTP against a
-  real database (`TEST_DATABASE_URL`; `bash tools/test-go.sh` starts one).
+  real database with `internal/testkit` (signed-in company users, MFA admin,
+  CSRF/Idempotency handled). `bash tools/test-go.sh` starts a throwaway DB.
