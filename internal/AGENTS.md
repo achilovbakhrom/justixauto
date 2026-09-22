@@ -40,7 +40,8 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   needing another's data declares a small port interface (e.g. commerce
   `Directory`) and `internal/app` adapts the other module's exported service.
   Shared helpers are in `internal/platform` (`database`, `validate`, `jsonx`,
-  `httpx`, `auth`, `apperr`).
+  `httpx`, `auth`, `apperr`). `internal/architecture` enforces these import
+  rules in the test suite (no module-to-module or platform-to-module imports).
 - Tests: pure logic as in-package unit tests; behaviour end to end through
   HTTP in the external `<module>_test` package with `internal/testkit`
   (full app, active seller companies, MFA admin, CSRF/Idempotency handled).
