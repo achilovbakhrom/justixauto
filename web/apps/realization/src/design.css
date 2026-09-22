@@ -1,0 +1,25 @@
+/* Design system of the approved HTML reference (docs/justix-auto/mocks: realization.css).
+ * Copied rule for rule so the React apps match the reference; edit the design here, never in the mocks. */
+/* ---- realization.css ---- */
+.unified-shell .brand-name{font-size:20px}
+.unified-shell .brand-role{text-transform:none;letter-spacing:.04em}
+.unified-shell .sidebar{overflow-y:auto}
+.unified-shell .sidebar-bottom{position:static;margin-top:auto;padding-top:24px}
+.channel-tabs{margin:0 0 20px;padding:0;gap:28px}
+.channel-tabs .view-tab{min-height:48px;font-size:15px;padding:0 12px}
+.unified-shell .page-actions{flex-wrap:wrap}
+.unified-shell .page>.surface+.surface{margin-top:20px}
+.wholesale-picker{display:grid;gap:10px;max-height:260px;overflow-y:auto}
+.wholesale-choice{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:8px;cursor:pointer}
+.wholesale-choice:has(input:checked){background:var(--primary-soft);border-color:var(--primary)}
+.field input[type=checkbox],.field input[type=radio],.wholesale-choice input{width:18px;height:18px;min-height:18px;flex:0 0 18px;padding:0}
+.wholesale-choice .vehicle-thumb{flex-shrink:0}
+.wholesale-choice .cell-sub{display:block}
+.wholesale-error{margin:0 0 16px;padding:12px 16px;background:#fff1f2;color:#a52236;border-radius:8px}
+.wholesale-error:empty{display:none}
+.wholesale-table tr[data-wholesale-open]{cursor:pointer}
+.wholesale-table tr[data-wholesale-open]:hover{background:var(--primary-soft)}
+.wholesale-table td:last-child{white-space:nowrap}
+.unified-shortcuts{display:flex;flex-wrap:wrap;gap:12px}
+.wholesale-documents{display:flex;flex-wrap:wrap;gap:12px}
+.wholesale-documents a{padding:10px 14px;border:1px solid var(--border);border-radius:6px}

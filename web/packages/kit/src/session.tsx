@@ -52,7 +52,7 @@ async function loadSession(): Promise<State> {
  * password change before rendering the app. `kinds` limits which company
  * kinds this app works with (e.g. the insurer cabinet).
  */
-export function SessionGate({ children, title, kinds }: { children: ReactNode; title: string; kinds?: Company['kind'][] }) {
+export function SessionGate({ children, title, brand, kinds }: { children: ReactNode; title: string; brand?: string; kinds?: Company['kind'][] }) {
   const [state, setState] = useState<State>({ kind: 'loading' });
 
   const refresh = useCallback(() => loadSession().then(setState), []);
@@ -92,7 +92,7 @@ export function SessionGate({ children, title, kinds }: { children: ReactNode; t
       <Button onClick={() => void refresh()}>Повторить</Button></Card></Centered>;
   }
   if (state.kind === 'anonymous') {
-    return <Login title={title} onDone={(r) => r.challengeId ? setState({ kind: 'challenge', challengeId: r.challengeId }) : refresh()} />;
+    return <Login title={title} brand={brand} onDone={(r) => r.challengeId ? setState({ kind: 'challenge', challengeId: r.challengeId }) : refresh()} />;
   }
   if (state.kind === 'challenge') {
     return <MFAChallenge challengeId={state.challengeId} onDone={() => void refresh()} onCancel={() => setState({ kind: 'anonymous' })} />;
@@ -131,12 +131,12 @@ function Centered({ children }: { children: ReactNode }) {
   return <div className={css.centered}>{children}</div>;
 }
 
-function Login({ title, onDone }: { title: string; onDone: (r: { challengeId?: string }) => void }) {
+function Login({ brand, onDone }: { title: string; brand: string | undefined; onDone: (r: { challengeId?: string }) => void }) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  return <Centered><Card title={title}>
+  return <Centered><Card title="Вход" subtitle={brand}>
     <form className={css.stack} onSubmit={async (e) => {
       e.preventDefault();
       setBusy(true); setError('');
@@ -151,6 +151,7 @@ function Login({ title, onDone }: { title: string; onDone: (r: { challengeId?: s
       <Field label="Логин" value={login} onChange={setLogin} autoComplete="username" required />
       <Field label="Пароль" type="password" value={password} onChange={setPassword} autoComplete="current-password" required />
       <Button type="submit" variant="primary" busy={busy}>Войти</Button>
+      <p className="cell-sub">Нет доступа? Компанию и её первого администратора подключает администратор платформы JustixAuto.</p>
     </form>
   </Card></Centered>;
 }

@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { fileUrl, get, list, patch, post } from './http';
 import { ActionButton, useData } from './shell';
-import { Badge, Details, Modal, Notice, Panel, Table, date, dateTime, money } from './ui';
+import { Badge, Button, Details, Modal, Notice, Panel, Table, date, dateTime, money } from './ui';
 import type { FieldSpec } from './ui';
 
 type Money = { amountMinor: string; currency: string };
@@ -156,7 +156,7 @@ export function FinanceTable({ rows, loading, error, counterparty, onOpen }: {
 export function CalculationView({ calc, title }: { calc: Calculation | null | undefined; title: string }) {
   const [open, setOpen] = useState(false);
   if (!calc) return null;
-  return <Panel title={title} padded actions={<button className="kit-btn" data-variant="link" type="button" onClick={() => setOpen(!open)}>{open ? 'Скрыть график' : 'График платежей'}</button>}>
+  return <Panel title={title} padded actions={<Button variant="secondary" size="sm" onClick={() => setOpen(!open)}>{open ? 'Скрыть график' : 'График платежей'}</Button>}>
     <Details items={[['Цена', money(calc.price)], ['Первый взнос', money(calc.input.downPayment)], ['Наценка', money(calc.output.markup)],
       ['Финансируется', money(calc.output.financedAmount)], ['Итого к оплате', money(calc.output.total)],
       ['Срок', `${calc.input.termMonths} мес., первый платёж ${date(calc.input.firstDueDate)}`]]} />
@@ -237,9 +237,9 @@ export function DocumentRequests({ applicationId, side }: { applicationId: strin
     { name: 'requirements', label: 'Требования', type: 'textarea', required: true },
   ]} onSubmit={(v) => post(`/financing/applications/${applicationId}/document-requests`, v)} />}>
     <Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(d) => d.id} empty="Документы не запрашивались" columns={[
-      { title: 'Документ', render: (d) => <><b>{d.title}</b><div className="kit-muted">{d.requirements}</div></> },
+      { title: 'Документ', render: (d) => <><b>{d.title}</b><div className="cell-sub">{d.requirements}</div></> },
       { title: 'Статус', render: (d) => <><Badge tone={d.status === 'accepted' ? 'success' : d.status === 'changes' ? 'warning' : undefined}>{docLabel[d.status]}</Badge>
-        {d.statusNote && <div className="kit-muted">{d.statusNote}</div>}</> },
+        {d.statusNote && <div className="cell-sub">{d.statusNote}</div>}</> },
       { title: 'Файлы', render: (d) => d.submissions.map((s) => <div key={s.version}><a href={fileUrl(s.fileId)} target="_blank" rel="noreferrer">Версия {s.version}</a> · {dateTime(s.createdAt)}{s.note ? ` · ${s.note}` : ''}</div>) },
       { title: '', render: (d) => {
         const last = d.submissions[d.submissions.length - 1];

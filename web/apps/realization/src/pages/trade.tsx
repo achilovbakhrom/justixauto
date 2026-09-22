@@ -1,74 +1,21 @@
 import { useState } from 'react';
 import {
-  ActionButton, Badge, Details, Modal, Page, Panel, Table, Tabs, dateTime, fileUrl, get, list, money, post, useData, useRefresh, useSession,
+  ActionButton, Badge, Details, Modal, Panel, Table, dateTime, fileUrl, get, list, money, post, useData, useRefresh,
 } from '@justixauto/kit';
 import type { FieldSpec } from '@justixauto/kit';
 import { TermsButton, TermsView } from '../shared';
-import { modelName, routeLabel, useModelName, useModels, usePartners, useVehicles, useWarehouses } from '../data';
-import type { Money, Terms } from '../data';
+import { modelName, routeLabel, useModelName, useModels, useVehicles, useWarehouses, orderLabel, orderTone, rfqLabel } from '../data';
+import type { Invoice, Offer, Order, RFQ, Shipment } from '../data';
 
 const reason: FieldSpec[] = [{ name: 'reason', label: 'Причина', type: 'textarea', required: true }];
 
 // ---------------- partners ----------------
 
-const partnershipLabel: Record<string, string> = { requested: 'Запрошено', active: 'Активно', declined: 'Отклонено', withdrawn: 'Отозвано', ended: 'Завершено' };
-
-export function PartnersPage() {
-  const q = usePartners();
-  const dir = useData(['directory'], () => list<{ id: string; name: string; country: string }>('/identity/directory/companies?kind=seller&limit=100'));
-  const s = useSession();
-  const refresh = [['partnerships']];
-  return <Page title="Партнёры" subtitle="Активное партнёрство открывает предложения, цены и новые сделки"
-    actions={<ActionButton label="Запросить партнёрство" variant="primary" refresh={refresh} fields={[
-      { name: 'counterpartyCompanyId', label: 'Компания', type: 'select', required: true,
-        options: (dir.data ?? []).filter((c) => c.id !== s.company?.id).map((c) => [c.id, `${c.name} (${c.country})`]) },
-    ]} onSubmit={(v) => post('/commerce/partnerships', v)} />}>
-    <Panel><Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(p) => p.id} columns={[
-      { title: 'Компания', render: (p) => <b>{p.counterparty.name}</b> },
-      { title: 'Направление', render: (p) => p.direction === 'incoming' ? 'Входящий' : 'Исходящий' },
-      { title: 'Статус', render: (p) => <Badge tone={p.status === 'active' ? 'success' : p.status === 'requested' ? 'warning' : undefined}>{partnershipLabel[p.status]}</Badge> },
-      { title: 'Причина', render: (p) => p.statusReason || '—' },
-      { title: '', render: (p) => <div className="kit-row">{p.allowedActions.map((a) => a === 'accept'
-        ? <ActionButton key={a} label="Принять" refresh={refresh} onSubmit={() => post(`/commerce/partnerships/${p.id}/accept`, {}, { ifMatch: p.revision })} />
-        : <ActionButton key={a} label={{ decline: 'Отклонить', withdraw: 'Отозвать', end: 'Завершить' }[a] ?? a} fields={reason} refresh={refresh}
-          onSubmit={(v) => post(`/commerce/partnerships/${p.id}/${a}`, v, { ifMatch: p.revision })} />)}</div> },
-    ]} /></Panel>
-  </Page>;
-}
 
 // ---------------- offers ----------------
 
-interface OfferVersion { id: string; number: number; terms: Terms; total: Money; audience?: { mode: string; partnerCompanyIds: string[] }; publishedAt: string | null }
-interface Offer { id: string; supplier: { id: string; name: string }; status: string; statusReason: string; publishedVersion: OfferVersion | null; versions?: OfferVersion[]; allowedActions: string[]; revision: string }
 
-const offerLabel: Record<string, string> = { draft: 'Черновик', published: 'Опубликовано', withdrawn: 'Снято' };
-
-export function OffersPage() {
-  const [scope, setScope] = useState<'own' | 'available'>('available');
-  const q = useData(['offers', scope], () => list<Offer>(`/commerce/offers?scope=${scope}`));
-  const partners = usePartners();
-  const [open, setOpen] = useState<string | null>(null);
-  const active = (partners.data ?? []).filter((p) => p.status === 'active');
-  return <Page title="Предложения" subtitle="Публикация не резервирует VIN"
-    actions={<TermsButton label="Новое предложение" variant="primary" refresh={[['offers']]}
-      extra={[{ name: 'partners', label: 'Только для выбранных партнёров (ничего не выбрано — всем активным)', multiple: true,
-        options: active.map((p) => [p.counterparty.id, p.counterparty.name]) }]}
-      onSubmit={(terms, x) => {
-        const ids = (x.partners as string[] | undefined) ?? [];
-        return post('/commerce/offers', { terms, audience: ids.length ? { mode: 'selected', partnerCompanyIds: ids } : { mode: 'all-active', partnerCompanyIds: [] } });
-      }} />}>
-    <Tabs value={scope} onChange={setScope} tabs={[['available', 'От партнёров'], ['own', 'Мои предложения']]} />
-    <Panel><Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(o) => o.id} onRowClick={(o) => setOpen(o.id)} columns={[
-      { title: 'Поставщик', render: (o) => o.supplier.name },
-      { title: 'Версия', render: (o) => o.publishedVersion ? `№${o.publishedVersion.number}` : '—' },
-      { title: 'Итого', render: (o) => money(o.publishedVersion?.total ?? o.versions?.[o.versions.length - 1]?.total) },
-      { title: 'Статус', render: (o) => <Badge tone={o.status === 'published' ? 'success' : undefined}>{offerLabel[o.status]}</Badge> },
-    ]} /></Panel>
-    {open && <OfferDialog id={open} onClose={() => setOpen(null)} />}
-  </Page>;
-}
-
-function OfferDialog({ id, onClose }: { id: string; onClose: () => void }) {
+export function OfferDialog({ id, onClose }: { id: string; onClose: () => void }) {
   const q = useData(['offer', id], () => get<Offer>(`/commerce/offers/${id}`));
   const name = useModelName();
   const o = q.data?.data;
@@ -95,17 +42,6 @@ function OfferDialog({ id, onClose }: { id: string; onClose: () => void }) {
 
 // ---------------- purchases: RFQs and orders ----------------
 
-interface Quotation { id: string; number: number; terms: Terms; total: Money; digest: string; createdAt: string }
-interface RFQ { id: string; buyer: { id: string; name: string }; supplier: { id: string; name: string }; lines: { modelId: string; quantity: string }[]; status: string; statusReason: string; quotations: Quotation[]; allowedActions: string[]; revision: string }
-interface Allocation { orderLineId: string; vehicleId: string; vin: string; status: string; shipmentId: string | null }
-interface Order {
-  id: string; party: 'buyer' | 'supplier'; buyer: { name: string }; supplier: { name: string }; source: string; terms: Terms; total: Money;
-  status: string; statusReason: string; allocations: Allocation[]; shipments: { id: string; route: string; status: string }[];
-  addenda: { id: string; number: number; terms: Terms; total: Money; reason: string; proposedBy: string; status: string; decisionReason: string }[];
-  history?: { type: string; occurredAt: string; reason: string }[]; allowedActions: string[]; revision: string;
-}
-
-const rfqLabel: Record<string, string> = { draft: 'Черновик', sent: 'Отправлен', negotiating: 'Согласование', accepted: 'Принят', declined: 'Отклонён', cancelled: 'Отменён' };
 const eventLabel: Record<string, string> = {
   'order.created': 'Заказ создан', 'order.confirmed': 'Подтверждён поставщиком', 'order.rejected': 'Отклонён поставщиком',
   'order.cancelled': 'Отменён', 'order.vehicles_allocated': 'Назначены VIN', 'order.shipped': 'Отгрузка',
@@ -114,35 +50,8 @@ const eventLabel: Record<string, string> = {
   'order.payment_submitted': 'Сообщено об оплате', 'order.payment_accepted': 'Оплата принята', 'order.payment_rejected': 'Оплата отклонена',
   'shipment.receipt_accepted': 'Принято на склад', 'shipment.receipt_rejected': 'Отказ в приёмке',
 };
-const orderLabel: Record<string, string> = { 'awaiting-supplier': 'Ждёт поставщика', accepted: 'Принят', fulfilling: 'Исполняется', completed: 'Выполнен', cancelled: 'Отменён' };
-const orderTone = (s: string) => s === 'completed' ? 'success' : s === 'cancelled' ? 'danger' : s === 'awaiting-supplier' ? 'warning' : 'info';
 
-export function PurchasesPage() {
-  const [tab, setTab] = useState<'orders' | 'rfqs'>('orders');
-  return <Page title="Закупки и продажи опт" subtitle="Запросы котировок, заказы, отгрузки и приёмка">
-    <Tabs value={tab} onChange={setTab} tabs={[['orders', 'Заказы'], ['rfqs', 'Запросы котировок (RFQ)']]} />
-    {tab === 'orders' ? <OrdersPanel /> : <RFQPanel />}
-  </Page>;
-}
-
-function RFQPanel() {
-  const q = useData(['rfqs'], () => list<RFQ>('/commerce/rfqs'));
-  const partners = usePartners();
-  const [open, setOpen] = useState<string | null>(null);
-  const suppliers = (partners.data ?? []).filter((p) => p.status === 'active').map((p): [string, string] => [p.counterparty.id, p.counterparty.name]);
-  return <Panel title="RFQ" actions={<TermsButton label="Новый RFQ" withPrices={false} refresh={[['rfqs']]}
-    extra={[{ name: 'supplier', label: 'Поставщик (активный партнёр)', required: true, options: suppliers }]}
-    onSubmit={(terms, x) => post('/commerce/rfqs', { supplierCompanyId: x.supplier, lines: terms.lines.map((l) => ({ modelId: l.modelId, quantity: l.quantity })) })} />}>
-    <Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(r) => r.id} onRowClick={(r) => setOpen(r.id)} columns={[
-      { title: 'Покупатель', render: (r) => r.buyer.name }, { title: 'Поставщик', render: (r) => r.supplier.name },
-      { title: 'Позиций', render: (r) => r.lines.length }, { title: 'Котировок', render: (r) => r.quotations.length },
-      { title: 'Статус', render: (r) => <Badge>{rfqLabel[r.status]}</Badge> },
-    ]} />
-    {open && <RFQDialog id={open} onClose={() => setOpen(null)} />}
-  </Panel>;
-}
-
-function RFQDialog({ id, onClose }: { id: string; onClose: () => void }) {
+export function RFQDialog({ id, onClose }: { id: string; onClose: () => void }) {
   const q = useData(['rfq', id], () => get<RFQ>(`/commerce/rfqs/${id}`));
   const name = useModelName();
   const r = q.data?.data;
@@ -168,20 +77,7 @@ function RFQDialog({ id, onClose }: { id: string; onClose: () => void }) {
   </Modal>;
 }
 
-function OrdersPanel() {
-  const q = useData(['orders'], () => list<Order>('/commerce/orders?limit=100'));
-  const [open, setOpen] = useState<string | null>(null);
-  return <Panel title="Заказы"><Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(o) => o.id} onRowClick={(o) => setOpen(o.id)} columns={[
-    { title: 'Роль', render: (o) => o.party === 'buyer' ? 'Покупка' : 'Продажа' },
-    { title: 'Контрагент', render: (o) => o.party === 'buyer' ? o.supplier.name : o.buyer.name },
-    { title: 'Сумма', render: (o) => money(o.total) },
-    { title: 'Статус', render: (o) => <Badge tone={orderTone(o.status)}>{orderLabel[o.status]}</Badge> },
-  ]} />
-    {open && <OrderDialog id={open} onClose={() => setOpen(null)} />}
-  </Panel>;
-}
-
-function OrderDialog({ id, onClose }: { id: string; onClose: () => void }) {
+export function OrderDialog({ id, onClose }: { id: string; onClose: () => void }) {
   const q = useData(['order', id], () => get<Order>(`/commerce/orders/${id}`));
   const invoices = useData(['order-invoices', id], () => list<Invoice>(`/commerce/orders/${id}/invoices`));
   const vehicles = useVehicles('any');
@@ -237,10 +133,9 @@ function OrderDialog({ id, onClose }: { id: string; onClose: () => void }) {
   </Modal>;
 }
 
-interface Shipment { id: string; route: string; status: string; vehicles: Allocation[]; milestones: { milestoneType: string; occurredAt: string; location: string; note: string }[]; revision: string }
 const milestoneLabel: Record<string, string> = { departed: 'Отправлено', 'border-crossed': 'Граница пройдена', 'customs-cleared': 'Таможня пройдена', arrived: 'Прибыло', 'damage-reported': 'Повреждение' };
 
-function ShipmentDialog({ id, party, onClose, refreshOrder }: { id: string; party: string; onClose: () => void; refreshOrder: unknown[][] }) {
+export function ShipmentDialog({ id, party, onClose, refreshOrder }: { id: string; party: string; onClose: () => void; refreshOrder: unknown[][] }) {
   const q = useData(['shipment', id], () => get<Shipment>(`/commerce/shipments/${id}`));
   const warehouses = useWarehouses();
   const s = q.data?.data;
@@ -272,9 +167,6 @@ function ShipmentDialog({ id, party, onClose, refreshOrder }: { id: string; part
 
 // ---------------- invoices ----------------
 
-interface Evidence { id: string; amount: Money; paidOn: string; externalReference: string; attachmentIds: string[]; status: string; decisionReason: string; allowedActions: string[]; revision: string }
-export interface Invoice { id: string; orderId: string; total: Money; status: string; paid: Money; pending: Money; outstanding: Money; paymentEvidence: Evidence[]; allowedActions: string[]; revision: string; schedule: { amount: Money; dueDate: string }[] }
-
 const evidenceLabel: Record<string, string> = { submitted: 'На проверке', accepted: 'Принято', rejected: 'Отклонено' };
 
 export function InvoicePanel({ invoice: i, party, refresh }: { invoice: Invoice; party: string; refresh: unknown[][] }) {
@@ -300,22 +192,4 @@ export function InvoicePanel({ invoice: i, party, refresh }: { invoice: Invoice;
       </div> },
     ]} />
   </Panel>;
-}
-
-export function BillingPage() {
-  const orders = useData(['orders'], () => list<Order>('/commerce/orders?limit=100'));
-  const [tab, setTab] = useState<'buyer' | 'supplier'>('buyer');
-  const rows = (orders.data ?? []).filter((o) => o.party === tab);
-  return <Page title="Счета и оплаты" subtitle="Оплаты фиксируются как факты; деньги через платформу не проходят">
-    <Tabs value={tab} onChange={setTab} tabs={[['buyer', 'Поставщикам'], ['supplier', 'От покупателей']]} />
-    {rows.map((o) => <OrderInvoices key={o.id} order={o} />)}
-    {rows.length === 0 && <p className="kit-muted">Нет заказов.</p>}
-  </Page>;
-}
-
-function OrderInvoices({ order }: { order: Order }) {
-  const q = useData(['order-invoices', order.id], () => list<Invoice>(`/commerce/orders/${order.id}/invoices`));
-  if (!q.data?.length) return null;
-  return <div className="kit-stack"><b>{order.party === 'buyer' ? order.supplier.name : order.buyer.name} · заказ {money(order.total)}</b>
-    {q.data.map((i) => <InvoicePanel key={i.id} invoice={i} party={order.party} refresh={[['order-invoices', order.id], ['orders']]} />)}</div>;
 }

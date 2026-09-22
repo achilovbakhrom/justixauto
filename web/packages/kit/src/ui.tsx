@@ -2,101 +2,78 @@ import { useEffect, useId, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import '@justixauto/tokens/tokens.css';
 import { ApiError, errorText, upload } from './http';
+import { Icon } from './icons';
+import type { IconName } from './icons';
+import './design.css';
 
-/** Class names; the styles are injected once by <KitStyles/>. */
+/** Layout helpers the reference has no class for; everything else uses the reference classes (design.css). */
 export const css = {
   centered: 'kit-centered', stack: 'kit-stack', row: 'kit-row', codes: 'kit-codes', grid: 'kit-grid',
-  muted: 'kit-muted', right: 'kit-right',
+  muted: 'cell-sub', right: 'kit-right',
 };
 
 const styles = `
-.kit-app { font-family:var(--font-family);font-size:var(--font-size);line-height:var(--line-height);color:var(--text);background:var(--canvas);min-height:100vh }
-.kit-centered { min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--canvas);font-family:var(--font-family);color:var(--text) }
-.kit-stack { display:grid;gap:12px }
+.sidebar a.nav-item, .sidebar a.btn { text-decoration:none }
+.kit-centered { min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--canvas) }
+.kit-auth { width:min(420px,100%);padding:28px }
+.kit-auth .brand { padding:0 0 20px }
+.kit-auth h1 { margin:0 0 6px;font-size:20px }
+.kit-stack { display:grid;gap:14px }
 .kit-row { display:flex;gap:10px;align-items:center;flex-wrap:wrap }
 .kit-right { margin-left:auto }
-.kit-muted { color:var(--text-muted);font-size:12px }
-.kit-codes { padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-subtle);font-size:14px;letter-spacing:.04em;white-space:pre-wrap;word-break:break-all }
-.kit-card { width:min(440px,100%);padding:24px;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow-overlay) }
-.kit-card h1 { margin:0 0 16px;font-size:20px }
-.kit-btn { height:36px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--surface);color:var(--text);font:inherit;font-weight:600;cursor:pointer;white-space:nowrap }
-.kit-btn:hover:not(:disabled) { background:var(--surface-subtle) }
-.kit-btn:disabled { opacity:.55;cursor:not-allowed }
-.kit-btn[data-variant=primary] { background:var(--primary);border-color:var(--primary);color:#fff }
-.kit-btn[data-variant=primary]:hover:not(:disabled) { background:var(--primary-hover) }
-.kit-btn[data-variant=danger] { background:var(--danger);border-color:var(--danger);color:#fff }
-.kit-btn[data-variant=link] { border:0;background:none;color:var(--primary);padding:0;height:auto }
-.kit-field { display:grid;gap:5px;min-width:0 }
-.kit-field > span { color:var(--text-secondary);font-size:12px;font-weight:600 }
-.kit-field input, .kit-field select, .kit-field textarea { box-sizing:border-box;width:100%;min-height:38px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text);font:inherit }
-.kit-field textarea { min-height:80px;resize:vertical }
-.kit-field input:focus, .kit-field select:focus, .kit-field textarea:focus { outline:var(--field-focus-outline);border-color:var(--primary) }
-.kit-field-error { color:var(--danger);font-size:12px }
-.kit-notice { padding:10px 12px;border-radius:var(--radius);font-size:13px }
-.kit-notice[data-kind=danger] { background:var(--danger-soft);color:var(--danger) }
-.kit-notice[data-kind=success] { background:var(--success-soft);color:var(--success) }
-.kit-notice[data-kind=info] { background:var(--info-soft);color:var(--info) }
-.kit-notice[data-kind=warning] { background:var(--warning-soft);color:var(--warning) }
-.kit-badge { display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface-subtle);color:var(--text-secondary);white-space:nowrap }
-.kit-badge[data-tone=success] { background:var(--success-soft);color:var(--success) }
-.kit-badge[data-tone=warning] { background:var(--warning-soft);color:var(--warning) }
-.kit-badge[data-tone=danger] { background:var(--danger-soft);color:var(--danger) }
-.kit-badge[data-tone=info] { background:var(--info-soft);color:var(--info) }
-.kit-page { padding:var(--page-padding);display:grid;gap:16px;align-content:start }
-.kit-page-head { display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap }
-.kit-page-head h1 { margin:0;font-size:22px }
-.kit-page-head p { margin:2px 0 0;color:var(--text-secondary) }
-.kit-panel { border:1px solid var(--border);border-radius:10px;background:var(--surface);overflow:auto }
-.kit-panel-head { display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border) }
-.kit-panel-head h2 { margin:0;font-size:15px }
-.kit-panel-body { padding:16px }
-.kit-table { width:100%;border-collapse:collapse }
-.kit-table th { text-align:left;padding:10px 14px;font-size:12px;color:var(--text-secondary);background:var(--surface-subtle);border-bottom:1px solid var(--border);white-space:nowrap }
-.kit-table td { padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top }
-.kit-table tr[data-click=true] { cursor:pointer }
-.kit-table tr[data-click=true]:hover td { background:var(--surface-subtle) }
-.kit-empty { padding:28px;text-align:center;color:var(--text-muted) }
+.kit-codes { margin:0;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-subtle);font-size:14px;letter-spacing:.04em;white-space:pre-wrap;word-break:break-all }
 .kit-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px }
-.kit-dl { display:grid;grid-template-columns:minmax(120px,max-content) 1fr;gap:8px 16px;margin:0 }
-.kit-dl dt { color:var(--text-secondary) }
-.kit-dl dd { margin:0;overflow-wrap:anywhere }
-.kit-tabs { display:flex;gap:4px;border-bottom:1px solid var(--border) }
-.kit-tabs button { padding:9px 14px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;color:var(--text-secondary);cursor:pointer }
-.kit-tabs button[aria-selected=true] { color:var(--primary);border-bottom-color:var(--primary);font-weight:600 }
-.kit-overlay { position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:var(--dialog-backdrop) }
-.kit-modal { width:min(560px,100%);max-height:90vh;overflow:auto;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-overlay) }
-.kit-modal[data-size=wide] { width:min(860px,100%) }
-.kit-modal-head { display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border) }
-.kit-modal-head h2 { margin:0;font-size:18px;flex:1 }
-.kit-modal-body { padding:20px;display:grid;gap:12px }
-.kit-modal-foot { display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--border) }
-.kit-stat { padding:16px;border:1px solid var(--border);border-radius:10px;background:var(--surface) }
-.kit-stat b { display:block;font-size:24px }
-.kit-stat span { color:var(--text-secondary);font-size:12px }
+.kit-page-body > * + * { margin-top:18px }
+.kit-page-body > .summary-strip { margin-bottom:0 }
+.kit-notice { padding:11px 13px;border-radius:6px;font-size:13px;border-left:3px solid currentColor }
+.kit-notice[data-kind=danger] { color:var(--danger);background:var(--danger-soft) }
+.kit-notice[data-kind=success] { color:var(--success);background:var(--success-soft) }
+.kit-notice[data-kind=warning] { color:var(--warning);background:var(--warning-soft) }
+.kit-notice[data-kind=info] { color:var(--text-secondary);background:var(--surface-subtle);border-left-color:var(--primary) }
+.kit-link { height:auto;padding:0;border:0;background:none;color:var(--primary);font-weight:600;cursor:pointer }
+.kit-info { display:grid }
+.kit-info .info-row > :last-child { text-align:right;overflow-wrap:anywhere }
+.kit-clickable tbody tr { cursor:pointer }
+.kit-clickable tbody tr:hover td { background:var(--surface-subtle) }
+.modal-body > * + * { margin-top:14px }
+.kit-field { display:grid;gap:6px;color:var(--text-secondary);font-size:12px;font-weight:600 }
+.kit-field input,.kit-field select,.kit-field textarea { width:100%;min-height:40px;padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text);font-size:14px;font-weight:400 }
+.kit-field textarea { min-height:80px;resize:vertical }
 .kit-timeline { display:grid;gap:8px;margin:0;padding:0;list-style:none }
-.kit-timeline li { padding:8px 12px;border-left:3px solid var(--primary-soft);background:var(--surface-subtle);border-radius:0 var(--radius) var(--radius) 0 }
+.kit-timeline li { padding:9px 12px;border-left:3px solid var(--primary-soft);background:var(--surface-subtle);border-radius:0 var(--radius) var(--radius) 0 }
 `;
 
 export function KitStyles() { return <style>{styles}</style>; }
 
-export function Button({ children, onClick, variant = 'secondary', type = 'button', busy, disabled, title }: {
-  children: ReactNode; onClick?: (() => void) | undefined; variant?: 'primary' | 'secondary' | 'danger' | 'link' | undefined;
+type Variant = 'primary' | 'secondary' | 'danger' | 'link';
+
+export function Button({ children, onClick, variant = 'secondary', type = 'button', busy, disabled, title, size, icon }: {
+  children: ReactNode; onClick?: (() => void) | undefined; variant?: Variant | undefined;
   type?: 'button' | 'submit'; busy?: boolean | undefined; disabled?: boolean | undefined; title?: string | undefined;
+  size?: 'sm' | undefined; icon?: IconName | undefined;
 }) {
-  return <button className="kit-btn" data-variant={variant} type={type} onClick={onClick} disabled={disabled || busy}
-    aria-busy={busy || undefined} title={title}>{busy ? '…' : children}</button>;
+  const cls = variant === 'link' ? 'kit-link' : `btn btn-${variant}${size === 'sm' ? ' btn-sm' : ''}`;
+  return <button className={cls} type={type} onClick={onClick} disabled={disabled || busy}
+    aria-busy={busy || undefined} title={title}>{icon && <Icon name={icon} />}{busy ? '…' : children}</button>;
 }
 
-export function Card({ title, children }: { title: string; children: ReactNode }) {
-  return <div className="kit-card"><h1>{title}</h1>{children}</div>;
+/** Centered card for sign-in and other pre-app screens. */
+export function Card({ title, subtitle, children }: { title: string; subtitle?: string | undefined; children: ReactNode }) {
+  return <section className="surface kit-auth">
+    <div className="brand"><div className="brand-mark">J</div><div><div className="brand-name">JustixAuto</div>{subtitle && <div className="brand-role">{subtitle}</div>}</div></div>
+    <h1>{title}</h1>{children}
+  </section>;
 }
 
 export function Notice({ kind = 'info', children }: { kind?: 'info' | 'success' | 'warning' | 'danger'; children: ReactNode }) {
   return <div className="kit-notice" data-kind={kind} role={kind === 'danger' ? 'alert' : 'status'}>{children}</div>;
 }
 
+const toneClass = { success: 'status-success', warning: 'status-warning', danger: 'status-danger', info: 'status-info' } as const;
+
+/** Status pill of the reference (`.status`). */
 export function Badge({ tone, children }: { tone?: 'success' | 'warning' | 'danger' | 'info' | undefined; children: ReactNode }) {
-  return <span className="kit-badge" data-tone={tone}>{children}</span>;
+  return <span className={`status ${tone ? toneClass[tone] : 'status-neutral'}`}>{children}</span>;
 }
 
 export function Field({ label, value, onChange, type = 'text', error, required, autoComplete, placeholder }: {
@@ -104,25 +81,26 @@ export function Field({ label, value, onChange, type = 'text', error, required, 
   required?: boolean; autoComplete?: string; placeholder?: string;
 }) {
   const id = useId();
-  return <label className="kit-field" htmlFor={id}><span>{label}</span>
+  return <div className="field"><label htmlFor={id}>{label}</label>
     <input id={id} type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required}
       autoComplete={autoComplete} placeholder={placeholder} aria-invalid={error ? true : undefined} />
-    {error && <em className="kit-field-error">{error}</em>}
-  </label>;
+    {error && <div className="field-error">{error}</div>}
+  </div>;
 }
 
-export function Page({ title, subtitle, actions, children }: { title: string; subtitle?: string; actions?: ReactNode; children: ReactNode }) {
-  return <main className="kit-page">
-    <div className="kit-page-head"><div><h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>
-      <div className="kit-row kit-right">{actions}</div></div>
-    {children}
-  </main>;
+export function Page({ title, subtitle, actions, children }: { title: string; subtitle?: ReactNode; actions?: ReactNode; children: ReactNode }) {
+  return <section className="page">
+    <div className="page-header"><div><h1 className="page-title">{title}</h1>{subtitle && <div className="page-subtitle">{subtitle}</div>}</div>
+      {actions && <div className="page-actions">{actions}</div>}</div>
+    <div className="kit-page-body">{children}</div>
+  </section>;
 }
 
-export function Panel({ title, actions, children, padded }: { title?: string; actions?: ReactNode; children: ReactNode; padded?: boolean }) {
-  return <section className="kit-panel">
-    {title && <div className="kit-panel-head"><h2>{title}</h2><div className="kit-row kit-right">{actions}</div></div>}
-    {padded ? <div className="kit-panel-body">{children}</div> : children}
+/** A `.surface` block with an optional section header. */
+export function Panel({ title, actions, children, padded }: { title?: string | undefined; actions?: ReactNode; children: ReactNode; padded?: boolean }) {
+  return <section className="surface">
+    {title && <div className="section-head"><h2 className="section-title">{title}</h2>{actions && <div className="page-actions">{actions}</div>}</div>}
+    {padded ? <div className="section-body">{children}</div> : children}
   </section>;
 }
 
@@ -132,44 +110,107 @@ export function Table<T>({ rows, columns, rowKey, onRowClick, loading, error, em
   rows: T[] | undefined; columns: Column<T>[]; rowKey: (row: T) => string; onRowClick?: (row: T) => void;
   loading?: boolean; error?: unknown; empty?: string;
 }) {
-  if (error) return <div className="kit-empty"><Notice kind="danger">{errorText(error)}</Notice></div>;
-  if (loading || !rows) return <div className="kit-empty">Загрузка…</div>;
-  if (rows.length === 0) return <div className="kit-empty">{empty}</div>;
-  return <table className="kit-table"><thead><tr>{columns.map((c) => <th key={c.title}>{c.title}</th>)}</tr></thead>
-    <tbody>{rows.map((r) => <tr key={rowKey(r)} data-click={!!onRowClick} onClick={onRowClick ? () => onRowClick(r) : undefined}
+  if (error) return <div className="table-empty-inline"><Notice kind="danger">{errorText(error)}</Notice></div>;
+  if (loading || !rows) return <div className="table-empty-inline"><span className="cell-sub">Загрузка…</span></div>;
+  if (rows.length === 0) return <div className="table-empty-inline"><strong>{empty}</strong></div>;
+  return <div className={`table-wrap${onRowClick ? ' kit-clickable' : ''}`}><table>
+    <thead><tr>{columns.map((c, i) => <th key={i}>{c.title}</th>)}</tr></thead>
+    <tbody>{rows.map((r) => <tr key={rowKey(r)} onClick={onRowClick ? () => onRowClick(r) : undefined}
       tabIndex={onRowClick ? 0 : undefined} onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter') onRowClick(r); } : undefined}>
-      {columns.map((c) => <td key={c.title}>{c.render(r)}</td>)}</tr>)}</tbody></table>;
+      {columns.map((c, i) => <td key={i}>{c.render(r)}</td>)}</tr>)}</tbody></table></div>;
 }
 
+/** Label / value rows (`.info-row`). */
 export function Details({ items }: { items: [string, ReactNode][] }) {
-  return <dl className="kit-dl">{items.map(([k, v]) => <div key={k} style={{ display: 'contents' }}><dt>{k}</dt><dd>{v ?? '—'}</dd></div>)}</dl>;
+  return <div className="kit-info">{items.map(([k, v]) =>
+    <div key={k} className="info-row"><span>{k}</span><strong>{v ?? '—'}</strong></div>)}</div>;
 }
 
-export function Tabs<T extends string>({ value, onChange, tabs }: { value: T; onChange: (v: T) => void; tabs: [T, string][] }) {
-  return <div className="kit-tabs" role="tablist">{tabs.map(([k, label]) =>
-    <button key={k} role="tab" aria-selected={value === k} onClick={() => onChange(k)}>{label}</button>)}</div>;
+/** View tabs (`.view-tabs`); a third tuple element shows a count. `channel` = page-level tabs (Клиентам / Партнёрам). */
+export function Tabs<T extends string>({ value, onChange, tabs, channel, actions }: {
+  value: T; onChange: (v: T) => void; tabs: ([T, string] | [T, string, number | undefined])[]; channel?: boolean; actions?: ReactNode;
+}) {
+  return <div className={`view-tabs${channel ? ' channel-tabs' : ''}`} role="tablist">{tabs.map(([k, label, count]) =>
+    <button key={k} role="tab" aria-selected={value === k} className={`view-tab${value === k ? ' active' : ''}`} onClick={() => onChange(k)}>
+      {label}{count !== undefined && <b>{count}</b>}</button>)}
+    {actions && <div className="kit-row" style={{ marginLeft: 'auto', alignSelf: 'center' }}>{actions}</div>}</div>;
 }
 
-export function Stat({ label, value }: { label: string; value: ReactNode }) {
-  return <div className="kit-stat"><b>{value}</b><span>{label}</span></div>;
+/** Search and filters above a list (`.toolbar`); Сбросить clears them. */
+export function Toolbar({ query, onQuery, placeholder, children, onReset }: {
+  query: string; onQuery: (q: string) => void; placeholder: string; children?: ReactNode; onReset?: () => void;
+}) {
+  return <div className="toolbar">
+    <label className="search-field"><Icon name="search" /><input placeholder={placeholder} value={query} onChange={(e) => onQuery(e.target.value)} aria-label={placeholder} /></label>
+    {children}
+    <button className="btn btn-secondary btn-sm" type="button" onClick={() => { onQuery(''); onReset?.(); }}>Сбросить</button>
+  </div>;
 }
 
-export function Modal({ title, onClose, children, footer, size }: { title: string; onClose: () => void; children: ReactNode; footer?: ReactNode; size?: 'wide' | undefined }) {
-  const ref = useRef<HTMLDivElement>(null);
+/** Filter select of a toolbar; the first option means "all". */
+export function FilterSelect({ value, onChange, all, options }: { value: string; onChange: (v: string) => void; all: string; options: [string, string][] }) {
+  return <select className="select" value={value} onChange={(e) => onChange(e.target.value)} aria-label={all}>
+    <option value="">{all}</option>{options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>;
+}
+
+/** "N записей · hint" line above a table. */
+export function ResultMeta({ children }: { children: ReactNode }) { return <div className="result-meta">{children}</div>; }
+
+/** Two-line table cell. */
+export function Cell({ main, sub }: { main: ReactNode; sub?: ReactNode }) {
+  return <><div className="cell-main">{main}</div>{sub && <div className="cell-sub">{sub}</div>}</>;
+}
+
+export function Progress({ value, max }: { value: number; max: number }) {
+  return <div className="progress"><span style={{ width: `${max > 0 ? Math.min(100, (value / max) * 100) : 0}%` }} /></div>;
+}
+
+/** Case-insensitive match of a search query against any of the texts. */
+export const matches = (query: string, ...texts: (string | undefined | null)[]) => {
+  const q = query.trim().toLowerCase();
+  return !q || texts.some((t) => t?.toLowerCase().includes(q));
+};
+
+/** Russian plural: plural(5, ['запись', 'записи', 'записей']). */
+export function plural(n: number, forms: [string, string, string]) {
+  const a = Math.abs(n) % 100, b = a % 10;
+  return `${n} ${a > 10 && a < 20 ? forms[2] : b === 1 ? forms[0] : b >= 2 && b <= 4 ? forms[1] : forms[2]}`;
+}
+
+/** One figure of a `.summary-strip`. */
+export function Stat({ label, value, note }: { label: string; value: ReactNode; note?: string | undefined }) {
+  return <div className="summary-item"><div className="summary-label">{label}</div><div className="summary-value">{value}</div>
+    {note && <div className="summary-note">{note}</div>}</div>;
+}
+
+export function Stats({ children, columns }: { children: ReactNode; columns?: number }) {
+  return <div className="summary-strip" style={columns ? { gridTemplateColumns: `repeat(${columns},minmax(0,1fr))` } : undefined}>{children}</div>;
+}
+
+export function EmptyState({ icon = 'info', title, text, action }: { icon?: IconName; title: string; text?: string; action?: ReactNode }) {
+  return <div className="empty-state"><div className="empty-icon"><Icon name={icon} size={24} /></div><h3>{title}</h3>{text && <p>{text}</p>}{action}</div>;
+}
+
+export function Modal({ title, onClose, children, footer, size, help, icon = 'file' }: {
+  title: string; onClose: () => void; children: ReactNode; footer?: ReactNode; size?: 'wide' | undefined; help?: ReactNode; icon?: IconName;
+}) {
+  const ref = useRef<HTMLElement>(null);
   const close = useRef(onClose);
   useEffect(() => { close.current = onClose; });
   // Focus once on open; parents re-render with new callbacks while the user types.
   useEffect(() => {
-    ref.current?.querySelector<HTMLElement>('.kit-modal-body input,.kit-modal-body select,.kit-modal-body textarea,button')?.focus();
+    ref.current?.querySelector<HTMLElement>('.modal-body input,.modal-body select,.modal-body textarea,.modal-close')?.focus();
     const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') close.current(); };
     document.addEventListener('keydown', esc);
     return () => document.removeEventListener('keydown', esc);
   }, []);
-  return <div className="kit-overlay"><div className="kit-modal" data-size={size} role="dialog" aria-modal="true" aria-label={title} ref={ref}>
-    <div className="kit-modal-head"><h2>{title}</h2><Button variant="link" onClick={onClose}>Закрыть</Button></div>
-    <div className="kit-modal-body">{children}</div>
-    {footer && <div className="kit-modal-foot">{footer}</div>}
-  </div></div>;
+  return <div className="modal-scrim"><section className={`modal${size === 'wide' ? ' modal-wide' : ''}`} role="dialog" aria-modal="true" aria-label={title} ref={ref}>
+    <header className="modal-header"><div className="modal-icon"><Icon name={icon} size={22} /></div>
+      <div><h2 className="modal-title">{title}</h2>{help && <div className="modal-help">{help}</div>}</div>
+      <button className="modal-close" type="button" onClick={onClose} aria-label="Закрыть"><Icon name="close" /></button></header>
+    <div className="modal-body">{children}</div>
+    {footer && <footer className="modal-footer">{footer}</footer>}
+  </section></div>;
 }
 
 // ---- money: exact decimal strings, never floating point ----
@@ -272,7 +313,7 @@ export function FormDialog({ title, fields, submitLabel = 'Сохранить', 
     footer={<><Button onClick={onClose} disabled={busy}>Отмена</Button><Button variant="primary" busy={busy} onClick={() => void submit()}>{submitLabel}</Button></>}>
     {intro}
     {error && <Notice kind="danger">{error}</Notice>}
-    <form onSubmit={(e) => { e.preventDefault(); void submit(); }} className="kit-stack">
+    <form onSubmit={(e) => { e.preventDefault(); void submit(); }} className="form-grid">
       {fields.map((f) => <FieldInput key={f.name} spec={f} value={values[f.name]!} error={errors[f.name]}
         onChange={(v) => set(f.name, v)} onFile={(file) => setFiles((s) => ({ ...s, [f.name]: file }))}
         currency={currency[f.name]} onCurrency={(c) => setCurrency((s) => ({ ...s, [f.name]: c }))} />)}
@@ -290,32 +331,37 @@ function FieldInput({ spec, value, error, onChange, onFile, currency, onCurrency
 }) {
   const id = useId();
   const req = 'required' in spec && spec.required;
-  const label = <span>{spec.label}{req ? ' *' : ''}</span>;
-  const err = error && <em className="kit-field-error">{error}</em>;
+  const label = <label htmlFor={id}>{spec.label}{req ? ' *' : ''}</label>;
+  const err = error && <div className="field-error">{error}</div>;
+  // Long inputs span both columns of the reference .form-grid.
+  const wide = ['textarea', 'multiselect', 'checkbox', 'file'].includes(spec.type) || spec.label.length > 34;
+  const cls = `field${wide ? ' field-full' : ''}`;
   switch (spec.type) {
     case 'textarea':
-      return <label className="kit-field" htmlFor={id}>{label}<textarea id={id} value={String(value)} onChange={(e) => onChange(e.target.value)} />{err}</label>;
+      return <div className={cls}>{label}<textarea id={id} value={String(value)} onChange={(e) => onChange(e.target.value)} />{err}</div>;
     case 'select':
-      return <label className="kit-field" htmlFor={id}>{label}<select id={id} value={String(value)} onChange={(e) => onChange(e.target.value)}>
-        <option value="">—</option>{spec.options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>{err}</label>;
+      return <div className={cls}>{label}<select id={id} value={String(value)} onChange={(e) => onChange(e.target.value)}>
+        <option value="">—</option>{spec.options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>{err}</div>;
     case 'multiselect':
-      return <fieldset className="kit-field"><span>{spec.label}</span>{spec.options.map(([v, l]) =>
-        <label key={v} className="kit-row"><input type="checkbox" checked={(value as string[]).includes(v)}
-          onChange={(e) => onChange(e.target.checked ? [...(value as string[]), v] : (value as string[]).filter((x) => x !== v))} />{l}</label>)}{err}</fieldset>;
+      return <fieldset className={`${cls} checkbox-fieldset`}><legend className="form-section-label">{spec.label}</legend>
+        <div className="checkbox-grid">{spec.options.map(([v, l]) =>
+          <label key={v} className="check-line"><input type="checkbox" checked={(value as string[]).includes(v)}
+            onChange={(e) => onChange(e.target.checked ? [...(value as string[]), v] : (value as string[]).filter((x) => x !== v))} /><span>{l}</span></label>)}
+          {spec.options.length === 0 && <span className="cell-sub">Нет вариантов</span>}</div>{err}</fieldset>;
     case 'checkbox':
-      return <label className="kit-row"><input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />{spec.label}{err}</label>;
+      return <div className={cls}><label className="check-line"><input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} /><span>{spec.label}</span></label>{err}</div>;
     case 'file':
-      return <label className="kit-field" htmlFor={id}>{label}<input id={id} type="file" accept="application/pdf,image/jpeg,image/png"
-        onChange={(e) => onFile(e.target.files?.[0] ?? null)} /><em className="kit-muted">PDF, JPEG или PNG до 10 МБ</em>{err}</label>;
+      return <div className={cls}>{label}<input id={id} type="file" accept="application/pdf,image/jpeg,image/png"
+        onChange={(e) => onFile(e.target.files?.[0] ?? null)} /><div className="field-hint">PDF, JPEG или PNG до 10 МБ</div>{err}</div>;
     case 'money':
-      return <label className="kit-field" htmlFor={id}>{label}<div className="kit-row" style={{ flexWrap: 'nowrap' }}>
+      return <div className={cls}>{label}<div className="kit-row" style={{ flexWrap: 'nowrap' }}>
         <input id={id} inputMode="decimal" value={String(value)} onChange={(e) => onChange(e.target.value)} placeholder="0.00" />
-        <select value={currency} onChange={(e) => onCurrency(e.target.value)} style={{ width: 90 }} aria-label="Валюта">
-          {currencies.map((c) => <option key={c}>{c}</option>)}</select></div>{err}</label>;
+        <select value={currency} onChange={(e) => onCurrency(e.target.value)} style={{ width: 96 }} aria-label="Валюта">
+          {currencies.map((c) => <option key={c}>{c}</option>)}</select></div>{err}</div>;
     default: {
       const type = spec.type === 'datetime' ? 'datetime-local' : spec.type;
-      return <label className="kit-field" htmlFor={id}>{label}<input id={id} type={type} value={String(value)}
-        onChange={(e) => onChange(e.target.value)} />{'hint' in spec && spec.hint && <em className="kit-muted">{spec.hint}</em>}{err}</label>;
+      return <div className={cls}>{label}<input id={id} type={type} value={String(value)}
+        onChange={(e) => onChange(e.target.value)} />{'hint' in spec && spec.hint && <div className="field-hint">{spec.hint}</div>}{err}</div>;
     }
   }
 }
