@@ -16,7 +16,7 @@ export const navigation: NavItem[] = [
   { to: '/sales', label: 'Продажи', group: 'Розница', permission: 'retail.read', element: <SalesPage /> },
   { to: '/listings', label: 'Витрина', group: 'Розница', permission: 'retail.read', element: <ListingsPage /> },
   { to: '/crm', label: 'Клиенты', group: 'Розница', permission: 'retail.read', element: <CRMPage /> },
-  { to: '/insurance', label: 'Страхование', group: 'Партнёры', permission: 'insurance.read', element: <InsurancePage /> },
+  { to: '/insurance-applications', label: 'Страхование', group: 'Партнёры', permission: 'insurance.read', element: <InsurancePage /> },
   { to: '/financing', label: 'Финансирование', group: 'Партнёры', permission: 'financing.read', element: <FinancingPage /> },
   { to: '/settings', label: 'Настройки', group: 'Компания', element: <SettingsPage /> },
 ];
