@@ -28,9 +28,9 @@ export function OrgSettings() {
     </Panel>
     <Notice>Реквизиты организации, сотрудников и их роли меняет администратор платформы JustixAuto. Подключение кабинета не означает интеграцию с API банка или страховой.</Notice>
     <Panel title="Безопасность" padded>
-      <Details items={[['Двухфакторная защита', s.view.mfa.enrolled ? <Badge tone="success">Включена</Badge> : <Badge tone="warning">Выключена — нужна для решений</Badge>]]} />
+      {!s.view.mfa.disabled && <Details items={[['Двухфакторная защита', s.view.mfa.enrolled ? <Badge tone="success">Включена</Badge> : <Badge tone="warning">Выключена — нужна для решений</Badge>]]} />}
       <div className="kit-row" style={{ marginTop: 14 }}>
-        {!s.view.mfa.enrolled && <Button variant="primary" onClick={() => setForm('mfa')}>Включить двухфакторную защиту</Button>}
+        {!s.view.mfa.enrolled && !s.view.mfa.disabled && <Button variant="primary" onClick={() => setForm('mfa')}>Включить двухфакторную защиту</Button>}
         <Button onClick={() => setForm('password')}>Сменить пароль</Button>
       </div>
       {form === 'mfa' && <div style={{ marginTop: 16 }}><MFASetup onDone={() => { void s.refresh(); setForm(null); }} /></div>}

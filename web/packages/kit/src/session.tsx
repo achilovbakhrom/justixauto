@@ -8,7 +8,7 @@ export interface SessionView {
   user: { id: string; displayName: string; status: string; passwordChangeRequired: boolean };
   roles: { id: string; name: string }[];
   permissions: string[];
-  mfa: { enrolled: boolean; authenticatedAt?: string };
+  mfa: { enrolled: boolean; disabled?: boolean; authenticatedAt?: string };
   context: { revision: string; companyId: string | null; branchScope: { mode: 'ALL' | 'SELECTED'; branchIds: string[] } };
   accessibleCompanies: Company[];
   setup: { next: 'company' | 'branch' | 'none' };

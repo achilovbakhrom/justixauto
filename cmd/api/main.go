@@ -51,11 +51,12 @@ func run(log *slog.Logger) error {
 		}
 	}
 	e, _, err := app.New(db, app.Config{
-		Files:   files,
-		Cookie:  identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
-		Session: identity.DefaultSessionConfig,
-		MFAKey:  cfg.MFAKey,
-		Log:     log,
+		Files:       files,
+		Cookie:      identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
+		Session:     identity.DefaultSessionConfig,
+		MFAKey:      cfg.MFAKey,
+		MFADisabled: cfg.MFADisabled,
+		Log:         log,
 	})
 	if err != nil {
 		return err

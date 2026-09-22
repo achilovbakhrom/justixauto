@@ -27,8 +27,10 @@ type Config struct {
 	Cookie  identity.CookieConfig
 	Session identity.SessionConfig
 	MFAKey  []byte
-	Now     func() time.Time // nil = time.Now
-	Log     *slog.Logger
+	// MFADisabled switches two-factor authentication off (local development).
+	MFADisabled bool
+	Now         func() time.Time // nil = time.Now
+	Log         *slog.Logger
 }
 
 // New returns the HTTP server with all modules mounted under /api/v1.
@@ -42,7 +44,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	identity.RegisterPermissions(insurance.Permissions...)
 	identity.RegisterPermissions(financing.Permissions...)
 	identity.RegisterPermissions(documents.Permissions...)
-	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now})
+	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now, MFADisabled: cfg.MFADisabled})
 	if err != nil {
 		return nil, nil, err
 	}

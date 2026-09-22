@@ -107,9 +107,9 @@ function Account() {
     <div className="settings-title-row"><div><h2>Личный аккаунт</h2><p>Профиль, пароль и двухфакторная защита</p></div></div>
     <Panel title="Профиль" padded><Details items={[['Имя', s.view.user.displayName], ['Статус', s.view.user.status === 'active' ? 'Активен' : s.view.user.status]]} /></Panel>
     <Panel title="Безопасность" padded>
-      <Details items={[['Двухфакторная защита', s.view.mfa.enrolled ? <Badge tone="success">Включена</Badge> : <Badge tone="warning">Выключена</Badge>]]} />
+      {!s.view.mfa.disabled && <Details items={[['Двухфакторная защита', s.view.mfa.enrolled ? <Badge tone="success">Включена</Badge> : <Badge tone="warning">Выключена</Badge>]]} />}
       <div className="kit-row" style={{ marginTop: 14 }}>
-        {!s.view.mfa.enrolled && <Button variant="primary" onClick={() => setTab('mfa')}>Включить двухфакторную защиту</Button>}
+        {!s.view.mfa.enrolled && !s.view.mfa.disabled && <Button variant="primary" onClick={() => setTab('mfa')}>Включить двухфакторную защиту</Button>}
         <Button onClick={() => setTab('password')}>Сменить пароль</Button>
       </div>
       {tab === 'mfa' && <div style={{ marginTop: 16 }}><MFASetup onDone={() => { void s.refresh(); setTab(null); }} /></div>}

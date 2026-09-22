@@ -35,6 +35,8 @@ type AuthService struct {
 	deps
 	cfg SessionConfig
 	box *secretBox // encrypts MFA secrets
+	// mfaOff: two-factor authentication is switched off (Config.MFADisabled).
+	mfaOff bool
 }
 
 var errInvalidCredentials = apperr.New(apperr.ErrUnauthenticated, "invalid_credentials", "login or password is incorrect")
@@ -90,7 +92,7 @@ func (s *AuthService) Login(ctx context.Context, login, password, previousToken 
 	if u.Status != UserActive {
 		return nil, apperr.New(apperr.ErrForbidden, "account_suspended", "this account is suspended")
 	}
-	if u.MFAEnabledAt != nil {
+	if u.MFAEnabledAt != nil && !s.mfaOff {
 		// Failed-attempt counter resets only after the second factor, so
 		// repeated logins cannot bypass the lockout for code guessing.
 		token, err := randomToken()
@@ -188,7 +190,7 @@ func (s *AuthService) Authenticate(ctx context.Context, token string) (*auth.Pri
 	}
 	p := &auth.Principal{UserID: u.ID, SessionID: sess.ID, Permissions: map[string]bool{},
 		ContextRevision: sess.ContextRevision, BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}},
-		MFAEnrolled: u.MFAEnabledAt != nil, MFARequired: mfaRequired(),
+		MFAEnrolled: u.MFAEnabledAt != nil, MFARequired: s.mfaRequired(),
 		MFAFresh:               sess.MFAAuthenticatedAt != nil && now.Sub(*sess.MFAAuthenticatedAt) <= mfaFreshness,
 		PasswordChangeRequired: u.PasswordChangeRequired}
 	for _, r := range roles {
@@ -243,6 +245,7 @@ type RoleRef struct {
 
 type MFAView struct {
 	Enrolled        bool       `json:"enrolled"`
+	Disabled        bool       `json:"disabled"` // two-factor authentication is switched off on this server
 	AuthenticatedAt *time.Time `json:"authenticatedAt,omitempty"`
 }
 
@@ -291,7 +294,7 @@ func (s *AuthService) View(ctx context.Context, p *auth.Principal, sess *Session
 		User:                SessionUser{ID: u.ID, DisplayName: u.DisplayName, Status: u.Status, PasswordChangeRequired: u.PasswordChangeRequired},
 		Roles:               make([]RoleRef, len(roles)),
 		Permissions:         p.PermissionList(),
-		MFA:                 MFAView{Enrolled: u.MFAEnabledAt != nil, AuthenticatedAt: sess.MFAAuthenticatedAt},
+		MFA:                 MFAView{Enrolled: u.MFAEnabledAt != nil, Disabled: s.mfaOff, AuthenticatedAt: sess.MFAAuthenticatedAt},
 		Context:             ContextView{Revision: revision(p.ContextRevision), BranchScope: p.BranchScope},
 		AccessibleCompanies: make([]AccessibleCompany, len(companies)),
 		Setup:               SetupView{Next: "none", PartnershipRequiredForB2B: true},

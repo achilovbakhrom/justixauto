@@ -21,12 +21,14 @@ type Config struct {
 	// MFAKey (32 bytes, base64 in MFA_KEY) encrypts two-factor secrets at rest.
 	// Losing or changing it disables every enrolled authenticator.
 	MFAKey []byte
+	// MFADisabled (MFA_DISABLED=true) switches two-factor authentication off. Local development only.
+	MFADisabled bool
 	// FileStorage is "s3" (production) or "local" (DocumentsDir, development).
 	FileStorage  string
 	DocumentsDir string
 	// WebDir is the web/apps checkout with built apps (npm run build); empty = API only.
 	WebDir string
-	S3           S3
+	S3     S3
 }
 
 // S3 selects the private bucket for uploaded files. Credentials come from the
@@ -63,6 +65,7 @@ func Load() (Config, error) {
 		return Config{}, fmt.Errorf("config: MFA_KEY must be 32 random bytes, base64-encoded (openssl rand -base64 32)")
 	}
 	cfg.MFAKey = key
+	cfg.MFADisabled = os.Getenv("MFA_DISABLED") == "true"
 	switch {
 	case cfg.FileStorage == "s3" && cfg.S3.Bucket == "":
 		return Config{}, fmt.Errorf("config: S3_BUCKET is required when FILE_STORAGE=s3")

@@ -200,7 +200,9 @@ function GlobalSearch({ placeholder, path }: { placeholder: string; path: (q: st
 
 function SecurityDialog({ onClose }: { onClose: () => void }) {
   const s = useSession();
-  const [tab, setTab] = useState<'mfa' | 'password'>('mfa');
+  const off = !!s.view.mfa.disabled;
+  const [tab, setTab] = useState<'mfa' | 'password'>(off ? 'password' : 'mfa');
+  if (off) return <Modal title="Безопасность" onClose={onClose}><ChangePassword onDone={() => { void s.refresh(); onClose(); }} /></Modal>;
   return <Modal title="Безопасность" onClose={onClose}>
     <Tabs value={tab} onChange={setTab} tabs={[['mfa', 'Двухфакторная защита'], ['password', 'Пароль']]} />
     {tab === 'mfa' && (s.view.mfa.enrolled

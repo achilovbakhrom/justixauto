@@ -12,6 +12,9 @@ type Config struct {
 	Session SessionConfig
 	MFAKey  []byte           // 32-byte key encrypting TOTP secrets at rest
 	Now     func() time.Time // nil = time.Now
+	// MFADisabled turns two-factor authentication off everywhere: no login
+	// challenge and no second factor for sensitive actions. Local use only.
+	MFADisabled bool
 }
 
 // Module wires the identity repository → service → handler chain.
@@ -35,7 +38,7 @@ func New(db *gorm.DB, cfg Config) (*Module, error) {
 	}
 	d := deps{store: NewStore(db), now: cfg.Now}
 	m := &Module{
-		Auth:      &AuthService{deps: d, cfg: cfg.Session, box: box},
+		Auth:      &AuthService{deps: d, cfg: cfg.Session, box: box, mfaOff: cfg.MFADisabled},
 		Companies: &CompanyService{deps: d},
 		Users:     &UserService{deps: d},
 	}

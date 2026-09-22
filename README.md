@@ -43,7 +43,9 @@ bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
 ```
 
 `.env` needs your own `MFA_KEY` (`openssl rand -base64 32`); it encrypts
-two-factor secrets, so keep it stable and secret.
+two-factor secrets, so keep it stable and secret. `MFA_DISABLED=true` switches
+two-factor authentication off for local development only; business rules
+require it for sensitive actions everywhere else.
 
 Sign in with `POST /api/v1/identity/session/login` `{"login","password"}`; the
 session is an HttpOnly cookie. Every state-changing request sends the

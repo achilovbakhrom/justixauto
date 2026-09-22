@@ -23,9 +23,13 @@ const (
 
 var errInvalidCode = apperr.New(apperr.ErrUnauthenticated, "invalid_mfa_code", "the two-factor code is incorrect or expired")
 
-// mfaRequired lists the catalog permissions that need a fresh second factor.
-func mfaRequired() map[string]bool {
+// mfaRequired lists the catalog permissions that need a fresh second factor
+// (none when two-factor authentication is switched off).
+func (s *AuthService) mfaRequired() map[string]bool {
 	out := map[string]bool{}
+	if s.mfaOff {
+		return out
+	}
 	for _, p := range Catalog {
 		if p.RequiresMFA {
 			out[p.Key] = true
