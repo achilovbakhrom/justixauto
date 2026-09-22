@@ -13,6 +13,7 @@ import (
 
 	"justixauto/internal/app"
 	"justixauto/internal/config"
+	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/platform/database"
 )
@@ -40,12 +41,20 @@ func run(log *slog.Logger) error {
 	}
 	defer sqlDB.Close()
 
+	var files documents.Storage = documents.DirStorage{Root: cfg.DocumentsDir}
+	if cfg.FileStorage == "s3" {
+		files, err = documents.NewS3Storage(context.Background(), documents.S3Config{Bucket: cfg.S3.Bucket, Region: cfg.S3.Region,
+			Prefix: cfg.S3.Prefix, Endpoint: cfg.S3.Endpoint, PathStyle: cfg.S3.PathStyle, SSE: cfg.S3.SSE})
+		if err != nil {
+			return err
+		}
+	}
 	e, _, err := app.New(db, app.Config{
-		DocumentsDir: cfg.DocumentsDir,
-		Cookie:       identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
-		Session:      identity.DefaultSessionConfig,
-		MFAKey:       cfg.MFAKey,
-		Log:          log,
+		Files:   files,
+		Cookie:  identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
+		Session: identity.DefaultSessionConfig,
+		MFAKey:  cfg.MFAKey,
+		Log:     log,
 	})
 	if err != nil {
 		return err

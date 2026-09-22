@@ -58,7 +58,7 @@ Tests:
 
 ```sh
 bash tools/go.sh vet ./...
-bash tools/test-go.sh        # all tests incl. database tests, in a throwaway PostgreSQL container
+bash tools/test-go.sh        # all tests incl. database and S3 tests (throwaway PostgreSQL + MinIO)
 bash tools/go.sh test ./...  # without Docker: database tests are skipped
 ```
 

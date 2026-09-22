@@ -32,6 +32,7 @@ import (
 	"gorm.io/gorm"
 
 	"justixauto/internal/app"
+	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/platform/database"
 )
@@ -102,7 +103,7 @@ func New(t *testing.T) *Env {
 	clock := &Clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
 	key := make([]byte, 32)
 	_, _ = rand.Read(key)
-	e, idm, err := app.New(db, app.Config{DocumentsDir: t.TempDir(), Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
+	e, idm, err := app.New(db, app.Config{Files: fileStorage(t), Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
 		Log: slog.New(slog.NewTextHandler(io.Discard, nil))})
 	if err != nil {
 		t.Fatal(err)
@@ -318,3 +319,21 @@ func (c *Client) Raw(path string) (int, []byte) {
 
 // PDF is a minimal file detected as application/pdf.
 var PDF = []byte("%PDF-1.4\n1 0 obj << /Type /Catalog >> endobj\ntrailer << /Root 1 0 R >>\n%%EOF\n")
+
+// fileStorage uses S3 (e.g. MinIO) when TEST_S3_ENDPOINT is set, else a
+// temporary directory.
+func fileStorage(t *testing.T) documents.Storage {
+	endpoint := os.Getenv("TEST_S3_ENDPOINT")
+	if endpoint == "" {
+		return documents.DirStorage{Root: t.TempDir()}
+	}
+	s, err := documents.NewS3Storage(context.Background(), documents.S3Config{Bucket: "justixauto-test", Region: "us-east-1",
+		Prefix: "t/" + uuid.NewString() + "/", Endpoint: endpoint, PathStyle: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := s.EnsureBucket(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	return s
+}

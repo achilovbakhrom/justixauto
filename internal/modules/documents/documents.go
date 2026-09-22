@@ -74,20 +74,20 @@ type Share struct {
 
 func (Share) TableName() string { return "documents.shares" }
 
-// Storage keeps file bytes. Keys are opaque and never leave the module.
+// Storage keeps file bytes: S3 in production, a private directory locally.
+// Keys are opaque and never leave the module.
 type Storage interface {
-	Put(key string, r io.Reader) error
-	Open(key string) (io.ReadCloser, error)
-	Delete(key string) error
+	Put(ctx context.Context, key string, data []byte, contentType string) error
+	Open(ctx context.Context, key string) (io.ReadCloser, error)
+	Delete(ctx context.Context, key string) error
 }
 
-// DirStorage stores files in a private local directory (ADR-10: local
-// filesystem now, S3-compatible object storage in production).
+// DirStorage stores files in a private local directory (development, tests).
 type DirStorage struct{ Root string }
 
 func (d DirStorage) path(key string) string { return filepath.Join(d.Root, key[:2], key) }
 
-func (d DirStorage) Put(key string, r io.Reader) error {
+func (d DirStorage) Put(_ context.Context, key string, data []byte, _ string) error {
 	p := d.path(key)
 	if err := os.MkdirAll(filepath.Dir(p), 0o700); err != nil {
 		return err
@@ -96,15 +96,17 @@ func (d DirStorage) Put(key string, r io.Reader) error {
 	if err != nil {
 		return err
 	}
-	if _, err := io.Copy(f, r); err != nil {
+	if _, err := f.Write(data); err != nil {
 		f.Close()
 		return err
 	}
 	return f.Close()
 }
 
-func (d DirStorage) Open(key string) (io.ReadCloser, error) { return os.Open(d.path(key)) }
-func (d DirStorage) Delete(key string) error                { return os.Remove(d.path(key)) }
+func (d DirStorage) Open(_ context.Context, key string) (io.ReadCloser, error) {
+	return os.Open(d.path(key))
+}
+func (d DirStorage) Delete(_ context.Context, key string) error { return os.Remove(d.path(key)) }
 
 // repository holds all database access of the module.
 type repository struct{ db *gorm.DB }
@@ -152,40 +154,33 @@ func (s *Service) Upload(ctx context.Context, p *auth.Principal, purpose, name s
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
-	key := strings.ReplaceAll(uuid.NewString(), "-", "")
-	h := sha256.New()
-	counter := &countingReader{r: io.TeeReader(io.LimitReader(r, MaxBytes+1), h)}
-	head := make([]byte, 512)
-	n, _ := io.ReadFull(counter, head)
-	mime := strings.Split(http.DetectContentType(head[:n]), ";")[0]
+	// Uploads are small (10 MiB): read them fully, check them, then store.
+	data, err := io.ReadAll(io.LimitReader(r, MaxBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(data) == 0 {
+		return nil, apperr.FieldError("file", "the file is empty")
+	}
+	if len(data) > MaxBytes {
+		return nil, apperr.FieldError("file", "at most 10 MiB")
+	}
+	mime := strings.Split(http.DetectContentType(data), ";")[0]
 	if !slices.Contains(allowedMIME, mime) {
 		return nil, apperr.FieldError("file", "only PDF, JPEG or PNG files")
 	}
-	if err := s.storage.Put(key, io.MultiReader(strings.NewReader(string(head[:n])), counter)); err != nil {
+	sum := sha256.Sum256(data)
+	key := strings.ReplaceAll(uuid.NewString(), "-", "")
+	if err := s.storage.Put(ctx, key, data, mime); err != nil {
 		return nil, err
 	}
-	if counter.n > MaxBytes {
-		_ = s.storage.Delete(key)
-		return nil, apperr.FieldError("file", "at most 10 MiB")
-	}
-	f := &File{ID: uuid.NewString(), CompanyID: p.CompanyID, Purpose: purpose, FileName: name, MIME: mime, ByteLength: counter.n,
-		SHA256: hex.EncodeToString(h.Sum(nil)), StorageKey: key, Sensitive: sensitive, CreatedBy: p.UserID, CreatedAt: s.now().UTC()}
+	f := &File{ID: uuid.NewString(), CompanyID: p.CompanyID, Purpose: purpose, FileName: name, MIME: mime, ByteLength: int64(len(data)),
+		SHA256: hex.EncodeToString(sum[:]), StorageKey: key, Sensitive: sensitive, CreatedBy: p.UserID, CreatedAt: s.now().UTC()}
 	if err := s.repo.create(ctx, f); err != nil {
-		_ = s.storage.Delete(key)
+		_ = s.storage.Delete(ctx, key)
 		return nil, err
 	}
 	return f, nil
-}
-
-type countingReader struct {
-	r io.Reader
-	n int64
-}
-
-func (c *countingReader) Read(b []byte) (int, error) {
-	n, err := c.r.Read(b)
-	c.n += int64(n)
-	return n, err
 }
 
 func (s *Service) readable(ctx context.Context, companyID, id string) (*File, error) {
@@ -211,7 +206,7 @@ func (s *Service) Open(ctx context.Context, p *auth.Principal, id string) (*File
 			return nil, nil, err
 		}
 	}
-	r, err := s.storage.Open(f.StorageKey)
+	r, err := s.storage.Open(ctx, f.StorageKey)
 	return f, r, err
 }
 

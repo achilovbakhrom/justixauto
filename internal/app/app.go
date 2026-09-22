@@ -22,13 +22,13 @@ import (
 )
 
 type Config struct {
-	// DocumentsDir is the private directory for uploaded files.
-	DocumentsDir string
-	Cookie       identity.CookieConfig
-	Session      identity.SessionConfig
-	MFAKey       []byte
-	Now          func() time.Time // nil = time.Now
-	Log          *slog.Logger
+	// Files stores uploaded documents (S3 in production, a directory locally).
+	Files   documents.Storage
+	Cookie  identity.CookieConfig
+	Session identity.SessionConfig
+	MFAKey  []byte
+	Now     func() time.Time // nil = time.Now
+	Log     *slog.Logger
 }
 
 // New returns the HTTP server with all modules mounted under /api/v1.
@@ -50,7 +50,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	// Every request: who is calling (session cookie, CSRF, Origin), then safe retries.
 	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, cfg.Now, "/identity/session/"))
 	idm.Register(api)
-	docs := documents.New(db, cfg.Now, documents.DirStorage{Root: cfg.DocumentsDir})
+	docs := documents.New(db, cfg.Now, cfg.Files)
 	docs.Register(api)
 	files := fileShares{docs.Service}
 	inv := inventory.New(db, cfg.Now)
