@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"justixauto/internal/modules/commerce"
+	"justixauto/internal/modules/financing"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/modules/insurance"
 	"justixauto/internal/modules/inventory"
@@ -36,6 +37,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	identity.RegisterPermissions(commerce.Permissions...)
 	identity.RegisterPermissions(retail.Permissions...)
 	identity.RegisterPermissions(insurance.Permissions...)
+	identity.RegisterPermissions(financing.Permissions...)
 	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now})
 	if err != nil {
 		return nil, nil, err
@@ -55,6 +57,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	ins := insurance.New(db, cfg.Now, insuranceSales{ret.Deals}, insurerDirectory{idm.Companies})
 	approvals.s = ins.Service
 	ins.Register(api)
+	financing.New(db, cfg.Now, financingSales{ret.Deals}, providerDirectory{idm.Companies}).Register(api)
 	return e, idm, nil
 }
 
@@ -165,4 +168,26 @@ func (a insurerDirectory) Company(ctx context.Context, id string) (*insurance.Co
 		return nil, err
 	}
 	return &insurance.Company{ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive}, nil
+}
+
+// financingSales adapts retail sales to financing's Sales port.
+type financingSales struct{ deals *retail.DealService }
+
+func (a financingSales) Sale(ctx context.Context, companyID, dealID string) (*financing.Sale, error) {
+	d, err := a.deals.Info(ctx, companyID, dealID)
+	if err != nil {
+		return nil, err
+	}
+	return &financing.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision}, nil
+}
+
+// providerDirectory adapts identity company profiles to financing's Directory port.
+type providerDirectory struct{ companies *identity.CompanyService }
+
+func (a providerDirectory) Company(ctx context.Context, id string) (*financing.Company, error) {
+	p, err := a.companies.CompanyProfile(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &financing.Company{ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive}, nil
 }
