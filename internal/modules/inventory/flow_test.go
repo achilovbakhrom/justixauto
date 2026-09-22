@@ -263,3 +263,43 @@ func TestReceiptQuantityCorrection(t *testing.T) {
 		t.Fatalf("occupied: %v", occ)
 	}
 }
+
+func TestWarehouseBranchAttachment(t *testing.T) {
+	e, admin := newEnv(t)
+	c := e.CompanyUser(admin, "Motors", append(allPerms, "branches.create")...)
+	other := e.CompanyUser(admin, "Other", "branches.create")
+	branch := func(u *testkit.Client, name string) string {
+		r := u.Do(http.MethodPost, "/identity/companies/"+u.CompanyID+"/branches", map[string]any{"name": name})
+		expect(t, r, http.StatusCreated)
+		return str(r.Data(), "id")
+	}
+	north, south, foreign := branch(c, "North"), branch(c, "South"), branch(other, "Elsewhere")
+
+	withBranch := func(name, branchID string) testkit.Response {
+		body := warehouse(name, 5)
+		body["branchId"] = branchID
+		return c.Do(http.MethodPost, "/inventory/warehouses", body)
+	}
+	expect(t, withBranch("Foreign", foreign), http.StatusUnprocessableEntity)
+	main := withBranch("North main", north)
+	expect(t, main, http.StatusCreated)
+	if main.Data()["branchId"] != north {
+		t.Fatalf("branch: %v", main.Data())
+	}
+	expect(t, withBranch("North second", north), http.StatusConflict, "branch_has_warehouse")
+
+	spare := c.Do(http.MethodPost, "/inventory/warehouses", warehouse("Spare", 5))
+	spareID := str(spare.Data(), "id")
+	attach := func(branchID any, rev string) testkit.Response {
+		return c.Do(http.MethodPost, "/inventory/warehouses/"+spareID+"/branch-attachment", map[string]any{"branchId": branchID}, ifMatch(rev)...)
+	}
+	expect(t, attach(nil, "1"), http.StatusConflict, "invalid_transition") // not attached yet
+	expect(t, attach(north, "1"), http.StatusConflict, "branch_has_warehouse")
+	expect(t, attach(foreign, "1"), http.StatusUnprocessableEntity)
+	expect(t, attach(south, "1"), http.StatusOK)
+	detached := attach(nil, "2")
+	expect(t, detached, http.StatusOK)
+	if detached.Data()["branchId"] != nil {
+		t.Fatalf("detached: %v", detached.Data())
+	}
+}

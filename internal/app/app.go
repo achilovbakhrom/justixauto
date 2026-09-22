@@ -53,7 +53,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	docs := documents.New(db, cfg.Now, cfg.Files)
 	docs.Register(api)
 	files := fileShares{docs.Service}
-	inv := inventory.New(db, cfg.Now)
+	inv := inventory.New(db, cfg.Now, idm.Companies)
 	inv.Register(api)
 	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}, commerceStock{inv.Stock()}, files).Register(api)
 	// Retail and insurance each ask the other a question (approval / sale

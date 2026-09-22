@@ -3,7 +3,7 @@ import {
   ActionButton, Badge, Details, Modal, Page, Panel, Stat, Table, Tabs, date, dateTime, get, list, patch, post, useData, useRefresh,
 } from '@justixauto/kit';
 import type { FieldSpec } from '@justixauto/kit';
-import { modelName, useModelName, useModels, useVehicles, useWarehouses } from '../data';
+import { modelName, useBranches, useModelName, useModels, useVehicles, useWarehouses } from '../data';
 import type { Model, Vehicle, Warehouse } from '../data';
 
 interface Batch { id: string; modelId: string; modelSpecificationVersion: string; confirmedQuantity: string; identifiedCount: string; unidentifiedCount: string; receivedAt: string; revision: string }
@@ -19,13 +19,17 @@ const warehouseInput = (v: Record<string, unknown>) => ({ name: v.name, country:
 
 export function WarehousesPage() {
   const q = useWarehouses();
+  const branches = useBranches();
+  const branchName = (id: string | null) => id ? branches.data?.find((b) => b.id === id)?.name ?? '—' : 'Общий склад компании';
   const [open, setOpen] = useState<string | null>(null);
   return <Page title="Склады" subtitle="Занято = размещённые автомобили + ожидающие ввода VIN"
     actions={<ActionButton label="Добавить склад" variant="primary" refresh={[['warehouses']]}
-      fields={[...warehouseFields(), { name: 'capacity', label: 'Вместимость (машин)', type: 'number', required: true }]}
-      onSubmit={(v) => post('/inventory/warehouses', { ...warehouseInput(v), capacity: v.capacity })} />}>
+      fields={[...warehouseFields(), { name: 'capacity', label: 'Вместимость (машин)', type: 'number', required: true },
+        { name: 'branchId', label: 'Основной склад филиала (необязательно)', type: 'select', options: (branches.data ?? []).map((b) => [b.id, b.name]) }]}
+      onSubmit={(v) => post('/inventory/warehouses', { ...warehouseInput(v), capacity: v.capacity, branchId: v.branchId || null })} />}>
     <Panel><Table rows={q.data} loading={q.isLoading} error={q.error} rowKey={(w) => w.id} onRowClick={(w) => setOpen(w.id)} columns={[
-      { title: 'Склад', render: (w) => <b>{w.name}</b> }, { title: 'Город', render: (w) => w.city },
+      { title: 'Склад', render: (w) => <b>{w.name}</b> }, { title: 'Филиал', render: (w) => branchName(w.branchId) },
+      { title: 'Город', render: (w) => w.city },
       { title: 'Вместимость', render: (w) => w.capacity }, { title: 'Занято', render: (w) => w.occupied },
       { title: 'Свободно', render: (w) => <Badge tone={w.free === '0' ? 'danger' : 'success'}>{w.free}</Badge> },
     ]} /></Panel>
@@ -42,6 +46,7 @@ function WarehouseDialog({ id, onClose }: { id: string; onClose: () => void }) {
   const w = s?.warehouse;
   const refresh = [['stock', id], ['warehouses'], ['vehicles']];
   const modelOptions = (models.data ?? []).map((m): [string, string] => [m.id, modelName(m)]);
+  const branches = useBranches();
   return <Modal title={w?.name ?? 'Склад'} onClose={onClose} size="wide" footer={w && <>
     <ActionButton label="Принять автомобили" variant="primary" refresh={refresh} fields={[
       { name: 'modelId', label: 'Модель', type: 'select', required: true, options: modelOptions },
@@ -63,6 +68,11 @@ function WarehouseDialog({ id, onClose }: { id: string; onClose: () => void }) {
     ]} onSubmit={(v) => post(`/inventory/warehouses/${id}/capacity-changes`, v, { ifMatch: w.revision })} />
     <ActionButton label="Реквизиты" fields={warehouseFields(w)} refresh={refresh}
       onSubmit={(v) => patch(`/inventory/warehouses/${id}`, warehouseInput(v), { ifMatch: w.revision })} />
+    <ActionButton label="Филиал" refresh={refresh}
+      intro={<p>У филиала может быть один основной склад. Отвязка сохраняет склад, вместимость и автомобили.</p>}
+      fields={[{ name: 'branchId', label: 'Основной склад филиала', type: 'select', initial: w.branchId ?? '',
+        options: (branches.data ?? []).map((b) => [b.id, b.name]) }]}
+      onSubmit={(v) => post(`/inventory/warehouses/${id}/branch-attachment`, { branchId: v.branchId || null }, { ifMatch: w.revision })} />
   </>}>
     {w && <div className="kit-grid"><Stat label="Вместимость" value={w.capacity} /><Stat label="Занято" value={w.occupied} /><Stat label="Свободно" value={w.free} /></div>}
     <Panel title="Автомобили"><Table rows={s?.vehicles} rowKey={(v) => v.id} columns={[

@@ -50,6 +50,7 @@ export const errorMessages: Record<string, string> = {
   capacity_exceeded: 'На складе не хватает мест.',
   capacity_below_occupied: 'Вместимость не может быть меньше занятых мест.',
   exceeds_unidentified: 'VIN больше, чем машин без VIN в партии.',
+  branch_has_warehouse: 'У филиала уже есть основной склад.',
   not_in_warehouse: 'Автомобиль не на складе.',
   placement_changed: 'Размещение автомобиля изменилось. Обновите данные.',
   vehicle_unavailable: 'Автомобиль уже участвует в другой продаже или заказе.',

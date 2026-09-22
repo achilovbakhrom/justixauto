@@ -125,6 +125,8 @@ type WarehouseRepository interface {
 	Lock(ctx context.Context, companyID, id string) (*Warehouse, error)
 	List(ctx context.Context, f WarehouseFilter) ([]Warehouse, error)
 	Update(ctx context.Context, w *Warehouse, expected int64) error
+	// ByBranch returns the branch's main warehouse, if any.
+	ByBranch(ctx context.Context, companyID, branchID string) (*Warehouse, error)
 	// Touch bumps the version after stock in the warehouse changed.
 	Touch(ctx context.Context, w *Warehouse, at time.Time) error
 	// Occupied = placed vehicles + unidentified vehicles of active batches.
@@ -173,12 +175,20 @@ func (r *warehouseRepository) Update(ctx context.Context, w *Warehouse, expected
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Warehouse{}, w.ID, expected, map[string]any{
 		"name": w.Name, "country": w.Country, "country_key": w.CountryKey, "region": w.Region,
 		"region_key": w.RegionKey, "city": w.City, "address": w.Address, "capacity": w.Capacity,
-		"updated_at": w.UpdatedAt,
+		"branch_id": w.BranchID, "updated_at": w.UpdatedAt,
 	})
 	if err == nil {
 		w.Version = expected + 1
 	}
 	return err
+}
+
+func (r *warehouseRepository) ByBranch(ctx context.Context, companyID, branchID string) (*Warehouse, error) {
+	var w Warehouse
+	if err := r.db.WithContext(ctx).Where("company_id = ? AND branch_id = ?", companyID, branchID).Take(&w).Error; err != nil {
+		return nil, translate(err)
+	}
+	return &w, nil
 }
 
 func (r *warehouseRepository) Touch(ctx context.Context, w *Warehouse, at time.Time) error {

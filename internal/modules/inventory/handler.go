@@ -166,6 +166,7 @@ func (h *Handler) Routes(g *echo.Group) {
 	c.POST("/warehouses", h.createWarehouse, auth.Require(PermWarehousesManage))
 	c.PATCH("/warehouses/:id", h.updateWarehouse, auth.Require(PermWarehousesManage))
 	c.POST("/warehouses/:id/capacity-changes", h.changeCapacity, auth.Require(PermWarehousesManage))
+	c.POST("/warehouses/:id/branch-attachment", h.attachBranch, auth.Require(PermWarehousesManage))
 	c.POST("/warehouses/:id/receipt-batches", h.receive, auth.Require(PermReceiptsCreate))
 	c.POST("/receipt-batches/:id/identifications", h.identify, auth.Require(PermReceiptsCreate))
 	c.POST("/receipt-batches/:id/quantity-corrections", h.correctQuantity, auth.Require(PermReceiptsCreate))
@@ -333,6 +334,24 @@ func (h *Handler) identify(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, receiptBody(r), r.Batch.Version)
 }
 
+func (h *Handler) attachBranch(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in struct {
+		BranchID *string `json:"branchId"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	w, err := h.warehouses.AttachBranch(c.Request().Context(), auth.Get(c), c.Param("id"), expected, in.BranchID)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusOK, toWarehouse(w), w.Warehouse.Version)
+}
+
 func (h *Handler) correctQuantity(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -403,11 +422,11 @@ type Module struct {
 	stock   *StockService
 }
 
-func New(db *gorm.DB, now func() time.Time) *Module {
+func New(db *gorm.DB, now func() time.Time, branches Branches) *Module {
 	if now == nil {
 		now = time.Now
 	}
-	d := deps{store: NewStore(db), now: now}
+	d := deps{store: NewStore(db), now: now, branches: branches}
 	return &Module{handler: &Handler{models: &ModelService{d}, warehouses: &WarehouseService{d},
 		receipts: &ReceiptService{d}, vehicles: &VehicleService{d}}, stock: &StockService{d}}
 }

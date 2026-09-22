@@ -17,8 +17,14 @@ import (
 )
 
 type deps struct {
-	store Store
-	now   func() time.Time
+	store    Store
+	now      func() time.Time
+	branches Branches
+}
+
+// Branches answers whether a branch belongs to a company (implemented by identity).
+type Branches interface {
+	BranchOf(ctx context.Context, companyID, branchID string) (bool, error)
 }
 
 func (d deps) clock() time.Time { return d.now().UTC() }
@@ -190,6 +196,8 @@ type WarehouseProfileInput struct {
 type WarehouseInput struct {
 	WarehouseProfileInput
 	Capacity jsonx.Quantity `json:"capacity"`
+	// BranchID makes the new warehouse the branch's main warehouse.
+	BranchID *string `json:"branchId"`
 }
 
 func (in WarehouseProfileInput) apply(v *apperr.Validation, w *Warehouse) {
@@ -229,7 +237,8 @@ func duplicateWarehouse(err error) error {
 	return err
 }
 
-// Create adds a company-wide warehouse; attaching it to a branch is a separate step.
+// Create adds a company-wide warehouse, or a branch's main warehouse when
+// branchId is given.
 func (s *WarehouseService) Create(ctx context.Context, p *auth.Principal, in WarehouseInput) (*WarehouseView, error) {
 	var v apperr.Validation
 	now := s.clock()
@@ -240,6 +249,12 @@ func (s *WarehouseService) Create(ctx context.Context, p *auth.Principal, in War
 		return nil, err
 	}
 	err := s.store.InTx(ctx, func(st Store) error {
+		if in.BranchID != nil {
+			if err := s.checkBranch(ctx, st, p.CompanyID, *in.BranchID, ""); err != nil {
+				return err
+			}
+			w.BranchID = in.BranchID
+		}
 		if err := st.Warehouses().Create(ctx, w); err != nil {
 			return duplicateWarehouse(err)
 		}
@@ -317,6 +332,65 @@ func (s *WarehouseService) Update(ctx context.Context, p *auth.Principal, id str
 		w.UpdatedAt = s.clock()
 		if err := st.Warehouses().Update(ctx, w, expected); err != nil {
 			return duplicateWarehouse(err)
+		}
+		result, err = s.view(ctx, st, w)
+		return err
+	})
+	return result, err
+}
+
+// checkBranch: the branch is the company's and has no other main warehouse.
+func (s *WarehouseService) checkBranch(ctx context.Context, st Store, companyID, branchID, warehouseID string) error {
+	ok, err := s.branches.BranchOf(ctx, companyID, branchID)
+	if err != nil {
+		return err
+	}
+	if !ok {
+		return apperr.FieldError("branchId", "not a branch of your company")
+	}
+	other, err := st.Warehouses().ByBranch(ctx, companyID, branchID)
+	if err == nil && other.ID != warehouseID {
+		return apperr.New(apperr.ErrConflict, "branch_has_warehouse", "the branch already has a main warehouse: "+other.Name)
+	}
+	if err != nil && !errors.Is(err, apperr.ErrNotFound) {
+		return err
+	}
+	return nil
+}
+
+// AttachBranch makes the warehouse a branch's main warehouse, or (nil)
+// detaches it; the warehouse keeps its capacity and stock either way.
+func (s *WarehouseService) AttachBranch(ctx context.Context, p *auth.Principal, id string, expected int64, branchID *string) (*WarehouseView, error) {
+	if err := validate.IDs(id); err != nil {
+		return nil, err
+	}
+	var result *WarehouseView
+	err := s.store.InTx(ctx, func(st Store) error {
+		w, err := st.Warehouses().Lock(ctx, p.CompanyID, id)
+		if err != nil {
+			return err
+		}
+		if w.Version != expected {
+			return apperr.ErrStale
+		}
+		fact, details := "warehouse.branch_detached", map[string]any{"branchId": w.BranchID}
+		if branchID != nil {
+			if err := s.checkBranch(ctx, st, p.CompanyID, *branchID, w.ID); err != nil {
+				return err
+			}
+			fact, details = "warehouse.branch_attached", map[string]any{"branchId": *branchID}
+		} else if w.BranchID == nil {
+			return apperr.New(apperr.ErrConflict, "invalid_transition", "the warehouse is not attached to a branch")
+		}
+		w.BranchID, w.UpdatedAt = branchID, s.clock()
+		if err := st.Warehouses().Update(ctx, w, expected); err != nil {
+			if errors.Is(err, apperr.ErrConflict) { // a concurrent attachment won
+				return apperr.New(apperr.ErrConflict, "branch_has_warehouse", "the branch already has a main warehouse")
+			}
+			return err
+		}
+		if err := st.Facts().Append(ctx, s.fact(p, fact, nil, &w.ID, nil, w.UpdatedAt, "", details)); err != nil {
+			return err
 		}
 		result, err = s.view(ctx, st, w)
 		return err
