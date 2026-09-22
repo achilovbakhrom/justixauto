@@ -627,6 +627,68 @@ func (s *ReceiptService) Identify(ctx context.Context, p *auth.Principal, batchI
 	return result, err
 }
 
+// CorrectQuantity fixes the confirmed quantity of a batch after a recount. It
+// is a separate audited action (business-logic §5.7): a reason is required,
+// the quantity cannot drop below the vehicles already identified, and an
+// increase must fit the warehouse.
+func (s *ReceiptService) CorrectQuantity(ctx context.Context, p *auth.Principal, batchID string, expected int64, quantity int, reason string) (*ReceiptResult, error) {
+	if err := validate.IDs(batchID); err != nil {
+		return nil, err
+	}
+	var v apperr.Validation
+	if quantity < 1 || quantity > 10000 {
+		v.Add("quantity", "must be 1-10000")
+	}
+	why := validate.Reason(&v, reason)
+	if err := v.Err(); err != nil {
+		return nil, err
+	}
+	var result *ReceiptResult
+	err := s.store.InTx(ctx, func(st Store) error {
+		b, err := st.Warehouses().LockBatch(ctx, p.CompanyID, batchID)
+		if err != nil {
+			return err
+		}
+		if b.Version != expected {
+			return apperr.ErrStale
+		}
+		if quantity == b.ConfirmedQuantity {
+			return apperr.FieldError("quantity", "equals the current quantity")
+		}
+		if quantity < b.IdentifiedCount {
+			return apperr.FieldError("quantity", "cannot be below the vehicles already identified")
+		}
+		w, err := st.Warehouses().Lock(ctx, p.CompanyID, b.WarehouseID)
+		if err != nil {
+			return err
+		}
+		occ, err := st.Warehouses().Occupied(ctx, []string{w.ID})
+		if err != nil {
+			return err
+		}
+		delta := quantity - b.ConfirmedQuantity
+		if delta > 0 && occ[w.ID]+delta > w.Capacity {
+			return apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the warehouse")
+		}
+		previous := b.ConfirmedQuantity
+		b.ConfirmedQuantity, b.UnidentifiedCount = quantity, quantity-b.IdentifiedCount
+		if err := st.Warehouses().UpdateBatchCounts(ctx, b); err != nil {
+			return err
+		}
+		now := s.clock()
+		if err := st.Warehouses().Touch(ctx, w, now); err != nil {
+			return err
+		}
+		if err := st.Facts().Append(ctx, s.fact(p, "receipt.quantity_corrected", nil, &w.ID, &b.ID, now, why,
+			map[string]any{"from": previous, "to": quantity})); err != nil {
+			return err
+		}
+		result = &ReceiptResult{Batch: *b, Warehouse: WarehouseView{Warehouse: *w, Occupied: occ[w.ID] + delta}}
+		return nil
+	})
+	return result, err
+}
+
 // ================= vehicles =================
 
 type VehicleDetail struct {

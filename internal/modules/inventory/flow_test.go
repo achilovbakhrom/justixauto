@@ -230,3 +230,36 @@ func TestConcurrentMovesRespectCapacity(t *testing.T) {
 		t.Fatalf("small warehouse: %v", w)
 	}
 }
+
+func TestReceiptQuantityCorrection(t *testing.T) {
+	e, admin := newEnv(t)
+	c := e.CompanyUser(admin, "Motors", allPerms...)
+	model := str(c.Do(http.MethodPost, "/inventory/vehicle-models", spec("LTZ", 2025)).Data(), "id")
+	w := c.Do(http.MethodPost, "/inventory/warehouses", warehouse("Yard", "4"))
+	wid := str(w.Data(), "id")
+	b := c.Do(http.MethodPost, "/inventory/warehouses/"+wid+"/receipt-batches", map[string]any{"modelId": model, "modelSpecificationVersion": "1",
+		"stock": map[string]any{"mode": "unidentified", "quantity": "3"}, "receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch("1")...)
+	expect(t, b, http.StatusCreated)
+	batchID := str(b.Data()["batch"].(map[string]any), "id")
+	expect(t, c.Do(http.MethodPost, "/inventory/receipt-batches/"+batchID+"/identifications",
+		map[string]any{"items": []map[string]string{{"vin": "XTAAA11111A000009", "modelId": model}}, "atomic": true}), http.StatusOK)
+
+	fix := func(quantity, reason, rev string) testkit.Response {
+		return c.Do(http.MethodPost, "/inventory/receipt-batches/"+batchID+"/quantity-corrections",
+			map[string]string{"quantity": quantity, "reason": reason}, ifMatch(rev)...)
+	}
+	expect(t, fix("2", "", "2"), http.StatusUnprocessableEntity)                  // reason required
+	expect(t, fix("2", "recount", "1"), http.StatusPreconditionFailed)            // stale batch
+	expect(t, fix("0", "recount", "2"), http.StatusUnprocessableEntity)           // below identified
+	expect(t, fix("5", "recount", "2"), http.StatusConflict, "capacity_exceeded") // 4 places only
+	r := fix("2", "one car was counted twice", "2")
+	expect(t, r, http.StatusOK)
+	bt, wh := r.Data()["batch"].(map[string]any), r.Data()["warehouse"].(map[string]any)
+	if bt["confirmedQuantity"] != "2" || bt["identifiedCount"] != "1" || bt["unidentifiedCount"] != "1" || wh["occupied"] != "2" {
+		t.Fatalf("after correction: batch %v warehouse %v", bt, wh)
+	}
+	expect(t, fix("4", "the fourth car arrived with the lot", "3"), http.StatusOK)
+	if occ := c.Do(http.MethodGet, "/inventory/warehouses/"+wid, nil).Data()["occupied"]; occ != "4" {
+		t.Fatalf("occupied: %v", occ)
+	}
+}

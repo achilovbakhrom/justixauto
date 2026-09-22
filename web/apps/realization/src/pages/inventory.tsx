@@ -6,7 +6,7 @@ import type { FieldSpec } from '@justixauto/kit';
 import { modelName, useModelName, useModels, useVehicles, useWarehouses } from '../data';
 import type { Model, Vehicle, Warehouse } from '../data';
 
-interface Batch { id: string; modelId: string; modelSpecificationVersion: string; confirmedQuantity: string; identifiedCount: string; unidentifiedCount: string; receivedAt: string }
+interface Batch { id: string; modelId: string; modelSpecificationVersion: string; confirmedQuantity: string; identifiedCount: string; unidentifiedCount: string; receivedAt: string; revision: string }
 interface Stock { warehouse: Warehouse; vehicles: Vehicle[]; unidentifiedBatches: Batch[] }
 
 const warehouseFields = (w?: Warehouse): FieldSpec[] => [
@@ -72,12 +72,17 @@ function WarehouseDialog({ id, onClose }: { id: string; onClose: () => void }) {
     <Panel title="Ожидают ввода VIN"><Table rows={s?.unidentifiedBatches} rowKey={(b) => b.id} columns={[
       { title: 'Модель', render: (b) => name(b.modelId) }, { title: 'Принято', render: (b) => b.confirmedQuantity },
       { title: 'Без VIN', render: (b) => b.unidentifiedCount }, { title: 'Дата', render: (b) => date(b.receivedAt) },
-      { title: '', render: (b) => <ActionButton label="Ввести VIN" fields={[{ name: 'vins', label: 'VIN (по одному в строке)', type: 'textarea', required: true }]}
+      { title: '', render: (b) => <div className="kit-row"><ActionButton label="Ввести VIN" fields={[{ name: 'vins', label: 'VIN (по одному в строке)', type: 'textarea', required: true }]}
         onSubmit={async (v) => {
           await post(`/inventory/receipt-batches/${b.id}/identifications`, { atomic: true,
             items: String(v.vins).split(/\s+/).filter(Boolean).map((vin) => ({ vin, modelId: b.modelId })) });
           await reload(...refresh);
-        }} /> },
+        }} />
+        <ActionButton label="Исправить количество" refresh={refresh}
+          intro={<p>Пересчёт партии фиксируется в истории склада. Нельзя указать меньше, чем уже введено VIN ({b.identifiedCount}).</p>}
+          fields={[{ name: 'quantity', label: 'Верное количество', type: 'number', required: true, initial: b.confirmedQuantity },
+            { name: 'reason', label: 'Основание', type: 'textarea', required: true }]}
+          onSubmit={(v) => post(`/inventory/receipt-batches/${b.id}/quantity-corrections`, v, { ifMatch: b.revision })} /></div> },
     ]} empty="Нет партий без VIN" /></Panel>
   </Modal>;
 }

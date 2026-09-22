@@ -168,6 +168,7 @@ func (h *Handler) Routes(g *echo.Group) {
 	c.POST("/warehouses/:id/capacity-changes", h.changeCapacity, auth.Require(PermWarehousesManage))
 	c.POST("/warehouses/:id/receipt-batches", h.receive, auth.Require(PermReceiptsCreate))
 	c.POST("/receipt-batches/:id/identifications", h.identify, auth.Require(PermReceiptsCreate))
+	c.POST("/receipt-batches/:id/quantity-corrections", h.correctQuantity, auth.Require(PermReceiptsCreate))
 	c.GET("/vehicle-units", h.listVehicles, auth.Require(PermRead))
 	c.GET("/vehicle-units/:id", h.getVehicle, auth.Require(PermRead))
 	c.POST("/vehicle-units/:id/warehouse-moves", h.move, auth.Require(PermVehiclesMove))
@@ -326,6 +327,25 @@ func (h *Handler) identify(c echo.Context) error {
 		return err
 	}
 	r, err := h.receipts.Identify(c.Request().Context(), auth.Get(c), c.Param("id"), in)
+	if err != nil {
+		return err
+	}
+	return httpx.Data(c, http.StatusOK, receiptBody(r), r.Batch.Version)
+}
+
+func (h *Handler) correctQuantity(c echo.Context) error {
+	expected, err := httpx.IfMatch(c)
+	if err != nil {
+		return err
+	}
+	var in struct {
+		Quantity jsonx.Quantity `json:"quantity"`
+		Reason   string         `json:"reason"`
+	}
+	if err := httpx.Bind(c, &in); err != nil {
+		return err
+	}
+	r, err := h.receipts.CorrectQuantity(c.Request().Context(), auth.Get(c), c.Param("id"), expected, int(in.Quantity), in.Reason)
 	if err != nil {
 		return err
 	}

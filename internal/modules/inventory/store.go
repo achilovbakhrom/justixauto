@@ -231,7 +231,7 @@ func (r *warehouseRepository) LockBatch(ctx context.Context, companyID, id strin
 
 func (r *warehouseRepository) UpdateBatchCounts(ctx context.Context, b *ReceiptBatch) error {
 	res := r.db.WithContext(ctx).Model(&ReceiptBatch{}).Where("id = ?", b.ID).Updates(map[string]any{
-		"identified_count": b.IdentifiedCount, "unidentified_count": b.UnidentifiedCount, "version": b.Version + 1,
+		"confirmed_quantity": b.ConfirmedQuantity, "identified_count": b.IdentifiedCount, "unidentified_count": b.UnidentifiedCount, "version": b.Version + 1,
 	})
 	if res.Error == nil {
 		b.Version++
