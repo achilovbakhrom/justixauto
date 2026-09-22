@@ -64,6 +64,12 @@ interface Task { id: string; customerId: string; leadId: string | null; dealId: 
 
 const stageLabel: Record<string, string> = { new: 'Новый', contacted: 'Контакт', qualified: 'Квалифицирован', 'test-drive': 'Тест-драйв', negotiation: 'Переговоры', won: 'Продажа', lost: 'Потерян' };
 const stageOrder = ['new', 'contacted', 'qualified', 'test-drive', 'negotiation'];
+const eventLabel: Record<string, string> = {
+  'lead.created': 'Лид создан', 'lead.assigned': 'Назначен ответственный', 'lead.stage_changed': 'Смена этапа', 'lead.won': 'Продажа',
+  'deal.reserved': 'Сделка создана, автомобиль зарезервирован', 'deal.contract_recorded': 'Договор подписан', 'deal.invoice_issued': 'Выставлен счёт',
+  'deal.payment_submitted': 'Внесена оплата', 'deal.payment_accepted': 'Оплата принята', 'deal.payment_rejected': 'Оплата отклонена',
+  'deal.registered': 'Регистрация', 'deal.delivered': 'Автомобиль выдан', 'deal.cancelled': 'Сделка отменена',
+};
 const channelLabel: Record<string, string> = { phone: 'Звонок', telegram: 'Telegram', visit: 'Визит', email: 'Письмо', other: 'Другое' };
 const sourceLabel: Record<string, string> = { website: 'Сайт', telegram: 'Telegram', phone: 'Звонок', manual: 'Вручную' };
 
@@ -150,7 +156,7 @@ function LeadDialog({ id, onClose }: { id: string; onClose: () => void }) {
       <Panel title="Контакты" padded><ul className="kit-timeline">{(l.contacts ?? []).map((c, i) =>
         <li key={i}>{dateTime(c.occurredAt)} — {channelLabel[c.channel] ?? c.channel}: {c.note}</li>)}</ul></Panel>
       <Panel title="История" padded><ul className="kit-timeline">{(l.history ?? []).map((h, i) =>
-        <li key={i}>{dateTime(h.occurredAt)} — {h.type}{h.reason ? ` · ${h.reason}` : ''}</li>)}</ul></Panel>
+        <li key={i}>{dateTime(h.occurredAt)} — {eventLabel[h.type] ?? h.type}{h.reason ? ` · ${h.reason}` : ''}</li>)}</ul></Panel>
     </>}
   </Modal>;
 }
@@ -264,7 +270,7 @@ function DealDialog({ id, onClose }: { id: string; onClose: () => void }) {
       </ul></Panel>}
       {(d.invoices ?? []).map((i) => <RetailInvoicePanel key={i.id} invoice={i} refresh={refresh} />)}
       <Panel title="История" padded><ul className="kit-timeline">{(d.history ?? []).map((h, i) =>
-        <li key={i}>{dateTime(h.occurredAt)} — {h.type}{h.reason ? ` · ${h.reason}` : ''}</li>)}</ul></Panel>
+        <li key={i}>{dateTime(h.occurredAt)} — {eventLabel[h.type] ?? h.type}{h.reason ? ` · ${h.reason}` : ''}</li>)}</ul></Panel>
     </>}
   </Modal>;
 }

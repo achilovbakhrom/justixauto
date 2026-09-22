@@ -106,6 +106,14 @@ interface Order {
 }
 
 const rfqLabel: Record<string, string> = { draft: 'Черновик', sent: 'Отправлен', negotiating: 'Согласование', accepted: 'Принят', declined: 'Отклонён', cancelled: 'Отменён' };
+const eventLabel: Record<string, string> = {
+  'order.created': 'Заказ создан', 'order.confirmed': 'Подтверждён поставщиком', 'order.rejected': 'Отклонён поставщиком',
+  'order.cancelled': 'Отменён', 'order.vehicles_allocated': 'Назначены VIN', 'order.shipped': 'Отгрузка',
+  'order.addendum_proposed': 'Предложено изменение условий', 'order.addendum_accepted': 'Изменение условий принято',
+  'order.addendum_rejected': 'Изменение условий отклонено', 'order.invoice_issued': 'Выставлен счёт', 'order.invoice_voided': 'Счёт аннулирован',
+  'order.payment_submitted': 'Сообщено об оплате', 'order.payment_accepted': 'Оплата принята', 'order.payment_rejected': 'Оплата отклонена',
+  'shipment.receipt_accepted': 'Принято на склад', 'shipment.receipt_rejected': 'Отказ в приёмке',
+};
 const orderLabel: Record<string, string> = { 'awaiting-supplier': 'Ждёт поставщика', accepted: 'Принят', fulfilling: 'Исполняется', completed: 'Выполнен', cancelled: 'Отменён' };
 const orderTone = (s: string) => s === 'completed' ? 'success' : s === 'cancelled' ? 'danger' : s === 'awaiting-supplier' ? 'warning' : 'info';
 
@@ -185,7 +193,8 @@ function OrderDialog({ id, onClose }: { id: string; onClose: () => void }) {
   if (!o) return <Modal title="Заказ" onClose={onClose}><p>Загрузка…</p></Modal>;
   const openAddendum = o.addenda.find((a) => a.status === 'proposed');
   const allocatedFree = o.allocations.filter((a) => a.status === 'allocated');
-  const freeVehicles = (vehicles.data ?? []).filter((v) => o.terms.lines.some((l) => l.modelId === v.modelId) && !o.allocations.some((a) => a.vehicleId === v.id && a.status !== 'rejected' && a.status !== 'released'));
+  // Cars held by another order or a retail sale cannot be allocated.
+  const freeVehicles = (vehicles.data ?? []).filter((v) => !v.reserved && v.placement && o.terms.lines.some((l) => l.modelId === v.modelId));
   const actions = o.allowedActions;
   return <Modal title={`${o.party === 'buyer' ? 'Покупка у' : 'Продажа'} ${o.party === 'buyer' ? o.supplier.name : o.buyer.name}`} onClose={onClose} size="wide" footer={<>
     {actions.includes('confirm') && <ActionButton label="Подтвердить" variant="primary" refresh={refresh} onSubmit={() => post(`/commerce/orders/${id}/supplier-confirmations`, {}, { ifMatch: o.revision })} />}
@@ -223,7 +232,7 @@ function OrderDialog({ id, onClose }: { id: string; onClose: () => void }) {
       { title: 'Статус', render: (a) => ({ proposed: 'Предложено', accepted: 'Принято', rejected: 'Отклонено' }[a.status]) },
     ]} /></Panel>}
     {(invoices.data ?? []).map((i) => <InvoicePanel key={i.id} invoice={i} party={o.party} refresh={refresh} />)}
-    {o.history && <Panel title="История" padded><ul className="kit-timeline">{o.history.map((h, i) => <li key={i}>{dateTime(h.occurredAt)} — {h.type}{h.reason ? ` · ${h.reason}` : ''}</li>)}</ul></Panel>}
+    {o.history && <Panel title="История" padded><ul className="kit-timeline">{o.history.map((h, i) => <li key={i}>{dateTime(h.occurredAt)} — {eventLabel[h.type] ?? h.type}{h.reason ? ` · ${h.reason}` : ''}</li>)}</ul></Panel>}
     {shipment && <ShipmentDialog id={shipment} party={o.party} onClose={() => setShipment(null)} refreshOrder={refresh} />}
   </Modal>;
 }

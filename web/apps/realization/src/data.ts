@@ -5,7 +5,7 @@ export interface Money { amountMinor: string; currency: string }
 export interface Spec { version: string; make: string; model: string; variant: string; year: number; bodyType: string; exteriorColor: string; interiorColor: string; powertrain: string; drivetrain: string }
 export interface Model { id: string; specification: Spec; versions?: Spec[]; revision: string }
 export interface Warehouse { id: string; branchId: string | null; name: string; city: string; address: string; country: { label: string }; capacity: string; occupied: string; free: string; revision: string }
-export interface Vehicle { id: string; vin: string; modelId: string; modelSpecificationVersion: string; placement: { warehouseId: string; placedAt: string } | null; revision: string }
+export interface Vehicle { id: string; vin: string; modelId: string; modelSpecificationVersion: string; placement: { warehouseId: string; placedAt: string } | null; reserved: boolean; revision: string }
 export interface Partnership { id: string; direction: string; counterparty: { id: string; name: string; country: string }; status: string; statusReason: string; allowedActions: string[]; revision: string }
 export interface Branch { id: string; name: string; address: string; revision: string }
 export interface Customer { id: string; displayName: string; phone: string; revision: string }

@@ -272,6 +272,7 @@ type VehicleRow struct {
 	WarehouseID    *string
 	ReceiptBatchID *string
 	PlacedAt       *time.Time
+	Reserved       bool // held by an order or a retail sale
 }
 
 type VehicleRepository interface {
@@ -310,7 +311,8 @@ func (r *vehicleRepository) Create(ctx context.Context, units []VehicleUnit, pla
 	return translate(db.Create(&placements).Error)
 }
 
-const vehicleSelect = `vehicle_units.*, p.warehouse_id, p.receipt_batch_id, p.placed_at`
+const vehicleSelect = `vehicle_units.*, p.warehouse_id, p.receipt_batch_id, p.placed_at, ` +
+	`EXISTS (SELECT 1 FROM inventory.reservations r WHERE r.vehicle_id = vehicle_units.id AND r.status = 'held') AS reserved`
 
 func (r *vehicleRepository) visible(ctx context.Context, companyID string) *gorm.DB {
 	return r.db.WithContext(ctx).Model(&VehicleUnit{}).Select(vehicleSelect).

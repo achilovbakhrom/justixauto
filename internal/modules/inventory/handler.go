@@ -106,11 +106,12 @@ type vehicleDTO struct {
 	ModelID     string        `json:"modelId"`
 	SpecVersion string        `json:"modelSpecificationVersion"`
 	Placement   *placementDTO `json:"placement"` // null: outside any warehouse
+	Reserved    bool          `json:"reserved"`  // held by an order or a retail sale
 	Revision    string        `json:"revision"`
 }
 
 func toVehicle(r *VehicleRow) vehicleDTO {
-	d := vehicleDTO{ID: r.ID, VIN: r.VIN, ModelID: r.ModelID, SpecVersion: httpx.Revision(int64(r.SpecVersion)), Revision: httpx.Revision(r.Version)}
+	d := vehicleDTO{ID: r.ID, VIN: r.VIN, ModelID: r.ModelID, SpecVersion: httpx.Revision(int64(r.SpecVersion)), Reserved: r.Reserved, Revision: httpx.Revision(r.Version)}
 	if r.WarehouseID != nil {
 		d.Placement = &placementDTO{WarehouseID: *r.WarehouseID, ReceiptBatchID: r.ReceiptBatchID, PlacedAt: *r.PlacedAt}
 	}
