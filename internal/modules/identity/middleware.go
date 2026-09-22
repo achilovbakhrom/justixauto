@@ -33,8 +33,28 @@ func (c CookieConfig) set(ctx echo.Context, token string, maxAge int) {
 		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteLaxMode})
 }
 
-func (c CookieConfig) token(ctx echo.Context) string {
-	cookie, err := ctx.Cookie(c.name())
+func (c CookieConfig) token(ctx echo.Context) string { return cookieValue(ctx, c.name()) }
+
+// The MFA challenge cookie holds no authority on its own; it only binds a
+// pending challenge to the browser that entered the password.
+func (c CookieConfig) challengeName() string {
+	if c.Secure {
+		return "__Host-justix_mfa_challenge"
+	}
+	return "justix_mfa_challenge"
+}
+
+func (c CookieConfig) setChallenge(ctx echo.Context, token string, maxAge int) {
+	ctx.SetCookie(&http.Cookie{Name: c.challengeName(), Value: token, Path: "/", MaxAge: maxAge,
+		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteStrictMode})
+}
+
+func (c CookieConfig) challengeToken(ctx echo.Context) string {
+	return cookieValue(ctx, c.challengeName())
+}
+
+func cookieValue(ctx echo.Context, name string) string {
+	cookie, err := ctx.Cookie(name)
 	if err != nil {
 		return ""
 	}
@@ -68,7 +88,9 @@ func (a *Authenticator) originAllowed(c echo.Context) bool {
 	return err == nil && u.Host == c.Request().Host
 }
 
-func (a *Authenticator) Middleware(loginPath string) echo.MiddlewareFunc {
+// Middleware authenticates requests. csrfExempt lists route suffixes that run
+// before a session exists (login and MFA verification).
+func (a *Authenticator) Middleware(csrfExempt ...string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			unsafe := unsafeMethod(c.Request().Method)
@@ -82,7 +104,8 @@ func (a *Authenticator) Middleware(loginPath string) echo.MiddlewareFunc {
 			case err != nil:
 				return err
 			}
-			if unsafe && !strings.HasSuffix(c.Path(), loginPath) {
+			exempt := slices.ContainsFunc(csrfExempt, func(suffix string) bool { return strings.HasSuffix(c.Path(), suffix) })
+			if unsafe && !exempt {
 				sent := c.Request().Header.Get("X-CSRF-Token")
 				if subtle.ConstantTimeCompare([]byte(sent), []byte(sess.CSRFToken)) != 1 {
 					return apperr.New(apperr.ErrForbidden, "csrf_invalid", "missing or invalid X-CSRF-Token")

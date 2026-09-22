@@ -50,7 +50,10 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	m := identity.New(db, identity.Config{Session: identity.DefaultSessionConfig})
+	m, err := identity.New(db, identity.Config{Session: identity.DefaultSessionConfig, MFAKey: cfg.MFAKey})
+	if err != nil {
+		return err
+	}
 	u, err := m.Users.Bootstrap(context.Background(), identity.BootstrapInput{
 		DisplayName: *name, Login: *login, Email: *email, Password: strings.TrimRight(password, "\r\n"),
 	})

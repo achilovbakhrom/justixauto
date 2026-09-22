@@ -28,9 +28,34 @@ type Principal struct {
 	CompanyID       string
 	ContextRevision int64
 	BranchScope     BranchScope
+	// MFA: permissions in MFARequired are usable only with a recent second factor.
+	MFAEnrolled bool
+	MFAFresh    bool
+	MFARequired map[string]bool
 }
 
-func (p *Principal) Can(permission string) bool { return p != nil && p.Permissions[permission] }
+// Has reports whether the user's roles grant the permission.
+func (p *Principal) Has(permission string) bool { return p != nil && p.Permissions[permission] }
+
+// Can reports whether the permission is usable now: granted and, for
+// sensitive permissions, backed by a recent second factor.
+func (p *Principal) Can(permission string) bool {
+	return p.Has(permission) && (!p.MFARequired[permission] || p.MFAFresh)
+}
+
+// Allow returns nil if the permission is usable now, otherwise the reason.
+func (p *Principal) Allow(permission string) error {
+	switch {
+	case !p.Has(permission):
+		return apperr.New(apperr.ErrForbidden, "permission_denied", "missing permission "+permission)
+	case p.Can(permission):
+		return nil
+	case !p.MFAEnrolled:
+		return apperr.New(apperr.ErrForbidden, "mfa_enrollment_required", "set up two-factor authentication to use "+permission)
+	default:
+		return apperr.New(apperr.ErrForbidden, "mfa_required", "confirm with your two-factor code to use "+permission)
+	}
+}
 
 // PermissionList returns the permissions sorted, for responses.
 func (p *Principal) PermissionList() []string {
@@ -60,8 +85,8 @@ func MustGet(c echo.Context) (*Principal, error) {
 	return nil, apperr.ErrUnauthenticated
 }
 
-// Require rejects anonymous callers (401) and callers lacking any of the
-// permissions (403).
+// Require rejects anonymous callers (401) and callers that cannot use all of
+// the permissions now (403: permission_denied, mfa_enrollment_required, mfa_required).
 func Require(permissions ...string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -70,8 +95,8 @@ func Require(permissions ...string) echo.MiddlewareFunc {
 				return err
 			}
 			for _, perm := range permissions {
-				if !p.Can(perm) {
-					return apperr.New(apperr.ErrForbidden, "permission_denied", "missing permission "+perm)
+				if err := p.Allow(perm); err != nil {
+					return err
 				}
 			}
 			return next(c)

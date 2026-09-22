@@ -14,6 +14,8 @@ type SessionRepository interface {
 	// FindLive returns the unrevoked session with this token hash, or ErrNotFound.
 	FindLive(ctx context.Context, tokenHash []byte) (*Session, error)
 	Touch(ctx context.Context, id string, at time.Time) error
+	// SetMFA records a successful second factor for the session.
+	SetMFA(ctx context.Context, id string, at time.Time) error
 	Revoke(ctx context.Context, id string, at time.Time) error
 	// RevokeUser revokes all live sessions of a user except exceptID ("" = all).
 	RevokeUser(ctx context.Context, userID, exceptID string, at time.Time) error
@@ -50,6 +52,10 @@ func (r *sessionRepository) FindLive(ctx context.Context, tokenHash []byte) (*Se
 
 func (r *sessionRepository) Touch(ctx context.Context, id string, at time.Time) error {
 	return translate(r.db.WithContext(ctx).Model(&Session{}).Where("id = ?", id).Update("last_seen_at", at).Error)
+}
+
+func (r *sessionRepository) SetMFA(ctx context.Context, id string, at time.Time) error {
+	return translate(r.db.WithContext(ctx).Model(&Session{}).Where("id = ?", id).Update("mfa_authenticated_at", at).Error)
 }
 
 func (r *sessionRepository) Revoke(ctx context.Context, id string, at time.Time) error {

@@ -37,8 +37,8 @@ func (s *BranchService) companyFor(ctx context.Context, actor *auth.Principal, c
 		}
 		return apperr.ErrNotFound
 	}
-	if permission != "" && !actor.Can(permission) {
-		return apperr.New(apperr.ErrForbidden, "permission_denied", "missing permission "+permission)
+	if permission != "" {
+		return actor.Allow(permission)
 	}
 	return nil
 }

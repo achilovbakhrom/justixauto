@@ -42,9 +42,17 @@ printf '%s\n' 'choose-a-long-password' | bash tools/go.sh run ./cmd/bootstrap-ad
 bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
 ```
 
+`.env` needs your own `MFA_KEY` (`openssl rand -base64 32`); it encrypts
+two-factor secrets, so keep it stable and secret.
+
 Sign in with `POST /api/v1/identity/session/login` `{"login","password"}`; the
-session is an HttpOnly cookie and every state-changing request must send the
-`X-CSRF-Token` returned by login / `GET /api/v1/identity/session`.
+session is an HttpOnly cookie. Every state-changing request sends the
+`X-CSRF-Token` returned by login / `GET /api/v1/identity/session`, and every
+authenticated POST (outside `/session/`) sends a fresh `Idempotency-Key` UUID.
+Administrators must set up TOTP (`POST /session/mfa/enrollment`, then
+`…/{id}/confirm`) before sensitive actions; after that, login returns an MFA
+challenge answered with `POST /session/mfa/verify`, and sensitive actions need
+a code from the last 5 minutes (`POST /session/mfa/step-up`).
 
 Tests:
 

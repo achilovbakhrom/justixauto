@@ -26,7 +26,13 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   Models never go to JSON directly; map them to DTOs.
 - Auth: the identity module authenticates every `/api/v1` request. Read the
   caller with `auth.Get(c)`; protect routes with `auth.Require(perm...)` and
-  company-scoped routes with `auth.RequireCompany()`. Add new permission keys
-  to the identity catalog (`<module>.<resource>.<action>`).
+  company-scoped routes with `auth.RequireCompany()`. In services use
+  `actor.Allow(perm)` (returns the precise 403 reason) rather than `Can`.
+  Add new permission keys to the identity catalog
+  (`<module>.<resource>.<action>`) and mark `RequiresMFA` for sensitive ones
+  (decisions, terms, payments, fulfillment, sensitive downloads).
+- Retries: authenticated POSTs require `Idempotency-Key`; the platform
+  middleware replays the first 2xx response. Existing-resource writes use
+  If-Match instead.
 - Tests: pure logic as unit tests; behaviour end to end through HTTP against a
   real database (`TEST_DATABASE_URL`; `bash tools/test-go.sh` starts one).

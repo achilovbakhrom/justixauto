@@ -76,9 +76,13 @@ type User struct {
 	StatusReason string
 	FailedLogins int
 	LockedUntil  *time.Time
-	Version      int64
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
+	// MFA fields change only through MFARepository, never through Update.
+	MFASecretEnc   []byte     `gorm:"column:mfa_secret_enc"`
+	MFAEnabledAt   *time.Time `gorm:"column:mfa_enabled_at"`
+	MFALastCounter int64      `gorm:"column:mfa_last_counter"`
+	Version        int64
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }
 
 func (User) TableName() string { return "identity.users" }
@@ -174,10 +178,12 @@ type Session struct {
 	BranchScopeMode string
 	BranchIDs       []string `gorm:"-"` // only for SELECTED scope
 	ContextRevision int64
-	CreatedAt       time.Time
-	LastSeenAt      time.Time
-	ExpiresAt       time.Time
-	RevokedAt       *time.Time
+	// MFAAuthenticatedAt is the last successful second factor in this session.
+	MFAAuthenticatedAt *time.Time `gorm:"column:mfa_authenticated_at"`
+	CreatedAt          time.Time
+	LastSeenAt         time.Time
+	ExpiresAt          time.Time
+	RevokedAt          *time.Time
 }
 
 func (Session) TableName() string { return "identity.sessions" }
@@ -204,3 +210,35 @@ type AuditEvent struct {
 }
 
 func (AuditEvent) TableName() string { return "identity.audit_events" }
+
+type mfaEnrollment struct {
+	ID          string `gorm:"primaryKey;type:uuid"`
+	UserID      string `gorm:"type:uuid"`
+	SecretEnc   []byte
+	CreatedAt   time.Time
+	ExpiresAt   time.Time
+	ConfirmedAt *time.Time
+}
+
+func (mfaEnrollment) TableName() string { return "identity.mfa_enrollments" }
+
+type mfaRecoveryCode struct {
+	UserID   string `gorm:"primaryKey;type:uuid"`
+	CodeHash []byte `gorm:"primaryKey"`
+	UsedAt   *time.Time
+}
+
+func (mfaRecoveryCode) TableName() string { return "identity.mfa_recovery_codes" }
+
+// mfaChallenge: the password was correct, the second factor is pending.
+type mfaChallenge struct {
+	ID         string `gorm:"primaryKey;type:uuid"`
+	UserID     string `gorm:"type:uuid"`
+	TokenHash  []byte
+	Attempts   int
+	CreatedAt  time.Time
+	ExpiresAt  time.Time
+	ConsumedAt *time.Time
+}
+
+func (mfaChallenge) TableName() string { return "identity.mfa_challenges" }

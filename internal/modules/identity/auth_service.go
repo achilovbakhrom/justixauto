@@ -34,6 +34,7 @@ var DefaultSessionConfig = SessionConfig{
 type AuthService struct {
 	deps
 	cfg SessionConfig
+	box *secretBox // encrypts MFA secrets
 }
 
 var errInvalidCredentials = apperr.New(apperr.ErrUnauthenticated, "invalid_credentials", "login or password is incorrect")
@@ -51,40 +52,83 @@ func tokenHash(token string) []byte {
 	return h[:]
 }
 
-// Login verifies credentials and starts a new session. A previous session of
-// the same browser (previousToken) is revoked, so the cookie always rotates.
-// It returns the raw cookie token, which is never stored.
-func (s *AuthService) Login(ctx context.Context, login, password, previousToken string) (string, *Session, error) {
+// LoginResult is either a session (Token) or, for users with MFA, a pending
+// challenge (ChallengeID + ChallengeToken for the challenge cookie).
+type LoginResult struct {
+	Token          string
+	ChallengeID    string
+	ChallengeToken string
+}
+
+// Login verifies credentials. Without MFA it starts a session; with MFA it
+// creates a short-lived challenge that VerifyChallenge completes. A previous
+// session of the same browser (previousToken) is revoked, so the cookie
+// always rotates.
+func (s *AuthService) Login(ctx context.Context, login, password, previousToken string) (*LoginResult, error) {
 	now := s.clock()
 	u, err := s.store.Users().FindByLogin(ctx, strings.TrimSpace(login))
 	if errors.Is(err, apperr.ErrNotFound) || (err == nil && u.PasswordHash == nil) {
 		_, _ = verifyPassword(password, dummyHash) // equalize timing
-		return "", nil, errInvalidCredentials
+		return nil, errInvalidCredentials
 	}
 	if err != nil {
-		return "", nil, err
+		return nil, err
 	}
 	if u.LockedUntil != nil && u.LockedUntil.After(now) {
-		return "", nil, &apperr.RateLimitedError{RetryAfter: u.LockedUntil.Sub(now)}
+		return nil, &apperr.RateLimitedError{RetryAfter: u.LockedUntil.Sub(now)}
 	}
 	ok, err := verifyPassword(password, *u.PasswordHash)
 	if err != nil {
-		return "", nil, err
+		return nil, err
 	}
 	if !ok {
-		failed, lockedUntil := u.FailedLogins+1, (*time.Time)(nil)
-		if failed >= s.cfg.LockoutThreshold {
-			until := now.Add(s.cfg.LockoutDuration)
-			failed, lockedUntil = 0, &until
+		if err := s.recordFailure(ctx, u); err != nil {
+			return nil, err
 		}
-		if err := s.store.Users().SetLoginState(ctx, u.ID, failed, lockedUntil); err != nil {
-			return "", nil, err
-		}
-		return "", nil, errInvalidCredentials
+		return nil, errInvalidCredentials
 	}
 	if u.Status != UserActive {
-		return "", nil, apperr.New(apperr.ErrForbidden, "account_suspended", "this account is suspended")
+		return nil, apperr.New(apperr.ErrForbidden, "account_suspended", "this account is suspended")
 	}
+	if u.MFAEnabledAt != nil {
+		// Failed-attempt counter resets only after the second factor, so
+		// repeated logins cannot bypass the lockout for code guessing.
+		token, err := randomToken()
+		if err != nil {
+			return nil, err
+		}
+		ch := &mfaChallenge{ID: uuid.NewString(), UserID: u.ID, TokenHash: tokenHash(token),
+			CreatedAt: now, ExpiresAt: now.Add(mfaChallengeTTL)}
+		if err := s.store.MFA().CreateChallenge(ctx, ch); err != nil {
+			return nil, err
+		}
+		return &LoginResult{ChallengeID: ch.ID, ChallengeToken: token}, nil
+	}
+	if err := s.store.Users().SetLoginState(ctx, u.ID, 0, nil); err != nil {
+		return nil, err
+	}
+	token, _, err := s.startSession(ctx, u, previousToken, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &LoginResult{Token: token}, nil
+}
+
+// recordFailure counts a failed password or second factor and locks the
+// account for a while after too many in a row.
+func (s *AuthService) recordFailure(ctx context.Context, u *User) error {
+	failed, lockedUntil := u.FailedLogins+1, (*time.Time)(nil)
+	if failed >= s.cfg.LockoutThreshold {
+		until := s.clock().Add(s.cfg.LockoutDuration)
+		failed, lockedUntil = 0, &until
+	}
+	return s.store.Users().SetLoginState(ctx, u.ID, failed, lockedUntil)
+}
+
+// startSession creates a session and returns its raw cookie token, which is
+// never stored. mfaAt marks a session that passed the second factor.
+func (s *AuthService) startSession(ctx context.Context, u *User, previousToken string, mfaAt *time.Time) (string, *Session, error) {
+	now := s.clock()
 	token, err := randomToken()
 	if err != nil {
 		return "", nil, err
@@ -94,7 +138,7 @@ func (s *AuthService) Login(ctx context.Context, login, password, previousToken 
 		return "", nil, err
 	}
 	sess := &Session{ID: uuid.NewString(), TokenHash: tokenHash(token), CSRFToken: csrf, UserID: u.ID,
-		BranchScopeMode: ScopeAll, BranchIDs: []string{}, ContextRevision: 1,
+		BranchScopeMode: ScopeAll, BranchIDs: []string{}, ContextRevision: 1, MFAAuthenticatedAt: mfaAt,
 		CreatedAt: now, LastSeenAt: now, ExpiresAt: now.Add(s.cfg.AbsoluteTimeout)}
 	err = s.store.InTx(ctx, func(st Store) error {
 		if previousToken != "" {
@@ -103,9 +147,6 @@ func (s *AuthService) Login(ctx context.Context, login, password, previousToken 
 					return err
 				}
 			}
-		}
-		if err := st.Users().SetLoginState(ctx, u.ID, 0, nil); err != nil {
-			return err
 		}
 		return st.Sessions().Create(ctx, sess)
 	})
@@ -146,7 +187,9 @@ func (s *AuthService) Authenticate(ctx context.Context, token string) (*auth.Pri
 		return nil, nil, err
 	}
 	p := &auth.Principal{UserID: u.ID, SessionID: sess.ID, Permissions: map[string]bool{},
-		ContextRevision: sess.ContextRevision, BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}}}
+		ContextRevision: sess.ContextRevision, BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}},
+		MFAEnrolled: u.MFAEnabledAt != nil, MFARequired: mfaRequired(),
+		MFAFresh: sess.MFAAuthenticatedAt != nil && now.Sub(*sess.MFAAuthenticatedAt) <= mfaFreshness}
 	for _, r := range roles {
 		for _, perm := range effectivePermissions(r) {
 			p.Permissions[perm] = true
@@ -197,7 +240,8 @@ type RoleRef struct {
 }
 
 type MFAView struct {
-	Enrolled bool `json:"enrolled"`
+	Enrolled        bool       `json:"enrolled"`
+	AuthenticatedAt *time.Time `json:"authenticatedAt,omitempty"`
 }
 
 type ContextView struct {
@@ -218,7 +262,7 @@ type SetupView struct {
 	PartnershipRequiredForB2B bool   `json:"partnershipRequiredForB2B"`
 }
 
-func (s *AuthService) View(ctx context.Context, p *auth.Principal) (*SessionView, error) {
+func (s *AuthService) View(ctx context.Context, p *auth.Principal, sess *Session) (*SessionView, error) {
 	u, err := s.store.Users().Get(ctx, p.UserID)
 	if err != nil {
 		return nil, err
@@ -245,6 +289,7 @@ func (s *AuthService) View(ctx context.Context, p *auth.Principal) (*SessionView
 		User:                SessionUser{ID: u.ID, DisplayName: u.DisplayName, Status: u.Status},
 		Roles:               make([]RoleRef, len(roles)),
 		Permissions:         p.PermissionList(),
+		MFA:                 MFAView{Enrolled: u.MFAEnabledAt != nil, AuthenticatedAt: sess.MFAAuthenticatedAt},
 		Context:             ContextView{Revision: revision(p.ContextRevision), BranchScope: p.BranchScope},
 		AccessibleCompanies: make([]AccessibleCompany, len(companies)),
 		Setup:               SetupView{Next: "none", PartnershipRequiredForB2B: true},

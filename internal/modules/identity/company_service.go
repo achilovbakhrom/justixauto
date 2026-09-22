@@ -212,13 +212,20 @@ func (s *CompanyService) Update(ctx context.Context, actor *auth.Principal, id s
 	if err != nil {
 		return nil, err
 	}
-	if !actor.Can(PermPlatformCompaniesAccess) {
+	if actor.Has(PermPlatformCompaniesAccess) {
+		if err := actor.Allow(PermPlatformCompaniesAccess); err != nil {
+			return nil, err
+		}
+	} else {
 		member, err := s.isMember(ctx, s.store, actor.UserID, id)
 		if err != nil {
 			return nil, err
 		}
-		if !member || !actor.Can(PermCompanyEdit) {
+		if !member {
 			return nil, apperr.New(apperr.ErrForbidden, "permission_denied", "missing permission company.edit")
+		}
+		if err := actor.Allow(PermCompanyEdit); err != nil {
+			return nil, err
 		}
 	}
 	if c.Version != expected {

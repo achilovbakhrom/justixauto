@@ -2,6 +2,7 @@
 package config
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 	"strings"
@@ -17,6 +18,9 @@ type Config struct {
 	// AllowedOrigins may send state-changing requests besides the API's own host
 	// (e.g. the Vite dev servers).
 	AllowedOrigins []string
+	// MFAKey (32 bytes, base64 in MFA_KEY) encrypts two-factor secrets at rest.
+	// Losing or changing it disables every enrolled authenticator.
+	MFAKey []byte
 }
 
 // Load reads configuration from the environment. DATABASE_URL is required;
@@ -36,6 +40,11 @@ func Load() (Config, error) {
 	if cfg.DatabaseURL == "" {
 		return Config{}, fmt.Errorf("config: DATABASE_URL is required")
 	}
+	key, err := base64.StdEncoding.DecodeString(os.Getenv("MFA_KEY"))
+	if err != nil || len(key) != 32 {
+		return Config{}, fmt.Errorf("config: MFA_KEY must be 32 random bytes, base64-encoded (openssl rand -base64 32)")
+	}
+	cfg.MFAKey = key
 	return cfg, nil
 }
 

@@ -19,6 +19,7 @@ type Store interface {
 	Memberships() MembershipRepository
 	Sessions() SessionRepository
 	Audit() AuditRepository
+	MFA() MFARepository
 	// InTx runs fn with a Store bound to one transaction; any error rolls back.
 	InTx(ctx context.Context, fn func(Store) error) error
 }
@@ -34,6 +35,7 @@ func (s *gormStore) Branches() BranchRepository        { return &branchRepositor
 func (s *gormStore) Memberships() MembershipRepository { return &membershipRepository{s.db} }
 func (s *gormStore) Sessions() SessionRepository       { return &sessionRepository{s.db} }
 func (s *gormStore) Audit() AuditRepository            { return &auditRepository{s.db} }
+func (s *gormStore) MFA() MFARepository                { return &mfaRepository{s.db} }
 
 func (s *gormStore) InTx(ctx context.Context, fn func(Store) error) error {
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
