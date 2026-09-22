@@ -221,6 +221,8 @@ type OfferRepository interface {
 	GetOwn(ctx context.Context, supplierID, id string) (*Offer, error)
 	// GetVisible returns a published offer the buyer may see, else ErrNotFound.
 	GetVisible(ctx context.Context, buyerID, id string) (*Offer, error)
+	// VisibleByPublishedVersion finds the visible offer whose published version is versionID.
+	VisibleByPublishedVersion(ctx context.Context, buyerID, versionID string) (*Offer, error)
 	ListOwn(ctx context.Context, supplierID string, limit, offset int) ([]Offer, error)
 	ListVisible(ctx context.Context, buyerID string, limit, offset int) ([]Offer, error)
 	Versions(ctx context.Context, offerID string) ([]OfferVersion, error)
@@ -263,6 +265,15 @@ func (r *offerRepository) visible(ctx context.Context, buyerID string) *gorm.DB 
 func (r *offerRepository) GetVisible(ctx context.Context, buyerID, id string) (*Offer, error) {
 	var o Offer
 	if err := r.visible(ctx, buyerID).Where("offers.id = ?", id).Select("offers.*").Take(&o).Error; err != nil {
+		return nil, database.Translate(err)
+	}
+	return &o, nil
+}
+
+func (r *offerRepository) VisibleByPublishedVersion(ctx context.Context, buyerID, versionID string) (*Offer, error) {
+	var o Offer
+	err := r.visible(ctx, buyerID).Where("offers.published_version_id = ?", versionID).Select("offers.*").Take(&o).Error
+	if err != nil {
 		return nil, database.Translate(err)
 	}
 	return &o, nil

@@ -56,6 +56,7 @@ func mapSlice[T, D any](items []T, f func(*T) D) []D {
 type Handler struct {
 	partnerships *PartnershipService
 	offers       *OfferService
+	deals        *DealService
 }
 
 func (h *Handler) Routes(g *echo.Group) {
@@ -71,6 +72,8 @@ func (h *Handler) Routes(g *echo.Group) {
 	c.POST("/offers/:id/versions", h.addOfferVersion, auth.Require(PermOffersManage))
 	c.POST("/offers/:id/publish", h.publishOffer, auth.Require(PermOffersManage))
 	c.POST("/offers/:id/withdraw", h.withdrawOffer, auth.Require(PermOffersManage))
+
+	h.dealRoutes(c)
 }
 
 func (h *Handler) listPartnerships(c echo.Context) error {
@@ -140,7 +143,8 @@ func New(db *gorm.DB, now func() time.Time, directory Directory, catalog Catalog
 		now = time.Now
 	}
 	d := deps{store: NewStore(db), directory: directory, catalog: catalog, now: now}
-	return &Module{handler: &Handler{partnerships: &PartnershipService{d}, offers: &OfferService{d}}}
+	offers := &OfferService{d}
+	return &Module{handler: &Handler{partnerships: &PartnershipService{d}, offers: offers, deals: &DealService{deps: d, offers: offers}}}
 }
 
 // Register mounts the commerce routes under /api/v1/commerce.
