@@ -364,3 +364,21 @@ func (s *CompanyService) CompanyProfile(ctx context.Context, id string) (*Profil
 	p := profile(c)
 	return &p, nil
 }
+
+// IsMember reports whether the user has an active membership in the company
+// (for other modules, through their ports).
+func (s *CompanyService) IsMember(ctx context.Context, userID, companyID string) (bool, error) {
+	if validID(userID, companyID) != nil {
+		return false, nil
+	}
+	return s.isMember(ctx, s.store, userID, companyID)
+}
+
+// BranchOf reports whether the branch belongs to the company.
+func (s *CompanyService) BranchOf(ctx context.Context, companyID, branchID string) (bool, error) {
+	if validID(companyID, branchID) != nil {
+		return false, nil
+	}
+	n, err := s.store.Branches().CountInCompany(ctx, companyID, []string{branchID})
+	return n == 1, err
+}

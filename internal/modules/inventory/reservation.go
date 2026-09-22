@@ -207,3 +207,41 @@ func (s *StockService) Transfer(ctx context.Context, t Handover) error {
 		return st.Facts().Append(ctx, facts...)
 	})
 }
+
+// Deliver hands a held vehicle to a retail customer (a natural person, not a
+// company): the hold is finalized, the vehicle leaves its warehouse and no
+// company owns or keeps it any more. The history stays.
+func (s *StockService) Deliver(ctx context.Context, h Holder, vehicleID, actorID string, at time.Time) error {
+	return s.store.InTx(ctx, func(st Store) error {
+		db := st.(*gormStore).db
+		var r Reservation
+		err := db.Where("holder_type = ? AND holder_id = ? AND vehicle_id = ? AND status = 'held'", h.Type, h.ID, vehicleID).Take(&r).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errUnavailable
+		} else if err != nil {
+			return database.Translate(err)
+		}
+		now := s.clock()
+		var p Placement
+		if err := db.Where("vehicle_id = ?", vehicleID).Take(&p).Error; err == nil {
+			if err := db.Delete(&Placement{}, "vehicle_id = ?", vehicleID).Error; err != nil {
+				return database.Translate(err)
+			}
+			if err := db.Model(&Warehouse{}).Where("id = ?", p.WarehouseID).
+				Updates(map[string]any{"version": gorm.Expr("version + 1"), "updated_at": now}).Error; err != nil {
+				return database.Translate(err)
+			}
+		}
+		if err := db.Model(&VehicleUnit{}).Where("id = ?", vehicleID).Updates(map[string]any{
+			"owner_company_id": nil, "custodian_company_id": nil, "version": gorm.Expr("version + 1")}).Error; err != nil {
+			return database.Translate(err)
+		}
+		if err := db.Model(&r).Updates(map[string]any{"status": "finalized", "closed_at": now}).Error; err != nil {
+			return database.Translate(err)
+		}
+		details, _ := json.Marshal(map[string]any{"holderType": h.Type, "holderId": h.ID})
+		vid := vehicleID
+		return st.Facts().Append(ctx, Fact{ID: uuid.NewString(), CompanyID: r.CompanyID, FactType: "vehicle.delivered_to_customer",
+			VehicleID: &vid, ActorUserID: actorID, OccurredAt: at, RecordedAt: now, Details: details})
+	})
+}

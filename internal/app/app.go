@@ -13,6 +13,7 @@ import (
 	"justixauto/internal/modules/commerce"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/modules/inventory"
+	"justixauto/internal/modules/retail"
 	"justixauto/internal/platform/httpx"
 	"justixauto/internal/platform/idempotency"
 )
@@ -32,6 +33,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	}
 	identity.RegisterPermissions(inventory.Permissions...)
 	identity.RegisterPermissions(commerce.Permissions...)
+	identity.RegisterPermissions(retail.Permissions...)
 	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now})
 	if err != nil {
 		return nil, nil, err
@@ -43,6 +45,8 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	inv := inventory.New(db, cfg.Now)
 	inv.Register(api)
 	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}, commerceStock{inv.Stock()}).Register(api)
+	ret := retail.New(db, cfg.Now, idm.Companies, retailStock{inv.Stock()}, pendingInsurance{})
+	ret.Register(api)
 	return e, idm, nil
 }
 
@@ -97,3 +101,37 @@ func (a commerceStock) Transfer(ctx context.Context, orderID string, vehicleIDs 
 	return a.s.Transfer(ctx, inventory.Handover{Holder: a.holder(orderID), VehicleIDs: vehicleIDs,
 		ToCompanyID: toCompanyID, ToWarehouseID: toWarehouseID, ActorUserID: actorID, At: at})
 }
+
+// retailStock adapts inventory to retail's Stock port; sales hold vehicles
+// as "retail-deal".
+type retailStock struct{ s *inventory.StockService }
+
+func (a retailStock) holder(dealID string) inventory.Holder {
+	return inventory.Holder{Type: "retail-deal", ID: dealID}
+}
+
+func (a retailStock) Vehicle(ctx context.Context, companyID, id string) (*retail.Vehicle, error) {
+	v, err := a.s.Vehicle(ctx, companyID, id)
+	if err != nil {
+		return nil, err
+	}
+	return &retail.Vehicle{ID: v.ID, VIN: v.VIN, ModelID: v.ModelID, Owned: v.OwnerCompanyID == companyID, InWarehouse: v.WarehouseID != ""}, nil
+}
+
+func (a retailStock) Reserve(ctx context.Context, companyID, dealID, vehicleID string) error {
+	return a.s.Reserve(ctx, companyID, a.holder(dealID), []string{vehicleID})
+}
+
+func (a retailStock) Release(ctx context.Context, dealID, reason string) error {
+	return a.s.Release(ctx, a.holder(dealID), nil, reason)
+}
+
+func (a retailStock) Deliver(ctx context.Context, dealID, vehicleID, actorID string, at time.Time) error {
+	return a.s.Deliver(ctx, a.holder(dealID), vehicleID, actorID, at)
+}
+
+// pendingInsurance stands in until the insurance module exists: no deal is
+// approved, so own-installment sales cannot be delivered yet.
+type pendingInsurance struct{}
+
+func (pendingInsurance) Approved(context.Context, string, string) (bool, error) { return false, nil }
