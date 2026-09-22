@@ -2,6 +2,10 @@ package identity
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
+	"net/mail"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -10,194 +14,89 @@ import (
 	"github.com/google/uuid"
 
 	"justixauto/internal/platform/apperr"
+	"justixauto/internal/platform/auth"
 )
 
-type CreateCompanyInput struct {
-	Kind               CompanyKind `json:"kind"`
-	Name               string      `json:"name"`
-	Country            string      `json:"country"`
-	Region             string      `json:"region"`
-	RegistrationNumber string      `json:"registrationNumber"`
+// deps is shared by all identity services.
+type deps struct {
+	store Store
+	now   func() time.Time
 }
 
-// UpdateCompanyInput edits requisites. Kind and ID are immutable.
-type UpdateCompanyInput struct {
-	Name               string `json:"name"`
-	Country            string `json:"country"`
-	Region             string `json:"region"`
-	RegistrationNumber string `json:"registrationNumber"`
-}
+func (d deps) clock() time.Time { return d.now().UTC() }
 
-type ChangeStatusInput struct {
-	Status CompanyStatus `json:"status"`
-	Reason string        `json:"reason"`
-}
-
-type CompanyService struct {
-	repo CompanyRepository
-	now  func() time.Time
-}
-
-func NewCompanyService(repo CompanyRepository, now func() time.Time) *CompanyService {
-	return &CompanyService{repo: repo, now: now}
-}
-
-// Create registers a company in draft status; it must be activated separately.
-func (s *CompanyService) Create(ctx context.Context, in CreateCompanyInput) (*Company, error) {
-	var v apperr.Validation
-	if !in.Kind.Valid() {
-		v.Add("kind", "must be one of seller, bank, mfo, insurer")
-	}
-	req := normalizeRequisites(in.Name, in.Country, in.Region, in.RegistrationNumber, &v)
-	if err := v.Err(); err != nil {
-		return nil, err
-	}
-	now := s.now().UTC()
-	c := &Company{
-		ID:                 uuid.NewString(),
-		Kind:               in.Kind,
-		Name:               req.name,
-		Country:            req.country,
-		Region:             req.region,
-		RegistrationNumber: req.registration,
-		Status:             StatusDraft,
-		Version:            1,
-		CreatedAt:          now,
-		UpdatedAt:          now,
-	}
-	if err := s.repo.Create(ctx, c); err != nil {
-		return nil, err
-	}
-	return c, nil
-}
-
-func (s *CompanyService) Get(ctx context.Context, id string) (*Company, error) {
-	if uuid.Validate(id) != nil {
-		return nil, apperr.ErrNotFound
-	}
-	return s.repo.Get(ctx, id)
-}
-
-func (s *CompanyService) List(ctx context.Context, f CompanyFilter) ([]Company, error) {
-	var v apperr.Validation
-	if f.Kind != "" && !f.Kind.Valid() {
-		v.Add("kind", "unknown kind")
-	}
-	if f.Status != "" && !validStatus(f.Status) {
-		v.Add("status", "unknown status")
-	}
-	if f.Limit < 0 || f.Offset < 0 {
-		v.Add("limit", "limit and offset must not be negative")
-	}
-	if err := v.Err(); err != nil {
-		return nil, err
-	}
-	if f.Limit == 0 || f.Limit > 200 {
-		f.Limit = 50
-	}
-	return s.repo.List(ctx, f)
-}
-
-// Update changes requisites. The ID, memberships and history stay the same.
-func (s *CompanyService) Update(ctx context.Context, id string, expectedVersion int64, in UpdateCompanyInput) (*Company, error) {
-	c, err := s.load(ctx, id, expectedVersion)
+// audit appends an audit event inside the caller's transaction.
+func (d deps) audit(ctx context.Context, st Store, actor *auth.Principal, action, resourceType, resourceID string, companyID *string, reason string, details map[string]any) error {
+	raw, err := json.Marshal(details)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	var v apperr.Validation
-	req := normalizeRequisites(in.Name, in.Country, in.Region, in.RegistrationNumber, &v)
-	if err := v.Err(); err != nil {
-		return nil, err
+	e := &AuditEvent{
+		ID: uuid.NewString(), OccurredAt: d.clock(), Action: action,
+		ResourceType: resourceType, ResourceID: resourceID, CompanyID: companyID,
+		Reason: reason, Details: raw,
 	}
-	c.Name, c.Country, c.Region, c.RegistrationNumber = req.name, req.country, req.region, req.registration
-	c.UpdatedAt = s.now().UTC()
-	if err := s.repo.Update(ctx, c, expectedVersion); err != nil {
-		return nil, err
+	if actor != nil {
+		e.ActorUserID = &actor.UserID
 	}
-	return c, nil
+	return st.Audit().Append(ctx, e)
 }
 
-// allowedTransitions: activation needs a reason; suspension keeps history and
-// can be reversed. Access status is not legal or compliance verification.
-var allowedTransitions = map[CompanyStatus][]CompanyStatus{
-	StatusDraft:     {StatusActive},
-	StatusActive:    {StatusSuspended},
-	StatusSuspended: {StatusActive},
+// isMember reports whether the user has an active membership in the company.
+func (d deps) isMember(ctx context.Context, st Store, userID, companyID string) (bool, error) {
+	_, err := st.Memberships().Active(ctx, userID, companyID)
+	if errors.Is(err, apperr.ErrNotFound) {
+		return false, nil
+	}
+	return err == nil, err
 }
 
-func (s *CompanyService) ChangeStatus(ctx context.Context, id string, expectedVersion int64, in ChangeStatusInput) (*Company, error) {
-	c, err := s.load(ctx, id, expectedVersion)
-	if err != nil {
-		return nil, err
-	}
-	var v apperr.Validation
-	reason := strings.TrimSpace(in.Reason)
-	if !canTransition(c.Status, in.Status) {
-		v.Add("status", "cannot change from "+string(c.Status)+" to "+string(in.Status))
-	}
-	if reason == "" || utf8.RuneCountInString(reason) > 500 {
-		v.Add("reason", "required, at most 500 characters")
-	}
-	if err := v.Err(); err != nil {
-		return nil, err
-	}
-	c.Status, c.StatusReason, c.UpdatedAt = in.Status, reason, s.now().UTC()
-	if err := s.repo.Update(ctx, c, expectedVersion); err != nil {
-		return nil, err
-	}
-	return c, nil
-}
-
-// load fetches the company and rejects early if the client's version is stale,
-// so rules are never evaluated against a state the client has not seen.
-func (s *CompanyService) load(ctx context.Context, id string, expectedVersion int64) (*Company, error) {
-	c, err := s.Get(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	if c.Version != expectedVersion {
-		return nil, apperr.ErrStale
-	}
-	return c, nil
-}
-
-func canTransition(from, to CompanyStatus) bool {
-	for _, allowed := range allowedTransitions[from] {
-		if allowed == to {
-			return true
+// validID turns malformed IDs into ErrNotFound instead of database errors.
+func validID(ids ...string) error {
+	for _, id := range ids {
+		if uuid.Validate(id) != nil {
+			return apperr.ErrNotFound
 		}
 	}
-	return false
+	return nil
 }
 
-func validStatus(s CompanyStatus) bool {
-	_, ok := allowedTransitions[s]
-	return ok
+func text(v *apperr.Validation, field, value string, min, max int) string {
+	value = strings.TrimSpace(value)
+	if n := utf8.RuneCountInString(value); n < min || n > max {
+		if min > 0 {
+			v.Add(field, "required, at most "+strconv.Itoa(max)+" characters")
+		} else {
+			v.Add(field, "at most "+strconv.Itoa(max)+" characters")
+		}
+	}
+	return value
 }
 
-type requisites struct{ name, country, region, registration string }
-
-func normalizeRequisites(name, country, region, registration string, v *apperr.Validation) requisites {
-	r := requisites{
-		name:         strings.TrimSpace(name),
-		country:      strings.TrimSpace(country),
-		region:       strings.TrimSpace(region),
-		registration: strings.TrimSpace(registration),
+func email(v *apperr.Validation, field, value string) string {
+	value = strings.TrimSpace(value)
+	addr, err := mail.ParseAddress(value)
+	if err != nil || addr.Address != value || len(value) > 254 {
+		v.Add(field, "must be a valid email address")
 	}
-	checkLength(v, "name", r.name, 200)
-	checkLength(v, "country", r.country, 100)
-	checkLength(v, "registrationNumber", r.registration, 64)
-	if utf8.RuneCountInString(r.region) > 100 {
-		v.Add("region", "at most 100 characters")
-	}
-	if r.region != "" && r.country == "" {
-		v.Add("region", "requires a country")
-	}
-	return r
+	return value
 }
 
-func checkLength(v *apperr.Validation, field, value string, max int) {
-	if n := utf8.RuneCountInString(value); n == 0 || n > max {
-		v.Add(field, "required, at most "+strconv.Itoa(max)+" characters")
+func reason(v *apperr.Validation, value string) string {
+	return text(v, "reason", value, 1, 500)
+}
+
+// uniqueIDs validates and de-duplicates a list of UUIDs.
+func uniqueIDs(v *apperr.Validation, field string, ids []string) []string {
+	out := []string{}
+	for _, id := range ids {
+		if uuid.Validate(id) != nil {
+			v.Add(field, "must contain valid IDs")
+			return out
+		}
+		if !slices.Contains(out, id) {
+			out = append(out, id)
+		}
 	}
+	return out
 }

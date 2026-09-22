@@ -36,16 +36,22 @@ cp .env.example .env                    # local-only credentials
 docker compose --env-file .env -f infra/local/compose.yaml up -d
 set -a && . ./.env && set +a
 bash tools/go.sh run ./cmd/migrate up   # apply SQL migrations
+# once: first platform administrator (password on stdin, single-use)
+printf '%s\n' 'choose-a-long-password' | bash tools/go.sh run ./cmd/bootstrap-admin \
+  -login admin -email admin@example.com -name "Platform Admin"
 bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
 ```
 
-Tests (`TEST_DATABASE_URL` must point to a **disposable** database; the
-repository tests truncate tables, and are skipped without it):
+Sign in with `POST /api/v1/identity/session/login` `{"login","password"}`; the
+session is an HttpOnly cookie and every state-changing request must send the
+`X-CSRF-Token` returned by login / `GET /api/v1/identity/session`.
+
+Tests:
 
 ```sh
 bash tools/go.sh vet ./...
-bash tools/go.sh test -race ./...
-TEST_DATABASE_URL=postgres://… bash tools/go.sh test -race ./...
+bash tools/test-go.sh        # all tests incl. database tests, in a throwaway PostgreSQL container
+bash tools/go.sh test ./...  # without Docker: database tests are skipped
 ```
 
 New migration: add the next numbered pair
@@ -56,6 +62,7 @@ New migration: add the next numbered pair
 ```text
 cmd/api/                  HTTP API entry point (composition root)
 cmd/migrate/              migration CLI (up / down [N] / version)
+cmd/bootstrap-admin/      single-use creation of the first platform admin
 internal/modules/<name>/  one module: handler → service → repository, model
 internal/platform/        shared tech: config, database, HTTP server, errors
 migrations/               versioned SQL migrations (embedded)

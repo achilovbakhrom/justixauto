@@ -20,5 +20,13 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
 - Schema changes are new numbered files in `migrations/` (up + down); never edit
   an applied migration. No GORM AutoMigrate.
 - Money: integer minor units + currency code; never float.
-- Tests: service rules with in-memory fakes, HTTP mapping with httptest, and
-  repository tests against a disposable database via `TEST_DATABASE_URL`.
+- HTTP contract: `docs/justix-auto/contracts/http-domain.md`. Use `httpx.Data`
+  (`{data,revision}` + ETag), `httpx.List` (`{items,nextCursor,asOf}`) and
+  return `apperr` errors (rendered as `{error:{code,message,fields,traceId}}`).
+  Models never go to JSON directly; map them to DTOs.
+- Auth: the identity module authenticates every `/api/v1` request. Read the
+  caller with `auth.Get(c)`; protect routes with `auth.Require(perm...)` and
+  company-scoped routes with `auth.RequireCompany()`. Add new permission keys
+  to the identity catalog (`<module>.<resource>.<action>`).
+- Tests: pure logic as unit tests; behaviour end to end through HTTP against a
+  real database (`TEST_DATABASE_URL`; `bash tools/test-go.sh` starts one).

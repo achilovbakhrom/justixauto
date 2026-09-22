@@ -40,9 +40,13 @@ func run(log *slog.Logger) error {
 	}
 	defer sqlDB.Close()
 
+	idm := identity.New(db, identity.Config{
+		Cookie:  identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
+		Session: identity.DefaultSessionConfig,
+	})
 	e := httpx.NewServer(log)
-	api := e.Group("/api/v1")
-	identity.Register(api, db)
+	api := e.Group("/api/v1", idm.Authenticate())
+	idm.Register(api)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
