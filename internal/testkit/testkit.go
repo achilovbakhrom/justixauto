@@ -243,14 +243,24 @@ func (e *Env) Admin() *Client {
 // CompanyUser creates an active seller company with a first administrator who additionally
 // holds a custom role with perms, signs them in and selects the company.
 func (e *Env) CompanyUser(admin *Client, name string, perms ...string) *Client {
+	e.T.Helper()
+	return e.KindUser(admin, "seller", name, perms...)
+}
+
+// KindUser is CompanyUser for any company kind: seller, bank, mfo or insurance.
+func (e *Env) KindUser(admin *Client, kind, name string, perms ...string) *Client {
 	t := e.T
 	t.Helper()
 	login := strings.ToLower(strings.ReplaceAll(name, " ", "-"))
-	created := admin.Do(http.MethodPost, "/identity/admin/seller-companies", map[string]any{
-		"company": map[string]any{"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
-			"registration": "REG-" + login, "email": "office@" + login + ".test"},
-		"firstAdmin": map[string]string{"displayName": name + " user", "login": login, "email": login + "@company.test",
-			"password": "company-password-1", "passwordConfirmation": "company-password-1"}})
+	path, body := "/identity/admin/seller-companies", map[string]any{}
+	if kind != "seller" {
+		path, body["kind"] = "/identity/admin/provider-companies", kind
+	}
+	body["company"] = map[string]any{"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
+		"registration": "REG-" + login, "email": "office@" + login + ".test"}
+	body["firstAdmin"] = map[string]string{"displayName": name + " user", "login": login, "email": login + "@company.test",
+		"password": "company-password-1", "passwordConfirmation": "company-password-1"}
+	created := admin.Do(http.MethodPost, path, body)
 	Expect(t, created, http.StatusCreated)
 	userID := created.Data()["admin"].(map[string]any)["id"].(string)
 	companyID := created.Data()["company"].(map[string]any)["id"].(string)

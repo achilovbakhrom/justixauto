@@ -12,6 +12,7 @@ import (
 
 	"justixauto/internal/modules/commerce"
 	"justixauto/internal/modules/identity"
+	"justixauto/internal/modules/insurance"
 	"justixauto/internal/modules/inventory"
 	"justixauto/internal/modules/retail"
 	"justixauto/internal/platform/httpx"
@@ -34,6 +35,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	identity.RegisterPermissions(inventory.Permissions...)
 	identity.RegisterPermissions(commerce.Permissions...)
 	identity.RegisterPermissions(retail.Permissions...)
+	identity.RegisterPermissions(insurance.Permissions...)
 	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now})
 	if err != nil {
 		return nil, nil, err
@@ -45,8 +47,14 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	inv := inventory.New(db, cfg.Now)
 	inv.Register(api)
 	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}, commerceStock{inv.Stock()}).Register(api)
-	ret := retail.New(db, cfg.Now, idm.Companies, retailStock{inv.Stock()}, pendingInsurance{})
+	// Retail and insurance each ask the other a question (approval / sale
+	// facts); the approval adapter is bound once insurance exists.
+	approvals := &insuranceApprovals{}
+	ret := retail.New(db, cfg.Now, idm.Companies, retailStock{inv.Stock()}, approvals)
 	ret.Register(api)
+	ins := insurance.New(db, cfg.Now, insuranceSales{ret.Deals}, insurerDirectory{idm.Companies})
+	approvals.s = ins.Service
+	ins.Register(api)
 	return e, idm, nil
 }
 
@@ -130,8 +138,31 @@ func (a retailStock) Deliver(ctx context.Context, dealID, vehicleID, actorID str
 	return a.s.Deliver(ctx, a.holder(dealID), vehicleID, actorID, at)
 }
 
-// pendingInsurance stands in until the insurance module exists: no deal is
-// approved, so own-installment sales cannot be delivered yet.
-type pendingInsurance struct{}
+// insuranceApprovals adapts insurance decisions to retail's Insurance port.
+type insuranceApprovals struct{ s *insurance.Service }
 
-func (pendingInsurance) Approved(context.Context, string, string) (bool, error) { return false, nil }
+func (a *insuranceApprovals) Approved(ctx context.Context, companyID, dealID string) (bool, error) {
+	return a.s.Approved(ctx, companyID, dealID)
+}
+
+// insuranceSales adapts retail sales to insurance's Sales port.
+type insuranceSales struct{ deals *retail.DealService }
+
+func (a insuranceSales) Sale(ctx context.Context, companyID, dealID string) (*insurance.Sale, error) {
+	d, err := a.deals.Info(ctx, companyID, dealID)
+	if err != nil {
+		return nil, err
+	}
+	return &insurance.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision}, nil
+}
+
+// insurerDirectory adapts identity company profiles to insurance's Directory port.
+type insurerDirectory struct{ companies *identity.CompanyService }
+
+func (a insurerDirectory) Company(ctx context.Context, id string) (*insurance.Company, error) {
+	p, err := a.companies.CompanyProfile(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &insurance.Company{ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive}, nil
+}
