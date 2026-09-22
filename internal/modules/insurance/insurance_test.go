@@ -51,7 +51,13 @@ func TestInsuranceDecisionUnlocksOwnInstallmentDelivery(t *testing.T) {
 		return c.Do(http.MethodPost, "/insurance/applications/"+id+"/"+path, map[string]string{"note": note}, ifMatch(rev)...)
 	}
 	expect(t, act(shop.Client, "take", "", "2"), http.StatusForbidden)
-	expect(t, act(insurer, "take", "", "2"), http.StatusOK)
+	taken := act(insurer, "take", "", "2")
+	expect(t, taken, http.StatusOK)
+	// The insurer sees the vehicle and the client from the submitted snapshot.
+	snap := taken.Data()["snapshot"].(map[string]any)
+	if snap["vehicle"].(map[string]any)["vin"] != "XTAAA11111A40000B" || snap["customer"].(map[string]any)["name"] == "" {
+		t.Fatalf("snapshot: %v", snap)
+	}
 	expect(t, act(insurer, "information-requests", "", "3"), http.StatusUnprocessableEntity)
 	expect(t, act(insurer, "information-requests", "Need the customer's income statement", "3"), http.StatusOK)
 	expect(t, act(shop.Client, "responses", "Uploaded to the deal file", "4"), http.StatusOK)

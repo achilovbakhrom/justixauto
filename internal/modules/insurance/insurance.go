@@ -36,7 +36,10 @@ var Permissions = []auth.PermissionInfo{
 // Sale is what insurance may know about a retail sale (from retail).
 type Sale struct {
 	ID, VehicleID, PaymentScheme, Status string
-	Price                                money.Money
+	// What the provider sees about the sale: vehicle and client (OD-10 decides
+	// any further personal data).
+	VIN, Model, CustomerName string
+	Price                    money.Money
 	Revision                             int64
 }
 
@@ -299,6 +302,7 @@ func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expe
 		}
 		now := s.clock()
 		a.Snapshot, _ = json.Marshal(map[string]any{"dealId": sale.ID, "vehicleId": sale.VehicleID, "price": sale.Price,
+			"vehicle": map[string]string{"vin": sale.VIN, "model": sale.Model}, "customer": map[string]string{"name": sale.CustomerName},
 			"paymentScheme": sale.PaymentScheme, "dealRevision": sale.Revision, "note": a.Note})
 		a.Status, a.SubmittedAt, a.UpdatedAt = "submitted", &now, now
 		if err := r.Update(ctx, a, expected); err != nil {

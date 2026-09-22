@@ -10,6 +10,10 @@ import { Badge, Details, Modal, Notice, Panel, Table, date, dateTime, money } fr
 import type { FieldSpec } from './ui';
 
 type Money = { amountMinor: string; currency: string };
+/** Sale facts frozen at submission; drafts have no snapshot yet. */
+type SaleSnapshot = { price?: Money; paymentScheme?: string; vehicleId?: string; vehicle?: { vin: string; model: string }; customer?: { name: string } } | null;
+
+const vehicleText = (s: SaleSnapshot) => s?.vehicle ? `${s.vehicle.model} · VIN ${s.vehicle.vin}` : '—';
 
 // Queues change on the other side (seller or provider); poll them.
 const QUEUE_POLL_MS = 30_000;
@@ -56,7 +60,7 @@ async function dealRevision(dealId: string) {
 
 export interface InsuranceApplication {
   id: string; side: 'seller' | 'insurer'; sellerCompanyId: string; insurerCompanyId: string; retailDealId: string; status: string;
-  note: string; snapshot: { price?: Money; paymentScheme?: string; vehicleId?: string } | null; history?: Message[];
+  note: string; snapshot: SaleSnapshot; history?: Message[];
   allowedActions: string[]; revision: string; submittedAt: string | null; decidedAt: string | null;
 }
 
@@ -69,6 +73,7 @@ export function InsuranceTable({ rows, loading, error, counterparty, onOpen }: {
 }) {
   return <Table rows={rows} loading={loading} error={error} rowKey={(a) => a.id} onRowClick={(a) => onOpen(a.id)} columns={[
     { title: 'Контрагент', render: counterparty },
+    { title: 'Автомобиль', render: (a) => a.snapshot?.vehicle?.model ?? '—' },
     { title: 'Цена авто', render: (a) => money(a.snapshot?.price) },
     { title: 'Отправлена', render: (a) => dateTime(a.submittedAt) },
     { title: 'Статус', render: (a) => <StatusBadge status={a.status} /> },
@@ -101,6 +106,8 @@ export function InsuranceDialog({ id, onClose, describeDeal }: { id: string; onC
         ['Статус', <StatusBadge status={a.status} />],
         [a.side === 'seller' ? 'Страховая' : 'Продавец', name(a.side === 'seller' ? a.insurerCompanyId : a.sellerCompanyId)],
         ['Сделка', describeDeal ? describeDeal(a.retailDealId) : a.retailDealId.slice(0, 8)],
+        ['Автомобиль', vehicleText(a.snapshot)],
+        ['Клиент', a.snapshot?.customer?.name ?? '—'],
         ['Цена автомобиля', money(a.snapshot?.price)],
         ['Комментарий продавца', a.note || '—'],
         ['Решение', dateTime(a.decidedAt)],
@@ -121,7 +128,7 @@ export interface Calculation {
 export interface FinanceApplication {
   id: string; side: 'seller' | 'provider'; sellerCompanyId: string; providerCompanyId: string; retailDealId: string;
   programId: string | null; programVersion: number | null; calculation: Calculation | null; calculationDigest: string; status: string;
-  snapshot: { price?: Money; vehicleId?: string } | null; currentTermsVersion: number | null;
+  snapshot: SaleSnapshot; currentTermsVersion: number | null;
   terms?: { number: number; calculation: Calculation; note: string; createdAt: string }[]; history?: Message[]; allowedActions: string[]; revision: string;
 }
 export interface ProgramVersion { number: string; name: string; currency: string; terms: { markupBps: number; minDownPaymentBps: number; termMonths: number[] }; eligibility: { minPriceMinor: string; maxPriceMinor: string }; createdAt: string }
@@ -138,6 +145,7 @@ export function FinanceTable({ rows, loading, error, counterparty, onOpen }: {
 }) {
   return <Table rows={rows} loading={loading} error={error} rowKey={(a) => a.id} onRowClick={(a) => onOpen(a.id)} columns={[
     { title: 'Контрагент', render: counterparty },
+    { title: 'Автомобиль', render: (a) => a.snapshot?.vehicle?.model ?? '—' },
     { title: 'Цена авто', render: (a) => money(a.snapshot?.price ?? a.calculation?.price) },
     { title: 'Финансирование', render: (a) => money(a.calculation?.output.financedAmount) },
     { title: 'Срок', render: (a) => a.calculation ? `${a.calculation.input.termMonths} мес.` : '—' },
@@ -204,6 +212,8 @@ export function FinanceDialog({ id, onClose, describeDeal }: { id: string; onClo
         [a.side === 'seller' ? 'Банк / МФО' : 'Продавец', name(a.side === 'seller' ? a.providerCompanyId : a.sellerCompanyId)],
         ['Программа', version ? `${version.name} (версия ${version.number}, наценка ${percent(version.terms.markupBps)})` : '—'],
         ['Сделка', describeDeal ? describeDeal(a.retailDealId) : a.retailDealId.slice(0, 8)],
+        ['Автомобиль', vehicleText(a.snapshot)],
+        ['Клиент', a.snapshot?.customer?.name ?? '—'],
       ]} />
       {a.status === 'needs-info' && a.side === 'seller' && <Notice kind="warning">Партнёр запросил информацию — ответьте в переписке.</Notice>}
       <CalculationView calc={a.calculation} title="Расчёт продавца" />

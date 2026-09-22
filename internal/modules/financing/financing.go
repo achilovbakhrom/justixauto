@@ -41,7 +41,10 @@ var Permissions = []auth.PermissionInfo{
 // Sale is what financing may know about a retail sale (from retail).
 type Sale struct {
 	ID, VehicleID, PaymentScheme, Status string
-	Price                                money.Money
+	// What the provider sees about the sale: vehicle and client (OD-10 decides
+	// any further personal data).
+	VIN, Model, CustomerName string
+	Price                    money.Money
 	Revision                             int64
 }
 

@@ -67,7 +67,13 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 		return c.Do(http.MethodPost, "/financing/applications/"+id+"/"+path, body, ifMatch(rev)...)
 	}
 	expect(t, act(shop.Client, "take", nil, "2"), http.StatusForbidden)
-	expect(t, act(bank, "take", nil, "2"), http.StatusOK)
+	taken := act(bank, "take", nil, "2")
+	expect(t, taken, http.StatusOK)
+	// The provider sees the vehicle and the client from the submitted snapshot.
+	snap := taken.Data()["snapshot"].(map[string]any)
+	if v := snap["vehicle"].(map[string]any); v["vin"] == "" || v["model"] == "" || snap["customer"].(map[string]any)["name"] == "" {
+		t.Fatalf("snapshot: %v", snap)
+	}
 	expect(t, act(bank, "information-requests", map[string]any{"note": "Customer's employment certificate"}, "3"), http.StatusOK)
 	expect(t, act(shop.Client, "responses", map[string]any{"note": "Sent by email"}, "4"), http.StatusOK)
 

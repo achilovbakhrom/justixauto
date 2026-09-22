@@ -61,10 +61,10 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	approvals := &insuranceApprovals{}
 	ret := retail.New(db, cfg.Now, idm.Companies, retailStock{inv.Stock()}, approvals, files)
 	ret.Register(api)
-	ins := insurance.New(db, cfg.Now, insuranceSales{ret.Deals}, insurerDirectory{idm.Companies})
+	ins := insurance.New(db, cfg.Now, insuranceSales{ret.Deals, inv}, insurerDirectory{idm.Companies})
 	approvals.s = ins.Service
 	ins.Register(api)
-	financing.New(db, cfg.Now, financingSales{ret.Deals}, providerDirectory{idm.Companies}, files).Register(api)
+	financing.New(db, cfg.Now, financingSales{ret.Deals, inv}, providerDirectory{idm.Companies}, files).Register(api)
 	return e, idm, nil
 }
 
@@ -156,14 +156,22 @@ func (a *insuranceApprovals) Approved(ctx context.Context, companyID, dealID str
 }
 
 // insuranceSales adapts retail sales to insurance's Sales port.
-type insuranceSales struct{ deals *retail.DealService }
+type insuranceSales struct {
+	deals     *retail.DealService
+	inventory *inventory.Module
+}
 
 func (a insuranceSales) Sale(ctx context.Context, companyID, dealID string) (*insurance.Sale, error) {
 	d, err := a.deals.Info(ctx, companyID, dealID)
 	if err != nil {
 		return nil, err
 	}
-	return &insurance.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision}, nil
+	v, err := saleVehicle(ctx, a.inventory, companyID, d.VehicleID)
+	if err != nil {
+		return nil, err
+	}
+	return &insurance.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision,
+		VIN: v.vin, Model: v.model, CustomerName: d.CustomerName}, nil
 }
 
 // insurerDirectory adapts identity company profiles to insurance's Directory port.
@@ -178,14 +186,37 @@ func (a insurerDirectory) Company(ctx context.Context, id string) (*insurance.Co
 }
 
 // financingSales adapts retail sales to financing's Sales port.
-type financingSales struct{ deals *retail.DealService }
+type financingSales struct {
+	deals     *retail.DealService
+	inventory *inventory.Module
+}
 
 func (a financingSales) Sale(ctx context.Context, companyID, dealID string) (*financing.Sale, error) {
 	d, err := a.deals.Info(ctx, companyID, dealID)
 	if err != nil {
 		return nil, err
 	}
-	return &financing.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision}, nil
+	v, err := saleVehicle(ctx, a.inventory, companyID, d.VehicleID)
+	if err != nil {
+		return nil, err
+	}
+	return &financing.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision,
+		VIN: v.vin, Model: v.model, CustomerName: d.CustomerName}, nil
+}
+
+type vehicleFacts struct{ vin, model string }
+
+// saleVehicle reads the VIN and model name of a sold vehicle for provider snapshots.
+func saleVehicle(ctx context.Context, inv *inventory.Module, companyID, vehicleID string) (vehicleFacts, error) {
+	v, err := inv.Stock().Vehicle(ctx, companyID, vehicleID)
+	if err != nil {
+		return vehicleFacts{}, err
+	}
+	m, err := inv.Model(ctx, v.ModelID)
+	if err != nil {
+		return vehicleFacts{}, err
+	}
+	return vehicleFacts{vin: v.VIN, model: m.Model.Make + " " + m.Model.Model + " " + m.Model.Variant}, nil
 }
 
 // providerDirectory adapts identity company profiles to financing's Directory port.

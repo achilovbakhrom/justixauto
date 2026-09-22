@@ -189,6 +189,7 @@ func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expe
 		}
 		now := s.clock()
 		a.Snapshot, _ = json.Marshal(map[string]any{"dealId": sale.ID, "vehicleId": sale.VehicleID, "price": sale.Price,
+			"vehicle": map[string]string{"vin": sale.VIN, "model": sale.Model}, "customer": map[string]string{"name": sale.CustomerName},
 			"dealRevision": sale.Revision, "calculation": json.RawMessage(a.Calculation)})
 		a.Status, a.SubmittedAt, a.UpdatedAt = "submitted", &now, now
 		if err := r.updateApplication(ctx, a, expected); err != nil {

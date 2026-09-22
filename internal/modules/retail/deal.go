@@ -806,6 +806,7 @@ func (s *DealService) List(ctx context.Context, p *auth.Principal, status string
 // DealInfo is what finance and insurance may know about a sale.
 type DealInfo struct {
 	ID, CompanyID, VehicleID, CustomerID, PaymentScheme, Status string
+	CustomerName                                                string
 	Price                                                       money.Money
 	Revision                                                    int64
 }
@@ -819,6 +820,10 @@ func (s *DealService) Info(ctx context.Context, companyID, id string) (*DealInfo
 	if err != nil {
 		return nil, err
 	}
-	return &DealInfo{ID: d.ID, CompanyID: d.CompanyID, VehicleID: d.VehicleID, CustomerID: d.CustomerID,
+	c, err := s.store.CRM().Customer(ctx, companyID, d.CustomerID)
+	if err != nil {
+		return nil, err
+	}
+	return &DealInfo{ID: d.ID, CompanyID: d.CompanyID, VehicleID: d.VehicleID, CustomerID: d.CustomerID, CustomerName: c.DisplayName,
 		PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price(), Revision: d.Version}, nil
 }
