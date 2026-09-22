@@ -16,6 +16,7 @@ type CompanyHandler struct {
 }
 
 func (h *CompanyHandler) Routes(g *echo.Group) {
+	g.GET("/directory/companies", h.directory, auth.Require())
 	g.POST("/companies", h.create, auth.Require(PermCompanyCreate))
 	g.GET("/companies/:id", h.get, auth.Require())
 	g.PATCH("/companies/:id", h.update, auth.Require())
@@ -96,4 +97,20 @@ func (h *CompanyHandler) updateBranch(c echo.Context) error {
 		return err
 	}
 	return httpx.Data(c, http.StatusOK, toBranch(b), b.Version)
+}
+
+func (h *CompanyHandler) directory(c echo.Context) error {
+	f := CompanyFilter{Query: c.QueryParam("q"), Kind: CompanyKind(c.QueryParam("kind"))}
+	var err error
+	if f.Limit, err = httpx.IntQuery(c, "limit"); err != nil {
+		return err
+	}
+	if f.Offset, err = httpx.IntQuery(c, "offset"); err != nil {
+		return err
+	}
+	profiles, err := h.companies.Directory(c.Request().Context(), f)
+	if err != nil {
+		return err
+	}
+	return httpx.List(c, profiles, nil)
 }

@@ -319,3 +319,48 @@ func (s *CompanyService) SetAccess(ctx context.Context, actor *auth.Principal, i
 	}
 	return c, nil
 }
+
+// Profile is the public part of a company that other companies and modules
+// may see: no contacts, registration or internal state beyond access.
+type Profile struct {
+	ID      string        `json:"id"`
+	Name    string        `json:"name"`
+	Kind    CompanyKind   `json:"kind"`
+	Access  CompanyAccess `json:"access"`
+	Country string        `json:"country"`
+	Region  string        `json:"region"`
+}
+
+func profile(c *Company) Profile {
+	return Profile{ID: c.ID, Name: c.Name, Kind: c.Kind, Access: c.Status, Country: c.Country, Region: c.Region}
+}
+
+// Directory lists active companies' public profiles, e.g. to find partners.
+func (s *CompanyService) Directory(ctx context.Context, f CompanyFilter) ([]Profile, error) {
+	if f.Kind != "" && !f.Kind.Valid() {
+		return nil, apperr.FieldError("kind", "unknown kind")
+	}
+	f.Access = AccessActive
+	companies, err := s.store.Companies().List(ctx, f)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]Profile, len(companies))
+	for i := range companies {
+		out[i] = profile(&companies[i])
+	}
+	return out, nil
+}
+
+// CompanyProfile returns any company's public profile (for other modules).
+func (s *CompanyService) CompanyProfile(ctx context.Context, id string) (*Profile, error) {
+	if err := validID(id); err != nil {
+		return nil, err
+	}
+	c, err := s.store.Companies().Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	p := profile(c)
+	return &p, nil
+}

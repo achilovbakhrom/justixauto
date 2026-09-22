@@ -28,14 +28,11 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/google/uuid"
-	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
+	"justixauto/internal/app"
 	"justixauto/internal/modules/identity"
-	"justixauto/internal/platform/auth"
 	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/httpx"
-	"justixauto/internal/platform/idempotency"
 )
 
 // Clock is a controllable time source shared by the server and the test.
@@ -96,24 +93,18 @@ type Env struct {
 	srv      *httptest.Server
 }
 
-// New starts the API. register mounts the modules under test on /api/v1;
-// perms are their permission keys (added to the identity catalog).
-func New(t *testing.T, perms []auth.PermissionInfo, register func(api *echo.Group, db *gorm.DB, now func() time.Time)) *Env {
+// New starts the full API (all modules, wired as in production) on a clean
+// database with a controllable clock.
+func New(t *testing.T) *Env {
 	t.Helper()
 	db := DB(t)
 	clock := &Clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
-	identity.RegisterPermissions(perms...)
 	key := make([]byte, 32)
 	_, _ = rand.Read(key)
-	idm, err := identity.New(db, identity.Config{Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now})
+	e, idm, err := app.New(db, app.Config{Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
+		Log: slog.New(slog.NewTextHandler(io.Discard, nil))})
 	if err != nil {
 		t.Fatal(err)
-	}
-	e := httpx.NewServer(slog.New(slog.NewTextHandler(io.Discard, nil)))
-	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, clock.Now, "/identity/session/"))
-	idm.Register(api)
-	if register != nil {
-		register(api, db, clock.Now)
 	}
 	srv := httptest.NewServer(e)
 	t.Cleanup(srv.Close)
@@ -249,7 +240,7 @@ func (e *Env) Admin() *Client {
 	return admin
 }
 
-// CompanyUser creates a seller company with a first administrator who additionally
+// CompanyUser creates an active seller company with a first administrator who additionally
 // holds a custom role with perms, signs them in and selects the company.
 func (e *Env) CompanyUser(admin *Client, name string, perms ...string) *Client {
 	t := e.T
@@ -263,6 +254,8 @@ func (e *Env) CompanyUser(admin *Client, name string, perms ...string) *Client {
 	Expect(t, created, http.StatusCreated)
 	userID := created.Data()["admin"].(map[string]any)["id"].(string)
 	companyID := created.Data()["company"].(map[string]any)["id"].(string)
+	Expect(t, admin.Do(http.MethodPost, "/identity/admin/companies/"+companyID+"/activate",
+		map[string]string{"reason": "onboarded"}, IfMatch("1")...), http.StatusOK)
 	role := admin.Do(http.MethodPost, "/identity/admin/roles", map[string]any{"name": name + " staff", "permissionKeys": perms})
 	Expect(t, role, http.StatusCreated)
 	user := admin.Do(http.MethodGet, "/identity/admin/users/"+userID, nil)

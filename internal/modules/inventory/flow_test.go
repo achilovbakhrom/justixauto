@@ -1,4 +1,4 @@
-package inventory
+package inventory_test
 
 import (
 	"net/http"
@@ -6,9 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
-
+	"justixauto/internal/modules/inventory"
 	"justixauto/internal/testkit"
 )
 
@@ -16,13 +14,11 @@ var expect = testkit.Expect
 var ifMatch = testkit.IfMatch
 
 func newEnv(t *testing.T) (*testkit.Env, *testkit.Client) {
-	e := testkit.New(t, Permissions, func(api *echo.Group, db *gorm.DB, now func() time.Time) {
-		New(db, now).Register(api)
-	})
+	e := testkit.New(t)
 	return e, e.Admin()
 }
 
-var allPerms = []string{PermRead, PermModelsEdit, PermWarehousesManage, PermReceiptsCreate, PermVehiclesMove}
+var allPerms = []string{inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, inventory.PermVehiclesMove}
 
 func spec(variant string, year int) map[string]any {
 	return map[string]any{"specification": map[string]any{"make": "Chevrolet", "model": "Cobalt", "variant": variant,
@@ -40,7 +36,7 @@ func str(m map[string]any, k string) string { s, _ := m[k].(string); return s }
 func TestModelCatalogue(t *testing.T) {
 	e, admin := newEnv(t)
 	editor := e.CompanyUser(admin, "Motors", allPerms...)
-	viewer := e.CompanyUser(admin, "Viewer", PermRead)
+	viewer := e.CompanyUser(admin, "Viewer", inventory.PermRead)
 
 	m := editor.Do(http.MethodPost, "/inventory/vehicle-models", spec("LTZ", 2025))
 	expect(t, m, http.StatusCreated)

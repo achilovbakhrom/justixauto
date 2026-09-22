@@ -10,14 +10,11 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
+	"justixauto/internal/app"
 	"justixauto/internal/config"
 	"justixauto/internal/modules/identity"
-	"justixauto/internal/modules/inventory"
 	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/httpx"
-	"justixauto/internal/platform/idempotency"
 )
 
 func main() {
@@ -43,21 +40,15 @@ func run(log *slog.Logger) error {
 	}
 	defer sqlDB.Close()
 
-	// Each module's permission keys join the identity catalog before serving.
-	identity.RegisterPermissions(inventory.Permissions...)
-	idm, err := identity.New(db, identity.Config{
+	e, _, err := app.New(db, app.Config{
 		Cookie:  identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
 		Session: identity.DefaultSessionConfig,
 		MFAKey:  cfg.MFAKey,
+		Log:     log,
 	})
 	if err != nil {
 		return err
 	}
-	e := httpx.NewServer(log)
-	// Every request: who is calling (session cookie, CSRF, Origin), then safe retries.
-	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, time.Now, "/identity/session/"))
-	idm.Register(api)
-	inventory.New(db, time.Now).Register(api)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()

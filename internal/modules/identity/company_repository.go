@@ -8,6 +8,7 @@ import (
 
 // CompanyFilter narrows List; zero values mean "any".
 type CompanyFilter struct {
+	Query  string // part of the name
 	Kind   CompanyKind
 	Access CompanyAccess
 	Limit  int
@@ -54,6 +55,9 @@ func (r *companyRepository) List(ctx context.Context, f CompanyFilter) ([]Compan
 	}
 	if f.Access != "" {
 		q = q.Where("status = ?", f.Access)
+	}
+	if f.Query != "" {
+		q = q.Where("name ILIKE ?", "%"+f.Query+"%")
 	}
 	companies := []Company{}
 	return companies, translate(q.Find(&companies).Error)
