@@ -27,6 +27,7 @@ const (
 var Permissions = []auth.PermissionInfo{
 	{Key: PermRead, Scope: "company", Assignable: true},
 	{Key: PermPartnershipsManage, Scope: "company", Assignable: true},
+	{Key: PermOffersManage, Scope: "company", Assignable: true},
 }
 
 // Company is what commerce needs to know about another company.
@@ -109,6 +110,7 @@ func (Event) TableName() string { return "commerce.events" }
 
 type Store interface {
 	Partnerships() PartnershipRepository
+	Offers() OfferRepository
 	Events() EventRepository
 	InTx(ctx context.Context, fn func(Store) error) error
 }
@@ -119,6 +121,7 @@ func NewStore(db *gorm.DB) Store { return &gormStore{db: db} }
 
 func (s *gormStore) Partnerships() PartnershipRepository { return &partnershipRepository{s.db} }
 func (s *gormStore) Events() EventRepository             { return &eventRepository{s.db} }
+func (s *gormStore) Offers() OfferRepository             { return &offerRepository{s.db} }
 func (s *gormStore) InTx(ctx context.Context, fn func(Store) error) error {
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&gormStore{db: tx}) })
 }
@@ -209,6 +212,7 @@ func (r *eventRepository) ForResource(ctx context.Context, resourceType, id stri
 type deps struct {
 	store     Store
 	directory Directory
+	catalog   Catalog
 	now       func() time.Time
 }
 

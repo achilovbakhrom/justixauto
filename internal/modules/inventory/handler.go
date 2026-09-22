@@ -1,6 +1,7 @@
 package inventory
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -390,3 +391,9 @@ func New(db *gorm.DB, now func() time.Time) *Module {
 
 // Register mounts the inventory routes under /api/v1/inventory.
 func (m *Module) Register(api *echo.Group) { m.handler.Routes(api.Group("/inventory")) }
+
+// Model returns a catalogue model with its current specification (for other
+// modules, through their own ports). Unknown IDs return apperr.ErrNotFound.
+func (m *Module) Model(ctx context.Context, id string) (*ModelDetail, error) {
+	return m.handler.models.Get(ctx, id)
+}

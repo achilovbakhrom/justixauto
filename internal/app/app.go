@@ -40,8 +40,9 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	// Every request: who is calling (session cookie, CSRF, Origin), then safe retries.
 	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, cfg.Now, "/identity/session/"))
 	idm.Register(api)
-	inventory.New(db, cfg.Now).Register(api)
-	commerce.New(db, cfg.Now, directory{idm.Companies}).Register(api)
+	inv := inventory.New(db, cfg.Now)
+	inv.Register(api)
+	commerce.New(db, cfg.Now, directory{idm.Companies}, catalog{inv}).Register(api)
 	return e, idm, nil
 }
 
@@ -55,4 +56,15 @@ func (d directory) Company(ctx context.Context, id string) (*commerce.Company, e
 	}
 	return &commerce.Company{ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive,
 		Country: p.Country}, nil
+}
+
+// catalog adapts inventory's model catalogue to commerce's Catalog port.
+type catalog struct{ inventory *inventory.Module }
+
+func (c catalog) Model(ctx context.Context, id string) (*commerce.Model, error) {
+	m, err := c.inventory.Model(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &commerce.Model{ID: m.Model.ID, Name: m.Model.Make + " " + m.Model.Model + " " + m.Model.Variant}, nil
 }
