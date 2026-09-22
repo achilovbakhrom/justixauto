@@ -566,3 +566,20 @@ func TestSellerOnboardingAndAdminSetPasswords(t *testing.T) {
 	expect(t, e.browser().login("staff", "initial-pass-123"), http.StatusUnauthorized)
 	expect(t, e.browser().login("staff", "my-own-password-1"), http.StatusOK)
 }
+
+// Parallel wrong passwords (as from several API replicas) must not lose
+// counts: the account is locked once the threshold is reached.
+func TestLoginLockoutUnderConcurrency(t *testing.T) {
+	e := newEnv(t)
+	e.bootstrap()
+	var wg sync.WaitGroup
+	for i := 0; i < DefaultSessionConfig.LockoutThreshold; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			e.browser().login("admin", "wrong-password-1")
+		}()
+	}
+	wg.Wait()
+	expect(t, e.browser().login("admin", adminPassword), http.StatusTooManyRequests, "rate_limited")
+}

@@ -5,6 +5,7 @@ package app
 import (
 	"context"
 	"log/slog"
+	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -31,6 +32,8 @@ type Config struct {
 	MFADisabled bool
 	Now         func() time.Time // nil = time.Now
 	Log         *slog.Logger
+	// Middleware runs on every request after the request ID (telemetry).
+	Middleware []echo.MiddlewareFunc
 }
 
 // New returns the HTTP server with all modules mounted under /api/v1.
@@ -48,7 +51,18 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	e := httpx.NewServer(cfg.Log)
+	e := httpx.NewServer(cfg.Log, cfg.Middleware...)
+	// Readiness: the replica can serve only while the database answers.
+	e.GET("/readyz", func(c echo.Context) error {
+		sqlDB, err := db.DB()
+		if err == nil {
+			err = sqlDB.PingContext(c.Request().Context())
+		}
+		if err != nil {
+			return c.NoContent(http.StatusServiceUnavailable)
+		}
+		return c.NoContent(http.StatusNoContent)
+	})
 	// Every request: who is calling (session cookie, CSRF, Origin), then safe retries.
 	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, cfg.Now, "/identity/session/"))
 	idm.Register(api)

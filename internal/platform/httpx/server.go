@@ -17,13 +17,16 @@ import (
 )
 
 // NewServer returns an Echo instance with shared middleware and error handling.
-func NewServer(log *slog.Logger) *echo.Echo {
+// NewServer builds the Echo server; extra middleware (tracing, request logs)
+// runs right after the request ID is assigned.
+func NewServer(log *slog.Logger, extra ...echo.MiddlewareFunc) *echo.Echo {
 	e := echo.New()
 	e.HideBanner = true
 	e.HidePort = true
 	e.HTTPErrorHandler = errorHandler(log)
 	e.Use(middleware.Recover())
 	e.Use(middleware.RequestID())
+	e.Use(extra...)
 	// JSON bodies stay small; file uploads (multipart) set their own limit.
 	e.Use(middleware.BodyLimitWithConfig(middleware.BodyLimitConfig{Limit: "1M", Skipper: func(c echo.Context) bool {
 		return strings.HasPrefix(c.Request().Header.Get("Content-Type"), "multipart/form-data")

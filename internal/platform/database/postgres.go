@@ -25,10 +25,16 @@ func Open(url string) (*gorm.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("database: open: %w", err)
 	}
+	// A span per SQL statement under the request's trace (no-op without OTLP).
+	if err := useTracing(db); err != nil {
+		return nil, fmt.Errorf("database: tracing: %w", err)
+	}
 	sqlDB, err := db.DB()
 	if err != nil {
 		return nil, fmt.Errorf("database: pool: %w", err)
 	}
+	// Every replica holds up to 20 connections: keep replicas × 20 below the
+	// server's max_connections (PostgreSQL default 100).
 	sqlDB.SetMaxOpenConns(20)
 	sqlDB.SetMaxIdleConns(5)
 	sqlDB.SetConnMaxLifetime(30 * time.Minute)

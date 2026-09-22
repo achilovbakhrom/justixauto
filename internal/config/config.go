@@ -13,6 +13,8 @@ type Config struct {
 	HTTPAddr        string
 	DatabaseURL     string
 	ShutdownTimeout time.Duration
+	// ShutdownDrain: after SIGTERM keep serving this long before closing (SHUTDOWN_DRAIN, e.g. 5s).
+	ShutdownDrain time.Duration
 	// CookieSecure must stay true outside local HTTP development.
 	CookieSecure bool
 	// AllowedOrigins may send state-changing requests besides the API's own host
@@ -65,6 +67,11 @@ func Load() (Config, error) {
 		return Config{}, fmt.Errorf("config: MFA_KEY must be 32 random bytes, base64-encoded (openssl rand -base64 32)")
 	}
 	cfg.MFAKey = key
+	if d := os.Getenv("SHUTDOWN_DRAIN"); d != "" {
+		if cfg.ShutdownDrain, err = time.ParseDuration(d); err != nil {
+			return Config{}, fmt.Errorf("SHUTDOWN_DRAIN: %w", err)
+		}
+	}
 	cfg.MFADisabled = os.Getenv("MFA_DISABLED") == "true"
 	switch {
 	case cfg.FileStorage == "s3" && cfg.S3.Bucket == "":

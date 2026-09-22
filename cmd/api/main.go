@@ -10,17 +10,23 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"justixauto/internal/app"
 	"justixauto/internal/config"
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/platform/database"
+	"justixauto/internal/platform/telemetry"
 	"justixauto/internal/platform/webui"
 )
 
+// version is set at build time (-ldflags "-X main.version=...").
+var version = "dev"
+
 func main() {
-	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	log := telemetry.Logger()
+	slog.SetDefault(log)
 	if err := run(log); err != nil {
 		log.Error("api stopped", "err", err)
 		os.Exit(1)
@@ -32,6 +38,15 @@ func run(log *slog.Logger) error {
 	if err != nil {
 		return err
 	}
+	stopTelemetry, err := telemetry.Setup(context.Background(), version)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_ = stopTelemetry(ctx)
+	}()
 	db, err := database.Open(cfg.DatabaseURL)
 	if err != nil {
 		return err
@@ -57,6 +72,7 @@ func run(log *slog.Logger) error {
 		MFAKey:      cfg.MFAKey,
 		MFADisabled: cfg.MFADisabled,
 		Log:         log,
+		Middleware:  telemetry.HTTP(log),
 	})
 	if err != nil {
 		return err
@@ -80,6 +96,10 @@ func run(log *slog.Logger) error {
 		return nil
 	case <-ctx.Done():
 	}
+	// Kubernetes stops routing to a terminating pod a moment after SIGTERM;
+	// keep serving briefly so no request hits a closed listener.
+	log.Info("shutting down", "drain", cfg.ShutdownDrain)
+	time.Sleep(cfg.ShutdownDrain)
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
 	defer cancel()
 	return e.Shutdown(shutdownCtx)

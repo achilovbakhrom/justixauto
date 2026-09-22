@@ -20,6 +20,9 @@ type UserRepository interface {
 	// SetLoginState records failed attempts and lockouts without bumping the
 	// version, so sign-in attempts never make an admin's edit stale.
 	SetLoginState(ctx context.Context, id string, failed int, lockedUntil *time.Time) error
+	// RecordFailure counts one failed attempt atomically (safe across
+	// replicas); at the threshold it locks the account and resets the count.
+	RecordFailure(ctx context.Context, id string, threshold int, lockUntil time.Time) error
 }
 
 type userRepository struct{ db *gorm.DB }
@@ -75,6 +78,14 @@ func (r *userRepository) Update(ctx context.Context, u *User, expected int64) er
 		u.Version = expected + 1
 	}
 	return err
+}
+
+func (r *userRepository) RecordFailure(ctx context.Context, id string, threshold int, lockUntil time.Time) error {
+	err := r.db.WithContext(ctx).Model(&User{}).Where("id = ?", id).Updates(map[string]any{
+		"failed_logins": gorm.Expr("CASE WHEN failed_logins + 1 >= ? THEN 0 ELSE failed_logins + 1 END", threshold),
+		"locked_until":  gorm.Expr("CASE WHEN failed_logins + 1 >= ? THEN ?::timestamptz ELSE locked_until END", threshold, lockUntil),
+	}).Error
+	return translate(err)
 }
 
 func (r *userRepository) SetLoginState(ctx context.Context, id string, failed int, lockedUntil *time.Time) error {

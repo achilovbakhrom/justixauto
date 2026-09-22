@@ -119,12 +119,7 @@ func (s *AuthService) Login(ctx context.Context, login, password, previousToken 
 // recordFailure counts a failed password or second factor and locks the
 // account for a while after too many in a row.
 func (s *AuthService) recordFailure(ctx context.Context, u *User) error {
-	failed, lockedUntil := u.FailedLogins+1, (*time.Time)(nil)
-	if failed >= s.cfg.LockoutThreshold {
-		until := s.clock().Add(s.cfg.LockoutDuration)
-		failed, lockedUntil = 0, &until
-	}
-	return s.store.Users().SetLoginState(ctx, u.ID, failed, lockedUntil)
+	return s.store.Users().RecordFailure(ctx, u.ID, s.cfg.LockoutThreshold, s.clock().Add(s.cfg.LockoutDuration))
 }
 
 // startSession creates a session and returns its raw cookie token, which is
