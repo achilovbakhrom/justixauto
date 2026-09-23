@@ -29,6 +29,20 @@ manifest. The four apps exchange **demo** data in the same browser/origin.
 No real personal documents, passwords, financial actions or external APIs.
 Use another `MOCK_PORT` if 4180 is occupied; do not kill an unrelated server.
 
+## Quick start (Makefile)
+
+```sh
+make env                 # .env with generated secrets (ports: make env POSTGRES_PORT=55433 API_PORT=8090)
+make dev                 # PostgreSQL + migrations + built web apps + API on one port
+make bootstrap-admin     # once per database: first platform admin (asks for a password)
+```
+
+For UI work with hot reload run `make api` in one terminal and
+`make web APP=realization` (or `financing`, `insurance`, `admin`) in another;
+Vite proxies `/api` to the API. `make help` lists everything: tests
+(`make test`, `make check`), database (`make db-psql`, `make db-reset`), the
+Docker image (`make image`) and the local Kubernetes stack (`make k8s-up`).
+
 ## Run the backend
 
 ```sh
