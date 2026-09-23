@@ -1,0 +1,24 @@
+# Local kind cluster (infra/kind). Plain HTTP on a NodePort, MinIO as S3,
+# telemetry to the in-cluster OpenTelemetry Collector.
+environment: dev
+image:
+  repository: justixauto
+  tag: dev
+replicaCount: 2
+config:
+  cookieSecure: false           # http://localhost only
+  allowedOrigins: "http://localhost:18090,http://127.0.0.1:18090"
+  mfaDisabled: true             # local stand without two-factor (user decision 2026-09-22)
+  s3:
+    bucket: justixauto-documents
+    endpoint: http://minio.justixauto-deps:9000
+    forcePathStyle: true
+  otel:
+    endpoint: http://otel-collector.observability:4318
+    traceSampleRatio: "0.5"
+service:
+  type: NodePort
+  nodePort: 30080
+resources:
+  requests: { cpu: 50m, memory: 96Mi }
+  limits: { memory: 256Mi }

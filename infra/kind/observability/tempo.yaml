@@ -1,0 +1,16 @@
+# grafana/tempo 1.24.4 — single binary, local storage.
+tempo:
+  retention: 48h
+  receivers:
+    otlp:
+      protocols:
+        grpc: { endpoint: "0.0.0.0:4317" }
+        http: { endpoint: "0.0.0.0:4318" }
+  resources: { requests: { cpu: 50m, memory: 192Mi }, limits: { memory: 768Mi } }
+  # Keep the Go heap under the container limit (GC works harder instead of OOM).
+  extraEnv: [{ name: GOMEMLIMIT, value: 600MiB }]
+  # Reject bursts instead of running out of memory (load tests on a laptop).
+  overrides:
+    defaults:
+      ingestion: { rate_limit_bytes: 3000000, burst_size_bytes: 6000000, max_traces_per_user: 20000 }
+persistence: { enabled: false }

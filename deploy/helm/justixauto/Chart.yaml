@@ -1,0 +1,6 @@
+apiVersion: v2
+name: justixauto
+description: JustixAuto modular monolith (API + web apps) with migrations as a pre-install/pre-upgrade job
+type: application
+version: 0.1.0
+appVersion: "dev"

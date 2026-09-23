@@ -1,0 +1,13 @@
+.git
+.env
+**/node_modules
+**/dist
+var
+docs
+tools
+infra
+deploy
+.claude
+.codex
+**/*.test.ts
+**/*.test.tsx

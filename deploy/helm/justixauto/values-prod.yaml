@@ -1,0 +1,35 @@
+# Production template. Deployment is human-only (infra/AGENTS.md): fill the
+# placeholders, pin the image by digest and review before any rollout.
+environment: prod
+image:
+  repository: REGISTRY/justixauto   # e.g. <account>.dkr.ecr.<region>.amazonaws.com/justixauto
+  tag: ""
+  digest: ""                        # required: sha256:… of the released image
+  pullPolicy: IfNotPresent
+replicaCount: 2
+config:
+  cookieSecure: true
+  mfaDisabled: false
+  s3:
+    bucket: REPLACE-justixauto-documents
+    region: eu-central-1
+    sse: aws:kms
+  otel:
+    endpoint: http://otel-collector.observability:4318
+resources:
+  requests: { cpu: 250m, memory: 256Mi }
+  limits: { memory: 512Mi }
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+ingress:
+  enabled: true
+  className: nginx
+  host: app.example.com
+  tls:
+    - secretName: justixauto-tls
+      hosts: [app.example.com]
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: REPLACE-arn:aws:iam::ACCOUNT:role/justixauto-s3

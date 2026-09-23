@@ -1,0 +1,46 @@
+{{- if .Values.migrations.enabled }}
+# Runs before the new pods start. golang-migrate takes a PostgreSQL advisory
+# lock, so concurrent runs are safe. Migrations must stay backward compatible
+# with the previous release (expand → deploy → contract), because old pods
+# keep serving during the rolling update.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "justixauto.name" . }}-migrate
+  labels: {{- include "justixauto.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.migrations.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migrations.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "justixauto.labels" . | nindent 8 }}
+        app.kubernetes.io/component: migrate
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532          # distroless "nonroot"; Kubernetes needs the numeric id
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: migrate
+          image: {{ include "justixauto.image" . }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/app/migrate", "up"]
+          env:
+            {{- include "justixauto.env" . | nindent 12 }}
+          resources:
+            requests: { cpu: 50m, memory: 64Mi }
+            limits: { memory: 128Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+{{- end }}

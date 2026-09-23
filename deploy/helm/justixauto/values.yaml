@@ -1,0 +1,74 @@
+# Defaults shared by all environments; values-dev.yaml / values-prod.yaml override.
+environment: dev
+
+image:
+  repository: justixauto
+  # Use an immutable reference in shared environments: a digest (sha256:…) or a unique tag.
+  tag: dev
+  digest: ""
+  pullPolicy: IfNotPresent
+
+# Two replicas by default: the API keeps no state in memory (sessions, idempotency
+# keys, lockouts and MFA counters live in PostgreSQL; files in S3).
+replicaCount: 2
+
+# Secret with DATABASE_URL and MFA_KEY (and AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
+# when S3 uses static keys). Created outside the chart; the chart never holds secrets.
+existingSecret: justixauto-secrets
+
+config:
+  cookieSecure: true
+  allowedOrigins: ""            # comma-separated extra origins (dev servers)
+  shutdownDrain: 5s             # keep serving after SIGTERM while endpoints update
+  mfaDisabled: false            # never true outside local development (enforced for prod)
+  webDir: /app/web/apps
+  fileStorage: s3               # several replicas need shared storage: always s3
+  s3:
+    bucket: justixauto-documents
+    region: us-east-1
+    prefix: documents/
+    endpoint: ""                # MinIO / S3-compatible endpoint; empty for AWS
+    forcePathStyle: false
+    sse: ""                     # AES256 or aws:kms
+  otel:
+    endpoint: ""                # e.g. http://otel-collector:4318 ; empty disables export
+    serviceName: justixauto-api
+    traceSampleRatio: "0.1"     # share of new traces kept (parent-based)
+
+resources:
+  requests: { cpu: 100m, memory: 128Mi }
+  limits: { memory: 384Mi }
+
+podDisruptionBudget:
+  minAvailable: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+service:
+  type: ClusterIP
+  port: 80
+  nodePort: null
+
+ingress:
+  enabled: false
+  className: ""
+  host: ""
+  tls: []
+  annotations: {}
+
+serviceAccount:
+  create: true
+  annotations: {}               # e.g. eks.amazonaws.com/role-arn for S3 via IRSA
+
+migrations:
+  enabled: true
+  backoffLimit: 2
+  activeDeadlineSeconds: 300
+
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
