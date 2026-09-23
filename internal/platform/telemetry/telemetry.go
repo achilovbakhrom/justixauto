@@ -33,7 +33,8 @@ func Setup(ctx context.Context, version string) (func(context.Context) error, er
 		return func(context.Context) error { return nil }, nil
 	}
 	host, _ := os.Hostname() // the pod name in Kubernetes
-	res, err := resource.Merge(resource.Default(), resource.NewWithAttributes(semconv.SchemaURL,
+	// Schemaless: merging with the SDK default resource fails when schema URLs differ.
+	res, err := resource.Merge(resource.Default(), resource.NewSchemaless(
 		semconv.ServiceName(envOr("OTEL_SERVICE_NAME", ServiceName)), semconv.ServiceVersion(version), semconv.ServiceInstanceID(host)))
 	if err != nil {
 		return nil, err

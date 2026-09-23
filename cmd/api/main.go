@@ -12,11 +12,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/labstack/echo/v4"
+
 	"justixauto/internal/app"
 	"justixauto/internal/config"
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
 	"justixauto/internal/platform/database"
+	"justixauto/internal/platform/httpx"
 	"justixauto/internal/platform/telemetry"
 	"justixauto/internal/platform/webui"
 )
@@ -38,6 +41,7 @@ func run(log *slog.Logger) error {
 	if err != nil {
 		return err
 	}
+	var drain httpx.Drain
 	stopTelemetry, err := telemetry.Setup(context.Background(), version)
 	if err != nil {
 		return err
@@ -72,7 +76,7 @@ func run(log *slog.Logger) error {
 		MFAKey:      cfg.MFAKey,
 		MFADisabled: cfg.MFADisabled,
 		Log:         log,
-		Middleware:  telemetry.HTTP(log),
+		Middleware:  append([]echo.MiddlewareFunc{drain.Middleware}, telemetry.HTTP(log)...),
 	})
 	if err != nil {
 		return err
@@ -99,6 +103,7 @@ func run(log *slog.Logger) error {
 	// Kubernetes stops routing to a terminating pod a moment after SIGTERM;
 	// keep serving briefly so no request hits a closed listener.
 	log.Info("shutting down", "drain", cfg.ShutdownDrain)
+	drain.Start()
 	time.Sleep(cfg.ShutdownDrain)
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
 	defer cancel()

@@ -6,17 +6,12 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/metric"
 )
 
-// HTTP traces every request (a span per route) and then logs it and records
-// http.server.request.duration. Health probes are not traced or logged.
+// HTTP traces every request (a span per route; otelecho also records
+// http.server.request.duration) and logs it. Health probes are skipped.
 func HTTP(log *slog.Logger) []echo.MiddlewareFunc {
 	skip := func(c echo.Context) bool { p := c.Request().URL.Path; return p == "/healthz" || p == "/readyz" }
-	duration, _ := otel.Meter("justixauto/http").Float64Histogram("http.server.request.duration",
-		metric.WithUnit("s"), metric.WithDescription("Duration of HTTP server requests"))
 	logged := func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			if skip(c) {
@@ -30,8 +25,6 @@ func HTTP(log *slog.Logger) []echo.MiddlewareFunc {
 			req, res := c.Request(), c.Response()
 			route := c.Path()
 			elapsed := time.Since(start)
-			duration.Record(req.Context(), elapsed.Seconds(), metric.WithAttributes(attribute.String("http.request.method", req.Method),
-				attribute.String("http.route", route), attribute.Int("http.response.status_code", res.Status)))
 			level := slog.LevelInfo
 			if res.Status >= 500 {
 				level = slog.LevelError
