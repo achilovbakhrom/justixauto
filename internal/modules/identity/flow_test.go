@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/rand"
+	"encoding/base32"
 	"encoding/json"
 	"errors"
 	"io"
@@ -21,6 +22,8 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"gorm.io/gorm"
 
+	"justixauto/internal/modules/identity/model"
+	"justixauto/internal/modules/identity/service"
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/database"
 	"justixauto/internal/pkg/httpx"
@@ -192,7 +195,7 @@ func (c *client) enrollMFA() []string {
 	t.Helper()
 	start := c.do(http.MethodPost, "/session/mfa/enrollment", nil)
 	expect(t, start, http.StatusCreated)
-	secret, err := b32.DecodeString(start.data()["secret"].(string))
+	secret, err := base32.StdEncoding.WithPadding(base32.NoPadding).DecodeString(start.data()["secret"].(string))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -210,8 +213,8 @@ func (c *client) enrollMFA() []string {
 // code returns a fresh TOTP code, moving the clock to the next 30s step so
 // the code has not been used yet.
 func (c *client) code() string {
-	c.env.clock.add(totpStep * time.Second)
-	return totpCode(c.totp, c.env.clock.now())
+	c.env.clock.add(service.TOTPStep * time.Second)
+	return service.TOTPCode(c.totp, c.env.clock.now())
 }
 
 func company(name, registration string) map[string]any {
@@ -385,10 +388,10 @@ func TestUsersRolesAndGuards(t *testing.T) {
 
 	// Custom roles: only known, assignable permissions.
 	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": "Seller", "permissionKeys": []string{"nope"}}), http.StatusUnprocessableEntity)
-	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": "Seller", "permissionKeys": []string{PermPlatformUsersManage}}), http.StatusUnprocessableEntity)
-	role := admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": "Seller manager", "permissionKeys": []string{PermCompanyCreate, PermCompanyEdit, PermBranchesCreate}})
+	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": "Seller", "permissionKeys": []string{model.PermPlatformUsersManage}}), http.StatusUnprocessableEntity)
+	role := admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": "Seller manager", "permissionKeys": []string{model.PermCompanyCreate, model.PermCompanyEdit, model.PermBranchesCreate}})
 	expect(t, role, http.StatusCreated)
-	expect(t, admin.do(http.MethodPatch, "/admin/roles/"+PlatformAdminRoleID, map[string]any{"name": "x", "permissionKeys": []string{}}, ifMatch("1")...), http.StatusConflict, "system_role")
+	expect(t, admin.do(http.MethodPatch, "/admin/roles/"+model.PlatformAdminRoleID, map[string]any{"name": "x", "permissionKeys": []string{}}, ifMatch("1")...), http.StatusConflict, "system_role")
 
 	// New users are pending and cannot sign in.
 	u := admin.do(http.MethodPost, "/admin/users", map[string]any{"displayName": "Dilnoza", "email": "dilnoza@seller.test", "roleIds": []string{role.data()["id"].(string)}})
@@ -436,7 +439,7 @@ func TestMFA(t *testing.T) {
 	expect(t, admin.do(http.MethodGet, "/admin/companies", nil), http.StatusOK)
 
 	recovery := admin.enrollMFA()
-	if len(recovery) != recoveryCodeCount {
+	if len(recovery) != service.RecoveryCodeCount {
 		t.Fatalf("recovery codes: %v", recovery)
 	}
 	s := admin.do(http.MethodGet, "/session", nil)
@@ -447,7 +450,7 @@ func TestMFA(t *testing.T) {
 	expect(t, admin.do(http.MethodPost, "/session/mfa/enrollment", nil), http.StatusConflict, "mfa_already_enrolled")
 
 	// The second factor goes stale; step-up renews it. A code works only once.
-	e.clock.add(mfaFreshness + time.Second)
+	e.clock.add(service.MFAFreshness + time.Second)
 	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusForbidden, "mfa_required")
 	code := admin.code()
 	expect(t, admin.do(http.MethodPost, "/session/mfa/step-up", map[string]string{"code": code}), http.StatusOK)

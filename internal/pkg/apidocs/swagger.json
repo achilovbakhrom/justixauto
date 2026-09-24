@@ -27,7 +27,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -71,7 +71,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.EvidenceInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.EvidenceInput"
                         }
                     }
                 ],
@@ -79,7 +79,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -147,7 +147,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.invoiceVoidRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.invoiceVoidRequest"
                         }
                     }
                 ],
@@ -155,7 +155,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -238,7 +238,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_offerDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_offerDTO"
                         }
                     },
                     "401": {
@@ -273,7 +273,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.OfferInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.OfferInput"
                         }
                     }
                 ],
@@ -281,7 +281,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_offerDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_offerDTO"
                         }
                     },
                     "401": {
@@ -329,7 +329,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_offerDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_offerDTO"
                         }
                     },
                     "401": {
@@ -380,7 +380,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.publishOfferRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.publishOfferRequest"
                         }
                     }
                 ],
@@ -388,7 +388,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_offerDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_offerDTO"
                         }
                     },
                     "401": {
@@ -468,7 +468,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.OfferInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.OfferInput"
                         }
                     }
                 ],
@@ -476,7 +476,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_offerDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_offerDTO"
                         }
                     },
                     "401": {
@@ -556,7 +556,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.offerWithdrawRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.offerWithdrawRequest"
                         }
                     }
                 ],
@@ -564,7 +564,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_offerDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_offerDTO"
                         }
                     },
                     "401": {
@@ -635,7 +635,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -670,7 +670,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.DirectOrderInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.DirectOrderInput"
                         }
                     }
                 ],
@@ -678,7 +678,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -738,7 +738,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -789,7 +789,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.addendumProposeRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.addendumProposeRequest"
                         }
                     }
                 ],
@@ -797,7 +797,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -884,7 +884,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.addendumDecisionRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.addendumDecisionRequest"
                         }
                     }
                 ],
@@ -892,7 +892,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -979,7 +979,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.addendumDecisionRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.addendumDecisionRequest"
                         }
                     }
                 ],
@@ -987,7 +987,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -1067,7 +1067,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.allocateRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.allocateRequest"
                         }
                     }
                 ],
@@ -1075,7 +1075,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -1155,7 +1155,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.orderCancelRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.orderCancelRequest"
                         }
                     }
                 ],
@@ -1163,7 +1163,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -1235,7 +1235,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -1284,7 +1284,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.issueInvoiceRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.issueInvoiceRequest"
                         }
                     }
                 ],
@@ -1292,7 +1292,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -1372,7 +1372,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.ShipmentInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.ShipmentInput"
                         }
                     }
                 ],
@@ -1380,7 +1380,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_shipmentDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_shipmentDTO"
                         }
                     },
                     "401": {
@@ -1460,7 +1460,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.orderConfirmRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.orderConfirmRequest"
                         }
                     }
                 ],
@@ -1468,7 +1468,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -1548,7 +1548,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.orderConfirmRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.orderConfirmRequest"
                         }
                     }
                 ],
@@ -1556,7 +1556,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -1639,7 +1639,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_partnershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_partnershipDTO"
                         }
                     },
                     "401": {
@@ -1674,7 +1674,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.requestPartnershipRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.requestPartnershipRequest"
                         }
                     }
                 ],
@@ -1682,7 +1682,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_partnershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_partnershipDTO"
                         }
                     },
                     "401": {
@@ -1742,7 +1742,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_partnershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_partnershipDTO"
                         }
                     },
                     "401": {
@@ -1800,7 +1800,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.partnershipDecisionRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.partnershipDecisionRequest"
                         }
                     }
                 ],
@@ -1808,7 +1808,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_partnershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_partnershipDTO"
                         }
                     },
                     "401": {
@@ -1888,7 +1888,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.evidenceDecisionRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.evidenceDecisionRequest"
                         }
                     }
                 ],
@@ -1896,7 +1896,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -1976,7 +1976,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.evidenceDecisionRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.evidenceDecisionRequest"
                         }
                     }
                 ],
@@ -1984,7 +1984,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO"
                         }
                     },
                     "401": {
@@ -2061,7 +2061,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_rfqDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_rfqDTO"
                         }
                     },
                     "401": {
@@ -2096,7 +2096,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.RFQInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.RFQInput"
                         }
                     }
                 ],
@@ -2104,7 +2104,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_rfqDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_rfqDTO"
                         }
                     },
                     "401": {
@@ -2158,7 +2158,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_rfqDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_rfqDTO"
                         }
                     },
                     "401": {
@@ -2209,7 +2209,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.acceptRFQRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.acceptRFQRequest"
                         }
                     }
                 ],
@@ -2217,7 +2217,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO"
                         }
                     },
                     "401": {
@@ -2297,7 +2297,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.quoteRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.quoteRequest"
                         }
                     }
                 ],
@@ -2305,7 +2305,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_rfqDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_rfqDTO"
                         }
                     },
                     "401": {
@@ -2392,7 +2392,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.rfqActionRequest"
+                            "$ref": "#/definitions/modules_commerce_handler.rfqActionRequest"
                         }
                     }
                 ],
@@ -2400,7 +2400,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_rfqDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_rfqDTO"
                         }
                     },
                     "401": {
@@ -2472,7 +2472,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_shipmentDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_shipmentDTO"
                         }
                     },
                     "401": {
@@ -2516,7 +2516,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.MilestoneInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.MilestoneInput"
                         }
                     }
                 ],
@@ -2524,7 +2524,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_shipmentDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_shipmentDTO"
                         }
                     },
                     "401": {
@@ -2586,7 +2586,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_commerce.ReceiptDecision"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_service.ReceiptDecision"
                         }
                     }
                 ],
@@ -2594,7 +2594,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_shipmentDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_shipmentDTO"
                         }
                     },
                     "401": {
@@ -4540,7 +4540,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_auditDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_auditDTO"
                         }
                     },
                     "401": {
@@ -4594,7 +4594,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_companyDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_companyDTO"
                         }
                     },
                     "401": {
@@ -4646,7 +4646,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.reasonBody"
+                            "$ref": "#/definitions/modules_identity_handler.reasonBody"
                         }
                     }
                 ],
@@ -4654,7 +4654,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_companyDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_companyDTO"
                         }
                     },
                     "401": {
@@ -4728,7 +4728,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.membershipAccessRequest"
+                            "$ref": "#/definitions/modules_identity_handler.membershipAccessRequest"
                         }
                     }
                 ],
@@ -4736,7 +4736,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_membershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_membershipDTO"
                         }
                     },
                     "401": {
@@ -4810,7 +4810,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.reasonBody"
+                            "$ref": "#/definitions/modules_identity_handler.reasonBody"
                         }
                     }
                 ],
@@ -4818,7 +4818,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_membershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_membershipDTO"
                         }
                     },
                     "401": {
@@ -4875,7 +4875,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_PermissionInfo"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-justixauto_internal_modules_identity_model_PermissionInfo"
                         }
                     },
                     "401": {
@@ -4906,7 +4906,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.ProviderInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.ProviderInput"
                         }
                     }
                 ],
@@ -4914,7 +4914,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_provisionedResponse"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_provisionedResponse"
                         }
                     },
                     "401": {
@@ -4959,7 +4959,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_roleDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_roleDTO"
                         }
                     },
                     "401": {
@@ -4988,7 +4988,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.RoleInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.RoleInput"
                         }
                     }
                 ],
@@ -4996,7 +4996,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_roleDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_roleDTO"
                         }
                     },
                     "401": {
@@ -5058,7 +5058,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.RoleInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.RoleInput"
                         }
                     }
                 ],
@@ -5066,7 +5066,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_roleDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_roleDTO"
                         }
                     },
                     "401": {
@@ -5126,7 +5126,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.SellerInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.SellerInput"
                         }
                     }
                 ],
@@ -5134,7 +5134,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_provisionedResponse"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_provisionedResponse"
                         }
                     },
                     "401": {
@@ -5193,7 +5193,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5222,7 +5222,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.CreateUserInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.CreateUserInput"
                         }
                     }
                 ],
@@ -5230,7 +5230,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5284,7 +5284,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5333,7 +5333,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.UpdateUserInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.UpdateUserInput"
                         }
                     }
                 ],
@@ -5341,7 +5341,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5407,7 +5407,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_membershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_membershipDTO"
                         }
                     },
                     "401": {
@@ -5449,7 +5449,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.GrantMembershipInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.GrantMembershipInput"
                         }
                     }
                 ],
@@ -5457,7 +5457,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_membershipDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_membershipDTO"
                         }
                     },
                     "401": {
@@ -5525,7 +5525,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.SetPasswordInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.SetPasswordInput"
                         }
                     }
                 ],
@@ -5533,7 +5533,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5607,7 +5607,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.reasonBody"
+                            "$ref": "#/definitions/modules_identity_handler.reasonBody"
                         }
                     }
                 ],
@@ -5615,7 +5615,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5682,7 +5682,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.reasonBody"
+                            "$ref": "#/definitions/modules_identity_handler.reasonBody"
                         }
                     }
                 ],
@@ -5749,7 +5749,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.reasonBody"
+                            "$ref": "#/definitions/modules_identity_handler.reasonBody"
                         }
                     }
                 ],
@@ -5757,7 +5757,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO"
                         }
                     },
                     "401": {
@@ -5817,7 +5817,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.createCompanyRequest"
+                            "$ref": "#/definitions/modules_identity_handler.createCompanyRequest"
                         }
                     }
                 ],
@@ -5825,7 +5825,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_companyDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_companyDTO"
                         }
                     },
                     "401": {
@@ -5879,7 +5879,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_companyDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_companyDTO"
                         }
                     },
                     "401": {
@@ -5928,7 +5928,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.CompanyInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.CompanyInput"
                         }
                     }
                 ],
@@ -5936,7 +5936,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_companyDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_companyDTO"
                         }
                     },
                     "401": {
@@ -6002,7 +6002,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_branchDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_branchDTO"
                         }
                     },
                     "401": {
@@ -6044,7 +6044,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.BranchInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.BranchInput"
                         }
                     }
                 ],
@@ -6052,7 +6052,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_branchDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_branchDTO"
                         }
                     },
                     "401": {
@@ -6127,7 +6127,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.BranchInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_identity_service.BranchInput"
                         }
                     }
                 ],
@@ -6135,7 +6135,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_branchDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_branchDTO"
                         }
                     },
                     "401": {
@@ -6218,7 +6218,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_Profile"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-justixauto_internal_modules_identity_service_Profile"
                         }
                     },
                     "401": {
@@ -6246,7 +6246,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_SessionView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
                         }
                     },
                     "401": {
@@ -6286,7 +6286,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_ContextView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_ContextView"
                         }
                     },
                     "401": {
@@ -6347,7 +6347,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.setContextRequest"
+                            "$ref": "#/definitions/modules_identity_handler.setContextRequest"
                         }
                     }
                 ],
@@ -6355,7 +6355,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_ContextView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_ContextView"
                         }
                     },
                     "401": {
@@ -6409,7 +6409,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.loginRequest"
+                            "$ref": "#/definitions/modules_identity_handler.loginRequest"
                         }
                     }
                 ],
@@ -6417,7 +6417,7 @@
                     "200": {
                         "description": "signed in; when MFA is required, data is {challengeId, required: mfa} instead (then POST /identity/session/mfa/verify)",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_SessionView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
                         }
                     },
                     "401": {
@@ -6475,7 +6475,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_Enrollment"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_Enrollment"
                         }
                     },
                     "401": {
@@ -6518,7 +6518,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.mfaCodeRequest"
+                            "$ref": "#/definitions/modules_identity_handler.mfaCodeRequest"
                         }
                     }
                 ],
@@ -6526,7 +6526,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_confirmEnrollmentResponse"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_confirmEnrollmentResponse"
                         }
                     },
                     "401": {
@@ -6568,7 +6568,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.mfaCodeRequest"
+                            "$ref": "#/definitions/modules_identity_handler.mfaCodeRequest"
                         }
                     }
                 ],
@@ -6576,7 +6576,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_SessionView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
                         }
                     },
                     "401": {
@@ -6618,7 +6618,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.verifyMFARequest"
+                            "$ref": "#/definitions/modules_identity_handler.verifyMFARequest"
                         }
                     }
                 ],
@@ -6626,7 +6626,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_SessionView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
                         }
                     },
                     "401": {
@@ -6663,7 +6663,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_identity.changePasswordRequest"
+                            "$ref": "#/definitions/modules_identity_handler.changePasswordRequest"
                         }
                     }
                 ],
@@ -6671,7 +6671,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_SessionView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
                         }
                     },
                     "401": {
@@ -10612,6 +10612,367 @@
                 }
             }
         },
+        "justixauto_internal_modules_commerce_model.Audience": {
+            "type": "object",
+            "required": [
+                "mode",
+                "partnerCompanyIds"
+            ],
+            "properties": {
+                "mode": {
+                    "description": "all-active | selected",
+                    "type": "string"
+                },
+                "partnerCompanyIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_model.Installment": {
+            "type": "object",
+            "required": [
+                "amount",
+                "dueDate",
+                "id"
+            ],
+            "properties": {
+                "amount": {
+                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
+                },
+                "dueDate": {
+                    "description": "YYYY-MM-DD",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_model.Line": {
+            "type": "object",
+            "required": [
+                "lineId",
+                "modelId",
+                "quantity",
+                "unitPrice"
+            ],
+            "properties": {
+                "lineId": {
+                    "type": "string"
+                },
+                "modelId": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "unitPrice": {
+                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_model.OfferStatus": {
+            "type": "string",
+            "enum": [
+                "draft",
+                "published",
+                "withdrawn"
+            ],
+            "x-enum-varnames": [
+                "OfferDraft",
+                "OfferPublished",
+                "OfferWithdrawn"
+            ]
+        },
+        "justixauto_internal_modules_commerce_model.OrderStatus": {
+            "type": "string",
+            "enum": [
+                "awaiting-supplier",
+                "accepted",
+                "fulfilling",
+                "completed",
+                "cancelled"
+            ],
+            "x-enum-varnames": [
+                "AwaitingSupplier",
+                "OrderAccepted",
+                "OrderFulfilling",
+                "OrderCompleted",
+                "OrderCancelled"
+            ]
+        },
+        "justixauto_internal_modules_commerce_model.PartnershipStatus": {
+            "type": "string",
+            "enum": [
+                "requested",
+                "active",
+                "declined",
+                "withdrawn",
+                "ended"
+            ],
+            "x-enum-varnames": [
+                "Requested",
+                "Active",
+                "Declined",
+                "Withdrawn",
+                "Ended"
+            ]
+        },
+        "justixauto_internal_modules_commerce_model.RFQLine": {
+            "type": "object",
+            "required": [
+                "lineId",
+                "modelId",
+                "quantity"
+            ],
+            "properties": {
+                "lineId": {
+                    "type": "string"
+                },
+                "modelId": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_model.RFQStatus": {
+            "type": "string",
+            "enum": [
+                "draft",
+                "sent",
+                "negotiating",
+                "accepted",
+                "declined",
+                "cancelled"
+            ],
+            "x-enum-varnames": [
+                "RFQDraft",
+                "RFQSent",
+                "RFQNegotiating",
+                "RFQAccepted",
+                "RFQDeclined",
+                "RFQCancelled"
+            ]
+        },
+        "justixauto_internal_modules_commerce_model.Terms": {
+            "type": "object",
+            "required": [
+                "deliveryTerms",
+                "lines",
+                "paymentSchedule",
+                "route",
+                "serviceTerms",
+                "warrantyTerms"
+            ],
+            "properties": {
+                "deliveryTerms": {
+                    "type": "string"
+                },
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Line"
+                    }
+                },
+                "paymentSchedule": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Installment"
+                    }
+                },
+                "route": {
+                    "description": "factory | foreign-direct | in-transit | local",
+                    "type": "string"
+                },
+                "serviceTerms": {
+                    "type": "string"
+                },
+                "warrantyTerms": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.AllocationItem": {
+            "type": "object",
+            "required": [
+                "orderLineId",
+                "vehicleId"
+            ],
+            "properties": {
+                "orderLineId": {
+                    "type": "string"
+                },
+                "vehicleId": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.DirectOrderInput": {
+            "type": "object",
+            "required": [
+                "lines",
+                "offerVersionId"
+            ],
+            "properties": {
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "offerLineId",
+                            "quantity"
+                        ],
+                        "properties": {
+                            "offerLineId": {
+                                "type": "string"
+                            },
+                            "quantity": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "offerVersionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.EvidenceInput": {
+            "type": "object",
+            "required": [
+                "attachmentBindingIds",
+                "claimedAmount",
+                "externalReference",
+                "paidOn"
+            ],
+            "properties": {
+                "attachmentBindingIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "claimedAmount": {
+                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
+                },
+                "externalReference": {
+                    "type": "string"
+                },
+                "paidOn": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.MilestoneInput": {
+            "type": "object",
+            "required": [
+                "location",
+                "milestoneType",
+                "note",
+                "occurredAt"
+            ],
+            "properties": {
+                "location": {
+                    "type": "string"
+                },
+                "milestoneType": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "occurredAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.OfferInput": {
+            "type": "object",
+            "required": [
+                "audience",
+                "terms"
+            ],
+            "properties": {
+                "audience": {
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Audience"
+                },
+                "terms": {
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.RFQInput": {
+            "type": "object",
+            "required": [
+                "lines",
+                "offerVersionId",
+                "supplierCompanyId"
+            ],
+            "properties": {
+                "lines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/justixauto_internal_modules_commerce_model.RFQLine"
+                    }
+                },
+                "offerVersionId": {
+                    "type": "string"
+                },
+                "supplierCompanyId": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.ReceiptDecision": {
+            "type": "object",
+            "required": [
+                "decision",
+                "reason",
+                "vehicleIds",
+                "warehouseId"
+            ],
+            "properties": {
+                "decision": {
+                    "description": "accept | reject",
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "vehicleIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "warehouseId": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_commerce_service.ShipmentInput": {
+            "type": "object",
+            "required": [
+                "route",
+                "vehicleIds"
+            ],
+            "properties": {
+                "route": {
+                    "type": "string"
+                },
+                "vehicleIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "justixauto_internal_modules_financing_model.CalculationInput": {
             "type": "object",
             "required": [
@@ -10754,6 +11115,553 @@
                 },
                 "terms": {
                     "$ref": "#/definitions/justixauto_internal_modules_financing_model.ProgramTerms"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_model.CompanyAccess": {
+            "type": "string",
+            "enum": [
+                "draft",
+                "active",
+                "suspended"
+            ],
+            "x-enum-varnames": [
+                "AccessDraft",
+                "AccessActive",
+                "AccessSuspended"
+            ]
+        },
+        "justixauto_internal_modules_identity_model.CompanyKind": {
+            "type": "string",
+            "enum": [
+                "seller",
+                "bank",
+                "mfo",
+                "insurance"
+            ],
+            "x-enum-varnames": [
+                "KindSeller",
+                "KindBank",
+                "KindMFO",
+                "KindInsurance"
+            ]
+        },
+        "justixauto_internal_modules_identity_model.MembershipStatus": {
+            "type": "string",
+            "enum": [
+                "active",
+                "revoked"
+            ],
+            "x-enum-varnames": [
+                "MembershipActive",
+                "MembershipRevoked"
+            ]
+        },
+        "justixauto_internal_modules_identity_model.PermissionInfo": {
+            "type": "object",
+            "required": [
+                "assignable",
+                "key",
+                "requiresMfa",
+                "scope"
+            ],
+            "properties": {
+                "assignable": {
+                    "type": "boolean"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "requiresMfa": {
+                    "type": "boolean"
+                },
+                "scope": {
+                    "description": "\"platform\" or \"company\"",
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_model.UserStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "active",
+                "suspended"
+            ],
+            "x-enum-comments": {
+                "UserPending": "no credential yet, cannot sign in"
+            },
+            "x-enum-descriptions": [
+                "no credential yet, cannot sign in",
+                "",
+                ""
+            ],
+            "x-enum-varnames": [
+                "UserPending",
+                "UserActive",
+                "UserSuspended"
+            ]
+        },
+        "justixauto_internal_modules_identity_service.AccessibleCompany": {
+            "type": "object",
+            "required": [
+                "access",
+                "id",
+                "kind",
+                "name"
+            ],
+            "properties": {
+                "access": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyAccess"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "kind": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyKind"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.BranchAccessInput": {
+            "type": "object",
+            "required": [
+                "branchIds",
+                "mode"
+            ],
+            "properties": {
+                "branchIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "mode": {
+                    "description": "ALL_BRANCHES | SELECTED_BRANCHES",
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.BranchInput": {
+            "type": "object",
+            "required": [
+                "address",
+                "name",
+                "warehouse"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "warehouse": {
+                    "description": "Warehouse: only {\"mode\":\"none\"} until the inventory module exists.",
+                    "type": "object",
+                    "required": [
+                        "mode"
+                    ],
+                    "properties": {
+                        "mode": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.CompanyInput": {
+            "type": "object",
+            "required": [
+                "address",
+                "country",
+                "email",
+                "legalName",
+                "name",
+                "phone",
+                "region",
+                "registration"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "country": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.Label"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "legalName": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "region": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.Label"
+                },
+                "registration": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.ContextView": {
+            "type": "object",
+            "required": [
+                "branchScope",
+                "companyId",
+                "revision"
+            ],
+            "properties": {
+                "branchScope": {
+                    "$ref": "#/definitions/justixauto_internal_pkg_auth.BranchScope"
+                },
+                "companyId": {
+                    "type": "string"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.CreateUserInput": {
+            "type": "object",
+            "required": [
+                "displayName",
+                "email",
+                "roleIds"
+            ],
+            "properties": {
+                "displayName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "roleIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.Enrollment": {
+            "type": "object",
+            "required": [
+                "enrollmentId",
+                "otpauthUri",
+                "secret"
+            ],
+            "properties": {
+                "enrollmentId": {
+                    "type": "string"
+                },
+                "otpauthUri": {
+                    "type": "string"
+                },
+                "secret": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.FirstAdminInput": {
+            "type": "object",
+            "required": [
+                "displayName",
+                "email",
+                "login",
+                "password",
+                "passwordConfirmation"
+            ],
+            "properties": {
+                "displayName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "passwordConfirmation": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.GrantMembershipInput": {
+            "type": "object",
+            "required": [
+                "branchAccess",
+                "companyId"
+            ],
+            "properties": {
+                "branchAccess": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.BranchAccessInput"
+                },
+                "companyId": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.Label": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.MFAView": {
+            "type": "object",
+            "required": [
+                "disabled",
+                "enrolled"
+            ],
+            "properties": {
+                "authenticatedAt": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "description": "two-factor authentication is switched off on this server",
+                    "type": "boolean"
+                },
+                "enrolled": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.Profile": {
+            "type": "object",
+            "required": [
+                "access",
+                "country",
+                "id",
+                "kind",
+                "name",
+                "region"
+            ],
+            "properties": {
+                "access": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyAccess"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "kind": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyKind"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.ProviderInput": {
+            "type": "object",
+            "required": [
+                "company",
+                "firstAdmin",
+                "kind"
+            ],
+            "properties": {
+                "company": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.CompanyInput"
+                },
+                "firstAdmin": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.FirstAdminInput"
+                },
+                "kind": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyKind"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.RoleInput": {
+            "type": "object",
+            "required": [
+                "name",
+                "permissionKeys"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "permissionKeys": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.RoleRef": {
+            "type": "object",
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.SellerInput": {
+            "type": "object",
+            "required": [
+                "company",
+                "firstAdmin"
+            ],
+            "properties": {
+                "company": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.CompanyInput"
+                },
+                "firstAdmin": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.FirstAdminInput"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.SessionUser": {
+            "type": "object",
+            "required": [
+                "displayName",
+                "id",
+                "passwordChangeRequired",
+                "status"
+            ],
+            "properties": {
+                "displayName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "passwordChangeRequired": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.UserStatus"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.SessionView": {
+            "type": "object",
+            "required": [
+                "accessibleCompanies",
+                "context",
+                "mfa",
+                "permissions",
+                "roles",
+                "setup",
+                "user"
+            ],
+            "properties": {
+                "accessibleCompanies": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/justixauto_internal_modules_identity_service.AccessibleCompany"
+                    }
+                },
+                "context": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.ContextView"
+                },
+                "mfa": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.MFAView"
+                },
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/justixauto_internal_modules_identity_service.RoleRef"
+                    }
+                },
+                "setup": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.SetupView"
+                },
+                "user": {
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.SessionUser"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.SetPasswordInput": {
+            "type": "object",
+            "required": [
+                "login",
+                "password",
+                "passwordConfirmation"
+            ],
+            "properties": {
+                "login": {
+                    "description": "required if the user has none yet",
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "passwordConfirmation": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.SetupView": {
+            "type": "object",
+            "required": [
+                "next",
+                "partnershipRequiredForB2B"
+            ],
+            "properties": {
+                "next": {
+                    "description": "company | branch | none",
+                    "type": "string"
+                },
+                "partnershipRequiredForB2B": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "justixauto_internal_modules_identity_service.UpdateUserInput": {
+            "type": "object",
+            "required": [
+                "displayName",
+                "roleIds"
+            ],
+            "properties": {
+                "displayName": {
+                    "type": "string"
+                },
+                "roleIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -11218,7 +12126,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_invoiceDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_ContextView": {
             "type": "object",
             "required": [
                 "data",
@@ -11230,14 +12138,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_commerce.invoiceDTO"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.ContextView"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_offerDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_Enrollment": {
             "type": "object",
             "required": [
                 "data",
@@ -11249,14 +12157,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_commerce.offerDTO"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.Enrollment"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_orderDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView": {
             "type": "object",
             "required": [
                 "data",
@@ -11268,14 +12176,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_commerce.orderDTO"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.SessionView"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_partnershipDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_invoiceDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11287,14 +12195,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_commerce.partnershipDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.invoiceDTO"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_rfqDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_offerDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11306,14 +12214,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_commerce.rfqDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.offerDTO"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_shipmentDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_orderDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11325,7 +12233,64 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_commerce.shipmentDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.orderDTO"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_partnershipDTO": {
+            "type": "object",
+            "required": [
+                "data",
+                "revision"
+            ],
+            "properties": {
+                "asOf": {
+                    "description": "AsOf is set on GET responses.",
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/modules_commerce_handler.partnershipDTO"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_rfqDTO": {
+            "type": "object",
+            "required": [
+                "data",
+                "revision"
+            ],
+            "properties": {
+                "asOf": {
+                    "description": "AsOf is set on GET responses.",
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/modules_commerce_handler.rfqDTO"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_commerce_handler_shipmentDTO": {
+            "type": "object",
+            "required": [
+                "data",
+                "revision"
+            ],
+            "properties": {
+                "asOf": {
+                    "description": "AsOf is set on GET responses.",
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/modules_commerce_handler.shipmentDTO"
                 },
                 "revision": {
                     "type": "string"
@@ -11408,7 +12373,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_ContextView": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_branchDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11420,14 +12385,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.ContextView"
+                    "$ref": "#/definitions/modules_identity_handler.branchDTO"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_Enrollment": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_companyDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11439,14 +12404,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.Enrollment"
+                    "$ref": "#/definitions/modules_identity_handler.companyDTO"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_SessionView": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_confirmEnrollmentResponse": {
             "type": "object",
             "required": [
                 "data",
@@ -11458,14 +12423,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.SessionView"
+                    "$ref": "#/definitions/modules_identity_handler.confirmEnrollmentResponse"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_branchDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_membershipDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11477,14 +12442,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.branchDTO"
+                    "$ref": "#/definitions/modules_identity_handler.membershipDTO"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_companyDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_provisionedResponse": {
             "type": "object",
             "required": [
                 "data",
@@ -11496,14 +12461,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.companyDTO"
+                    "$ref": "#/definitions/modules_identity_handler.provisionedResponse"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_confirmEnrollmentResponse": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_roleDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11515,14 +12480,14 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.confirmEnrollmentResponse"
+                    "$ref": "#/definitions/modules_identity_handler.roleDTO"
                 },
                 "revision": {
                     "type": "string"
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_membershipDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_userDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11534,64 +12499,7 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_identity.membershipDTO"
-                },
-                "revision": {
-                    "type": "string"
-                }
-            }
-        },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_provisionedResponse": {
-            "type": "object",
-            "required": [
-                "data",
-                "revision"
-            ],
-            "properties": {
-                "asOf": {
-                    "description": "AsOf is set on GET responses.",
-                    "type": "string"
-                },
-                "data": {
-                    "$ref": "#/definitions/modules_identity.provisionedResponse"
-                },
-                "revision": {
-                    "type": "string"
-                }
-            }
-        },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_roleDTO": {
-            "type": "object",
-            "required": [
-                "data",
-                "revision"
-            ],
-            "properties": {
-                "asOf": {
-                    "description": "AsOf is set on GET responses.",
-                    "type": "string"
-                },
-                "data": {
-                    "$ref": "#/definitions/modules_identity.roleDTO"
-                },
-                "revision": {
-                    "type": "string"
-                }
-            }
-        },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_userDTO": {
-            "type": "object",
-            "required": [
-                "data",
-                "revision"
-            ],
-            "properties": {
-                "asOf": {
-                    "description": "AsOf is set on GET responses.",
-                    "type": "string"
-                },
-                "data": {
-                    "$ref": "#/definitions/modules_identity.userDTO"
+                    "$ref": "#/definitions/modules_identity_handler.userDTO"
                 },
                 "revision": {
                     "type": "string"
@@ -11845,7 +12753,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_invoiceDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-justixauto_internal_modules_identity_model_PermissionInfo": {
             "type": "object",
             "required": [
                 "asOf",
@@ -11859,7 +12767,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.invoiceDTO"
+                        "$ref": "#/definitions/justixauto_internal_modules_identity_model.PermissionInfo"
                     }
                 },
                 "nextCursor": {
@@ -11868,7 +12776,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_offerDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-justixauto_internal_modules_identity_service_Profile": {
             "type": "object",
             "required": [
                 "asOf",
@@ -11882,7 +12790,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.offerDTO"
+                        "$ref": "#/definitions/justixauto_internal_modules_identity_service.Profile"
                     }
                 },
                 "nextCursor": {
@@ -11891,7 +12799,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_orderDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_invoiceDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -11905,7 +12813,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.orderDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.invoiceDTO"
                     }
                 },
                 "nextCursor": {
@@ -11914,7 +12822,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_partnershipDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_offerDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -11928,7 +12836,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.partnershipDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.offerDTO"
                     }
                 },
                 "nextCursor": {
@@ -11937,7 +12845,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_rfqDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_orderDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -11951,7 +12859,53 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.rfqDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.orderDTO"
+                    }
+                },
+                "nextCursor": {
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_partnershipDTO": {
+            "type": "object",
+            "required": [
+                "asOf",
+                "items",
+                "nextCursor"
+            ],
+            "properties": {
+                "asOf": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_commerce_handler.partnershipDTO"
+                    }
+                },
+                "nextCursor": {
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_commerce_handler_rfqDTO": {
+            "type": "object",
+            "required": [
+                "asOf",
+                "items",
+                "nextCursor"
+            ],
+            "properties": {
+                "asOf": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_commerce_handler.rfqDTO"
                     }
                 },
                 "nextCursor": {
@@ -12029,7 +12983,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_PermissionInfo": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_auditDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12043,7 +12997,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.PermissionInfo"
+                        "$ref": "#/definitions/modules_identity_handler.auditDTO"
                     }
                 },
                 "nextCursor": {
@@ -12052,7 +13006,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_Profile": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_branchDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12066,7 +13020,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.Profile"
+                        "$ref": "#/definitions/modules_identity_handler.branchDTO"
                     }
                 },
                 "nextCursor": {
@@ -12075,7 +13029,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_auditDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_companyDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12089,7 +13043,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.auditDTO"
+                        "$ref": "#/definitions/modules_identity_handler.companyDTO"
                     }
                 },
                 "nextCursor": {
@@ -12098,7 +13052,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_branchDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_membershipDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12112,7 +13066,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.branchDTO"
+                        "$ref": "#/definitions/modules_identity_handler.membershipDTO"
                     }
                 },
                 "nextCursor": {
@@ -12121,7 +13075,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_companyDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_roleDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12135,7 +13089,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.companyDTO"
+                        "$ref": "#/definitions/modules_identity_handler.roleDTO"
                     }
                 },
                 "nextCursor": {
@@ -12144,7 +13098,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_membershipDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_handler_userDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12158,53 +13112,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.membershipDTO"
-                    }
-                },
-                "nextCursor": {
-                    "type": "string",
-                    "x-nullable": true
-                }
-            }
-        },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_roleDTO": {
-            "type": "object",
-            "required": [
-                "asOf",
-                "items",
-                "nextCursor"
-            ],
-            "properties": {
-                "asOf": {
-                    "type": "string"
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_identity.roleDTO"
-                    }
-                },
-                "nextCursor": {
-                    "type": "string",
-                    "x-nullable": true
-                }
-            }
-        },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_identity_userDTO": {
-            "type": "object",
-            "required": [
-                "asOf",
-                "items",
-                "nextCursor"
-            ],
-            "properties": {
-                "asOf": {
-                    "type": "string"
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_identity.userDTO"
+                        "$ref": "#/definitions/modules_identity_handler.userDTO"
                     }
                 },
                 "nextCursor": {
@@ -12449,368 +13357,7 @@
                 }
             }
         },
-        "modules_commerce.AllocationItem": {
-            "type": "object",
-            "required": [
-                "orderLineId",
-                "vehicleId"
-            ],
-            "properties": {
-                "orderLineId": {
-                    "type": "string"
-                },
-                "vehicleId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.Audience": {
-            "type": "object",
-            "required": [
-                "mode",
-                "partnerCompanyIds"
-            ],
-            "properties": {
-                "mode": {
-                    "description": "all-active | selected",
-                    "type": "string"
-                },
-                "partnerCompanyIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "modules_commerce.DirectOrderInput": {
-            "type": "object",
-            "required": [
-                "lines",
-                "offerVersionId"
-            ],
-            "properties": {
-                "lines": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": [
-                            "offerLineId",
-                            "quantity"
-                        ],
-                        "properties": {
-                            "offerLineId": {
-                                "type": "string"
-                            },
-                            "quantity": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                },
-                "offerVersionId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.EvidenceInput": {
-            "type": "object",
-            "required": [
-                "attachmentBindingIds",
-                "claimedAmount",
-                "externalReference",
-                "paidOn"
-            ],
-            "properties": {
-                "attachmentBindingIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "claimedAmount": {
-                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
-                },
-                "externalReference": {
-                    "type": "string"
-                },
-                "paidOn": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.Installment": {
-            "type": "object",
-            "required": [
-                "amount",
-                "dueDate",
-                "id"
-            ],
-            "properties": {
-                "amount": {
-                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
-                },
-                "dueDate": {
-                    "description": "YYYY-MM-DD",
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.Line": {
-            "type": "object",
-            "required": [
-                "lineId",
-                "modelId",
-                "quantity",
-                "unitPrice"
-            ],
-            "properties": {
-                "lineId": {
-                    "type": "string"
-                },
-                "modelId": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "unitPrice": {
-                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
-                }
-            }
-        },
-        "modules_commerce.MilestoneInput": {
-            "type": "object",
-            "required": [
-                "location",
-                "milestoneType",
-                "note",
-                "occurredAt"
-            ],
-            "properties": {
-                "location": {
-                    "type": "string"
-                },
-                "milestoneType": {
-                    "type": "string"
-                },
-                "note": {
-                    "type": "string"
-                },
-                "occurredAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.OfferInput": {
-            "type": "object",
-            "required": [
-                "audience",
-                "terms"
-            ],
-            "properties": {
-                "audience": {
-                    "$ref": "#/definitions/modules_commerce.Audience"
-                },
-                "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
-                }
-            }
-        },
-        "modules_commerce.OfferStatus": {
-            "type": "string",
-            "enum": [
-                "draft",
-                "published",
-                "withdrawn"
-            ],
-            "x-enum-varnames": [
-                "OfferDraft",
-                "OfferPublished",
-                "OfferWithdrawn"
-            ]
-        },
-        "modules_commerce.OrderStatus": {
-            "type": "string",
-            "enum": [
-                "awaiting-supplier",
-                "accepted",
-                "fulfilling",
-                "completed",
-                "cancelled"
-            ],
-            "x-enum-varnames": [
-                "AwaitingSupplier",
-                "OrderAccepted",
-                "OrderFulfilling",
-                "OrderCompleted",
-                "OrderCancelled"
-            ]
-        },
-        "modules_commerce.PartnershipStatus": {
-            "type": "string",
-            "enum": [
-                "requested",
-                "active",
-                "declined",
-                "withdrawn",
-                "ended"
-            ],
-            "x-enum-varnames": [
-                "Requested",
-                "Active",
-                "Declined",
-                "Withdrawn",
-                "Ended"
-            ]
-        },
-        "modules_commerce.RFQInput": {
-            "type": "object",
-            "required": [
-                "lines",
-                "offerVersionId",
-                "supplierCompanyId"
-            ],
-            "properties": {
-                "lines": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_commerce.RFQLine"
-                    }
-                },
-                "offerVersionId": {
-                    "type": "string"
-                },
-                "supplierCompanyId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.RFQLine": {
-            "type": "object",
-            "required": [
-                "lineId",
-                "modelId",
-                "quantity"
-            ],
-            "properties": {
-                "lineId": {
-                    "type": "string"
-                },
-                "modelId": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                }
-            }
-        },
-        "modules_commerce.RFQStatus": {
-            "type": "string",
-            "enum": [
-                "draft",
-                "sent",
-                "negotiating",
-                "accepted",
-                "declined",
-                "cancelled"
-            ],
-            "x-enum-varnames": [
-                "RFQDraft",
-                "RFQSent",
-                "RFQNegotiating",
-                "RFQAccepted",
-                "RFQDeclined",
-                "RFQCancelled"
-            ]
-        },
-        "modules_commerce.ReceiptDecision": {
-            "type": "object",
-            "required": [
-                "decision",
-                "reason",
-                "vehicleIds",
-                "warehouseId"
-            ],
-            "properties": {
-                "decision": {
-                    "description": "accept | reject",
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "vehicleIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "warehouseId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.ShipmentInput": {
-            "type": "object",
-            "required": [
-                "route",
-                "vehicleIds"
-            ],
-            "properties": {
-                "route": {
-                    "type": "string"
-                },
-                "vehicleIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "modules_commerce.Terms": {
-            "type": "object",
-            "required": [
-                "deliveryTerms",
-                "lines",
-                "paymentSchedule",
-                "route",
-                "serviceTerms",
-                "warrantyTerms"
-            ],
-            "properties": {
-                "deliveryTerms": {
-                    "type": "string"
-                },
-                "lines": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_commerce.Line"
-                    }
-                },
-                "paymentSchedule": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_commerce.Installment"
-                    }
-                },
-                "route": {
-                    "description": "factory | foreign-direct | in-transit | local",
-                    "type": "string"
-                },
-                "serviceTerms": {
-                    "type": "string"
-                },
-                "warrantyTerms": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_commerce.acceptRFQRequest": {
+        "modules_commerce_handler.acceptRFQRequest": {
             "type": "object",
             "required": [
                 "quotationDigest",
@@ -12825,7 +13372,7 @@
                 }
             }
         },
-        "modules_commerce.addendumDTO": {
+        "modules_commerce_handler.addendumDTO": {
             "type": "object",
             "required": [
                 "createdAt",
@@ -12866,14 +13413,14 @@
                     "type": "string"
                 },
                 "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
                 },
                 "total": {
                     "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
                 }
             }
         },
-        "modules_commerce.addendumDecisionRequest": {
+        "modules_commerce_handler.addendumDecisionRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -12884,7 +13431,7 @@
                 }
             }
         },
-        "modules_commerce.addendumProposeRequest": {
+        "modules_commerce_handler.addendumProposeRequest": {
             "type": "object",
             "required": [
                 "reason",
@@ -12895,11 +13442,11 @@
                     "type": "string"
                 },
                 "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
                 }
             }
         },
-        "modules_commerce.allocateRequest": {
+        "modules_commerce_handler.allocateRequest": {
             "type": "object",
             "required": [
                 "items"
@@ -12908,12 +13455,12 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.AllocationItem"
+                        "$ref": "#/definitions/justixauto_internal_modules_commerce_service.AllocationItem"
                     }
                 }
             }
         },
-        "modules_commerce.allocationDTO": {
+        "modules_commerce_handler.allocationDTO": {
             "type": "object",
             "required": [
                 "orderLineId",
@@ -12940,7 +13487,7 @@
                 }
             }
         },
-        "modules_commerce.counterpartyDTO": {
+        "modules_commerce_handler.counterpartyDTO": {
             "type": "object",
             "required": [
                 "country",
@@ -12959,7 +13506,7 @@
                 }
             }
         },
-        "modules_commerce.evidenceDTO": {
+        "modules_commerce_handler.evidenceDTO": {
             "type": "object",
             "required": [
                 "allowedActions",
@@ -13016,7 +13563,7 @@
                 }
             }
         },
-        "modules_commerce.evidenceDecisionRequest": {
+        "modules_commerce_handler.evidenceDecisionRequest": {
             "type": "object",
             "required": [
                 "confirmation",
@@ -13031,7 +13578,7 @@
                 }
             }
         },
-        "modules_commerce.historyDTO": {
+        "modules_commerce_handler.historyDTO": {
             "type": "object",
             "required": [
                 "actorId",
@@ -13054,7 +13601,7 @@
                 }
             }
         },
-        "modules_commerce.invoiceDTO": {
+        "modules_commerce_handler.invoiceDTO": {
             "type": "object",
             "required": [
                 "allowedActions",
@@ -13092,7 +13639,7 @@
                 "paymentEvidence": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.evidenceDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.evidenceDTO"
                     }
                 },
                 "pending": {
@@ -13104,7 +13651,7 @@
                 "schedule": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.Installment"
+                        "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Installment"
                     }
                 },
                 "status": {
@@ -13118,7 +13665,7 @@
                 }
             }
         },
-        "modules_commerce.invoiceVoidRequest": {
+        "modules_commerce_handler.invoiceVoidRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -13129,7 +13676,7 @@
                 }
             }
         },
-        "modules_commerce.issueInvoiceRequest": {
+        "modules_commerce_handler.issueInvoiceRequest": {
             "type": "object",
             "required": [
                 "dueDate"
@@ -13140,7 +13687,7 @@
                 }
             }
         },
-        "modules_commerce.milestoneDTO": {
+        "modules_commerce_handler.milestoneDTO": {
             "type": "object",
             "required": [
                 "location",
@@ -13167,7 +13714,7 @@
                 }
             }
         },
-        "modules_commerce.offerDTO": {
+        "modules_commerce_handler.offerDTO": {
             "type": "object",
             "required": [
                 "allowedActions",
@@ -13190,19 +13737,19 @@
                     "type": "string"
                 },
                 "publishedVersion": {
-                    "$ref": "#/definitions/modules_commerce.offerVersionDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.offerVersionDTO"
                 },
                 "revision": {
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/modules_commerce.OfferStatus"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.OfferStatus"
                 },
                 "statusReason": {
                     "type": "string"
                 },
                 "supplier": {
-                    "$ref": "#/definitions/modules_commerce.counterpartyDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.counterpartyDTO"
                 },
                 "updatedAt": {
                     "type": "string"
@@ -13211,12 +13758,12 @@
                     "description": "supplier only",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.offerVersionDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.offerVersionDTO"
                     }
                 }
             }
         },
-        "modules_commerce.offerVersionDTO": {
+        "modules_commerce_handler.offerVersionDTO": {
             "type": "object",
             "required": [
                 "createdAt",
@@ -13231,7 +13778,7 @@
                     "description": "supplier only",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/modules_commerce.Audience"
+                            "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Audience"
                         }
                     ]
                 },
@@ -13248,14 +13795,14 @@
                     "type": "string"
                 },
                 "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
                 },
                 "total": {
                     "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
                 }
             }
         },
-        "modules_commerce.offerWithdrawRequest": {
+        "modules_commerce_handler.offerWithdrawRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -13266,7 +13813,7 @@
                 }
             }
         },
-        "modules_commerce.orderCancelRequest": {
+        "modules_commerce_handler.orderCancelRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -13277,7 +13824,7 @@
                 }
             }
         },
-        "modules_commerce.orderConfirmRequest": {
+        "modules_commerce_handler.orderConfirmRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -13288,7 +13835,7 @@
                 }
             }
         },
-        "modules_commerce.orderDTO": {
+        "modules_commerce_handler.orderDTO": {
             "type": "object",
             "required": [
                 "addenda",
@@ -13314,13 +13861,13 @@
                 "addenda": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.addendumDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.addendumDTO"
                     }
                 },
                 "allocations": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.allocationDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.allocationDTO"
                     }
                 },
                 "allowedActions": {
@@ -13330,12 +13877,12 @@
                     }
                 },
                 "buyer": {
-                    "$ref": "#/definitions/modules_commerce.counterpartyDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.counterpartyDTO"
                 },
                 "history": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.historyDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.historyDTO"
                     }
                 },
                 "id": {
@@ -13360,23 +13907,23 @@
                 "shipments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.shipmentRef"
+                        "$ref": "#/definitions/modules_commerce_handler.shipmentRef"
                     }
                 },
                 "source": {
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/modules_commerce.OrderStatus"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.OrderStatus"
                 },
                 "statusReason": {
                     "type": "string"
                 },
                 "supplier": {
-                    "$ref": "#/definitions/modules_commerce.counterpartyDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.counterpartyDTO"
                 },
                 "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
                 },
                 "total": {
                     "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
@@ -13386,7 +13933,7 @@
                 }
             }
         },
-        "modules_commerce.partnershipDTO": {
+        "modules_commerce_handler.partnershipDTO": {
             "type": "object",
             "required": [
                 "activatedAt",
@@ -13414,7 +13961,7 @@
                     "type": "string"
                 },
                 "counterparty": {
-                    "$ref": "#/definitions/modules_commerce.counterpartyDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.counterpartyDTO"
                 },
                 "createdAt": {
                     "type": "string"
@@ -13430,14 +13977,14 @@
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/modules_commerce.PartnershipStatus"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.PartnershipStatus"
                 },
                 "statusReason": {
                     "type": "string"
                 }
             }
         },
-        "modules_commerce.partnershipDecisionRequest": {
+        "modules_commerce_handler.partnershipDecisionRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -13448,7 +13995,7 @@
                 }
             }
         },
-        "modules_commerce.publishOfferRequest": {
+        "modules_commerce_handler.publishOfferRequest": {
             "type": "object",
             "required": [
                 "offerVersionId"
@@ -13459,7 +14006,7 @@
                 }
             }
         },
-        "modules_commerce.quotationDTO": {
+        "modules_commerce_handler.quotationDTO": {
             "type": "object",
             "required": [
                 "createdAt",
@@ -13483,25 +14030,25 @@
                     "type": "integer"
                 },
                 "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
                 },
                 "total": {
                     "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
                 }
             }
         },
-        "modules_commerce.quoteRequest": {
+        "modules_commerce_handler.quoteRequest": {
             "type": "object",
             "required": [
                 "terms"
             ],
             "properties": {
                 "terms": {
-                    "$ref": "#/definitions/modules_commerce.Terms"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.Terms"
                 }
             }
         },
-        "modules_commerce.requestPartnershipRequest": {
+        "modules_commerce_handler.requestPartnershipRequest": {
             "type": "object",
             "required": [
                 "counterpartyCompanyId"
@@ -13512,7 +14059,7 @@
                 }
             }
         },
-        "modules_commerce.rfqActionRequest": {
+        "modules_commerce_handler.rfqActionRequest": {
             "type": "object",
             "required": [
                 "reason"
@@ -13523,7 +14070,7 @@
                 }
             }
         },
-        "modules_commerce.rfqDTO": {
+        "modules_commerce_handler.rfqDTO": {
             "type": "object",
             "required": [
                 "allowedActions",
@@ -13546,7 +14093,7 @@
                     }
                 },
                 "buyer": {
-                    "$ref": "#/definitions/modules_commerce.counterpartyDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.counterpartyDTO"
                 },
                 "id": {
                     "type": "string"
@@ -13554,7 +14101,7 @@
                 "lines": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.RFQLine"
+                        "$ref": "#/definitions/justixauto_internal_modules_commerce_model.RFQLine"
                     }
                 },
                 "offerVersionId": {
@@ -13563,27 +14110,27 @@
                 "quotations": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.quotationDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.quotationDTO"
                     }
                 },
                 "revision": {
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/modules_commerce.RFQStatus"
+                    "$ref": "#/definitions/justixauto_internal_modules_commerce_model.RFQStatus"
                 },
                 "statusReason": {
                     "type": "string"
                 },
                 "supplier": {
-                    "$ref": "#/definitions/modules_commerce.counterpartyDTO"
+                    "$ref": "#/definitions/modules_commerce_handler.counterpartyDTO"
                 },
                 "updatedAt": {
                     "type": "string"
                 }
             }
         },
-        "modules_commerce.shipmentDTO": {
+        "modules_commerce_handler.shipmentDTO": {
             "type": "object",
             "required": [
                 "id",
@@ -13601,7 +14148,7 @@
                 "milestones": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.milestoneDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.milestoneDTO"
                     }
                 },
                 "orderId": {
@@ -13619,12 +14166,12 @@
                 "vehicles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_commerce.allocationDTO"
+                        "$ref": "#/definitions/modules_commerce_handler.allocationDTO"
                     }
                 }
             }
         },
-        "modules_commerce.shipmentRef": {
+        "modules_commerce_handler.shipmentRef": {
             "type": "object",
             "required": [
                 "id",
@@ -14070,554 +14617,7 @@
                 }
             }
         },
-        "modules_identity.AccessibleCompany": {
-            "type": "object",
-            "required": [
-                "access",
-                "id",
-                "kind",
-                "name"
-            ],
-            "properties": {
-                "access": {
-                    "$ref": "#/definitions/modules_identity.CompanyAccess"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "kind": {
-                    "$ref": "#/definitions/modules_identity.CompanyKind"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.BranchAccessInput": {
-            "type": "object",
-            "required": [
-                "branchIds",
-                "mode"
-            ],
-            "properties": {
-                "branchIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "mode": {
-                    "description": "ALL_BRANCHES | SELECTED_BRANCHES",
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.BranchInput": {
-            "type": "object",
-            "required": [
-                "address",
-                "name",
-                "warehouse"
-            ],
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "warehouse": {
-                    "description": "Warehouse: only {\"mode\":\"none\"} until the inventory module exists.",
-                    "type": "object",
-                    "required": [
-                        "mode"
-                    ],
-                    "properties": {
-                        "mode": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "modules_identity.CompanyAccess": {
-            "type": "string",
-            "enum": [
-                "draft",
-                "active",
-                "suspended"
-            ],
-            "x-enum-varnames": [
-                "AccessDraft",
-                "AccessActive",
-                "AccessSuspended"
-            ]
-        },
-        "modules_identity.CompanyInput": {
-            "type": "object",
-            "required": [
-                "address",
-                "country",
-                "email",
-                "legalName",
-                "name",
-                "phone",
-                "region",
-                "registration"
-            ],
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "country": {
-                    "$ref": "#/definitions/modules_identity.Label"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "legalName": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "region": {
-                    "$ref": "#/definitions/modules_identity.Label"
-                },
-                "registration": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.CompanyKind": {
-            "type": "string",
-            "enum": [
-                "seller",
-                "bank",
-                "mfo",
-                "insurance"
-            ],
-            "x-enum-varnames": [
-                "KindSeller",
-                "KindBank",
-                "KindMFO",
-                "KindInsurance"
-            ]
-        },
-        "modules_identity.ContextView": {
-            "type": "object",
-            "required": [
-                "branchScope",
-                "companyId",
-                "revision"
-            ],
-            "properties": {
-                "branchScope": {
-                    "$ref": "#/definitions/justixauto_internal_pkg_auth.BranchScope"
-                },
-                "companyId": {
-                    "type": "string"
-                },
-                "revision": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.CreateUserInput": {
-            "type": "object",
-            "required": [
-                "displayName",
-                "email",
-                "roleIds"
-            ],
-            "properties": {
-                "displayName": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "roleIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "modules_identity.Enrollment": {
-            "type": "object",
-            "required": [
-                "enrollmentId",
-                "otpauthUri",
-                "secret"
-            ],
-            "properties": {
-                "enrollmentId": {
-                    "type": "string"
-                },
-                "otpauthUri": {
-                    "type": "string"
-                },
-                "secret": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.FirstAdminInput": {
-            "type": "object",
-            "required": [
-                "displayName",
-                "email",
-                "login",
-                "password",
-                "passwordConfirmation"
-            ],
-            "properties": {
-                "displayName": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "login": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "passwordConfirmation": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.GrantMembershipInput": {
-            "type": "object",
-            "required": [
-                "branchAccess",
-                "companyId"
-            ],
-            "properties": {
-                "branchAccess": {
-                    "$ref": "#/definitions/modules_identity.BranchAccessInput"
-                },
-                "companyId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.Label": {
-            "type": "object",
-            "required": [
-                "label"
-            ],
-            "properties": {
-                "key": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.MFAView": {
-            "type": "object",
-            "required": [
-                "disabled",
-                "enrolled"
-            ],
-            "properties": {
-                "authenticatedAt": {
-                    "type": "string"
-                },
-                "disabled": {
-                    "description": "two-factor authentication is switched off on this server",
-                    "type": "boolean"
-                },
-                "enrolled": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "modules_identity.MembershipStatus": {
-            "type": "string",
-            "enum": [
-                "active",
-                "revoked"
-            ],
-            "x-enum-varnames": [
-                "MembershipActive",
-                "MembershipRevoked"
-            ]
-        },
-        "modules_identity.PermissionInfo": {
-            "type": "object",
-            "required": [
-                "assignable",
-                "key",
-                "requiresMfa",
-                "scope"
-            ],
-            "properties": {
-                "assignable": {
-                    "type": "boolean"
-                },
-                "key": {
-                    "type": "string"
-                },
-                "requiresMfa": {
-                    "type": "boolean"
-                },
-                "scope": {
-                    "description": "\"platform\" or \"company\"",
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.Profile": {
-            "type": "object",
-            "required": [
-                "access",
-                "country",
-                "id",
-                "kind",
-                "name",
-                "region"
-            ],
-            "properties": {
-                "access": {
-                    "$ref": "#/definitions/modules_identity.CompanyAccess"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "kind": {
-                    "$ref": "#/definitions/modules_identity.CompanyKind"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "region": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.ProviderInput": {
-            "type": "object",
-            "required": [
-                "company",
-                "firstAdmin",
-                "kind"
-            ],
-            "properties": {
-                "company": {
-                    "$ref": "#/definitions/modules_identity.CompanyInput"
-                },
-                "firstAdmin": {
-                    "$ref": "#/definitions/modules_identity.FirstAdminInput"
-                },
-                "kind": {
-                    "$ref": "#/definitions/modules_identity.CompanyKind"
-                }
-            }
-        },
-        "modules_identity.RoleInput": {
-            "type": "object",
-            "required": [
-                "name",
-                "permissionKeys"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "permissionKeys": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "modules_identity.RoleRef": {
-            "type": "object",
-            "required": [
-                "id",
-                "name"
-            ],
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.SellerInput": {
-            "type": "object",
-            "required": [
-                "company",
-                "firstAdmin"
-            ],
-            "properties": {
-                "company": {
-                    "$ref": "#/definitions/modules_identity.CompanyInput"
-                },
-                "firstAdmin": {
-                    "$ref": "#/definitions/modules_identity.FirstAdminInput"
-                }
-            }
-        },
-        "modules_identity.SessionUser": {
-            "type": "object",
-            "required": [
-                "displayName",
-                "id",
-                "passwordChangeRequired",
-                "status"
-            ],
-            "properties": {
-                "displayName": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "passwordChangeRequired": {
-                    "type": "boolean"
-                },
-                "status": {
-                    "$ref": "#/definitions/modules_identity.UserStatus"
-                }
-            }
-        },
-        "modules_identity.SessionView": {
-            "type": "object",
-            "required": [
-                "accessibleCompanies",
-                "context",
-                "mfa",
-                "permissions",
-                "roles",
-                "setup",
-                "user"
-            ],
-            "properties": {
-                "accessibleCompanies": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_identity.AccessibleCompany"
-                    }
-                },
-                "context": {
-                    "$ref": "#/definitions/modules_identity.ContextView"
-                },
-                "mfa": {
-                    "$ref": "#/definitions/modules_identity.MFAView"
-                },
-                "permissions": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/modules_identity.RoleRef"
-                    }
-                },
-                "setup": {
-                    "$ref": "#/definitions/modules_identity.SetupView"
-                },
-                "user": {
-                    "$ref": "#/definitions/modules_identity.SessionUser"
-                }
-            }
-        },
-        "modules_identity.SetPasswordInput": {
-            "type": "object",
-            "required": [
-                "login",
-                "password",
-                "passwordConfirmation"
-            ],
-            "properties": {
-                "login": {
-                    "description": "required if the user has none yet",
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "passwordConfirmation": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity.SetupView": {
-            "type": "object",
-            "required": [
-                "next",
-                "partnershipRequiredForB2B"
-            ],
-            "properties": {
-                "next": {
-                    "description": "company | branch | none",
-                    "type": "string"
-                },
-                "partnershipRequiredForB2B": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "modules_identity.UpdateUserInput": {
-            "type": "object",
-            "required": [
-                "displayName",
-                "roleIds"
-            ],
-            "properties": {
-                "displayName": {
-                    "type": "string"
-                },
-                "roleIds": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "modules_identity.UserStatus": {
-            "type": "string",
-            "enum": [
-                "pending",
-                "active",
-                "suspended"
-            ],
-            "x-enum-comments": {
-                "UserPending": "no credential yet, cannot sign in"
-            },
-            "x-enum-descriptions": [
-                "no credential yet, cannot sign in",
-                "",
-                ""
-            ],
-            "x-enum-varnames": [
-                "UserPending",
-                "UserActive",
-                "UserSuspended"
-            ]
-        },
-        "modules_identity.auditDTO": {
+        "modules_identity_handler.auditDTO": {
             "type": "object",
             "required": [
                 "action",
@@ -14663,7 +14663,7 @@
                 }
             }
         },
-        "modules_identity.branchDTO": {
+        "modules_identity_handler.branchDTO": {
             "type": "object",
             "required": [
                 "address",
@@ -14690,7 +14690,7 @@
                 }
             }
         },
-        "modules_identity.changePasswordRequest": {
+        "modules_identity_handler.changePasswordRequest": {
             "type": "object",
             "required": [
                 "currentPassword",
@@ -14709,7 +14709,7 @@
                 }
             }
         },
-        "modules_identity.companyDTO": {
+        "modules_identity_handler.companyDTO": {
             "type": "object",
             "required": [
                 "access",
@@ -14730,7 +14730,7 @@
             ],
             "properties": {
                 "access": {
-                    "$ref": "#/definitions/modules_identity.CompanyAccess"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyAccess"
                 },
                 "accessReason": {
                     "type": "string"
@@ -14739,7 +14739,7 @@
                     "type": "string"
                 },
                 "country": {
-                    "$ref": "#/definitions/modules_identity.Label"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.Label"
                 },
                 "createdAt": {
                     "type": "string"
@@ -14751,7 +14751,7 @@
                     "type": "string"
                 },
                 "kind": {
-                    "$ref": "#/definitions/modules_identity.CompanyKind"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyKind"
                 },
                 "legalName": {
                     "type": "string"
@@ -14763,7 +14763,7 @@
                     "type": "string"
                 },
                 "region": {
-                    "$ref": "#/definitions/modules_identity.Label"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.Label"
                 },
                 "registration": {
                     "type": "string"
@@ -14776,7 +14776,7 @@
                 }
             }
         },
-        "modules_identity.confirmEnrollmentResponse": {
+        "modules_identity_handler.confirmEnrollmentResponse": {
             "type": "object",
             "required": [
                 "enrolled",
@@ -14794,18 +14794,18 @@
                 }
             }
         },
-        "modules_identity.createCompanyRequest": {
+        "modules_identity_handler.createCompanyRequest": {
             "type": "object",
             "required": [
                 "company"
             ],
             "properties": {
                 "company": {
-                    "$ref": "#/definitions/modules_identity.CompanyInput"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.CompanyInput"
                 }
             }
         },
-        "modules_identity.loginRequest": {
+        "modules_identity_handler.loginRequest": {
             "type": "object",
             "required": [
                 "login",
@@ -14820,18 +14820,18 @@
                 }
             }
         },
-        "modules_identity.membershipAccessRequest": {
+        "modules_identity_handler.membershipAccessRequest": {
             "type": "object",
             "required": [
                 "branchAccess"
             ],
             "properties": {
                 "branchAccess": {
-                    "$ref": "#/definitions/modules_identity.BranchAccessInput"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.BranchAccessInput"
                 }
             }
         },
-        "modules_identity.membershipDTO": {
+        "modules_identity_handler.membershipDTO": {
             "type": "object",
             "required": [
                 "branchAccess",
@@ -14844,7 +14844,7 @@
             ],
             "properties": {
                 "branchAccess": {
-                    "$ref": "#/definitions/modules_identity.BranchAccessInput"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.BranchAccessInput"
                 },
                 "companyId": {
                     "type": "string"
@@ -14856,7 +14856,7 @@
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/modules_identity.MembershipStatus"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.MembershipStatus"
                 },
                 "statusReason": {
                     "type": "string"
@@ -14866,7 +14866,7 @@
                 }
             }
         },
-        "modules_identity.mfaCodeRequest": {
+        "modules_identity_handler.mfaCodeRequest": {
             "type": "object",
             "required": [
                 "code"
@@ -14877,7 +14877,7 @@
                 }
             }
         },
-        "modules_identity.provisionedAdmin": {
+        "modules_identity_handler.provisionedAdmin": {
             "type": "object",
             "required": [
                 "displayName",
@@ -14896,7 +14896,7 @@
                 }
             }
         },
-        "modules_identity.provisionedResponse": {
+        "modules_identity_handler.provisionedResponse": {
             "type": "object",
             "required": [
                 "admin",
@@ -14905,17 +14905,17 @@
             ],
             "properties": {
                 "admin": {
-                    "$ref": "#/definitions/modules_identity.provisionedAdmin"
+                    "$ref": "#/definitions/modules_identity_handler.provisionedAdmin"
                 },
                 "company": {
-                    "$ref": "#/definitions/modules_identity.companyDTO"
+                    "$ref": "#/definitions/modules_identity_handler.companyDTO"
                 },
                 "membership": {
-                    "$ref": "#/definitions/modules_identity.membershipDTO"
+                    "$ref": "#/definitions/modules_identity_handler.membershipDTO"
                 }
             }
         },
-        "modules_identity.reasonBody": {
+        "modules_identity_handler.reasonBody": {
             "type": "object",
             "required": [
                 "reason"
@@ -14926,7 +14926,7 @@
                 }
             }
         },
-        "modules_identity.roleDTO": {
+        "modules_identity_handler.roleDTO": {
             "type": "object",
             "required": [
                 "id",
@@ -14956,7 +14956,7 @@
                 }
             }
         },
-        "modules_identity.setContextRequest": {
+        "modules_identity_handler.setContextRequest": {
             "type": "object",
             "required": [
                 "companyId"
@@ -14967,7 +14967,7 @@
                 }
             }
         },
-        "modules_identity.userDTO": {
+        "modules_identity_handler.userDTO": {
             "type": "object",
             "required": [
                 "createdAt",
@@ -15006,18 +15006,18 @@
                 "roles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_identity.RoleRef"
+                        "$ref": "#/definitions/justixauto_internal_modules_identity_service.RoleRef"
                     }
                 },
                 "status": {
-                    "$ref": "#/definitions/modules_identity.UserStatus"
+                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.UserStatus"
                 },
                 "statusReason": {
                     "type": "string"
                 }
             }
         },
-        "modules_identity.verifyMFARequest": {
+        "modules_identity_handler.verifyMFARequest": {
             "type": "object",
             "required": [
                 "challengeId",
