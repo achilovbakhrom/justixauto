@@ -10,6 +10,8 @@ import (
 // Store gives the service the documents repositories.
 type Store interface {
 	Create(ctx context.Context, f *model.File) error
+	// ByContent returns the company's file with this purpose and content hash.
+	ByContent(ctx context.Context, companyID, purpose, sha256 string) (*model.File, error)
 	// Readable returns the file if the company owns it or it was shared with it.
 	Readable(ctx context.Context, companyID, id string) (*model.File, error)
 	// Share joins the caller's transaction when ctx carries one.

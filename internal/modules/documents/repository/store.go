@@ -23,6 +23,16 @@ func (r *Store) Create(ctx context.Context, f *model.File) error {
 	return database.Translate(r.db.WithContext(ctx).Create(f).Error)
 }
 
+// ByContent returns the company's file with this purpose and content hash.
+func (r *Store) ByContent(ctx context.Context, companyID, purpose, sha256 string) (*model.File, error) {
+	var f model.File
+	err := r.db.WithContext(ctx).Where("company_id = ? AND purpose = ? AND sha256 = ?", companyID, purpose, sha256).Take(&f).Error
+	if err != nil {
+		return nil, database.Translate(err)
+	}
+	return &f, nil
+}
+
 // Readable returns the file if the company owns it or it was shared with it.
 func (r *Store) Readable(ctx context.Context, companyID, id string) (*model.File, error) {
 	var f model.File

@@ -32,7 +32,7 @@ var version = "dev"
 //
 //	@title						JustixAuto API
 //	@version					1
-//	@description				Envelopes and errors: docs/justix-auto/contracts/http-domain.md. Sign in with POST /identity/session/login (session cookie); state-changing requests also send the X-CSRF-Token returned by GET /identity/session, and authenticated POSTs an Idempotency-Key.
+//	@description				Envelopes and errors: docs/justix-auto/contracts/http-domain.md. Sign in with POST /identity/session/login (session cookie); state-changing requests also send the X-CSRF-Token returned by GET /identity/session.
 //	@BasePath					/api/v1
 //	@securityDefinitions.apikey	CSRF
 //	@in							header

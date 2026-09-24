@@ -31,9 +31,11 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   Add new permission keys to the identity catalog
   (`<module>.<resource>.<action>`) and mark `RequiresMFA` for sensitive ones
   (decisions, terms, payments, fulfillment, sensitive downloads).
-- Retries: authenticated POSTs require `Idempotency-Key`; the idempotency
-  middleware replays the first 2xx response. Existing-resource writes use
-  If-Match instead.
+- Idempotency lives in the data, never in request keys: creates carry a unique
+  business key (409 on repeat), actions check the state they transition from,
+  existing-resource writes use If-Match (412). Background jobs run on one
+  replica through `database.RunOnce` (advisory lock); migrations run once in
+  the deploy Job.
 - `internal/app` is the composition root (used by `cmd/api` and tests): it
   registers module permissions (`Permissions []auth.PermissionInfo`) with
   identity and mounts every module. Modules never import each other: a module
@@ -44,5 +46,5 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   never imports a module or `internal/app`.
 - Tests: pure logic as in-package unit tests; behaviour end to end through
   HTTP in the external `<module>_test` package with `internal/e2e`
-  (full app, active seller companies, MFA admin, CSRF/Idempotency handled).
+  (full app, active seller companies, MFA admin, CSRF handled).
   `bash tools/test-go.sh` starts a throwaway database.

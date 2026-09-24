@@ -66,7 +66,6 @@ describe('same-origin validated transport', () => {
       body: { label: 'synthetic' },
       contextRevision: '7',
       ifMatch: '9',
-      idempotencyKey: userId,
       headers: { 'X-Feature-Challenge': 'ephemeral' },
       signal: controller.signal,
     });
@@ -74,7 +73,6 @@ describe('same-origin validated transport', () => {
     const headers = new Headers(init.headers);
     expect(headers.get('X-Context-Revision')).toBe('7');
     expect(headers.get('If-Match')).toBe('"9"');
-    expect(headers.get('Idempotency-Key')).toBe(userId);
     expect(headers.get('X-Feature-Challenge')).toBe('ephemeral');
     expect(headers.get('Content-Type')).toBe('application/json');
     expect(init.signal).toBe(controller.signal);
@@ -165,17 +163,14 @@ describe('same-origin validated transport', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
-  it.each([
-    { ifMatch: '01' },
-    { contextRevision: '9223372036854775808' },
-    { idempotencyKey: 'not-a-uuid' },
-    { body: {} },
-    { successStatuses: [] },
-  ])('rejects invalid transport metadata %j', async (invalid) => {
-    const { client, fetcher } = setup();
-    expect(await client.request({ ...request, ...invalid })).toEqual({ kind: 'invalid-request' });
-    expect(fetcher).not.toHaveBeenCalled();
-  });
+  it.each([{ ifMatch: '01' }, { contextRevision: '9223372036854775808' }, { body: {} }, { successStatuses: [] }])(
+    'rejects invalid transport metadata %j',
+    async (invalid) => {
+      const { client, fetcher } = setup();
+      expect(await client.request({ ...request, ...invalid })).toEqual({ kind: 'invalid-request' });
+      expect(fetcher).not.toHaveBeenCalled();
+    },
+  );
 
   it.each([
     new Response('<html>another app</html>', { headers: { 'Content-Type': 'text/html' } }),

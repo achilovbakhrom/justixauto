@@ -130,7 +130,6 @@ func (h *Handler) orderInvoices(c echo.Context) error {
 //	@Param		id							path		string				true	"order ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		issueInvoiceRequest	true	"due date"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[commerce.invoiceDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/invoices [post]
@@ -174,7 +173,6 @@ func (h *Handler) getInvoice(c echo.Context) error {
 //	@Param		id							path		string				true	"invoice ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		invoiceVoidRequest	true	"reason"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.invoiceDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/invoices/{id}/void [post]
@@ -200,7 +198,6 @@ func (h *Handler) voidInvoice(c echo.Context) error {
 //	@Tags		commerce/invoices
 //	@Security	CSRF
 //	@Param		id					path		string			true	"invoice ID"
-//	@Param		Idempotency-Key		header		string			true	"retry key"
 //	@Param		body				body		EvidenceInput	true	"payment evidence"
 //	@Success	201					{object}	httpx.DataEnvelope[commerce.invoiceDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -225,7 +222,6 @@ func (h *Handler) submitEvidence(c echo.Context) error {
 //	@Param		id							path		string					true	"payment evidence ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		evidenceDecisionRequest	true	"decision"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.invoiceDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/payment-evidence/{id}/accept [post]

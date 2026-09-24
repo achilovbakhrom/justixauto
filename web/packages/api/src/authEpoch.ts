@@ -184,7 +184,6 @@ function parseAuthOperation<T, Session, Restricted, View>(
       'body',
       'contextRevision',
       'ifMatch',
-      'idempotencyKey',
       'headers',
       'signal',
       'responseContract',
@@ -196,7 +195,6 @@ function parseAuthOperation<T, Session, Restricted, View>(
       typeof request.path !== 'string' ||
       !routes[purpose].test(request.path) ||
       request.ifMatch !== undefined ||
-      request.idempotencyKey !== undefined ||
       (purpose === 'session' ? (request.method ?? 'GET') !== 'GET' : request.method !== 'POST')
     )
       throw new Error('Invalid auth request');

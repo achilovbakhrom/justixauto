@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"io"
 	"net/http"
 	"path/filepath"
@@ -74,17 +75,32 @@ func (s *Service) Upload(ctx context.Context, p *auth.Principal, purpose, name s
 	if !slices.Contains(allowedMIME, mime) {
 		return nil, apperr.FieldError("file", "only PDF, JPEG or PNG files")
 	}
+	return s.upload(ctx, p, purpose, name, mime, sensitive, data)
+}
+
+// upload stores the file once per company, purpose and content: uploading
+// the same bytes again (a retry, a double click) returns the existing file.
+func (s *Service) upload(ctx context.Context, p *auth.Principal, purpose, name, mime string, sensitive bool, data []byte) (*model.File, error) {
 	sum := sha256.Sum256(data)
+	hash := hex.EncodeToString(sum[:])
+	if f, err := s.store.ByContent(ctx, p.CompanyID, purpose, hash); err == nil {
+		return f, nil
+	} else if !errors.Is(err, apperr.ErrNotFound) {
+		return nil, err
+	}
 	key := strings.ReplaceAll(uuid.NewString(), "-", "")
 	if err := s.storage.Put(ctx, key, data, mime); err != nil {
 		return nil, err
 	}
 	f := &model.File{
 		ID: uuid.NewString(), CompanyID: p.CompanyID, Purpose: purpose, FileName: name, MIME: mime, ByteLength: int64(len(data)),
-		SHA256: hex.EncodeToString(sum[:]), StorageKey: key, Sensitive: sensitive, CreatedBy: p.UserID, CreatedAt: s.now().UTC(),
+		SHA256: hash, StorageKey: key, Sensitive: sensitive, CreatedBy: p.UserID, CreatedAt: s.now().UTC(),
 	}
 	if err := s.store.Create(ctx, f); err != nil {
 		_ = s.storage.Delete(ctx, key)
+		if errors.Is(err, apperr.ErrConflict) { // lost the race to an identical upload
+			return s.store.ByContent(ctx, p.CompanyID, purpose, hash)
+		}
 		return nil, err
 	}
 	return f, nil

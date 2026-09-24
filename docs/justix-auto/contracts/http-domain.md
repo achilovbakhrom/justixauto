@@ -2,13 +2,13 @@
 
 Status: ARCHITECTURE BASELINE APPROVED 2026-09-13; part of `../architecture.md`. Typed contract baseline for owner tasks, not implemented APIs or an exhaustive approved release backlog. OD/security/visual-state gates remain.
 Common transport, domain fields, authorization and OD gates in the parent apply. Tables use owner-relative paths: prefix every public row with `/api/v1/{owner}`.
-Existing aggregate writes use If-Match, never body expectedVersion; additional referenced revisions have explicit field names. All creates/actions have Idempotency-Key.
+Existing aggregate writes use If-Match, never body expectedVersion; additional referenced revisions have explicit field names. Creates and actions are idempotent by their data (unique business keys, state checks, If-Match), never by a request key: a repeat gets 409/412, not a replayed response.
 Authentication handshakes are exceptions to the business command ledger: login,
 MFA verification/enrollment and recovery use rate limits, session-bound single-use
 challenges/tokens and replay guards; logout is idempotent session revocation.
 Do not persist credentials, MFA codes or authentication responses in a generic
-command receipt. Authenticated provider provisioning remains a business command
-with the secret-safe idempotency procedure below.
+command receipt. Authenticated provider provisioning is a business command whose
+repeat is rejected by the company and user unique keys (see below).
 Request bodies below do not include trusted actor/company/permissions; use authenticated context. Explicit counterparty IDs select an object and must be authorized.
 Response: create201/command200 `{data:<resource receipt>,revision:<string>,operationId}`; cross-owner202 `{operationId,status:"pending"}`. Logout204 is the explicit no-body exception.
 All receipts carry exact affected IDs/state; multi-object receipts have `data.related:[{type,id,revision}]`. GET detail `{data:<typed resource>,revision,asOf}`; list `{items,nextCursor,asOf}`.
@@ -90,7 +90,7 @@ Default business action permission is `<owner>.<resource>.<action>` (e.g. `finan
 Catalog explicit allowlist is generated from approved action schemas; unknown action denied. Sensitive document download additionally requires `documents.sensitive.download` and owner-side read grant/MFA.
 `requiresMfa=true` for platform access/roles/credentials, membership/user administration, provider provisioning, finance/insurance decisions and terms agreement, payment acceptance, fulfillment and sensitive downloads. Routine CRM contacts and model/profile edits use their permission without blanket step-up; catalog changes are versioned security decisions.
 New company initial capabilities are empty, not inferred from kind or activation; assignment/live capability-compliance policy awaits OD-11. Provider sign-in can show the empty admitted workspace without publishing a program or granting product authority.
-Secret-bearing idempotency: store keyed HMAC of normalized nonsecret input, outcome IDs and no secret body/hash in ledger. Retry rechecks same nonsecret values and supplied password against created private credential; mismatch generic409, never resets password. Credential change afterward may make original secret-bearing replay unavailable; authorized receipt lookup still recovers outcome.
+Secret-bearing commands (provider provisioning, user creation with an initial password) keep no request ledger: a repeat hits the company registration / user email unique keys and gets a generic 409; it never resets the password. The outcome is recovered by an authorized lookup of the created company or user.
 Private `POST /internal/v1/identity/authorize {sessionHandle,operationId,action,companyId?,branchId?,resource:{type,id}?,contextRevision}` → `{decisionId,allowed,denyCode?,actorId,companyId?,effectiveBranchIds,policyRevision,securityRevision,mfaAuthenticatedAt?,decidedAt}`. Session handle never enters events/logs.
 
 ## 3. Inventory and commerce

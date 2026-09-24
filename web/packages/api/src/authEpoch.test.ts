@@ -426,7 +426,7 @@ describe('memory-only auth epochs', () => {
     expect(fetcher).toHaveBeenCalledTimes(3);
   });
 
-  it.each(['path', 'query', 'method', 'key', 'match', 'signal', 'accessor'] as const)(
+  it.each(['path', 'query', 'method', 'match', 'signal', 'accessor'] as const)(
     'rejects invalid %s bindings before dispatch',
     async (invalid) => {
       const { controller, fetcher } = setup();
@@ -439,13 +439,11 @@ describe('memory-only auth epochs', () => {
             ? { path: read.request.path + '?x=1' }
             : invalid === 'method'
               ? { method: 'POST' as const }
-              : invalid === 'key'
-                ? { idempotencyKey: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' }
-                : invalid === 'match'
-                  ? { ifMatch: '1' }
-                  : invalid === 'signal'
-                    ? { signal: {} as AbortSignal }
-                    : {};
+              : invalid === 'match'
+                ? { ifMatch: '1' }
+                : invalid === 'signal'
+                  ? { signal: {} as AbortSignal }
+                  : {};
       const request = { ...read.request, ...changes };
       if (invalid === 'accessor') Object.defineProperty(request, 'signal', { get: getter });
       expect(await controller.execute({ ...read, request })).toEqual({ kind: 'invalid-request' });

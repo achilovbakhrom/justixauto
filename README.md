@@ -59,8 +59,8 @@ require it for sensitive actions everywhere else.
 
 Sign in with `POST /api/v1/identity/session/login` `{"login","password"}`; the
 session is an HttpOnly cookie. Every state-changing request sends the
-`X-CSRF-Token` returned by login / `GET /api/v1/identity/session`, and every
-authenticated POST (outside `/session/`) sends a fresh `Idempotency-Key` UUID.
+`X-CSRF-Token` returned by login / `GET /api/v1/identity/session`. Repeating a
+write is safe: unique business keys, state checks and `If-Match` reject it.
 Administrators must set up TOTP (`POST /session/mfa/enrollment`, then
 `…/{id}/confirm`) before sensitive actions; after that, login returns an MFA
 challenge answered with `POST /session/mfa/verify`, and sensitive actions need
@@ -92,8 +92,8 @@ manages only company details and branches; business work needs a role — create
 one under “Роли и права” (e.g. all `inventory.*`, `commerce.*`, `retail.*`
 permissions for a seller) and assign it to the user.
 
-Shared UI code lives in `web/packages/kit` (HTTP client with CSRF,
-Idempotency-Key and If-Match, session gate with MFA, shell, forms, tables and
+Shared UI code lives in `web/packages/kit` (HTTP client with CSRF
+and If-Match, session gate with MFA, shell, forms, tables and
 the insurance/financing application views). Checks:
 
 ```sh

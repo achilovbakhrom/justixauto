@@ -96,7 +96,6 @@ func (h *Handler) getModel(c echo.Context) error {
 //	@Summary	Create vehicle model
 //	@Tags		inventory/models
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string				true	"retry key"
 //	@Param		body			body		handler.specBody	true	"specification"
 //	@Success	201				{object}	httpx.DataEnvelope[handler.modelDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -121,7 +120,6 @@ func (h *Handler) createModel(c echo.Context) error {
 //	@Param		id						path		string				true	"model ID"
 //	@Param		If-Match				header		string				true	"revision"
 //	@Param		body					body		handler.specBody	true	"specification"
-//	@Param		Idempotency-Key			header		string				true	"retry key"
 //	@Success	201						{object}	httpx.DataEnvelope[handler.modelDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/inventory/vehicle-models/{id}/specification-versions [post]
@@ -197,7 +195,6 @@ func (h *Handler) warehouseStock(c echo.Context) error {
 //	@Summary	Create warehouse
 //	@Tags		inventory/warehouses
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string					true	"retry key"
 //	@Param		body			body		service.WarehouseInput	true	"warehouse"
 //	@Success	201				{object}	httpx.DataEnvelope[handler.warehouseDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -249,7 +246,6 @@ func (h *Handler) updateWarehouse(c echo.Context) error {
 //	@Param		id						path		string							true	"warehouse ID"
 //	@Param		If-Match				header		string							true	"revision"
 //	@Param		body					body		handler.changeCapacityRequest	true	"capacity change"
-//	@Param		Idempotency-Key			header		string							true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[handler.warehouseDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/inventory/warehouses/{id}/capacity-changes [post]
@@ -277,7 +273,6 @@ func (h *Handler) changeCapacity(c echo.Context) error {
 //	@Param		id						path		string					true	"warehouse ID"
 //	@Param		If-Match				header		string					true	"revision"
 //	@Param		body					body		service.ReceiptInput	true	"receipt"
-//	@Param		Idempotency-Key			header		string					true	"retry key"
 //	@Success	201						{object}	httpx.DataEnvelope[handler.receiptResponse]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/inventory/warehouses/{id}/receipt-batches [post]
@@ -303,7 +298,6 @@ func (h *Handler) receive(c echo.Context) error {
 //	@Tags		inventory/receipts
 //	@Security	CSRF
 //	@Param		id					path		string					true	"receipt batch ID"
-//	@Param		Idempotency-Key		header		string					true	"retry key"
 //	@Param		body				body		service.IdentifyInput	true	"identifications"
 //	@Success	200					{object}	httpx.DataEnvelope[handler.receiptResponse]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -328,7 +322,6 @@ func (h *Handler) identify(c echo.Context) error {
 //	@Param		id						path		string						true	"warehouse ID"
 //	@Param		If-Match				header		string						true	"revision"
 //	@Param		body					body		handler.attachBranchRequest	true	"branch attachment"
-//	@Param		Idempotency-Key			header		string						true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[handler.warehouseDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/inventory/warehouses/{id}/branch-attachment [post]
@@ -356,7 +349,6 @@ func (h *Handler) attachBranch(c echo.Context) error {
 //	@Param		id						path		string							true	"receipt batch ID"
 //	@Param		If-Match				header		string							true	"revision"
 //	@Param		body					body		handler.correctQuantityRequest	true	"quantity correction"
-//	@Param		Idempotency-Key			header		string							true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[handler.receiptResponse]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/inventory/receipt-batches/{id}/quantity-corrections [post]
@@ -435,7 +427,6 @@ func (h *Handler) getVehicle(c echo.Context) error {
 //	@Tags		inventory/vehicles
 //	@Security	CSRF
 //	@Param		id					path		string				true	"vehicle unit ID"
-//	@Param		Idempotency-Key		header		string				true	"retry key"
 //	@Param		body				body		service.MoveInput	true	"move"
 //	@Success	200					{object}	httpx.DataEnvelope[handler.vehicleDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody

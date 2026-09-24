@@ -34,7 +34,6 @@ func (h *CompanyHandler) Routes(g *echo.Group) {
 //	@Summary	Create seller company
 //	@Tags		identity/companies
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string					true	"retry key"
 //	@Param		body			body		createCompanyRequest	true	"company"
 //	@Success	201				{object}	httpx.DataEnvelope[identity.companyDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -116,7 +115,6 @@ func (h *CompanyHandler) listBranches(c echo.Context) error {
 //	@Tags		identity/companies
 //	@Security	CSRF
 //	@Param		id					path		string		true	"company ID"
-//	@Param		Idempotency-Key		header		string		true	"retry key"
 //	@Param		body				body		BranchInput	true	"branch"
 //	@Success	201					{object}	httpx.DataEnvelope[identity.branchDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody

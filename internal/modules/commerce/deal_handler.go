@@ -308,7 +308,6 @@ func toShipment(v *ShipmentView) shipmentDTO {
 //	@Param		id							path		string			true	"order ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		allocateRequest	true	"allocation items"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/allocations [post]
@@ -336,7 +335,6 @@ func (h *Handler) allocate(c echo.Context) error {
 //	@Param		id							path		string			true	"order ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		ShipmentInput	true	"shipment"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[commerce.shipmentDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/shipments [post]
@@ -382,7 +380,6 @@ func (h *Handler) getShipment(c echo.Context) error {
 //	@Tags		commerce/orders
 //	@Security	CSRF
 //	@Param		id				path		string			true	"shipment ID"
-//	@Param		Idempotency-Key	header		string			true	"retry key"
 //	@Param		body			body		MilestoneInput	true	"milestone"
 //	@Success	201				{object}	httpx.DataEnvelope[commerce.shipmentDTO]
 //	@Failure	401,403,404,422	{object}	httpx.ErrorBody
@@ -407,7 +404,6 @@ func (h *Handler) addMilestone(c echo.Context) error {
 //	@Param		id							path		string			true	"shipment ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		ReceiptDecision	true	"receipt decision"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.shipmentDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/shipments/{id}/receipt-decisions [post]
@@ -489,7 +485,6 @@ func (h *Handler) getRFQ(c echo.Context) error {
 //	@Summary	Create RFQ
 //	@Tags		commerce/rfqs
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
 //	@Param		body			body		RFQInput	true	"RFQ"
 //	@Success	201				{object}	httpx.DataEnvelope[commerce.rfqDTO]
 //	@Failure	401,403,404,422	{object}	httpx.ErrorBody
@@ -515,7 +510,6 @@ func (h *Handler) createRFQ(c echo.Context) error {
 //	@Param		action						path		string				true	"decision action"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		rfqActionRequest	true	"reason"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.rfqDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/rfqs/{id}/{action} [post]
@@ -543,7 +537,6 @@ func (h *Handler) rfqAction(c echo.Context) error {
 //	@Param		id							path		string			true	"RFQ ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		quoteRequest	true	"quotation terms"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[commerce.rfqDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/rfqs/{id}/quotation-versions [post]
@@ -571,7 +564,6 @@ func (h *Handler) quote(c echo.Context) error {
 //	@Param		id							path		string				true	"RFQ ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		acceptRFQRequest	true	"accepted quotation"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/rfqs/{id}/accept [post]
@@ -644,7 +636,6 @@ func (h *Handler) getOrder(c echo.Context) error {
 //	@Summary	Create order from offer
 //	@Tags		commerce/orders
 //	@Security	CSRF
-//	@Param		Idempotency-Key		header		string				true	"retry key"
 //	@Param		body				body		DirectOrderInput	true	"order"
 //	@Success	201					{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -669,7 +660,6 @@ func (h *Handler) orderFromOffer(c echo.Context) error {
 //	@Param		id							path		string				true	"order ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		orderConfirmRequest	true	"reason"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/supplier-confirmations [post]
@@ -700,7 +690,6 @@ func (h *Handler) confirmOrder(confirm bool) echo.HandlerFunc {
 //	@Param		id							path		string				true	"order ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		orderCancelRequest	true	"reason"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/cancellations [post]
@@ -728,7 +717,6 @@ func (h *Handler) cancelOrder(c echo.Context) error {
 //	@Param		id							path		string					true	"order ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		addendumProposeRequest	true	"addendum"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/addenda [post]
@@ -757,7 +745,6 @@ func (h *Handler) proposeAddendum(c echo.Context) error {
 //	@Param		addendumId					path		string					true	"addendum ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		addendumDecisionRequest	true	"reason"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/orders/{id}/addenda/{addendumId}/accept [post]

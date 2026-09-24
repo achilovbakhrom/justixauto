@@ -19,13 +19,11 @@ import (
 	"time"
 
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/database"
 	"justixauto/internal/pkg/httpx"
-	"justixauto/internal/pkg/idempotency"
 )
 
 // These tests exercise the real HTTP API against PostgreSQL. TEST_DATABASE_URL
@@ -81,9 +79,6 @@ type env struct {
 
 func newEnv(t *testing.T) *env {
 	db := openTestDB(t)
-	if err := db.Exec("TRUNCATE platform.idempotency_keys").Error; err != nil {
-		t.Fatal(err)
-	}
 	clk := &clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
 	key := make([]byte, 32)
 	_, _ = rand.Read(key)
@@ -92,7 +87,7 @@ func newEnv(t *testing.T) *env {
 		t.Fatal(err)
 	}
 	e := httpx.NewServer(slog.New(slog.NewTextHandler(io.Discard, nil)))
-	mod.Register(e.Group("/api/v1", mod.Authenticate(), idempotency.Middleware(db, clk.now, "/identity/session/")))
+	mod.Register(e.Group("/api/v1", mod.Authenticate()))
 	srv := httptest.NewServer(e)
 	t.Cleanup(srv.Close)
 	return &env{t: t, srv: srv, clock: clk, mod: mod}
@@ -136,9 +131,6 @@ func (c *client) do(method, path string, body any, headers ...string) response {
 	req.Header.Set("Content-Type", "application/json")
 	if c.csrf != "" {
 		req.Header.Set("X-CSRF-Token", c.csrf)
-	}
-	if method == http.MethodPost && !strings.HasPrefix(path, "/session/") {
-		req.Header.Set("Idempotency-Key", uuid.NewString()) // tests may override
 	}
 	for i := 0; i+1 < len(headers); i += 2 {
 		req.Header.Set(headers[i], headers[i+1])
@@ -496,33 +488,6 @@ func TestMFACodeGuessingLocksAccount(t *testing.T) {
 		expect(t, admin.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": "000000"}), http.StatusUnauthorized)
 	}
 	expect(t, admin.login("admin", adminPassword), http.StatusTooManyRequests, "rate_limited")
-}
-
-func TestIdempotencyKey(t *testing.T) {
-	e := newEnv(t)
-	admin := e.bootstrap()
-	key := uuid.NewString()
-	body := map[string]any{"name": "Support", "permissionKeys": []string{PermPlatformDirectoryRead}}
-
-	first := admin.do(http.MethodPost, "/admin/roles", body, "Idempotency-Key", key)
-	expect(t, first, http.StatusCreated)
-	retry := admin.do(http.MethodPost, "/admin/roles", body, "Idempotency-Key", key)
-	expect(t, retry, http.StatusCreated)
-	if retry.data()["id"] != first.data()["id"] || retry.header.Get("Idempotent-Replayed") != "true" || retry.header.Get("ETag") != `"1"` {
-		t.Fatalf("replay: %v %v", retry.header, retry.body)
-	}
-	if n := len(admin.do(http.MethodGet, "/admin/roles", nil).items()); n != 3 { // 2 system + 1
-		t.Fatalf("roles after retry: %d", n)
-	}
-	body["name"] = "Other"
-	expect(t, admin.do(http.MethodPost, "/admin/roles", body, "Idempotency-Key", key), http.StatusConflict, "idempotency_key_reused")
-	expect(t, admin.do(http.MethodPost, "/admin/roles", body, "Idempotency-Key", ""), http.StatusPreconditionRequired, "idempotency_key_required")
-	expect(t, admin.do(http.MethodPost, "/admin/roles", body, "Idempotency-Key", "abc"), http.StatusUnprocessableEntity)
-
-	// A failed request releases its key so the corrected retry can use it.
-	bad := uuid.NewString()
-	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": ""}, "Idempotency-Key", bad), http.StatusUnprocessableEntity)
-	expect(t, admin.do(http.MethodPost, "/admin/roles", map[string]any{"name": ""}, "Idempotency-Key", bad), http.StatusUnprocessableEntity)
 }
 
 func TestSellerOnboardingAndAdminSetPasswords(t *testing.T) {

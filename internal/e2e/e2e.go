@@ -1,6 +1,6 @@
 // Package e2e runs module tests end to end: a real PostgreSQL database
 // (TEST_DATABASE_URL, emptied per test), the identity module for sign-in, and
-// HTTP clients that behave like a browser (cookies, CSRF, Idempotency-Key).
+// HTTP clients that behave like a browser (cookies, CSRF).
 // Use it from _test.go files only.
 package e2e
 
@@ -146,8 +146,7 @@ func (r Response) Code() string {
 	return c
 }
 
-// Do sends a request to /api/v1+path. headers are name/value pairs; POSTs get
-// a fresh Idempotency-Key unless one is given.
+// Do sends a request to /api/v1+path. headers are name/value pairs.
 func (c *Client) Do(method, path string, body any, headers ...string) Response {
 	t := c.env.T
 	t.Helper()
@@ -160,9 +159,6 @@ func (c *Client) Do(method, path string, body any, headers ...string) Response {
 	req.Header.Set("Content-Type", "application/json")
 	if c.csrf != "" {
 		req.Header.Set("X-CSRF-Token", c.csrf)
-	}
-	if method == http.MethodPost {
-		req.Header.Set("Idempotency-Key", uuid.NewString())
 	}
 	for i := 0; i+1 < len(headers); i += 2 {
 		req.Header.Set(headers[i], headers[i+1])
@@ -304,7 +300,6 @@ func (c *Client) Upload(purpose, name string, content []byte) Response {
 	req, _ := http.NewRequest(http.MethodPost, c.env.srv.URL+"/api/v1/documents/files", &buf)
 	req.Header.Set("Content-Type", w.FormDataContentType())
 	req.Header.Set("X-CSRF-Token", c.csrf)
-	req.Header.Set("Idempotency-Key", uuid.NewString())
 	res, err := c.http.Do(req)
 	if err != nil {
 		t.Fatal(err)

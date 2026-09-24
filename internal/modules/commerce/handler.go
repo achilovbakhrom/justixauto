@@ -150,7 +150,6 @@ func (h *Handler) getPartnership(c echo.Context) error {
 //	@Summary	Request partnership
 //	@Tags		commerce/partnerships
 //	@Security	CSRF
-//	@Param		Idempotency-Key		header		string						true	"retry key"
 //	@Param		body				body		requestPartnershipRequest	true	"counterparty"
 //	@Success	201					{object}	httpx.DataEnvelope[commerce.partnershipDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -177,7 +176,6 @@ func (h *Handler) requestPartnership(c echo.Context) error {
 //	@Param		action						path		string						true	"decision action"
 //	@Param		If-Match					header		string						true	"revision"
 //	@Param		body						body		partnershipDecisionRequest	true	"reason"
-//	@Param		Idempotency-Key				header		string						true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.partnershipDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/partnerships/{id}/{action} [post]
@@ -314,10 +312,9 @@ func (h *Handler) getOffer(c echo.Context) error {
 //	@Summary	Create offer
 //	@Tags		commerce/offers
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
-//	@Param		body			body		OfferInput	true	"offer"
-//	@Success	201				{object}	httpx.DataEnvelope[commerce.offerDTO]
-//	@Failure	401,403,422		{object}	httpx.ErrorBody
+//	@Param		body		body		OfferInput	true	"offer"
+//	@Success	201			{object}	httpx.DataEnvelope[commerce.offerDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
 //	@Router		/commerce/offers [post]
 func (h *Handler) createOffer(c echo.Context) error {
 	var in OfferInput
@@ -339,7 +336,6 @@ func (h *Handler) createOffer(c echo.Context) error {
 //	@Param		id							path		string		true	"offer ID"
 //	@Param		If-Match					header		string		true	"revision"
 //	@Param		body						body		OfferInput	true	"offer"
-//	@Param		Idempotency-Key				header		string		true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[commerce.offerDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/offers/{id}/versions [post]
@@ -367,7 +363,6 @@ func (h *Handler) addOfferVersion(c echo.Context) error {
 //	@Param		id							path		string				true	"offer ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		publishOfferRequest	true	"offer version"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[commerce.offerDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/offers/{id}/publish [post]
@@ -395,7 +390,6 @@ func (h *Handler) publishOffer(c echo.Context) error {
 //	@Param		id						path		string					true	"offer ID"
 //	@Param		If-Match				header		string					true	"revision"
 //	@Param		body					body		offerWithdrawRequest	true	"reason"
-//	@Param		Idempotency-Key			header		string					true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[commerce.offerDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/commerce/offers/{id}/withdraw [post]

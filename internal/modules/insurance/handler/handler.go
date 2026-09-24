@@ -104,7 +104,6 @@ func (h *Handler) get(c echo.Context) error { return h.respond(c, http.StatusOK,
 //	@Summary	Create insurance application
 //	@Tags		insurance/applications
 //	@Security	CSRF
-//	@Param		Idempotency-Key		header		string				true	"retry key"
 //	@Param		body				body		service.CreateInput	true	"application"
 //	@Success	201					{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -156,7 +155,6 @@ func (h *Handler) update(c echo.Context) error {
 //	@Param		id							path		string			true	"application ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		submitRequest	true	"submission"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications/{id}/submit [post]
@@ -188,7 +186,6 @@ func (h *Handler) submit(c echo.Context) error {
 //	@Param		id							path		string		true	"application ID"
 //	@Param		If-Match					header		string		true	"revision"
 //	@Param		body						body		actRequest	true	"note"
-//	@Param		Idempotency-Key				header		string		true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications/{id}/responses [post]

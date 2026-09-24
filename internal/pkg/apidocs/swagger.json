@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Envelopes and errors: docs/justix-auto/contracts/http-domain.md. Sign in with POST /identity/session/login (session cookie); state-changing requests also send the X-CSRF-Token returned by GET /identity/session, and authenticated POSTs an Idempotency-Key.",
+        "description": "Envelopes and errors: docs/justix-auto/contracts/http-domain.md. Sign in with POST /identity/session/login (session cookie); state-changing requests also send the X-CSRF-Token returned by GET /identity/session.",
         "title": "JustixAuto API",
         "contact": {},
         "version": "1"
@@ -63,13 +63,6 @@
                         "description": "invoice ID",
                         "name": "id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
                         "required": true
                     },
                     {
@@ -156,13 +149,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.invoiceVoidRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -282,13 +268,6 @@
                 "summary": "Create offer",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "offer",
                         "name": "body",
                         "in": "body",
@@ -403,13 +382,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.publishOfferRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -498,13 +470,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.OfferInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -593,13 +558,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.offerWithdrawRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -706,13 +664,6 @@
                 ],
                 "summary": "Create order from offer",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "order",
                         "name": "body",
@@ -840,13 +791,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.addendumProposeRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -942,13 +886,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.addendumDecisionRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1044,13 +981,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.addendumDecisionRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1139,13 +1069,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.allocateRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1234,13 +1157,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.orderCancelRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1370,13 +1286,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.issueInvoiceRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1465,13 +1374,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.ShipmentInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1560,13 +1462,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.orderConfirmRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1655,13 +1550,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.orderConfirmRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -1780,13 +1668,6 @@
                 ],
                 "summary": "Request partnership",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "counterparty",
                         "name": "body",
@@ -1921,13 +1802,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.partnershipDecisionRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2016,13 +1890,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.evidenceDecisionRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2111,13 +1978,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.evidenceDecisionRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2230,13 +2090,6 @@
                 ],
                 "summary": "Create RFQ",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "RFQ",
                         "name": "body",
@@ -2358,13 +2211,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.acceptRFQRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2453,13 +2299,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.quoteRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2555,13 +2394,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.rfqActionRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2679,13 +2511,6 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "milestone",
                         "name": "body",
                         "in": "body",
@@ -2763,13 +2588,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_commerce.ReceiptDecision"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -2839,13 +2657,6 @@
                 ],
                 "summary": "Upload file",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "file purpose",
@@ -3019,7 +2830,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3049,19 +2860,12 @@
                 "summary": "Create application",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "application",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ApplicationInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ApplicationInput"
                         }
                     }
                 ],
@@ -3069,7 +2873,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3129,7 +2933,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3178,7 +2982,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ApplicationInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ApplicationInput"
                         }
                     }
                 ],
@@ -3186,7 +2990,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3266,22 +3070,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3361,22 +3158,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3456,22 +3246,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3543,7 +3326,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_documentRequestDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_handler_documentRequestDTO"
                         }
                     },
                     "401": {
@@ -3580,19 +3363,12 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "document request",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.requestDocumentRequest"
+                            "$ref": "#/definitions/modules_financing_handler.requestDocumentRequest"
                         }
                     }
                 ],
@@ -3600,7 +3376,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_documentRequestDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_documentRequestDTO"
                         }
                     },
                     "401": {
@@ -3668,22 +3444,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3763,22 +3532,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3858,22 +3620,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.submitApplicationRequest"
+                            "$ref": "#/definitions/modules_financing_handler.submitApplicationRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -3953,22 +3708,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -4048,22 +3796,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ActInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ActInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -4135,7 +3876,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_documentRequestDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_documentRequestDTO"
                         }
                     },
                     "401": {
@@ -4186,22 +3927,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.submitDocumentRequest"
+                            "$ref": "#/definitions/modules_financing_handler.submitDocumentRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_documentRequestDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_documentRequestDTO"
                         }
                     },
                     "401": {
@@ -4288,22 +4022,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.decideDocumentRequest"
+                            "$ref": "#/definitions/modules_financing_handler.decideDocumentRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_documentRequestDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_documentRequestDTO"
                         }
                     },
                     "401": {
@@ -4386,7 +4113,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_programDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_handler_programDTO"
                         }
                     },
                     "401": {
@@ -4416,19 +4143,12 @@
                 "summary": "Create program",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "program",
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ProgramInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ProgramInput"
                         }
                     }
                 ],
@@ -4436,7 +4156,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_programDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_programDTO"
                         }
                     },
                     "401": {
@@ -4490,7 +4210,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_programDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_programDTO"
                         }
                     },
                     "401": {
@@ -4541,22 +4261,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.publishProgramRequest"
+                            "$ref": "#/definitions/modules_financing_handler.publishProgramRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_programDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_programDTO"
                         }
                     },
                     "401": {
@@ -4636,22 +4349,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.ProgramInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_financing_service.ProgramInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_programDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_programDTO"
                         }
                     },
                     "401": {
@@ -4731,22 +4437,15 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_financing.withdrawProgramRequest"
+                            "$ref": "#/definitions/modules_financing_handler.withdrawProgramRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_programDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_programDTO"
                         }
                     },
                     "401": {
@@ -4949,13 +4648,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_identity.reasonBody"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -5120,13 +4812,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_identity.reasonBody"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -5216,13 +4901,6 @@
                 "summary": "Create provider company",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "provider company",
                         "name": "body",
                         "in": "body",
@@ -5304,13 +4982,6 @@
                 ],
                 "summary": "Create role",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "role",
                         "name": "body",
@@ -5450,13 +5121,6 @@
                 "summary": "Create seller company (admin)",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "seller company",
                         "name": "body",
                         "in": "body",
@@ -5552,13 +5216,6 @@
                 ],
                 "summary": "Create user",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "user",
                         "name": "body",
@@ -5787,13 +5444,6 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "membership",
                         "name": "body",
                         "in": "body",
@@ -5877,13 +5527,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_identity.SetPasswordInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -5966,13 +5609,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_identity.reasonBody"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -6038,13 +5674,6 @@
                         "description": "user ID",
                         "name": "id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
                         "required": true
                     },
                     {
@@ -6122,13 +5751,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_identity.reasonBody"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -6189,13 +5811,6 @@
                 ],
                 "summary": "Create seller company",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "company",
                         "name": "body",
@@ -6421,13 +6036,6 @@
                         "description": "company ID",
                         "name": "id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
                         "required": true
                     },
                     {
@@ -7146,13 +6754,6 @@
                 "summary": "Create insurance application",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "application",
                         "name": "body",
                         "in": "body",
@@ -7365,13 +6966,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -7460,13 +7054,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -7555,13 +7142,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -7650,13 +7230,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -7745,13 +7318,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_insurance_handler.submitRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -7840,13 +7406,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -7918,13 +7477,6 @@
                         "description": "receipt batch ID",
                         "name": "id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
                         "required": true
                     },
                     {
@@ -8011,13 +7563,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_inventory_handler.correctQuantityRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -8124,13 +7669,6 @@
                 ],
                 "summary": "Create vehicle model",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "specification",
                         "name": "body",
@@ -8246,13 +7784,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_inventory_handler.specBody"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -8424,13 +7955,6 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "move",
                         "name": "body",
                         "in": "body",
@@ -8518,13 +8042,6 @@
                 ],
                 "summary": "Create warehouse",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "warehouse",
                         "name": "body",
@@ -8726,13 +8243,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_inventory_handler.attachBranchRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -8815,13 +8325,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_inventory_handler.changeCapacityRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -8947,13 +8450,6 @@
                         "schema": {
                             "$ref": "#/definitions/justixauto_internal_modules_inventory_service.ReceiptInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -9066,13 +8562,6 @@
                 ],
                 "summary": "Create customer",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "customer",
                         "name": "body",
@@ -9305,13 +8794,6 @@
                 "summary": "Create deal",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "deal",
                         "name": "body",
                         "in": "body",
@@ -9432,13 +8914,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.cancelDealRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -9527,13 +9002,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.recordContractRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -9622,13 +9090,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.deliverRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -9717,13 +9178,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.InvoiceInput"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -9812,13 +9266,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.recordRegistrationRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -9907,13 +9354,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.decideEvidenceRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -10002,13 +9442,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.decideEvidenceRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -10126,13 +9559,6 @@
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "evidence",
                         "name": "body",
                         "in": "body",
@@ -10246,13 +9672,6 @@
                 ],
                 "summary": "Create lead",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "lead",
                         "name": "body",
@@ -10374,13 +9793,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.assignLeadRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -10452,13 +9864,6 @@
                         "description": "lead ID",
                         "name": "id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
                         "required": true
                     },
                     {
@@ -10545,13 +9950,6 @@
                         "schema": {
                             "$ref": "#/definitions/modules_retail.setStageRequest"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -10670,13 +10068,6 @@
                 ],
                 "summary": "Create listing",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "listing",
                         "name": "body",
@@ -10869,13 +10260,6 @@
                         "name": "If-Match",
                         "in": "header",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -10947,13 +10331,6 @@
                         "type": "string",
                         "description": "revision",
                         "name": "If-Match",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
                         "in": "header",
                         "required": true
                     }
@@ -11075,13 +10452,6 @@
                 "summary": "Create task",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
                         "description": "task",
                         "name": "body",
                         "in": "body",
@@ -11148,13 +10518,6 @@
                         "type": "string",
                         "description": "revision",
                         "name": "If-Match",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "retry key",
-                        "name": "Idempotency-Key",
                         "in": "header",
                         "required": true
                     }
@@ -11246,6 +10609,151 @@
                 },
                 "traceId": {
                     "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_financing_model.CalculationInput": {
+            "type": "object",
+            "required": [
+                "downPayment",
+                "firstDueDate",
+                "termMonths"
+            ],
+            "properties": {
+                "downPayment": {
+                    "$ref": "#/definitions/justixauto_internal_pkg_money.Money"
+                },
+                "firstDueDate": {
+                    "description": "YYYY-MM-DD",
+                    "type": "string"
+                },
+                "termMonths": {
+                    "type": "integer"
+                }
+            }
+        },
+        "justixauto_internal_modules_financing_model.Eligibility": {
+            "type": "object",
+            "required": [
+                "maxPriceMinor",
+                "minPriceMinor"
+            ],
+            "properties": {
+                "maxPriceMinor": {
+                    "type": "string"
+                },
+                "minPriceMinor": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_financing_model.ProgramTerms": {
+            "type": "object",
+            "required": [
+                "markupBps",
+                "minDownPaymentBps",
+                "termMonths"
+            ],
+            "properties": {
+                "markupBps": {
+                    "description": "markup on the price, in basis points",
+                    "type": "integer"
+                },
+                "minDownPaymentBps": {
+                    "description": "minimum down payment, from the price",
+                    "type": "integer"
+                },
+                "termMonths": {
+                    "description": "offered terms",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "justixauto_internal_modules_financing_service.ActInput": {
+            "type": "object",
+            "required": [
+                "calculationInputs",
+                "confirmation",
+                "note",
+                "reason",
+                "termsVersion"
+            ],
+            "properties": {
+                "calculationInputs": {
+                    "$ref": "#/definitions/justixauto_internal_modules_financing_model.CalculationInput"
+                },
+                "confirmation": {
+                    "type": "boolean"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "termsVersion": {
+                    "type": "integer"
+                }
+            }
+        },
+        "justixauto_internal_modules_financing_service.ApplicationInput": {
+            "type": "object",
+            "required": [
+                "calculationInputs",
+                "programId",
+                "programVersion",
+                "providerCompanyId",
+                "retailDealId"
+            ],
+            "properties": {
+                "calculationInputs": {
+                    "$ref": "#/definitions/justixauto_internal_modules_financing_model.CalculationInput"
+                },
+                "programId": {
+                    "type": "string"
+                },
+                "programVersion": {
+                    "type": "integer"
+                },
+                "providerCompanyId": {
+                    "type": "string"
+                },
+                "retailDealId": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_modules_financing_service.ProgramInput": {
+            "type": "object",
+            "required": [
+                "calculationPolicyId",
+                "calculationPolicyVersion",
+                "currency",
+                "eligibility",
+                "name",
+                "terms"
+            ],
+            "properties": {
+                "calculationPolicyId": {
+                    "type": "string"
+                },
+                "calculationPolicyVersion": {
+                    "type": "integer"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "eligibility": {
+                    "$ref": "#/definitions/justixauto_internal_modules_financing_model.Eligibility"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "terms": {
+                    "$ref": "#/definitions/justixauto_internal_modules_financing_model.ProgramTerms"
                 }
             }
         },
@@ -11667,6 +11175,63 @@
                 },
                 "data": {
                     "$ref": "#/definitions/modules_financing.documentRequestDTO"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_applicationDTO": {
+            "type": "object",
+            "required": [
+                "data",
+                "revision"
+            ],
+            "properties": {
+                "asOf": {
+                    "description": "AsOf is set on GET responses.",
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/modules_financing_handler.applicationDTO"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_documentRequestDTO": {
+            "type": "object",
+            "required": [
+                "data",
+                "revision"
+            ],
+            "properties": {
+                "asOf": {
+                    "description": "AsOf is set on GET responses.",
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/modules_financing_handler.documentRequestDTO"
+                },
+                "revision": {
+                    "type": "string"
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_financing_handler_programDTO": {
+            "type": "object",
+            "required": [
+                "data",
+                "revision"
+            ],
+            "properties": {
+                "asOf": {
+                    "description": "AsOf is set on GET responses.",
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/modules_financing_handler.programDTO"
                 },
                 "revision": {
                     "type": "string"
@@ -12282,6 +11847,75 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/modules_financing.documentRequestDTO"
+                    }
+                },
+                "nextCursor": {
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_handler_applicationDTO": {
+            "type": "object",
+            "required": [
+                "asOf",
+                "items",
+                "nextCursor"
+            ],
+            "properties": {
+                "asOf": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.applicationDTO"
+                    }
+                },
+                "nextCursor": {
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_handler_documentRequestDTO": {
+            "type": "object",
+            "required": [
+                "asOf",
+                "items",
+                "nextCursor"
+            ],
+            "properties": {
+                "asOf": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.documentRequestDTO"
+                    }
+                },
+                "nextCursor": {
+                    "type": "string",
+                    "x-nullable": true
+                }
+            }
+        },
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_financing_handler_programDTO": {
+            "type": "object",
+            "required": [
+                "asOf",
+                "items",
+                "nextCursor"
+            ],
+            "properties": {
+                "asOf": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.programDTO"
                     }
                 },
                 "nextCursor": {
@@ -14489,6 +14123,390 @@
             }
         },
         "modules_financing.withdrawProgramRequest": {
+            "type": "object",
+            "required": [
+                "reason"
+            ],
+            "properties": {
+                "reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "modules_financing_handler.applicationDTO": {
+            "type": "object",
+            "required": [
+                "allowedActions",
+                "calculation",
+                "calculationDigest",
+                "currentTermsVersion",
+                "id",
+                "programId",
+                "programVersion",
+                "providerCompanyId",
+                "retailDealId",
+                "revision",
+                "sellerCompanyId",
+                "side",
+                "snapshot",
+                "status"
+            ],
+            "properties": {
+                "allowedActions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "calculation": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "calculationDigest": {
+                    "type": "string"
+                },
+                "currentTermsVersion": {
+                    "type": "integer"
+                },
+                "history": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.messageDTO"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "programId": {
+                    "type": "string"
+                },
+                "programVersion": {
+                    "type": "integer"
+                },
+                "providerCompanyId": {
+                    "type": "string"
+                },
+                "retailDealId": {
+                    "type": "string"
+                },
+                "revision": {
+                    "type": "string"
+                },
+                "sellerCompanyId": {
+                    "type": "string"
+                },
+                "side": {
+                    "type": "string"
+                },
+                "snapshot": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "terms": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.termsDTO"
+                    }
+                }
+            }
+        },
+        "modules_financing_handler.decideDocumentRequest": {
+            "type": "object",
+            "required": [
+                "confirmation",
+                "note",
+                "reason",
+                "submissionVersion"
+            ],
+            "properties": {
+                "confirmation": {
+                    "type": "boolean"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "submissionVersion": {
+                    "type": "integer"
+                }
+            }
+        },
+        "modules_financing_handler.documentRequestDTO": {
+            "type": "object",
+            "required": [
+                "applicationId",
+                "id",
+                "requirements",
+                "revision",
+                "status",
+                "statusNote",
+                "submissions",
+                "title"
+            ],
+            "properties": {
+                "applicationId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "requirements": {
+                    "type": "string"
+                },
+                "revision": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "statusNote": {
+                    "type": "string"
+                },
+                "submissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.submissionDTO"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "modules_financing_handler.messageDTO": {
+            "type": "object",
+            "required": [
+                "actorId",
+                "kind",
+                "note",
+                "occurredAt",
+                "requestId",
+                "side",
+                "termsVersion"
+            ],
+            "properties": {
+                "actorId": {
+                    "type": "string"
+                },
+                "kind": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "occurredAt": {
+                    "type": "string"
+                },
+                "requestId": {
+                    "type": "string"
+                },
+                "side": {
+                    "type": "string"
+                },
+                "termsVersion": {
+                    "type": "integer"
+                }
+            }
+        },
+        "modules_financing_handler.programDTO": {
+            "type": "object",
+            "required": [
+                "id",
+                "provider",
+                "publishedVersion",
+                "revision",
+                "status",
+                "statusReason",
+                "versions"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "publishedVersion": {
+                    "type": "integer"
+                },
+                "revision": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "statusReason": {
+                    "type": "string"
+                },
+                "versions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/modules_financing_handler.programVersionDTO"
+                    }
+                }
+            }
+        },
+        "modules_financing_handler.programVersionDTO": {
+            "type": "object",
+            "required": [
+                "calculationPolicyId",
+                "calculationPolicyVersion",
+                "createdAt",
+                "currency",
+                "eligibility",
+                "name",
+                "number",
+                "terms"
+            ],
+            "properties": {
+                "calculationPolicyId": {
+                    "type": "string"
+                },
+                "calculationPolicyVersion": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "eligibility": {
+                    "$ref": "#/definitions/justixauto_internal_modules_financing_model.Eligibility"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
+                "terms": {
+                    "$ref": "#/definitions/justixauto_internal_modules_financing_model.ProgramTerms"
+                }
+            }
+        },
+        "modules_financing_handler.publishProgramRequest": {
+            "type": "object",
+            "required": [
+                "programVersion"
+            ],
+            "properties": {
+                "programVersion": {
+                    "type": "integer"
+                }
+            }
+        },
+        "modules_financing_handler.requestDocumentRequest": {
+            "type": "object",
+            "required": [
+                "requirements",
+                "title"
+            ],
+            "properties": {
+                "requirements": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "modules_financing_handler.submissionDTO": {
+            "type": "object",
+            "required": [
+                "createdAt",
+                "fileId",
+                "note",
+                "version"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "fileId": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "integer"
+                }
+            }
+        },
+        "modules_financing_handler.submitApplicationRequest": {
+            "type": "object",
+            "required": [
+                "calculationDigest",
+                "confirmation",
+                "dealRevision"
+            ],
+            "properties": {
+                "calculationDigest": {
+                    "type": "string"
+                },
+                "confirmation": {
+                    "type": "boolean"
+                },
+                "dealRevision": {
+                    "type": "string"
+                }
+            }
+        },
+        "modules_financing_handler.submitDocumentRequest": {
+            "type": "object",
+            "required": [
+                "attachmentBindingId",
+                "note"
+            ],
+            "properties": {
+                "attachmentBindingId": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                }
+            }
+        },
+        "modules_financing_handler.termsDTO": {
+            "type": "object",
+            "required": [
+                "calculation",
+                "createdAt",
+                "note",
+                "number"
+            ],
+            "properties": {
+                "calculation": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "integer"
+                }
+            }
+        },
+        "modules_financing_handler.withdrawProgramRequest": {
             "type": "object",
             "required": [
                 "reason"

@@ -388,7 +388,6 @@ func (h *Handler) getCustomer(c echo.Context) error {
 //	@Summary	Create customer
 //	@Tags		retail/crm
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string			true	"retry key"
 //	@Param		body			body		CustomerInput	true	"customer"
 //	@Success	201				{object}	httpx.DataEnvelope[retail.customerDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -479,7 +478,6 @@ func (h *Handler) getLead(c echo.Context) error {
 //	@Summary	Create lead
 //	@Tags		retail/crm
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
 //	@Param		body			body		LeadInput	true	"lead"
 //	@Success	201				{object}	httpx.DataEnvelope[retail.leadDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -504,7 +502,6 @@ func (h *Handler) createLead(c echo.Context) error {
 //	@Param		id							path		string				true	"lead ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		assignLeadRequest	true	"assignment"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.leadDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/leads/{id}/assign [post]
@@ -530,7 +527,6 @@ func (h *Handler) assignLead(c echo.Context) error {
 //	@Tags		retail/crm
 //	@Security	CSRF
 //	@Param		id					path		string				true	"lead ID"
-//	@Param		Idempotency-Key		header		string				true	"retry key"
 //	@Param		body				body		addContactRequest	true	"contact"
 //	@Success	201					{object}	httpx.DataEnvelope[retail.leadDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -555,7 +551,6 @@ func (h *Handler) addContact(c echo.Context) error {
 //	@Param		id							path		string			true	"lead ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		setStageRequest	true	"stage"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.leadDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/leads/{id}/stage [post]
@@ -603,7 +598,6 @@ func (h *Handler) listTasks(c echo.Context) error {
 //	@Summary	Create task
 //	@Tags		retail/crm
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
 //	@Param		body			body		TaskInput	true	"task"
 //	@Success	201				{object}	httpx.DataEnvelope[retail.taskDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -627,7 +621,6 @@ func (h *Handler) createTask(c echo.Context) error {
 //	@Security	CSRF
 //	@Param		id						path		string	true	"task ID"
 //	@Param		If-Match				header		string	true	"revision"
-//	@Param		Idempotency-Key			header		string	true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[retail.taskDTO]
 //	@Failure	401,403,404,409,412,428	{object}	httpx.ErrorBody
 //	@Router		/retail/tasks/{id}/complete [post]
@@ -686,7 +679,6 @@ func (h *Handler) getListing(c echo.Context) error {
 //	@Summary	Create listing
 //	@Tags		retail/listings
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string			true	"retry key"
 //	@Param		body			body		ListingInput	true	"listing"
 //	@Success	201				{object}	httpx.DataEnvelope[retail.listingDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -737,7 +729,6 @@ func (h *Handler) updateListing(c echo.Context) error {
 //	@Security	CSRF
 //	@Param		id						path		string	true	"listing ID"
 //	@Param		If-Match				header		string	true	"revision"
-//	@Param		Idempotency-Key			header		string	true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[retail.listingDTO]
 //	@Failure	401,403,404,409,412,428	{object}	httpx.ErrorBody
 //	@Router		/retail/listings/{id}/publish [post]
@@ -803,7 +794,6 @@ func (h *Handler) getDeal(c echo.Context) error {
 //	@Summary	Create deal
 //	@Tags		retail/deals
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
 //	@Param		body			body		DealInput	true	"deal"
 //	@Success	201				{object}	httpx.DataEnvelope[retail.dealDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -828,7 +818,6 @@ func (h *Handler) createDeal(c echo.Context) error {
 //	@Param		id							path		string					true	"deal ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		recordContractRequest	true	"contract"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.dealDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/deals/{id}/contract-records [post]
@@ -856,7 +845,6 @@ func (h *Handler) recordContract(c echo.Context) error {
 //	@Param		id							path		string						true	"deal ID"
 //	@Param		If-Match					header		string						true	"revision"
 //	@Param		body						body		recordRegistrationRequest	true	"registration"
-//	@Param		Idempotency-Key				header		string						true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.dealDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/deals/{id}/registration [post]
@@ -884,7 +872,6 @@ func (h *Handler) recordRegistration(c echo.Context) error {
 //	@Param		id							path		string			true	"deal ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		InvoiceInput	true	"invoice"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[retail.invoiceDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/deals/{id}/invoices [post]
@@ -912,7 +899,6 @@ func (h *Handler) issueInvoice(c echo.Context) error {
 //	@Param		id							path		string			true	"deal ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		deliverRequest	true	"delivery"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.dealDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/deals/{id}/deliveries [post]
@@ -940,7 +926,6 @@ func (h *Handler) deliver(c echo.Context) error {
 //	@Param		id							path		string				true	"deal ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		cancelDealRequest	true	"cancellation"
-//	@Param		Idempotency-Key				header		string				true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.dealDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/deals/{id}/cancel [post]
@@ -990,7 +975,6 @@ func (h *Handler) getInvoice(c echo.Context) error {
 //	@Tags		retail/deals
 //	@Security	CSRF
 //	@Param		id					path		string			true	"invoice ID"
-//	@Param		Idempotency-Key		header		string			true	"retry key"
 //	@Param		body				body		EvidenceInput	true	"evidence"
 //	@Success	201					{object}	httpx.DataEnvelope[retail.invoiceDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -1015,7 +999,6 @@ func (h *Handler) submitEvidence(c echo.Context) error {
 //	@Param		id							path		string					true	"evidence ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		decideEvidenceRequest	true	"decision"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[retail.invoiceDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/retail/evidence/{id}/accept [post]

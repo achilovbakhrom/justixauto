@@ -8,8 +8,8 @@ image:
   digest: ""
   pullPolicy: IfNotPresent
 
-# Two replicas by default: the API keeps no state in memory (sessions, idempotency
-# keys, lockouts and MFA counters live in PostgreSQL; files in S3).
+# Two replicas by default: the API keeps no state in memory (sessions, lockouts
+# and MFA counters live in PostgreSQL; files in S3).
 replicaCount: 2
 
 # Secret with DATABASE_URL and MFA_KEY (and AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY

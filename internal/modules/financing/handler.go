@@ -276,7 +276,6 @@ func (h *Handler) getDocument(c echo.Context) error {
 //	@Tags		financing/documents
 //	@Security	CSRF
 //	@Param		id					path		string					true	"application ID"
-//	@Param		Idempotency-Key		header		string					true	"retry key"
 //	@Param		body				body		requestDocumentRequest	true	"document request"
 //	@Success	201					{object}	httpx.DataEnvelope[financing.documentRequestDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -301,7 +300,6 @@ func (h *Handler) requestDocument(c echo.Context) error {
 //	@Param		id							path		string					true	"document request ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		submitDocumentRequest	true	"submission"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[financing.documentRequestDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/document-requests/{id}/submissions [post]
@@ -330,7 +328,6 @@ func (h *Handler) submitDocument(c echo.Context) error {
 //	@Param		action						path		string					true	"accept, return or cancel"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		decideDocumentRequest	true	"decision"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[financing.documentRequestDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/document-requests/{id}/{action} [post]
@@ -409,7 +406,6 @@ func (h *Handler) getProgram(c echo.Context) error {
 //	@Summary	Create program
 //	@Tags		financing/programs
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string			true	"retry key"
 //	@Param		body			body		ProgramInput	true	"program"
 //	@Success	201				{object}	httpx.DataEnvelope[financing.programDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -434,7 +430,6 @@ func (h *Handler) createProgram(c echo.Context) error {
 //	@Param		id							path		string			true	"program ID"
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		ProgramInput	true	"program version"
-//	@Param		Idempotency-Key				header		string			true	"retry key"
 //	@Success	201							{object}	httpx.DataEnvelope[financing.programDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/programs/{id}/versions [post]
@@ -462,7 +457,6 @@ func (h *Handler) addProgramVersion(c echo.Context) error {
 //	@Param		id							path		string					true	"program ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		publishProgramRequest	true	"publication"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[financing.programDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/programs/{id}/publish [post]
@@ -490,7 +484,6 @@ func (h *Handler) publishProgram(c echo.Context) error {
 //	@Param		id							path		string					true	"program ID"
 //	@Param		If-Match					header		string					true	"revision"
 //	@Param		body						body		withdrawProgramRequest	true	"withdrawal"
-//	@Param		Idempotency-Key				header		string					true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[financing.programDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/programs/{id}/withdraw [post]
@@ -565,7 +558,6 @@ func (h *Handler) get(c echo.Context) error { return h.respond(c, http.StatusOK,
 //	@Summary	Create application
 //	@Tags		financing/applications
 //	@Security	CSRF
-//	@Param		Idempotency-Key		header		string				true	"retry key"
 //	@Param		body				body		ApplicationInput	true	"application"
 //	@Success	201					{object}	httpx.DataEnvelope[financing.applicationDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -617,7 +609,6 @@ func (h *Handler) update(c echo.Context) error {
 //	@Param		id							path		string						true	"application ID"
 //	@Param		If-Match					header		string						true	"revision"
 //	@Param		body						body		submitApplicationRequest	true	"submission"
-//	@Param		Idempotency-Key				header		string						true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[financing.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/applications/{id}/submit [post]
@@ -648,7 +639,6 @@ func (h *Handler) submit(c echo.Context) error {
 //	@Param		id							path		string		true	"application ID"
 //	@Param		If-Match					header		string		true	"revision"
 //	@Param		body						body		ActInput	true	"action"
-//	@Param		Idempotency-Key				header		string		true	"retry key"
 //	@Success	200							{object}	httpx.DataEnvelope[financing.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/financing/applications/{id}/responses [post]

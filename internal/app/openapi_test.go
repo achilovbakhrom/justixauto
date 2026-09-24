@@ -48,13 +48,12 @@ func TestOpenAPICoversRoutes(t *testing.T) {
 	for path, ops := range spec.Paths {
 		for method, op := range ops {
 			documented = append(documented, strings.ToUpper(method)+" "+path)
-			// The idempotency middleware requires the key on every signed-in POST
-			// outside the session handshake, including If-Match writes.
-			if method == "post" && !strings.HasPrefix(path, "/identity/session/") &&
-				!slices.ContainsFunc(op.Parameters, func(p struct{ Name, In string }) bool {
-					return p.In == "header" && p.Name == "Idempotency-Key"
-				}) {
-				t.Errorf("POST %s does not document the Idempotency-Key header", path)
+			// Writes are idempotent by their data (unique keys, state checks,
+			// If-Match), never by a request key.
+			if slices.ContainsFunc(op.Parameters, func(p struct{ Name, In string }) bool {
+				return p.In == "header" && strings.EqualFold(p.Name, "Idempotency-Key")
+			}) {
+				t.Errorf("%s %s documents an Idempotency-Key header", strings.ToUpper(method), path)
 			}
 		}
 	}

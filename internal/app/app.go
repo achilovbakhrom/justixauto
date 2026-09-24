@@ -19,7 +19,6 @@ import (
 	"justixauto/internal/modules/inventory"
 	"justixauto/internal/modules/retail"
 	"justixauto/internal/pkg/httpx"
-	"justixauto/internal/pkg/idempotency"
 )
 
 type Config struct {
@@ -63,8 +62,8 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 		}
 		return c.NoContent(http.StatusNoContent)
 	})
-	// Every request: who is calling (session cookie, CSRF, Origin), then safe retries.
-	api := e.Group("/api/v1", idm.Authenticate(), idempotency.Middleware(db, cfg.Now, "/identity/session/"))
+	// Every request: who is calling (session cookie, CSRF, Origin).
+	api := e.Group("/api/v1", idm.Authenticate())
 	idm.Register(api)
 	docs := documents.New(db, cfg.Now, cfg.Files)
 	docs.Register(api)

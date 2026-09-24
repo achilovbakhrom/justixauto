@@ -26,7 +26,7 @@ The API keeps no per-process state; every shared fact lives in PostgreSQL.
 | Area | Result |
 |---|---|
 | Sessions, CSRF, context | Rows in `identity.sessions`; any replica serves any request |
-| Idempotency keys | `INSERT … ON CONFLICT DO NOTHING` + conditional takeover; safe across replicas. A key held by a killed pod blocks retries for up to 5 minutes (`abandonAfter`) |
+| Repeated writes | Idempotent by data: unique business keys, state checks, If-Match; no request-key ledger. Background jobs take a PostgreSQL advisory lock (`database.RunOnce`) so one replica runs them |
 | Login lockout | **Fixed**: failed attempts were read-modify-written and could lose counts under parallel attempts on several replicas; now one atomic `UPDATE … failed_logins + 1` (test `TestLoginLockoutUnderConcurrency`) |
 | TOTP replay, recovery codes, MFA challenge attempts | Conditional/atomic updates (`mfa_last_counter < ?`, `used_at IS NULL`, `attempts + 1`) |
 | Capacity, stock, orders, deals | Row locks (`SELECT … FOR UPDATE`) and version checks (If-Match) inside transactions |

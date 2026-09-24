@@ -74,7 +74,6 @@ type membershipAccessRequest struct {
 //	@Summary	Create provider company
 //	@Tags		identity/admin
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string			true	"retry key"
 //	@Param		body			body		ProviderInput	true	"provider company"
 //	@Success	201				{object}	httpx.DataEnvelope[identity.provisionedResponse]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -96,7 +95,6 @@ func (h *AdminHandler) createProvider(c echo.Context) error {
 //	@Summary	Create seller company (admin)
 //	@Tags		identity/admin
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
 //	@Param		body			body		SellerInput	true	"seller company"
 //	@Success	201				{object}	httpx.DataEnvelope[identity.provisionedResponse]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -121,7 +119,6 @@ func (h *AdminHandler) createSeller(c echo.Context) error {
 //	@Param		id						path		string				true	"user ID"
 //	@Param		If-Match				header		string				true	"revision"
 //	@Param		body					body		SetPasswordInput	true	"password"
-//	@Param		Idempotency-Key			header		string				true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[identity.userDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/admin/users/{id}/password [post]
@@ -186,7 +183,6 @@ func (h *AdminHandler) listCompanies(c echo.Context) error {
 //	@Param		action					path		string		true	"access action"
 //	@Param		If-Match				header		string		true	"revision"
 //	@Param		body					body		reasonBody	true	"reason"
-//	@Param		Idempotency-Key			header		string		true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[identity.companyDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/admin/companies/{id}/{action} [post]
@@ -236,7 +232,6 @@ func (h *AdminHandler) listUsers(c echo.Context) error {
 //	@Summary	Create user
 //	@Tags		identity/admin
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string			true	"retry key"
 //	@Param		body			body		CreateUserInput	true	"user"
 //	@Success	201				{object}	httpx.DataEnvelope[identity.userDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody
@@ -304,7 +299,6 @@ func (h *AdminHandler) updateUser(c echo.Context) error {
 //	@Param		id						path		string		true	"user ID"
 //	@Param		If-Match				header		string		true	"revision"
 //	@Param		body					body		reasonBody	true	"reason"
-//	@Param		Idempotency-Key			header		string		true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[identity.userDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/admin/users/{id}/suspend [post]
@@ -337,7 +331,6 @@ func (h *AdminHandler) userStatus(suspend bool) echo.HandlerFunc {
 //	@Tags		identity/admin
 //	@Security	CSRF
 //	@Param		id				path	string		true	"user ID"
-//	@Param		Idempotency-Key	header	string		true	"retry key"
 //	@Param		body			body	reasonBody	true	"reason"
 //	@Success	204				"no content"
 //	@Failure	401,403,404,422	{object}	httpx.ErrorBody
@@ -375,7 +368,6 @@ func (h *AdminHandler) listMemberships(c echo.Context) error {
 //	@Tags		identity/admin
 //	@Security	CSRF
 //	@Param		id					path		string					true	"user ID"
-//	@Param		Idempotency-Key		header		string					true	"retry key"
 //	@Param		body				body		GrantMembershipInput	true	"membership"
 //	@Success	201					{object}	httpx.DataEnvelope[identity.membershipDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
@@ -427,7 +419,6 @@ func (h *AdminHandler) membershipAccess(c echo.Context) error {
 //	@Param		id						path		string		true	"membership ID"
 //	@Param		If-Match				header		string		true	"revision"
 //	@Param		body					body		reasonBody	true	"reason"
-//	@Param		Idempotency-Key			header		string		true	"retry key"
 //	@Success	200						{object}	httpx.DataEnvelope[identity.membershipDTO]
 //	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/admin/memberships/{id}/revoke [post]
@@ -478,7 +469,6 @@ func (h *AdminHandler) listRoles(c echo.Context) error {
 //	@Summary	Create role
 //	@Tags		identity/admin
 //	@Security	CSRF
-//	@Param		Idempotency-Key	header		string		true	"retry key"
 //	@Param		body			body		RoleInput	true	"role"
 //	@Success	201				{object}	httpx.DataEnvelope[identity.roleDTO]
 //	@Failure	401,403,409,422	{object}	httpx.ErrorBody

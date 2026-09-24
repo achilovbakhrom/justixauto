@@ -34,7 +34,6 @@ func (h *Handler) Routes(g *echo.Group) {
 //	@Tags		documents
 //	@Security	CSRF
 //	@Accept		mpfd
-//	@Param		Idempotency-Key	header		string	true	"retry key"
 //	@Param		purpose			formData	string	true	"file purpose"
 //	@Param		file			formData	file	true	"file contents"
 //	@Success	201				{object}	httpx.DataEnvelope[handler.FileView]

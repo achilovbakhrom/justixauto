@@ -65,7 +65,6 @@ export interface ApiRequest<T> {
   readonly body?: unknown;
   readonly contextRevision?: string;
   readonly ifMatch?: string;
-  readonly idempotencyKey?: string;
   /** Feature-owned headers, including the approved session CSRF protocol when available. */
   readonly headers?: HeadersInit;
   readonly signal?: AbortSignal;
@@ -135,7 +134,7 @@ function requestHeaders(request: ApiRequest<unknown>): Headers {
   for (const key of headers.keys()) {
     const normalized = key.toLowerCase().replaceAll('_', '-');
     if (
-      /^(authorization|proxy-authorization|cookie|host|origin|accept|content-type|idempotency-key|if-match|x-context-revision)$/.test(
+      /^(authorization|proxy-authorization|cookie|host|origin|accept|content-type|if-match|x-context-revision)$/.test(
         normalized,
       ) ||
       /^(sec-|x-(actor|user|company|branch|permissions?|internal|justix-internal|forwarded)(-|$))/.test(normalized)
@@ -153,10 +152,6 @@ function requestHeaders(request: ApiRequest<unknown>): Headers {
       if (!isRevision(value)) throw new Error('Invalid revision');
       headers.set(name, name === 'If-Match' ? `"${value}"` : value);
     }
-  }
-  if (request.idempotencyKey !== undefined) {
-    if (!isId(request.idempotencyKey)) throw new Error('Invalid idempotency key');
-    headers.set('Idempotency-Key', request.idempotencyKey);
   }
   return headers;
 }
