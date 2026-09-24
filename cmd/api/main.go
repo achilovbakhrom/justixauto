@@ -18,6 +18,7 @@ import (
 	"justixauto/internal/config"
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
+	"justixauto/internal/platform/apidocs"
 	"justixauto/internal/platform/database"
 	"justixauto/internal/platform/httpx"
 	"justixauto/internal/platform/telemetry"
@@ -27,6 +28,15 @@ import (
 // version is set at build time (-ldflags "-X main.version=...").
 var version = "dev"
 
+// OpenAPI general info for swag (make openapi); handlers carry per-route annotations.
+//
+//	@title						JustixAuto API
+//	@version					1
+//	@description				Envelopes and errors: docs/justix-auto/contracts/http-domain.md. Sign in with POST /identity/session/login (session cookie); state-changing requests also send the X-CSRF-Token returned by GET /identity/session, and authenticated POSTs an Idempotency-Key.
+//	@BasePath					/api/v1
+//	@securityDefinitions.apikey	CSRF
+//	@in							header
+//	@name						X-CSRF-Token
 func main() {
 	log := telemetry.Logger()
 	slog.SetDefault(log)
@@ -80,6 +90,9 @@ func run(log *slog.Logger) error {
 	})
 	if err != nil {
 		return err
+	}
+	if cfg.APIDocs {
+		apidocs.Mount(e)
 	}
 	if cfg.WebDir != "" {
 		webui.Mount(e, webui.Apps(cfg.WebDir))

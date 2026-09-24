@@ -82,10 +82,34 @@ func (h *Handler) invoiceRoutes(c *echo.Group) {
 	c.POST("/payment-evidence/:id/reject", h.decideEvidence(false), auth.Require(PermPaymentsAccept))
 }
 
+// issueInvoiceRequest issues an invoice for an accepted order.
+type issueInvoiceRequest struct {
+	DueDate string `json:"dueDate"`
+}
+
+// invoiceVoidRequest voids an unpaid issued invoice.
+type invoiceVoidRequest struct {
+	Reason string `json:"reason"`
+}
+
+// evidenceDecisionRequest accepts or rejects submitted payment evidence.
+type evidenceDecisionRequest struct {
+	Confirmation bool   `json:"confirmation"`
+	Reason       string `json:"reason"`
+}
+
 func (h *Handler) invoiceResponse(c echo.Context, status int, v *InvoiceView) error {
 	return httpx.Data(c, status, toInvoice(auth.Get(c).CompanyID)(v), v.Invoice.Version)
 }
 
+// orderInvoices lists invoices issued for an order.
+//
+//	@Summary	List order invoices
+//	@Tags		commerce/invoices
+//	@Param		id			path		string	true	"order ID"
+//	@Success	200			{object}	httpx.ListEnvelope[commerce.invoiceDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/invoices [get]
 func (h *Handler) orderInvoices(c echo.Context) error {
 	vs, err := h.invoices.ForOrder(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -94,14 +118,24 @@ func (h *Handler) orderInvoices(c echo.Context) error {
 	return httpx.List(c, mapSlice(vs, toInvoice(auth.Get(c).CompanyID)), nil)
 }
 
+// issueInvoice issues an invoice for an accepted order.
+//
+//	@Summary	Issue invoice
+//	@Tags		commerce/invoices
+//	@Security	CSRF
+//	@Param		id							path		string				true	"order ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		issueInvoiceRequest	true	"due date"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[commerce.invoiceDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/invoices [post]
 func (h *Handler) issueInvoice(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		DueDate string `json:"dueDate"`
-	}
+	var in issueInvoiceRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -112,6 +146,14 @@ func (h *Handler) issueInvoice(c echo.Context) error {
 	return h.invoiceResponse(c, http.StatusCreated, v)
 }
 
+// getInvoice returns one invoice.
+//
+//	@Summary	Get invoice
+//	@Tags		commerce/invoices
+//	@Param		id			path		string	true	"invoice ID"
+//	@Success	200			{object}	httpx.DataEnvelope[commerce.invoiceDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/invoices/{id} [get]
 func (h *Handler) getInvoice(c echo.Context) error {
 	v, err := h.invoices.Get(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -120,14 +162,24 @@ func (h *Handler) getInvoice(c echo.Context) error {
 	return h.invoiceResponse(c, http.StatusOK, v)
 }
 
+// voidInvoice voids an issued invoice that has no payments yet.
+//
+//	@Summary	Void invoice
+//	@Tags		commerce/invoices
+//	@Security	CSRF
+//	@Param		id							path		string				true	"invoice ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		invoiceVoidRequest	true	"reason"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.invoiceDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/invoices/{id}/void [post]
 func (h *Handler) voidInvoice(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Reason string `json:"reason"`
-	}
+	var in invoiceVoidRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -138,6 +190,17 @@ func (h *Handler) voidInvoice(c echo.Context) error {
 	return h.invoiceResponse(c, http.StatusOK, v)
 }
 
+// submitEvidence submits payment evidence for an issued invoice.
+//
+//	@Summary	Submit payment evidence
+//	@Tags		commerce/invoices
+//	@Security	CSRF
+//	@Param		id					path		string			true	"invoice ID"
+//	@Param		Idempotency-Key		header		string			true	"retry key"
+//	@Param		body				body		EvidenceInput	true	"payment evidence"
+//	@Success	201					{object}	httpx.DataEnvelope[commerce.invoiceDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/invoices/{id}/payment-evidence [post]
 func (h *Handler) submitEvidence(c echo.Context) error {
 	var in EvidenceInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -150,16 +213,26 @@ func (h *Handler) submitEvidence(c echo.Context) error {
 	return h.invoiceResponse(c, http.StatusCreated, v)
 }
 
+// decideEvidence accepts or rejects submitted payment evidence.
+//
+//	@Summary	Decide payment evidence
+//	@Tags		commerce/invoices
+//	@Security	CSRF
+//	@Param		id							path		string					true	"payment evidence ID"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		evidenceDecisionRequest	true	"decision"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.invoiceDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/payment-evidence/{id}/accept [post]
+//	@Router		/commerce/payment-evidence/{id}/reject [post]
 func (h *Handler) decideEvidence(accept bool) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		expected, err := httpx.IfMatch(c)
 		if err != nil {
 			return err
 		}
-		var in struct {
-			Confirmation bool   `json:"confirmation"`
-			Reason       string `json:"reason"`
-		}
+		var in evidenceDecisionRequest
 		if err := httpx.Bind(c, &in); err != nil {
 			return err
 		}

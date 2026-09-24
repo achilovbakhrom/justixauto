@@ -25,6 +25,17 @@ func (h *Handler) Routes(g *echo.Group) {
 }
 
 // upload takes multipart/form-data with fields "purpose" and "file".
+//
+//	@Summary	Upload file
+//	@Tags		documents
+//	@Security	CSRF
+//	@Accept		mpfd
+//	@Param		Idempotency-Key	header		string	true	"retry key"
+//	@Param		purpose			formData	string	true	"file purpose"
+//	@Param		file			formData	file	true	"file contents"
+//	@Success	201				{object}	httpx.DataEnvelope[documents.FileView]
+//	@Failure	401,403,413,422	{object}	httpx.ErrorBody
+//	@Router		/documents/files [post]
 func (h *Handler) upload(c echo.Context) error {
 	req := c.Request()
 	req.Body = http.MaxBytesReader(c.Response(), req.Body, MaxBytes+1<<20) // file plus form overhead
@@ -44,6 +55,14 @@ func (h *Handler) upload(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, FileInfo(file), 1)
 }
 
+// get returns a file's metadata.
+//
+//	@Summary	Get file metadata
+//	@Tags		documents
+//	@Param		id			path		string	true	"file ID"
+//	@Success	200			{object}	httpx.DataEnvelope[documents.FileView]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/documents/files/{id} [get]
 func (h *Handler) get(c echo.Context) error {
 	f, err := h.s.Get(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -52,6 +71,15 @@ func (h *Handler) get(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, FileInfo(f), 1)
 }
 
+// content streams the file's raw bytes.
+//
+//	@Summary	Download file content
+//	@Tags		documents
+//	@Produce	octet-stream
+//	@Param		id			path		string	true	"file ID"
+//	@Success	200			{file}		file
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/documents/files/{id}/content [get]
 func (h *Handler) content(c echo.Context) error {
 	f, r, err := h.s.Open(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {

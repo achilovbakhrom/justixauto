@@ -93,6 +93,23 @@ func (h *Handler) Routes(g *echo.Group) {
 	c.POST("/applications/:id/decline", h.act("decline"), auth.Require(PermDecide))
 }
 
+// updateDraftRequest edits a draft insurance application.
+type updateDraftRequest struct {
+	InsurerCompanyID string `json:"insurerCompanyId"`
+	Note             string `json:"note"`
+}
+
+// submitRequest submits a draft insurance application for review.
+type submitRequest struct {
+	Confirmation bool   `json:"confirmation"`
+	DealRevision string `json:"dealRevision"`
+}
+
+// actRequest carries an optional note for an insurance application transition.
+type actRequest struct {
+	Note string `json:"note"`
+}
+
 func (h *Handler) respond(c echo.Context, status int, id string) error {
 	p := auth.Get(c)
 	a, ms, err := h.s.Get(c.Request().Context(), p, id)
@@ -102,6 +119,16 @@ func (h *Handler) respond(c echo.Context, status int, id string) error {
 	return httpx.Data(c, status, toApplication(p.CompanyID, a, ms), a.Version)
 }
 
+// list lists insurance applications for the active company.
+//
+//	@Summary	List insurance applications
+//	@Tags		insurance/applications
+//	@Param		status		query		string	false	"application status"
+//	@Param		limit		query		int		false	"page size"
+//	@Param		offset		query		int		false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[insurance.applicationDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/insurance/applications [get]
 func (h *Handler) list(c echo.Context) error {
 	limit, err := httpx.IntQuery(c, "limit")
 	if err != nil {
@@ -123,8 +150,26 @@ func (h *Handler) list(c echo.Context) error {
 	return httpx.List(c, out, nil)
 }
 
+// get returns one insurance application.
+//
+//	@Summary	Get insurance application
+//	@Tags		insurance/applications
+//	@Param		id			path		string	true	"application ID"
+//	@Success	200			{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/insurance/applications/{id} [get]
 func (h *Handler) get(c echo.Context) error { return h.respond(c, http.StatusOK, c.Param("id")) }
 
+// create creates a draft insurance application for an installment sale.
+//
+//	@Summary	Create insurance application
+//	@Tags		insurance/applications
+//	@Security	CSRF
+//	@Param		Idempotency-Key		header		string		true	"retry key"
+//	@Param		body				body		CreateInput	true	"application"
+//	@Success	201					{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/insurance/applications [post]
 func (h *Handler) create(c echo.Context) error {
 	var in CreateInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -137,15 +182,23 @@ func (h *Handler) create(c echo.Context) error {
 	return h.respond(c, http.StatusCreated, a.ID)
 }
 
+// update edits a draft insurance application.
+//
+//	@Summary	Update insurance application
+//	@Tags		insurance/applications
+//	@Security	CSRF
+//	@Param		id							path		string				true	"application ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		updateDraftRequest	true	"application"
+//	@Success	200							{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/insurance/applications/{id} [patch]
 func (h *Handler) update(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		InsurerCompanyID string `json:"insurerCompanyId"`
-		Note             string `json:"note"`
-	}
+	var in updateDraftRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -156,15 +209,24 @@ func (h *Handler) update(c echo.Context) error {
 	return h.respond(c, http.StatusOK, a.ID)
 }
 
+// submit submits a draft insurance application for the insurer's review.
+//
+//	@Summary	Submit insurance application
+//	@Tags		insurance/applications
+//	@Security	CSRF
+//	@Param		id							path		string			true	"application ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		submitRequest	true	"submission"
+//	@Param		Idempotency-Key				header		string			true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/insurance/applications/{id}/submit [post]
 func (h *Handler) submit(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Confirmation bool   `json:"confirmation"`
-		DealRevision string `json:"dealRevision"`
-	}
+	var in submitRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -177,15 +239,31 @@ func (h *Handler) submit(c echo.Context) error {
 	return h.respond(c, http.StatusOK, a.ID)
 }
 
+// act performs a state transition on an insurance application: the seller
+// responds to an information request, the insurer takes/reviews it, or the
+// insurer requests information, approves or declines it.
+//
+//	@Summary	Act on insurance application
+//	@Tags		insurance/applications
+//	@Security	CSRF
+//	@Param		id							path		string		true	"application ID"
+//	@Param		If-Match					header		string		true	"revision"
+//	@Param		body						body		actRequest	true	"note"
+//	@Param		Idempotency-Key				header		string		true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/insurance/applications/{id}/responses [post]
+//	@Router		/insurance/applications/{id}/take [post]
+//	@Router		/insurance/applications/{id}/information-requests [post]
+//	@Router		/insurance/applications/{id}/approve [post]
+//	@Router		/insurance/applications/{id}/decline [post]
 func (h *Handler) act(action string) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		expected, err := httpx.IfMatch(c)
 		if err != nil {
 			return err
 		}
-		var in struct {
-			Note string `json:"note"`
-		}
+		var in actRequest
 		if err := httpx.Bind(c, &in); err != nil {
 			return err
 		}

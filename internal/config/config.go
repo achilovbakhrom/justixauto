@@ -30,7 +30,9 @@ type Config struct {
 	DocumentsDir string
 	// WebDir is the web/apps checkout with built apps (npm run build); empty = API only.
 	WebDir string
-	S3     S3
+	// APIDocs (API_DOCS=true) serves Swagger UI and the OpenAPI spec at /api/docs.
+	APIDocs bool
+	S3      S3
 }
 
 // S3 selects the private bucket for uploaded files. Credentials come from the
@@ -51,6 +53,7 @@ func Load() (Config, error) {
 		FileStorage:     getenv("FILE_STORAGE", "local"),
 		DocumentsDir:    getenv("DOCUMENTS_DIR", "var/documents"),
 		WebDir:          os.Getenv("WEB_DIR"),
+		APIDocs:         os.Getenv("API_DOCS") == "true",
 		S3: S3{Bucket: os.Getenv("S3_BUCKET"), Region: getenv("S3_REGION", "us-east-1"), Prefix: getenv("S3_PREFIX", "documents/"),
 			Endpoint: os.Getenv("S3_ENDPOINT"), SSE: os.Getenv("S3_SSE"), PathStyle: os.Getenv("S3_FORCE_PATH_STYLE") == "true"},
 	}

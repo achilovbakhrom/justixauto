@@ -218,6 +218,48 @@ func (h *Handler) dealRoutes(c *echo.Group) {
 	c.POST("/shipments/:id/receipt-decisions", h.decideReceipt, auth.Require(PermTrade))
 }
 
+// rfqActionRequest decides a generic RFQ transition (path action).
+type rfqActionRequest struct {
+	Reason string `json:"reason"`
+}
+
+// quoteRequest adds a quotation version to an RFQ.
+type quoteRequest struct {
+	Terms Terms `json:"terms"`
+}
+
+// acceptRFQRequest accepts a quotation and creates the order.
+type acceptRFQRequest struct {
+	QuotationVersionID string `json:"quotationVersionId"`
+	QuotationDigest    string `json:"quotationDigest"`
+}
+
+// orderConfirmRequest confirms or rejects an order as the supplier.
+type orderConfirmRequest struct {
+	Reason string `json:"reason"`
+}
+
+// orderCancelRequest cancels an order.
+type orderCancelRequest struct {
+	Reason string `json:"reason"`
+}
+
+// addendumProposeRequest proposes a change to an accepted order's terms.
+type addendumProposeRequest struct {
+	Terms  Terms  `json:"terms"`
+	Reason string `json:"reason"`
+}
+
+// addendumDecisionRequest accepts or rejects a proposed addendum.
+type addendumDecisionRequest struct {
+	Reason string `json:"reason"`
+}
+
+// allocateRequest allocates vehicle units to an order's lines.
+type allocateRequest struct {
+	Items []AllocationItem `json:"items"`
+}
+
 type milestoneDTO struct {
 	Type       string    `json:"milestoneType"`
 	OccurredAt time.Time `json:"occurredAt"`
@@ -248,14 +290,24 @@ func toShipment(v *ShipmentView) shipmentDTO {
 	return d
 }
 
+// allocate allocates vehicle units to an accepted order's lines.
+//
+//	@Summary	Allocate order vehicles
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string			true	"order ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		allocateRequest	true	"allocation items"
+//	@Param		Idempotency-Key				header		string			true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/allocations [post]
 func (h *Handler) allocate(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Items []AllocationItem `json:"items"`
-	}
+	var in allocateRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -266,6 +318,18 @@ func (h *Handler) allocate(c echo.Context) error {
 	return h.orderResponse(c, http.StatusOK, o)
 }
 
+// ship creates a shipment for an order's allocated vehicles.
+//
+//	@Summary	Ship order
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string			true	"order ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		ShipmentInput	true	"shipment"
+//	@Param		Idempotency-Key				header		string			true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[commerce.shipmentDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/shipments [post]
 func (h *Handler) ship(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -286,6 +350,14 @@ func (h *Handler) ship(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toShipment(v), v.Shipment.Version)
 }
 
+// getShipment returns one shipment.
+//
+//	@Summary	Get shipment
+//	@Tags		commerce/orders
+//	@Param		id			path		string	true	"shipment ID"
+//	@Success	200			{object}	httpx.DataEnvelope[commerce.shipmentDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/shipments/{id} [get]
 func (h *Handler) getShipment(c echo.Context) error {
 	v, err := h.fulfilment.GetShipment(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -294,6 +366,17 @@ func (h *Handler) getShipment(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toShipment(v), v.Shipment.Version)
 }
 
+// addMilestone records a tracking milestone for a shipment.
+//
+//	@Summary	Add shipment milestone
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id				path		string			true	"shipment ID"
+//	@Param		Idempotency-Key	header		string			true	"retry key"
+//	@Param		body			body		MilestoneInput	true	"milestone"
+//	@Success	201				{object}	httpx.DataEnvelope[commerce.shipmentDTO]
+//	@Failure	401,403,404,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/shipments/{id}/milestones [post]
 func (h *Handler) addMilestone(c echo.Context) error {
 	var in MilestoneInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -306,6 +389,18 @@ func (h *Handler) addMilestone(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toShipment(v), v.Shipment.Version)
 }
 
+// decideReceipt records the buyer's decision on a received shipment.
+//
+//	@Summary	Decide shipment receipt
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string			true	"shipment ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		ReceiptDecision	true	"receipt decision"
+//	@Param		Idempotency-Key				header		string			true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.shipmentDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/shipments/{id}/receipt-decisions [post]
 func (h *Handler) decideReceipt(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -331,6 +426,15 @@ func paging(c echo.Context) (int, int, error) {
 	return limit, offset, err
 }
 
+// listRFQs lists RFQs for the active company.
+//
+//	@Summary	List RFQs
+//	@Tags		commerce/rfqs
+//	@Param		limit		query		int	false	"page size"
+//	@Param		offset		query		int	false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[commerce.rfqDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/rfqs [get]
 func (h *Handler) listRFQs(c echo.Context) error {
 	limit, offset, err := paging(c)
 	if err != nil {
@@ -353,6 +457,14 @@ func (h *Handler) rfqResponse(c echo.Context, status int, x *RFQ) error {
 	return httpx.Data(c, status, toRFQ(p.CompanyID)(v), x.Version)
 }
 
+// getRFQ returns one RFQ with its quotations.
+//
+//	@Summary	Get RFQ
+//	@Tags		commerce/rfqs
+//	@Param		id			path		string	true	"RFQ ID"
+//	@Success	200			{object}	httpx.DataEnvelope[commerce.rfqDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/rfqs/{id} [get]
 func (h *Handler) getRFQ(c echo.Context) error {
 	p := auth.Get(c)
 	v, err := h.deals.GetRFQ(c.Request().Context(), p, c.Param("id"))
@@ -362,6 +474,16 @@ func (h *Handler) getRFQ(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toRFQ(p.CompanyID)(v), v.RFQ.Version)
 }
 
+// createRFQ creates a request for quotation to a supplier.
+//
+//	@Summary	Create RFQ
+//	@Tags		commerce/rfqs
+//	@Security	CSRF
+//	@Param		Idempotency-Key	header		string		true	"retry key"
+//	@Param		body			body		RFQInput	true	"RFQ"
+//	@Success	201				{object}	httpx.DataEnvelope[commerce.rfqDTO]
+//	@Failure	401,403,404,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/rfqs [post]
 func (h *Handler) createRFQ(c echo.Context) error {
 	var in RFQInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -374,14 +496,25 @@ func (h *Handler) createRFQ(c echo.Context) error {
 	return h.rfqResponse(c, http.StatusCreated, x)
 }
 
+// rfqAction decides a generic RFQ transition (path action, e.g. cancel/decline).
+//
+//	@Summary	Decide RFQ
+//	@Tags		commerce/rfqs
+//	@Security	CSRF
+//	@Param		id							path		string				true	"RFQ ID"
+//	@Param		action						path		string				true	"decision action"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		rfqActionRequest	true	"reason"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.rfqDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/rfqs/{id}/{action} [post]
 func (h *Handler) rfqAction(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Reason string `json:"reason"`
-	}
+	var in rfqActionRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -392,14 +525,24 @@ func (h *Handler) rfqAction(c echo.Context) error {
 	return h.rfqResponse(c, http.StatusOK, x)
 }
 
+// quote adds a quotation version to an RFQ.
+//
+//	@Summary	Quote RFQ
+//	@Tags		commerce/rfqs
+//	@Security	CSRF
+//	@Param		id							path		string			true	"RFQ ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		quoteRequest	true	"quotation terms"
+//	@Param		Idempotency-Key				header		string			true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[commerce.rfqDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/rfqs/{id}/quotation-versions [post]
 func (h *Handler) quote(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Terms Terms `json:"terms"`
-	}
+	var in quoteRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -410,15 +553,24 @@ func (h *Handler) quote(c echo.Context) error {
 	return h.rfqResponse(c, http.StatusCreated, x)
 }
 
+// acceptRFQ accepts a quotation and creates the resulting order.
+//
+//	@Summary	Accept RFQ quotation
+//	@Tags		commerce/rfqs
+//	@Security	CSRF
+//	@Param		id							path		string				true	"RFQ ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		acceptRFQRequest	true	"accepted quotation"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/rfqs/{id}/accept [post]
 func (h *Handler) acceptRFQ(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		QuotationVersionID string `json:"quotationVersionId"`
-		QuotationDigest    string `json:"quotationDigest"`
-	}
+	var in acceptRFQRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -438,6 +590,15 @@ func (h *Handler) orderResponse(c echo.Context, status int, o *Order) error {
 	return httpx.Data(c, status, toOrder(p.CompanyID)(v), o.Version)
 }
 
+// listOrders lists orders for the active company.
+//
+//	@Summary	List orders
+//	@Tags		commerce/orders
+//	@Param		limit		query		int	false	"page size"
+//	@Param		offset		query		int	false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[commerce.orderDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders [get]
 func (h *Handler) listOrders(c echo.Context) error {
 	limit, offset, err := paging(c)
 	if err != nil {
@@ -451,6 +612,14 @@ func (h *Handler) listOrders(c echo.Context) error {
 	return httpx.List(c, mapSlice(vs, toOrder(p.CompanyID)), nil)
 }
 
+// getOrder returns one order.
+//
+//	@Summary	Get order
+//	@Tags		commerce/orders
+//	@Param		id			path		string	true	"order ID"
+//	@Success	200			{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id} [get]
 func (h *Handler) getOrder(c echo.Context) error {
 	p := auth.Get(c)
 	v, err := h.deals.GetOrder(c.Request().Context(), p, c.Param("id"))
@@ -460,6 +629,16 @@ func (h *Handler) getOrder(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toOrder(p.CompanyID)(v), v.Order.Version)
 }
 
+// orderFromOffer creates an order directly from a published offer version.
+//
+//	@Summary	Create order from offer
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		Idempotency-Key		header		string				true	"retry key"
+//	@Param		body				body		DirectOrderInput	true	"order"
+//	@Success	201					{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders [post]
 func (h *Handler) orderFromOffer(c echo.Context) error {
 	var in DirectOrderInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -472,15 +651,26 @@ func (h *Handler) orderFromOffer(c echo.Context) error {
 	return h.orderResponse(c, http.StatusCreated, o)
 }
 
+// confirmOrder confirms or rejects an order as the supplier.
+//
+//	@Summary	Confirm or reject order
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string				true	"order ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		orderConfirmRequest	true	"reason"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/supplier-confirmations [post]
+//	@Router		/commerce/orders/{id}/supplier-rejections [post]
 func (h *Handler) confirmOrder(confirm bool) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		expected, err := httpx.IfMatch(c)
 		if err != nil {
 			return err
 		}
-		var in struct {
-			Reason string `json:"reason"`
-		}
+		var in orderConfirmRequest
 		if err := httpx.Bind(c, &in); err != nil {
 			return err
 		}
@@ -492,14 +682,24 @@ func (h *Handler) confirmOrder(confirm bool) echo.HandlerFunc {
 	}
 }
 
+// cancelOrder cancels an order.
+//
+//	@Summary	Cancel order
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string				true	"order ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		orderCancelRequest	true	"reason"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/cancellations [post]
 func (h *Handler) cancelOrder(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Reason string `json:"reason"`
-	}
+	var in orderCancelRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -510,15 +710,24 @@ func (h *Handler) cancelOrder(c echo.Context) error {
 	return h.orderResponse(c, http.StatusOK, o)
 }
 
+// proposeAddendum proposes a change to an accepted order's terms.
+//
+//	@Summary	Propose order addendum
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string					true	"order ID"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		addendumProposeRequest	true	"addendum"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/addenda [post]
 func (h *Handler) proposeAddendum(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Terms  Terms  `json:"terms"`
-		Reason string `json:"reason"`
-	}
+	var in addendumProposeRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -529,15 +738,27 @@ func (h *Handler) proposeAddendum(c echo.Context) error {
 	return h.orderResponse(c, http.StatusCreated, o)
 }
 
+// decideAddendum accepts or rejects a proposed addendum.
+//
+//	@Summary	Decide order addendum
+//	@Tags		commerce/orders
+//	@Security	CSRF
+//	@Param		id							path		string					true	"order ID"
+//	@Param		addendumId					path		string					true	"addendum ID"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		addendumDecisionRequest	true	"reason"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.orderDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/orders/{id}/addenda/{addendumId}/accept [post]
+//	@Router		/commerce/orders/{id}/addenda/{addendumId}/reject [post]
 func (h *Handler) decideAddendum(accept bool) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		expected, err := httpx.IfMatch(c)
 		if err != nil {
 			return err
 		}
-		var in struct {
-			Reason string `json:"reason"`
-		}
+		var in addendumDecisionRequest
 		if err := httpx.Bind(c, &in); err != nil {
 			return err
 		}

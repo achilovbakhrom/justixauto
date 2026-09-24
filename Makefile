@@ -24,7 +24,7 @@ API_URL       = http://$(or $(HTTP_ADDR),127.0.0.1:$(API_PORT))
 
 .PHONY: help env db-up db-down db-reset db-psql migrate migrate-down bootstrap-admin \
         api web web-install web-build dev test test-go test-web lint typecheck check \
-        image k8s-up k8s-down
+        openapi openapi-check hooks image k8s-up k8s-down
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -98,9 +98,23 @@ test: test-go test-web ## All tests
 typecheck: ## TypeScript typecheck
 	npm run typecheck
 
-lint: ## go vet + ESLint
+lint: openapi-check ## go vet + ESLint + OpenAPI spec up to date
 	$(GO) vet ./...
 	npm run lint
+
+# ---- API docs ----
+
+openapi: ## Regenerate the OpenAPI spec from handler annotations (served at /api/docs with API_DOCS=true)
+	$(GO) tool swag fmt --dir ./cmd/api,./internal
+	$(GO) tool swag init --quiet --dir ./cmd/api,./internal --generalInfo main.go \
+	  --output internal/platform/apidocs --outputTypes json --parseInternal --parseDependency --requiredByDefault
+
+openapi-check: openapi ## Fail when the committed spec differs from the annotations
+	@git diff --quiet -- internal/platform/apidocs/swagger.json || \
+	  { echo "OpenAPI spec is out of date: review and commit internal/platform/apidocs/swagger.json"; exit 1; }
+
+hooks: ## Install the repository Git hooks (.githooks: pre-commit regenerates the OpenAPI spec)
+	git config core.hooksPath .githooks
 
 check: lint typecheck test ## Everything CI would run
 

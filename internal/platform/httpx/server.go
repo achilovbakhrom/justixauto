@@ -104,16 +104,17 @@ func IntQuery(c echo.Context, name string) (int, error) {
 	return n, nil
 }
 
-type errorBody struct {
-	Error errorDetail `json:"error"`
-}
+// ErrorBody is the contract's error response: {error:{code,message,fields,traceId}}.
+type ErrorBody struct {
+	Error ErrorDetail `json:"error"`
+} //	@name	Error
 
-type errorDetail struct {
+type ErrorDetail struct {
 	Code    string            `json:"code"`
 	Message string            `json:"message"`
 	Fields  map[string]string `json:"fields"`
 	TraceID string            `json:"traceId"`
-}
+} //	@name	ErrorDetail
 
 var kinds = []struct {
 	kind          error
@@ -134,7 +135,7 @@ func errorHandler(log *slog.Logger) echo.HTTPErrorHandler {
 			return
 		}
 		status := http.StatusInternalServerError
-		detail := errorDetail{Code: "internal", Message: "internal error", Fields: map[string]string{}}
+		detail := ErrorDetail{Code: "internal", Message: "internal error", Fields: map[string]string{}}
 		var validation *apperr.ValidationError
 		var coded *apperr.Error
 		var limited *apperr.RateLimitedError
@@ -163,7 +164,7 @@ func errorHandler(log *slog.Logger) echo.HTTPErrorHandler {
 			}
 		}
 		detail.TraceID = c.Response().Header().Get(echo.HeaderXRequestID)
-		if err := c.JSON(status, errorBody{Error: detail}); err != nil {
+		if err := c.JSON(status, ErrorBody{Error: detail}); err != nil {
 			log.Error("write error response", "err", err)
 		}
 	}

@@ -221,8 +221,21 @@ func (s *Service) Share(ctx context.Context, ownerCompanyID, fileID, companyID, 
 		ResourceType: resourceType, ResourceID: resourceID, CreatedAt: s.now().UTC()})
 }
 
-// FileInfo is a file's public metadata (never the storage key).
-func FileInfo(f *File) map[string]any {
-	return map[string]any{"id": f.ID, "fileName": f.FileName, "mime": f.MIME, "byteLength": f.ByteLength, "sha256": f.SHA256,
-		"purpose": f.Purpose, "sensitive": f.Sensitive, "scanState": "unscanned", "createdAt": f.CreatedAt}
+// FileView is a file's public metadata (never the storage key).
+type FileView struct {
+	ID         string    `json:"id"`
+	FileName   string    `json:"fileName"`
+	MIME       string    `json:"mime"`
+	ByteLength int64     `json:"byteLength"`
+	SHA256     string    `json:"sha256"`
+	Purpose    string    `json:"purpose"`
+	Sensitive  bool      `json:"sensitive"`
+	ScanState  string    `json:"scanState"`
+	CreatedAt  time.Time `json:"createdAt"`
+}
+
+// FileInfo returns a file's public metadata.
+func FileInfo(f *File) FileView {
+	return FileView{ID: f.ID, FileName: f.FileName, MIME: f.MIME, ByteLength: f.ByteLength, SHA256: f.SHA256,
+		Purpose: f.Purpose, Sensitive: f.Sensitive, ScanState: "unscanned", CreatedAt: f.CreatedAt}
 }

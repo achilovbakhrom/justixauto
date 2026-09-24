@@ -79,6 +79,36 @@ func (h *Handler) Routes(g *echo.Group) {
 	h.invoiceRoutes(c)
 }
 
+// requestPartnershipRequest requests a trading partnership with another company.
+type requestPartnershipRequest struct {
+	CounterpartyCompanyID string `json:"counterpartyCompanyId"`
+}
+
+// partnershipDecisionRequest decides an incoming/outgoing partnership request.
+type partnershipDecisionRequest struct {
+	Reason string `json:"reason"`
+}
+
+// publishOfferRequest publishes a specific offer version.
+type publishOfferRequest struct {
+	OfferVersionID string `json:"offerVersionId"`
+}
+
+// offerWithdrawRequest withdraws an offer.
+type offerWithdrawRequest struct {
+	Reason string `json:"reason"`
+}
+
+// listPartnerships lists trading partnerships for the active company.
+//
+//	@Summary	List partnerships
+//	@Tags		commerce/partnerships
+//	@Param		status		query		string	false	"partnership status"
+//	@Param		limit		query		int		false	"page size"
+//	@Param		offset		query		int		false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[commerce.partnershipDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/partnerships [get]
 func (h *Handler) listPartnerships(c echo.Context) error {
 	p := auth.Get(c)
 	f := PartnershipFilter{Status: PartnershipStatus(c.QueryParam("status"))}
@@ -96,6 +126,14 @@ func (h *Handler) listPartnerships(c echo.Context) error {
 	return httpx.List(c, mapSlice(views, toPartnership(p.CompanyID)), nil)
 }
 
+// getPartnership returns one partnership.
+//
+//	@Summary	Get partnership
+//	@Tags		commerce/partnerships
+//	@Param		id			path		string	true	"partnership ID"
+//	@Success	200			{object}	httpx.DataEnvelope[commerce.partnershipDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/partnerships/{id} [get]
 func (h *Handler) getPartnership(c echo.Context) error {
 	p := auth.Get(c)
 	v, err := h.partnerships.Get(c.Request().Context(), p, c.Param("id"))
@@ -105,11 +143,19 @@ func (h *Handler) getPartnership(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toPartnership(p.CompanyID)(v), v.Partnership.Version)
 }
 
+// requestPartnership asks another company to become a trading partner.
+//
+//	@Summary	Request partnership
+//	@Tags		commerce/partnerships
+//	@Security	CSRF
+//	@Param		Idempotency-Key		header		string						true	"retry key"
+//	@Param		body				body		requestPartnershipRequest	true	"counterparty"
+//	@Success	201					{object}	httpx.DataEnvelope[commerce.partnershipDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/partnerships [post]
 func (h *Handler) requestPartnership(c echo.Context) error {
 	p := auth.Get(c)
-	var in struct {
-		CounterpartyCompanyID string `json:"counterpartyCompanyId"`
-	}
+	var in requestPartnershipRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -120,15 +166,26 @@ func (h *Handler) requestPartnership(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toPartnership(p.CompanyID)(v), v.Partnership.Version)
 }
 
+// decidePartnership accepts/rejects/closes a partnership request (path action).
+//
+//	@Summary	Decide partnership
+//	@Tags		commerce/partnerships
+//	@Security	CSRF
+//	@Param		id							path		string						true	"partnership ID"
+//	@Param		action						path		string						true	"decision action"
+//	@Param		If-Match					header		string						true	"revision"
+//	@Param		body						body		partnershipDecisionRequest	true	"reason"
+//	@Param		Idempotency-Key				header		string						true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.partnershipDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/partnerships/{id}/{action} [post]
 func (h *Handler) decidePartnership(c echo.Context) error {
 	p := auth.Get(c)
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Reason string `json:"reason"`
-	}
+	var in partnershipDecisionRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -206,6 +263,16 @@ func toOffer(v *OfferView) offerDTO {
 	return d
 }
 
+// listOffers lists supplier offers visible to the active company.
+//
+//	@Summary	List offers
+//	@Tags		commerce/offers
+//	@Param		scope		query		string	false	"offer scope (own, partners)"
+//	@Param		limit		query		int		false	"page size"
+//	@Param		offset		query		int		false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[commerce.offerDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/commerce/offers [get]
 func (h *Handler) listOffers(c echo.Context) error {
 	limit, err := httpx.IntQuery(c, "limit")
 	if err != nil {
@@ -222,6 +289,14 @@ func (h *Handler) listOffers(c echo.Context) error {
 	return httpx.List(c, mapSlice(views, toOffer), nil)
 }
 
+// getOffer returns one offer.
+//
+//	@Summary	Get offer
+//	@Tags		commerce/offers
+//	@Param		id			path		string	true	"offer ID"
+//	@Success	200			{object}	httpx.DataEnvelope[commerce.offerDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/commerce/offers/{id} [get]
 func (h *Handler) getOffer(c echo.Context) error {
 	v, err := h.offers.Get(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -230,6 +305,16 @@ func (h *Handler) getOffer(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toOffer(v), v.Offer.Version)
 }
 
+// createOffer creates a supplier offer.
+//
+//	@Summary	Create offer
+//	@Tags		commerce/offers
+//	@Security	CSRF
+//	@Param		Idempotency-Key	header		string		true	"retry key"
+//	@Param		body			body		OfferInput	true	"offer"
+//	@Success	201				{object}	httpx.DataEnvelope[commerce.offerDTO]
+//	@Failure	401,403,422		{object}	httpx.ErrorBody
+//	@Router		/commerce/offers [post]
 func (h *Handler) createOffer(c echo.Context) error {
 	var in OfferInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -242,6 +327,18 @@ func (h *Handler) createOffer(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toOffer(v), v.Offer.Version)
 }
 
+// addOfferVersion adds a new terms version to an offer.
+//
+//	@Summary	Add offer version
+//	@Tags		commerce/offers
+//	@Security	CSRF
+//	@Param		id							path		string		true	"offer ID"
+//	@Param		If-Match					header		string		true	"revision"
+//	@Param		body						body		OfferInput	true	"offer"
+//	@Param		Idempotency-Key				header		string		true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[commerce.offerDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/offers/{id}/versions [post]
 func (h *Handler) addOfferVersion(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -258,14 +355,24 @@ func (h *Handler) addOfferVersion(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toOffer(v), v.Offer.Version)
 }
 
+// publishOffer publishes an offer version, replacing the currently published one.
+//
+//	@Summary	Publish offer
+//	@Tags		commerce/offers
+//	@Security	CSRF
+//	@Param		id							path		string				true	"offer ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		publishOfferRequest	true	"offer version"
+//	@Param		Idempotency-Key				header		string				true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[commerce.offerDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/offers/{id}/publish [post]
 func (h *Handler) publishOffer(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		OfferVersionID string `json:"offerVersionId"`
-	}
+	var in publishOfferRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -276,14 +383,24 @@ func (h *Handler) publishOffer(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toOffer(v), v.Offer.Version)
 }
 
+// withdrawOffer withdraws an offer so it can no longer be traded on.
+//
+//	@Summary	Withdraw offer
+//	@Tags		commerce/offers
+//	@Security	CSRF
+//	@Param		id						path		string					true	"offer ID"
+//	@Param		If-Match				header		string					true	"revision"
+//	@Param		body					body		offerWithdrawRequest	true	"reason"
+//	@Param		Idempotency-Key			header		string					true	"retry key"
+//	@Success	200						{object}	httpx.DataEnvelope[commerce.offerDTO]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/commerce/offers/{id}/withdraw [post]
 func (h *Handler) withdrawOffer(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Reason string `json:"reason"`
-	}
+	var in offerWithdrawRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}

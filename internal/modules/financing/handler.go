@@ -126,6 +126,43 @@ func toApplication(companyID string, v *ApplicationView) applicationDTO {
 
 type Handler struct{ s *Service }
 
+// publishProgramRequest publishes a financing program version.
+type publishProgramRequest struct {
+	ProgramVersion int `json:"programVersion"`
+}
+
+// withdrawProgramRequest withdraws a published financing program.
+type withdrawProgramRequest struct {
+	Reason string `json:"reason"`
+}
+
+// submitApplicationRequest submits a draft financing application for review.
+type submitApplicationRequest struct {
+	Confirmation      bool   `json:"confirmation"`
+	DealRevision      string `json:"dealRevision"`
+	CalculationDigest string `json:"calculationDigest"`
+}
+
+// requestDocumentRequest requests a supporting document on a financing application.
+type requestDocumentRequest struct {
+	Title        string `json:"title"`
+	Requirements string `json:"requirements"`
+}
+
+// submitDocumentRequest submits a document for a requested attachment.
+type submitDocumentRequest struct {
+	AttachmentBindingID string `json:"attachmentBindingId"`
+	Note                string `json:"note"`
+}
+
+// decideDocumentRequest accepts, returns or cancels a document submission.
+type decideDocumentRequest struct {
+	SubmissionVersion int    `json:"submissionVersion"`
+	Confirmation      bool   `json:"confirmation"`
+	Note              string `json:"note"`
+	Reason            string `json:"reason"`
+}
+
 func (h *Handler) Routes(g *echo.Group) {
 	c := g.Group("", auth.RequireCompany())
 	c.GET("/programs", h.listPrograms, auth.Require(PermRead))
@@ -191,6 +228,14 @@ func (h *Handler) documentResponse(c echo.Context, status int, id string) error 
 	return httpx.Data(c, status, toDocumentRequest(v), v.Request.Version)
 }
 
+// listDocuments lists the document requests on an application.
+//
+//	@Summary	List document requests
+//	@Tags		financing/documents
+//	@Param		id			path		string	true	"application ID"
+//	@Success	200			{object}	httpx.ListEnvelope[financing.documentRequestDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/financing/applications/{id}/document-requests [get]
 func (h *Handler) listDocuments(c echo.Context) error {
 	vs, err := h.s.DocumentRequests(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -203,15 +248,31 @@ func (h *Handler) listDocuments(c echo.Context) error {
 	return httpx.List(c, out, nil)
 }
 
+// getDocument returns one document request with its submissions.
+//
+//	@Summary	Get document request
+//	@Tags		financing/documents
+//	@Param		id			path		string	true	"document request ID"
+//	@Success	200			{object}	httpx.DataEnvelope[financing.documentRequestDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/financing/document-requests/{id} [get]
 func (h *Handler) getDocument(c echo.Context) error {
 	return h.documentResponse(c, http.StatusOK, c.Param("id"))
 }
 
+// requestDocument requests a supporting document on an application.
+//
+//	@Summary	Request document
+//	@Tags		financing/documents
+//	@Security	CSRF
+//	@Param		id					path		string					true	"application ID"
+//	@Param		Idempotency-Key		header		string					true	"retry key"
+//	@Param		body				body		requestDocumentRequest	true	"document request"
+//	@Success	201					{object}	httpx.DataEnvelope[financing.documentRequestDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/financing/applications/{id}/document-requests [post]
 func (h *Handler) requestDocument(c echo.Context) error {
-	var in struct {
-		Title        string `json:"title"`
-		Requirements string `json:"requirements"`
-	}
+	var in requestDocumentRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -222,15 +283,24 @@ func (h *Handler) requestDocument(c echo.Context) error {
 	return h.documentResponse(c, http.StatusCreated, d.ID)
 }
 
+// submitDocument submits a document for a requested attachment.
+//
+//	@Summary	Submit document
+//	@Tags		financing/documents
+//	@Security	CSRF
+//	@Param		id							path		string					true	"document request ID"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		submitDocumentRequest	true	"submission"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[financing.documentRequestDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/document-requests/{id}/submissions [post]
 func (h *Handler) submitDocument(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		AttachmentBindingID string `json:"attachmentBindingId"`
-		Note                string `json:"note"`
-	}
+	var in submitDocumentRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -241,17 +311,25 @@ func (h *Handler) submitDocument(c echo.Context) error {
 	return h.documentResponse(c, http.StatusCreated, d.ID)
 }
 
+// decideDocument accepts, returns or cancels a submitted document.
+//
+//	@Summary	Decide document
+//	@Tags		financing/documents
+//	@Security	CSRF
+//	@Param		id							path		string					true	"document request ID"
+//	@Param		action						path		string					true	"accept, return or cancel"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		decideDocumentRequest	true	"decision"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[financing.documentRequestDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/document-requests/{id}/{action} [post]
 func (h *Handler) decideDocument(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		SubmissionVersion int    `json:"submissionVersion"`
-		Confirmation      bool   `json:"confirmation"`
-		Note              string `json:"note"`
-		Reason            string `json:"reason"`
-	}
+	var in decideDocumentRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -274,6 +352,16 @@ func (h *Handler) programResponse(c echo.Context, status int, id string) error {
 	return httpx.Data(c, status, toProgram(v), v.Program.Version)
 }
 
+// listPrograms searches financing programs.
+//
+//	@Summary	List programs
+//	@Tags		financing/programs
+//	@Param		providerId	query		string	false	"provider company ID"
+//	@Param		limit		query		int		false	"page size"
+//	@Param		offset		query		int		false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[financing.programDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/financing/programs [get]
 func (h *Handler) listPrograms(c echo.Context) error {
 	limit, err := httpx.IntQuery(c, "limit")
 	if err != nil {
@@ -294,10 +382,28 @@ func (h *Handler) listPrograms(c echo.Context) error {
 	return httpx.List(c, out, nil)
 }
 
+// getProgram returns one financing program with its versions.
+//
+//	@Summary	Get program
+//	@Tags		financing/programs
+//	@Param		id			path		string	true	"program ID"
+//	@Success	200			{object}	httpx.DataEnvelope[financing.programDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/financing/programs/{id} [get]
 func (h *Handler) getProgram(c echo.Context) error {
 	return h.programResponse(c, http.StatusOK, c.Param("id"))
 }
 
+// createProgram creates a financing program with its first version.
+//
+//	@Summary	Create program
+//	@Tags		financing/programs
+//	@Security	CSRF
+//	@Param		Idempotency-Key	header		string			true	"retry key"
+//	@Param		body			body		ProgramInput	true	"program"
+//	@Success	201				{object}	httpx.DataEnvelope[financing.programDTO]
+//	@Failure	401,403,409,422	{object}	httpx.ErrorBody
+//	@Router		/financing/programs [post]
 func (h *Handler) createProgram(c echo.Context) error {
 	var in ProgramInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -310,6 +416,18 @@ func (h *Handler) createProgram(c echo.Context) error {
 	return h.programResponse(c, http.StatusCreated, p.ID)
 }
 
+// addProgramVersion adds a new version to a financing program.
+//
+//	@Summary	Add program version
+//	@Tags		financing/programs
+//	@Security	CSRF
+//	@Param		id							path		string			true	"program ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		ProgramInput	true	"program version"
+//	@Param		Idempotency-Key				header		string			true	"retry key"
+//	@Success	201							{object}	httpx.DataEnvelope[financing.programDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/programs/{id}/versions [post]
 func (h *Handler) addProgramVersion(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -326,14 +444,24 @@ func (h *Handler) addProgramVersion(c echo.Context) error {
 	return h.programResponse(c, http.StatusCreated, p.ID)
 }
 
+// publishProgram publishes a program version as the active one.
+//
+//	@Summary	Publish program
+//	@Tags		financing/programs
+//	@Security	CSRF
+//	@Param		id							path		string					true	"program ID"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		publishProgramRequest	true	"publication"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[financing.programDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/programs/{id}/publish [post]
 func (h *Handler) publishProgram(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		ProgramVersion int `json:"programVersion"`
-	}
+	var in publishProgramRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -344,14 +472,24 @@ func (h *Handler) publishProgram(c echo.Context) error {
 	return h.programResponse(c, http.StatusOK, p.ID)
 }
 
+// withdrawProgram withdraws a published financing program.
+//
+//	@Summary	Withdraw program
+//	@Tags		financing/programs
+//	@Security	CSRF
+//	@Param		id							path		string					true	"program ID"
+//	@Param		If-Match					header		string					true	"revision"
+//	@Param		body						body		withdrawProgramRequest	true	"withdrawal"
+//	@Param		Idempotency-Key				header		string					true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[financing.programDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/programs/{id}/withdraw [post]
 func (h *Handler) withdrawProgram(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Reason string `json:"reason"`
-	}
+	var in withdrawProgramRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -371,6 +509,16 @@ func (h *Handler) respond(c echo.Context, status int, id string) error {
 	return httpx.Data(c, status, toApplication(p.CompanyID, v), v.Application.Version)
 }
 
+// list searches financing applications for the active company.
+//
+//	@Summary	List applications
+//	@Tags		financing/applications
+//	@Param		status		query		string	false	"application status"
+//	@Param		limit		query		int		false	"page size"
+//	@Param		offset		query		int		false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[financing.applicationDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/financing/applications [get]
 func (h *Handler) list(c echo.Context) error {
 	limit, err := httpx.IntQuery(c, "limit")
 	if err != nil {
@@ -392,8 +540,26 @@ func (h *Handler) list(c echo.Context) error {
 	return httpx.List(c, out, nil)
 }
 
+// get returns one financing application with its terms and history.
+//
+//	@Summary	Get application
+//	@Tags		financing/applications
+//	@Param		id			path		string	true	"application ID"
+//	@Success	200			{object}	httpx.DataEnvelope[financing.applicationDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/financing/applications/{id} [get]
 func (h *Handler) get(c echo.Context) error { return h.respond(c, http.StatusOK, c.Param("id")) }
 
+// create creates a draft financing application for a retail deal.
+//
+//	@Summary	Create application
+//	@Tags		financing/applications
+//	@Security	CSRF
+//	@Param		Idempotency-Key		header		string				true	"retry key"
+//	@Param		body				body		ApplicationInput	true	"application"
+//	@Success	201					{object}	httpx.DataEnvelope[financing.applicationDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/financing/applications [post]
 func (h *Handler) create(c echo.Context) error {
 	var in ApplicationInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -406,6 +572,17 @@ func (h *Handler) create(c echo.Context) error {
 	return h.respond(c, http.StatusCreated, a.ID)
 }
 
+// update edits a draft financing application.
+//
+//	@Summary	Update application
+//	@Tags		financing/applications
+//	@Security	CSRF
+//	@Param		id							path		string				true	"application ID"
+//	@Param		If-Match					header		string				true	"revision"
+//	@Param		body						body		ApplicationInput	true	"application"
+//	@Success	200							{object}	httpx.DataEnvelope[financing.applicationDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/applications/{id} [patch]
 func (h *Handler) update(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -422,16 +599,24 @@ func (h *Handler) update(c echo.Context) error {
 	return h.respond(c, http.StatusOK, a.ID)
 }
 
+// submit submits a draft financing application for review.
+//
+//	@Summary	Submit application
+//	@Tags		financing/applications
+//	@Security	CSRF
+//	@Param		id							path		string						true	"application ID"
+//	@Param		If-Match					header		string						true	"revision"
+//	@Param		body						body		submitApplicationRequest	true	"submission"
+//	@Param		Idempotency-Key				header		string						true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[financing.applicationDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/applications/{id}/submit [post]
 func (h *Handler) submit(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Confirmation      bool   `json:"confirmation"`
-		DealRevision      string `json:"dealRevision"`
-		CalculationDigest string `json:"calculationDigest"`
-	}
+	var in submitApplicationRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -443,6 +628,26 @@ func (h *Handler) submit(c echo.Context) error {
 	return h.respond(c, http.StatusOK, a.ID)
 }
 
+// act performs a state transition on a financing application: the seller
+// responds to an information request, counters or agrees to terms, or the
+// provider takes/reviews it, requests information, issues terms or declines.
+//
+//	@Summary	Act on application
+//	@Tags		financing/applications
+//	@Security	CSRF
+//	@Param		id							path		string		true	"application ID"
+//	@Param		If-Match					header		string		true	"revision"
+//	@Param		body						body		ActInput	true	"action"
+//	@Param		Idempotency-Key				header		string		true	"retry key"
+//	@Success	200							{object}	httpx.DataEnvelope[financing.applicationDTO]
+//	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/financing/applications/{id}/responses [post]
+//	@Router		/financing/applications/{id}/counter [post]
+//	@Router		/financing/applications/{id}/agree [post]
+//	@Router		/financing/applications/{id}/take [post]
+//	@Router		/financing/applications/{id}/information-requests [post]
+//	@Router		/financing/applications/{id}/terms [post]
+//	@Router		/financing/applications/{id}/decline [post]
 func (h *Handler) act(action string) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		expected, err := httpx.IfMatch(c)

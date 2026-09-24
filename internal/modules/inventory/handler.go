@@ -135,12 +135,19 @@ func mapSlice[T, D any](items []T, f func(*T) D) []D {
 	return out
 }
 
-func receiptBody(r *ReceiptResult) map[string]any {
+// receiptResponse documents the body written for a receipt batch mutation.
+type receiptResponse struct {
+	Batch     batchDTO     `json:"batch"`
+	Warehouse warehouseDTO `json:"warehouse"`
+	Vehicles  []vehicleDTO `json:"vehicles"`
+}
+
+func receiptBody(r *ReceiptResult) receiptResponse {
 	units := make([]vehicleDTO, len(r.Vehicles))
 	for i, u := range r.Vehicles {
 		units[i] = vehicleDTO{ID: u.ID, VIN: u.VIN, ModelID: u.ModelID, SpecVersion: httpx.Revision(int64(u.SpecVersion)), Revision: httpx.Revision(u.Version)}
 	}
-	return map[string]any{"batch": toBatch(&r.Batch), "warehouse": toWarehouse(&r.Warehouse), "vehicles": units}
+	return receiptResponse{Batch: toBatch(&r.Batch), Warehouse: toWarehouse(&r.Warehouse), Vehicles: units}
 }
 
 // ---- handlers ----
@@ -176,6 +183,16 @@ func (h *Handler) Routes(g *echo.Group) {
 	c.POST("/vehicle-units/:id/warehouse-moves", h.move, auth.Require(PermVehiclesMove))
 }
 
+// listModels lists the shared vehicle model catalogue.
+//
+//	@Summary	List vehicle models
+//	@Tags		inventory/models
+//	@Param		q		query		string	false	"name search"
+//	@Param		limit	query		int		false	"page size"
+//	@Param		offset	query		int		false	"offset"
+//	@Success	200		{object}	httpx.ListEnvelope[inventory.modelDTO]
+//	@Failure	401,422	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-models [get]
 func (h *Handler) listModels(c echo.Context) error {
 	f := ModelFilter{Query: c.QueryParam("q")}
 	var err error
@@ -192,6 +209,14 @@ func (h *Handler) listModels(c echo.Context) error {
 	return httpx.List(c, mapSlice(models, toModel), nil)
 }
 
+// getModel returns one vehicle model with its specification history.
+//
+//	@Summary	Get vehicle model
+//	@Tags		inventory/models
+//	@Param		id		path		string	true	"model ID"
+//	@Success	200		{object}	httpx.DataEnvelope[inventory.modelDTO]
+//	@Failure	401,404	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-models/{id} [get]
 func (h *Handler) getModel(c echo.Context) error {
 	m, err := h.models.Get(c.Request().Context(), c.Param("id"))
 	if err != nil {
@@ -204,6 +229,16 @@ type specBody struct {
 	Specification SpecInput `json:"specification"`
 }
 
+// createModel creates a vehicle model with its initial specification.
+//
+//	@Summary	Create vehicle model
+//	@Tags		inventory/models
+//	@Security	CSRF
+//	@Param		Idempotency-Key	header		string		true	"retry key"
+//	@Param		body			body		specBody	true	"specification"
+//	@Success	201				{object}	httpx.DataEnvelope[inventory.modelDTO]
+//	@Failure	401,403,409,422	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-models [post]
 func (h *Handler) createModel(c echo.Context) error {
 	var in specBody
 	if err := httpx.Bind(c, &in); err != nil {
@@ -216,6 +251,18 @@ func (h *Handler) createModel(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toModel(m), m.Model.Version)
 }
 
+// addSpec adds a new specification version to a vehicle model.
+//
+//	@Summary	Add model specification version
+//	@Tags		inventory/models
+//	@Security	CSRF
+//	@Param		id						path		string		true	"model ID"
+//	@Param		If-Match				header		string		true	"revision"
+//	@Param		body					body		specBody	true	"specification"
+//	@Param		Idempotency-Key			header		string		true	"retry key"
+//	@Success	201						{object}	httpx.DataEnvelope[inventory.modelDTO]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-models/{id}/specification-versions [post]
 func (h *Handler) addSpec(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -232,6 +279,13 @@ func (h *Handler) addSpec(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toModel(m), m.Model.Version)
 }
 
+// listWarehouses lists warehouses for the active company.
+//
+//	@Summary	List warehouses
+//	@Tags		inventory/warehouses
+//	@Success	200		{object}	httpx.ListEnvelope[inventory.warehouseDTO]
+//	@Failure	401,403	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses [get]
 func (h *Handler) listWarehouses(c echo.Context) error {
 	ws, err := h.warehouses.List(c.Request().Context(), auth.Get(c))
 	if err != nil {
@@ -240,6 +294,14 @@ func (h *Handler) listWarehouses(c echo.Context) error {
 	return httpx.List(c, mapSlice(ws, toWarehouse), nil)
 }
 
+// getWarehouse returns one warehouse.
+//
+//	@Summary	Get warehouse
+//	@Tags		inventory/warehouses
+//	@Param		id			path		string	true	"warehouse ID"
+//	@Success	200			{object}	httpx.DataEnvelope[inventory.warehouseDTO]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses/{id} [get]
 func (h *Handler) getWarehouse(c echo.Context) error {
 	w, err := h.warehouses.Get(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -248,18 +310,43 @@ func (h *Handler) getWarehouse(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toWarehouse(w), w.Warehouse.Version)
 }
 
+// warehouseStockResponse documents the body written for a warehouse's current inventory.
+type warehouseStockResponse struct {
+	Warehouse           warehouseDTO `json:"warehouse"`
+	Vehicles            []vehicleDTO `json:"vehicles"`
+	UnidentifiedBatches []batchDTO   `json:"unidentifiedBatches"`
+}
+
+// warehouseStock returns a warehouse's current vehicle inventory.
+//
+//	@Summary	Get warehouse inventory
+//	@Tags		inventory/warehouses
+//	@Param		id			path		string	true	"warehouse ID"
+//	@Success	200			{object}	httpx.DataEnvelope[inventory.warehouseStockResponse]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses/{id}/inventory [get]
 func (h *Handler) warehouseStock(c echo.Context) error {
 	s, err := h.warehouses.Stock(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
 		return err
 	}
-	return httpx.Data(c, http.StatusOK, map[string]any{
-		"warehouse":           toWarehouse(&s.View),
-		"vehicles":            mapSlice(s.Vehicles, toVehicle),
-		"unidentifiedBatches": mapSlice(s.Unidentified, toBatch),
+	return httpx.Data(c, http.StatusOK, warehouseStockResponse{
+		Warehouse:           toWarehouse(&s.View),
+		Vehicles:            mapSlice(s.Vehicles, toVehicle),
+		UnidentifiedBatches: mapSlice(s.Unidentified, toBatch),
 	}, s.View.Warehouse.Version)
 }
 
+// createWarehouse creates a warehouse for the active company.
+//
+//	@Summary	Create warehouse
+//	@Tags		inventory/warehouses
+//	@Security	CSRF
+//	@Param		Idempotency-Key	header		string			true	"retry key"
+//	@Param		body			body		WarehouseInput	true	"warehouse"
+//	@Success	201				{object}	httpx.DataEnvelope[inventory.warehouseDTO]
+//	@Failure	401,403,409,422	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses [post]
 func (h *Handler) createWarehouse(c echo.Context) error {
 	var in WarehouseInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -272,6 +359,17 @@ func (h *Handler) createWarehouse(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, toWarehouse(w), w.Warehouse.Version)
 }
 
+// updateWarehouse edits a warehouse profile.
+//
+//	@Summary	Update warehouse
+//	@Tags		inventory/warehouses
+//	@Security	CSRF
+//	@Param		id						path		string					true	"warehouse ID"
+//	@Param		If-Match				header		string					true	"revision"
+//	@Param		body					body		WarehouseProfileInput	true	"warehouse"
+//	@Success	200						{object}	httpx.DataEnvelope[inventory.warehouseDTO]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses/{id} [patch]
 func (h *Handler) updateWarehouse(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -288,15 +386,29 @@ func (h *Handler) updateWarehouse(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toWarehouse(w), w.Warehouse.Version)
 }
 
+type changeCapacityRequest struct {
+	Capacity jsonx.Quantity `json:"capacity"`
+	Reason   string         `json:"reason"`
+}
+
+// changeCapacity changes a warehouse's total capacity.
+//
+//	@Summary	Change warehouse capacity
+//	@Tags		inventory/warehouses
+//	@Security	CSRF
+//	@Param		id						path		string					true	"warehouse ID"
+//	@Param		If-Match				header		string					true	"revision"
+//	@Param		body					body		changeCapacityRequest	true	"capacity change"
+//	@Param		Idempotency-Key			header		string					true	"retry key"
+//	@Success	200						{object}	httpx.DataEnvelope[inventory.warehouseDTO]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses/{id}/capacity-changes [post]
 func (h *Handler) changeCapacity(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Capacity jsonx.Quantity `json:"capacity"`
-		Reason   string         `json:"reason"`
-	}
+	var in changeCapacityRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -307,6 +419,18 @@ func (h *Handler) changeCapacity(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toWarehouse(w), w.Warehouse.Version)
 }
 
+// receive records a receipt batch of vehicles into a warehouse.
+//
+//	@Summary	Receive vehicles
+//	@Tags		inventory/receipts
+//	@Security	CSRF
+//	@Param		id						path		string			true	"warehouse ID"
+//	@Param		If-Match				header		string			true	"revision"
+//	@Param		body					body		ReceiptInput	true	"receipt"
+//	@Param		Idempotency-Key			header		string			true	"retry key"
+//	@Success	201						{object}	httpx.DataEnvelope[inventory.receiptResponse]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses/{id}/receipt-batches [post]
 func (h *Handler) receive(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
@@ -323,6 +447,17 @@ func (h *Handler) receive(c echo.Context) error {
 	return httpx.Data(c, http.StatusCreated, receiptBody(r), r.Batch.Version)
 }
 
+// identify assigns VINs to unidentified units in a receipt batch.
+//
+//	@Summary	Identify received vehicles
+//	@Tags		inventory/receipts
+//	@Security	CSRF
+//	@Param		id					path		string			true	"receipt batch ID"
+//	@Param		Idempotency-Key		header		string			true	"retry key"
+//	@Param		body				body		IdentifyInput	true	"identifications"
+//	@Success	200					{object}	httpx.DataEnvelope[inventory.receiptResponse]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/inventory/receipt-batches/{id}/identifications [post]
 func (h *Handler) identify(c echo.Context) error {
 	var in IdentifyInput
 	if err := httpx.Bind(c, &in); err != nil {
@@ -335,14 +470,28 @@ func (h *Handler) identify(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, receiptBody(r), r.Batch.Version)
 }
 
+type attachBranchRequest struct {
+	BranchID *string `json:"branchId"`
+}
+
+// attachBranch attaches or detaches a warehouse from a branch.
+//
+//	@Summary	Attach warehouse to branch
+//	@Tags		inventory/warehouses
+//	@Security	CSRF
+//	@Param		id						path		string				true	"warehouse ID"
+//	@Param		If-Match				header		string				true	"revision"
+//	@Param		body					body		attachBranchRequest	true	"branch attachment"
+//	@Param		Idempotency-Key			header		string				true	"retry key"
+//	@Success	200						{object}	httpx.DataEnvelope[inventory.warehouseDTO]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/inventory/warehouses/{id}/branch-attachment [post]
 func (h *Handler) attachBranch(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		BranchID *string `json:"branchId"`
-	}
+	var in attachBranchRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -353,15 +502,29 @@ func (h *Handler) attachBranch(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, toWarehouse(w), w.Warehouse.Version)
 }
 
+type correctQuantityRequest struct {
+	Quantity jsonx.Quantity `json:"quantity"`
+	Reason   string         `json:"reason"`
+}
+
+// correctQuantity corrects the unidentified quantity of a receipt batch.
+//
+//	@Summary	Correct receipt batch quantity
+//	@Tags		inventory/receipts
+//	@Security	CSRF
+//	@Param		id						path		string					true	"receipt batch ID"
+//	@Param		If-Match				header		string					true	"revision"
+//	@Param		body					body		correctQuantityRequest	true	"quantity correction"
+//	@Param		Idempotency-Key			header		string					true	"retry key"
+//	@Success	200						{object}	httpx.DataEnvelope[inventory.receiptResponse]
+//	@Failure	401,403,404,412,422,428	{object}	httpx.ErrorBody
+//	@Router		/inventory/receipt-batches/{id}/quantity-corrections [post]
 func (h *Handler) correctQuantity(c echo.Context) error {
 	expected, err := httpx.IfMatch(c)
 	if err != nil {
 		return err
 	}
-	var in struct {
-		Quantity jsonx.Quantity `json:"quantity"`
-		Reason   string         `json:"reason"`
-	}
+	var in correctQuantityRequest
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -372,6 +535,17 @@ func (h *Handler) correctQuantity(c echo.Context) error {
 	return httpx.Data(c, http.StatusOK, receiptBody(r), r.Batch.Version)
 }
 
+// listVehicles lists vehicle units for the active company.
+//
+//	@Summary	List vehicle units
+//	@Tags		inventory/vehicles
+//	@Param		placement	query		string	false	"placement filter"
+//	@Param		warehouseId	query		string	false	"warehouse ID filter"
+//	@Param		limit		query		int		false	"page size"
+//	@Param		offset		query		int		false	"offset"
+//	@Success	200			{object}	httpx.ListEnvelope[inventory.vehicleDTO]
+//	@Failure	401,403,422	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-units [get]
 func (h *Handler) listVehicles(c echo.Context) error {
 	f := VehicleFilter{Placement: c.QueryParam("placement"), WarehouseID: c.QueryParam("warehouseId")}
 	var err error
@@ -388,6 +562,21 @@ func (h *Handler) listVehicles(c echo.Context) error {
 	return httpx.List(c, mapSlice(rows, toVehicle), nil)
 }
 
+// vehicleDetailResponse documents the body written for one vehicle unit.
+type vehicleDetailResponse struct {
+	Vehicle       vehicleDTO `json:"vehicle"`
+	Specification specDTO    `json:"specification"`
+	History       []factDTO  `json:"history"`
+}
+
+// getVehicle returns one vehicle unit with its specification and fact history.
+//
+//	@Summary	Get vehicle unit
+//	@Tags		inventory/vehicles
+//	@Param		id			path		string	true	"vehicle unit ID"
+//	@Success	200			{object}	httpx.DataEnvelope[inventory.vehicleDetailResponse]
+//	@Failure	401,403,404	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-units/{id} [get]
 func (h *Handler) getVehicle(c echo.Context) error {
 	d, err := h.vehicles.Get(c.Request().Context(), auth.Get(c), c.Param("id"))
 	if err != nil {
@@ -399,11 +588,22 @@ func (h *Handler) getVehicle(c echo.Context) error {
 			OccurredAt: f.OccurredAt, Reason: f.Reason, Details: json.RawMessage(f.Details)}
 	}
 	body := toVehicle(&d.Vehicle)
-	return httpx.Data(c, http.StatusOK, map[string]any{
-		"vehicle": body, "specification": toSpec(d.Model, d.Spec), "history": history,
+	return httpx.Data(c, http.StatusOK, vehicleDetailResponse{
+		Vehicle: body, Specification: toSpec(d.Model, d.Spec), History: history,
 	}, d.Vehicle.Version)
 }
 
+// move records a vehicle unit's movement between warehouses.
+//
+//	@Summary	Move vehicle unit
+//	@Tags		inventory/vehicles
+//	@Security	CSRF
+//	@Param		id					path		string		true	"vehicle unit ID"
+//	@Param		Idempotency-Key		header		string		true	"retry key"
+//	@Param		body				body		MoveInput	true	"move"
+//	@Success	200					{object}	httpx.DataEnvelope[inventory.vehicleDTO]
+//	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
+//	@Router		/inventory/vehicle-units/{id}/warehouse-moves [post]
 func (h *Handler) move(c echo.Context) error {
 	var in MoveInput
 	if err := httpx.Bind(c, &in); err != nil {
