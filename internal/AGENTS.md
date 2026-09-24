@@ -4,14 +4,23 @@ Decision: [ADR-14](../docs/justix-auto/adr-14-classic-modular-monolith.md).
 One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
 `migrations/`. Use `bash tools/go.sh` (pinned Go).
 
-- Each module lives in `internal/modules/<module>/` with the fixed layering
-  `handler.go → service.go → repository.go`, plus `model.go` and `module.go`
-  (wiring + routes under `/api/v1/<module>`). Split files per entity when a
-  module grows (`company_service.go`, `branch_service.go`, …).
+- Each module lives in `internal/modules/<module>/` as one package per layer:
+  `model/` (GORM models, enums, filters, value types), `repository/` (GORM
+  code, `store.go` + one file per aggregate), `service/` (business rules, one
+  file per service, `ports.go` with the repository interfaces and the ports
+  to other modules, `deps.go`), `handler/` (Echo handlers, DTOs, `Routes`),
+  and `module.go` at the root (`New`, `Register` under `/api/v1/<module>`,
+  the cross-module methods, `Permissions`, and type aliases for everything
+  other code uses). Imports run one way: `handler → service → model` and
+  `repository → model`; the service declares the repository interfaces and
+  the repository satisfies them structurally. Only the root package is
+  imported from outside the module. Use `service.Warehouse`, not
+  `service.WarehouseService`. Split files per aggregate inside each layer.
 - Handlers: bind/parse HTTP, call one service method, write JSON. No rules.
 - Services: all business rules and validation; return `apperr` errors; never
-  import Echo or GORM. Depend on repository interfaces declared in the module.
-- Repositories: GORM only; translate `gorm.ErrRecordNotFound`/duplicate keys
+  import Echo or GORM. Depend on the interfaces in `service/ports.go`.
+- Repositories: GORM only; resolve the ambient transaction with
+  `database.Conn(ctx, db)`; translate `gorm.ErrRecordNotFound`/duplicate keys
   into `apperr`. Mutations use optimistic locking (`version` column + If-Match).
 - Modules own their tables in their own PostgreSQL schema (`identity.*`, …).
   Never query another module's tables; call its exported service instead.
