@@ -1,0 +1,44 @@
+# Git hooks, installed by `npm install` (prepare) or `make hooks`.
+# The full gate is `make check` (CI runs it on every PR into dev/main).
+pre-commit:
+  parallel: true
+  jobs:
+    - name: go
+      glob: "*.go"
+      group:
+        piped: true # format first; swag and the linter read the formatted tree
+        jobs:
+          - name: go-fmt
+            run: bash tools/go.sh tool -modfile=tools/lint/go.mod golangci-lint fmt {staged_files}
+            stage_fixed: true
+          - name: openapi
+            run: bash tools/openapi-staged.sh
+          - name: go-lint
+            run: bash tools/go.sh tool -modfile=tools/lint/go.mod golangci-lint run --new-from-rev HEAD ./...
+    - name: web
+      glob: "web/**/*.{ts,tsx,js,cjs,mjs,css,json,md,html}"
+      group:
+        piped: true
+        jobs:
+          - name: prettier
+            run: npx prettier --write --ignore-unknown {staged_files}
+            stage_fixed: true
+          - name: eslint
+            glob: "web/**/*.{ts,tsx,js,cjs,mjs}"
+            run: npx eslint --config web/eslint.config.js --max-warnings 0 {staged_files}
+
+commit-msg:
+  jobs:
+    - name: conventional-commit
+      run: npx commitlint --edit {1}
+
+pre-push:
+  parallel: true
+  jobs:
+    - name: typecheck
+      run: npm run typecheck
+    - name: go-unit
+      # Without TEST_DATABASE_URL the database tests skip; CI runs them all.
+      run: bash tools/go.sh test ./...
+    - name: vitest
+      run: npm run test:unit

@@ -1,0 +1,77 @@
+# golangci-lint v2 (pinned in tools/lint/go.mod): make lint-go / make fmt-go.
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  # standard = errcheck, govet, ineffassign, staticcheck, unused
+  default: standard
+  enable:
+    - bodyclose
+    - errorlint
+    - gocognit
+    - gocritic
+    - gosec
+    - misspell
+    - nolintlint
+    - revive
+    - unparam
+  settings:
+    gocognit:
+      min-complexity: 30
+    gocritic:
+      enabled-tags: [diagnostic, performance, style]
+      disabled-checks:
+        - hugeParam # DTOs are passed by value on purpose
+        - rangeValCopy
+        - unnamedResult
+        - whyNoLint # nolintlint already requires an explanation
+    gosec:
+      excludes:
+        - G104 # duplicate of errcheck
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    revive:
+      rules:
+        - name: blank-imports
+        - name: context-as-argument
+        - name: dot-imports
+        - name: error-naming
+        - name: error-return
+        - name: error-strings
+        - name: errorf
+        - name: increment-decrement
+        - name: indent-error-flow
+        - name: range
+        - name: receiver-naming
+        - name: redefines-builtin-id
+        - name: superfluous-else
+        - name: time-naming
+        - name: unexported-return
+        - name: unreachable-code
+        - name: unused-parameter
+        - name: var-declaration
+        - name: var-naming
+  exclusions:
+    generated: strict
+    presets: [std-error-handling]
+    # docs/ holds the pinned Go toolchain (ADR-13): never lint or rewrite it.
+    paths: &outside [docs, web, node_modules]
+    rules:
+      # Tests may ignore errors and use weak randomness / fixed secrets.
+      - path: (_test\.go|^internal/testkit/)
+        linters: [errcheck, gosec, unparam, gocognit]
+
+formatters:
+  enable:
+    - gci
+    - gofumpt
+  exclusions:
+    paths: *outside
+  settings:
+    gofumpt:
+      module-path: justixauto # no dot in the path, so it must be named to not count as stdlib
+    gci:
+      sections: [standard, default, prefix(justixauto)]

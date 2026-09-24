@@ -4,6 +4,7 @@ const ts = require('typescript-eslint');
 const hooks = require('eslint-plugin-react-hooks');
 const refresh = require('eslint-plugin-react-refresh').default;
 const globals = require('globals');
+const prettier = require('eslint-config-prettier/flat');
 
 // This config is explicitly loaded from the repository root. Keep linting
 // scoped to web; the immutable reference bundle has its own verification.
@@ -12,6 +13,7 @@ module.exports = defineConfig([
   {
     files: ['web/**/*.{js,cjs,mjs,ts,tsx,mts,cts}'],
     extends: [js.configs.recommended],
+    rules: { complexity: ['error', 20] },
   },
   {
     files: ['web/**/*.{ts,tsx,mts,cts}'],
@@ -34,4 +36,6 @@ module.exports = defineConfig([
     files: ['web/**/*.config.{js,cjs,mjs,ts,mts,cts}', 'web/vitest.workspace.ts'],
     languageOptions: { globals: globals.node },
   },
+  // Formatting belongs to Prettier; must stay last.
+  prettier,
 ]);

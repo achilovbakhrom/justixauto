@@ -1,0 +1,7 @@
+# Prettier runs on web/ only (npm run format). Canonical docs and mock bundles
+# under docs/ are reference artifacts and must not be rewritten.
+**/node_modules/
+**/dist/
+**/coverage/
+# Verbatim token values extracted from the reference mocks (tested for provenance).
+web/packages/tokens/src/tokens.css

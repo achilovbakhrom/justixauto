@@ -1,0 +1,79 @@
+# CI gate for dev and main: the same checks as `make check` (ADR-16).
+# Checks only: no deploy, image push, registry, cluster access or promotion —
+# those stay human-only (AGENTS.md). Actions are pinned to commit SHAs.
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # A new PR commit supersedes its old run. A push to dev/main is integration
+  # evidence, so a running one is never killed (a queued older one is replaced).
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  static:
+    name: Lint, typecheck and web tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.27.1' # must equal JUSTIX_GO_VERSION in tools/go.sh (ADR-13)
+          check-latest: false
+          cache-dependency-path: |
+            go.sum
+            tools/lint/go.sum
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/golangci-lint
+          key: golangci-lint-${{ runner.os }}-${{ hashFiles('go.sum', 'tools/lint/go.sum', '.golangci.yml') }}
+          restore-keys: golangci-lint-${{ runner.os }}-
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: package.json # engines.node; Node 24.21.0 bundles npm 11.19.0
+          cache: npm
+      - name: Install web dependencies (npm ci --ignore-scripts)
+        id: deps
+        run: make web-install
+      - name: Lint (golangci-lint, deadcode, OpenAPI freshness, ESLint, Prettier, knip)
+        run: make lint
+      - name: Typecheck
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: make typecheck
+      - name: Web unit tests
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: make test-web
+      - name: Checks left tracked files unchanged
+        if: ${{ !cancelled() }}
+        run: git diff --exit-code
+
+  go-test:
+    name: Go tests with PostgreSQL and MinIO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.27.1' # must equal JUSTIX_GO_VERSION in tools/go.sh (ADR-13)
+          check-latest: false
+          cache-dependency-path: go.sum
+      - name: Go tests (-race, throwaway PostgreSQL 18.6 and MinIO containers)
+        run: make test-go

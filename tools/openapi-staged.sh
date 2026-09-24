@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Regenerates the OpenAPI spec when Go code is committed and stops the commit
-# if the spec changed, so it can be reviewed and staged. Install: make hooks.
+# lefthook pre-commit: regenerates the OpenAPI spec when Go code is committed
+# and stops the commit if the spec changed, so it can be reviewed and staged.
 set -euo pipefail
 spec=internal/platform/apidocs/swagger.json
 git diff --cached --name-only --diff-filter=ACMRD | grep -qE '^(cmd|internal)/.*\.go$' || exit 0

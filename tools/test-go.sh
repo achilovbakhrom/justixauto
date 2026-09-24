@@ -5,7 +5,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 pg_image="docker.io/library/postgres:18.6-alpine3.24@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2"
-minio_image="docker.io/minio/minio:latest"
+minio_image="quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e"
 name="justixauto-test-$$"
 password="$(openssl rand -hex 16)"
 cleanup() { docker rm -f "$name-pg" "$name-s3" >/dev/null 2>&1 || true; }
