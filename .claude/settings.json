@@ -1,4 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "opus"
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Glob|Grep|Edit|Write|MultiEdit|NotebookEdit|mcp__figma__.*|mcp__claude-in-chrome__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/autonomous-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }
