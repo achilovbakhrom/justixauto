@@ -1,91 +1,20 @@
-package retail
+package service
 
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 
+	"justixauto/internal/modules/retail/model"
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/auth"
-	"justixauto/internal/pkg/database"
 	"justixauto/internal/pkg/money"
 	"justixauto/internal/pkg/validate"
 )
 
-type Listing struct {
-	ID               string `gorm:"primaryKey;type:uuid"`
-	CompanyID        string `gorm:"type:uuid"`
-	VehicleID        string `gorm:"type:uuid"`
-	Text             string
-	AskingPriceMinor string
-	Currency         string
-	Status           string // draft | published | withdrawn
-	Version          int64
-	CreatedAt        time.Time
-	UpdatedAt        time.Time
-}
-
-func (Listing) TableName() string { return "retail.listings" }
-
-func (l *Listing) Price() money.Money {
-	return money.Money{AmountMinor: l.AskingPriceMinor, Currency: l.Currency}
-}
-
-type ListingRepository interface {
-	Create(ctx context.Context, l *Listing) error
-	Get(ctx context.Context, companyID, id string) (*Listing, error)
-	List(ctx context.Context, companyID, status string, limit, offset int) ([]Listing, error)
-	Update(ctx context.Context, l *Listing, expected int64) error
-	// WithdrawForVehicle closes open listings of a delivered vehicle.
-	WithdrawForVehicle(ctx context.Context, vehicleID string, at time.Time) error
-}
-
-type listingRepository struct{ db *gorm.DB }
-
-func (r *listingRepository) Create(ctx context.Context, l *Listing) error {
-	return database.Translate(r.db.WithContext(ctx).Create(l).Error)
-}
-
-func (r *listingRepository) Get(ctx context.Context, companyID, id string) (*Listing, error) {
-	var l Listing
-	if err := r.db.WithContext(ctx).Where("id = ? AND company_id = ?", id, companyID).Take(&l).Error; err != nil {
-		return nil, database.Translate(err)
-	}
-	return &l, nil
-}
-
-func (r *listingRepository) List(ctx context.Context, companyID, status string, limit, offset int) ([]Listing, error) {
-	limit, offset = database.Page(limit, offset)
-	q := r.db.WithContext(ctx).Where("company_id = ?", companyID).Order("updated_at DESC, id").Limit(limit).Offset(offset)
-	if status != "" {
-		q = q.Where("status = ?", status)
-	}
-	ls := []Listing{}
-	if err := database.Translate(q.Find(&ls).Error); err != nil {
-		return nil, err
-	}
-	return ls, nil
-}
-
-func (r *listingRepository) Update(ctx context.Context, l *Listing, expected int64) error {
-	err := database.UpdateVersioned(r.db.WithContext(ctx), &Listing{}, l.ID, expected, map[string]any{
-		"text": l.Text, "asking_price_minor": l.AskingPriceMinor, "currency": l.Currency, "status": l.Status, "updated_at": l.UpdatedAt,
-	})
-	if err == nil {
-		l.Version = expected + 1
-	}
-	return err
-}
-
-func (r *listingRepository) WithdrawForVehicle(ctx context.Context, vehicleID string, at time.Time) error {
-	return database.Translate(r.db.WithContext(ctx).Model(&Listing{}).Where("vehicle_id = ? AND status <> 'withdrawn'", vehicleID).
-		Updates(map[string]any{"status": "withdrawn", "updated_at": at, "version": gorm.Expr("version + 1")}).Error)
-}
-
-type ListingService struct{ deps }
+// Listing manages marketplace listings of vehicles.
+type Listing struct{ Deps }
 
 type ListingInput struct {
 	VehicleID   string      `json:"vehicleId"`
@@ -101,7 +30,7 @@ func price(v *apperr.Validation, field string, m money.Money) {
 
 // eligible checks the vehicle belongs to the company. Listings never change
 // vehicle facts (VIN, customs, documents).
-func (s *ListingService) eligible(ctx context.Context, p *auth.Principal, vehicleID string) error {
+func (s *Listing) eligible(ctx context.Context, p *auth.Principal, vehicleID string) error {
 	v, err := s.stock.Vehicle(ctx, p.CompanyID, vehicleID)
 	if errors.Is(err, apperr.ErrNotFound) || (err == nil && !v.Owned) {
 		return apperr.FieldError("vehicleId", "not a vehicle your company owns")
@@ -109,7 +38,7 @@ func (s *ListingService) eligible(ctx context.Context, p *auth.Principal, vehicl
 	return err
 }
 
-func (s *ListingService) Create(ctx context.Context, p *auth.Principal, in ListingInput) (*Listing, error) {
+func (s *Listing) Create(ctx context.Context, p *auth.Principal, in ListingInput) (*model.Listing, error) {
 	var v apperr.Validation
 	text := validate.Text(&v, "text", in.Text, 0, 5000)
 	price(&v, "askingPrice", in.AskingPrice)
@@ -123,7 +52,7 @@ func (s *ListingService) Create(ctx context.Context, p *auth.Principal, in Listi
 		return nil, err
 	}
 	now := s.clock()
-	l := &Listing{
+	l := &model.Listing{
 		ID: uuid.NewString(), CompanyID: p.CompanyID, VehicleID: in.VehicleID, Text: text,
 		AskingPriceMinor: in.AskingPrice.AmountMinor, Currency: in.AskingPrice.Currency, Status: "draft", Version: 1, CreatedAt: now, UpdatedAt: now,
 	}
@@ -139,7 +68,7 @@ func (s *ListingService) Create(ctx context.Context, p *auth.Principal, in Listi
 	return l, err
 }
 
-func (s *ListingService) get(ctx context.Context, st Store, p *auth.Principal, id string, expected int64) (*Listing, error) {
+func (s *Listing) get(ctx context.Context, st Store, p *auth.Principal, id string, expected int64) (*model.Listing, error) {
 	if err := validate.IDs(id); err != nil {
 		return nil, err
 	}
@@ -154,14 +83,14 @@ func (s *ListingService) get(ctx context.Context, st Store, p *auth.Principal, i
 }
 
 // Update changes the text and asking price of an open listing.
-func (s *ListingService) Update(ctx context.Context, p *auth.Principal, id string, expected int64, text string, askingPrice money.Money) (*Listing, error) {
+func (s *Listing) Update(ctx context.Context, p *auth.Principal, id string, expected int64, text string, askingPrice money.Money) (*model.Listing, error) {
 	var v apperr.Validation
 	text = validate.Text(&v, "text", text, 0, 5000)
 	price(&v, "askingPrice", askingPrice)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
-	var l *Listing
+	var l *model.Listing
 	err := s.store.InTx(ctx, func(st Store) error {
 		var err error
 		if l, err = s.get(ctx, st, p, id, expected); err != nil {
@@ -180,8 +109,8 @@ func (s *ListingService) Update(ctx context.Context, p *auth.Principal, id strin
 }
 
 // SetPublished publishes (after re-checking the vehicle) or withdraws a listing.
-func (s *ListingService) SetPublished(ctx context.Context, p *auth.Principal, id string, expected int64, publish bool) (*Listing, error) {
-	var l *Listing
+func (s *Listing) SetPublished(ctx context.Context, p *auth.Principal, id string, expected int64, publish bool) (*model.Listing, error) {
+	var l *model.Listing
 	err := s.store.InTx(ctx, func(st Store) error {
 		var err error
 		if l, err = s.get(ctx, st, p, id, expected); err != nil {
@@ -210,10 +139,10 @@ func (s *ListingService) SetPublished(ctx context.Context, p *auth.Principal, id
 	return l, err
 }
 
-func (s *ListingService) List(ctx context.Context, p *auth.Principal, status string, limit, offset int) ([]Listing, error) {
+func (s *Listing) List(ctx context.Context, p *auth.Principal, status string, limit, offset int) ([]model.Listing, error) {
 	return s.store.Listings().List(ctx, p.CompanyID, status, limit, offset)
 }
 
-func (s *ListingService) Get(ctx context.Context, p *auth.Principal, id string) (*Listing, error) {
+func (s *Listing) Get(ctx context.Context, p *auth.Principal, id string) (*model.Listing, error) {
 	return s.get(ctx, s.store, p, id, -1)
 }

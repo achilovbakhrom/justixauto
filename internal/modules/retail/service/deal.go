@@ -1,4 +1,4 @@
-package retail
+package service
 
 import (
 	"context"
@@ -9,208 +9,19 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 
+	"justixauto/internal/modules/retail/model"
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/auth"
-	"justixauto/internal/pkg/database"
 	"justixauto/internal/pkg/money"
 	"justixauto/internal/pkg/validate"
 )
 
-// Insurance tells whether the insurer approved the deal's application
-// (implemented by the insurance module).
-type Insurance interface {
-	Approved(ctx context.Context, companyID, dealID string) (bool, error)
-}
-
-// ---- model ----
-
+// Deal manages retail sales: reservation, contract, invoices, payment
+// evidence, registration and delivery.
 type Deal struct {
-	ID                    string  `gorm:"primaryKey;type:uuid"`
-	CompanyID             string  `gorm:"type:uuid"`
-	BranchID              string  `gorm:"type:uuid"`
-	CustomerID            string  `gorm:"type:uuid"`
-	LeadID                *string `gorm:"type:uuid"`
-	VehicleID             string  `gorm:"type:uuid"`
-	PaymentScheme         string
-	PriceMinor            string
-	Currency              string
-	Status                string     // reserved | delivered | cancelled
-	ContractSignedOn      *time.Time `gorm:"type:date"`
-	ContractReference     string
-	ContractFileIDs       []byte     `gorm:"type:jsonb"`
-	RegisteredOn          *time.Time `gorm:"type:date"`
-	PlateNumber           string
-	RegistrationReference string
-	DeliveredAt           *time.Time
-	StatusReason          string
-	Version               int64
-	CreatedBy             string `gorm:"type:uuid"`
-	CreatedAt             time.Time
-	UpdatedAt             time.Time
-}
-
-func (Deal) TableName() string { return "retail.deals" }
-
-func (d *Deal) Price() money.Money {
-	return money.Money{AmountMinor: d.PriceMinor, Currency: d.Currency}
-}
-
-type Invoice struct {
-	ID                string `gorm:"primaryKey;type:uuid"`
-	DealID            string `gorm:"type:uuid"`
-	CompanyID         string `gorm:"type:uuid"`
-	Purpose           string
-	AmountMinor       string
-	Currency          string
-	RecipientSnapshot string
-	DueDate           *time.Time `gorm:"type:date"`
-	Status            string
-	Version           int64
-	CreatedAt         time.Time
-}
-
-func (Invoice) TableName() string { return "retail.invoices" }
-
-type Evidence struct {
-	ID                string `gorm:"primaryKey;type:uuid"`
-	InvoiceID         string `gorm:"type:uuid"`
-	AmountMinor       string
-	Currency          string
-	PaidOn            time.Time `gorm:"type:date"`
-	ExternalReference string
-	AttachmentIDs     []byte `gorm:"type:jsonb"`
-	Seq               int64  `gorm:"->"`
-	Status            string
-	DecisionReason    string
-	SubmittedBy       string  `gorm:"type:uuid"`
-	DecidedBy         *string `gorm:"type:uuid"`
-	Version           int64
-	CreatedAt         time.Time
-	DecidedAt         *time.Time
-}
-
-func (Evidence) TableName() string { return "retail.payment_evidence" }
-
-// ---- repository ----
-
-type DealRepository interface {
-	Create(ctx context.Context, d *Deal) error
-	Deal(ctx context.Context, companyID, id string) (*Deal, error)
-	Deals(ctx context.Context, companyID string, branchIDs []string, status string, limit, offset int) ([]Deal, error)
-	Update(ctx context.Context, d *Deal, expected int64) error
-	CreateInvoice(ctx context.Context, i *Invoice) error
-	Invoice(ctx context.Context, companyID, id string) (*Invoice, error)
-	Invoices(ctx context.Context, dealID string) ([]Invoice, error)
-	AddEvidence(ctx context.Context, e *Evidence) error
-	Evidence(ctx context.Context, invoiceID string) ([]Evidence, error)
-	GetEvidence(ctx context.Context, id string) (*Evidence, error)
-	UpdateEvidence(ctx context.Context, e *Evidence, expected int64) error
-}
-
-type dealRepository struct{ db *gorm.DB }
-
-func (r *dealRepository) Create(ctx context.Context, d *Deal) error {
-	return database.Translate(r.db.WithContext(ctx).Create(d).Error)
-}
-
-func (r *dealRepository) Deal(ctx context.Context, companyID, id string) (*Deal, error) {
-	var d Deal
-	if err := r.db.WithContext(ctx).Where("id = ? AND company_id = ?", id, companyID).Take(&d).Error; err != nil {
-		return nil, database.Translate(err)
-	}
-	return &d, nil
-}
-
-func (r *dealRepository) Deals(ctx context.Context, companyID string, branchIDs []string, status string, limit, offset int) ([]Deal, error) {
-	limit, offset = database.Page(limit, offset)
-	q := r.db.WithContext(ctx).Where("company_id = ?", companyID).Order("updated_at DESC, id").Limit(limit).Offset(offset)
-	if branchIDs != nil {
-		q = q.Where("branch_id IN ?", append(branchIDs, uuid.Nil.String()))
-	}
-	if status != "" {
-		q = q.Where("status = ?", status)
-	}
-	ds := []Deal{}
-	if err := database.Translate(q.Find(&ds).Error); err != nil {
-		return nil, err
-	}
-	return ds, nil
-}
-
-func (r *dealRepository) Update(ctx context.Context, d *Deal, expected int64) error {
-	err := database.UpdateVersioned(r.db.WithContext(ctx), &Deal{}, d.ID, expected, map[string]any{
-		"status": d.Status, "contract_signed_on": d.ContractSignedOn, "contract_reference": d.ContractReference, "contract_file_ids": d.ContractFileIDs,
-		"registered_on": d.RegisteredOn, "plate_number": d.PlateNumber, "registration_reference": d.RegistrationReference,
-		"delivered_at": d.DeliveredAt, "status_reason": d.StatusReason, "updated_at": d.UpdatedAt,
-	})
-	if err == nil {
-		d.Version = expected + 1
-	}
-	return err
-}
-
-func (r *dealRepository) CreateInvoice(ctx context.Context, i *Invoice) error {
-	return database.Translate(r.db.WithContext(ctx).Create(i).Error)
-}
-
-func (r *dealRepository) Invoice(ctx context.Context, companyID, id string) (*Invoice, error) {
-	var i Invoice
-	if err := r.db.WithContext(ctx).Where("id = ? AND company_id = ?", id, companyID).Take(&i).Error; err != nil {
-		return nil, database.Translate(err)
-	}
-	return &i, nil
-}
-
-func (r *dealRepository) Invoices(ctx context.Context, dealID string) ([]Invoice, error) {
-	is := []Invoice{}
-	err := r.db.WithContext(ctx).Where("deal_id = ?", dealID).Order("created_at").Find(&is).Error
-	return is, database.Translate(err)
-}
-
-func (r *dealRepository) AddEvidence(ctx context.Context, e *Evidence) error {
-	return database.Translate(r.db.WithContext(ctx).Create(e).Error)
-}
-
-func (r *dealRepository) Evidence(ctx context.Context, invoiceID string) ([]Evidence, error) {
-	es := []Evidence{}
-	err := r.db.WithContext(ctx).Where("invoice_id = ?", invoiceID).Order("seq").Find(&es).Error
-	return es, database.Translate(err)
-}
-
-func (r *dealRepository) GetEvidence(ctx context.Context, id string) (*Evidence, error) {
-	var e Evidence
-	if err := r.db.WithContext(ctx).Where("id = ?", id).Take(&e).Error; err != nil {
-		return nil, database.Translate(err)
-	}
-	return &e, nil
-}
-
-func (r *dealRepository) UpdateEvidence(ctx context.Context, e *Evidence, expected int64) error {
-	err := database.UpdateVersioned(r.db.WithContext(ctx), &Evidence{}, e.ID, expected, map[string]any{
-		"status": e.Status, "decision_reason": e.DecisionReason, "decided_by": e.DecidedBy, "decided_at": e.DecidedAt,
-	})
-	if err == nil {
-		e.Version = expected + 1
-	}
-	return err
-}
-
-// ---- service ----
-
-type DealService struct {
-	deps
+	Deps
 	insurance Insurance
-}
-
-var schemes = []string{"cash", "own-installment", "partner-finance"}
-
-// purposes lists which invoices a payment scheme uses.
-var purposes = map[string][]string{
-	"cash":            {"vehicle-payment", "registration"},
-	"own-installment": {"first-installment", "registration"},
-	"partner-finance": {"registration"},
 }
 
 type DealInput struct {
@@ -234,7 +45,7 @@ func validateDealIDs(v *apperr.Validation, in DealInput) {
 // resolveDealLead loads and validates the optional lead a Create call links
 // to the new deal: it must belong to the same customer, be open, qualified
 // and not already tied to another active sale.
-func resolveDealLead(ctx context.Context, st Store, p *auth.Principal, customerID string, leadID *string) (*Lead, error) {
+func resolveDealLead(ctx context.Context, st Store, p *auth.Principal, customerID string, leadID *string) (*model.Lead, error) {
 	if leadID == nil {
 		return nil, nil
 	}
@@ -250,7 +61,7 @@ func resolveDealLead(ctx context.Context, st Store, p *auth.Principal, customerI
 
 // checkDealVehicle rejects Create when the vehicle is not one the company
 // owns.
-func (s *DealService) checkDealVehicle(ctx context.Context, st Store, p *auth.Principal, vehicleID string) error {
+func (s *Deal) checkDealVehicle(ctx context.Context, st Store, p *auth.Principal, vehicleID string) error {
 	vehicle, err := s.stock.Vehicle(st.Bind(ctx), p.CompanyID, vehicleID)
 	if err != nil || !vehicle.Owned {
 		return apperr.FieldError("vehicleId", "not a vehicle your company owns")
@@ -260,9 +71,9 @@ func (s *DealService) checkDealVehicle(ctx context.Context, st Store, p *auth.Pr
 
 // Create starts a sale: the vehicle is reserved at once (one active sale per
 // VIN across wholesale and retail) and an optional qualified lead is linked.
-func (s *DealService) Create(ctx context.Context, p *auth.Principal, in DealInput) (*Deal, error) {
+func (s *Deal) Create(ctx context.Context, p *auth.Principal, in DealInput) (*model.Deal, error) {
 	var v apperr.Validation
-	if !slices.Contains(schemes, in.PaymentScheme) {
+	if !slices.Contains(model.Schemes, in.PaymentScheme) {
 		v.Add("paymentScheme", "must be cash, own-installment or partner-finance")
 	}
 	price(&v, "price", in.Price)
@@ -274,7 +85,7 @@ func (s *DealService) Create(ctx context.Context, p *auth.Principal, in DealInpu
 		return nil, err
 	}
 	now := s.clock()
-	d := &Deal{
+	d := &model.Deal{
 		ID: uuid.NewString(), ContractFileIDs: []byte("[]"), CompanyID: p.CompanyID, BranchID: in.BranchID, CustomerID: in.CustomerID, LeadID: in.LeadID,
 		VehicleID: in.VehicleID, PaymentScheme: in.PaymentScheme, PriceMinor: in.Price.AmountMinor, Currency: in.Price.Currency,
 		Status: "reserved", Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
@@ -310,7 +121,7 @@ func (s *DealService) Create(ctx context.Context, p *auth.Principal, in DealInpu
 	return d, err
 }
 
-func (s *DealService) deal(ctx context.Context, st Store, p *auth.Principal, id string, expected int64) (*Deal, error) {
+func (s *Deal) deal(ctx context.Context, st Store, p *auth.Principal, id string, expected int64) (*model.Deal, error) {
 	if err := validate.IDs(id); err != nil {
 		return nil, err
 	}
@@ -341,9 +152,9 @@ func date(v *apperr.Validation, field, s string, now time.Time) *time.Time {
 
 // RecordContract stores the external contract fact (signed date, reference)
 // and the uploaded scans; recording again replaces the previous record.
-func (s *DealService) RecordContract(ctx context.Context, p *auth.Principal, id string, expected int64, signedOn, reference string, fileIDs []string) (*Deal, error) {
+func (s *Deal) RecordContract(ctx context.Context, p *auth.Principal, id string, expected int64, signedOn, reference string, fileIDs []string) (*model.Deal, error) {
 	var files []string
-	return s.update(ctx, p, id, expected, "deal.contract_recorded", func(v *apperr.Validation, d *Deal) {
+	return s.update(ctx, p, id, expected, "deal.contract_recorded", func(v *apperr.Validation, d *model.Deal) {
 		d.ContractSignedOn = date(v, "signedOn", signedOn, s.clock())
 		d.ContractReference = validate.Text(v, "reference", reference, 1, 100)
 		files = validate.UniqueIDs(v, "bindingIds", fileIDs)
@@ -351,7 +162,7 @@ func (s *DealService) RecordContract(ctx context.Context, p *auth.Principal, id 
 			v.Add("bindingIds", "at most 10 files")
 		}
 		d.ContractFileIDs, _ = json.Marshal(files)
-	}, func(ctx context.Context, st Store, d *Deal) error {
+	}, func(ctx context.Context, st Store, d *model.Deal) error {
 		for _, f := range files { // must be the company's own files
 			if err := s.files.Share(st.Bind(ctx), p.CompanyID, f, p.CompanyID, "retail.contract", d.ID); err != nil {
 				if errors.Is(err, apperr.ErrNotFound) {
@@ -366,12 +177,12 @@ func (s *DealService) RecordContract(ctx context.Context, p *auth.Principal, id 
 
 // RecordRegistration stores the vehicle registration facts; the registration
 // invoice must be paid first.
-func (s *DealService) RecordRegistration(ctx context.Context, p *auth.Principal, id string, expected int64, registeredOn, plate, reference string) (*Deal, error) {
-	return s.update(ctx, p, id, expected, "deal.registered", func(v *apperr.Validation, d *Deal) {
+func (s *Deal) RecordRegistration(ctx context.Context, p *auth.Principal, id string, expected int64, registeredOn, plate, reference string) (*model.Deal, error) {
+	return s.update(ctx, p, id, expected, "deal.registered", func(v *apperr.Validation, d *model.Deal) {
 		d.RegisteredOn = date(v, "registeredOn", registeredOn, s.clock())
 		d.PlateNumber = validate.Text(v, "plateNumber", plate, 1, 20)
 		d.RegistrationReference = validate.Text(v, "reference", reference, 0, 100)
-	}, func(ctx context.Context, st Store, d *Deal) error {
+	}, func(ctx context.Context, st Store, d *model.Deal) error {
 		paid, err := s.paid(ctx, st, d, "registration")
 		if err != nil {
 			return err
@@ -383,10 +194,10 @@ func (s *DealService) RecordRegistration(ctx context.Context, p *auth.Principal,
 	})
 }
 
-func (s *DealService) update(ctx context.Context, p *auth.Principal, id string, expected int64, event string,
-	apply func(*apperr.Validation, *Deal), checks ...func(context.Context, Store, *Deal) error,
-) (*Deal, error) {
-	var d *Deal
+func (s *Deal) update(ctx context.Context, p *auth.Principal, id string, expected int64, event string,
+	apply func(*apperr.Validation, *model.Deal), checks ...func(context.Context, Store, *model.Deal) error,
+) (*model.Deal, error) {
+	var d *model.Deal
 	err := s.store.InTx(ctx, func(st Store) error {
 		var err error
 		if d, err = s.deal(ctx, st, p, id, expected); err != nil {
@@ -413,7 +224,7 @@ func (s *DealService) update(ctx context.Context, p *auth.Principal, id string, 
 
 // paid reports whether the deal's issued invoice for purpose is fully paid
 // by accepted evidence.
-func (s *DealService) paid(ctx context.Context, st Store, d *Deal, purpose string) (bool, error) {
+func (s *Deal) paid(ctx context.Context, st Store, d *model.Deal, purpose string) (bool, error) {
 	is, err := st.Deals().Invoices(ctx, d.ID)
 	if err != nil {
 		return false, err
@@ -441,7 +252,7 @@ type InvoiceInput struct {
 // IssueInvoice records a deal invoice for a purpose the payment scheme uses.
 // Amounts and recipients are entered by the seller; Justix does not infer
 // registration fees or legal obligations.
-func (s *DealService) IssueInvoice(ctx context.Context, p *auth.Principal, dealID string, expected int64, in InvoiceInput) (*InvoiceView, error) {
+func (s *Deal) IssueInvoice(ctx context.Context, p *auth.Principal, dealID string, expected int64, in InvoiceInput) (*InvoiceView, error) {
 	var v apperr.Validation
 	price(&v, "amount", in.Amount)
 	recipient := validate.Text(&v, "recipientSnapshot", in.RecipientSnapshot, 1, 500)
@@ -462,10 +273,10 @@ func (s *DealService) IssueInvoice(ctx context.Context, p *auth.Principal, dealI
 		if err != nil {
 			return err
 		}
-		if !slices.Contains(purposes[d.PaymentScheme], in.Purpose) {
+		if !slices.Contains(model.Purposes[d.PaymentScheme], in.Purpose) {
 			return apperr.FieldError("purpose", "not used by a "+d.PaymentScheme+" sale")
 		}
-		i := &Invoice{
+		i := &model.Invoice{
 			ID: uuid.NewString(), DealID: d.ID, CompanyID: d.CompanyID, Purpose: in.Purpose, AmountMinor: in.Amount.AmountMinor,
 			Currency: in.Amount.Currency, RecipientSnapshot: recipient, DueDate: due, Status: "issued", Version: 1, CreatedAt: s.clock(),
 		}
@@ -489,8 +300,8 @@ func (s *DealService) IssueInvoice(ctx context.Context, p *auth.Principal, dealI
 }
 
 type InvoiceView struct {
-	Invoice     Invoice
-	Evidence    []Evidence
+	Invoice     model.Invoice
+	Evidence    []model.Evidence
 	Paid        money.Money
 	Pending     money.Money
 	Outstanding money.Money
@@ -504,7 +315,7 @@ func amount(s string) *big.Int {
 	return n
 }
 
-func (s *DealService) invoiceView(ctx context.Context, st Store, i *Invoice) (*InvoiceView, error) {
+func (s *Deal) invoiceView(ctx context.Context, st Store, i *model.Invoice) (*InvoiceView, error) {
 	es, err := st.Deals().Evidence(ctx, i.ID)
 	if err != nil {
 		return nil, err
@@ -538,7 +349,7 @@ type EvidenceInput struct {
 // checkEvidenceInvoice loads the invoice for a SubmitEvidence call and
 // validates it is still open, in the claim's currency and that the claim
 // does not exceed the amount still open (net of evidence already pending).
-func (s *DealService) checkEvidenceInvoice(ctx context.Context, st Store, p *auth.Principal, invoiceID string, in EvidenceInput, claimed *big.Int) (*Invoice, error) {
+func (s *Deal) checkEvidenceInvoice(ctx context.Context, st Store, p *auth.Principal, invoiceID string, in EvidenceInput, claimed *big.Int) (*model.Invoice, error) {
 	if err := validate.IDs(invoiceID); err != nil {
 		return nil, err
 	}
@@ -567,7 +378,7 @@ func (s *DealService) checkEvidenceInvoice(ctx context.Context, st Store, p *aut
 
 // shareEvidenceAttachments shares each attachment (which must be the
 // company's own file) with itself, scoped to the evidence record.
-func (s *DealService) shareEvidenceAttachments(ctx context.Context, st Store, p *auth.Principal, attachments []string, evidenceID string) error {
+func (s *Deal) shareEvidenceAttachments(ctx context.Context, st Store, p *auth.Principal, attachments []string, evidenceID string) error {
 	for _, f := range attachments {
 		if err := s.files.Share(st.Bind(ctx), p.CompanyID, f, p.CompanyID, "retail.payment-evidence", evidenceID); err != nil {
 			if errors.Is(err, apperr.ErrNotFound) {
@@ -581,7 +392,7 @@ func (s *DealService) shareEvidenceAttachments(ctx context.Context, st Store, p 
 
 // SubmitEvidence records the customer's external payment as reported to the
 // seller's staff; it is reviewed separately.
-func (s *DealService) SubmitEvidence(ctx context.Context, p *auth.Principal, invoiceID string, in EvidenceInput) (*InvoiceView, error) {
+func (s *Deal) SubmitEvidence(ctx context.Context, p *auth.Principal, invoiceID string, in EvidenceInput) (*InvoiceView, error) {
 	var v apperr.Validation
 	claimed, ok := in.ClaimedAmount.Parse()
 	if !ok || claimed.Sign() == 0 {
@@ -603,7 +414,7 @@ func (s *DealService) SubmitEvidence(ctx context.Context, p *auth.Principal, inv
 			return err
 		}
 		rawIDs, _ := json.Marshal(attachments)
-		e := &Evidence{
+		e := &model.Evidence{
 			ID: uuid.NewString(), InvoiceID: i.ID, AmountMinor: claimed.String(), Currency: i.Currency, PaidOn: *paidOn,
 			ExternalReference: ref, AttachmentIDs: rawIDs, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: s.clock(),
 		}
@@ -624,7 +435,7 @@ func (s *DealService) SubmitEvidence(ctx context.Context, p *auth.Principal, inv
 
 // DecideEvidence is the factual review of a payment claim: accept (with
 // confirmation) or reject (with a reason). No schedule allocation is implied.
-func (s *DealService) DecideEvidence(ctx context.Context, p *auth.Principal, id string, expected int64, accept, confirmation bool, why string) (*InvoiceView, error) {
+func (s *Deal) DecideEvidence(ctx context.Context, p *auth.Principal, id string, expected int64, accept, confirmation bool, why string) (*InvoiceView, error) {
 	var v apperr.Validation
 	if accept && !confirmation {
 		v.Add("confirmation", "confirm that the payment was received")
@@ -690,7 +501,7 @@ func (c Checklist) Ready() bool {
 	return c.PolicyResolved && c.Contract && ok(c.VehiclePayment) && ok(c.InsuranceApproved) && ok(c.FirstInstallment) && c.RegistrationPaid && c.Registered
 }
 
-func (s *DealService) checklist(ctx context.Context, st Store, d *Deal) (Checklist, error) {
+func (s *Deal) checklist(ctx context.Context, st Store, d *model.Deal) (Checklist, error) {
 	c := Checklist{Contract: d.ContractSignedOn != nil, Registered: d.RegisteredOn != nil, PolicyResolved: d.PaymentScheme != "partner-finance"}
 	var err error
 	if c.RegistrationPaid, err = s.paid(ctx, st, d, "registration"); err != nil {
@@ -722,11 +533,11 @@ func (s *DealService) checklist(ctx context.Context, st Store, d *Deal) (Checkli
 // linked lead is won. Partner-finance deliveries wait for a product decision
 // on the money flow (OD-01). For own installments, servicing of the debt is
 // not started here.
-func (s *DealService) Deliver(ctx context.Context, p *auth.Principal, id string, expected int64, occurredAt time.Time) (*Deal, error) {
+func (s *Deal) Deliver(ctx context.Context, p *auth.Principal, id string, expected int64, occurredAt time.Time) (*model.Deal, error) {
 	if occurredAt.IsZero() || occurredAt.After(s.clock().Add(5*time.Minute)) {
 		return nil, apperr.FieldError("occurredAt", "required and not in the future")
 	}
-	var d *Deal
+	var d *model.Deal
 	err := s.store.InTx(ctx, func(st Store) error {
 		var err error
 		if d, err = s.deal(ctx, st, p, id, expected); err != nil {
@@ -773,13 +584,13 @@ func (s *DealService) Deliver(ctx context.Context, p *auth.Principal, id string,
 
 // Cancel ends a sale before delivery and releases the vehicle. A sale with
 // accepted payments needs a refund policy first and cannot be cancelled here.
-func (s *DealService) Cancel(ctx context.Context, p *auth.Principal, id string, expected int64, why string) (*Deal, error) {
+func (s *Deal) Cancel(ctx context.Context, p *auth.Principal, id string, expected int64, why string) (*model.Deal, error) {
 	var v apperr.Validation
 	why = validate.Reason(&v, why)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
-	var d *Deal
+	var d *model.Deal
 	err := s.store.InTx(ctx, func(st Store) error {
 		var err error
 		if d, err = s.deal(ctx, st, p, id, expected); err != nil {
@@ -821,14 +632,14 @@ func (s *DealService) Cancel(ctx context.Context, p *auth.Principal, id string, 
 }
 
 type DealView struct {
-	Deal      Deal
-	Customer  Customer
+	Deal      model.Deal
+	Customer  model.Customer
 	Invoices  []InvoiceView
 	Checklist Checklist
-	History   []Event
+	History   []model.Event
 }
 
-func (s *DealService) view(ctx context.Context, d *Deal, full bool) (*DealView, error) {
+func (s *Deal) view(ctx context.Context, d *model.Deal, full bool) (*DealView, error) {
 	c, err := s.store.CRM().Customer(ctx, d.CompanyID, d.CustomerID)
 	if err != nil {
 		return nil, err
@@ -855,7 +666,7 @@ func (s *DealService) view(ctx context.Context, d *Deal, full bool) (*DealView, 
 	return v, err
 }
 
-func (s *DealService) Get(ctx context.Context, p *auth.Principal, id string) (*DealView, error) {
+func (s *Deal) Get(ctx context.Context, p *auth.Principal, id string) (*DealView, error) {
 	d, err := s.deal(ctx, s.store, p, id, -1)
 	if err != nil {
 		return nil, err
@@ -863,7 +674,7 @@ func (s *DealService) Get(ctx context.Context, p *auth.Principal, id string) (*D
 	return s.view(ctx, d, true)
 }
 
-func (s *DealService) List(ctx context.Context, p *auth.Principal, status string, limit, offset int) ([]DealView, error) {
+func (s *Deal) List(ctx context.Context, p *auth.Principal, status string, limit, offset int) ([]DealView, error) {
 	ds, err := s.store.Deals().Deals(ctx, p.CompanyID, scopeBranches(p), status, limit, offset)
 	if err != nil {
 		return nil, err
@@ -879,6 +690,22 @@ func (s *DealService) List(ctx context.Context, p *auth.Principal, status string
 	return out, nil
 }
 
+// Invoice returns one invoice with its payment evidence, checking access
+// through the deal it belongs to.
+func (s *Deal) Invoice(ctx context.Context, p *auth.Principal, id string) (*InvoiceView, error) {
+	if err := validate.IDs(id); err != nil {
+		return nil, err
+	}
+	i, err := s.store.Deals().Invoice(ctx, p.CompanyID, id)
+	if err != nil {
+		return nil, err
+	}
+	if _, err := s.deal(ctx, s.store, p, i.DealID, -1); err != nil {
+		return nil, err
+	}
+	return s.invoiceView(ctx, s.store, i)
+}
+
 // DealInfo is what finance and insurance may know about a sale.
 type DealInfo struct {
 	ID, CompanyID, VehicleID, CustomerID, PaymentScheme, Status string
@@ -888,7 +715,7 @@ type DealInfo struct {
 }
 
 // Info returns a sale of the company for other modules (through their ports).
-func (s *DealService) Info(ctx context.Context, companyID, id string) (*DealInfo, error) {
+func (s *Deal) Info(ctx context.Context, companyID, id string) (*DealInfo, error) {
 	if err := validate.IDs(id); err != nil {
 		return nil, err
 	}
