@@ -46,16 +46,59 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 export interface CallOptions {
   ifMatch?: string;
   contextRevision?: string;
-  /** Reuse the same key when retrying the same POST. */
+  /** Overrides the automatic per-action key (see actionKeys). */
   idempotencyKey?: string;
   retried?: boolean;
 }
 
-function buildRequestHeaders(method: Method, contentType: string | undefined, options: CallOptions): Headers {
+/**
+ * An Idempotency-Key identifies one user action, not one HTTP attempt. The key
+ * of a POST stays attached to its request (path + body) until the outcome is
+ * known, so a double click or a resubmit after a lost response sends the same
+ * key and the server replays the first result instead of acting twice. Once
+ * the server has answered definitively the key is dropped, and the next
+ * identical submission is a new action with a new key.
+ */
+const actionKeys = new Map<string, string>();
+
+function fingerprint(path: string, body: BodyInit | undefined): string {
+  if (!(body instanceof FormData)) return `${path}\n${typeof body === 'string' ? body : ''}`;
+  const parts = [...body.entries()].map(([name, value]) =>
+    typeof value === 'string'
+      ? `${name}=${value}`
+      : `${name}=file:${value.name}:${value.type}:${value.size}:${value.lastModified}`,
+  );
+  return `${path}\n${parts.join('\n')}`;
+}
+
+function actionKey(fp: string): string {
+  let key = actionKeys.get(fp);
+  if (!key) {
+    key = crypto.randomUUID();
+    actionKeys.set(fp, key);
+  }
+  return key;
+}
+
+/** The action may have happened: keep its key for the resubmit. */
+function outcomeUnknown(status: number, code: string | undefined): boolean {
+  return status === 0 || status >= 500 || code === 'request_in_progress';
+}
+
+function settleActionKey(fp: string, key: string) {
+  if (actionKeys.get(fp) === key) actionKeys.delete(fp);
+}
+
+function buildRequestHeaders(
+  method: Method,
+  contentType: string | undefined,
+  options: CallOptions,
+  idempotencyKey: string | undefined,
+): Headers {
   const headers = new Headers({ Accept: 'application/json' });
   if (contentType) headers.set('Content-Type', contentType);
   if (method !== 'GET' && csrf) headers.set('X-CSRF-Token', csrf);
-  if (method === 'POST') headers.set('Idempotency-Key', options.idempotencyKey ?? crypto.randomUUID());
+  if (idempotencyKey) headers.set('Idempotency-Key', idempotencyKey);
   if (options.ifMatch !== undefined) headers.set('If-Match', `"${options.ifMatch}"`);
   if (options.contextRevision !== undefined) headers.set('X-Context-Revision', options.contextRevision);
   return headers;
@@ -111,17 +154,26 @@ async function send(
   contentType: string | undefined,
   options: CallOptions = {},
 ): Promise<{ json: unknown; response: Response }> {
-  const headers = buildRequestHeaders(method, contentType, options);
+  // An explicit key is managed by the caller; otherwise the key follows the action.
+  const fp = method === 'POST' && options.idempotencyKey === undefined ? fingerprint(path, body) : undefined;
+  const idempotencyKey = fp === undefined ? options.idempotencyKey : actionKey(fp);
+  const headers = buildRequestHeaders(method, contentType, options, method === 'POST' ? idempotencyKey : undefined);
+  // Without a response (network error) the key stays for the resubmit.
   const response = await dispatchFetch(method, path, headers, body);
   const token = response.headers.get('X-CSRF-Token');
   if (token) csrf = token;
-  if (response.status === 204) return { json: null as unknown, response };
   let json: unknown = null;
-  try {
-    json = await response.json();
-  } catch {
-    /* non-JSON error */
+  if (response.status !== 204) {
+    try {
+      json = await response.json();
+    } catch {
+      /* non-JSON error */
+    }
   }
+  if (fp !== undefined && idempotencyKey && !outcomeUnknown(response.status, (json as ErrorBody)?.error?.code)) {
+    settleActionKey(fp, idempotencyKey);
+  }
+  if (response.status === 204) return { json: null as unknown, response };
   if (!response.ok) return handleErrorResponse(response, json, method, path, body, contentType, options);
   return { json, response };
 }

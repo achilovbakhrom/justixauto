@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"justixauto/internal/modules/inventory"
 	"justixauto/internal/e2e"
+	"justixauto/internal/modules/inventory"
 )
 
 var (

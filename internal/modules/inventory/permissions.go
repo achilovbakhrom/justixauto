@@ -1,20 +1,14 @@
 package inventory
 
-import "justixauto/internal/pkg/auth"
+import "justixauto/internal/modules/inventory/model"
 
 const (
-	PermRead             = "inventory.read"
-	PermModelsEdit       = "inventory.models.edit"
-	PermWarehousesManage = "inventory.warehouses.manage"
-	PermReceiptsCreate   = "inventory.receipts.create"
-	PermVehiclesMove     = "inventory.vehicles.move"
+	PermRead             = model.PermRead
+	PermModelsEdit       = model.PermModelsEdit
+	PermWarehousesManage = model.PermWarehousesManage
+	PermReceiptsCreate   = model.PermReceiptsCreate
+	PermVehiclesMove     = model.PermVehiclesMove
 )
 
 // Permissions are registered in the identity catalog at startup.
-var Permissions = []auth.PermissionInfo{
-	{Key: PermRead, Scope: "company", Assignable: true},
-	{Key: PermModelsEdit, Scope: "company", Assignable: true},
-	{Key: PermWarehousesManage, Scope: "company", Assignable: true},
-	{Key: PermReceiptsCreate, Scope: "company", Assignable: true},
-	{Key: PermVehiclesMove, Scope: "company", Assignable: true},
-}
+var Permissions = model.Permissions
