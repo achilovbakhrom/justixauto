@@ -1,27 +1,31 @@
-package documents
+package handler
 
 import (
 	"io"
 	"mime"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
 
+	"justixauto/internal/modules/documents/model"
+	"justixauto/internal/modules/documents/service"
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/auth"
 	"justixauto/internal/pkg/httpx"
 )
 
-type Handler struct{ s *Service }
+// Handler holds the service behind the documents HTTP routes.
+type Handler struct{ s *service.Service }
+
+// New builds the documents handler from its service.
+func New(s *service.Service) *Handler { return &Handler{s} }
 
 func (h *Handler) Routes(g *echo.Group) {
 	c := g.Group("", auth.RequireCompany())
-	c.POST("/files", h.upload, auth.Require(PermUpload))
-	c.GET("/files/:id", h.get, auth.Require(PermRead))
-	c.GET("/files/:id/content", h.content, auth.Require(PermRead))
+	c.POST("/files", h.upload, auth.Require(model.PermUpload))
+	c.GET("/files/:id", h.get, auth.Require(model.PermRead))
+	c.GET("/files/:id/content", h.content, auth.Require(model.PermRead))
 }
 
 // upload takes multipart/form-data with fields "purpose" and "file".
@@ -33,12 +37,12 @@ func (h *Handler) Routes(g *echo.Group) {
 //	@Param		Idempotency-Key	header		string	true	"retry key"
 //	@Param		purpose			formData	string	true	"file purpose"
 //	@Param		file			formData	file	true	"file contents"
-//	@Success	201				{object}	httpx.DataEnvelope[documents.FileView]
+//	@Success	201				{object}	httpx.DataEnvelope[handler.FileView]
 //	@Failure	401,403,413,422	{object}	httpx.ErrorBody
 //	@Router		/documents/files [post]
 func (h *Handler) upload(c echo.Context) error {
 	req := c.Request()
-	req.Body = http.MaxBytesReader(c.Response(), req.Body, MaxBytes+1<<20) // file plus form overhead
+	req.Body = http.MaxBytesReader(c.Response(), req.Body, service.MaxBytes+1<<20) // file plus form overhead
 	fh, err := c.FormFile("file")
 	if err != nil {
 		return apperr.FieldError("file", "attach a file")
@@ -52,7 +56,7 @@ func (h *Handler) upload(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return httpx.Data(c, http.StatusCreated, FileInfo(file), 1)
+	return httpx.Data(c, http.StatusCreated, toFileView(file), 1)
 }
 
 // get returns a file's metadata.
@@ -60,7 +64,7 @@ func (h *Handler) upload(c echo.Context) error {
 //	@Summary	Get file metadata
 //	@Tags		documents
 //	@Param		id			path		string	true	"file ID"
-//	@Success	200			{object}	httpx.DataEnvelope[documents.FileView]
+//	@Success	200			{object}	httpx.DataEnvelope[handler.FileView]
 //	@Failure	401,403,404	{object}	httpx.ErrorBody
 //	@Router		/documents/files/{id} [get]
 func (h *Handler) get(c echo.Context) error {
@@ -68,7 +72,7 @@ func (h *Handler) get(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return httpx.Data(c, http.StatusOK, FileInfo(f), 1)
+	return httpx.Data(c, http.StatusOK, toFileView(f), 1)
 }
 
 // content streams the file's raw bytes.
@@ -95,19 +99,3 @@ func (h *Handler) content(c echo.Context) error {
 	_, err = io.Copy(c.Response(), r)
 	return err
 }
-
-type Module struct {
-	handler *Handler
-	Service *Service
-}
-
-func New(db *gorm.DB, now func() time.Time, storage Storage) *Module {
-	if now == nil {
-		now = time.Now
-	}
-	s := &Service{repo: &repository{db}, storage: storage, now: now}
-	return &Module{handler: &Handler{s}, Service: s}
-}
-
-// Register mounts the document routes under /api/v1/documents.
-func (m *Module) Register(api *echo.Group) { m.handler.Routes(api.Group("/documents")) }

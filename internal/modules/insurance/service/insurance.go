@@ -1,7 +1,6 @@
-// Package insurance lets sellers send own-installment sales to an insurance
-// company, which reviews them and approves or declines. A decision is only a
-// decision: no policy, premium, coverage, payment or hand-over follows.
-package insurance
+// Package service holds insurance's business rules. It imports model and
+// internal/pkg only; it must never import echo, gorm, repository or handler.
+package service
 
 import (
 	"context"
@@ -10,172 +9,27 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 
+	"justixauto/internal/modules/insurance/model"
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/auth"
-	"justixauto/internal/pkg/database"
-	"justixauto/internal/pkg/money"
 	"justixauto/internal/pkg/validate"
 )
 
-const (
-	PermRead   = "insurance.read"
-	PermApply  = "insurance.applications.manage" // seller side
-	PermReview = "insurance.applications.review" // insurer: take, request information
-	PermDecide = "insurance.applications.decide" // insurer: approve/decline (sensitive)
-)
-
-var Permissions = []auth.PermissionInfo{
-	{Key: PermRead, Scope: "company", Assignable: true},
-	{Key: PermApply, Scope: "company", Assignable: true},
-	{Key: PermReview, Scope: "company", Assignable: true},
-	{Key: PermDecide, Scope: "company", RequiresMFA: true, Assignable: true},
-}
-
-// Sale is what insurance may know about a retail sale (from retail).
-type Sale struct {
-	ID, VehicleID, PaymentScheme, Status string
-	// What the provider sees about the sale: vehicle and client (OD-10 decides
-	// any further personal data).
-	VIN, Model, CustomerName string
-	Price                    money.Money
-	Revision                 int64
-}
-
-// Sales reads the seller's sales (implemented by retail).
-type Sales interface {
-	Sale(ctx context.Context, companyID, dealID string) (*Sale, error)
-}
-
-// Company is the insurer's public profile (from identity).
-type Company struct {
-	ID, Name, Kind string
-	Active         bool
-}
-
-type Directory interface {
-	Company(ctx context.Context, id string) (*Company, error)
-}
-
-// ---- model ----
-
-type Application struct {
-	ID               string `gorm:"primaryKey;type:uuid"`
-	SellerCompanyID  string `gorm:"type:uuid"`
-	InsurerCompanyID string `gorm:"type:uuid"`
-	DealID           string `gorm:"type:uuid"`
-	Status           string
-	Note             string
-	Snapshot         []byte `gorm:"type:jsonb"`
-	Version          int64
-	CreatedBy        string `gorm:"type:uuid"`
-	CreatedAt        time.Time
-	UpdatedAt        time.Time
-	SubmittedAt      *time.Time
-	DecidedAt        *time.Time
-}
-
-func (Application) TableName() string { return "insurance.applications" }
-
-type Message struct {
-	ID            string `gorm:"primaryKey;type:uuid"`
-	Seq           int64  `gorm:"->"`
-	ApplicationID string `gorm:"type:uuid"`
-	Kind          string
-	RequestID     *string `gorm:"type:uuid"`
-	Note          string
-	CompanyID     string `gorm:"type:uuid"`
-	ActorUserID   string `gorm:"type:uuid"`
-	CreatedAt     time.Time
-}
-
-func (Message) TableName() string { return "insurance.messages" }
-
-// ---- repository ----
-
-type Repository interface {
-	Create(ctx context.Context, a *Application) error
-	// Get returns an application visible to the company: the seller always,
-	// the addressed insurer once it was submitted.
-	Get(ctx context.Context, companyID, id string) (*Application, error)
-	List(ctx context.Context, companyID, status string, limit, offset int) ([]Application, error)
-	ForDeal(ctx context.Context, sellerID, dealID string) (*Application, error)
-	Update(ctx context.Context, a *Application, expected int64) error
-	AddMessage(ctx context.Context, m *Message) error
-	Messages(ctx context.Context, applicationID string) ([]Message, error)
-	InTx(ctx context.Context, fn func(Repository) error) error
-}
-
-type repository struct{ db *gorm.DB }
-
-func (r *repository) InTx(ctx context.Context, fn func(Repository) error) error {
-	return database.Conn(ctx, r.db).WithContext(ctx).Transaction(func(tx *gorm.DB) error { return fn(&repository{tx}) })
-}
-
-func (r *repository) Create(ctx context.Context, a *Application) error {
-	return database.Translate(r.db.WithContext(ctx).Create(a).Error)
-}
-
-const visible = "(seller_company_id = ? OR (insurer_company_id = ? AND status <> 'draft'))"
-
-func (r *repository) Get(ctx context.Context, companyID, id string) (*Application, error) {
-	var a Application
-	if err := r.db.WithContext(ctx).Where("id = ? AND "+visible, id, companyID, companyID).Take(&a).Error; err != nil {
-		return nil, database.Translate(err)
-	}
-	return &a, nil
-}
-
-func (r *repository) List(ctx context.Context, companyID, status string, limit, offset int) ([]Application, error) {
-	limit, offset = database.Page(limit, offset)
-	q := r.db.WithContext(ctx).Where(visible, companyID, companyID).Order("updated_at DESC, id").Limit(limit).Offset(offset)
-	if status != "" {
-		q = q.Where("status = ?", status)
-	}
-	as := []Application{}
-	if err := database.Translate(q.Find(&as).Error); err != nil {
-		return nil, err
-	}
-	return as, nil
-}
-
-func (r *repository) ForDeal(ctx context.Context, sellerID, dealID string) (*Application, error) {
-	var a Application
-	if err := r.db.WithContext(ctx).Where("seller_company_id = ? AND deal_id = ?", sellerID, dealID).Take(&a).Error; err != nil {
-		return nil, database.Translate(err)
-	}
-	return &a, nil
-}
-
-func (r *repository) Update(ctx context.Context, a *Application, expected int64) error {
-	err := database.UpdateVersioned(r.db.WithContext(ctx), &Application{}, a.ID, expected, map[string]any{
-		"insurer_company_id": a.InsurerCompanyID, "status": a.Status, "note": a.Note, "snapshot": a.Snapshot,
-		"updated_at": a.UpdatedAt, "submitted_at": a.SubmittedAt, "decided_at": a.DecidedAt,
-	})
-	if err == nil {
-		a.Version = expected + 1
-	}
-	return err
-}
-
-func (r *repository) AddMessage(ctx context.Context, m *Message) error {
-	return database.Translate(r.db.WithContext(ctx).Create(m).Error)
-}
-
-func (r *repository) Messages(ctx context.Context, applicationID string) ([]Message, error) {
-	ms := []Message{}
-	err := r.db.WithContext(ctx).Where("application_id = ?", applicationID).Order("seq").Find(&ms).Error
-	return ms, database.Translate(err)
-}
-
-// ---- service ----
-
+// Service reviews sellers' insurance applications on their sales.
 type Service struct {
 	repo      Repository
 	sales     Sales
 	directory Directory
 	now       func() time.Time
+}
+
+// New builds the insurance service.
+func New(repo Repository, sales Sales, directory Directory, now func() time.Time) *Service {
+	if now == nil {
+		now = time.Now
+	}
+	return &Service{repo: repo, sales: sales, directory: directory, now: now}
 }
 
 func (s *Service) clock() time.Time { return s.now().UTC() }
@@ -206,6 +60,7 @@ func (s *Service) eligibleSale(ctx context.Context, companyID, dealID string) (*
 	return sale, nil
 }
 
+// CreateInput is a new insurance application's data.
 type CreateInput struct {
 	RetailDealID     string `json:"retailDealId"`
 	InsurerCompanyID string `json:"insurerCompanyId"`
@@ -213,7 +68,7 @@ type CreateInput struct {
 }
 
 // Create drafts the application; the insurer does not see drafts.
-func (s *Service) Create(ctx context.Context, p *auth.Principal, in CreateInput) (*Application, error) {
+func (s *Service) Create(ctx context.Context, p *auth.Principal, in CreateInput) (*model.Application, error) {
 	var v apperr.Validation
 	note := validate.Text(&v, "note", in.Note, 0, 2000)
 	if err := v.Err(); err != nil {
@@ -226,7 +81,7 @@ func (s *Service) Create(ctx context.Context, p *auth.Principal, in CreateInput)
 		return nil, err
 	}
 	now := s.clock()
-	a := &Application{
+	a := &model.Application{
 		ID: uuid.NewString(), SellerCompanyID: p.CompanyID, InsurerCompanyID: in.InsurerCompanyID, DealID: in.RetailDealID,
 		Status: "draft", Note: note, Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
 	}
@@ -239,7 +94,7 @@ func (s *Service) Create(ctx context.Context, p *auth.Principal, in CreateInput)
 	return a, nil
 }
 
-func (s *Service) load(ctx context.Context, r Repository, p *auth.Principal, id string, expected int64, side string) (*Application, error) {
+func (s *Service) load(ctx context.Context, r Repository, p *auth.Principal, id string, expected int64, side string) (*model.Application, error) {
 	if err := validate.IDs(id); err != nil {
 		return nil, err
 	}
@@ -257,7 +112,7 @@ func (s *Service) load(ctx context.Context, r Repository, p *auth.Principal, id 
 }
 
 // UpdateDraft changes the insurer or note while the application is a draft.
-func (s *Service) UpdateDraft(ctx context.Context, p *auth.Principal, id string, expected int64, insurerID, note string) (*Application, error) {
+func (s *Service) UpdateDraft(ctx context.Context, p *auth.Principal, id string, expected int64, insurerID, note string) (*model.Application, error) {
 	var v apperr.Validation
 	note = validate.Text(&v, "note", note, 0, 2000)
 	if err := v.Err(); err != nil {
@@ -266,7 +121,7 @@ func (s *Service) UpdateDraft(ctx context.Context, p *auth.Principal, id string,
 	if err := s.insurer(ctx, insurerID); err != nil {
 		return nil, err
 	}
-	var a *Application
+	var a *model.Application
 	err := s.repo.InTx(ctx, func(r Repository) error {
 		var err error
 		if a, err = s.load(ctx, r, p, id, expected, "seller"); err != nil {
@@ -283,11 +138,11 @@ func (s *Service) UpdateDraft(ctx context.Context, p *auth.Principal, id string,
 
 // Submit freezes the sale facts and sends the application to the insurer.
 // dealRevision must match the sale the seller reviewed.
-func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expected int64, confirmation bool, dealRevision int64) (*Application, error) {
+func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expected int64, confirmation bool, dealRevision int64) (*model.Application, error) {
 	if !confirmation {
 		return nil, apperr.FieldError("confirmation", "confirm the data sent to the insurer")
 	}
-	var a *Application
+	var a *model.Application
 	err := s.repo.InTx(ctx, func(r Repository) error {
 		var err error
 		if a, err = s.load(ctx, r, p, id, expected, "seller"); err != nil {
@@ -321,8 +176,8 @@ func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expe
 	return a, err
 }
 
-func (s *Service) message(ctx context.Context, r Repository, p *auth.Principal, a *Application, kind string, requestID *string, note string) error {
-	return r.AddMessage(ctx, &Message{
+func (s *Service) message(ctx context.Context, r Repository, p *auth.Principal, a *model.Application, kind string, requestID *string, note string) error {
+	return r.AddMessage(ctx, &model.Message{
 		ID: uuid.NewString(), ApplicationID: a.ID, Kind: kind, RequestID: requestID, Note: note,
 		CompanyID: p.CompanyID, ActorUserID: p.UserID, CreatedAt: s.clock(),
 	})
@@ -335,7 +190,7 @@ func (s *Service) message(ctx context.Context, r Repository, p *auth.Principal, 
 //	respond  seller   needs-info → review       (note required, answers the open request)
 //	approve  insurer  review     → approved     (note required)
 //	decline  insurer  review     → declined     (note required)
-func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expected int64, action, note string) (*Application, error) {
+func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expected int64, action, note string) (*model.Application, error) {
 	type step struct {
 		side, from, to, kind string
 		note                 bool
@@ -358,7 +213,7 @@ func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expecte
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
-	var a *Application
+	var a *model.Application
 	err := s.repo.InTx(ctx, func(r Repository) error {
 		var err error
 		if a, err = s.load(ctx, r, p, id, expected, st.side); err != nil {
@@ -393,7 +248,7 @@ func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expecte
 	return a, err
 }
 
-func (s *Service) Get(ctx context.Context, p *auth.Principal, id string) (*Application, []Message, error) {
+func (s *Service) Get(ctx context.Context, p *auth.Principal, id string) (*model.Application, []model.Message, error) {
 	if err := validate.IDs(id); err != nil {
 		return nil, nil, err
 	}
@@ -405,7 +260,7 @@ func (s *Service) Get(ctx context.Context, p *auth.Principal, id string) (*Appli
 	return a, ms, err
 }
 
-func (s *Service) List(ctx context.Context, p *auth.Principal, status string, limit, offset int) ([]Application, error) {
+func (s *Service) List(ctx context.Context, p *auth.Principal, status string, limit, offset int) ([]model.Application, error) {
 	return s.repo.List(ctx, p.CompanyID, status, limit, offset)
 }
 

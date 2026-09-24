@@ -1,98 +1,35 @@
-package insurance
+package handler
 
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
 
+	"justixauto/internal/modules/insurance/model"
+	"justixauto/internal/modules/insurance/service"
 	"justixauto/internal/pkg/auth"
 	"justixauto/internal/pkg/httpx"
 )
 
-type messageDTO struct {
-	Kind       string    `json:"kind"`
-	RequestID  *string   `json:"requestId"`
-	Note       string    `json:"note"`
-	Side       string    `json:"side"` // seller | insurer
-	ActorID    string    `json:"actorId"`
-	OccurredAt time.Time `json:"occurredAt"`
-}
+// Handler holds the service behind the insurance HTTP routes.
+type Handler struct{ s *service.Service }
 
-type applicationDTO struct {
-	ID               string          `json:"id"`
-	Side             string          `json:"side"` // the caller's side
-	SellerCompanyID  string          `json:"sellerCompanyId"`
-	InsurerCompanyID string          `json:"insurerCompanyId"`
-	RetailDealID     string          `json:"retailDealId"`
-	Status           string          `json:"status"`
-	Note             string          `json:"note"`
-	Snapshot         json.RawMessage `json:"snapshot"`
-	History          []messageDTO    `json:"history,omitempty"`
-	AllowedActions   []string        `json:"allowedActions"`
-	Revision         string          `json:"revision"`
-	SubmittedAt      *time.Time      `json:"submittedAt"`
-	DecidedAt        *time.Time      `json:"decidedAt"`
-}
-
-func actions(a *Application, seller bool) []string {
-	switch {
-	case seller && a.Status == "draft":
-		return []string{"edit", "submit"}
-	case seller && a.Status == "needs-info":
-		return []string{"respond"}
-	case !seller && a.Status == "submitted":
-		return []string{"take"}
-	case !seller && a.Status == "review":
-		return []string{"request", "approve", "decline"}
-	}
-	return []string{}
-}
-
-func toApplication(companyID string, a *Application, ms []Message) applicationDTO {
-	seller := a.SellerCompanyID == companyID
-	side := "insurer"
-	if seller {
-		side = "seller"
-	}
-	snap := json.RawMessage("null")
-	if len(a.Snapshot) > 0 {
-		snap = a.Snapshot
-	}
-	d := applicationDTO{
-		ID: a.ID, Side: side, SellerCompanyID: a.SellerCompanyID, InsurerCompanyID: a.InsurerCompanyID,
-		RetailDealID: a.DealID, Status: a.Status, Note: a.Note, Snapshot: snap, AllowedActions: actions(a, seller),
-		Revision: httpx.Revision(a.Version), SubmittedAt: a.SubmittedAt, DecidedAt: a.DecidedAt,
-	}
-	if ms != nil {
-		d.History = []messageDTO{}
-		for _, m := range ms {
-			s := "insurer"
-			if m.CompanyID == a.SellerCompanyID {
-				s = "seller"
-			}
-			d.History = append(d.History, messageDTO{Kind: m.Kind, RequestID: m.RequestID, Note: m.Note, Side: s, ActorID: m.ActorUserID, OccurredAt: m.CreatedAt})
-		}
-	}
-	return d
-}
-
-type Handler struct{ s *Service }
+// New builds the insurance handler from its service.
+func New(s *service.Service) *Handler { return &Handler{s} }
 
 func (h *Handler) Routes(g *echo.Group) {
 	c := g.Group("", auth.RequireCompany())
-	c.GET("/applications", h.list, auth.Require(PermRead))
-	c.GET("/applications/:id", h.get, auth.Require(PermRead))
-	c.POST("/applications", h.create, auth.Require(PermApply))
-	c.PATCH("/applications/:id", h.update, auth.Require(PermApply))
-	c.POST("/applications/:id/submit", h.submit, auth.Require(PermApply))
-	c.POST("/applications/:id/responses", h.act("respond"), auth.Require(PermApply))
-	c.POST("/applications/:id/take", h.act("take"), auth.Require(PermReview))
-	c.POST("/applications/:id/information-requests", h.act("request"), auth.Require(PermReview))
-	c.POST("/applications/:id/approve", h.act("approve"), auth.Require(PermDecide))
-	c.POST("/applications/:id/decline", h.act("decline"), auth.Require(PermDecide))
+	c.GET("/applications", h.list, auth.Require(model.PermRead))
+	c.GET("/applications/:id", h.get, auth.Require(model.PermRead))
+	c.POST("/applications", h.create, auth.Require(model.PermApply))
+	c.PATCH("/applications/:id", h.update, auth.Require(model.PermApply))
+	c.POST("/applications/:id/submit", h.submit, auth.Require(model.PermApply))
+	c.POST("/applications/:id/responses", h.act("respond"), auth.Require(model.PermApply))
+	c.POST("/applications/:id/take", h.act("take"), auth.Require(model.PermReview))
+	c.POST("/applications/:id/information-requests", h.act("request"), auth.Require(model.PermReview))
+	c.POST("/applications/:id/approve", h.act("approve"), auth.Require(model.PermDecide))
+	c.POST("/applications/:id/decline", h.act("decline"), auth.Require(model.PermDecide))
 }
 
 // updateDraftRequest edits a draft insurance application.
@@ -128,7 +65,7 @@ func (h *Handler) respond(c echo.Context, status int, id string) error {
 //	@Param		status		query		string	false	"application status"
 //	@Param		limit		query		int		false	"page size"
 //	@Param		offset		query		int		false	"offset"
-//	@Success	200			{object}	httpx.ListEnvelope[insurance.applicationDTO]
+//	@Success	200			{object}	httpx.ListEnvelope[handler.applicationDTO]
 //	@Failure	401,403,422	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications [get]
 func (h *Handler) list(c echo.Context) error {
@@ -157,7 +94,7 @@ func (h *Handler) list(c echo.Context) error {
 //	@Summary	Get insurance application
 //	@Tags		insurance/applications
 //	@Param		id			path		string	true	"application ID"
-//	@Success	200			{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Success	200			{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications/{id} [get]
 func (h *Handler) get(c echo.Context) error { return h.respond(c, http.StatusOK, c.Param("id")) }
@@ -167,13 +104,13 @@ func (h *Handler) get(c echo.Context) error { return h.respond(c, http.StatusOK,
 //	@Summary	Create insurance application
 //	@Tags		insurance/applications
 //	@Security	CSRF
-//	@Param		Idempotency-Key		header		string		true	"retry key"
-//	@Param		body				body		CreateInput	true	"application"
-//	@Success	201					{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Param		Idempotency-Key		header		string				true	"retry key"
+//	@Param		body				body		service.CreateInput	true	"application"
+//	@Success	201					{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications [post]
 func (h *Handler) create(c echo.Context) error {
-	var in CreateInput
+	var in service.CreateInput
 	if err := httpx.Bind(c, &in); err != nil {
 		return err
 	}
@@ -192,7 +129,7 @@ func (h *Handler) create(c echo.Context) error {
 //	@Param		id							path		string				true	"application ID"
 //	@Param		If-Match					header		string				true	"revision"
 //	@Param		body						body		updateDraftRequest	true	"application"
-//	@Success	200							{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Success	200							{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications/{id} [patch]
 func (h *Handler) update(c echo.Context) error {
@@ -220,7 +157,7 @@ func (h *Handler) update(c echo.Context) error {
 //	@Param		If-Match					header		string			true	"revision"
 //	@Param		body						body		submitRequest	true	"submission"
 //	@Param		Idempotency-Key				header		string			true	"retry key"
-//	@Success	200							{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Success	200							{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications/{id}/submit [post]
 func (h *Handler) submit(c echo.Context) error {
@@ -252,7 +189,7 @@ func (h *Handler) submit(c echo.Context) error {
 //	@Param		If-Match					header		string		true	"revision"
 //	@Param		body						body		actRequest	true	"note"
 //	@Param		Idempotency-Key				header		string		true	"retry key"
-//	@Success	200							{object}	httpx.DataEnvelope[insurance.applicationDTO]
+//	@Success	200							{object}	httpx.DataEnvelope[handler.applicationDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/insurance/applications/{id}/responses [post]
 //	@Router		/insurance/applications/{id}/take [post]
@@ -276,19 +213,3 @@ func (h *Handler) act(action string) echo.HandlerFunc {
 		return h.respond(c, http.StatusOK, a.ID)
 	}
 }
-
-type Module struct {
-	handler *Handler
-	Service *Service
-}
-
-func New(db *gorm.DB, now func() time.Time, sales Sales, directory Directory) *Module {
-	if now == nil {
-		now = time.Now
-	}
-	s := &Service{repo: &repository{db}, sales: sales, directory: directory, now: now}
-	return &Module{handler: &Handler{s}, Service: s}
-}
-
-// Register mounts the insurance routes under /api/v1/insurance.
-func (m *Module) Register(api *echo.Group) { m.handler.Routes(api.Group("/insurance")) }

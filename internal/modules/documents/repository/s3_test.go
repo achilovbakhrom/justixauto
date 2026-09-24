@@ -1,4 +1,4 @@
-package documents_test
+package repository
 
 import (
 	"bytes"
@@ -8,8 +8,6 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-
-	"justixauto/internal/modules/documents"
 )
 
 func TestS3Storage(t *testing.T) {
@@ -18,7 +16,7 @@ func TestS3Storage(t *testing.T) {
 		t.Skip("set TEST_S3_ENDPOINT (bash tools/test-go.sh starts MinIO)")
 	}
 	ctx := context.Background()
-	s, err := documents.NewS3Storage(ctx, documents.S3Config{
+	s, err := NewS3Storage(ctx, S3Config{
 		Bucket: "justixauto-test", Region: "us-east-1",
 		Prefix: "adapter/", Endpoint: endpoint, PathStyle: true,
 	})

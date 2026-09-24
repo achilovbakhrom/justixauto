@@ -2865,7 +2865,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_documents_FileView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_documents_handler_FileView"
                         }
                     },
                     "401": {
@@ -2919,7 +2919,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_documents_FileView"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_documents_handler_FileView"
                         }
                     },
                     "401": {
@@ -7116,7 +7116,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.ListEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7158,7 +7158,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.CreateInput"
+                            "$ref": "#/definitions/justixauto_internal_modules_insurance_service.CreateInput"
                         }
                     }
                 ],
@@ -7166,7 +7166,7 @@
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7226,7 +7226,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7275,7 +7275,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.updateDraftRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.updateDraftRequest"
                         }
                     }
                 ],
@@ -7283,7 +7283,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7363,7 +7363,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.actRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
                     },
                     {
@@ -7378,7 +7378,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7458,7 +7458,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.actRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
                     },
                     {
@@ -7473,7 +7473,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7553,7 +7553,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.actRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
                     },
                     {
@@ -7568,7 +7568,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7648,7 +7648,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.actRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
                     },
                     {
@@ -7663,7 +7663,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7743,7 +7743,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.submitRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.submitRequest"
                         }
                     },
                     {
@@ -7758,7 +7758,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -7838,7 +7838,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/modules_insurance.actRequest"
+                            "$ref": "#/definitions/modules_insurance_handler.actRequest"
                         }
                     },
                     {
@@ -7853,7 +7853,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO"
+                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO"
                         }
                     },
                     "401": {
@@ -11249,6 +11249,25 @@
                 }
             }
         },
+        "justixauto_internal_modules_insurance_service.CreateInput": {
+            "type": "object",
+            "required": [
+                "insurerCompanyId",
+                "note",
+                "retailDealId"
+            ],
+            "properties": {
+                "insurerCompanyId": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "retailDealId": {
+                    "type": "string"
+                }
+            }
+        },
         "justixauto_internal_modules_inventory_service.IdentifyInput": {
             "type": "object",
             "required": [
@@ -11597,7 +11616,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_documents_FileView": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_documents_handler_FileView": {
             "type": "object",
             "required": [
                 "data",
@@ -11609,7 +11628,7 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_documents.FileView"
+                    "$ref": "#/definitions/modules_documents_handler.FileView"
                 },
                 "revision": {
                     "type": "string"
@@ -11863,7 +11882,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_applicationDTO": {
+        "justixauto_internal_pkg_httpx.DataEnvelope-modules_insurance_handler_applicationDTO": {
             "type": "object",
             "required": [
                 "data",
@@ -11875,7 +11894,7 @@
                     "type": "string"
                 },
                 "data": {
-                    "$ref": "#/definitions/modules_insurance.applicationDTO"
+                    "$ref": "#/definitions/modules_insurance_handler.applicationDTO"
                 },
                 "revision": {
                     "type": "string"
@@ -12478,7 +12497,7 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.ListEnvelope-modules_insurance_applicationDTO": {
+        "justixauto_internal_pkg_httpx.ListEnvelope-modules_insurance_handler_applicationDTO": {
             "type": "object",
             "required": [
                 "asOf",
@@ -12492,7 +12511,7 @@
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_insurance.applicationDTO"
+                        "$ref": "#/definitions/modules_insurance_handler.applicationDTO"
                     }
                 },
                 "nextCursor": {
@@ -13908,7 +13927,7 @@
                 }
             }
         },
-        "modules_documents.FileView": {
+        "modules_documents_handler.FileView": {
             "type": "object",
             "required": [
                 "byteLength",
@@ -15442,26 +15461,7 @@
                 }
             }
         },
-        "modules_insurance.CreateInput": {
-            "type": "object",
-            "required": [
-                "insurerCompanyId",
-                "note",
-                "retailDealId"
-            ],
-            "properties": {
-                "insurerCompanyId": {
-                    "type": "string"
-                },
-                "note": {
-                    "type": "string"
-                },
-                "retailDealId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_insurance.actRequest": {
+        "modules_insurance_handler.actRequest": {
             "type": "object",
             "required": [
                 "note"
@@ -15472,7 +15472,7 @@
                 }
             }
         },
-        "modules_insurance.applicationDTO": {
+        "modules_insurance_handler.applicationDTO": {
             "type": "object",
             "required": [
                 "allowedActions",
@@ -15501,7 +15501,7 @@
                 "history": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/modules_insurance.messageDTO"
+                        "$ref": "#/definitions/modules_insurance_handler.messageDTO"
                     }
                 },
                 "id": {
@@ -15540,7 +15540,7 @@
                 }
             }
         },
-        "modules_insurance.messageDTO": {
+        "modules_insurance_handler.messageDTO": {
             "type": "object",
             "required": [
                 "actorId",
@@ -15572,7 +15572,7 @@
                 }
             }
         },
-        "modules_insurance.submitRequest": {
+        "modules_insurance_handler.submitRequest": {
             "type": "object",
             "required": [
                 "confirmation",
@@ -15587,7 +15587,7 @@
                 }
             }
         },
-        "modules_insurance.updateDraftRequest": {
+        "modules_insurance_handler.updateDraftRequest": {
             "type": "object",
             "required": [
                 "insurerCompanyId",
