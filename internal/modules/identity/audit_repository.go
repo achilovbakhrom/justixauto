@@ -38,5 +38,8 @@ func (r *auditRepository) List(ctx context.Context, f AuditFilter) ([]AuditEvent
 		q = q.Where("actor_user_id = ?", f.ActorID)
 	}
 	events := []AuditEvent{}
-	return events, translate(q.Find(&events).Error)
+	if err := translate(q.Find(&events).Error); err != nil {
+		return nil, err
+	}
+	return events, nil
 }

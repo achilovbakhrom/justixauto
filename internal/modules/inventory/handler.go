@@ -30,9 +30,11 @@ type specDTO struct {
 }
 
 func toSpec(m VehicleModel, s Specification) specDTO {
-	return specDTO{Version: httpx.Revision(int64(s.SpecVersion)), Make: m.Make, Model: m.Model, Variant: m.Variant,
+	return specDTO{
+		Version: httpx.Revision(int64(s.SpecVersion)), Make: m.Make, Model: m.Model, Variant: m.Variant,
 		Year: s.Year, BodyType: s.BodyType, ExteriorColor: s.ExteriorColor, InteriorColor: s.InteriorColor,
-		Powertrain: s.Powertrain, Drivetrain: s.Drivetrain}
+		Powertrain: s.Powertrain, Drivetrain: s.Drivetrain,
+	}
 }
 
 type modelDTO struct {
@@ -67,9 +69,11 @@ type warehouseDTO struct {
 
 func toWarehouse(v *WarehouseView) warehouseDTO {
 	w := v.Warehouse
-	d := warehouseDTO{ID: w.ID, BranchID: w.BranchID, Name: w.Name, Country: jsonx.Label{Key: w.CountryKey, Label: w.Country},
+	d := warehouseDTO{
+		ID: w.ID, BranchID: w.BranchID, Name: w.Name, Country: jsonx.Label{Key: w.CountryKey, Label: w.Country},
 		City: w.City, Address: w.Address, Capacity: jsonx.Quantity(w.Capacity), Occupied: jsonx.Quantity(v.Occupied),
-		Free: jsonx.Quantity(v.Free()), Revision: httpx.Revision(w.Version), UpdatedAt: w.UpdatedAt}
+		Free: jsonx.Quantity(v.Free()), Revision: httpx.Revision(w.Version), UpdatedAt: w.UpdatedAt,
+	}
 	if w.Region != "" {
 		d.Region = &jsonx.Label{Key: w.RegionKey, Label: w.Region}
 	}
@@ -89,9 +93,11 @@ type batchDTO struct {
 }
 
 func toBatch(b *ReceiptBatch) batchDTO {
-	return batchDTO{ID: b.ID, WarehouseID: b.WarehouseID, ModelID: b.ModelID, SpecVersion: httpx.Revision(int64(b.SpecVersion)),
+	return batchDTO{
+		ID: b.ID, WarehouseID: b.WarehouseID, ModelID: b.ModelID, SpecVersion: httpx.Revision(int64(b.SpecVersion)),
 		ConfirmedQuantity: jsonx.Quantity(b.ConfirmedQuantity), IdentifiedCount: jsonx.Quantity(b.IdentifiedCount),
-		UnidentifiedCount: jsonx.Quantity(b.UnidentifiedCount), ReceivedAt: b.ReceivedAt, Revision: httpx.Revision(b.Version)}
+		UnidentifiedCount: jsonx.Quantity(b.UnidentifiedCount), ReceivedAt: b.ReceivedAt, Revision: httpx.Revision(b.Version),
+	}
 }
 
 type placementDTO struct {
@@ -584,8 +590,10 @@ func (h *Handler) getVehicle(c echo.Context) error {
 	}
 	history := make([]factDTO, len(d.History))
 	for i, f := range d.History {
-		history[i] = factDTO{Type: f.FactType, WarehouseID: f.WarehouseID, ActorID: f.ActorUserID,
-			OccurredAt: f.OccurredAt, Reason: f.Reason, Details: json.RawMessage(f.Details)}
+		history[i] = factDTO{
+			Type: f.FactType, WarehouseID: f.WarehouseID, ActorID: f.ActorUserID,
+			OccurredAt: f.OccurredAt, Reason: f.Reason, Details: json.RawMessage(f.Details),
+		}
 	}
 	body := toVehicle(&d.Vehicle)
 	return httpx.Data(c, http.StatusOK, vehicleDetailResponse{
@@ -628,8 +636,10 @@ func New(db *gorm.DB, now func() time.Time, branches Branches) *Module {
 		now = time.Now
 	}
 	d := deps{store: NewStore(db), now: now, branches: branches}
-	return &Module{handler: &Handler{models: &ModelService{d}, warehouses: &WarehouseService{d},
-		receipts: &ReceiptService{d}, vehicles: &VehicleService{d}}, stock: &StockService{d}}
+	return &Module{handler: &Handler{
+		models: &ModelService{d}, warehouses: &WarehouseService{d},
+		receipts: &ReceiptService{d}, vehicles: &VehicleService{d},
+	}, stock: &StockService{d}}
 }
 
 // Register mounts the inventory routes under /api/v1/inventory.

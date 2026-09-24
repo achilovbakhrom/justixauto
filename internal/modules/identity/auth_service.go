@@ -99,8 +99,10 @@ func (s *AuthService) Login(ctx context.Context, login, password, previousToken 
 		if err != nil {
 			return nil, err
 		}
-		ch := &mfaChallenge{ID: uuid.NewString(), UserID: u.ID, TokenHash: tokenHash(token),
-			CreatedAt: now, ExpiresAt: now.Add(mfaChallengeTTL)}
+		ch := &mfaChallenge{
+			ID: uuid.NewString(), UserID: u.ID, TokenHash: tokenHash(token),
+			CreatedAt: now, ExpiresAt: now.Add(mfaChallengeTTL),
+		}
 		if err := s.store.MFA().CreateChallenge(ctx, ch); err != nil {
 			return nil, err
 		}
@@ -134,9 +136,11 @@ func (s *AuthService) startSession(ctx context.Context, u *User, previousToken s
 	if err != nil {
 		return "", nil, err
 	}
-	sess := &Session{ID: uuid.NewString(), TokenHash: tokenHash(token), CSRFToken: csrf, UserID: u.ID,
+	sess := &Session{
+		ID: uuid.NewString(), TokenHash: tokenHash(token), CSRFToken: csrf, UserID: u.ID,
 		BranchScopeMode: ScopeAll, BranchIDs: []string{}, ContextRevision: 1, MFAAuthenticatedAt: mfaAt,
-		CreatedAt: now, LastSeenAt: now, ExpiresAt: now.Add(s.cfg.AbsoluteTimeout)}
+		CreatedAt: now, LastSeenAt: now, ExpiresAt: now.Add(s.cfg.AbsoluteTimeout),
+	}
 	err = s.store.InTx(ctx, func(st Store) error {
 		if previousToken != "" {
 			if prev, err := st.Sessions().FindLive(ctx, tokenHash(previousToken)); err == nil {
@@ -183,11 +187,13 @@ func (s *AuthService) Authenticate(ctx context.Context, token string) (*auth.Pri
 	if err != nil {
 		return nil, nil, err
 	}
-	p := &auth.Principal{UserID: u.ID, SessionID: sess.ID, Permissions: map[string]bool{},
+	p := &auth.Principal{
+		UserID: u.ID, SessionID: sess.ID, Permissions: map[string]bool{},
 		ContextRevision: sess.ContextRevision, BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}},
 		MFAEnrolled: u.MFAEnabledAt != nil, MFARequired: s.mfaRequired(),
 		MFAFresh:               sess.MFAAuthenticatedAt != nil && now.Sub(*sess.MFAAuthenticatedAt) <= mfaFreshness,
-		PasswordChangeRequired: u.PasswordChangeRequired}
+		PasswordChangeRequired: u.PasswordChangeRequired,
+	}
 	for _, r := range roles {
 		for _, perm := range effectivePermissions(r) {
 			p.Permissions[perm] = true

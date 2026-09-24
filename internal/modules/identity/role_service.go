@@ -55,8 +55,10 @@ func duplicateRole(err error) error {
 func (s *RoleService) Create(ctx context.Context, actor *auth.Principal, in RoleInput) (*Role, error) {
 	var v apperr.Validation
 	now := s.clock()
-	r := &Role{ID: uuid.NewString(), Name: text(&v, "name", in.Name, 1, 100),
-		Permissions: permissions(&v, in.PermissionKeys), Version: 1, CreatedAt: now, UpdatedAt: now}
+	r := &Role{
+		ID: uuid.NewString(), Name: text(&v, "name", in.Name, 1, 100),
+		Permissions: permissions(&v, in.PermissionKeys), Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	if err := v.Err(); err != nil {
 		return nil, err
 	}

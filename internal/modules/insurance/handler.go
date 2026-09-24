@@ -61,9 +61,11 @@ func toApplication(companyID string, a *Application, ms []Message) applicationDT
 	if len(a.Snapshot) > 0 {
 		snap = a.Snapshot
 	}
-	d := applicationDTO{ID: a.ID, Side: side, SellerCompanyID: a.SellerCompanyID, InsurerCompanyID: a.InsurerCompanyID,
+	d := applicationDTO{
+		ID: a.ID, Side: side, SellerCompanyID: a.SellerCompanyID, InsurerCompanyID: a.InsurerCompanyID,
 		RetailDealID: a.DealID, Status: a.Status, Note: a.Note, Snapshot: snap, AllowedActions: actions(a, seller),
-		Revision: httpx.Revision(a.Version), SubmittedAt: a.SubmittedAt, DecidedAt: a.DecidedAt}
+		Revision: httpx.Revision(a.Version), SubmittedAt: a.SubmittedAt, DecidedAt: a.DecidedAt,
+	}
 	if ms != nil {
 		d.History = []messageDTO{}
 		for _, m := range ms {

@@ -18,8 +18,10 @@ func TestS3Storage(t *testing.T) {
 		t.Skip("set TEST_S3_ENDPOINT (bash tools/test-go.sh starts MinIO)")
 	}
 	ctx := context.Background()
-	s, err := documents.NewS3Storage(ctx, documents.S3Config{Bucket: "justixauto-test", Region: "us-east-1",
-		Prefix: "adapter/", Endpoint: endpoint, PathStyle: true})
+	s, err := documents.NewS3Storage(ctx, documents.S3Config{
+		Bucket: "justixauto-test", Region: "us-east-1",
+		Prefix: "adapter/", Endpoint: endpoint, PathStyle: true,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

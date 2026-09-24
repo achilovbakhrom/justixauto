@@ -52,9 +52,22 @@ const styles = `
 `;
 
 /** Modal presentation only. Processing never implies that a server command can be cancelled. */
-export function Dialog({ open, onOpenChange, trigger, scope, title, description,
-  closeLabel, children, footer, icon, size = 'default', dirty = false,
-  processing = false, onDismissBlocked }: DialogProps) {
+export function Dialog({
+  open,
+  onOpenChange,
+  trigger,
+  scope,
+  title,
+  description,
+  closeLabel,
+  children,
+  footer,
+  icon,
+  size = 'default',
+  dirty = false,
+  processing = false,
+  onDismissBlocked,
+}: DialogProps) {
   function requestDismiss(reason: DismissReason) {
     if (processing || dirty) {
       onDismissBlocked?.(reason, processing ? 'processing' : 'dirty');
@@ -63,33 +76,73 @@ export function Dialog({ open, onOpenChange, trigger, scope, title, description,
     onOpenChange(false);
   }
 
-  return <RadixDialog.Root open={open} onOpenChange={(next) => {
-    if (next) onOpenChange(true);
-    else requestDismiss('close');
-  }}>
-    <RadixDialog.Trigger asChild>{trigger}</RadixDialog.Trigger>
-    <RadixDialog.Portal>
-      <style>{styles}</style>
-      <RadixDialog.Overlay className={`jx-dialog-overlay ${scope}`}>
-        <RadixDialog.Content className="jx-dialog" data-size={size} aria-busy={processing || undefined}
-          onEscapeKeyDown={(event) => { event.preventDefault(); requestDismiss('escape'); }}
-          onPointerDownOutside={(event) => { event.preventDefault(); requestDismiss('outside'); }}
-          onInteractOutside={(event) => event.preventDefault()}>
-          <header className="jx-dialog-header" data-icon={!!icon}>
-            {icon && <div className="jx-dialog-icon" aria-hidden="true">{icon}</div>}
-            <div><RadixDialog.Title className="jx-dialog-title">{title}</RadixDialog.Title>
-              <RadixDialog.Description className="jx-dialog-description">{description}</RadixDialog.Description></div>
-            <button type="button" className="jx-dialog-close" aria-label={closeLabel} disabled={processing}
-              onClick={() => requestDismiss('close')}>
-              {scope === 'dealer-shell'
-                ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
-                : <span aria-hidden="true">×</span>}
-            </button>
-          </header>
-          <div className="jx-dialog-body">{children}</div>
-          {footer && <footer className="jx-dialog-footer">{footer}</footer>}
-        </RadixDialog.Content>
-      </RadixDialog.Overlay>
-    </RadixDialog.Portal>
-  </RadixDialog.Root>;
+  return (
+    <RadixDialog.Root
+      open={open}
+      onOpenChange={(next) => {
+        if (next) onOpenChange(true);
+        else requestDismiss('close');
+      }}
+    >
+      <RadixDialog.Trigger asChild>{trigger}</RadixDialog.Trigger>
+      <RadixDialog.Portal>
+        <style>{styles}</style>
+        <RadixDialog.Overlay className={`jx-dialog-overlay ${scope}`}>
+          <RadixDialog.Content
+            className="jx-dialog"
+            data-size={size}
+            aria-busy={processing || undefined}
+            onEscapeKeyDown={(event) => {
+              event.preventDefault();
+              requestDismiss('escape');
+            }}
+            onPointerDownOutside={(event) => {
+              event.preventDefault();
+              requestDismiss('outside');
+            }}
+            onInteractOutside={(event) => event.preventDefault()}
+          >
+            <header className="jx-dialog-header" data-icon={!!icon}>
+              {icon && (
+                <div className="jx-dialog-icon" aria-hidden="true">
+                  {icon}
+                </div>
+              )}
+              <div>
+                <RadixDialog.Title className="jx-dialog-title">{title}</RadixDialog.Title>
+                <RadixDialog.Description className="jx-dialog-description">{description}</RadixDialog.Description>
+              </div>
+              <button
+                type="button"
+                className="jx-dialog-close"
+                aria-label={closeLabel}
+                disabled={processing}
+                onClick={() => requestDismiss('close')}
+              >
+                {scope === 'dealer-shell' ? (
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M18 6 6 18M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <span aria-hidden="true">×</span>
+                )}
+              </button>
+            </header>
+            <div className="jx-dialog-body">{children}</div>
+            {footer && <footer className="jx-dialog-footer">{footer}</footer>}
+          </RadixDialog.Content>
+        </RadixDialog.Overlay>
+      </RadixDialog.Portal>
+    </RadixDialog.Root>
+  );
 }

@@ -35,14 +35,18 @@ type programDTO struct {
 }
 
 func toProgram(v *ProgramView) programDTO {
-	d := programDTO{ID: v.Program.ID, Provider: map[string]string{"id": v.Provider.ID, "name": v.Provider.Name, "kind": v.Provider.Kind},
+	d := programDTO{
+		ID: v.Program.ID, Provider: map[string]string{"id": v.Provider.ID, "name": v.Provider.Name, "kind": v.Provider.Kind},
 		Status: v.Program.Status, StatusReason: v.Program.StatusReason, PublishedVersion: v.Program.PublishedVersion,
-		Versions: []programVersionDTO{}, Revision: httpx.Revision(v.Program.Version)}
+		Versions: []programVersionDTO{}, Revision: httpx.Revision(v.Program.Version),
+	}
 	for i := range v.Versions {
 		pv := &v.Versions[i]
 		t, e := pv.decode()
-		d.Versions = append(d.Versions, programVersionDTO{Number: strconv.Itoa(pv.Number), Name: pv.Name, Currency: pv.Currency,
-			Terms: t, Eligibility: e, CalculationPolicyID: pv.PolicyID, CalculationPolicyVersion: pv.PolicyVersion, CreatedAt: pv.CreatedAt})
+		d.Versions = append(d.Versions, programVersionDTO{
+			Number: strconv.Itoa(pv.Number), Name: pv.Name, Currency: pv.Currency,
+			Terms: t, Eligibility: e, CalculationPolicyID: pv.PolicyID, CalculationPolicyVersion: pv.PolicyVersion, CreatedAt: pv.CreatedAt,
+		})
 	}
 	return d
 }
@@ -94,10 +98,12 @@ func toApplication(companyID string, v *ApplicationView) applicationDTO {
 	a := v.Application
 	seller := a.SellerCompanyID == companyID
 	side := map[bool]string{true: "seller", false: "provider"}[seller]
-	d := applicationDTO{ID: a.ID, Side: side, SellerCompanyID: a.SellerCompanyID, ProviderCompanyID: a.ProviderCompanyID,
+	d := applicationDTO{
+		ID: a.ID, Side: side, SellerCompanyID: a.SellerCompanyID, ProviderCompanyID: a.ProviderCompanyID,
 		RetailDealID: a.DealID, ProgramID: a.ProgramID, ProgramVersion: a.ProgramVersion, Calculation: raw(a.Calculation),
 		CalculationDigest: a.CalculationDigest, Status: a.Status, Snapshot: raw(a.Snapshot), CurrentTermsVersion: a.CurrentTermsVersion,
-		AllowedActions: []string{}, Revision: httpx.Revision(a.Version)}
+		AllowedActions: []string{}, Revision: httpx.Revision(a.Version),
+	}
 	switch {
 	case seller && a.Status == "draft":
 		d.AllowedActions = []string{"edit", "submit"}
@@ -117,8 +123,10 @@ func toApplication(companyID string, v *ApplicationView) applicationDTO {
 		}
 		d.History = []messageDTO{}
 		for _, m := range v.History {
-			d.History = append(d.History, messageDTO{Kind: m.Kind, RequestID: m.RequestID, TermsVersion: m.TermsVersion, Note: m.Note,
-				Side: map[bool]string{true: "seller", false: "provider"}[m.CompanyID == a.SellerCompanyID], ActorID: m.ActorUserID, OccurredAt: m.CreatedAt})
+			d.History = append(d.History, messageDTO{
+				Kind: m.Kind, RequestID: m.RequestID, TermsVersion: m.TermsVersion, Note: m.Note,
+				Side: map[bool]string{true: "seller", false: "provider"}[m.CompanyID == a.SellerCompanyID], ActorID: m.ActorUserID, OccurredAt: m.CreatedAt,
+			})
 		}
 	}
 	return d
@@ -211,9 +219,11 @@ type documentRequestDTO struct {
 }
 
 func toDocumentRequest(v *DocumentRequestView) documentRequestDTO {
-	d := documentRequestDTO{ID: v.Request.ID, ApplicationID: v.Request.ApplicationID, Title: v.Request.Title,
+	d := documentRequestDTO{
+		ID: v.Request.ID, ApplicationID: v.Request.ApplicationID, Title: v.Request.Title,
 		Requirements: v.Request.Requirements, Status: v.Request.Status, StatusNote: v.Request.StatusNote,
-		Submissions: []submissionDTO{}, Revision: httpx.Revision(v.Request.Version)}
+		Submissions: []submissionDTO{}, Revision: httpx.Revision(v.Request.Version),
+	}
 	for _, s := range v.Submissions {
 		d.Submissions = append(d.Submissions, submissionDTO{Version: s.Number, FileID: s.FileID, Note: s.Note, CreatedAt: s.CreatedAt})
 	}

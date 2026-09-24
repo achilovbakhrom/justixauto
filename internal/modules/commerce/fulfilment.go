@@ -179,48 +179,9 @@ func (s *FulfilmentService) Allocate(ctx context.Context, p *auth.Principal, ord
 		if err != nil {
 			return err
 		}
-		used := map[string]int{}
-		for _, a := range existing {
-			if a.counts() {
-				used[a.LineID]++
-			}
-		}
-		lines := map[string]Line{}
-		for _, l := range o.terms().Lines {
-			lines[l.LineID] = l
-		}
-		var v apperr.Validation
-		var add []Allocation
-		var vehicleIDs []string
 		now := s.clock()
-		for i, it := range items {
-			field := "items." + strconv.Itoa(i)
-			line, ok := lines[it.OrderLineID]
-			if !ok {
-				v.Add(field+".orderLineId", "not a line of this order")
-				continue
-			}
-			if slices.Contains(vehicleIDs, it.VehicleID) || slices.ContainsFunc(existing, func(a Allocation) bool { return a.VehicleID == it.VehicleID && a.counts() }) {
-				v.Add(field+".vehicleId", "already allocated")
-				continue
-			}
-			vehicle, err := s.stock.Vehicle(st.Bind(ctx), p.CompanyID, it.VehicleID)
-			if err != nil {
-				v.Add(field+".vehicleId", "not one of your vehicles")
-				continue
-			}
-			if vehicle.ModelID != line.ModelID {
-				v.Add(field+".vehicleId", "VIN "+vehicle.VIN+" is a different model than the order line")
-				continue
-			}
-			used[line.LineID]++
-			if used[line.LineID] > int(line.Quantity) {
-				v.Add(field+".orderLineId", "more vehicles than the ordered quantity")
-			}
-			vehicleIDs = append(vehicleIDs, it.VehicleID)
-			add = append(add, Allocation{ID: uuid.NewString(), OrderID: o.ID, LineID: line.LineID, VehicleID: it.VehicleID, VIN: vehicle.VIN, Status: "allocated", CreatedAt: now})
-		}
-		if err := v.Err(); err != nil {
+		add, vehicleIDs, err := s.planAllocations(ctx, st, p, o, existing, items, now)
+		if err != nil {
 			return err
 		}
 		if err := s.stock.Reserve(st.Bind(ctx), p.CompanyID, o.ID, vehicleIDs); err != nil {
@@ -236,6 +197,57 @@ func (s *FulfilmentService) Allocate(ctx context.Context, p *auth.Principal, ord
 		return s.event(ctx, st, p, "order.vehicles_allocated", "order", o.ID, "", map[string]any{"vehicleIds": vehicleIDs})
 	})
 	return o, err
+}
+
+// planAllocations validates each requested item against the order's lines,
+// already-used quantities and the caller's stock, returning the allocations
+// to insert and the vehicle IDs to reserve. It preserves the original
+// per-item validation order and error precedence.
+func (s *FulfilmentService) planAllocations(ctx context.Context, st Store, p *auth.Principal, o *Order, existing []Allocation, items []AllocationItem, now time.Time) ([]Allocation, []string, error) {
+	used := map[string]int{}
+	for _, a := range existing {
+		if a.counts() {
+			used[a.LineID]++
+		}
+	}
+	lines := map[string]Line{}
+	for _, l := range o.terms().Lines {
+		lines[l.LineID] = l
+	}
+	var v apperr.Validation
+	var add []Allocation
+	var vehicleIDs []string
+	for i, it := range items {
+		field := "items." + strconv.Itoa(i)
+		line, ok := lines[it.OrderLineID]
+		if !ok {
+			v.Add(field+".orderLineId", "not a line of this order")
+			continue
+		}
+		if slices.Contains(vehicleIDs, it.VehicleID) || slices.ContainsFunc(existing, func(a Allocation) bool { return a.VehicleID == it.VehicleID && a.counts() }) {
+			v.Add(field+".vehicleId", "already allocated")
+			continue
+		}
+		vehicle, err := s.stock.Vehicle(st.Bind(ctx), p.CompanyID, it.VehicleID)
+		if err != nil {
+			v.Add(field+".vehicleId", "not one of your vehicles")
+			continue
+		}
+		if vehicle.ModelID != line.ModelID {
+			v.Add(field+".vehicleId", "VIN "+vehicle.VIN+" is a different model than the order line")
+			continue
+		}
+		used[line.LineID]++
+		if used[line.LineID] > int(line.Quantity) {
+			v.Add(field+".orderLineId", "more vehicles than the ordered quantity")
+		}
+		vehicleIDs = append(vehicleIDs, it.VehicleID)
+		add = append(add, Allocation{ID: uuid.NewString(), OrderID: o.ID, LineID: line.LineID, VehicleID: it.VehicleID, VIN: vehicle.VIN, Status: "allocated", CreatedAt: now})
+	}
+	if err := v.Err(); err != nil {
+		return nil, nil, err
+	}
+	return add, vehicleIDs, nil
 }
 
 func (s *FulfilmentService) supplierOrder(ctx context.Context, st Store, p *auth.Principal, id string, expected int64) (*Order, error) {
@@ -292,8 +304,10 @@ func (s *FulfilmentService) Ship(ctx context.Context, p *auth.Principal, orderID
 			}
 		}
 		now := s.clock()
-		sh = &Shipment{ID: uuid.NewString(), OrderID: o.ID, Route: in.Route, Status: "in-transit", Version: 1,
-			CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+		sh = &Shipment{
+			ID: uuid.NewString(), OrderID: o.ID, Route: in.Route, Status: "in-transit", Version: 1,
+			CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+		}
 		if err := st.Fulfilment().CreateShipment(ctx, sh); err != nil {
 			return err
 		}
@@ -358,8 +372,10 @@ func (s *FulfilmentService) AddMilestone(ctx context.Context, p *auth.Principal,
 		if sh.Status != "in-transit" && in.MilestoneType != "damage-reported" {
 			return apperr.New(apperr.ErrConflict, "shipment_received", "the shipment was already received")
 		}
-		m := &Milestone{ID: uuid.NewString(), ShipmentID: sh.ID, MilestoneType: in.MilestoneType, OccurredAt: in.OccurredAt.UTC(),
-			Location: location, Note: note, RecordedBy: p.UserID, CompanyID: p.CompanyID, RecordedAt: s.clock()}
+		m := &Milestone{
+			ID: uuid.NewString(), ShipmentID: sh.ID, MilestoneType: in.MilestoneType, OccurredAt: in.OccurredAt.UTC(),
+			Location: location, Note: note, RecordedBy: p.UserID, CompanyID: p.CompanyID, RecordedAt: s.clock(),
+		}
 		if err := st.Fulfilment().AddMilestone(ctx, m); err != nil {
 			return err
 		}
@@ -417,39 +433,18 @@ func (s *FulfilmentService) DecideReceipt(ctx context.Context, p *auth.Principal
 			return err
 		}
 		inShipment := func(a Allocation) bool { return a.ShipmentID != nil && *a.ShipmentID == sh.ID && a.Status == "shipped" }
-		for _, id := range ids {
-			if !slices.ContainsFunc(allocs, func(a Allocation) bool { return a.VehicleID == id && inShipment(a) }) {
-				return apperr.FieldError("vehicleIds", "only vehicles of this shipment awaiting receipt")
-			}
+		if err := requireShipmentVehicles(allocs, ids, inShipment); err != nil {
+			return err
 		}
 		now := s.clock()
-		txctx := st.Bind(ctx)
-		status := "delivered"
-		if in.Decision == "accept" {
-			if err := s.stock.Transfer(txctx, o.ID, ids, p.CompanyID, in.WarehouseID, p.UserID, now); err != nil {
-				return err
-			}
-		} else {
-			status = "rejected"
-			if err := s.stock.Release(txctx, o.ID, ids, "rejected at receipt: "+in.Reason); err != nil {
-				return err
-			}
+		status, err := s.applyReceiptDecision(st.Bind(ctx), o.ID, ids, p, in, now)
+		if err != nil {
+			return err
 		}
 		if err := st.Fulfilment().SetAllocationStatus(ctx, o.ID, ids, status, nil); err != nil {
 			return err
 		}
-		// Shipment is received once nothing in it awaits a decision.
-		pending := 0
-		delivered := map[string]int{}
-		for _, a := range allocs {
-			decided := inShipment(a) && slices.Contains(ids, a.VehicleID)
-			if inShipment(a) && !decided {
-				pending++
-			}
-			if a.Status == "delivered" || (decided && status == "delivered") {
-				delivered[a.LineID]++
-			}
-		}
+		pending, delivered := receiptProgress(allocs, ids, inShipment, status)
 		if pending == 0 {
 			sh.Status, sh.UpdatedAt = "received", now
 		}
@@ -457,11 +452,7 @@ func (s *FulfilmentService) DecideReceipt(ctx context.Context, p *auth.Principal
 		if err := st.Fulfilment().UpdateShipment(ctx, sh, expected); err != nil {
 			return err
 		}
-		complete := true
-		for _, l := range o.terms().Lines {
-			complete = complete && delivered[l.LineID] >= int(l.Quantity)
-		}
-		if complete {
+		if orderComplete(o, delivered) {
 			o.Status = OrderCompleted
 		}
 		o.UpdatedAt = now
@@ -475,6 +466,61 @@ func (s *FulfilmentService) DecideReceipt(ctx context.Context, p *auth.Principal
 		return nil, err
 	}
 	return s.GetShipment(ctx, p, shipmentID)
+}
+
+// requireShipmentVehicles checks that every id in ids is an allocation of
+// this shipment awaiting receipt.
+func requireShipmentVehicles(allocs []Allocation, ids []string, inShipment func(Allocation) bool) error {
+	for _, id := range ids {
+		if !slices.ContainsFunc(allocs, func(a Allocation) bool { return a.VehicleID == id && inShipment(a) }) {
+			return apperr.FieldError("vehicleIds", "only vehicles of this shipment awaiting receipt")
+		}
+	}
+	return nil
+}
+
+// applyReceiptDecision moves the vehicles into the buyer's stock (accept) or
+// back to the supplier's free stock (reject), returning the resulting
+// allocation status.
+func (s *FulfilmentService) applyReceiptDecision(txctx context.Context, orderID string, ids []string, p *auth.Principal, in ReceiptDecision, now time.Time) (string, error) {
+	if in.Decision == "accept" {
+		if err := s.stock.Transfer(txctx, orderID, ids, p.CompanyID, in.WarehouseID, p.UserID, now); err != nil {
+			return "", err
+		}
+		return "delivered", nil
+	}
+	if err := s.stock.Release(txctx, orderID, ids, "rejected at receipt: "+in.Reason); err != nil {
+		return "", err
+	}
+	return "rejected", nil
+}
+
+// receiptProgress reports how many shipment vehicles still await a decision
+// and how many vehicles are now delivered per order line. A shipment is
+// received once nothing in it awaits a decision.
+func receiptProgress(allocs []Allocation, ids []string, inShipment func(Allocation) bool, status string) (pending int, delivered map[string]int) {
+	delivered = map[string]int{}
+	for _, a := range allocs {
+		decided := inShipment(a) && slices.Contains(ids, a.VehicleID)
+		if inShipment(a) && !decided {
+			pending++
+		}
+		if a.Status == "delivered" || (decided && status == "delivered") {
+			delivered[a.LineID]++
+		}
+	}
+	return pending, delivered
+}
+
+// orderComplete reports whether every line of the order has reached its
+// ordered quantity of delivered vehicles.
+func orderComplete(o *Order, delivered map[string]int) bool {
+	for _, l := range o.terms().Lines {
+		if delivered[l.LineID] < int(l.Quantity) {
+			return false
+		}
+	}
+	return true
 }
 
 type ShipmentView struct {

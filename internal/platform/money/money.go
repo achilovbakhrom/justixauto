@@ -15,7 +15,7 @@ type Money struct {
 }
 
 var (
-	amountPattern   = regexp.MustCompile(`^(0|[1-9][0-9]{0,37})$`)
+	amountPattern   = regexp.MustCompile(`^(0|[1-9]\d{0,37})$`)
 	currencyPattern = regexp.MustCompile(`^[A-Z]{3}$`)
 )
 

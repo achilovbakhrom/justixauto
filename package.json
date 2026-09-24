@@ -14,27 +14,40 @@
     "typecheck": "npm run typecheck:config && npm run typecheck --workspaces",
     "typecheck:config": "tsc --noEmit --strict --module esnext --moduleResolution bundler --target es2022 --types node web/vitest.workspace.ts",
     "lint": "eslint --config web/eslint.config.js web --max-warnings 0",
+    "format": "prettier --write web",
+    "format:check": "prettier --check web",
+    "knip": "knip",
     "test:unit": "vitest run --config web/vitest.workspace.ts --configLoader runner",
     "test:unit:coverage": "npm run test:unit -- --coverage",
     "build": "npm run build --workspaces",
-    "build:apps": "npm run build --workspace web/apps"
+    "build:apps": "npm run build --workspace web/apps",
+    "prepare": "lefthook install"
   },
   "devDependencies": {
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
     "@eslint/js": "10.0.1",
     "@types/node": "24.13.4",
     "@vitejs/plugin-react": "6.1.1",
     "@vitest/coverage-v8": "4.1.11",
     "clean-css": "5.3.3",
     "eslint": "10.10.0",
+    "eslint-config-prettier": "10.1.8",
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.7",
     "globals": "17.12.0",
     "html-minifier-terser": "7.2.0",
+    "knip": "6.38.0",
+    "lefthook": "2.1.14",
+    "prettier": "3.9.9",
     "terser": "5.44.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.70.0",
     "vite": "8.3.0",
     "vitest": "4.1.11"
   },
-  "engines": { "node": "24.21.0", "npm": "11.19.0" }
+  "engines": {
+    "node": "24.21.0",
+    "npm": "11.19.0"
+  }
 }

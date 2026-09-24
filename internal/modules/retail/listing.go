@@ -64,12 +64,16 @@ func (r *listingRepository) List(ctx context.Context, companyID, status string, 
 		q = q.Where("status = ?", status)
 	}
 	ls := []Listing{}
-	return ls, database.Translate(q.Find(&ls).Error)
+	if err := database.Translate(q.Find(&ls).Error); err != nil {
+		return nil, err
+	}
+	return ls, nil
 }
 
 func (r *listingRepository) Update(ctx context.Context, l *Listing, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Listing{}, l.ID, expected, map[string]any{
-		"text": l.Text, "asking_price_minor": l.AskingPriceMinor, "currency": l.Currency, "status": l.Status, "updated_at": l.UpdatedAt})
+		"text": l.Text, "asking_price_minor": l.AskingPriceMinor, "currency": l.Currency, "status": l.Status, "updated_at": l.UpdatedAt,
+	})
 	if err == nil {
 		l.Version = expected + 1
 	}
@@ -119,8 +123,10 @@ func (s *ListingService) Create(ctx context.Context, p *auth.Principal, in Listi
 		return nil, err
 	}
 	now := s.clock()
-	l := &Listing{ID: uuid.NewString(), CompanyID: p.CompanyID, VehicleID: in.VehicleID, Text: text,
-		AskingPriceMinor: in.AskingPrice.AmountMinor, Currency: in.AskingPrice.Currency, Status: "draft", Version: 1, CreatedAt: now, UpdatedAt: now}
+	l := &Listing{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, VehicleID: in.VehicleID, Text: text,
+		AskingPriceMinor: in.AskingPrice.AmountMinor, Currency: in.AskingPrice.Currency, Status: "draft", Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	err := s.store.InTx(ctx, func(st Store) error {
 		if err := st.Listings().Create(ctx, l); err != nil {
 			if errors.Is(err, apperr.ErrConflict) {

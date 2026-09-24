@@ -58,14 +58,18 @@ func rfqActions(x *RFQ, companyID string) []string {
 func toRFQ(companyID string) func(*RFQView) rfqDTO {
 	return func(v *RFQView) rfqDTO {
 		x := v.RFQ
-		d := rfqDTO{ID: x.ID, Buyer: party(v.Buyer), Supplier: party(v.Supplier), OfferVersionID: x.OfferVersionID,
+		d := rfqDTO{
+			ID: x.ID, Buyer: party(v.Buyer), Supplier: party(v.Supplier), OfferVersionID: x.OfferVersionID,
 			Lines: x.lines(), Status: x.Status, StatusReason: x.StatusReason, Quotations: []quotationDTO{},
-			AllowedActions: rfqActions(&x, companyID), Revision: httpx.Revision(x.Version), UpdatedAt: x.UpdatedAt}
+			AllowedActions: rfqActions(&x, companyID), Revision: httpx.Revision(x.Version), UpdatedAt: x.UpdatedAt,
+		}
 		for _, q := range v.Quotations {
 			var t Terms
 			_ = json.Unmarshal(q.Terms, &t)
-			d.Quotations = append(d.Quotations, quotationDTO{ID: q.ID, Number: q.Number, Terms: t, Total: termsTotal(t),
-				Digest: q.Digest, CreatedAt: q.CreatedAt})
+			d.Quotations = append(d.Quotations, quotationDTO{
+				ID: q.ID, Number: q.Number, Terms: t, Total: termsTotal(t),
+				Digest: q.Digest, CreatedAt: q.CreatedAt,
+			})
 		}
 		return d
 	}
@@ -166,10 +170,12 @@ func toOrder(companyID string) func(*OrderView) orderDTO {
 	return func(v *OrderView) orderDTO {
 		o := v.Order
 		t := o.terms()
-		d := orderDTO{ID: o.ID, Party: o.Party(companyID), Buyer: party(v.Buyer), Supplier: party(v.Supplier),
+		d := orderDTO{
+			ID: o.ID, Party: o.Party(companyID), Buyer: party(v.Buyer), Supplier: party(v.Supplier),
 			Source: o.Source, RFQID: o.RFQID, QuotationID: o.QuotationID, OfferVersionID: o.OfferVersionID,
 			Terms: t, Total: termsTotal(t), Status: o.Status, StatusReason: o.StatusReason, Addenda: []addendumDTO{},
-			AllowedActions: orderActions(v, companyID), Revision: httpx.Revision(o.Version), UpdatedAt: o.UpdatedAt}
+			AllowedActions: orderActions(v, companyID), Revision: httpx.Revision(o.Version), UpdatedAt: o.UpdatedAt,
+		}
 		for _, a := range v.Addenda {
 			var at Terms
 			_ = json.Unmarshal(a.Terms, &at)
@@ -177,8 +183,10 @@ func toOrder(companyID string) func(*OrderView) orderDTO {
 			if a.ProposedByCompany == o.BuyerCompanyID {
 				by = "buyer"
 			}
-			d.Addenda = append(d.Addenda, addendumDTO{ID: a.ID, Number: a.Number, Terms: at, Total: termsTotal(at), Reason: a.Reason,
-				ProposedBy: by, Status: a.Status, DecisionReason: a.DecisionReason, CreatedAt: a.CreatedAt, DecidedAt: a.DecidedAt})
+			d.Addenda = append(d.Addenda, addendumDTO{
+				ID: a.ID, Number: a.Number, Terms: at, Total: termsTotal(at), Reason: a.Reason,
+				ProposedBy: by, Status: a.Status, DecisionReason: a.DecisionReason, CreatedAt: a.CreatedAt, DecidedAt: a.DecidedAt,
+			})
 		}
 		d.Allocations, d.Shipments = []allocationDTO{}, []shipmentRef{}
 		for _, a := range v.Allocations {
@@ -279,8 +287,10 @@ type shipmentDTO struct {
 }
 
 func toShipment(v *ShipmentView) shipmentDTO {
-	d := shipmentDTO{ID: v.Shipment.ID, OrderID: v.Shipment.OrderID, Route: v.Shipment.Route, Status: v.Shipment.Status,
-		Vehicles: []allocationDTO{}, Milestones: []milestoneDTO{}, Revision: httpx.Revision(v.Shipment.Version)}
+	d := shipmentDTO{
+		ID: v.Shipment.ID, OrderID: v.Shipment.OrderID, Route: v.Shipment.Route, Status: v.Shipment.Status,
+		Vehicles: []allocationDTO{}, Milestones: []milestoneDTO{}, Revision: httpx.Revision(v.Shipment.Version),
+	}
 	for _, a := range v.Vehicles {
 		d.Vehicles = append(d.Vehicles, allocationDTO{OrderLineID: a.LineID, VehicleID: a.VehicleID, VIN: a.VIN, Status: a.Status, ShipmentID: a.ShipmentID})
 	}

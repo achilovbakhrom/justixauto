@@ -50,12 +50,9 @@ func Middleware(db *gorm.DB, now func() time.Time, exempt ...string) echo.Middle
 			if req.Method != http.MethodPost || p == nil || isExempt(req.URL.Path, exempt) {
 				return next(c)
 			}
-			key := req.Header.Get("Idempotency-Key")
-			if key == "" {
-				return apperr.New(apperr.ErrPreconditionRequired, "idempotency_key_required", "Idempotency-Key header is required")
-			}
-			if uuid.Validate(key) != nil {
-				return apperr.FieldError("Idempotency-Key", "must be a UUID")
+			key, err := requireKey(req)
+			if err != nil {
+				return err
 			}
 			body, err := io.ReadAll(req.Body)
 			if err != nil {
@@ -76,24 +73,44 @@ func Middleware(db *gorm.DB, now func() time.Time, exempt ...string) echo.Middle
 					return err
 				}
 			}
-
-			capture := &captureWriter{ResponseWriter: c.Response().Writer}
-			c.Response().Writer = capture
-			err = next(c)
-			status := c.Response().Status
-			where := db.WithContext(ctx).Model(&record{}).Where("actor_id = ? AND key = ?", p.UserID, key)
-			if err == nil && status >= 200 && status < 300 {
-				done := now().UTC()
-				return where.Updates(map[string]any{"status": "completed", "response_code": status,
-					"response_etag": c.Response().Header().Get("ETag"), "response_body": capture.body.Bytes(),
-					"completed_at": done}).Error
-			}
-			if delErr := where.Delete(&record{}).Error; delErr != nil {
-				return errors.Join(err, delErr)
-			}
-			return err
+			return runAndRecord(c, db, now, next, p.UserID, key)
 		}
 	}
+}
+
+// requireKey validates the Idempotency-Key header on a request that needs one.
+func requireKey(req *http.Request) (string, error) {
+	key := req.Header.Get("Idempotency-Key")
+	if key == "" {
+		return "", apperr.New(apperr.ErrPreconditionRequired, "idempotency_key_required", "Idempotency-Key header is required")
+	}
+	if uuid.Validate(key) != nil {
+		return "", apperr.FieldError("Idempotency-Key", "must be a UUID")
+	}
+	return key, nil
+}
+
+// runAndRecord calls the handler, capturing its response, then stores a
+// completed record for a 2xx response or releases the key for any other
+// outcome so a corrected retry can reuse it.
+func runAndRecord(c echo.Context, db *gorm.DB, now func() time.Time, next echo.HandlerFunc, actorID, key string) error {
+	capture := &captureWriter{ResponseWriter: c.Response().Writer}
+	c.Response().Writer = capture
+	err := next(c)
+	status := c.Response().Status
+	where := db.WithContext(c.Request().Context()).Model(&record{}).Where("actor_id = ? AND key = ?", actorID, key)
+	if err == nil && status >= 200 && status < 300 {
+		done := now().UTC()
+		return where.Updates(map[string]any{
+			"status": "completed", "response_code": status,
+			"response_etag": c.Response().Header().Get("ETag"), "response_body": capture.body.Bytes(),
+			"completed_at": done,
+		}).Error
+	}
+	if delErr := where.Delete(&record{}).Error; delErr != nil {
+		return errors.Join(err, delErr)
+	}
+	return err
 }
 
 // resume handles a key that already exists: replay a completed response, or
@@ -113,7 +130,7 @@ func resume(c echo.Context, db *gorm.DB, rec record, now func() time.Time) (bool
 		if existing.ResponseEtag != "" {
 			h.Set("ETag", existing.ResponseEtag)
 		}
-		return true, c.Blob(*existing.ResponseCode, echo.MIMEApplicationJSONCharsetUTF8, existing.ResponseBody)
+		return true, c.Blob(*existing.ResponseCode, echo.MIMEApplicationJSON, existing.ResponseBody)
 	}
 	if now().UTC().Sub(existing.CreatedAt) < abandonAfter {
 		return false, apperr.New(apperr.ErrConflict, "request_in_progress", "the same request is still being processed")

@@ -13,7 +13,8 @@ func TestInvoicesAndPaymentEvidence(t *testing.T) {
 	_, version := tr.publishedOffer(t)
 	lines := version["terms"].(map[string]any)["lines"].([]any)
 	o := b.Do(http.MethodPost, "/commerce/orders", map[string]any{"offerVersionId": str(version, "id"), "lines": []map[string]string{
-		{"offerLineId": str(lines[0].(map[string]any), "lineId"), "quantity": "2"}, {"offerLineId": str(lines[1].(map[string]any), "lineId"), "quantity": "1"}}})
+		{"offerLineId": str(lines[0].(map[string]any), "lineId"), "quantity": "2"}, {"offerLineId": str(lines[1].(map[string]any), "lineId"), "quantity": "1"},
+	}})
 	expect(t, o, http.StatusCreated)
 	order := str(o.Data(), "id")
 	expect(t, s.Do(http.MethodPost, "/commerce/orders/"+order+"/supplier-confirmations", map[string]any{}, ifMatch("1")...), http.StatusOK)
@@ -29,7 +30,8 @@ func TestInvoicesAndPaymentEvidence(t *testing.T) {
 
 	pay := func(amount, currency, paidOn string) (int, map[string]any) {
 		r := b.Do(http.MethodPost, "/commerce/invoices/"+id+"/payment-evidence", map[string]any{
-			"claimedAmount": map[string]string{"amountMinor": amount, "currency": currency}, "paidOn": paidOn, "externalReference": "PP-" + amount})
+			"claimedAmount": map[string]string{"amountMinor": amount, "currency": currency}, "paidOn": paidOn, "externalReference": "PP-" + amount,
+		})
 		return r.Status, r.Data()
 	}
 	for _, bad := range [][3]string{{"5000000", "USD", "2026-09-20"}, {"1000", "EUR", "2026-09-20"}, {"1000", "USD", "2027-01-01"}, {"10.5", "USD", "2026-09-20"}} {
@@ -80,7 +82,8 @@ func TestInvoicesAndPaymentEvidence(t *testing.T) {
 	claim := func(file string) testkit.Response {
 		return b.Do(http.MethodPost, "/commerce/invoices/"+id+"/payment-evidence", map[string]any{
 			"claimedAmount": map[string]string{"amountMinor": "1600000", "currency": "USD"}, "paidOn": "2026-09-22",
-			"externalReference": "PP-final", "attachmentBindingIds": []string{file}})
+			"externalReference": "PP-final", "attachmentBindingIds": []string{file},
+		})
 	}
 	if st, _ := s.Raw("/documents/files/" + proof + "/content"); st != http.StatusNotFound {
 		t.Fatal("proof visible before it is attached")

@@ -38,10 +38,12 @@ func toPartnership(companyID string) func(*PartnershipView) partnershipDTO {
 		if p.RequesterCompanyID == companyID {
 			dir = "outgoing"
 		}
-		return partnershipDTO{ID: p.ID, Direction: dir,
+		return partnershipDTO{
+			ID: p.ID, Direction: dir,
 			Counterparty: counterpartyDTO{ID: v.Counterparty.ID, Name: v.Counterparty.Name, Country: v.Counterparty.Country},
 			Status:       p.Status, StatusReason: p.StatusReason, AllowedActions: p.AllowedActions(companyID),
-			Revision: httpx.Revision(p.Version), CreatedAt: p.CreatedAt, ActivatedAt: p.ActivatedAt, ClosedAt: p.ClosedAt}
+			Revision: httpx.Revision(p.Version), CreatedAt: p.CreatedAt, ActivatedAt: p.ActivatedAt, ClosedAt: p.ClosedAt,
+		}
 	}
 }
 
@@ -248,8 +250,10 @@ type offerDTO struct {
 
 func toOffer(v *OfferView) offerDTO {
 	o := v.Offer
-	d := offerDTO{ID: o.ID, Supplier: counterpartyDTO{ID: v.Supplier.ID, Name: v.Supplier.Name, Country: v.Supplier.Country},
-		Status: o.Status, StatusReason: o.StatusReason, AllowedActions: []string{}, Revision: httpx.Revision(o.Version), UpdatedAt: o.UpdatedAt}
+	d := offerDTO{
+		ID: o.ID, Supplier: counterpartyDTO{ID: v.Supplier.ID, Name: v.Supplier.Name, Country: v.Supplier.Country},
+		Status: o.Status, StatusReason: o.StatusReason, AllowedActions: []string{}, Revision: httpx.Revision(o.Version), UpdatedAt: o.UpdatedAt,
+	}
 	if v.Published != nil {
 		pv := toOfferVersion(v.Published, v.Own)
 		d.PublishedVersion = &pv

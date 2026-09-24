@@ -135,7 +135,10 @@ func (r *crmRepository) Customers(ctx context.Context, companyID, query string, 
 		q = q.Where("(display_name ILIKE ? OR phone ILIKE ?)", "%"+query+"%", "%"+query+"%")
 	}
 	cs := []Customer{}
-	return cs, database.Translate(q.Find(&cs).Error)
+	if err := database.Translate(q.Find(&cs).Error); err != nil {
+		return nil, err
+	}
+	return cs, nil
 }
 
 func (r *crmRepository) UpdateCustomer(ctx context.Context, c *Customer, expected int64) error {
@@ -169,12 +172,16 @@ func (r *crmRepository) Leads(ctx context.Context, f LeadFilter) ([]Lead, error)
 		q = q.Where("stage = ?", f.Stage)
 	}
 	ls := []Lead{}
-	return ls, database.Translate(q.Find(&ls).Error)
+	if err := database.Translate(q.Find(&ls).Error); err != nil {
+		return nil, err
+	}
+	return ls, nil
 }
 
 func (r *crmRepository) UpdateLead(ctx context.Context, l *Lead, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Lead{}, l.ID, expected, map[string]any{
-		"stage": l.Stage, "assigned_user_id": l.AssignedUserID, "lost_reason": l.LostReason, "deal_id": l.DealID, "updated_at": l.UpdatedAt})
+		"stage": l.Stage, "assigned_user_id": l.AssignedUserID, "lost_reason": l.LostReason, "deal_id": l.DealID, "updated_at": l.UpdatedAt,
+	})
 	if err == nil {
 		l.Version = expected + 1
 	}
@@ -213,7 +220,10 @@ func (r *crmRepository) Tasks(ctx context.Context, companyID, ownerID, status st
 		q = q.Where("status = ?", status)
 	}
 	ts := []Task{}
-	return ts, database.Translate(q.Find(&ts).Error)
+	if err := database.Translate(q.Find(&ts).Error); err != nil {
+		return nil, err
+	}
+	return ts, nil
 }
 
 func (r *crmRepository) UpdateTask(ctx context.Context, t *Task, expected int64) error {
@@ -330,8 +340,10 @@ func (s *CRMService) CreateLead(ctx context.Context, p *auth.Principal, in LeadI
 		}
 	}
 	now := s.clock()
-	l := &Lead{ID: uuid.NewString(), CompanyID: p.CompanyID, BranchID: in.BranchID, CustomerID: in.CustomerID, Source: in.Source,
-		Stage: "new", AssignedUserID: in.AssignedUserID, Version: 1, CreatedAt: now, UpdatedAt: now}
+	l := &Lead{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, BranchID: in.BranchID, CustomerID: in.CustomerID, Source: in.Source,
+		Stage: "new", AssignedUserID: in.AssignedUserID, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	err := s.store.InTx(ctx, func(st Store) error {
 		if _, err := st.CRM().Customer(ctx, p.CompanyID, in.CustomerID); errors.Is(err, apperr.ErrNotFound) {
 			return apperr.FieldError("customerId", "unknown customer")
@@ -404,8 +416,10 @@ func (s *CRMService) AddContact(ctx context.Context, p *auth.Principal, id, chan
 		if l, err = s.lead(ctx, st, p, id, -1); err != nil {
 			return err
 		}
-		return st.CRM().AddContact(ctx, &Contact{ID: uuid.NewString(), LeadID: l.ID, Channel: channel, Note: note,
-			ActorID: p.UserID, OccurredAt: s.clock()})
+		return st.CRM().AddContact(ctx, &Contact{
+			ID: uuid.NewString(), LeadID: l.ID, Channel: channel, Note: note,
+			ActorID: p.UserID, OccurredAt: s.clock(),
+		})
 	})
 	return l, err
 }
@@ -503,8 +517,10 @@ func (s *CRMService) CreateTask(ctx context.Context, p *auth.Principal, in TaskI
 	if err := s.member(ctx, p, "ownerUserId", in.OwnerUserID); err != nil {
 		return nil, err
 	}
-	t := &Task{ID: uuid.NewString(), CompanyID: p.CompanyID, CustomerID: in.CustomerID, LeadID: in.LeadID, DealID: in.DealID,
-		OwnerUserID: in.OwnerUserID, DueAt: in.DueAt.UTC(), Title: title, Status: "open", Version: 1, CreatedAt: s.clock()}
+	t := &Task{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, CustomerID: in.CustomerID, LeadID: in.LeadID, DealID: in.DealID,
+		OwnerUserID: in.OwnerUserID, DueAt: in.DueAt.UTC(), Title: title, Status: "open", Version: 1, CreatedAt: s.clock(),
+	}
 	err := s.store.InTx(ctx, func(st Store) error {
 		if _, err := st.CRM().Customer(ctx, p.CompanyID, in.CustomerID); err != nil {
 			return apperr.FieldError("customerId", "unknown customer")

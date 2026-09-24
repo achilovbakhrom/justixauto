@@ -92,8 +92,10 @@ func (d directory) Company(ctx context.Context, id string) (*commerce.Company, e
 	if err != nil {
 		return nil, err
 	}
-	return &commerce.Company{ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive,
-		Country: p.Country}, nil
+	return &commerce.Company{
+		ID: p.ID, Name: p.Name, Kind: string(p.Kind), Active: p.Access == identity.AccessActive,
+		Country: p.Country,
+	}, nil
 }
 
 // catalog adapts inventory's model catalogue to commerce's Catalog port.
@@ -132,8 +134,10 @@ func (a commerceStock) Release(ctx context.Context, orderID string, vehicleIDs [
 }
 
 func (a commerceStock) Transfer(ctx context.Context, orderID string, vehicleIDs []string, toCompanyID, toWarehouseID, actorID string, at time.Time) error {
-	return a.s.Transfer(ctx, inventory.Handover{Holder: a.holder(orderID), VehicleIDs: vehicleIDs,
-		ToCompanyID: toCompanyID, ToWarehouseID: toWarehouseID, ActorUserID: actorID, At: at})
+	return a.s.Transfer(ctx, inventory.Handover{
+		Holder: a.holder(orderID), VehicleIDs: vehicleIDs,
+		ToCompanyID: toCompanyID, ToWarehouseID: toWarehouseID, ActorUserID: actorID, At: at,
+	})
 }
 
 // retailStock adapts inventory to retail's Stock port; sales hold vehicles
@@ -186,8 +190,10 @@ func (a insuranceSales) Sale(ctx context.Context, companyID, dealID string) (*in
 	if err != nil {
 		return nil, err
 	}
-	return &insurance.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision,
-		VIN: v.vin, Model: v.model, CustomerName: d.CustomerName}, nil
+	return &insurance.Sale{
+		ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision,
+		VIN: v.vin, Model: v.model, CustomerName: d.CustomerName,
+	}, nil
 }
 
 // insurerDirectory adapts identity company profiles to insurance's Directory port.
@@ -216,8 +222,10 @@ func (a financingSales) Sale(ctx context.Context, companyID, dealID string) (*fi
 	if err != nil {
 		return nil, err
 	}
-	return &financing.Sale{ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision,
-		VIN: v.vin, Model: v.model, CustomerName: d.CustomerName}, nil
+	return &financing.Sale{
+		ID: d.ID, VehicleID: d.VehicleID, PaymentScheme: d.PaymentScheme, Status: d.Status, Price: d.Price, Revision: d.Revision,
+		VIN: v.vin, Model: v.model, CustomerName: d.CustomerName,
+	}, nil
 }
 
 type vehicleFacts struct{ vin, model string }

@@ -134,7 +134,10 @@ func (r *repository) List(ctx context.Context, companyID, status string, limit, 
 		q = q.Where("status = ?", status)
 	}
 	as := []Application{}
-	return as, database.Translate(q.Find(&as).Error)
+	if err := database.Translate(q.Find(&as).Error); err != nil {
+		return nil, err
+	}
+	return as, nil
 }
 
 func (r *repository) ForDeal(ctx context.Context, sellerID, dealID string) (*Application, error) {
@@ -148,7 +151,8 @@ func (r *repository) ForDeal(ctx context.Context, sellerID, dealID string) (*App
 func (r *repository) Update(ctx context.Context, a *Application, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Application{}, a.ID, expected, map[string]any{
 		"insurer_company_id": a.InsurerCompanyID, "status": a.Status, "note": a.Note, "snapshot": a.Snapshot,
-		"updated_at": a.UpdatedAt, "submitted_at": a.SubmittedAt, "decided_at": a.DecidedAt})
+		"updated_at": a.UpdatedAt, "submitted_at": a.SubmittedAt, "decided_at": a.DecidedAt,
+	})
 	if err == nil {
 		a.Version = expected + 1
 	}
@@ -222,8 +226,10 @@ func (s *Service) Create(ctx context.Context, p *auth.Principal, in CreateInput)
 		return nil, err
 	}
 	now := s.clock()
-	a := &Application{ID: uuid.NewString(), SellerCompanyID: p.CompanyID, InsurerCompanyID: in.InsurerCompanyID, DealID: in.RetailDealID,
-		Status: "draft", Note: note, Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+	a := &Application{
+		ID: uuid.NewString(), SellerCompanyID: p.CompanyID, InsurerCompanyID: in.InsurerCompanyID, DealID: in.RetailDealID,
+		Status: "draft", Note: note, Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+	}
 	if err := s.repo.Create(ctx, a); err != nil {
 		if errors.Is(err, apperr.ErrConflict) {
 			return nil, apperr.New(apperr.ErrConflict, "application_exists", "this sale already has an insurance application")
@@ -301,9 +307,11 @@ func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expe
 			return err
 		}
 		now := s.clock()
-		a.Snapshot, _ = json.Marshal(map[string]any{"dealId": sale.ID, "vehicleId": sale.VehicleID, "price": sale.Price,
+		a.Snapshot, _ = json.Marshal(map[string]any{
+			"dealId": sale.ID, "vehicleId": sale.VehicleID, "price": sale.Price,
 			"vehicle": map[string]string{"vin": sale.VIN, "model": sale.Model}, "customer": map[string]string{"name": sale.CustomerName},
-			"paymentScheme": sale.PaymentScheme, "dealRevision": sale.Revision, "note": a.Note})
+			"paymentScheme": sale.PaymentScheme, "dealRevision": sale.Revision, "note": a.Note,
+		})
 		a.Status, a.SubmittedAt, a.UpdatedAt = "submitted", &now, now
 		if err := r.Update(ctx, a, expected); err != nil {
 			return err
@@ -314,8 +322,10 @@ func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expe
 }
 
 func (s *Service) message(ctx context.Context, r Repository, p *auth.Principal, a *Application, kind string, requestID *string, note string) error {
-	return r.AddMessage(ctx, &Message{ID: uuid.NewString(), ApplicationID: a.ID, Kind: kind, RequestID: requestID, Note: note,
-		CompanyID: p.CompanyID, ActorUserID: p.UserID, CreatedAt: s.clock()})
+	return r.AddMessage(ctx, &Message{
+		ID: uuid.NewString(), ApplicationID: a.ID, Kind: kind, RequestID: requestID, Note: note,
+		CompanyID: p.CompanyID, ActorUserID: p.UserID, CreatedAt: s.clock(),
+	})
 }
 
 // Act applies an insurer or seller step:

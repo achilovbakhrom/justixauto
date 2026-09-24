@@ -154,5 +154,8 @@ func (r *roleRepository) CountActivePlatformAdmins(ctx context.Context, excludeU
 	if excludeUserID != "" {
 		q = q.Where("users.id <> ?", excludeUserID)
 	}
-	return n, translate(q.Count(&n).Error)
+	if err := translate(q.Count(&n).Error); err != nil {
+		return 0, err
+	}
+	return n, nil
 }

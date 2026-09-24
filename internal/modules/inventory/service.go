@@ -34,9 +34,11 @@ func (d deps) fact(p *auth.Principal, factType string, vehicleID, warehouseID, b
 	if details == nil {
 		raw = []byte("{}")
 	}
-	return Fact{ID: uuid.NewString(), CompanyID: p.CompanyID, FactType: factType, VehicleID: vehicleID,
+	return Fact{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, FactType: factType, VehicleID: vehicleID,
 		WarehouseID: warehouseID, ReceiptBatchID: batchID, ActorUserID: p.UserID,
-		OccurredAt: occurredAt, RecordedAt: d.clock(), Reason: reason, Details: raw}
+		OccurredAt: occurredAt, RecordedAt: d.clock(), Reason: reason, Details: raw,
+	}
 }
 
 func ptr[T any](v T) *T { return &v }
@@ -60,19 +62,21 @@ type SpecInput struct {
 	Drivetrain    string `json:"drivetrain"`
 }
 
-func (in SpecInput) validate(v *apperr.Validation) (make_, model, variant string, spec Specification) {
-	make_ = validate.Text(v, "specification.make", in.Make, 1, 100)
+func (in SpecInput) validate(v *apperr.Validation) (brand, model, variant string, spec Specification) {
+	brand = validate.Text(v, "specification.make", in.Make, 1, 100)
 	model = validate.Text(v, "specification.model", in.Model, 1, 100)
 	variant = validate.Text(v, "specification.variant", in.Variant, 1, 100)
 	if in.Year < 1900 || in.Year > 2100 {
 		v.Add("specification.year", "must be a year between 1900 and 2100")
 	}
-	spec = Specification{Year: in.Year,
+	spec = Specification{
+		Year:          in.Year,
 		BodyType:      validate.Text(v, "specification.bodyType", in.BodyType, 1, 50),
 		ExteriorColor: validate.Text(v, "specification.exteriorColor", in.ExteriorColor, 1, 50),
 		InteriorColor: validate.Text(v, "specification.interiorColor", in.InteriorColor, 1, 50),
 		Powertrain:    validate.Text(v, "specification.powertrain", in.Powertrain, 1, 50),
-		Drivetrain:    validate.Text(v, "specification.drivetrain", in.Drivetrain, 1, 50)}
+		Drivetrain:    validate.Text(v, "specification.drivetrain", in.Drivetrain, 1, 50),
+	}
 	return
 }
 
@@ -88,13 +92,15 @@ type ModelService struct{ deps }
 // Create adds a make/model/variant with specification version 1.
 func (s *ModelService) Create(ctx context.Context, p *auth.Principal, in SpecInput) (*ModelDetail, error) {
 	var v apperr.Validation
-	make_, model, variant, spec := in.validate(&v)
+	brand, model, variant, spec := in.validate(&v)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
 	now := s.clock()
-	m := &VehicleModel{ID: uuid.NewString(), Make: make_, Model: model, Variant: variant, CurrentSpecVersion: 1,
-		Version: 1, CreatedAt: now, UpdatedAt: now}
+	m := &VehicleModel{
+		ID: uuid.NewString(), Make: brand, Model: model, Variant: variant, CurrentSpecVersion: 1,
+		Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	spec.ModelID, spec.SpecVersion, spec.CreatedAt, spec.CreatedBy = m.ID, 1, now, p.UserID
 	if err := s.store.Models().Create(ctx, m, &spec); err != nil {
 		if errors.Is(err, apperr.ErrConflict) {
@@ -112,7 +118,7 @@ func (s *ModelService) AddVersion(ctx context.Context, p *auth.Principal, id str
 		return nil, err
 	}
 	var v apperr.Validation
-	make_, model, variant, spec := in.validate(&v)
+	brand, model, variant, spec := in.validate(&v)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
@@ -125,7 +131,7 @@ func (s *ModelService) AddVersion(ctx context.Context, p *auth.Principal, id str
 		if m.Version != expected {
 			return apperr.ErrStale
 		}
-		if !strings.EqualFold(make_, m.Make) || !strings.EqualFold(model, m.Model) || !strings.EqualFold(variant, m.Variant) {
+		if !strings.EqualFold(brand, m.Make) || !strings.EqualFold(model, m.Model) || !strings.EqualFold(variant, m.Variant) {
 			return apperr.FieldError("specification", "make, model and variant cannot change; create a new model instead")
 		}
 		now := s.clock()
@@ -516,11 +522,66 @@ func newUnits(p *auth.Principal, vins []string, modelID string, specVersion int,
 	units := make([]VehicleUnit, len(vins))
 	placements := make([]Placement, len(vins))
 	for i, vin := range vins {
-		units[i] = VehicleUnit{ID: uuid.NewString(), VIN: vin, ModelID: modelID, SpecVersion: specVersion,
-			OwnerCompanyID: ptr(p.CompanyID), CustodianCompanyID: ptr(p.CompanyID), Version: 1, CreatedAt: at}
+		units[i] = VehicleUnit{
+			ID: uuid.NewString(), VIN: vin, ModelID: modelID, SpecVersion: specVersion,
+			OwnerCompanyID: ptr(p.CompanyID), CustodianCompanyID: ptr(p.CompanyID), Version: 1, CreatedAt: at,
+		}
 		placements[i] = Placement{VehicleID: units[i].ID, WarehouseID: warehouseID, ReceiptBatchID: ptr(batchID), PlacedAt: at}
 	}
 	return units, placements
+}
+
+// validateReceiptStock validates the stock mode of a Receive call and
+// returns the quantity to reserve and, for identified stock, the VINs.
+func validateReceiptStock(v *apperr.Validation, in ReceiptInput) (quantity int, list []string) {
+	switch in.Stock.Mode {
+	case "unidentified":
+		if in.Stock.Quantity < 1 || in.Stock.Quantity > 10_000 || len(in.Stock.VINs) > 0 {
+			v.Add("stock.quantity", "must be 1-10000, without VINs")
+		}
+		quantity = int(in.Stock.Quantity)
+	case "identified":
+		list = vins(v, "stock.vins", in.Stock.VINs)
+		if len(in.Stock.VINs) == 0 || len(in.Stock.VINs) > 1000 {
+			v.Add("stock.vins", "list 1-1000 VINs")
+		}
+		quantity = len(list)
+	default:
+		v.Add("stock.mode", "must be unidentified or identified")
+	}
+	return quantity, list
+}
+
+// lockReceivingWarehouse validates the model spec, locks the warehouse at
+// the expected version and checks it has room and that no VIN is already
+// taken. It returns the locked warehouse and its occupancy before this
+// receipt.
+func lockReceivingWarehouse(ctx context.Context, st Store, p *auth.Principal, warehouseID string, expected int64, in ReceiptInput, quantity int, list []string) (*Warehouse, map[string]int, error) {
+	if _, err := st.Models().Spec(ctx, in.ModelID, int(in.ModelSpecificationVersion)); errors.Is(err, apperr.ErrNotFound) {
+		return nil, nil, apperr.FieldError("modelSpecificationVersion", "unknown model or specification version")
+	} else if err != nil {
+		return nil, nil, err
+	}
+	w, err := st.Warehouses().Lock(ctx, p.CompanyID, warehouseID)
+	if err != nil {
+		return nil, nil, err
+	}
+	if w.Version != expected {
+		return nil, nil, apperr.ErrStale
+	}
+	occ, err := st.Warehouses().Occupied(ctx, []string{w.ID})
+	if err != nil {
+		return nil, nil, err
+	}
+	if occ[w.ID]+quantity > w.Capacity {
+		return nil, nil, apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the warehouse")
+	}
+	if taken, err := st.Vehicles().ExistingVINs(ctx, list); err != nil {
+		return nil, nil, err
+	} else if len(taken) > 0 {
+		return nil, nil, vinUnavailable(taken)
+	}
+	return w, occ, nil
 }
 
 // Receive records vehicles arriving at a warehouse: either known VINs or a
@@ -534,23 +595,7 @@ func (s *ReceiptService) Receive(ctx context.Context, p *auth.Principal, warehou
 	if uuid.Validate(in.ModelID) != nil {
 		v.Add("modelId", "must be a valid ID")
 	}
-	var quantity int
-	var list []string
-	switch in.Stock.Mode {
-	case "unidentified":
-		if in.Stock.Quantity < 1 || in.Stock.Quantity > 10_000 || len(in.Stock.VINs) > 0 {
-			v.Add("stock.quantity", "must be 1-10000, without VINs")
-		}
-		quantity = int(in.Stock.Quantity)
-	case "identified":
-		list = vins(&v, "stock.vins", in.Stock.VINs)
-		if len(in.Stock.VINs) == 0 || len(in.Stock.VINs) > 1000 {
-			v.Add("stock.vins", "list 1-1000 VINs")
-		}
-		quantity = len(list)
-	default:
-		v.Add("stock.mode", "must be unidentified or identified")
-	}
+	quantity, list := validateReceiptStock(&v, in)
 	s.checkOccurred(&v, "receivedAt", in.ReceivedAt)
 	if len(in.EvidenceBindingIDs) > 0 {
 		v.Add("evidenceBindingIds", "evidence attachments are not supported yet")
@@ -560,35 +605,17 @@ func (s *ReceiptService) Receive(ctx context.Context, p *auth.Principal, warehou
 	}
 	var result *ReceiptResult
 	err := s.store.InTx(ctx, func(st Store) error {
-		if _, err := st.Models().Spec(ctx, in.ModelID, int(in.ModelSpecificationVersion)); errors.Is(err, apperr.ErrNotFound) {
-			return apperr.FieldError("modelSpecificationVersion", "unknown model or specification version")
-		} else if err != nil {
-			return err
-		}
-		w, err := st.Warehouses().Lock(ctx, p.CompanyID, warehouseID)
+		w, occ, err := lockReceivingWarehouse(ctx, st, p, warehouseID, expected, in, quantity, list)
 		if err != nil {
 			return err
-		}
-		if w.Version != expected {
-			return apperr.ErrStale
-		}
-		occ, err := st.Warehouses().Occupied(ctx, []string{w.ID})
-		if err != nil {
-			return err
-		}
-		if occ[w.ID]+quantity > w.Capacity {
-			return apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the warehouse")
-		}
-		if taken, err := st.Vehicles().ExistingVINs(ctx, list); err != nil {
-			return err
-		} else if len(taken) > 0 {
-			return vinUnavailable(taken)
 		}
 		now := s.clock()
 		received := in.ReceivedAt.UTC()
-		b := &ReceiptBatch{ID: uuid.NewString(), CompanyID: p.CompanyID, WarehouseID: w.ID, ModelID: in.ModelID,
+		b := &ReceiptBatch{
+			ID: uuid.NewString(), CompanyID: p.CompanyID, WarehouseID: w.ID, ModelID: in.ModelID,
 			SpecVersion: int(in.ModelSpecificationVersion), ConfirmedQuantity: quantity, IdentifiedCount: len(list),
-			UnidentifiedCount: quantity - len(list), ReceivedAt: received, CreatedBy: p.UserID, Version: 1, CreatedAt: now}
+			UnidentifiedCount: quantity - len(list), ReceivedAt: received, CreatedBy: p.UserID, Version: 1, CreatedAt: now,
+		}
 		if err := st.Warehouses().CreateBatch(ctx, b); err != nil {
 			return err
 		}
@@ -624,13 +651,9 @@ type IdentifyInput struct {
 	Atomic bool `json:"atomic"`
 }
 
-// Identify turns unidentified stock of a batch into vehicles with VINs, one
-// unit each. Occupancy does not change. All items succeed or none do.
-func (s *ReceiptService) Identify(ctx context.Context, p *auth.Principal, batchID string, in IdentifyInput) (*ReceiptResult, error) {
-	if err := validate.IDs(batchID); err != nil {
-		return nil, err
-	}
-	var v apperr.Validation
+// validateIdentifyItems validates an Identify call and returns the VINs to
+// assign.
+func validateIdentifyItems(v *apperr.Validation, in IdentifyInput) []string {
 	if !in.Atomic {
 		v.Add("atomic", "only atomic identification is supported")
 	}
@@ -638,10 +661,47 @@ func (s *ReceiptService) Identify(ctx context.Context, p *auth.Principal, batchI
 	for i, item := range in.Items {
 		raw[i] = item.VIN
 	}
-	list := vins(&v, "items", raw)
+	list := vins(v, "items", raw)
 	if len(in.Items) == 0 || len(in.Items) > 1000 {
 		v.Add("items", "list 1-1000 vehicles")
 	}
+	return list
+}
+
+// checkItemsMatchBatch rejects an Identify call that mixes in a model
+// different from the batch being identified.
+func checkItemsMatchBatch(in IdentifyInput, modelID string) error {
+	for _, item := range in.Items {
+		if item.ModelID != modelID {
+			return apperr.FieldError("items", "every vehicle must match the batch model")
+		}
+	}
+	return nil
+}
+
+// lockIdentifyWarehouse locks the batch's warehouse and checks that none of
+// the VINs being assigned is already taken.
+func lockIdentifyWarehouse(ctx context.Context, st Store, p *auth.Principal, b *ReceiptBatch, list []string) (*Warehouse, error) {
+	w, err := st.Warehouses().Lock(ctx, p.CompanyID, b.WarehouseID)
+	if err != nil {
+		return nil, err
+	}
+	if taken, err := st.Vehicles().ExistingVINs(ctx, list); err != nil {
+		return nil, err
+	} else if len(taken) > 0 {
+		return nil, vinUnavailable(taken)
+	}
+	return w, nil
+}
+
+// Identify turns unidentified stock of a batch into vehicles with VINs, one
+// unit each. Occupancy does not change. All items succeed or none do.
+func (s *ReceiptService) Identify(ctx context.Context, p *auth.Principal, batchID string, in IdentifyInput) (*ReceiptResult, error) {
+	if err := validate.IDs(batchID); err != nil {
+		return nil, err
+	}
+	var v apperr.Validation
+	list := validateIdentifyItems(&v, in)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
@@ -651,22 +711,15 @@ func (s *ReceiptService) Identify(ctx context.Context, p *auth.Principal, batchI
 		if err != nil {
 			return err
 		}
-		for _, item := range in.Items {
-			if item.ModelID != b.ModelID {
-				return apperr.FieldError("items", "every vehicle must match the batch model")
-			}
+		if err := checkItemsMatchBatch(in, b.ModelID); err != nil {
+			return err
 		}
 		if len(list) > b.UnidentifiedCount {
 			return apperr.New(apperr.ErrConflict, "exceeds_unidentified", "the batch has fewer vehicles waiting for a VIN")
 		}
-		w, err := st.Warehouses().Lock(ctx, p.CompanyID, b.WarehouseID)
+		w, err := lockIdentifyWarehouse(ctx, st, p, b, list)
 		if err != nil {
 			return err
-		}
-		if taken, err := st.Vehicles().ExistingVINs(ctx, list); err != nil {
-			return err
-		} else if len(taken) > 0 {
-			return vinUnavailable(taken)
 		}
 		now := s.clock()
 		units, placements := newUnits(p, list, b.ModelID, b.SpecVersion, w.ID, b.ID, now)
@@ -822,6 +875,58 @@ func (s *VehicleService) List(ctx context.Context, p *auth.Principal, f VehicleF
 	return s.store.Vehicles().List(ctx, f)
 }
 
+// validateMoveInput validates a Move call against the current time.
+func validateMoveInput(v *apperr.Validation, in MoveInput, now time.Time) {
+	if uuid.Validate(in.FromWarehouseID) != nil {
+		v.Add("fromWarehouseId", "must be a valid ID")
+	}
+	if uuid.Validate(in.ToWarehouseID) != nil || in.ToWarehouseID == in.FromWarehouseID {
+		v.Add("toWarehouseId", "must be a different warehouse")
+	}
+	if in.OccurredAt.IsZero() || in.OccurredAt.After(now.Add(5*time.Minute)) {
+		v.Add("occurredAt", "required and not in the future")
+	}
+	if len(in.EvidenceBindingIDs) > 0 {
+		v.Add("evidenceBindingIds", "evidence attachments are not supported yet")
+	}
+}
+
+// lockMoveWarehouses locks both warehouses of a Move (in ID order, to avoid
+// deadlocks), checks the vehicle is still placed in the source warehouse and
+// that the destination has room for it.
+func lockMoveWarehouses(ctx context.Context, st Store, p *auth.Principal, id string, in MoveInput) (map[string]*Warehouse, *Warehouse, error) {
+	ids := []string{in.FromWarehouseID, in.ToWarehouseID}
+	slices.Sort(ids)
+	locked := map[string]*Warehouse{}
+	for _, wid := range ids {
+		w, err := st.Warehouses().Lock(ctx, p.CompanyID, wid)
+		if errors.Is(err, apperr.ErrNotFound) {
+			return nil, nil, apperr.FieldError("toWarehouseId", "both warehouses must belong to your company")
+		} else if err != nil {
+			return nil, nil, err
+		}
+		locked[wid] = w
+	}
+	placement, err := st.Vehicles().LockPlacement(ctx, id)
+	if errors.Is(err, apperr.ErrNotFound) {
+		return nil, nil, apperr.New(apperr.ErrConflict, "not_in_warehouse", "the vehicle is not in a warehouse")
+	} else if err != nil {
+		return nil, nil, err
+	}
+	if placement.WarehouseID != in.FromWarehouseID {
+		return nil, nil, apperr.New(apperr.ErrConflict, "placement_changed", "the vehicle is no longer in the source warehouse, reload")
+	}
+	to := locked[in.ToWarehouseID]
+	occ, err := st.Warehouses().Occupied(ctx, []string{to.ID})
+	if err != nil {
+		return nil, nil, err
+	}
+	if occ[to.ID]+1 > to.Capacity {
+		return nil, nil, apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the destination warehouse")
+	}
+	return locked, to, nil
+}
+
 // Move relocates a vehicle between two warehouses of the same company. Both
 // warehouses are locked in ID order (no deadlocks) and the destination
 // capacity is checked. Ownership does not change.
@@ -830,18 +935,7 @@ func (s *VehicleService) Move(ctx context.Context, p *auth.Principal, id string,
 		return nil, err
 	}
 	var v apperr.Validation
-	if uuid.Validate(in.FromWarehouseID) != nil {
-		v.Add("fromWarehouseId", "must be a valid ID")
-	}
-	if uuid.Validate(in.ToWarehouseID) != nil || in.ToWarehouseID == in.FromWarehouseID {
-		v.Add("toWarehouseId", "must be a different warehouse")
-	}
-	if in.OccurredAt.IsZero() || in.OccurredAt.After(s.clock().Add(5*time.Minute)) {
-		v.Add("occurredAt", "required and not in the future")
-	}
-	if len(in.EvidenceBindingIDs) > 0 {
-		v.Add("evidenceBindingIds", "evidence attachments are not supported yet")
-	}
+	validateMoveInput(&v, in, s.clock())
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
@@ -850,34 +944,9 @@ func (s *VehicleService) Move(ctx context.Context, p *auth.Principal, id string,
 		if _, err := st.Vehicles().Get(ctx, p.CompanyID, id); err != nil {
 			return err
 		}
-		ids := []string{in.FromWarehouseID, in.ToWarehouseID}
-		slices.Sort(ids)
-		locked := map[string]*Warehouse{}
-		for _, wid := range ids {
-			w, err := st.Warehouses().Lock(ctx, p.CompanyID, wid)
-			if errors.Is(err, apperr.ErrNotFound) {
-				return apperr.FieldError("toWarehouseId", "both warehouses must belong to your company")
-			} else if err != nil {
-				return err
-			}
-			locked[wid] = w
-		}
-		placement, err := st.Vehicles().LockPlacement(ctx, id)
-		if errors.Is(err, apperr.ErrNotFound) {
-			return apperr.New(apperr.ErrConflict, "not_in_warehouse", "the vehicle is not in a warehouse")
-		} else if err != nil {
-			return err
-		}
-		if placement.WarehouseID != in.FromWarehouseID {
-			return apperr.New(apperr.ErrConflict, "placement_changed", "the vehicle is no longer in the source warehouse, reload")
-		}
-		to := locked[in.ToWarehouseID]
-		occ, err := st.Warehouses().Occupied(ctx, []string{to.ID})
+		locked, to, err := lockMoveWarehouses(ctx, st, p, id, in)
 		if err != nil {
 			return err
-		}
-		if occ[to.ID]+1 > to.Capacity {
-			return apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the destination warehouse")
 		}
 		at := in.OccurredAt.UTC()
 		if err := st.Vehicles().MovePlacement(ctx, id, to.ID, at); err != nil {

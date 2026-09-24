@@ -84,11 +84,14 @@ func TestOnlyActiveSellersTrade(t *testing.T) {
 
 	draft := admin.Do(http.MethodPost, "/identity/admin/seller-companies", map[string]any{
 		"company":    map[string]any{"name": "Draft Motors", "country": map[string]string{"label": "Uzbekistan"}, "registration": "D-1", "email": "d@d.test"},
-		"firstAdmin": map[string]string{"displayName": "D", "login": "draft", "email": "draft@d.test", "password": "draft-password-1", "passwordConfirmation": "draft-password-1"}})
+		"firstAdmin": map[string]string{"displayName": "D", "login": "draft", "email": "draft@d.test", "password": "draft-password-1", "passwordConfirmation": "draft-password-1"},
+	})
 	expect(t, draft, http.StatusCreated)
-	bank := admin.Do(http.MethodPost, "/identity/admin/provider-companies", map[string]any{"kind": "bank",
+	bank := admin.Do(http.MethodPost, "/identity/admin/provider-companies", map[string]any{
+		"kind":       "bank",
 		"company":    map[string]any{"name": "Capital Bank", "country": map[string]string{"label": "Uzbekistan"}, "registration": "B-1", "email": "b@b.test"},
-		"firstAdmin": map[string]string{"displayName": "B", "login": "banker", "email": "banker@b.test", "password": "bank-password-12", "passwordConfirmation": "bank-password-12"}})
+		"firstAdmin": map[string]string{"displayName": "B", "login": "banker", "email": "banker@b.test", "password": "bank-password-12", "passwordConfirmation": "bank-password-12"},
+	})
 	expect(t, bank, http.StatusCreated)
 	for _, r := range []testkit.Response{draft, bank} {
 		id := str(r.Data()["company"].(map[string]any), "id")

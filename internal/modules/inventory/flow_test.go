@@ -10,25 +10,32 @@ import (
 	"justixauto/internal/testkit"
 )
 
-var expect = testkit.Expect
-var ifMatch = testkit.IfMatch
+var (
+	expect  = testkit.Expect
+	ifMatch = testkit.IfMatch
+)
 
 func newEnv(t *testing.T) (*testkit.Env, *testkit.Client) {
 	e := testkit.New(t)
-	return e, e.Admin()
+	c := e.Admin()
+	return e, c
 }
 
 var allPerms = []string{inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, inventory.PermVehiclesMove}
 
 func spec(variant string, year int) map[string]any {
-	return map[string]any{"specification": map[string]any{"make": "Chevrolet", "model": "Cobalt", "variant": variant,
+	return map[string]any{"specification": map[string]any{
+		"make": "Chevrolet", "model": "Cobalt", "variant": variant,
 		"year": year, "bodyType": "sedan", "exteriorColor": "white", "interiorColor": "black",
-		"powertrain": "petrol 1.5", "drivetrain": "FWD"}}
+		"powertrain": "petrol 1.5", "drivetrain": "FWD",
+	}}
 }
 
 func warehouse(name string, capacity any) map[string]any {
-	return map[string]any{"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
-		"city": "Tashkent", "address": "Yunusabad 1", "capacity": capacity}
+	return map[string]any{
+		"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
+		"city": "Tashkent", "address": "Yunusabad 1", "capacity": capacity,
+	}
 }
 
 func str(m map[string]any, k string) string { s, _ := m[k].(string); return s }
@@ -79,8 +86,10 @@ func TestReceiptIdentifyMoveAndCapacity(t *testing.T) {
 	id1, id2 := str(w1.Data(), "id"), str(w2.Data(), "id")
 
 	receipt := func(stock map[string]any) map[string]any {
-		return map[string]any{"modelId": model, "modelSpecificationVersion": "1", "stock": stock,
-			"receivedAt": e.Clock.Now().Format(time.RFC3339)}
+		return map[string]any{
+			"modelId": model, "modelSpecificationVersion": "1", "stock": stock,
+			"receivedAt": e.Clock.Now().Format(time.RFC3339),
+		}
 	}
 	path := "/inventory/warehouses/" + id1 + "/receipt-batches"
 
@@ -166,9 +175,11 @@ func TestTenantIsolation(t *testing.T) {
 	model := str(a.Do(http.MethodPost, "/inventory/vehicle-models", spec("LTZ", 2025)).Data(), "id")
 	wa := str(a.Do(http.MethodPost, "/inventory/warehouses", warehouse("Alpha yard", 5)).Data(), "id")
 	wb := str(b.Do(http.MethodPost, "/inventory/warehouses", warehouse("Beta yard", 5)).Data(), "id")
-	r := a.Do(http.MethodPost, "/inventory/warehouses/"+wa+"/receipt-batches", map[string]any{"modelId": model,
+	r := a.Do(http.MethodPost, "/inventory/warehouses/"+wa+"/receipt-batches", map[string]any{
+		"modelId":                   model,
 		"modelSpecificationVersion": "1", "stock": map[string]any{"mode": "identified", "vins": []string{"XTAAA11111A000009"}},
-		"receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch("1")...)
+		"receivedAt": e.Clock.Now().Format(time.RFC3339),
+	}, ifMatch("1")...)
 	expect(t, r, http.StatusCreated)
 	vehicle := str(r.Data()["vehicles"].([]any)[0].(map[string]any), "id")
 
@@ -178,13 +189,16 @@ func TestTenantIsolation(t *testing.T) {
 	if n := len(b.Do(http.MethodGet, "/inventory/vehicle-units", nil).Items()); n != 0 {
 		t.Fatalf("beta sees %d vehicles", n)
 	}
-	dup := b.Do(http.MethodPost, "/inventory/warehouses/"+wb+"/receipt-batches", map[string]any{"modelId": model,
+	dup := b.Do(http.MethodPost, "/inventory/warehouses/"+wb+"/receipt-batches", map[string]any{
+		"modelId":                   model,
 		"modelSpecificationVersion": "1", "stock": map[string]any{"mode": "identified", "vins": []string{"XTAAA11111A000009"}},
-		"receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch("1")...)
+		"receivedAt": e.Clock.Now().Format(time.RFC3339),
+	}, ifMatch("1")...)
 	expect(t, dup, http.StatusConflict, "VIN_UNAVAILABLE")
 	// Moving into another company's warehouse is refused.
 	expect(t, a.Do(http.MethodPost, "/inventory/vehicle-units/"+vehicle+"/warehouse-moves", map[string]any{
-		"fromWarehouseId": wa, "toWarehouseId": wb, "occurredAt": e.Clock.Now().Format(time.RFC3339)}), http.StatusUnprocessableEntity)
+		"fromWarehouseId": wa, "toWarehouseId": wb, "occurredAt": e.Clock.Now().Format(time.RFC3339),
+	}), http.StatusUnprocessableEntity)
 
 	// Company routes need an active company.
 	fresh := e.Browser()
@@ -202,9 +216,11 @@ func TestConcurrentMovesRespectCapacity(t *testing.T) {
 	from := str(c.Do(http.MethodPost, "/inventory/warehouses", warehouse("Big", 10)).Data(), "id")
 	to := str(c.Do(http.MethodPost, "/inventory/warehouses", warehouse("Small", 1)).Data(), "id")
 	vins := []string{"XTAAA11111A000011", "XTAAA11111A000012", "XTAAA11111A000013", "XTAAA11111A000014", "XTAAA11111A000015"}
-	r := c.Do(http.MethodPost, "/inventory/warehouses/"+from+"/receipt-batches", map[string]any{"modelId": model,
+	r := c.Do(http.MethodPost, "/inventory/warehouses/"+from+"/receipt-batches", map[string]any{
+		"modelId":                   model,
 		"modelSpecificationVersion": "1", "stock": map[string]any{"mode": "identified", "vins": vins},
-		"receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch("1")...)
+		"receivedAt": e.Clock.Now().Format(time.RFC3339),
+	}, ifMatch("1")...)
 	expect(t, r, http.StatusCreated)
 
 	statuses := make(chan int, len(vins))
@@ -214,7 +230,8 @@ func TestConcurrentMovesRespectCapacity(t *testing.T) {
 		go func(id string) {
 			defer wg.Done()
 			statuses <- c.Do(http.MethodPost, "/inventory/vehicle-units/"+id+"/warehouse-moves", map[string]any{
-				"fromWarehouseId": from, "toWarehouseId": to, "occurredAt": e.Clock.Now().Format(time.RFC3339)}).Status
+				"fromWarehouseId": from, "toWarehouseId": to, "occurredAt": e.Clock.Now().Format(time.RFC3339),
+			}).Status
 		}(str(v.(map[string]any), "id"))
 	}
 	wg.Wait()
@@ -237,8 +254,10 @@ func TestReceiptQuantityCorrection(t *testing.T) {
 	model := str(c.Do(http.MethodPost, "/inventory/vehicle-models", spec("LTZ", 2025)).Data(), "id")
 	w := c.Do(http.MethodPost, "/inventory/warehouses", warehouse("Yard", "4"))
 	wid := str(w.Data(), "id")
-	b := c.Do(http.MethodPost, "/inventory/warehouses/"+wid+"/receipt-batches", map[string]any{"modelId": model, "modelSpecificationVersion": "1",
-		"stock": map[string]any{"mode": "unidentified", "quantity": "3"}, "receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch("1")...)
+	b := c.Do(http.MethodPost, "/inventory/warehouses/"+wid+"/receipt-batches", map[string]any{
+		"modelId": model, "modelSpecificationVersion": "1",
+		"stock": map[string]any{"mode": "unidentified", "quantity": "3"}, "receivedAt": e.Clock.Now().Format(time.RFC3339),
+	}, ifMatch("1")...)
 	expect(t, b, http.StatusCreated)
 	batchID := str(b.Data()["batch"].(map[string]any), "id")
 	expect(t, c.Do(http.MethodPost, "/inventory/receipt-batches/"+batchID+"/identifications",

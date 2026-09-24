@@ -92,7 +92,7 @@ func (d DirStorage) Put(_ context.Context, key string, data []byte, _ string) er
 	if err := os.MkdirAll(filepath.Dir(p), 0o700); err != nil {
 		return err
 	}
-	f, err := os.OpenFile(p, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o600)
+	f, err := os.OpenFile(p, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o600) //nolint:gosec // p is built from a server-generated UUID key (see Service.upload), never user-supplied
 	if err != nil {
 		return err
 	}
@@ -174,8 +174,10 @@ func (s *Service) Upload(ctx context.Context, p *auth.Principal, purpose, name s
 	if err := s.storage.Put(ctx, key, data, mime); err != nil {
 		return nil, err
 	}
-	f := &File{ID: uuid.NewString(), CompanyID: p.CompanyID, Purpose: purpose, FileName: name, MIME: mime, ByteLength: int64(len(data)),
-		SHA256: hex.EncodeToString(sum[:]), StorageKey: key, Sensitive: sensitive, CreatedBy: p.UserID, CreatedAt: s.now().UTC()}
+	f := &File{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, Purpose: purpose, FileName: name, MIME: mime, ByteLength: int64(len(data)),
+		SHA256: hex.EncodeToString(sum[:]), StorageKey: key, Sensitive: sensitive, CreatedBy: p.UserID, CreatedAt: s.now().UTC(),
+	}
 	if err := s.repo.create(ctx, f); err != nil {
 		_ = s.storage.Delete(ctx, key)
 		return nil, err
@@ -217,8 +219,10 @@ func (s *Service) Share(ctx context.Context, ownerCompanyID, fileID, companyID, 
 	if validate.IDs(fileID) != nil {
 		return nil, apperr.ErrNotFound
 	}
-	return s.repo.share(ctx, ownerCompanyID, fileID, &Share{FileID: fileID, CompanyID: companyID,
-		ResourceType: resourceType, ResourceID: resourceID, CreatedAt: s.now().UTC()})
+	return s.repo.share(ctx, ownerCompanyID, fileID, &Share{
+		FileID: fileID, CompanyID: companyID,
+		ResourceType: resourceType, ResourceID: resourceID, CreatedAt: s.now().UTC(),
+	})
 }
 
 // FileView is a file's public metadata (never the storage key).
@@ -236,6 +240,8 @@ type FileView struct {
 
 // FileInfo returns a file's public metadata.
 func FileInfo(f *File) FileView {
-	return FileView{ID: f.ID, FileName: f.FileName, MIME: f.MIME, ByteLength: f.ByteLength, SHA256: f.SHA256,
-		Purpose: f.Purpose, Sensitive: f.Sensitive, ScanState: "unscanned", CreatedAt: f.CreatedAt}
+	return FileView{
+		ID: f.ID, FileName: f.FileName, MIME: f.MIME, ByteLength: f.ByteLength, SHA256: f.SHA256,
+		Purpose: f.Purpose, Sensitive: f.Sensitive, ScanState: "unscanned", CreatedAt: f.CreatedAt,
+	}
 }

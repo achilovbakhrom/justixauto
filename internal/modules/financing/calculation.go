@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"math/big"
 	"slices"
-	"strconv"
 	"time"
 
 	"justixauto/internal/platform/apperr"
@@ -143,8 +142,10 @@ func calculate(price money.Money, programID string, programVersion int, currency
 	financed := new(big.Int).Sub(total, down)
 	n := big.NewInt(int64(in.TermMonths))
 	regular := new(big.Int).Quo(financed, n)
-	c := &Calculation{Kind: "partner-program", PolicyID: PolicyFixedMarkup, PolicyVersion: PolicyFixedMarkupVersion,
-		ProgramID: programID, ProgramVersion: programVersion, Price: price, Input: in, CalculatedAt: now}
+	c := &Calculation{
+		Kind: "partner-program", PolicyID: PolicyFixedMarkup, PolicyVersion: PolicyFixedMarkupVersion,
+		ProgramID: programID, ProgramVersion: programVersion, Price: price, Input: in, CalculatedAt: now,
+	}
 	c.Output.Markup, c.Output.Total, c.Output.FinancedAmount = money.Of(markup, currency), money.Of(total, currency), money.Of(financed, currency)
 	balance := new(big.Int).Set(financed)
 	for i := 0; i < in.TermMonths; i++ {
@@ -153,8 +154,10 @@ func calculate(price money.Money, programID string, programVersion int, currency
 			pay.Set(balance)
 		}
 		balance.Sub(balance, pay)
-		c.Output.Schedule = append(c.Output.Schedule, ScheduleRow{Number: i + 1, DueDate: monthly(first, i).Format(time.DateOnly),
-			Total: money.Of(pay, currency), Balance: money.Of(new(big.Int).Set(balance), currency)})
+		c.Output.Schedule = append(c.Output.Schedule, ScheduleRow{
+			Number: i + 1, DueDate: monthly(first, i).Format(time.DateOnly),
+			Total: money.Of(pay, currency), Balance: money.Of(new(big.Int).Set(balance), currency),
+		})
 	}
 	return c, nil
 }
@@ -166,5 +169,3 @@ func amount(s string) *big.Int {
 	}
 	return n
 }
-
-func itoa(n int) string { return strconv.Itoa(n) }

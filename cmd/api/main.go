@@ -73,8 +73,10 @@ func run(log *slog.Logger) error {
 
 	var files documents.Storage = documents.DirStorage{Root: cfg.DocumentsDir}
 	if cfg.FileStorage == "s3" {
-		files, err = documents.NewS3Storage(context.Background(), documents.S3Config{Bucket: cfg.S3.Bucket, Region: cfg.S3.Region,
-			Prefix: cfg.S3.Prefix, Endpoint: cfg.S3.Endpoint, PathStyle: cfg.S3.PathStyle, SSE: cfg.S3.SSE})
+		files, err = documents.NewS3Storage(context.Background(), documents.S3Config{
+			Bucket: cfg.S3.Bucket, Region: cfg.S3.Region,
+			Prefix: cfg.S3.Prefix, Endpoint: cfg.S3.Endpoint, PathStyle: cfg.S3.PathStyle, SSE: cfg.S3.SSE,
+		})
 		if err != nil {
 			return err
 		}

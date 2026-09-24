@@ -9,8 +9,10 @@ import (
 )
 
 func warehouse(t *testing.T, c *testkit.Client, name, capacity string) string {
-	w := c.Do(http.MethodPost, "/inventory/warehouses", map[string]any{"name": name, "country": map[string]string{"label": "Uzbekistan"},
-		"city": "Tashkent", "address": "Yard 1", "capacity": capacity})
+	w := c.Do(http.MethodPost, "/inventory/warehouses", map[string]any{
+		"name": name, "country": map[string]string{"label": "Uzbekistan"},
+		"city": "Tashkent", "address": "Yard 1", "capacity": capacity,
+	})
 	expect(t, w, http.StatusCreated)
 	return str(w.Data(), "id")
 }
@@ -18,9 +20,11 @@ func warehouse(t *testing.T, c *testkit.Client, name, capacity string) string {
 // receive registers VINs of the model into a warehouse and returns their IDs.
 func receive(t *testing.T, e *testkit.Env, c *testkit.Client, warehouseID, model string, vins ...string) []string {
 	rev := c.Do(http.MethodGet, "/inventory/warehouses/"+warehouseID, nil).Revision()
-	r := c.Do(http.MethodPost, "/inventory/warehouses/"+warehouseID+"/receipt-batches", map[string]any{"modelId": model,
+	r := c.Do(http.MethodPost, "/inventory/warehouses/"+warehouseID+"/receipt-batches", map[string]any{
+		"modelId":                   model,
 		"modelSpecificationVersion": "1", "stock": map[string]any{"mode": "identified", "vins": vins},
-		"receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch(rev)...)
+		"receivedAt": e.Clock.Now().Format(time.RFC3339),
+	}, ifMatch(rev)...)
 	expect(t, r, http.StatusCreated)
 	var ids []string
 	for _, v := range r.Data()["vehicles"].([]any) {
@@ -84,8 +88,10 @@ func TestAllocationShipmentAndReceipt(t *testing.T) {
 
 	// Receipt: the buyer accepts one into its warehouse and rejects the other.
 	decide := func(decision string, ids []string, rev, reason string) testkit.Response {
-		return b.Do(http.MethodPost, "/commerce/shipments/"+shipment+"/receipt-decisions", map[string]any{"decision": decision,
-			"vehicleIds": ids, "warehouseId": bw, "reason": reason}, ifMatch(rev)...)
+		return b.Do(http.MethodPost, "/commerce/shipments/"+shipment+"/receipt-decisions", map[string]any{
+			"decision":   decision,
+			"vehicleIds": ids, "warehouseId": bw, "reason": reason,
+		}, ifMatch(rev)...)
 	}
 	expect(t, decide("accept", []string{v[0], v[1]}, "1", ""), http.StatusConflict, "capacity_exceeded") // yard has 1 free place
 	expect(t, s.Do(http.MethodPost, "/commerce/shipments/"+shipment+"/receipt-decisions", map[string]any{"decision": "reject", "vehicleIds": []string{v[1]}, "reason": "x"}, ifMatch("1")...), http.StatusForbidden)

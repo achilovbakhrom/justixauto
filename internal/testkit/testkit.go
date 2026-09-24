@@ -103,8 +103,10 @@ func New(t *testing.T) *Env {
 	clock := &Clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
 	key := make([]byte, 32)
 	_, _ = rand.Read(key)
-	e, idm, err := app.New(db, app.Config{Files: fileStorage(t), Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
-		Log: slog.New(slog.NewTextHandler(io.Discard, nil))})
+	e, idm, err := app.New(db, app.Config{
+		Files: fileStorage(t), Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
+		Log: slog.New(slog.NewTextHandler(io.Discard, nil)),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -232,7 +234,8 @@ func (e *Env) Admin() *Client {
 	t := e.T
 	t.Helper()
 	_, err := e.Identity.Users.Bootstrap(context.Background(), identity.BootstrapInput{
-		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword})
+		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -258,10 +261,14 @@ func (e *Env) KindUser(admin *Client, kind, name string, perms ...string) *Clien
 	if kind != "seller" {
 		path, body["kind"] = "/identity/admin/provider-companies", kind
 	}
-	body["company"] = map[string]any{"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
-		"registration": "REG-" + login, "email": "office@" + login + ".test"}
-	body["firstAdmin"] = map[string]string{"displayName": name + " user", "login": login, "email": login + "@company.test",
-		"password": "company-password-1", "passwordConfirmation": "company-password-1"}
+	body["company"] = map[string]any{
+		"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
+		"registration": "REG-" + login, "email": "office@" + login + ".test",
+	}
+	body["firstAdmin"] = map[string]string{
+		"displayName": name + " user", "login": login, "email": login + "@company.test",
+		"password": "company-password-1", "passwordConfirmation": "company-password-1",
+	}
 	created := admin.Do(http.MethodPost, path, body)
 	Expect(t, created, http.StatusCreated)
 	userID := created.Data()["admin"].(map[string]any)["id"].(string)
@@ -271,8 +278,10 @@ func (e *Env) KindUser(admin *Client, kind, name string, perms ...string) *Clien
 	role := admin.Do(http.MethodPost, "/identity/admin/roles", map[string]any{"name": name + " staff", "permissionKeys": perms})
 	Expect(t, role, http.StatusCreated)
 	user := admin.Do(http.MethodGet, "/identity/admin/users/"+userID, nil)
-	Expect(t, admin.Do(http.MethodPatch, "/identity/admin/users/"+userID, map[string]any{"displayName": name + " user",
-		"roleIds": []string{identity.CompanyAdminRoleID, role.Data()["id"].(string)}}, IfMatch(user.Revision())...), http.StatusOK)
+	Expect(t, admin.Do(http.MethodPatch, "/identity/admin/users/"+userID, map[string]any{
+		"displayName": name + " user",
+		"roleIds":     []string{identity.CompanyAdminRoleID, role.Data()["id"].(string)},
+	}, IfMatch(user.Revision())...), http.StatusOK)
 
 	c := e.Browser()
 	s := c.SignIn(login, "company-password-1")
@@ -327,8 +336,10 @@ func fileStorage(t *testing.T) documents.Storage {
 	if endpoint == "" {
 		return documents.DirStorage{Root: t.TempDir()}
 	}
-	s, err := documents.NewS3Storage(context.Background(), documents.S3Config{Bucket: "justixauto-test", Region: "us-east-1",
-		Prefix: "t/" + uuid.NewString() + "/", Endpoint: endpoint, PathStyle: true})
+	s, err := documents.NewS3Storage(context.Background(), documents.S3Config{
+		Bucket: "justixauto-test", Region: "us-east-1",
+		Prefix: "t/" + uuid.NewString() + "/", Endpoint: endpoint, PathStyle: true,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

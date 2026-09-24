@@ -3,7 +3,10 @@ package inventory
 import "testing"
 
 func TestNormalizeVIN(t *testing.T) {
-	for raw, want := range map[string]string{" wvwzzz1jz3w386752 ": "WVWZZZ1JZ3W386752", "1HGCM82633A004352": "1HGCM82633A004352"} {
+	for raw, want := range map[string]string{
+		" wvwzzz1jz3w386752 ": "WVWZZZ1JZ3W386752", //nolint:gocritic // intentional: raw input with surrounding whitespace to exercise trimming
+		"1HGCM82633A004352":   "1HGCM82633A004352",
+	} {
 		if got, ok := normalizeVIN(raw); !ok || got != want {
 			t.Fatalf("%q: got %q %v", raw, got, ok)
 		}

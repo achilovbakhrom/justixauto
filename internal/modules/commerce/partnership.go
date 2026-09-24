@@ -186,7 +186,10 @@ func (r *partnershipRepository) List(ctx context.Context, f PartnershipFilter) (
 		q = q.Where("status = ?", f.Status)
 	}
 	ps := []Partnership{}
-	return ps, database.Translate(q.Find(&ps).Error)
+	if err := database.Translate(q.Find(&ps).Error); err != nil {
+		return nil, err
+	}
+	return ps, nil
 }
 
 func (r *partnershipRepository) Update(ctx context.Context, p *Partnership, expected int64) error {
@@ -243,9 +246,11 @@ func (d deps) event(ctx context.Context, st Store, p *auth.Principal, eventType,
 	if details != nil {
 		raw, _ = json.Marshal(details)
 	}
-	return st.Events().Append(ctx, &Event{ID: uuid.NewString(), CompanyID: p.CompanyID, EventType: eventType,
+	return st.Events().Append(ctx, &Event{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, EventType: eventType,
 		ResourceType: resourceType, ResourceID: resourceID, ActorUserID: p.UserID, OccurredAt: d.clock(),
-		Reason: reason, Details: raw})
+		Reason: reason, Details: raw,
+	})
 }
 
 // tradingCompany checks that a company exists, sells vehicles and has active
@@ -297,8 +302,10 @@ func (s *PartnershipService) Request(ctx context.Context, p *auth.Principal, cou
 		return nil, err
 	}
 	now := s.clock()
-	ps := &Partnership{ID: uuid.NewString(), RequesterCompanyID: p.CompanyID, RecipientCompanyID: counterpartyID,
-		Status: Requested, RequestedBy: p.UserID, Version: 1, CreatedAt: now, UpdatedAt: now}
+	ps := &Partnership{
+		ID: uuid.NewString(), RequesterCompanyID: p.CompanyID, RecipientCompanyID: counterpartyID,
+		Status: Requested, RequestedBy: p.UserID, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	err = s.store.InTx(ctx, func(st Store) error {
 		if err := st.Partnerships().Create(ctx, ps); err != nil {
 			if errors.Is(err, apperr.ErrConflict) {
@@ -416,10 +423,4 @@ func (s *PartnershipService) Decide(ctx context.Context, p *auth.Principal, id s
 		return nil, err
 	}
 	return s.view(ctx, p.CompanyID, result)
-}
-
-// ActiveBetween is used by other commerce features: B2B offers, prices and
-// new orders require an active partnership.
-func (s *PartnershipService) ActiveBetween(ctx context.Context, a, b string) (bool, error) {
-	return s.store.Partnerships().ActiveBetween(ctx, a, b)
 }

@@ -106,8 +106,10 @@ func (s *Service) RequestDocument(ctx context.Context, p *auth.Principal, applic
 		return nil, apperr.New(apperr.ErrConflict, "invalid_transition", "documents are requested after agreement")
 	}
 	now := s.clock()
-	d := &DocumentRequest{ID: uuid.NewString(), ApplicationID: a.ID, Title: title, Requirements: requirements, Status: "requested",
-		Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+	d := &DocumentRequest{
+		ID: uuid.NewString(), ApplicationID: a.ID, Title: title, Requirements: requirements, Status: "requested",
+		Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+	}
 	return d, s.r.create(ctx, d)
 }
 

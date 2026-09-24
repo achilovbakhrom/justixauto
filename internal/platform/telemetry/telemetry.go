@@ -80,6 +80,7 @@ func (h traceHandler) Handle(ctx context.Context, r slog.Record) error {
 func (h traceHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
 	return traceHandler{h.Handler.WithAttrs(attrs)}
 }
+
 func (h traceHandler) WithGroup(name string) slog.Handler {
 	return traceHandler{h.Handler.WithGroup(name)}
 }

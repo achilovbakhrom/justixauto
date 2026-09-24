@@ -49,9 +49,11 @@ func NewS3Storage(ctx context.Context, cfg S3Config) (*S3Storage, error) {
 func (s *S3Storage) key(k string) *string { return aws.String(s.cfg.Prefix + k) }
 
 func (s *S3Storage) Put(ctx context.Context, key string, data []byte, contentType string) error {
-	in := &s3.PutObjectInput{Bucket: aws.String(s.cfg.Bucket), Key: s.key(key), Body: bytes.NewReader(data),
+	in := &s3.PutObjectInput{
+		Bucket: aws.String(s.cfg.Bucket), Key: s.key(key), Body: bytes.NewReader(data),
 		ContentLength: aws.Int64(int64(len(data))), ContentType: aws.String(contentType),
-		IfNoneMatch: aws.String("*")} // stored bytes never change
+		IfNoneMatch: aws.String("*"),
+	} // stored bytes never change
 	if s.cfg.SSE != "" {
 		in.ServerSideEncryption = types.ServerSideEncryption(s.cfg.SSE)
 	}

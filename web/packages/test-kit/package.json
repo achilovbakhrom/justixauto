@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "exports": { ".": "./src/fixtures.ts" },
+  "exports": {
+    ".": "./src/fixtures.ts"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck"

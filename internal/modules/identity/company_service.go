@@ -89,8 +89,10 @@ func (s *CompanyService) CreateSeller(ctx context.Context, actor *auth.Principal
 		if err := st.Companies().Create(ctx, c); err != nil {
 			return duplicateCompany(err)
 		}
-		m := &Membership{ID: uuid.NewString(), UserID: actor.UserID, CompanyID: c.ID, Status: MembershipActive,
-			BranchAccess: AllBranches, Version: 1, CreatedAt: c.CreatedAt, UpdatedAt: c.CreatedAt}
+		m := &Membership{
+			ID: uuid.NewString(), UserID: actor.UserID, CompanyID: c.ID, Status: MembershipActive,
+			BranchAccess: AllBranches, Version: 1, CreatedAt: c.CreatedAt, UpdatedAt: c.CreatedAt,
+		}
 		if err := st.Memberships().Create(ctx, m); err != nil {
 			return err
 		}
@@ -138,9 +140,11 @@ func (s *CompanyService) provision(ctx context.Context, actor *auth.Principal, v
 	c := s.newCompany(v, kind, company)
 	login := validLogin(v, "firstAdmin.login", a.Login)
 	now := c.CreatedAt
-	u := &User{ID: uuid.NewString(), DisplayName: text(v, "firstAdmin.displayName", a.DisplayName, 1, 200),
+	u := &User{
+		ID: uuid.NewString(), DisplayName: text(v, "firstAdmin.displayName", a.DisplayName, 1, 200),
 		Email: email(v, "firstAdmin.email", a.Email), Login: &login, Status: UserActive,
-		Version: 1, CreatedAt: now, UpdatedAt: now}
+		Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	validatePassword(v, "firstAdmin.password", a.Password, a.PasswordConfirmation)
 	if err := v.Err(); err != nil {
 		return nil, err
@@ -150,8 +154,10 @@ func (s *CompanyService) provision(ctx context.Context, actor *auth.Principal, v
 		return nil, err
 	}
 	u.PasswordHash = &hash
-	m := &Membership{ID: uuid.NewString(), UserID: u.ID, CompanyID: c.ID, Status: MembershipActive,
-		BranchAccess: AllBranches, Version: 1, CreatedAt: now, UpdatedAt: now}
+	m := &Membership{
+		ID: uuid.NewString(), UserID: u.ID, CompanyID: c.ID, Status: MembershipActive,
+		BranchAccess: AllBranches, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 
 	err = s.store.InTx(ctx, func(st Store) error {
 		taken, err := st.Users().EmailOrLoginTaken(ctx, u.Email, u.Login)

@@ -7,8 +7,10 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const manifest = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')) as {
   workspaces?: unknown;
 };
-if (!Array.isArray(manifest.workspaces)
-  || !manifest.workspaces.every((pattern): pattern is string => typeof pattern === 'string')) {
+if (
+  !Array.isArray(manifest.workspaces) ||
+  !manifest.workspaces.every((pattern): pattern is string => typeof pattern === 'string')
+) {
   throw new Error('The root package.json must declare npm workspace directory patterns.');
 }
 
@@ -28,10 +30,14 @@ const projects = workspaceManifests.map((packagePath) => {
     .filter((path) => existsSync(path) && statSync(path).isFile());
   const [config] = configs;
   if (!config) {
-    throw new Error(`Missing Vitest project config for npm workspace "${workspace}": expected vitest.config.ts or vitest.config.mts.`);
+    throw new Error(
+      `Missing Vitest project config for npm workspace "${workspace}": expected vitest.config.ts or vitest.config.mts.`,
+    );
   }
   if (configs.length !== 1) {
-    throw new Error(`Ambiguous Vitest project configs for npm workspace "${workspace}": keep exactly one vitest.config.ts or vitest.config.mts.`);
+    throw new Error(
+      `Ambiguous Vitest project configs for npm workspace "${workspace}": keep exactly one vitest.config.ts or vitest.config.mts.`,
+    );
   }
   return config;
 });

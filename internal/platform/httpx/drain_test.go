@@ -15,7 +15,7 @@ func TestDrainClosesConnections(t *testing.T) {
 	e.GET("/", func(c echo.Context) error { return c.NoContent(http.StatusNoContent) })
 	get := func() string {
 		rec := httptest.NewRecorder()
-		e.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/", nil))
+		e.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/", http.NoBody))
 		return rec.Header().Get("Connection")
 	}
 	if get() != "" {

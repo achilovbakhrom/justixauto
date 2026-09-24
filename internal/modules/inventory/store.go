@@ -80,7 +80,10 @@ func (r *modelRepository) List(ctx context.Context, f ModelFilter) ([]VehicleMod
 		q = q.Where("(make ILIKE ? OR model ILIKE ? OR variant ILIKE ?)", like, like, like)
 	}
 	models := []VehicleModel{}
-	return models, translate(q.Find(&models).Error)
+	if err := translate(q.Find(&models).Error); err != nil {
+		return nil, err
+	}
+	return models, nil
 }
 
 func (r *modelRepository) Specs(ctx context.Context, modelID string) ([]Specification, error) {
@@ -168,7 +171,10 @@ func (r *warehouseRepository) List(ctx context.Context, f WarehouseFilter) ([]Wa
 		q = q.Where("(branch_id IS NULL OR branch_id IN ?)", append(f.BranchIDs, "00000000-0000-0000-0000-000000000000"))
 	}
 	ws := []Warehouse{}
-	return ws, translate(q.Find(&ws).Error)
+	if err := translate(q.Find(&ws).Error); err != nil {
+		return nil, err
+	}
+	return ws, nil
 }
 
 func (r *warehouseRepository) Update(ctx context.Context, w *Warehouse, expected int64) error {
@@ -345,7 +351,10 @@ func (r *vehicleRepository) List(ctx context.Context, f VehicleFilter) ([]Vehicl
 		q = q.Where("p.warehouse_id = ?", f.WarehouseID)
 	}
 	rows := []VehicleRow{}
-	return rows, translate(q.Scan(&rows).Error)
+	if err := translate(q.Scan(&rows).Error); err != nil {
+		return nil, err
+	}
+	return rows, nil
 }
 
 func (r *vehicleRepository) InWarehouse(ctx context.Context, warehouseID string) ([]VehicleRow, error) {

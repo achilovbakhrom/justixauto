@@ -17,9 +17,11 @@ var (
 func str(m map[string]any, k string) string { s, _ := m[k].(string); return s }
 
 func program(policy string) map[string]any {
-	return map[string]any{"name": "Auto 24", "currency": "USD", "calculationPolicyId": policy, "calculationPolicyVersion": 1,
+	return map[string]any{
+		"name": "Auto 24", "currency": "USD", "calculationPolicyId": policy, "calculationPolicyVersion": 1,
 		"terms":       map[string]any{"markupBps": 1500, "minDownPaymentBps": 2000, "termMonths": []int{12, 24}},
-		"eligibility": map[string]string{"maxPriceMinor": "10000000"}}
+		"eligibility": map[string]string{"maxPriceMinor": "10000000"},
+	}
 }
 
 func TestProgramApplicationTermsAndAgreement(t *testing.T) {
@@ -45,8 +47,10 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 
 	deal := shop.Sale(0, "partner-finance", "2000000")
 	calc := map[string]any{"downPayment": map[string]string{"amountMinor": "500000", "currency": "USD"}, "termMonths": 12, "firstDueDate": "2026-10-15"}
-	a := shop.Do(http.MethodPost, "/financing/applications", map[string]any{"retailDealId": str(deal.Data(), "id"),
-		"providerCompanyId": bank.CompanyID, "programId": prog, "programVersion": 1, "calculationInputs": calc})
+	a := shop.Do(http.MethodPost, "/financing/applications", map[string]any{
+		"retailDealId":      str(deal.Data(), "id"),
+		"providerCompanyId": bank.CompanyID, "programId": prog, "programVersion": 1, "calculationInputs": calc,
+	})
 	expect(t, a, http.StatusCreated)
 	id := str(a.Data(), "id")
 	out := a.Data()["calculation"].(map[string]any)["output"].(map[string]any)
@@ -57,8 +61,10 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	expect(t, bank.Do(http.MethodGet, "/financing/applications/"+id, nil), http.StatusNotFound) // draft
 
 	submit := func(digest string) testkit.Response {
-		return shop.Do(http.MethodPost, "/financing/applications/"+id+"/submit", map[string]any{"confirmation": true,
-			"dealRevision": deal.Revision(), "calculationDigest": digest}, ifMatch("1")...)
+		return shop.Do(http.MethodPost, "/financing/applications/"+id+"/submit", map[string]any{
+			"confirmation": true,
+			"dealRevision": deal.Revision(), "calculationDigest": digest,
+		}, ifMatch("1")...)
 	}
 	expect(t, submit("stale"), http.StatusConflict, "calculation_changed")
 	expect(t, submit(str(a.Data(), "calculationDigest")), http.StatusOK)
@@ -88,7 +94,8 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	}
 	expect(t, act(shop.Client, "counter", map[string]any{"termsVersion": 1, "note": "Customer asks for 20% down"}, "6"), http.StatusOK)
 	expect(t, act(bank, "terms", map[string]any{"note": "25% down, 24 months", "calculationInputs": map[string]any{
-		"downPayment": map[string]string{"amountMinor": "500000", "currency": "USD"}, "termMonths": 24, "firstDueDate": "2026-10-15"}}, "7"), http.StatusOK)
+		"downPayment": map[string]string{"amountMinor": "500000", "currency": "USD"}, "termMonths": 24, "firstDueDate": "2026-10-15",
+	}}, "7"), http.StatusOK)
 
 	// The seller agrees to the exact current terms, with a fresh second factor.
 	expect(t, act(shop.Client, "agree", map[string]any{"termsVersion": 1, "confirmation": true}, "8"), http.StatusForbidden)

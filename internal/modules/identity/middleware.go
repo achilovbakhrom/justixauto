@@ -29,8 +29,10 @@ func (c CookieConfig) name() string {
 }
 
 func (c CookieConfig) set(ctx echo.Context, token string, maxAge int) {
-	ctx.SetCookie(&http.Cookie{Name: c.name(), Value: token, Path: "/", MaxAge: maxAge,
-		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteLaxMode})
+	ctx.SetCookie(&http.Cookie{ //nolint:gosec // Secure comes from CookieConfig.Secure (config-driven, true outside local dev); HttpOnly/SameSite are set below
+		Name: c.name(), Value: token, Path: "/", MaxAge: maxAge,
+		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteLaxMode,
+	})
 }
 
 func (c CookieConfig) token(ctx echo.Context) string { return cookieValue(ctx, c.name()) }
@@ -45,8 +47,10 @@ func (c CookieConfig) challengeName() string {
 }
 
 func (c CookieConfig) setChallenge(ctx echo.Context, token string, maxAge int) {
-	ctx.SetCookie(&http.Cookie{Name: c.challengeName(), Value: token, Path: "/", MaxAge: maxAge,
-		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteStrictMode})
+	ctx.SetCookie(&http.Cookie{ //nolint:gosec // Secure comes from CookieConfig.Secure (config-driven, true outside local dev); HttpOnly/SameSite are set below
+		Name: c.challengeName(), Value: token, Path: "/", MaxAge: maxAge,
+		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteStrictMode,
+	})
 }
 
 func (c CookieConfig) challengeToken(ctx echo.Context) string {

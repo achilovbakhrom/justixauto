@@ -25,8 +25,10 @@ type shop struct {
 	vehicles []string
 }
 
-var perms = []string{retail.PermRead, retail.PermCRM, retail.PermListings, retail.PermDeals, retail.PermPaymentsAccept, retail.PermDeliver,
-	inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, documents.PermUpload, documents.PermRead}
+var perms = []string{
+	retail.PermRead, retail.PermCRM, retail.PermListings, retail.PermDeals, retail.PermPaymentsAccept, retail.PermDeliver,
+	inventory.PermRead, inventory.PermModelsEdit, inventory.PermWarehousesManage, inventory.PermReceiptsCreate, documents.PermUpload, documents.PermRead,
+}
 
 func newShop(t *testing.T) *shop {
 	e := testkit.New(t)
@@ -34,14 +36,20 @@ func newShop(t *testing.T) *shop {
 	c := e.CompanyUser(admin, "Retail Motors", perms...)
 	br := c.Do(http.MethodPost, "/identity/companies/"+c.CompanyID+"/branches", map[string]any{"name": "Chilanzar"})
 	expect(t, br, http.StatusCreated)
-	model := str(c.Do(http.MethodPost, "/inventory/vehicle-models", map[string]any{"specification": map[string]any{"make": "Chevrolet",
+	model := str(c.Do(http.MethodPost, "/inventory/vehicle-models", map[string]any{"specification": map[string]any{
+		"make":  "Chevrolet",
 		"model": "Cobalt", "variant": "LTZ", "year": 2025, "bodyType": "sedan", "exteriorColor": "white", "interiorColor": "black",
-		"powertrain": "petrol", "drivetrain": "FWD"}}).Data(), "id")
-	w := c.Do(http.MethodPost, "/inventory/warehouses", map[string]any{"name": "Showroom", "country": map[string]string{"label": "Uzbekistan"},
-		"city": "Tashkent", "address": "1", "capacity": "10"})
-	r := c.Do(http.MethodPost, "/inventory/warehouses/"+str(w.Data(), "id")+"/receipt-batches", map[string]any{"modelId": model,
+		"powertrain": "petrol", "drivetrain": "FWD",
+	}}).Data(), "id")
+	w := c.Do(http.MethodPost, "/inventory/warehouses", map[string]any{
+		"name": "Showroom", "country": map[string]string{"label": "Uzbekistan"},
+		"city": "Tashkent", "address": "1", "capacity": "10",
+	})
+	r := c.Do(http.MethodPost, "/inventory/warehouses/"+str(w.Data(), "id")+"/receipt-batches", map[string]any{
+		"modelId":                   model,
 		"modelSpecificationVersion": "1", "stock": map[string]any{"mode": "identified", "vins": []string{"XTAAA11111A300001", "XTAAA11111A300002", "XTAAA11111A300003"}},
-		"receivedAt": e.Clock.Now().Format(time.RFC3339)}, ifMatch("1")...)
+		"receivedAt": e.Clock.Now().Format(time.RFC3339),
+	}, ifMatch("1")...)
 	expect(t, r, http.StatusCreated)
 	s := &shop{e: e, c: c, branch: str(br.Data(), "id")}
 	for _, v := range r.Data()["vehicles"].([]any) {
@@ -82,8 +90,10 @@ func TestLeadsTasksAndListings(t *testing.T) {
 		t.Fatalf("lead detail: %v", detail.Data())
 	}
 
-	task := c.Do(http.MethodPost, "/retail/tasks", map[string]any{"customerId": cust, "leadId": id, "ownerUserId": c.UserID,
-		"dueAt": s.e.Clock.Now().Add(24 * time.Hour).Format(time.RFC3339), "title": "Call back"})
+	task := c.Do(http.MethodPost, "/retail/tasks", map[string]any{
+		"customerId": cust, "leadId": id, "ownerUserId": c.UserID,
+		"dueAt": s.e.Clock.Now().Add(24 * time.Hour).Format(time.RFC3339), "title": "Call back",
+	})
 	expect(t, task, http.StatusCreated)
 	if n := len(c.Do(http.MethodGet, "/retail/tasks?owner=me&status=open", nil).Items()); n != 1 {
 		t.Fatalf("my open tasks: %d", n)
@@ -107,8 +117,10 @@ func TestCashSaleToDelivery(t *testing.T) {
 	expect(t, c.Do(http.MethodPost, "/retail/listings/"+str(li.Data(), "id")+"/publish", map[string]any{}, ifMatch("1")...), http.StatusOK)
 
 	deal := func(vehicle string, leadID any, scheme string) testkit.Response {
-		return c.Do(http.MethodPost, "/retail/deals", map[string]any{"customerId": cust, "leadId": leadID, "vehicleId": vehicle,
-			"branchId": s.branch, "paymentScheme": scheme, "price": usd("1600000")})
+		return c.Do(http.MethodPost, "/retail/deals", map[string]any{
+			"customerId": cust, "leadId": leadID, "vehicleId": vehicle,
+			"branchId": s.branch, "paymentScheme": scheme, "price": usd("1600000"),
+		})
 	}
 	expect(t, deal(s.vehicles[0], lead, "cash"), http.StatusConflict, "lead_not_eligible") // lead not qualified yet
 	for i, st := range []string{"contacted", "qualified"} {
@@ -169,8 +181,10 @@ func TestSchemeGatesAndCancellation(t *testing.T) {
 	cust := s.customer(t, "Rustam")
 	c.EnrollMFA()
 	create := func(vehicle, scheme string) string {
-		d := c.Do(http.MethodPost, "/retail/deals", map[string]any{"customerId": cust, "vehicleId": vehicle, "branchId": s.branch,
-			"paymentScheme": scheme, "price": usd("1600000")})
+		d := c.Do(http.MethodPost, "/retail/deals", map[string]any{
+			"customerId": cust, "vehicleId": vehicle, "branchId": s.branch,
+			"paymentScheme": scheme, "price": usd("1600000"),
+		})
 		expect(t, d, http.StatusCreated)
 		return str(d.Data(), "id")
 	}

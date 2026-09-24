@@ -45,7 +45,8 @@ func TestOfferPublishingAndVisibility(t *testing.T) {
 
 	model := str(s.Do(http.MethodPost, "/inventory/vehicle-models", map[string]any{"specification": map[string]any{
 		"make": "Chevrolet", "model": "Tracker", "variant": "Premier", "year": 2025, "bodyType": "SUV",
-		"exteriorColor": "black", "interiorColor": "black", "powertrain": "petrol 1.2T", "drivetrain": "FWD"}}).Data(), "id")
+		"exteriorColor": "black", "interiorColor": "black", "powertrain": "petrol 1.2T", "drivetrain": "FWD",
+	}}).Data(), "id")
 
 	// Validation: one currency, exact schedule, known models, route, minor units.
 	bad := terms(model)
@@ -60,8 +61,10 @@ func TestOfferPublishingAndVisibility(t *testing.T) {
 	expect(t, b1.Do(http.MethodPost, "/commerce/offers", map[string]any{"terms": terms(model), "audience": map[string]any{"mode": "all-active"}}), http.StatusForbidden)
 
 	schedule := []map[string]any{{"amount": usd("2300000"), "dueDate": "2026-10-01"}, {"amount": usd("2300000"), "dueDate": "2026-11-01"}}
-	created := s.Do(http.MethodPost, "/commerce/offers", map[string]any{"terms": terms(model, schedule...),
-		"audience": map[string]any{"mode": "selected", "partnerCompanyIds": []string{b1.CompanyID}}})
+	created := s.Do(http.MethodPost, "/commerce/offers", map[string]any{
+		"terms":    terms(model, schedule...),
+		"audience": map[string]any{"mode": "selected", "partnerCompanyIds": []string{b1.CompanyID}},
+	})
 	expect(t, created, http.StatusCreated)
 	id := str(created.Data(), "id")
 	v1 := created.Data()["versions"].([]any)[0].(map[string]any)
@@ -87,8 +90,10 @@ func TestOfferPublishingAndVisibility(t *testing.T) {
 	expect(t, b3.Do(http.MethodGet, "/commerce/offers/"+id, nil), http.StatusNotFound)
 
 	// A selected audience must be active partners.
-	withB3 := s.Do(http.MethodPost, "/commerce/offers/"+id+"/versions", map[string]any{"terms": terms(model),
-		"audience": map[string]any{"mode": "selected", "partnerCompanyIds": []string{b3.CompanyID}}}, ifMatch("2")...)
+	withB3 := s.Do(http.MethodPost, "/commerce/offers/"+id+"/versions", map[string]any{
+		"terms":    terms(model),
+		"audience": map[string]any{"mode": "selected", "partnerCompanyIds": []string{b3.CompanyID}},
+	}, ifMatch("2")...)
 	expect(t, withB3, http.StatusCreated)
 	v2 := withB3.Data()["versions"].([]any)[1].(map[string]any)
 	expect(t, s.Do(http.MethodPost, "/commerce/offers/"+id+"/publish", map[string]string{"offerVersionId": str(v2, "id")}, ifMatch("3")...), http.StatusConflict, "partner_not_active")

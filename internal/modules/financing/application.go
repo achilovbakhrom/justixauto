@@ -90,8 +90,10 @@ func (s *Service) Create(ctx context.Context, p *auth.Principal, in ApplicationI
 		return nil, err
 	}
 	now := s.clock()
-	a := &Application{ID: uuid.NewString(), SellerCompanyID: p.CompanyID, DealID: sale.ID, Status: "draft", Version: 1,
-		CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+	a := &Application{
+		ID: uuid.NewString(), SellerCompanyID: p.CompanyID, DealID: sale.ID, Status: "draft", Version: 1,
+		CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+	}
 	err = s.r.tx(ctx, func(r *repo) error {
 		if err := s.apply(ctx, r, a, sale, in); err != nil {
 			return err
@@ -149,8 +151,10 @@ func (s *Service) UpdateDraft(ctx context.Context, p *auth.Principal, id string,
 }
 
 func (s *Service) message(ctx context.Context, r *repo, p *auth.Principal, a *Application, kind string, requestID *string, note string, terms *int) error {
-	return r.create(ctx, &Message{ID: uuid.NewString(), ApplicationID: a.ID, Kind: kind, RequestID: requestID, Note: note,
-		TermsVersion: terms, CompanyID: p.CompanyID, ActorUserID: p.UserID, CreatedAt: s.clock()})
+	return r.create(ctx, &Message{
+		ID: uuid.NewString(), ApplicationID: a.ID, Kind: kind, RequestID: requestID, Note: note,
+		TermsVersion: terms, CompanyID: p.CompanyID, ActorUserID: p.UserID, CreatedAt: s.clock(),
+	})
 }
 
 // Submit sends the application with an immutable snapshot of the sale and
@@ -188,9 +192,11 @@ func (s *Service) Submit(ctx context.Context, p *auth.Principal, id string, expe
 			return err
 		}
 		now := s.clock()
-		a.Snapshot, _ = json.Marshal(map[string]any{"dealId": sale.ID, "vehicleId": sale.VehicleID, "price": sale.Price,
+		a.Snapshot, _ = json.Marshal(map[string]any{
+			"dealId": sale.ID, "vehicleId": sale.VehicleID, "price": sale.Price,
 			"vehicle": map[string]string{"vin": sale.VIN, "model": sale.Model}, "customer": map[string]string{"name": sale.CustomerName},
-			"dealRevision": sale.Revision, "calculation": json.RawMessage(a.Calculation)})
+			"dealRevision": sale.Revision, "calculation": json.RawMessage(a.Calculation),
+		})
 		a.Status, a.SubmittedAt, a.UpdatedAt = "submitted", &now, now
 		if err := r.updateApplication(ctx, a, expected); err != nil {
 			return err
@@ -231,23 +237,7 @@ func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expecte
 		return nil, apperr.ErrNotFound
 	}
 	var v apperr.Validation
-	note := ""
-	switch action {
-	case "request", "respond", "terms", "counter":
-		note = validate.Text(&v, "note", in.Note, 1, 2000)
-	case "decline":
-		note = validate.Reason(&v, in.Reason)
-	case "agree":
-		if !in.Confirmation {
-			v.Add("confirmation", "confirm the agreement with the customer")
-		}
-	}
-	if (action == "counter" || action == "agree") && in.TermsVersion == nil {
-		v.Add("termsVersion", "the terms version you reviewed")
-	}
-	if action == "terms" && in.CalculationInputs == nil {
-		v.Add("calculationInputs", "required")
-	}
+	note := validateActInput(&v, action, in)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
@@ -260,47 +250,9 @@ func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expecte
 		if a.Status != st.from {
 			return apperr.New(apperr.ErrConflict, "invalid_transition", "cannot "+action+" an application that is "+a.Status)
 		}
-		var requestID *string
-		var termsNumber *int
-		switch action {
-		case "respond":
-			ms, err := r.messages(ctx, a.ID)
-			if err != nil {
-				return err
-			}
-			for i := len(ms) - 1; i >= 0 && requestID == nil; i-- {
-				if ms[i].Kind == "request" {
-					requestID = &ms[i].ID
-				}
-			}
-		case "counter", "agree":
-			if a.CurrentTermsVersion == nil || *in.TermsVersion != *a.CurrentTermsVersion {
-				return apperr.New(apperr.ErrConflict, "terms_changed", "these are not the current terms; reload")
-			}
-			termsNumber = a.CurrentTermsVersion
-		case "terms":
-			pv, err := r.programVersion(ctx, *a.ProgramID, *a.ProgramVersion)
-			if err != nil {
-				return err
-			}
-			var snap struct {
-				Price money.Money `json:"price"`
-			}
-			_ = json.Unmarshal(a.Snapshot, &snap)
-			terms, elig := pv.decode()
-			c, err := calculate(snap.Price, pv.ProgramID, pv.Number, pv.Currency, terms, elig, *in.CalculationInputs, s.clock())
-			if err != nil {
-				return err
-			}
-			raw, _ := json.Marshal(c)
-			n, err := r.nextNumber(ctx, &TermsVersion{}, "application_id", a.ID)
-			if err != nil {
-				return err
-			}
-			if err := r.create(ctx, &TermsVersion{ApplicationID: a.ID, Number: n, Calculation: raw, Note: note, CreatedBy: p.UserID, CreatedAt: s.clock()}); err != nil {
-				return err
-			}
-			a.CurrentTermsVersion, termsNumber = &n, &n
+		requestID, termsNumber, err := s.stepEffects(ctx, r, p, a, action, in, note)
+		if err != nil {
+			return err
 		}
 		a.Status, a.UpdatedAt = st.to, s.clock()
 		if err := r.updateApplication(ctx, a, expected); err != nil {
@@ -309,6 +261,87 @@ func (s *Service) Act(ctx context.Context, p *auth.Principal, id string, expecte
 		return s.message(ctx, r, p, a, action, requestID, note, termsNumber)
 	})
 	return a, err
+}
+
+// validateActInput checks the fields an Act action needs, beyond the
+// from/to transition itself, preserving the original validation order.
+func validateActInput(v *apperr.Validation, action string, in ActInput) string {
+	note := ""
+	switch action {
+	case "request", "respond", "terms", "counter":
+		note = validate.Text(v, "note", in.Note, 1, 2000)
+	case "decline":
+		note = validate.Reason(v, in.Reason)
+	case "agree":
+		if !in.Confirmation {
+			v.Add("confirmation", "confirm the agreement with the customer")
+		}
+	}
+	if (action == "counter" || action == "agree") && in.TermsVersion == nil {
+		v.Add("termsVersion", "the terms version you reviewed")
+	}
+	if action == "terms" && in.CalculationInputs == nil {
+		v.Add("calculationInputs", "required")
+	}
+	return note
+}
+
+// stepEffects performs the action-specific side effects of Act (finding the
+// open request to answer, pinning the reviewed terms version, or
+// recalculating and recording a new terms version) before the generic
+// status transition and message are written.
+func (s *Service) stepEffects(ctx context.Context, r *repo, p *auth.Principal, a *Application, action string, in ActInput, note string) (requestID *string, termsNumber *int, err error) {
+	switch action {
+	case "respond":
+		ms, err := r.messages(ctx, a.ID)
+		if err != nil {
+			return nil, nil, err
+		}
+		for i := len(ms) - 1; i >= 0 && requestID == nil; i-- {
+			if ms[i].Kind == "request" {
+				requestID = &ms[i].ID
+			}
+		}
+	case "counter", "agree":
+		if a.CurrentTermsVersion == nil || *in.TermsVersion != *a.CurrentTermsVersion {
+			return nil, nil, apperr.New(apperr.ErrConflict, "terms_changed", "these are not the current terms; reload")
+		}
+		termsNumber = a.CurrentTermsVersion
+	case "terms":
+		n, err := s.recordTerms(ctx, r, p, a, *in.CalculationInputs, note)
+		if err != nil {
+			return nil, nil, err
+		}
+		a.CurrentTermsVersion, termsNumber = &n, &n
+	}
+	return requestID, termsNumber, nil
+}
+
+// recordTerms recalculates the application's program terms and stores the
+// next numbered terms version.
+func (s *Service) recordTerms(ctx context.Context, r *repo, p *auth.Principal, a *Application, inputs CalculationInput, note string) (int, error) {
+	pv, err := r.programVersion(ctx, *a.ProgramID, *a.ProgramVersion)
+	if err != nil {
+		return 0, err
+	}
+	var snap struct {
+		Price money.Money `json:"price"`
+	}
+	_ = json.Unmarshal(a.Snapshot, &snap)
+	terms, elig := pv.decode()
+	c, err := calculate(snap.Price, pv.ProgramID, pv.Number, pv.Currency, terms, elig, inputs, s.clock())
+	if err != nil {
+		return 0, err
+	}
+	raw, _ := json.Marshal(c)
+	n, err := r.nextNumber(ctx, &TermsVersion{}, "application_id", a.ID)
+	if err != nil {
+		return 0, err
+	}
+	if err := r.create(ctx, &TermsVersion{ApplicationID: a.ID, Number: n, Calculation: raw, Note: note, CreatedBy: p.UserID, CreatedAt: s.clock()}); err != nil {
+		return 0, err
+	}
+	return n, nil
 }
 
 type ApplicationView struct {

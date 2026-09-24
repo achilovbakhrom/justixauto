@@ -9,28 +9,71 @@ import { Button } from './Button';
 
 afterEach(cleanup);
 
-function Fixture({ dirty = false, processing = false, onDismissBlocked,
-  write = () => undefined }: Partial<Pick<DialogProps, 'dirty' | 'processing' | 'onDismissBlocked'>> & { write?: () => void }) {
+function Fixture({
+  dirty = false,
+  processing = false,
+  onDismissBlocked,
+  write = () => undefined,
+}: Partial<Pick<DialogProps, 'dirty' | 'processing' | 'onDismissBlocked'>> & { write?: () => void }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string>();
   const [name, setName] = useState('');
-  return <><button>Outside</button><Dialog open={open} onOpenChange={setOpen}
-    trigger={<Button>Open form</Button>} scope="ins-workspace" title="Edit fixture"
-    description="Synthetic form; no server command" closeLabel="Close"
-    dirty={dirty} processing={processing} {...(onDismissBlocked ? { onDismissBlocked } : {})}
-    footer={<><Button disabled={processing} onClick={() => {
-      if (!dirty && !processing) setOpen(false);
-    }}>Cancel</Button><Button type="submit" form="fixture-form" processing={processing}>Save</Button></>}>
-    <form id="fixture-form" noValidate onSubmit={(event) => {
-      event.preventDefault();
-      if (!name.trim()) { setError('Name is required'); return; }
-      if (!processing) write();
-    }}>
-      <Field label="Name" name="name" hint="Enter a synthetic label" required value={name}
-        {...(error ? { error } : {})} onChange={(event) => setName(event.target.value)} />
-      <button type="button">Inside action</button>
-    </form>
-  </Dialog></>;
+  return (
+    <>
+      <button>Outside</button>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+        trigger={<Button>Open form</Button>}
+        scope="ins-workspace"
+        title="Edit fixture"
+        description="Synthetic form; no server command"
+        closeLabel="Close"
+        dirty={dirty}
+        processing={processing}
+        {...(onDismissBlocked ? { onDismissBlocked } : {})}
+        footer={
+          <>
+            <Button
+              disabled={processing}
+              onClick={() => {
+                if (!dirty && !processing) setOpen(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" form="fixture-form" processing={processing}>
+              Save
+            </Button>
+          </>
+        }
+      >
+        <form
+          id="fixture-form"
+          noValidate
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!name.trim()) {
+              setError('Name is required');
+              return;
+            }
+            if (!processing) write();
+          }}
+        >
+          <Field
+            label="Name"
+            name="name"
+            hint="Enter a synthetic label"
+            required
+            value={name}
+            {...(error ? { error } : {})}
+            onChange={(event) => setName(event.target.value)}
+          />
+          <button type="button">Inside action</button>
+        </form>
+      </Dialog>
+    </>
+  );
 }
 
 describe('Dialog accessibility and dismissal boundaries', () => {
@@ -40,8 +83,9 @@ describe('Dialog accessibility and dismissal boundaries', () => {
     const trigger = screen.getByRole('button', { name: 'Open form' });
     await user.click(trigger);
     const dialog = screen.getByRole('dialog', { name: 'Edit fixture' });
-    expect(document.getElementById(dialog.getAttribute('aria-describedby')!)?.textContent)
-      .toBe('Synthetic form; no server command');
+    expect(document.getElementById(dialog.getAttribute('aria-describedby')!)?.textContent).toBe(
+      'Synthetic form; no server command',
+    );
     expect(dialog.contains(document.activeElement)).toBe(true);
     screen.getByRole('button', { name: 'Save' }).focus();
     await user.tab();
@@ -92,8 +136,12 @@ describe('Dialog accessibility and dismissal boundaries', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }));
     const input = screen.getByRole('textbox', { name: 'Name' });
     expect(input.getAttribute('aria-invalid')).toBe('true');
-    expect(input.getAttribute('aria-describedby')?.split(' ').map(id => document.getElementById(id)?.textContent))
-      .toEqual(['Enter a synthetic label', 'Name is required']);
+    expect(
+      input
+        .getAttribute('aria-describedby')
+        ?.split(' ')
+        .map((id) => document.getElementById(id)?.textContent),
+    ).toEqual(['Enter a synthetic label', 'Name is required']);
     expect(screen.getByRole('alert').textContent).toBe('Name is required');
     await user.type(input, 'Fixture');
     await user.click(screen.getByRole('button', { name: 'Inside action' }));

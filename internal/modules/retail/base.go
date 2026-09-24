@@ -133,8 +133,10 @@ func (d deps) event(ctx context.Context, st Store, p *auth.Principal, eventType,
 	if details != nil {
 		raw, _ = json.Marshal(details)
 	}
-	return st.Events().Append(ctx, &Event{ID: uuid.NewString(), CompanyID: p.CompanyID, EventType: eventType,
-		ResourceType: resourceType, ResourceID: id, ActorUserID: p.UserID, OccurredAt: d.clock(), Reason: reason, Details: raw})
+	return st.Events().Append(ctx, &Event{
+		ID: uuid.NewString(), CompanyID: p.CompanyID, EventType: eventType,
+		ResourceType: resourceType, ResourceID: id, ActorUserID: p.UserID, OccurredAt: d.clock(), Reason: reason, Details: raw,
+	})
 }
 
 // branch checks that a branch belongs to the active company and is inside the

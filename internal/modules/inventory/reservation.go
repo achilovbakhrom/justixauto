@@ -100,8 +100,10 @@ func (s *StockService) Reserve(ctx context.Context, companyID string, h Holder, 
 			} else if !errors.Is(err, gorm.ErrRecordNotFound) {
 				return database.Translate(err)
 			}
-			r := Reservation{ID: uuid.NewString(), VehicleID: id, CompanyID: companyID, HolderType: h.Type,
-				HolderID: h.ID, Status: "held", CreatedAt: now}
+			r := Reservation{
+				ID: uuid.NewString(), VehicleID: id, CompanyID: companyID, HolderType: h.Type,
+				HolderID: h.ID, Status: "held", CreatedAt: now,
+			}
 			if err := db.Create(&r).Error; err != nil {
 				if errors.Is(database.Translate(err), apperr.ErrConflict) {
 					return errUnavailable
@@ -141,61 +143,89 @@ type Handover struct {
 	At            time.Time
 }
 
+// lockHandoverTarget locks the receiving warehouse, checks that every vehicle
+// in the handover is currently held by t.Holder and that the warehouse has
+// enough free capacity for the incoming vehicles.
+func lockHandoverTarget(ctx context.Context, st Store, db *gorm.DB, t Handover) (*Warehouse, error) {
+	to, err := st.Warehouses().Lock(ctx, t.ToCompanyID, t.ToWarehouseID)
+	if errors.Is(err, apperr.ErrNotFound) {
+		return nil, apperr.FieldError("warehouseId", "not one of your warehouses")
+	} else if err != nil {
+		return nil, err
+	}
+	var held int64
+	if err := db.Model(&Reservation{}).Where("holder_type = ? AND holder_id = ? AND status = 'held' AND vehicle_id IN ?",
+		t.Holder.Type, t.Holder.ID, t.VehicleIDs).Count(&held).Error; err != nil {
+		return nil, database.Translate(err)
+	}
+	if int(held) != len(t.VehicleIDs) {
+		return nil, errUnavailable
+	}
+	occ, err := st.Warehouses().Occupied(ctx, []string{to.ID})
+	if err != nil {
+		return nil, err
+	}
+	var alreadyThere int64
+	if err := db.Model(&Placement{}).Where("warehouse_id = ? AND vehicle_id IN ?", to.ID, t.VehicleIDs).Count(&alreadyThere).Error; err != nil {
+		return nil, database.Translate(err)
+	}
+	if occ[to.ID]+len(t.VehicleIDs)-int(alreadyThere) > to.Capacity {
+		return nil, apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the receiving warehouse")
+	}
+	return to, nil
+}
+
+// transferVehicle moves one vehicle's ownership, custody and placement to the
+// receiving warehouse and returns the fact recording the hand-over. Any
+// warehouse the vehicle is leaving has its version bumped.
+func transferVehicle(db *gorm.DB, t Handover, to *Warehouse, id string, now time.Time) (Fact, error) {
+	var from Placement
+	fromErr := db.Where("vehicle_id = ?", id).Take(&from).Error
+	if err := db.Model(&VehicleUnit{}).Where("id = ?", id).Updates(map[string]any{
+		"owner_company_id": t.ToCompanyID, "custodian_company_id": t.ToCompanyID, "version": gorm.Expr("version + 1"),
+	}).Error; err != nil {
+		return Fact{}, database.Translate(err)
+	}
+	placement := Placement{VehicleID: id, WarehouseID: to.ID, PlacedAt: t.At}
+	if err := db.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "vehicle_id"}},
+		DoUpdates: clause.AssignmentColumns([]string{"warehouse_id", "receipt_batch_id", "placed_at"}),
+	}).Create(&placement).Error; err != nil {
+		return Fact{}, database.Translate(err)
+	}
+	details, _ := json.Marshal(map[string]any{"holderType": t.Holder.Type, "holderId": t.Holder.ID})
+	vid := id
+	fact := Fact{
+		ID: uuid.NewString(), CompanyID: t.ToCompanyID, FactType: "vehicle.handed_over",
+		VehicleID: &vid, WarehouseID: &to.ID, ActorUserID: t.ActorUserID, OccurredAt: t.At, RecordedAt: now, Details: details,
+	}
+	if fromErr == nil {
+		if err := db.Model(&Warehouse{}).Where("id = ?", from.WarehouseID).
+			Updates(map[string]any{"version": gorm.Expr("version + 1"), "updated_at": now}).Error; err != nil {
+			return Fact{}, database.Translate(err)
+		}
+	}
+	return fact, nil
+}
+
 // Transfer completes a hand-over: the reservations are finalized, ownership
 // and custody pass to the receiving company and the vehicles are placed in its
 // warehouse, whose capacity is checked under a row lock.
 func (s *StockService) Transfer(ctx context.Context, t Handover) error {
 	return s.store.InTx(ctx, func(st Store) error {
 		db := st.(*gormStore).db
-		to, err := st.Warehouses().Lock(ctx, t.ToCompanyID, t.ToWarehouseID)
-		if errors.Is(err, apperr.ErrNotFound) {
-			return apperr.FieldError("warehouseId", "not one of your warehouses")
-		} else if err != nil {
-			return err
-		}
-		var held int64
-		if err := db.Model(&Reservation{}).Where("holder_type = ? AND holder_id = ? AND status = 'held' AND vehicle_id IN ?",
-			t.Holder.Type, t.Holder.ID, t.VehicleIDs).Count(&held).Error; err != nil {
-			return database.Translate(err)
-		}
-		if int(held) != len(t.VehicleIDs) {
-			return errUnavailable
-		}
-		occ, err := st.Warehouses().Occupied(ctx, []string{to.ID})
+		to, err := lockHandoverTarget(ctx, st, db, t)
 		if err != nil {
 			return err
-		}
-		var alreadyThere int64
-		if err := db.Model(&Placement{}).Where("warehouse_id = ? AND vehicle_id IN ?", to.ID, t.VehicleIDs).Count(&alreadyThere).Error; err != nil {
-			return database.Translate(err)
-		}
-		if occ[to.ID]+len(t.VehicleIDs)-int(alreadyThere) > to.Capacity {
-			return apperr.New(apperr.ErrConflict, "capacity_exceeded", "not enough free space in the receiving warehouse")
 		}
 		now := s.clock()
 		var facts []Fact
 		for _, id := range t.VehicleIDs {
-			var from Placement
-			fromErr := db.Where("vehicle_id = ?", id).Take(&from).Error
-			if err := db.Model(&VehicleUnit{}).Where("id = ?", id).Updates(map[string]any{
-				"owner_company_id": t.ToCompanyID, "custodian_company_id": t.ToCompanyID, "version": gorm.Expr("version + 1")}).Error; err != nil {
-				return database.Translate(err)
+			fact, err := transferVehicle(db, t, to, id, now)
+			if err != nil {
+				return err
 			}
-			placement := Placement{VehicleID: id, WarehouseID: to.ID, PlacedAt: t.At}
-			if err := db.Clauses(clause.OnConflict{Columns: []clause.Column{{Name: "vehicle_id"}},
-				DoUpdates: clause.AssignmentColumns([]string{"warehouse_id", "receipt_batch_id", "placed_at"})}).Create(&placement).Error; err != nil {
-				return database.Translate(err)
-			}
-			details, _ := json.Marshal(map[string]any{"holderType": t.Holder.Type, "holderId": t.Holder.ID})
-			vid := id
-			facts = append(facts, Fact{ID: uuid.NewString(), CompanyID: t.ToCompanyID, FactType: "vehicle.handed_over",
-				VehicleID: &vid, WarehouseID: &to.ID, ActorUserID: t.ActorUserID, OccurredAt: t.At, RecordedAt: now, Details: details})
-			if fromErr == nil {
-				if err := db.Model(&Warehouse{}).Where("id = ?", from.WarehouseID).
-					Updates(map[string]any{"version": gorm.Expr("version + 1"), "updated_at": now}).Error; err != nil {
-					return database.Translate(err)
-				}
-			}
+			facts = append(facts, fact)
 		}
 		if err := db.Model(&Reservation{}).Where("holder_type = ? AND holder_id = ? AND status = 'held' AND vehicle_id IN ?",
 			t.Holder.Type, t.Holder.ID, t.VehicleIDs).Updates(map[string]any{"status": "finalized", "closed_at": now}).Error; err != nil {
@@ -233,7 +263,8 @@ func (s *StockService) Deliver(ctx context.Context, h Holder, vehicleID, actorID
 			}
 		}
 		if err := db.Model(&VehicleUnit{}).Where("id = ?", vehicleID).Updates(map[string]any{
-			"owner_company_id": nil, "custodian_company_id": nil, "version": gorm.Expr("version + 1")}).Error; err != nil {
+			"owner_company_id": nil, "custodian_company_id": nil, "version": gorm.Expr("version + 1"),
+		}).Error; err != nil {
 			return database.Translate(err)
 		}
 		if err := db.Model(&r).Updates(map[string]any{"status": "finalized", "closed_at": now}).Error; err != nil {
@@ -241,7 +272,9 @@ func (s *StockService) Deliver(ctx context.Context, h Holder, vehicleID, actorID
 		}
 		details, _ := json.Marshal(map[string]any{"holderType": h.Type, "holderId": h.ID})
 		vid := vehicleID
-		return st.Facts().Append(ctx, Fact{ID: uuid.NewString(), CompanyID: r.CompanyID, FactType: "vehicle.delivered_to_customer",
-			VehicleID: &vid, ActorUserID: actorID, OccurredAt: at, RecordedAt: now, Details: details})
+		return st.Facts().Append(ctx, Fact{
+			ID: uuid.NewString(), CompanyID: r.CompanyID, FactType: "vehicle.delivered_to_customer",
+			VehicleID: &vid, ActorUserID: actorID, OccurredAt: at, RecordedAt: now, Details: details,
+		})
 	})
 }

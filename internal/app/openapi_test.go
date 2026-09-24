@@ -20,8 +20,10 @@ import (
 // Every /api/v1 route must be annotated for the generated spec (make openapi),
 // and the spec must not list routes that no longer exist.
 func TestOpenAPICoversRoutes(t *testing.T) {
-	e, _, err := app.New(testkit.DB(t), app.Config{Session: identity.DefaultSessionConfig, MFAKey: make([]byte, 32),
-		Log: slog.New(slog.NewTextHandler(io.Discard, nil))})
+	e, _, err := app.New(testkit.DB(t), app.Config{
+		Session: identity.DefaultSessionConfig, MFAKey: make([]byte, 32),
+		Log: slog.New(slog.NewTextHandler(io.Discard, nil)),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

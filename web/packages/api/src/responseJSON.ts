@@ -11,21 +11,24 @@ export const defaultResponseJSONLimits: Readonly<ResponseJSONLimits> = Object.fr
 });
 
 /** Capture trusted construction settings once; response headers never set limits. */
-export function responseJSONLimits(
-  limits: Partial<ResponseJSONLimits> = {},
-): Readonly<ResponseJSONLimits> {
-  const maxResponseBytes = limits.maxResponseBytes === undefined
-    ? defaultResponseJSONLimits.maxResponseBytes : limits.maxResponseBytes;
-  const maxJSONDepth = limits.maxJSONDepth === undefined
-    ? defaultResponseJSONLimits.maxJSONDepth : limits.maxJSONDepth;
-  if (!Number.isSafeInteger(maxResponseBytes) || maxResponseBytes <= 0
-    || !Number.isSafeInteger(maxJSONDepth) || maxJSONDepth <= 0) {
+export function responseJSONLimits(limits: Partial<ResponseJSONLimits> = {}): Readonly<ResponseJSONLimits> {
+  const maxResponseBytes =
+    limits.maxResponseBytes === undefined ? defaultResponseJSONLimits.maxResponseBytes : limits.maxResponseBytes;
+  const maxJSONDepth = limits.maxJSONDepth === undefined ? defaultResponseJSONLimits.maxJSONDepth : limits.maxJSONDepth;
+  if (
+    !Number.isSafeInteger(maxResponseBytes) ||
+    maxResponseBytes <= 0 ||
+    !Number.isSafeInteger(maxJSONDepth) ||
+    maxJSONDepth <= 0
+  ) {
     throw new TypeError('Invalid response JSON limits');
   }
   return Object.freeze({ maxResponseBytes, maxJSONDepth });
 }
 
-const invalid = (): never => { throw new SyntaxError('Invalid response JSON'); };
+const invalid = (): never => {
+  throw new SyntaxError('Invalid response JSON');
+};
 const numberToken = /-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/y;
 
 function safeInteger(token: string): number {
@@ -60,6 +63,42 @@ function safeInteger(token: string): number {
   return negative ? -value : value;
 }
 
+function decodeEscape(escape: string | undefined, source: string, position: number): { text: string; end: number } {
+  if (escape === 'u') {
+    const hex = source.slice(position, position + 4);
+    if (!/^[0-9a-fA-F]{4}$/.test(hex)) return invalid();
+    return { text: String.fromCharCode(Number.parseInt(hex, 16)), end: position + 4 };
+  }
+  switch (escape) {
+    case '"':
+    case '\\':
+    case '/':
+      return { text: escape, end: position };
+    case 'b':
+      return { text: '\b', end: position };
+    case 'f':
+      return { text: '\f', end: position };
+    case 'n':
+      return { text: '\n', end: position };
+    case 'r':
+      return { text: '\r', end: position };
+    case 't':
+      return { text: '\t', end: position };
+    default:
+      return invalid();
+  }
+}
+
+function assertNoLoneSurrogates(decoded: string): void {
+  for (let index = 0; index < decoded.length; index++) {
+    const unit = decoded.charCodeAt(index);
+    if (unit >= 0xd800 && unit <= 0xdbff) {
+      const low = decoded.charCodeAt(++index);
+      if (!(low >= 0xdc00 && low <= 0xdfff)) return invalid();
+    } else if (unit >= 0xdc00 && unit <= 0xdfff) return invalid();
+  }
+}
+
 type Frame =
   | { kind: 'array'; value: unknown[]; state: 'first' | 'next' | 'after' }
   | { kind: 'object'; value: Record<string, unknown>; keys: Set<string>; state: 'first' | 'next' | 'after' };
@@ -85,8 +124,13 @@ export function decodeResponseJSON(
   let position = 0;
   const frames: Frame[] = [];
   const whitespace = () => {
-    while (source[position] === ' ' || source[position] === '\t'
-      || source[position] === '\n' || source[position] === '\r') position++;
+    while (
+      source[position] === ' ' ||
+      source[position] === '\t' ||
+      source[position] === '\n' ||
+      source[position] === '\r'
+    )
+      position++;
   };
   const string = (): string => {
     if (source[position++] !== '"') return invalid();
@@ -103,34 +147,14 @@ export function decodeResponseJSON(
       if (character.charCodeAt(0) < 32) return invalid();
       if (character !== '\\') continue;
       parts.push(source.slice(start, position - 1));
-      const escape = source[position++];
-      if (escape === 'u') {
-        const hex = source.slice(position, position + 4);
-        if (!/^[0-9a-fA-F]{4}$/.test(hex)) return invalid();
-        parts.push(String.fromCharCode(Number.parseInt(hex, 16)));
-        position += 4;
-      } else {
-        switch (escape) {
-          case '"': case '\\': case '/': parts.push(escape); break;
-          case 'b': parts.push('\b'); break;
-          case 'f': parts.push('\f'); break;
-          case 'n': parts.push('\n'); break;
-          case 'r': parts.push('\r'); break;
-          case 't': parts.push('\t'); break;
-          default: return invalid();
-        }
-      }
+      const { text, end } = decodeEscape(source[position++], source, position);
+      parts.push(text);
+      position = end;
       start = position;
     }
     if (!closed) return invalid();
     const decoded = parts.join('');
-    for (let index = 0; index < decoded.length; index++) {
-      const unit = decoded.charCodeAt(index);
-      if (unit >= 0xd800 && unit <= 0xdbff) {
-        const low = decoded.charCodeAt(++index);
-        if (!(low >= 0xdc00 && low <= 0xdfff)) return invalid();
-      } else if (unit >= 0xdc00 && unit <= 0xdfff) return invalid();
-    }
+    assertNoLoneSurrogates(decoded);
     return decoded;
   };
   const value = (): unknown => {
@@ -140,13 +164,18 @@ export function decodeResponseJSON(
     if (character === '{' || character === '[') {
       if (frames.length >= maxJSONDepth) return invalid();
       position++;
-      const frame: Frame = character === '['
-        ? { kind: 'array', value: [], state: 'first' }
-        : { kind: 'object', value: Object.create(null) as Record<string, unknown>, keys: new Set(), state: 'first' };
+      const frame: Frame =
+        character === '['
+          ? { kind: 'array', value: [], state: 'first' }
+          : { kind: 'object', value: Object.create(null) as Record<string, unknown>, keys: new Set(), state: 'first' };
       frames.push(frame);
       return frame.value;
     }
-    for (const [literal, result] of [['true', true], ['false', false], ['null', null]] as const) {
+    for (const [literal, result] of [
+      ['true', true],
+      ['false', false],
+      ['null', null],
+    ] as const) {
       if (source.startsWith(literal, position)) {
         position += literal.length;
         return result;
@@ -186,7 +215,10 @@ export function decodeResponseJSON(
       whitespace();
       if (source[position++] !== ':') return invalid();
       Object.defineProperty(frame.value, key, {
-        value: value(), enumerable: true, configurable: true, writable: true,
+        value: value(),
+        enumerable: true,
+        configurable: true,
+        writable: true,
       });
     }
   }

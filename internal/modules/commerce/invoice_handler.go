@@ -48,9 +48,11 @@ func toInvoice(companyID string) func(*InvoiceView) invoiceDTO {
 		var schedule []Installment
 		_ = json.Unmarshal(i.Schedule, &schedule)
 		supplier := i.SupplierCompanyID == companyID
-		d := invoiceDTO{ID: i.ID, OrderID: i.OrderID, Total: money.Money{AmountMinor: i.TotalMinor, Currency: i.Currency},
+		d := invoiceDTO{
+			ID: i.ID, OrderID: i.OrderID, Total: money.Money{AmountMinor: i.TotalMinor, Currency: i.Currency},
 			Schedule: schedule, Status: i.Status, VoidReason: i.VoidReason, Paid: v.Paid, Pending: v.Pending,
-			Outstanding: v.Outstanding, Evidence: []evidenceDTO{}, AllowedActions: []string{}, Revision: httpx.Revision(i.Version)}
+			Outstanding: v.Outstanding, Evidence: []evidenceDTO{}, AllowedActions: []string{}, Revision: httpx.Revision(i.Version),
+		}
 		open := new(big.Int).Sub(amount(v.Outstanding.AmountMinor), amount(v.Pending.AmountMinor))
 		switch {
 		case i.Status == "issued" && !supplier && open.Sign() > 0:
@@ -59,10 +61,12 @@ func toInvoice(companyID string) func(*InvoiceView) invoiceDTO {
 			d.AllowedActions = append(d.AllowedActions, "void")
 		}
 		for _, e := range v.Evidence {
-			ed := evidenceDTO{ID: e.ID, Amount: money.Money{AmountMinor: e.AmountMinor, Currency: e.Currency},
+			ed := evidenceDTO{
+				ID: e.ID, Amount: money.Money{AmountMinor: e.AmountMinor, Currency: e.Currency},
 				PaidOn: e.PaidOn.Format(time.DateOnly), ExternalReference: e.ExternalReference, AttachmentIDs: ids(e.AttachmentIDs), Status: e.Status,
 				DecisionReason: e.DecisionReason, AllowedActions: []string{}, Revision: httpx.Revision(e.Version),
-				CreatedAt: e.CreatedAt, DecidedAt: e.DecidedAt}
+				CreatedAt: e.CreatedAt, DecidedAt: e.DecidedAt,
+			}
 			if supplier && e.Status == "submitted" {
 				ed.AllowedActions = []string{"accept", "reject"}
 			}

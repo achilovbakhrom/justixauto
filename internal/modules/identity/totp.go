@@ -5,7 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/hmac"
 	"crypto/rand"
-	"crypto/sha1"
+	"crypto/sha1" //nolint:gosec // RFC 6238 TOTP mandates HMAC-SHA1
 	"crypto/subtle"
 	"encoding/base32"
 	"encoding/binary"
@@ -45,7 +45,7 @@ func hotp(secret []byte, counter uint64) string {
 
 // totpCode returns the code for time t (used by tests and verification).
 func totpCode(secret []byte, t time.Time) string {
-	return hotp(secret, uint64(t.Unix()/totpStep))
+	return hotp(secret, uint64(t.Unix()/totpStep)) //nolint:gosec // t.Unix() is a wall-clock timestamp, always non-negative for any real time value
 }
 
 // verifyTOTP returns the matched step counter. Steps at or below lastCounter
@@ -61,7 +61,7 @@ func verifyTOTP(secret []byte, code string, now time.Time, lastCounter int64) (i
 		if counter <= lastCounter {
 			continue
 		}
-		if subtle.ConstantTimeCompare([]byte(hotp(secret, uint64(counter))), []byte(code)) == 1 {
+		if subtle.ConstantTimeCompare([]byte(hotp(secret, uint64(counter))), []byte(code)) == 1 { //nolint:gosec // counter is a time-derived step index (now.Unix()/totpStep +/- totpSkew), always non-negative for any real time value
 			return counter, true
 		}
 	}

@@ -87,8 +87,10 @@ func (s *MembershipService) Grant(ctx context.Context, actor *auth.Principal, us
 			return err
 		}
 		now := s.clock()
-		m := &Membership{ID: uuid.NewString(), UserID: userID, CompanyID: in.CompanyID, Status: MembershipActive,
-			BranchAccess: mode, BranchIDs: ids, Version: 1, CreatedAt: now, UpdatedAt: now}
+		m := &Membership{
+			ID: uuid.NewString(), UserID: userID, CompanyID: in.CompanyID, Status: MembershipActive,
+			BranchAccess: mode, BranchIDs: ids, Version: 1, CreatedAt: now, UpdatedAt: now,
+		}
 		if err := st.Memberships().Create(ctx, m); err != nil {
 			if isConflict(err) {
 				return apperr.New(apperr.ErrConflict, "membership_exists", "the user is already a member of this company")

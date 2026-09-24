@@ -1,8 +1,20 @@
 import type { ApiRequest, ApiResult, ResponseMetadata, ValidatedResult } from './client';
 
-export type AuthPhase = 'empty' | 'anonymous' | 'restricted' | 'authenticated' | 'context-unresolved' | 'uncertain' | 'exhausted';
-export type AuthPurpose = 'session' | 'login' | 'challenge-create' | 'challenge-verify' | 'enrollment-start' | 'enrollment-confirm' | 'recovery-request' | 'recovery-complete' | 'revoke-all' | 'logout';
-export type AuthInvalidation = 'login-intent' | 'context-change' | 'revocation' | 'navigation' | 'unmount' | 'uncertainty';
+export type AuthPhase =
+  'empty' | 'anonymous' | 'restricted' | 'authenticated' | 'context-unresolved' | 'uncertain' | 'exhausted';
+export type AuthPurpose =
+  | 'session'
+  | 'login'
+  | 'challenge-create'
+  | 'challenge-verify'
+  | 'enrollment-start'
+  | 'enrollment-confirm'
+  | 'recovery-request'
+  | 'recovery-complete'
+  | 'revoke-all'
+  | 'logout';
+export type AuthInvalidation =
+  'login-intent' | 'context-change' | 'revocation' | 'navigation' | 'unmount' | 'uncertainty';
 export type AuthAcceptance<Session, Restricted, View> =
   | { readonly kind: 'anonymous' }
   | { readonly kind: 'session'; readonly session: Session }
@@ -26,17 +38,40 @@ export interface AuthTransport {
 /** Deliberately contains no response body, token, error receipt or one-time value. */
 export type AuthOutcome =
   | { readonly kind: 'accepted'; readonly epoch: number; readonly status: number }
-  | { readonly kind: 'busy' | 'invalid-request' | 'binding-invalid' | 'unavailable' | 'uncertain' | 'stale' | 'exhausted' };
+  | {
+      readonly kind:
+        'busy' | 'invalid-request' | 'binding-invalid' | 'unavailable' | 'uncertain' | 'stale' | 'exhausted';
+    };
 
-const phases: readonly AuthPhase[] = ['empty', 'anonymous', 'restricted', 'authenticated', 'context-unresolved', 'uncertain', 'exhausted'];
-const purposes: readonly AuthPurpose[] = ['session', 'login', 'challenge-create', 'challenge-verify', 'enrollment-start', 'enrollment-confirm', 'recovery-request', 'recovery-complete', 'revoke-all', 'logout'];
+const phases: readonly AuthPhase[] = [
+  'empty',
+  'anonymous',
+  'restricted',
+  'authenticated',
+  'context-unresolved',
+  'uncertain',
+  'exhausted',
+];
+const purposes: readonly AuthPurpose[] = [
+  'session',
+  'login',
+  'challenge-create',
+  'challenge-verify',
+  'enrollment-start',
+  'enrollment-confirm',
+  'recovery-request',
+  'recovery-complete',
+  'revoke-all',
+  'logout',
+];
 const routes: Readonly<Record<AuthPurpose, RegExp>> = {
   session: /^\/api\/v1\/identity\/session$/,
   login: /^\/api\/v1\/identity\/session\/login$/,
   'challenge-create': /^\/api\/v1\/identity\/session\/mfa\/challenges$/,
   'challenge-verify': /^\/api\/v1\/identity\/session\/mfa\/verify$/,
   'enrollment-start': /^\/api\/v1\/identity\/session\/mfa\/enrollment$/,
-  'enrollment-confirm': /^\/api\/v1\/identity\/session\/mfa\/enrollment\/(?!00000000-0000-0000-0000-000000000000\/)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/confirm$/,
+  'enrollment-confirm':
+    /^\/api\/v1\/identity\/session\/mfa\/enrollment\/(?!00000000-0000-0000-0000-000000000000\/)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/confirm$/,
   'recovery-request': /^\/api\/v1\/identity\/session\/recovery\/request$/,
   'recovery-complete': /^\/api\/v1\/identity\/session\/recovery\/complete$/,
   'revoke-all': /^\/api\/v1\/identity\/session\/revoke-all$/,
@@ -48,7 +83,12 @@ const signalAdd = AbortSignal.prototype.addEventListener;
 const signalRemove = AbortSignal.prototype.removeEventListener;
 function discardPromise(value: unknown): boolean {
   // Native cross-realm Promise brand check; never inspect/assimilate thenables.
-  try { Reflect.apply(promiseThen, value, [() => undefined, () => undefined]); return true; } catch { return false; }
+  try {
+    Reflect.apply(promiseThen, value, [() => undefined, () => undefined]);
+    return true;
+  } catch {
+    return false;
+  }
 }
 function fields(value: unknown, keys: readonly string[]): Record<string, unknown> {
   if (discardPromise(value)) throw new Error('Invalid auth binding');
@@ -56,7 +96,8 @@ function fields(value: unknown, keys: readonly string[]): Record<string, unknown
   const prototype = Object.getPrototypeOf(value) as unknown;
   if (prototype !== Object.prototype && prototype !== null) throw new Error('Invalid auth binding');
   const descriptors = Object.getOwnPropertyDescriptors(value);
-  if (Reflect.ownKeys(descriptors).some((key) => typeof key !== 'string' || !keys.includes(key))) throw new Error('Invalid auth binding');
+  if (Reflect.ownKeys(descriptors).some((key) => typeof key !== 'string' || !keys.includes(key)))
+    throw new Error('Invalid auth binding');
   const output: Record<string, unknown> = Object.create(null) as Record<string, unknown>;
   for (const key of Object.keys(descriptors)) {
     const descriptor = descriptors[key]!;
@@ -68,8 +109,13 @@ function fields(value: unknown, keys: readonly string[]): Record<string, unknown
 /** Snapshot JSON DTOs without invoking accessors, preserving no caller-owned mutable references. */
 function snapshot<T>(value: T, depth = 0, seen = new Set<object>()): T {
   if (discardPromise(value)) throw new Error('Invalid auth data');
-  if (value === null || typeof value === 'string' || typeof value === 'boolean'
-    || (typeof value === 'number' && Number.isSafeInteger(value))) return value;
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean' ||
+    (typeof value === 'number' && Number.isSafeInteger(value))
+  )
+    return value;
   if (typeof value !== 'object' || depth >= 128 || seen.has(value)) throw new Error('Invalid auth data');
   seen.add(value);
   try {
@@ -94,12 +140,374 @@ function snapshot<T>(value: T, depth = 0, seen = new Set<object>()): T {
       copy[key] = snapshot(descriptor.value as unknown, depth + 1, seen);
     }
     return Object.freeze(copy) as T;
-  } finally { seen.delete(value); }
+  } finally {
+    seen.delete(value);
+  }
 }
-const csrfValid = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.length <= 4096 && !/[^A-Za-z0-9_-]/.test(value);
+const csrfValid = (value: unknown): value is string =>
+  typeof value === 'string' && value.length > 0 && value.length <= 4096 && !/[^A-Za-z0-9_-]/.test(value);
+
+interface ParsedAuthOperation<T, Session, Restricted, View> {
+  readonly purpose: AuthPurpose;
+  readonly expected: readonly AuthPhase[];
+  readonly request: Omit<ApiRequest<T>, 'authExchange'>;
+  readonly classify: AuthOperation<T, Session, Restricted, View>['classify'];
+  readonly signal: AbortSignal | undefined;
+  readonly preAborted: boolean;
+}
+
+/** Validates and normalizes a caller-supplied operation; never throws. */
+function parseAuthOperation<T, Session, Restricted, View>(
+  operation: AuthOperation<T, Session, Restricted, View>,
+): ParsedAuthOperation<T, Session, Restricted, View> | undefined {
+  try {
+    const captured = fields(operation, ['purpose', 'expected', 'request', 'classify']);
+    const purpose = captured.purpose as AuthPurpose;
+    if (
+      !purposes.includes(purpose) ||
+      !Array.isArray(captured.expected) ||
+      captured.expected.length === 0 ||
+      captured.expected.some((item: unknown) => !phases.includes(item as AuthPhase)) ||
+      typeof captured.classify !== 'function' ||
+      !captured.request
+    ) {
+      discardPromise(captured.classify);
+      throw new Error('Invalid auth operation');
+    }
+    const expected = [...captured.expected] as AuthPhase[];
+    const classify = captured.classify as ParsedAuthOperation<T, Session, Restricted, View>['classify'];
+    const request = fields(captured.request, [
+      'path',
+      'method',
+      'schema',
+      'successStatuses',
+      'body',
+      'contextRevision',
+      'ifMatch',
+      'idempotencyKey',
+      'headers',
+      'signal',
+      'responseContract',
+    ]) as unknown as ParsedAuthOperation<T, Session, Restricted, View>['request'];
+    const signal = request.signal;
+    const preAborted = signal !== undefined ? (Reflect.apply(signalAborted, signal, []) as boolean) : false;
+    if (
+      request.responseContract?.auth !== true ||
+      typeof request.path !== 'string' ||
+      !routes[purpose].test(request.path) ||
+      request.ifMatch !== undefined ||
+      request.idempotencyKey !== undefined ||
+      (purpose === 'session' ? (request.method ?? 'GET') !== 'GET' : request.method !== 'POST')
+    )
+      throw new Error('Invalid auth request');
+    return { purpose, expected, request, classify, signal, preAborted };
+  } catch (error) {
+    discardPromise(error);
+    return undefined;
+  }
+}
+
+interface AcceptanceTransition<Session, Restricted, View> {
+  readonly next: AuthPhase;
+  readonly session: Session | undefined;
+  readonly restricted: Restricted | undefined;
+  readonly view: View | undefined;
+  readonly token: string | undefined;
+}
+
+function exactKeysForKind(kind: unknown): readonly string[] {
+  if (kind === 'session') return ['kind', 'session'];
+  if (kind === 'restricted') return ['kind', 'restricted'];
+  if (kind === 'challenge' || kind === 'enrollment-secret' || kind === 'enrollment-confirmed') return ['kind', 'view'];
+  return ['kind'];
+}
+
+function isBindingError<T>(
+  value: ValidatedResult<T>,
+  purpose: AuthPurpose,
+  meta: { readonly csrf?: unknown },
+): boolean {
+  return (
+    value.kind === 'http-error' &&
+    ((value.status === 403 && value.receipt.error.code === 'CSRF_REJECTED') ||
+      (value.status === 401 && ['SESSION_REQUIRED', 'SESSION_EXPIRED'].includes(value.receipt.error.code))) &&
+    !(
+      purpose === 'session' &&
+      value.status === 401 &&
+      value.receipt.error.code === 'SESSION_REQUIRED' &&
+      csrfValid(meta.csrf)
+    )
+  );
+}
+
+function transitionBindingError<Session, Restricted, View>(
+  kind: unknown,
+  meta: { readonly csrf?: unknown },
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (!['unchanged', 'invalidate-binding'].includes(kind as string) || meta.csrf !== undefined) return false;
+  return baseline;
+}
+
+function transitionAnonymous<T, Session, Restricted, View>(
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (
+    purpose !== 'session' ||
+    value.kind !== 'http-error' ||
+    value.status !== 401 ||
+    value.receipt.error.code !== 'SESSION_REQUIRED' ||
+    !csrfValid(meta.csrf)
+  )
+    return false;
+  return {
+    ...baseline,
+    next: 'anonymous',
+    session: undefined,
+    restricted: undefined,
+    view: undefined,
+    token: meta.csrf,
+  };
+}
+
+function transitionSession<T, Session, Restricted, View>(
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  decision: Record<string, unknown>,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (
+    value.kind !== 'success' ||
+    value.status !== 200 ||
+    !['session', 'login', 'challenge-verify', 'revoke-all'].includes(purpose) ||
+    !csrfValid(meta.csrf)
+  )
+    return false;
+  return {
+    ...baseline,
+    next: 'authenticated',
+    session: snapshot(decision.session as Session),
+    restricted: undefined,
+    view: undefined,
+    token: meta.csrf,
+  };
+}
+
+function transitionRestricted<T, Session, Restricted, View>(
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  decision: Record<string, unknown>,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (
+    value.kind !== 'success' ||
+    value.status !== 200 ||
+    !['session', 'login'].includes(purpose) ||
+    !csrfValid(meta.csrf)
+  )
+    return false;
+  return {
+    ...baseline,
+    next: 'restricted',
+    session: undefined,
+    restricted: snapshot(decision.restricted as Restricted),
+    view: undefined,
+    token: (meta.csrf as string | undefined) ?? baseline.token,
+  };
+}
+
+function transitionChallenge<T, Session, Restricted, View>(
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  phase: AuthPhase,
+  decision: Record<string, unknown>,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (
+    value.kind !== 'success' ||
+    value.status !== 200 ||
+    purpose !== 'challenge-create' ||
+    phase !== 'authenticated' ||
+    meta.csrf !== undefined
+  )
+    return false;
+  return { ...baseline, view: snapshot(decision.view as View) };
+}
+
+function transitionEnrollment<T, Session, Restricted, View>(
+  kind: unknown,
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  decision: Record<string, unknown>,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (
+    value.kind !== 'success' ||
+    value.status !== 200 ||
+    purpose !== (kind === 'enrollment-secret' ? 'enrollment-start' : 'enrollment-confirm')
+  )
+    return false;
+  const view = snapshot(decision.view as View);
+  if (kind !== 'enrollment-confirmed') return { ...baseline, view };
+  if (!csrfValid(meta.csrf)) return false;
+  return { next: 'context-unresolved', session: undefined, restricted: undefined, view, token: meta.csrf };
+}
+
+function transitionClear<T, Session, Restricted, View>(
+  value: ValidatedResult<T>,
+  purpose: AuthPurpose,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (value.kind !== 'success' || value.status !== 204 || !['logout', 'recovery-complete'].includes(purpose))
+    return false;
+  return { next: 'empty', session: undefined, restricted: undefined, view: undefined, token: undefined };
+}
+
+function transitionUncertain<T, Session, Restricted, View>(
+  value: ValidatedResult<T>,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (value.kind !== 'http-error' || value.status !== 503 || value.receipt.error.code !== 'AUTH_OUTCOME_UNKNOWN')
+    return false;
+  return baseline;
+}
+
+function transitionUnchanged<T, Session, Restricted, View>(
+  kind: unknown,
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (
+    kind !== 'unchanged' ||
+    meta.csrf !== undefined ||
+    purpose === 'logout' ||
+    (value.kind === 'success' && (purpose !== 'recovery-request' || value.status !== 202))
+  )
+    return false;
+  return baseline;
+}
+
+/** Dispatches to the per-kind acceptance rule; returns false for any rejected/invalid shape. */
+function computeAcceptanceTransition<T, Session, Restricted, View>(
+  bindingError: boolean,
+  kind: unknown,
+  value: ValidatedResult<T>,
+  meta: { readonly csrf?: unknown },
+  purpose: AuthPurpose,
+  phase: AuthPhase,
+  decision: Record<string, unknown>,
+  baseline: AcceptanceTransition<Session, Restricted, View>,
+): AcceptanceTransition<Session, Restricted, View> | false {
+  if (bindingError) return transitionBindingError(kind, meta, baseline);
+  if (kind === 'anonymous') return transitionAnonymous(value, meta, purpose, baseline);
+  if (kind === 'session') return transitionSession(value, meta, purpose, decision, baseline);
+  if (kind === 'restricted') return transitionRestricted(value, meta, purpose, decision, baseline);
+  if (kind === 'challenge') return transitionChallenge(value, meta, purpose, phase, decision, baseline);
+  if (kind === 'enrollment-secret' || kind === 'enrollment-confirmed')
+    return transitionEnrollment(kind, value, meta, purpose, decision, baseline);
+  if (kind === 'clear') return transitionClear(value, purpose);
+  if (kind === 'uncertain') return transitionUncertain(value, baseline);
+  return transitionUnchanged(kind, value, meta, purpose, baseline);
+}
+
+/** Pre-dispatch admission gate; assumes any purpose-triggered invalidation already ran. */
+function gateExecution(
+  purpose: AuthPurpose,
+  expected: readonly AuthPhase[],
+  phase: AuthPhase,
+  slotBusy: boolean,
+  preAborted: boolean,
+  requestToken: string | undefined,
+): AuthOutcome | undefined {
+  if (phase === 'exhausted') return { kind: 'exhausted' };
+  if (slotBusy) return { kind: 'busy' };
+  if (!expected.includes(phase) || preAborted) return { kind: 'invalid-request' };
+  if (purpose !== 'session' && !csrfValid(requestToken)) return { kind: 'invalid-request' };
+  return undefined;
+}
+
+/** Resolves the post-dispatch outcome once the transport promise has settled. */
+function resolveSettledOutcome<T>(
+  bindingRejected: boolean,
+  ticketStillCurrent: boolean,
+  epoch: number,
+  ticketEpoch: number,
+  currentValid: boolean,
+  phase: AuthPhase,
+  accepted: boolean,
+  result: ApiResult<T>,
+  prepared: boolean,
+  markUncertain: () => void,
+): AuthOutcome {
+  if (bindingRejected && ticketStillCurrent && epoch === ticketEpoch + 1) {
+    return { kind: epoch === Number.MAX_SAFE_INTEGER ? 'exhausted' : 'binding-invalid' };
+  }
+  if (!currentValid) return { kind: phase === 'uncertain' ? 'uncertain' : 'stale' };
+  if (accepted && (result.kind === 'success' || result.kind === 'http-error'))
+    return { kind: 'accepted', epoch, status: result.status };
+  if (result.kind === 'invalid-request' && !accepted) return { kind: 'invalid-request' };
+  if (prepared) {
+    markUncertain();
+    return { kind: 'uncertain' };
+  }
+  return { kind: 'unavailable' };
+}
+
+function isAcceptEligible(
+  prepared: boolean,
+  acceptanceAttempted: boolean,
+  currentValid: boolean,
+  phase: AuthPhase,
+  ticketPhase: AuthPhase,
+  aborted: boolean,
+): boolean {
+  return prepared && !acceptanceAttempted && currentValid && phase === ticketPhase && !aborted;
+}
+
+function validateAcceptanceMeta(
+  metadata: ResponseMetadata,
+): { readonly csrf?: unknown; readonly retryAfterSeconds?: unknown } | undefined {
+  const meta = fields(metadata, ['csrf', 'retryAfterSeconds']);
+  if (meta.csrf !== undefined && !csrfValid(meta.csrf)) return undefined;
+  if (
+    meta.retryAfterSeconds !== undefined &&
+    (!Number.isInteger(meta.retryAfterSeconds) ||
+      (meta.retryAfterSeconds as number) < 0 ||
+      (meta.retryAfterSeconds as number) > 2147483647)
+  )
+    return undefined;
+  return meta;
+}
+
+function isValidDecisionShape<T>(decision: Record<string, unknown>, value: ValidatedResult<T>): boolean {
+  const kind = decision.kind;
+  const exactKeys = exactKeysForKind(kind);
+  if (
+    Object.keys(decision).length !== exactKeys.length ||
+    Object.keys(decision).some((key) => !exactKeys.includes(key))
+  )
+    return false;
+  return !(
+    value.kind === 'http-error' &&
+    value.status === 503 &&
+    value.receipt.error.code === 'AUTH_OUTCOME_UNKNOWN' &&
+    kind !== 'uncertain'
+  );
+}
 
 /** Cooperative local ordering only: HttpOnly cookies and other tabs remain owner responsibilities. */
-export function createAuthEpoch<Session, Restricted, View>(transport: AuthTransport, options: { readonly initialEpoch?: number } = {}) {
+export function createAuthEpoch<Session, Restricted, View>(
+  transport: AuthTransport,
+  options: { readonly initialEpoch?: number } = {},
+) {
   let epoch = options.initialEpoch ?? 0;
   if (!Number.isSafeInteger(epoch) || epoch < 0) throw new Error('Invalid auth epoch');
   const transportFields = fields(transport, ['responseContractVersion', 'request']);
@@ -113,9 +521,14 @@ export function createAuthEpoch<Session, Restricted, View>(transport: AuthTransp
   let session: Session | undefined;
   let restricted: Restricted | undefined;
   let view: View | undefined;
-  let slot: { readonly id: symbol; readonly abort: AbortController; readonly unsafe: boolean; prepared: boolean } | undefined;
+  let slot:
+    { readonly id: symbol; readonly abort: AbortController; readonly unsafe: boolean; prepared: boolean } | undefined;
   function clear(next: AuthPhase): void {
-    csrf = undefined; session = undefined; restricted = undefined; view = undefined; phase = next;
+    csrf = undefined;
+    session = undefined;
+    restricted = undefined;
+    view = undefined;
+    phase = next;
   }
   function invalidate(next: 'empty' | 'uncertain'): void {
     if (epoch < Number.MAX_SAFE_INTEGER) epoch += 1;
@@ -124,147 +537,161 @@ export function createAuthEpoch<Session, Restricted, View>(transport: AuthTransp
   }
   function visit<T>(value: T | undefined, visitor: (value: T) => void): boolean {
     if (value === undefined || typeof visitor !== 'function') return false;
-    try { discardPromise(visitor(value)); return true; } catch (error) { discardPromise(error); return false; }
+    try {
+      discardPromise(visitor(value));
+      return true;
+    } catch (error) {
+      discardPromise(error);
+      return false;
+    }
   }
   return Object.freeze({
     state: () => Object.freeze({ epoch, phase, busy: slot !== undefined, hasView: view !== undefined }),
     /** Explicit intent/notification; navigation and unmount also discard one-time views. */
-    invalidate(reason: AuthInvalidation): void { invalidate(reason === 'uncertainty' ? 'uncertain' : 'empty'); },
-    clearView(): void { view = undefined; },
-    withSession(visitor: (value: Session) => void): boolean { return phase === 'authenticated' && visit(session, visitor); },
-    withRestricted(visitor: (value: Restricted) => void): boolean { return phase === 'restricted' && visit(restricted, visitor); },
-    withView(visitor: (value: View) => void): boolean { return visit(view, visitor); },
+    invalidate(reason: AuthInvalidation): void {
+      invalidate(reason === 'uncertainty' ? 'uncertain' : 'empty');
+    },
+    clearView(): void {
+      view = undefined;
+    },
+    withSession(visitor: (value: Session) => void): boolean {
+      return phase === 'authenticated' && visit(session, visitor);
+    },
+    withRestricted(visitor: (value: Restricted) => void): boolean {
+      return phase === 'restricted' && visit(restricted, visitor);
+    },
+    withView(visitor: (value: View) => void): boolean {
+      return visit(view, visitor);
+    },
     async execute<T>(operation: AuthOperation<T, Session, Restricted, View>): Promise<AuthOutcome> {
-      let purpose: AuthPurpose;
-      let expected: readonly AuthPhase[];
-      let request: Omit<ApiRequest<T>, 'authExchange'>;
-      let signal: AbortSignal | undefined;
-      let preAborted = false;
-      let classify: AuthOperation<T, Session, Restricted, View>['classify'];
-      try {
-        const captured = fields(operation, ['purpose', 'expected', 'request', 'classify']);
-        purpose = captured.purpose as AuthPurpose;
-        if (!purposes.includes(purpose) || !Array.isArray(captured.expected)
-          || captured.expected.length === 0 || captured.expected.some((item: unknown) => !phases.includes(item as AuthPhase))
-          || typeof captured.classify !== 'function' || !captured.request) {
-          discardPromise(captured.classify); throw new Error('Invalid auth operation');
-        }
-        expected = [...captured.expected] as AuthPhase[];
-        classify = captured.classify as typeof classify;
-        request = fields(captured.request, ['path', 'method', 'schema', 'successStatuses', 'body', 'contextRevision', 'ifMatch', 'idempotencyKey', 'headers', 'signal', 'responseContract']) as unknown as typeof request;
-        signal = request.signal;
-        if (signal !== undefined) preAborted = Reflect.apply(signalAborted, signal, []) as boolean;
-        if (request.responseContract?.auth !== true || typeof request.path !== 'string' || !routes[purpose].test(request.path)
-          || request.ifMatch !== undefined || request.idempotencyKey !== undefined
-          || (purpose === 'session' ? (request.method ?? 'GET') !== 'GET' : request.method !== 'POST')) throw new Error('Invalid auth request');
-      } catch (error) { discardPromise(error); return { kind: 'invalid-request' }; }
+      const parsed = parseAuthOperation(operation);
+      if (!parsed) return { kind: 'invalid-request' };
+      const { purpose, expected, request, classify, signal, preAborted } = parsed;
       // Logout clears visible memory even while an older fetch keeps the exclusion slot.
       let requestToken = csrf;
-      const expectedState = expected.includes(phase);
       if (purpose === 'logout') invalidate('uncertain');
-      if (phase === 'exhausted') return { kind: 'exhausted' };
-      if (slot) return { kind: 'busy' };
-      if (!expectedState || preAborted) return { kind: 'invalid-request' };
-      if (purpose !== 'session' && !csrfValid(requestToken)) return { kind: 'invalid-request' };
+      const gated = gateExecution(purpose, expected, phase, slot !== undefined, preAborted, requestToken);
+      if (gated) return gated;
       const ticketEpoch = epoch;
       const ticketPhase = phase;
-      const ticket = { id: Symbol('auth-ticket'), abort: new AbortController(), unsafe: purpose !== 'session', prepared: false };
+      const ticket = {
+        id: Symbol('auth-ticket'),
+        abort: new AbortController(),
+        unsafe: purpose !== 'session',
+        prepared: false,
+      };
       slot = ticket;
       const current = () => slot === ticket && epoch === ticketEpoch && phase !== 'exhausted';
       let prepared = false;
       let acceptanceAttempted = false;
       let accepted = false;
       let bindingRejected = false;
-      const abort = () => { if (current()) invalidate('uncertain'); };
+      const abort = () => {
+        if (current()) invalidate('uncertain');
+      };
       try {
         if (signal) Reflect.apply(signalAdd, signal, ['abort', abort, { once: true }]);
-        const result = await Reflect.apply(send, transport, [{ ...request, signal: ticket.abort.signal, authExchange: {
-          prepare() {
-            if (prepared || !current() || phase !== ticketPhase || ticket.abort.signal.aborted) return undefined;
-            prepared = true;
-            ticket.prepared = true;
-            const value = purpose === 'session' ? {} : { csrf: requestToken };
-            requestToken = undefined;
-            return value;
-          },
-          accept(value: ValidatedResult<T>, metadata: ResponseMetadata) {
-            if (!prepared || acceptanceAttempted || !current() || phase !== ticketPhase || ticket.abort.signal.aborted) return false;
-            // Burn acceptance before invoking injected code; reentrant/stale callbacks cannot adopt.
-            acceptanceAttempted = true;
-            try {
-              const decision = fields(Reflect.apply(classify, operation, [value]), ['kind', 'session', 'restricted', 'view']);
-              const meta = fields(metadata, ['csrf', 'retryAfterSeconds']);
-              if (meta.csrf !== undefined && !csrfValid(meta.csrf)) return false;
-              if (meta.retryAfterSeconds !== undefined && (!Number.isInteger(meta.retryAfterSeconds)
-                || (meta.retryAfterSeconds as number) < 0 || (meta.retryAfterSeconds as number) > 2147483647)) return false;
-              let next = phase;
-              let nextSession = session;
-              let nextRestricted = restricted;
-              let nextView = view;
-              let nextToken = csrf;
-              const kind = decision.kind;
-              const bindingError = value.kind === 'http-error'
-                && ((value.status === 403 && value.receipt.error.code === 'CSRF_REJECTED')
-                  || (value.status === 401 && ['SESSION_REQUIRED', 'SESSION_EXPIRED'].includes(value.receipt.error.code)))
-                && !(purpose === 'session' && value.status === 401 && value.receipt.error.code === 'SESSION_REQUIRED' && csrfValid(meta.csrf));
-              const exactKeys = kind === 'session' ? ['kind', 'session'] : kind === 'restricted' ? ['kind', 'restricted']
-                : kind === 'challenge' || kind === 'enrollment-secret' || kind === 'enrollment-confirmed' ? ['kind', 'view'] : ['kind'];
-              if (Object.keys(decision).length !== exactKeys.length || Object.keys(decision).some((key) => !exactKeys.includes(key))) return false;
-              if (value.kind === 'http-error' && value.status === 503 && value.receipt.error.code === 'AUTH_OUTCOME_UNKNOWN' && kind !== 'uncertain') return false;
-              if (bindingError) {
-                if (!['unchanged', 'invalidate-binding'].includes(kind as string) || meta.csrf !== undefined) return false;
-              } else if (kind === 'anonymous') {
-                if (purpose !== 'session' || value.kind !== 'http-error' || value.status !== 401 || value.receipt.error.code !== 'SESSION_REQUIRED' || !csrfValid(meta.csrf)) return false;
-                next = 'anonymous'; nextSession = undefined; nextRestricted = undefined; nextView = undefined; nextToken = meta.csrf;
-              } else if (kind === 'session') {
-                if (value.kind !== 'success' || value.status !== 200 || !['session', 'login', 'challenge-verify', 'revoke-all'].includes(purpose) || !csrfValid(meta.csrf)) return false;
-                nextSession = snapshot(decision.session as Session); nextRestricted = undefined; nextView = undefined; nextToken = meta.csrf; next = 'authenticated';
-              } else if (kind === 'restricted') {
-                if (value.kind !== 'success' || value.status !== 200 || !['session', 'login'].includes(purpose) || !csrfValid(meta.csrf)) return false;
-                nextRestricted = snapshot(decision.restricted as Restricted); nextSession = undefined; nextView = undefined; nextToken = meta.csrf ?? csrf; next = 'restricted';
-              } else if (kind === 'challenge') {
-                if (value.kind !== 'success' || value.status !== 200 || purpose !== 'challenge-create' || phase !== 'authenticated' || meta.csrf !== undefined) return false;
-                nextView = snapshot(decision.view as View);
-              } else if (kind === 'enrollment-secret' || kind === 'enrollment-confirmed') {
-                if (value.kind !== 'success' || value.status !== 200 || purpose !== (kind === 'enrollment-secret' ? 'enrollment-start' : 'enrollment-confirm')) return false;
-                nextView = snapshot(decision.view as View);
-                if (kind === 'enrollment-confirmed') {
-                  if (!csrfValid(meta.csrf)) return false;
-                  next = 'context-unresolved'; nextSession = undefined; nextRestricted = undefined; nextToken = meta.csrf;
+        const result = (await Reflect.apply(send, transport, [
+          {
+            ...request,
+            signal: ticket.abort.signal,
+            authExchange: {
+              prepare() {
+                if (prepared || !current() || phase !== ticketPhase || ticket.abort.signal.aborted) return undefined;
+                prepared = true;
+                ticket.prepared = true;
+                const value = purpose === 'session' ? {} : { csrf: requestToken };
+                requestToken = undefined;
+                return value;
+              },
+              accept(value: ValidatedResult<T>, metadata: ResponseMetadata) {
+                if (
+                  !isAcceptEligible(
+                    prepared,
+                    acceptanceAttempted,
+                    current(),
+                    phase,
+                    ticketPhase,
+                    ticket.abort.signal.aborted,
+                  )
+                )
+                  return false;
+                // Burn acceptance before invoking injected code; reentrant/stale callbacks cannot adopt.
+                acceptanceAttempted = true;
+                try {
+                  const decision = fields(Reflect.apply(classify, operation, [value]), [
+                    'kind',
+                    'session',
+                    'restricted',
+                    'view',
+                  ]);
+                  const meta = validateAcceptanceMeta(metadata);
+                  if (!meta) return false;
+                  if (!isValidDecisionShape(decision, value)) return false;
+                  const kind = decision.kind;
+                  const bindingError = isBindingError(value, purpose, meta);
+                  const baseline: AcceptanceTransition<Session, Restricted, View> = {
+                    next: phase,
+                    session,
+                    restricted,
+                    view,
+                    token: csrf,
+                  };
+                  const transition = computeAcceptanceTransition(
+                    bindingError,
+                    kind,
+                    value,
+                    meta,
+                    purpose,
+                    phase,
+                    decision,
+                    baseline,
+                  );
+                  if (!transition) return false;
+                  if (!current() || phase !== ticketPhase || ticket.abort.signal.aborted) return false;
+                  if (bindingError) {
+                    // The validated error establishes rejection, not an unknown write.
+                    // Keep the ticket's slot until settlement but retire its binding.
+                    ticket.prepared = false;
+                    bindingRejected = true;
+                    invalidate('empty');
+                  } else if (kind === 'uncertain') invalidate('uncertain');
+                  else {
+                    phase = transition.next;
+                    session = transition.session;
+                    restricted = transition.restricted;
+                    view = transition.view;
+                    csrf = transition.token;
+                  }
+                  accepted = true;
+                  return true;
+                } catch (error) {
+                  discardPromise(error);
+                  return false;
                 }
-              } else if (kind === 'clear') {
-                if (value.kind !== 'success' || value.status !== 204 || !['logout', 'recovery-complete'].includes(purpose)) return false;
-                next = 'empty'; nextSession = undefined; nextRestricted = undefined; nextView = undefined; nextToken = undefined;
-              } else if (kind === 'uncertain') {
-                if (value.kind !== 'http-error' || value.status !== 503 || value.receipt.error.code !== 'AUTH_OUTCOME_UNKNOWN') return false;
-              } else if (kind !== 'unchanged' || meta.csrf !== undefined || purpose === 'logout'
-                || (value.kind === 'success' && (purpose !== 'recovery-request' || value.status !== 202))) return false;
-              if (!current() || phase !== ticketPhase || ticket.abort.signal.aborted) return false;
-              if (bindingError) {
-                // The validated error establishes rejection, not an unknown write.
-                // Keep the ticket's slot until settlement but retire its binding.
-                ticket.prepared = false;
-                bindingRejected = true;
-                invalidate('empty');
-              } else if (kind === 'uncertain') invalidate('uncertain');
-              else { phase = next; session = nextSession; restricted = nextRestricted; view = nextView; csrf = nextToken; }
-              accepted = true;
-              return true;
-            } catch (error) { discardPromise(error); return false; }
+              },
+            },
           },
-        } }]) as ApiResult<T>;
-        if (bindingRejected && slot === ticket && epoch === ticketEpoch + 1) {
-          return { kind: epoch === Number.MAX_SAFE_INTEGER ? 'exhausted' : 'binding-invalid' };
-        }
-        if (!current()) return { kind: phase === 'uncertain' ? 'uncertain' : 'stale' };
-        if (accepted && (result.kind === 'success' || result.kind === 'http-error')) return { kind: 'accepted', epoch, status: result.status };
-        if (result.kind === 'invalid-request' && !accepted) return { kind: 'invalid-request' };
-        if (prepared) { invalidate('uncertain'); return { kind: 'uncertain' }; }
-        return { kind: 'unavailable' };
+        ])) as ApiResult<T>;
+        return resolveSettledOutcome(
+          bindingRejected,
+          slot === ticket,
+          epoch,
+          ticketEpoch,
+          current(),
+          phase,
+          accepted,
+          result,
+          prepared,
+          () => invalidate('uncertain'),
+        );
       } catch (error) {
         discardPromise(error);
         if (!current()) return { kind: phase === 'uncertain' ? 'uncertain' : 'stale' };
-        if (prepared) { invalidate('uncertain'); return { kind: 'uncertain' }; }
+        if (prepared) {
+          invalidate('uncertain');
+          return { kind: 'uncertain' };
+        }
         return { kind: 'invalid-request' };
       } finally {
         requestToken = undefined;

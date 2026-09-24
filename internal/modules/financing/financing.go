@@ -176,7 +176,10 @@ func (r *repo) programs(ctx context.Context, providerID string, publishedOnly bo
 		q = q.Where("status = 'published'")
 	}
 	ps := []Program{}
-	return ps, database.Translate(q.Find(&ps).Error)
+	if err := database.Translate(q.Find(&ps).Error); err != nil {
+		return nil, err
+	}
+	return ps, nil
 }
 
 func (r *repo) programVersion(ctx context.Context, id string, number int) (*ProgramVersion, error) {
@@ -201,7 +204,8 @@ func (r *repo) nextNumber(ctx context.Context, model any, column, id string) (in
 
 func (r *repo) updateProgram(ctx context.Context, p *Program, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Program{}, p.ID, expected, map[string]any{
-		"status": p.Status, "published_version": p.PublishedVersion, "status_reason": p.StatusReason, "updated_at": p.UpdatedAt})
+		"status": p.Status, "published_version": p.PublishedVersion, "status_reason": p.StatusReason, "updated_at": p.UpdatedAt,
+	})
 	if err == nil {
 		p.Version = expected + 1
 	}
@@ -225,14 +229,18 @@ func (r *repo) applications(ctx context.Context, companyID, status string, limit
 		q = q.Where("status = ?", status)
 	}
 	as := []Application{}
-	return as, database.Translate(q.Find(&as).Error)
+	if err := database.Translate(q.Find(&as).Error); err != nil {
+		return nil, err
+	}
+	return as, nil
 }
 
 func (r *repo) updateApplication(ctx context.Context, a *Application, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Application{}, a.ID, expected, map[string]any{
 		"provider_company_id": a.ProviderCompanyID, "program_id": a.ProgramID, "program_version": a.ProgramVersion,
 		"calculation": a.Calculation, "calculation_digest": a.CalculationDigest, "status": a.Status, "snapshot": a.Snapshot,
-		"current_terms_version": a.CurrentTermsVersion, "updated_at": a.UpdatedAt, "submitted_at": a.SubmittedAt})
+		"current_terms_version": a.CurrentTermsVersion, "updated_at": a.UpdatedAt, "submitted_at": a.SubmittedAt,
+	})
 	if err == nil {
 		a.Version = expected + 1
 	}
@@ -304,8 +312,10 @@ func (s *Service) newProgramVersion(p *auth.Principal, programID string, number 
 	}
 	terms, _ := json.Marshal(in.Terms)
 	elig, _ := json.Marshal(in.Eligibility)
-	return &ProgramVersion{ProgramID: programID, Number: number, Name: name, Currency: in.Currency, Terms: terms, Eligibility: elig,
-		PolicyID: in.CalculationPolicyID, PolicyVersion: in.CalculationPolicyVersion, CreatedBy: p.UserID, CreatedAt: s.clock()}, nil
+	return &ProgramVersion{
+		ProgramID: programID, Number: number, Name: name, Currency: in.Currency, Terms: terms, Eligibility: elig,
+		PolicyID: in.CalculationPolicyID, PolicyVersion: in.CalculationPolicyVersion, CreatedBy: p.UserID, CreatedAt: s.clock(),
+	}, nil
 }
 
 // CreateProgram drafts a program for the provider (bank or MFO).

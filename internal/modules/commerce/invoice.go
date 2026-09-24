@@ -123,7 +123,8 @@ func (r *invoiceRepository) GetEvidence(ctx context.Context, id string) (*Eviden
 
 func (r *invoiceRepository) UpdateEvidence(ctx context.Context, e *Evidence, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Evidence{}, e.ID, expected, map[string]any{
-		"status": e.Status, "decision_reason": e.DecisionReason, "decided_by": e.DecidedBy, "decided_at": e.DecidedAt})
+		"status": e.Status, "decision_reason": e.DecisionReason, "decided_by": e.DecidedBy, "decided_at": e.DecidedAt,
+	})
 	if err == nil {
 		e.Version = expected + 1
 	}
@@ -166,8 +167,10 @@ func (s *InvoiceService) view(ctx context.Context, st Store, i *Invoice) (*Invoi
 		}
 	}
 	outstanding := new(big.Int).Sub(amount(i.TotalMinor), paid)
-	return &InvoiceView{Invoice: *i, Evidence: es, Paid: money.Of(paid, i.Currency),
-		Outstanding: money.Of(outstanding, i.Currency), Pending: money.Of(pending, i.Currency)}, nil
+	return &InvoiceView{
+		Invoice: *i, Evidence: es, Paid: money.Of(paid, i.Currency),
+		Outstanding: money.Of(outstanding, i.Currency), Pending: money.Of(pending, i.Currency),
+	}, nil
 }
 
 // Issue creates the supplier's invoice from the order's current terms. The
@@ -202,9 +205,11 @@ func (s *InvoiceService) Issue(ctx context.Context, p *auth.Principal, orderID s
 		}
 		raw, _ := json.Marshal(schedule)
 		now := s.clock()
-		i := &Invoice{ID: uuid.NewString(), OrderID: o.ID, SupplierCompanyID: o.SupplierCompanyID, BuyerCompanyID: o.BuyerCompanyID,
+		i := &Invoice{
+			ID: uuid.NewString(), OrderID: o.ID, SupplierCompanyID: o.SupplierCompanyID, BuyerCompanyID: o.BuyerCompanyID,
 			TotalMinor: total.AmountMinor, Currency: total.Currency, Schedule: raw, Status: "issued", Version: 1,
-			CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+			CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+		}
 		if err := st.Invoices().Create(ctx, i); err != nil {
 			if errors.Is(err, apperr.ErrConflict) {
 				return apperr.New(apperr.ErrConflict, "invoice_exists", "the order already has an issued invoice; void it first")
@@ -278,24 +283,49 @@ type EvidenceInput struct {
 	AttachmentIDs     []string    `json:"attachmentBindingIds"`
 }
 
-// SubmitEvidence records the buyer's claim of an external payment. Claims can
-// never exceed what is still outstanding (including undecided claims).
-func (s *InvoiceService) SubmitEvidence(ctx context.Context, p *auth.Principal, invoiceID string, in EvidenceInput) (*InvoiceView, error) {
+// parseEvidenceInput validates the field-level shape of a payment evidence
+// submission, preserving the original validation order.
+func parseEvidenceInput(now time.Time, in EvidenceInput) (claimed *big.Int, paidOn time.Time, ref string, attachments []string, err error) {
 	var v apperr.Validation
-	claimed, ok := in.ClaimedAmount.Parse()
+	var ok bool
+	claimed, ok = in.ClaimedAmount.Parse()
 	if !ok || claimed.Sign() == 0 {
 		v.Add("claimedAmount", "must be a positive amount in minor units with a currency code")
 	}
-	paidOn, err := time.Parse(time.DateOnly, in.PaidOn)
-	if err != nil || paidOn.After(s.clock()) {
+	paidOn, perr := time.Parse(time.DateOnly, in.PaidOn)
+	if perr != nil || paidOn.After(now) {
 		v.Add("paidOn", "a date (YYYY-MM-DD), not in the future")
 	}
-	ref := validate.Text(&v, "externalReference", in.ExternalReference, 1, 100)
-	attachments := validate.UniqueIDs(&v, "attachmentBindingIds", in.AttachmentIDs)
+	ref = validate.Text(&v, "externalReference", in.ExternalReference, 1, 100)
+	attachments = validate.UniqueIDs(&v, "attachmentBindingIds", in.AttachmentIDs)
 	if len(attachments) > 10 {
 		v.Add("attachmentBindingIds", "at most 10 files")
 	}
 	if err := v.Err(); err != nil {
+		return nil, time.Time{}, "", nil, err
+	}
+	return claimed, paidOn, ref, attachments, nil
+}
+
+// shareEvidenceFiles makes the buyer's proof attachments readable by the
+// payee for this evidence claim.
+func (s *InvoiceService) shareEvidenceFiles(txctx context.Context, buyerCompanyID, supplierCompanyID string, attachments []string, evidenceID string) error {
+	for _, f := range attachments {
+		if err := s.files.Share(txctx, buyerCompanyID, f, supplierCompanyID, "commerce.payment-evidence", evidenceID); err != nil {
+			if errors.Is(err, apperr.ErrNotFound) {
+				return apperr.FieldError("attachmentBindingIds", "contains files that are not yours")
+			}
+			return err
+		}
+	}
+	return nil
+}
+
+// SubmitEvidence records the buyer's claim of an external payment. Claims can
+// never exceed what is still outstanding (including undecided claims).
+func (s *InvoiceService) SubmitEvidence(ctx context.Context, p *auth.Principal, invoiceID string, in EvidenceInput) (*InvoiceView, error) {
+	claimed, paidOn, ref, attachments, err := parseEvidenceInput(s.clock(), in)
+	if err != nil {
 		return nil, err
 	}
 	var result *InvoiceView
@@ -323,16 +353,12 @@ func (s *InvoiceService) SubmitEvidence(ctx context.Context, p *auth.Principal, 
 		}
 		now := s.clock()
 		rawIDs, _ := json.Marshal(attachments)
-		e := &Evidence{ID: uuid.NewString(), InvoiceID: i.ID, AmountMinor: claimed.String(), Currency: i.Currency, PaidOn: paidOn,
-			ExternalReference: ref, AttachmentIDs: rawIDs, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: now}
-		// The proof files become readable by the payee for this claim.
-		for _, f := range attachments {
-			if err := s.files.Share(st.Bind(ctx), p.CompanyID, f, i.SupplierCompanyID, "commerce.payment-evidence", e.ID); err != nil {
-				if errors.Is(err, apperr.ErrNotFound) {
-					return apperr.FieldError("attachmentBindingIds", "contains files that are not yours")
-				}
-				return err
-			}
+		e := &Evidence{
+			ID: uuid.NewString(), InvoiceID: i.ID, AmountMinor: claimed.String(), Currency: i.Currency, PaidOn: paidOn,
+			ExternalReference: ref, AttachmentIDs: rawIDs, Status: "submitted", SubmittedBy: p.UserID, Version: 1, CreatedAt: now,
+		}
+		if err := s.shareEvidenceFiles(st.Bind(ctx), p.CompanyID, i.SupplierCompanyID, attachments, e.ID); err != nil {
+			return err
 		}
 		if err := st.Invoices().AddEvidence(ctx, e); err != nil {
 			return err

@@ -191,7 +191,8 @@ func (r *dealRepository) RFQs(ctx context.Context, companyID string, limit, offs
 
 func (r *dealRepository) UpdateRFQ(ctx context.Context, x *RFQ, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &RFQ{}, x.ID, expected, map[string]any{
-		"status": x.Status, "status_reason": x.StatusReason, "lines": x.Lines, "updated_at": x.UpdatedAt})
+		"status": x.Status, "status_reason": x.StatusReason, "lines": x.Lines, "updated_at": x.UpdatedAt,
+	})
 	if err == nil {
 		x.Version = expected + 1
 	}
@@ -235,7 +236,8 @@ func (r *dealRepository) Orders(ctx context.Context, companyID string, limit, of
 
 func (r *dealRepository) UpdateOrder(ctx context.Context, o *Order, expected int64) error {
 	err := database.UpdateVersioned(r.db.WithContext(ctx), &Order{}, o.ID, expected, map[string]any{
-		"status": o.Status, "status_reason": o.StatusReason, "terms": o.Terms, "updated_at": o.UpdatedAt})
+		"status": o.Status, "status_reason": o.StatusReason, "terms": o.Terms, "updated_at": o.UpdatedAt,
+	})
 	if err == nil {
 		o.Version = expected + 1
 	}
@@ -333,8 +335,10 @@ func (s *DealService) CreateRFQ(ctx context.Context, p *auth.Principal, in RFQIn
 	}
 	raw, _ := json.Marshal(lines)
 	now := s.clock()
-	x := &RFQ{ID: uuid.NewString(), BuyerCompanyID: p.CompanyID, SupplierCompanyID: in.SupplierCompanyID,
-		OfferVersionID: in.OfferVersionID, Lines: raw, Status: RFQDraft, Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+	x := &RFQ{
+		ID: uuid.NewString(), BuyerCompanyID: p.CompanyID, SupplierCompanyID: in.SupplierCompanyID,
+		OfferVersionID: in.OfferVersionID, Lines: raw, Status: RFQDraft, Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+	}
 	err := s.store.InTx(ctx, func(st Store) error {
 		if err := s.requirePartner(ctx, st, p.CompanyID, in.SupplierCompanyID); err != nil {
 			return err
@@ -418,7 +422,7 @@ func (s *DealService) RFQAction(ctx context.Context, p *auth.Principal, id strin
 // Quote adds the supplier's next numbered, immutable quotation.
 func (s *DealService) Quote(ctx context.Context, p *auth.Principal, id string, expected int64, in Terms) (*RFQ, error) {
 	var v apperr.Validation
-	terms, _ := s.validateTerms(ctx, &v, in)
+	terms := s.validateTerms(ctx, &v, in)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
@@ -476,9 +480,11 @@ func (s *DealService) Accept(ctx context.Context, p *auth.Principal, id string, 
 		if err := st.Deals().UpdateRFQ(ctx, x, expected); err != nil {
 			return err
 		}
-		order = &Order{ID: uuid.NewString(), BuyerCompanyID: x.BuyerCompanyID, SupplierCompanyID: x.SupplierCompanyID,
+		order = &Order{
+			ID: uuid.NewString(), BuyerCompanyID: x.BuyerCompanyID, SupplierCompanyID: x.SupplierCompanyID,
 			Source: "rfq", RFQID: &x.ID, QuotationID: &latest.ID, Terms: latest.Terms, Status: OrderAccepted,
-			Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+			Version: 1, CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+		}
 		if err := st.Deals().CreateOrder(ctx, order); err != nil {
 			return err
 		}
@@ -550,6 +556,54 @@ type DirectOrderInput struct {
 	} `json:"lines"`
 }
 
+// selectOrderLines validates the requested offer lines/quantities against
+// the offered terms and returns the resulting order terms. The payment
+// schedule is dropped unless the whole offer (every line, full quantity) was
+// ordered.
+func selectOrderLines(v *apperr.Validation, offered Terms, in []struct {
+	OfferLineID string         `json:"offerLineId"`
+	Quantity    jsonx.Quantity `json:"quantity"`
+},
+) (Terms, error) {
+	if len(in) == 0 {
+		v.Add("lines", "order at least one line")
+	}
+	chosen := map[string]jsonx.Quantity{}
+	for i, l := range in {
+		field := "lines." + strconv.Itoa(i)
+		if _, dup := chosen[l.OfferLineID]; dup {
+			v.Add(field+".offerLineId", "listed twice")
+		}
+		chosen[l.OfferLineID] = l.Quantity
+	}
+	terms := offered
+	terms.Lines = []Line{}
+	whole := len(chosen) == len(offered.Lines)
+	for _, ol := range offered.Lines {
+		q, ok := chosen[ol.LineID]
+		if !ok {
+			continue
+		}
+		delete(chosen, ol.LineID)
+		if q < 1 || q > ol.Quantity {
+			v.Add("lines", "quantity for line "+ol.LineID+" must be 1-"+strconv.Itoa(int(ol.Quantity)))
+		}
+		whole = whole && q == ol.Quantity
+		ol.Quantity = q
+		terms.Lines = append(terms.Lines, ol)
+	}
+	if len(chosen) > 0 {
+		v.Add("lines", "contains lines that are not in the offer")
+	}
+	if err := v.Err(); err != nil {
+		return Terms{}, err
+	}
+	if !whole {
+		terms.PaymentSchedule = []Installment{}
+	}
+	return terms, nil
+}
+
 // OrderFromOffer creates an order from the currently published offer version.
 // It waits for the supplier's confirmation and grants no early access to VINs.
 // The payment schedule is kept only when the whole offer is ordered;
@@ -572,50 +626,20 @@ func (s *DealService) OrderFromOffer(ctx context.Context, p *auth.Principal, in 
 		}
 		offered, _ := version.decode()
 		var v apperr.Validation
-		if len(in.Lines) == 0 {
-			v.Add("lines", "order at least one line")
-		}
-		chosen := map[string]jsonx.Quantity{}
-		for i, l := range in.Lines {
-			field := "lines." + strconv.Itoa(i)
-			if _, dup := chosen[l.OfferLineID]; dup {
-				v.Add(field+".offerLineId", "listed twice")
-			}
-			chosen[l.OfferLineID] = l.Quantity
-		}
-		terms := offered
-		terms.Lines = []Line{}
-		whole := len(chosen) == len(offered.Lines)
-		for _, ol := range offered.Lines {
-			q, ok := chosen[ol.LineID]
-			if !ok {
-				continue
-			}
-			delete(chosen, ol.LineID)
-			if q < 1 || q > ol.Quantity {
-				v.Add("lines", "quantity for line "+ol.LineID+" must be 1-"+strconv.Itoa(int(ol.Quantity)))
-			}
-			whole = whole && q == ol.Quantity
-			ol.Quantity = q
-			terms.Lines = append(terms.Lines, ol)
-		}
-		if len(chosen) > 0 {
-			v.Add("lines", "contains lines that are not in the offer")
-		}
-		if err := v.Err(); err != nil {
+		terms, err := selectOrderLines(&v, offered, in.Lines)
+		if err != nil {
 			return err
-		}
-		if !whole {
-			terms.PaymentSchedule = []Installment{}
 		}
 		if err := s.requirePartner(ctx, st, p.CompanyID, offer.SupplierCompanyID); err != nil {
 			return err
 		}
 		raw, _ := json.Marshal(terms)
 		now := s.clock()
-		order = &Order{ID: uuid.NewString(), BuyerCompanyID: p.CompanyID, SupplierCompanyID: offer.SupplierCompanyID,
+		order = &Order{
+			ID: uuid.NewString(), BuyerCompanyID: p.CompanyID, SupplierCompanyID: offer.SupplierCompanyID,
 			Source: "offer", OfferVersionID: &version.ID, Terms: raw, Status: AwaitingSupplier, Version: 1,
-			CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now}
+			CreatedBy: p.UserID, CreatedAt: now, UpdatedAt: now,
+		}
 		if err := st.Deals().CreateOrder(ctx, order); err != nil {
 			return err
 		}
@@ -728,7 +752,7 @@ func (s *DealService) cancellationBlocked(ctx context.Context, st Store, o *Orde
 // can be open; the other party accepts or rejects it.
 func (s *DealService) ProposeAddendum(ctx context.Context, p *auth.Principal, id string, expected int64, in Terms, why string) (*Order, error) {
 	var v apperr.Validation
-	terms, _ := s.validateTerms(ctx, &v, in)
+	terms := s.validateTerms(ctx, &v, in)
 	why = validate.Reason(&v, why)
 	if err := v.Err(); err != nil {
 		return nil, err
@@ -743,8 +767,10 @@ func (s *DealService) ProposeAddendum(ctx context.Context, p *auth.Principal, id
 			return apperr.New(apperr.ErrConflict, "invalid_transition", "addenda apply to accepted orders")
 		}
 		raw, _ := json.Marshal(terms)
-		a := &Addendum{ID: uuid.NewString(), OrderID: o.ID, Terms: raw, Reason: why, ProposedByCompany: p.CompanyID,
-			Status: "proposed", CreatedAt: s.clock()}
+		a := &Addendum{
+			ID: uuid.NewString(), OrderID: o.ID, Terms: raw, Reason: why, ProposedByCompany: p.CompanyID,
+			Status: "proposed", CreatedAt: s.clock(),
+		}
 		if err := st.Deals().AddAddendum(ctx, a); err != nil {
 			if errors.Is(err, apperr.ErrConflict) {
 				return apperr.New(apperr.ErrConflict, "addendum_open", "another addendum is waiting for a decision")

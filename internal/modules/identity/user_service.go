@@ -3,6 +3,7 @@ package identity
 import (
 	"context"
 	"slices"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -57,8 +58,10 @@ func (s *UserService) detail(ctx context.Context, st Store, u *User) (*UserDetai
 func (s *UserService) Create(ctx context.Context, actor *auth.Principal, in CreateUserInput) (*UserDetail, error) {
 	var v apperr.Validation
 	now := s.clock()
-	u := &User{ID: uuid.NewString(), DisplayName: text(&v, "displayName", in.DisplayName, 1, 200),
-		Email: email(&v, "email", in.Email), Status: UserPending, Version: 1, CreatedAt: now, UpdatedAt: now}
+	u := &User{
+		ID: uuid.NewString(), DisplayName: text(&v, "displayName", in.DisplayName, 1, 200),
+		Email: email(&v, "email", in.Email), Status: UserPending, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	var result *UserDetail
 	err := s.store.InTx(ctx, func(st Store) error {
 		roleIDs, err := s.roles(ctx, st, &v, in.RoleIDs)
@@ -205,6 +208,35 @@ func (s *UserService) Restore(ctx context.Context, actor *auth.Principal, id str
 	return s.setStatus(ctx, actor, id, expected, why, false)
 }
 
+// applySuspend transitions u into UserSuspended, guarding against re-suspending,
+// self-lockout and removing the last administrator, and revokes its sessions.
+func (s *UserService) applySuspend(ctx context.Context, st Store, actor *auth.Principal, u *User, roles []Role, now time.Time) error {
+	if u.Status == UserSuspended {
+		return apperr.New(apperr.ErrConflict, "invalid_transition", "the user is already suspended")
+	}
+	if u.ID == actor.UserID {
+		return apperr.New(apperr.ErrConflict, "self_lockout", "you cannot suspend yourself")
+	}
+	if err := s.guardAdminRemoval(ctx, st, actor, u, roles); err != nil {
+		return err
+	}
+	u.Status = UserSuspended
+	return st.Sessions().RevokeUser(ctx, u.ID, "", now)
+}
+
+// applyRestore transitions a suspended u back to pending or active, depending
+// on whether it already has a credential.
+func applyRestore(u *User) error {
+	if u.Status != UserSuspended {
+		return apperr.New(apperr.ErrConflict, "invalid_transition", "only suspended users can be restored")
+	}
+	u.Status = UserPending
+	if u.PasswordHash != nil {
+		u.Status = UserActive
+	}
+	return nil
+}
+
 func (s *UserService) setStatus(ctx context.Context, actor *auth.Principal, id string, expected int64, why string, suspend bool) (*UserDetail, error) {
 	if err := validID(id); err != nil {
 		return nil, err
@@ -229,36 +261,18 @@ func (s *UserService) setStatus(ctx context.Context, actor *auth.Principal, id s
 		}
 		before := u.Status
 		now := s.clock()
+		action := "user.restored"
 		if suspend {
-			if u.Status == UserSuspended {
-				return apperr.New(apperr.ErrConflict, "invalid_transition", "the user is already suspended")
-			}
-			if u.ID == actor.UserID {
-				return apperr.New(apperr.ErrConflict, "self_lockout", "you cannot suspend yourself")
-			}
-			if err := s.guardAdminRemoval(ctx, st, actor, u, roles); err != nil {
+			action = "user.suspended"
+			if err := s.applySuspend(ctx, st, actor, u, roles, now); err != nil {
 				return err
 			}
-			u.Status = UserSuspended
-			if err := st.Sessions().RevokeUser(ctx, id, "", now); err != nil {
-				return err
-			}
-		} else {
-			if u.Status != UserSuspended {
-				return apperr.New(apperr.ErrConflict, "invalid_transition", "only suspended users can be restored")
-			}
-			u.Status = UserPending
-			if u.PasswordHash != nil {
-				u.Status = UserActive
-			}
+		} else if err := applyRestore(u); err != nil {
+			return err
 		}
 		u.StatusReason, u.UpdatedAt = why, now
 		if err := st.Users().Update(ctx, u, expected); err != nil {
 			return err
-		}
-		action := "user.restored"
-		if suspend {
-			action = "user.suspended"
 		}
 		if err := s.audit(ctx, st, actor, action, "user", id, nil, why, map[string]any{"before": before, "after": u.Status}); err != nil {
 			return err
@@ -301,8 +315,10 @@ func (s *UserService) Bootstrap(ctx context.Context, in BootstrapInput) (*User, 
 	var v apperr.Validation
 	now := s.clock()
 	login := text(&v, "login", in.Login, 3, 100)
-	u := &User{ID: uuid.NewString(), DisplayName: text(&v, "displayName", in.DisplayName, 1, 200),
-		Email: email(&v, "email", in.Email), Login: &login, Status: UserActive, Version: 1, CreatedAt: now, UpdatedAt: now}
+	u := &User{
+		ID: uuid.NewString(), DisplayName: text(&v, "displayName", in.DisplayName, 1, 200),
+		Email: email(&v, "email", in.Email), Login: &login, Status: UserActive, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
 	validatePassword(&v, "password", in.Password, in.Password)
 	if err := v.Err(); err != nil {
 		return nil, err

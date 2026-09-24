@@ -60,7 +60,10 @@ func (r *companyRepository) List(ctx context.Context, f CompanyFilter) ([]Compan
 		q = q.Where("name ILIKE ?", "%"+f.Query+"%")
 	}
 	companies := []Company{}
-	return companies, translate(q.Find(&companies).Error)
+	if err := translate(q.Find(&companies).Error); err != nil {
+		return nil, err
+	}
+	return companies, nil
 }
 
 func (r *companyRepository) Update(ctx context.Context, c *Company, expected int64) error {

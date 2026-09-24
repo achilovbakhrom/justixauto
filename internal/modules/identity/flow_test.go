@@ -183,7 +183,8 @@ const adminPassword = "admin-password-123"
 func (e *env) bootstrap() *client {
 	e.t.Helper()
 	_, err := e.mod.Users.Bootstrap(context.Background(), BootstrapInput{
-		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword})
+		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword,
+	})
 	if err != nil {
 		e.t.Fatal(err)
 	}
@@ -222,21 +223,25 @@ func (c *client) code() string {
 }
 
 func company(name, registration string) map[string]any {
-	return map[string]any{"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
-		"registration": registration, "email": "office@" + registration + ".test"}
+	return map[string]any{
+		"name": name, "country": map[string]string{"key": "UZ", "label": "Uzbekistan"},
+		"registration": registration, "email": "office@" + registration + ".test",
+	}
 }
 
 func provider(kind, name, registration, login string) map[string]any {
 	return map[string]any{"kind": kind, "company": company(name, registration), "firstAdmin": map[string]string{
 		"displayName": name + " admin", "login": login, "email": login + "@provider.test",
-		"password": "provider-password-1", "passwordConfirmation": "provider-password-1"}}
+		"password": "provider-password-1", "passwordConfirmation": "provider-password-1",
+	}}
 }
 
 func TestBootstrapIsSingleUse(t *testing.T) {
 	e := newEnv(t)
 	e.bootstrap()
 	_, err := e.mod.Users.Bootstrap(context.Background(), BootstrapInput{
-		DisplayName: "Second", Login: "admin2", Email: "admin2@justix.test", Password: adminPassword})
+		DisplayName: "Second", Login: "admin2", Email: "admin2@justix.test", Password: adminPassword,
+	})
 	var coded *apperr.Error
 	if !errors.As(err, &coded) || coded.Code != "already_bootstrapped" {
 		t.Fatalf("second bootstrap: %v", err)
@@ -426,7 +431,8 @@ func TestUsersRolesAndGuards(t *testing.T) {
 func TestMFA(t *testing.T) {
 	e := newEnv(t)
 	_, err := e.mod.Users.Bootstrap(context.Background(), BootstrapInput{
-		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword})
+		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -523,9 +529,13 @@ func TestSellerOnboardingAndAdminSetPasswords(t *testing.T) {
 	e := newEnv(t)
 	admin := e.bootstrap()
 
-	seller := admin.do(http.MethodPost, "/admin/seller-companies", map[string]any{"company": company("Justix Motors", "SELL-1"),
-		"firstAdmin": map[string]string{"displayName": "Owner", "login": "owner", "email": "owner@motors.test",
-			"password": "owner-password-12", "passwordConfirmation": "owner-password-12"}})
+	seller := admin.do(http.MethodPost, "/admin/seller-companies", map[string]any{
+		"company": company("Justix Motors", "SELL-1"),
+		"firstAdmin": map[string]string{
+			"displayName": "Owner", "login": "owner", "email": "owner@motors.test",
+			"password": "owner-password-12", "passwordConfirmation": "owner-password-12",
+		},
+	})
 	expect(t, seller, http.StatusCreated)
 	if seller.data()["company"].(map[string]any)["kind"] != "seller" {
 		t.Fatalf("seller company: %v", seller.data())

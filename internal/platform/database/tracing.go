@@ -1,6 +1,8 @@
 package database
 
 import (
+	"errors"
+
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -29,7 +31,7 @@ func useTracing(db *gorm.DB) error {
 		}
 		span := v.(trace.Span)
 		span.SetAttributes(attribute.String("db.statement", tx.Statement.SQL.String()), attribute.Int64("db.rows_affected", tx.Statement.RowsAffected))
-		if tx.Error != nil && tx.Error != gorm.ErrRecordNotFound {
+		if tx.Error != nil && !errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			span.RecordError(tx.Error)
 			span.SetStatus(codes.Error, tx.Error.Error())
 		}

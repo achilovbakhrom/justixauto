@@ -46,8 +46,10 @@ func New(db *gorm.DB, cfg Config) (*Module, error) {
 	m.authenticator = &Authenticator{auth: m.Auth, cookie: cfg.Cookie}
 	m.session = &SessionHandler{auth: m.Auth, cookie: cfg.Cookie}
 	m.company = &CompanyHandler{companies: m.Companies, branches: branches}
-	m.admin = &AdminHandler{companies: m.Companies, users: m.Users, roles: &RoleService{deps: d},
-		memberships: &MembershipService{deps: d}, audit: &AuditService{deps: d}}
+	m.admin = &AdminHandler{
+		companies: m.Companies, users: m.Users, roles: &RoleService{deps: d},
+		memberships: &MembershipService{deps: d}, audit: &AuditService{deps: d},
+	}
 	return m, nil
 }
 

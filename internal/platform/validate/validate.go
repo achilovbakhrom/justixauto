@@ -15,13 +15,13 @@ import (
 )
 
 // Text trims value and checks its length in characters.
-func Text(v *apperr.Validation, field, value string, min, max int) string {
+func Text(v *apperr.Validation, field, value string, minLen, maxLen int) string {
 	value = strings.TrimSpace(value)
-	if n := utf8.RuneCountInString(value); n < min || n > max {
-		if min > 0 {
-			v.Add(field, "required, at most "+strconv.Itoa(max)+" characters")
+	if n := utf8.RuneCountInString(value); n < minLen || n > maxLen {
+		if minLen > 0 {
+			v.Add(field, "required, at most "+strconv.Itoa(maxLen)+" characters")
 		} else {
-			v.Add(field, "at most "+strconv.Itoa(max)+" characters")
+			v.Add(field, "at most "+strconv.Itoa(maxLen)+" characters")
 		}
 	}
 	return value

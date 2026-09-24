@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "exports": { "./Dialog": "./src/Dialog.tsx", "./Field": "./src/Field.tsx", "./Button": "./src/Button.tsx" },
+  "exports": {
+    "./Dialog": "./src/Dialog.tsx",
+    "./Field": "./src/Field.tsx",
+    "./Button": "./src/Button.tsx"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit false --outDir dist --declaration"

@@ -67,8 +67,10 @@ type leadDTO struct {
 }
 
 func toLead(l *Lead) leadDTO {
-	return leadDTO{ID: l.ID, CustomerID: l.CustomerID, BranchID: l.BranchID, Source: l.Source, Stage: l.Stage,
-		AssignedUserID: l.AssignedUserID, LostReason: l.LostReason, DealID: l.DealID, Revision: httpx.Revision(l.Version), UpdatedAt: l.UpdatedAt}
+	return leadDTO{
+		ID: l.ID, CustomerID: l.CustomerID, BranchID: l.BranchID, Source: l.Source, Stage: l.Stage,
+		AssignedUserID: l.AssignedUserID, LostReason: l.LostReason, DealID: l.DealID, Revision: httpx.Revision(l.Version), UpdatedAt: l.UpdatedAt,
+	}
 }
 
 func toLeadView(v *LeadView) leadDTO {
@@ -95,8 +97,10 @@ type taskDTO struct {
 }
 
 func toTask(t *Task) taskDTO {
-	return taskDTO{ID: t.ID, CustomerID: t.CustomerID, LeadID: t.LeadID, DealID: t.DealID, OwnerUserID: t.OwnerUserID,
-		DueAt: t.DueAt, Title: t.Title, Status: t.Status, CompletedAt: t.CompletedAt, Revision: httpx.Revision(t.Version)}
+	return taskDTO{
+		ID: t.ID, CustomerID: t.CustomerID, LeadID: t.LeadID, DealID: t.DealID, OwnerUserID: t.OwnerUserID,
+		DueAt: t.DueAt, Title: t.Title, Status: t.Status, CompletedAt: t.CompletedAt, Revision: httpx.Revision(t.Version),
+	}
 }
 
 type listingDTO struct {
@@ -110,8 +114,10 @@ type listingDTO struct {
 }
 
 func toListing(l *Listing) listingDTO {
-	return listingDTO{ID: l.ID, VehicleID: l.VehicleID, Text: l.Text, AskingPrice: l.Price(), Status: l.Status,
-		Revision: httpx.Revision(l.Version), UpdatedAt: l.UpdatedAt}
+	return listingDTO{
+		ID: l.ID, VehicleID: l.VehicleID, Text: l.Text, AskingPrice: l.Price(), Status: l.Status,
+		Revision: httpx.Revision(l.Version), UpdatedAt: l.UpdatedAt,
+	}
 }
 
 type evidenceDTO struct {
@@ -142,17 +148,21 @@ type invoiceDTO struct {
 
 func toInvoice(v *InvoiceView) invoiceDTO {
 	i := v.Invoice
-	d := invoiceDTO{ID: i.ID, DealID: i.DealID, Purpose: i.Purpose, Amount: money.Money{AmountMinor: i.AmountMinor, Currency: i.Currency},
+	d := invoiceDTO{
+		ID: i.ID, DealID: i.DealID, Purpose: i.Purpose, Amount: money.Money{AmountMinor: i.AmountMinor, Currency: i.Currency},
 		RecipientSnapshot: i.RecipientSnapshot, Status: i.Status, Paid: v.Paid, Pending: v.Pending, Outstanding: v.Outstanding,
-		Evidence: []evidenceDTO{}, Revision: httpx.Revision(i.Version)}
+		Evidence: []evidenceDTO{}, Revision: httpx.Revision(i.Version),
+	}
 	if i.DueDate != nil {
 		s := i.DueDate.Format(time.DateOnly)
 		d.DueDate = &s
 	}
 	for _, e := range v.Evidence {
-		d.Evidence = append(d.Evidence, evidenceDTO{ID: e.ID, Amount: money.Money{AmountMinor: e.AmountMinor, Currency: e.Currency},
+		d.Evidence = append(d.Evidence, evidenceDTO{
+			ID: e.ID, Amount: money.Money{AmountMinor: e.AmountMinor, Currency: e.Currency},
 			PaidOn: e.PaidOn.Format(time.DateOnly), ExternalReference: e.ExternalReference, AttachmentIDs: ids(e.AttachmentIDs), Status: e.Status,
-			DecisionReason: e.DecisionReason, Revision: httpx.Revision(e.Version)})
+			DecisionReason: e.DecisionReason, Revision: httpx.Revision(e.Version),
+		})
 	}
 	return d
 }
@@ -193,11 +203,13 @@ type dealDTO struct {
 func toDeal(full bool) func(*DealView) dealDTO {
 	return func(v *DealView) dealDTO {
 		d := v.Deal
-		out := dealDTO{ID: d.ID, BranchID: d.BranchID, Customer: toCustomer(&v.Customer), LeadID: d.LeadID, VehicleID: d.VehicleID,
+		out := dealDTO{
+			ID: d.ID, BranchID: d.BranchID, Customer: toCustomer(&v.Customer), LeadID: d.LeadID, VehicleID: d.VehicleID,
 			PaymentScheme: d.PaymentScheme, Price: d.Price(), Status: d.Status, StatusReason: d.StatusReason,
 			ContractSignedOn: dateString(d.ContractSignedOn), ContractReference: d.ContractReference, ContractFileIDs: ids(d.ContractFileIDs),
 			RegisteredOn: dateString(d.RegisteredOn), PlateNumber: d.PlateNumber, RegistrationReference: d.RegistrationReference,
-			DeliveredAt: d.DeliveredAt, AllowedActions: []string{}, Revision: httpx.Revision(d.Version), UpdatedAt: d.UpdatedAt}
+			DeliveredAt: d.DeliveredAt, AllowedActions: []string{}, Revision: httpx.Revision(d.Version), UpdatedAt: d.UpdatedAt,
+		}
 		if full {
 			out.Invoices = []invoiceDTO{}
 			for i := range v.Invoices {

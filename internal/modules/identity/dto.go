@@ -27,10 +27,12 @@ type companyDTO struct {
 }
 
 func toCompany(c *Company) companyDTO {
-	d := companyDTO{ID: c.ID, Kind: c.Kind, Name: c.Name, LegalName: c.LegalName,
+	d := companyDTO{
+		ID: c.ID, Kind: c.Kind, Name: c.Name, LegalName: c.LegalName,
 		Country: Label{Key: c.CountryKey, Label: c.Country}, Registration: c.RegistrationNumber,
 		Email: c.Email, Address: c.Address, Phone: c.Phone, Access: c.Status, AccessReason: c.StatusReason,
-		Revision: revision(c.Version), CreatedAt: c.CreatedAt, UpdatedAt: c.UpdatedAt}
+		Revision: revision(c.Version), CreatedAt: c.CreatedAt, UpdatedAt: c.UpdatedAt,
+	}
 	if c.Region != "" {
 		d.Region = &Label{Key: c.RegionKey, Label: c.Region}
 	}
@@ -52,8 +54,10 @@ type userDTO struct {
 
 func toUser(d *UserDetail) userDTO {
 	u := d.User
-	out := userDTO{ID: u.ID, DisplayName: u.DisplayName, Email: u.Email, Login: u.Login, Status: u.Status,
-		StatusReason: u.StatusReason, Roles: make([]RoleRef, len(d.Roles)), MFAEnabled: u.MFAEnabledAt != nil, Revision: revision(u.Version), CreatedAt: u.CreatedAt}
+	out := userDTO{
+		ID: u.ID, DisplayName: u.DisplayName, Email: u.Email, Login: u.Login, Status: u.Status,
+		StatusReason: u.StatusReason, Roles: make([]RoleRef, len(d.Roles)), MFAEnabled: u.MFAEnabledAt != nil, Revision: revision(u.Version), CreatedAt: u.CreatedAt,
+	}
 	for i, r := range d.Roles {
 		out.Roles[i] = RoleRef{ID: r.ID, Name: r.Name}
 	}
@@ -91,9 +95,11 @@ func toMembership(m *Membership) membershipDTO {
 	if ids == nil {
 		ids = []string{}
 	}
-	return membershipDTO{ID: m.ID, UserID: m.UserID, CompanyID: m.CompanyID, Status: m.Status,
+	return membershipDTO{
+		ID: m.ID, UserID: m.UserID, CompanyID: m.CompanyID, Status: m.Status,
 		BranchAccess: BranchAccessInput{Mode: m.BranchAccess, BranchIDs: ids}, StatusReason: m.StatusReason,
-		Revision: revision(m.Version)}
+		Revision: revision(m.Version),
+	}
 }
 
 type branchDTO struct {
@@ -121,9 +127,11 @@ type auditDTO struct {
 }
 
 func toAudit(e *AuditEvent) auditDTO {
-	return auditDTO{ID: e.ID, OccurredAt: e.OccurredAt, ActorID: e.ActorUserID, Action: e.Action,
+	return auditDTO{
+		ID: e.ID, OccurredAt: e.OccurredAt, ActorID: e.ActorUserID, Action: e.Action,
 		ResourceType: e.ResourceType, ResourceID: e.ResourceID, CompanyID: e.CompanyID, Reason: e.Reason,
-		Details: json.RawMessage(e.Details)}
+		Details: json.RawMessage(e.Details),
+	}
 }
 
 func mapSlice[T, D any](items []T, f func(*T) D) []D {

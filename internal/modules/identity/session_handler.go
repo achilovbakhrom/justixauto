@@ -243,8 +243,10 @@ func (h *SessionHandler) setContext(c echo.Context) error {
 	if err := h.auth.SetCompany(c.Request().Context(), p, expected, in.CompanyID); err != nil {
 		return err
 	}
-	return httpx.Data(c, http.StatusOK, ContextView{Revision: revision(expected + 1), CompanyID: in.CompanyID,
-		BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}}}, expected+1)
+	return httpx.Data(c, http.StatusOK, ContextView{
+		Revision: revision(expected + 1), CompanyID: in.CompanyID,
+		BranchScope: auth.BranchScope{Mode: ScopeAll, BranchIDs: []string{}},
+	}, expected+1)
 }
 
 // setBranchScope narrows the signed-in membership's branch scope.

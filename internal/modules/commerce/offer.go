@@ -60,11 +60,13 @@ var routes = []string{"factory", "foreign-direct", "in-transit", "local"}
 // validateTerms normalizes terms and returns the exact total. All amounts
 // share one currency (no conversion); a payment schedule must add up to the
 // total exactly. Line and installment IDs are generated when missing.
-func (d deps) validateTerms(ctx context.Context, v *apperr.Validation, in Terms) (Terms, money.Money) {
-	out := Terms{Route: in.Route, Lines: []Line{}, PaymentSchedule: []Installment{},
+func (d deps) validateTerms(ctx context.Context, v *apperr.Validation, in Terms) Terms {
+	out := Terms{
+		Route: in.Route, Lines: []Line{}, PaymentSchedule: []Installment{},
 		DeliveryTerms: validate.Text(v, "terms.deliveryTerms", in.DeliveryTerms, 0, 2000),
 		WarrantyTerms: validate.Text(v, "terms.warrantyTerms", in.WarrantyTerms, 0, 2000),
-		ServiceTerms:  validate.Text(v, "terms.serviceTerms", in.ServiceTerms, 0, 2000)}
+		ServiceTerms:  validate.Text(v, "terms.serviceTerms", in.ServiceTerms, 0, 2000),
+	}
 	if !slices.Contains(routes, in.Route) {
 		v.Add("terms.route", "must be factory, foreign-direct, in-transit or local")
 	}
@@ -72,16 +74,38 @@ func (d deps) validateTerms(ctx context.Context, v *apperr.Validation, in Terms)
 		v.Add("terms.lines", "list 1-100 lines")
 	}
 	currency := ""
-	sameCurrency := func(field, c string) {
-		if currency == "" {
-			currency = c
-		} else if c != currency {
-			v.Add(field, "all amounts must use one currency ("+currency+")")
-		}
-	}
-	total := new(big.Int)
 	ids := map[string]bool{}
-	for i, l := range in.Lines {
+	total := d.validateLines(ctx, v, in.Lines, ids, &out.Lines, &currency)
+	if !money.Fits(total) {
+		v.Add("terms.lines", "total is too large")
+	}
+	if len(in.PaymentSchedule) > 60 {
+		v.Add("terms.paymentSchedule", "at most 60 installments")
+	}
+	scheduled := validateSchedule(v, in.PaymentSchedule, ids, &out.PaymentSchedule, &currency)
+	if len(in.PaymentSchedule) > 0 && scheduled.Cmp(total) != 0 {
+		v.Add("terms.paymentSchedule", "installments must add up to the total "+total.String())
+	}
+	return out
+}
+
+// sameCurrency records the first currency seen and flags any later amount
+// that uses a different one.
+func sameCurrency(v *apperr.Validation, currency *string, field, c string) {
+	if *currency == "" {
+		*currency = c
+	} else if c != *currency {
+		v.Add(field, "all amounts must use one currency ("+*currency+")")
+	}
+}
+
+// validateLines normalizes order lines, checks each against the catalog and
+// returns the exact total (unit price * quantity, summed). Generated or
+// duplicate line IDs are tracked in ids so the payment schedule can also
+// reject collisions against them.
+func (d deps) validateLines(ctx context.Context, v *apperr.Validation, lines []Line, ids map[string]bool, out *[]Line, currency *string) *big.Int {
+	total := new(big.Int)
+	for i, l := range lines {
 		field := "terms.lines." + strconv.Itoa(i)
 		if l.LineID == "" {
 			l.LineID = uuid.NewString()
@@ -97,7 +121,7 @@ func (d deps) validateTerms(ctx context.Context, v *apperr.Validation, in Terms)
 		if !ok || price.Sign() == 0 {
 			v.Add(field+".unitPrice", "must be a positive amount in minor units with a currency code")
 		} else {
-			sameCurrency(field+".unitPrice", l.UnitPrice.Currency)
+			sameCurrency(v, currency, field+".unitPrice", l.UnitPrice.Currency)
 			total.Add(total, new(big.Int).Mul(price, big.NewInt(int64(l.Quantity))))
 		}
 		if uuid.Validate(l.ModelID) != nil {
@@ -105,16 +129,17 @@ func (d deps) validateTerms(ctx context.Context, v *apperr.Validation, in Terms)
 		} else if _, err := d.catalog.Model(ctx, l.ModelID); err != nil {
 			v.Add(field+".modelId", "unknown vehicle model")
 		}
-		out.Lines = append(out.Lines, l)
+		*out = append(*out, l)
 	}
-	if !money.Fits(total) {
-		v.Add("terms.lines", "total is too large")
-	}
-	if len(in.PaymentSchedule) > 60 {
-		v.Add("terms.paymentSchedule", "at most 60 installments")
-	}
+	return total
+}
+
+// validateSchedule normalizes the payment schedule and returns the total
+// amount scheduled. ids also tracks line IDs so schedule IDs cannot collide
+// with them.
+func validateSchedule(v *apperr.Validation, schedule []Installment, ids map[string]bool, out *[]Installment, currency *string) *big.Int {
 	scheduled := new(big.Int)
-	for i, p := range in.PaymentSchedule {
+	for i, p := range schedule {
 		field := "terms.paymentSchedule." + strconv.Itoa(i)
 		if p.ID == "" {
 			p.ID = uuid.NewString()
@@ -127,18 +152,15 @@ func (d deps) validateTerms(ctx context.Context, v *apperr.Validation, in Terms)
 		if !ok || amount.Sign() == 0 {
 			v.Add(field+".amount", "must be a positive amount in minor units with a currency code")
 		} else {
-			sameCurrency(field+".amount", p.Amount.Currency)
+			sameCurrency(v, currency, field+".amount", p.Amount.Currency)
 			scheduled.Add(scheduled, amount)
 		}
 		if _, err := time.Parse(time.DateOnly, p.DueDate); err != nil {
 			v.Add(field+".dueDate", "must be a date (YYYY-MM-DD)")
 		}
-		out.PaymentSchedule = append(out.PaymentSchedule, p)
+		*out = append(*out, p)
 	}
-	if len(in.PaymentSchedule) > 0 && scheduled.Cmp(total) != 0 {
-		v.Add("terms.paymentSchedule", "installments must add up to the total "+total.String())
-	}
-	return out, money.Of(total, currency)
+	return scheduled
 }
 
 // Audience decides which partners see a published offer.
@@ -353,15 +375,17 @@ type OfferService struct{ deps }
 
 func (s *OfferService) newVersion(ctx context.Context, p *auth.Principal, offerID string, in OfferInput) (*OfferVersion, error) {
 	var v apperr.Validation
-	terms, _ := s.validateTerms(ctx, &v, in.Terms)
+	terms := s.validateTerms(ctx, &v, in.Terms)
 	audience := validateAudience(&v, p.CompanyID, in.Audience)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
 	rawTerms, _ := json.Marshal(terms)
 	rawIDs, _ := json.Marshal(audience.PartnerCompanyIDs)
-	return &OfferVersion{ID: uuid.NewString(), OfferID: offerID, Number: 1, Terms: rawTerms, AudienceMode: audience.Mode,
-		AudienceIDs: rawIDs, CreatedBy: p.UserID, CreatedAt: s.clock()}, nil
+	return &OfferVersion{
+		ID: uuid.NewString(), OfferID: offerID, Number: 1, Terms: rawTerms, AudienceMode: audience.Mode,
+		AudienceIDs: rawIDs, CreatedBy: p.UserID, CreatedAt: s.clock(),
+	}, nil
 }
 
 // Create starts a draft offer with version 1.

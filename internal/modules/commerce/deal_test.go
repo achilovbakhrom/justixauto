@@ -18,8 +18,10 @@ func TestRFQQuotationAndAcceptance(t *testing.T) {
 	tr := newTrade(t)
 	s, b := tr.supplier, tr.buyer
 
-	r := b.Do(http.MethodPost, "/commerce/rfqs", map[string]any{"supplierCompanyId": s.CompanyID,
-		"lines": []map[string]any{{"modelId": tr.model, "quantity": "5"}}})
+	r := b.Do(http.MethodPost, "/commerce/rfqs", map[string]any{
+		"supplierCompanyId": s.CompanyID,
+		"lines":             []map[string]any{{"modelId": tr.model, "quantity": "5"}},
+	})
 	expect(t, r, http.StatusCreated)
 	id := str(r.Data(), "id")
 	expect(t, s.Do(http.MethodGet, "/commerce/rfqs/"+id, nil), http.StatusNotFound) // drafts are private
@@ -30,7 +32,8 @@ func TestRFQQuotationAndAcceptance(t *testing.T) {
 
 	quote := func(price string, rev string) map[string]any {
 		q := s.Do(http.MethodPost, "/commerce/rfqs/"+id+"/quotation-versions", map[string]any{"terms": map[string]any{
-			"lines": []map[string]any{{"modelId": tr.model, "quantity": "5", "unitPrice": usd(price)}}, "route": "factory"}}, ifMatch(rev)...)
+			"lines": []map[string]any{{"modelId": tr.model, "quantity": "5", "unitPrice": usd(price)}}, "route": "factory",
+		}}, ifMatch(rev)...)
 		expect(t, q, http.StatusCreated)
 		return q.Data()
 	}
@@ -89,8 +92,10 @@ func TestDirectOrderAddendaAndCancellation(t *testing.T) {
 	expect(t, s.Do(http.MethodPost, "/commerce/orders/"+id+"/supplier-confirmations", map[string]any{}, ifMatch("1")...), http.StatusOK)
 
 	// Addendum: proposed by one side, decided by the other; original terms stay in history.
-	newTerms := map[string]any{"lines": []map[string]any{{"modelId": tr.model, "quantity": "1", "unitPrice": usd("1450000")}},
-		"route": "local", "paymentSchedule": []map[string]any{{"amount": usd("1450000"), "dueDate": "2026-11-01"}}}
+	newTerms := map[string]any{
+		"lines": []map[string]any{{"modelId": tr.model, "quantity": "1", "unitPrice": usd("1450000")}},
+		"route": "local", "paymentSchedule": []map[string]any{{"amount": usd("1450000"), "dueDate": "2026-11-01"}},
+	}
 	expect(t, b.Do(http.MethodPost, "/commerce/orders/"+id+"/addenda", map[string]any{"terms": newTerms}, ifMatch("2")...), http.StatusUnprocessableEntity)
 	prop := b.Do(http.MethodPost, "/commerce/orders/"+id+"/addenda", map[string]any{"terms": newTerms, "reason": "discount agreed by phone"}, ifMatch("2")...)
 	expect(t, prop, http.StatusCreated)
@@ -105,8 +110,10 @@ func TestDirectOrderAddendaAndCancellation(t *testing.T) {
 
 	// Ending the partnership blocks new deals but not existing orders.
 	expect(t, s.Do(http.MethodPost, "/commerce/partnerships/"+tr.partnership+"/end", map[string]string{"reason": "paused"}, ifMatch("2")...), http.StatusOK)
-	expect(t, b.Do(http.MethodPost, "/commerce/rfqs", map[string]any{"supplierCompanyId": s.CompanyID,
-		"lines": []map[string]any{{"modelId": tr.model, "quantity": "1"}}}), http.StatusConflict, "partnership_required")
+	expect(t, b.Do(http.MethodPost, "/commerce/rfqs", map[string]any{
+		"supplierCompanyId": s.CompanyID,
+		"lines":             []map[string]any{{"modelId": tr.model, "quantity": "1"}},
+	}), http.StatusConflict, "partnership_required")
 	expect(t, b.Do(http.MethodPost, "/commerce/orders/"+id+"/cancellations", map[string]any{}, ifMatch("4")...), http.StatusUnprocessableEntity)
 	c := b.Do(http.MethodPost, "/commerce/orders/"+id+"/cancellations", map[string]string{"reason": "no longer needed"}, ifMatch("4")...)
 	expect(t, c, http.StatusOK)

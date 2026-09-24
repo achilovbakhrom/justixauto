@@ -8,8 +8,13 @@ import './design.css';
 
 /** Layout helpers the reference has no class for; everything else uses the reference classes (design.css). */
 export const css = {
-  centered: 'kit-centered', stack: 'kit-stack', row: 'kit-row', codes: 'kit-codes', grid: 'kit-grid',
-  muted: 'cell-sub', right: 'kit-right',
+  centered: 'kit-centered',
+  stack: 'kit-stack',
+  row: 'kit-row',
+  codes: 'kit-codes',
+  grid: 'kit-grid',
+  muted: 'cell-sub',
+  right: 'kit-right',
 };
 
 const styles = `
@@ -48,7 +53,9 @@ const styles = `
 .kit-timeline li { padding:9px 12px;border-left:3px solid var(--primary-soft);background:var(--surface-subtle);border-radius:0 var(--radius) var(--radius) 0 }
 `;
 
-export function KitStyles() { return <style>{styles}</style>; }
+export function KitStyles() {
+  return <style>{styles}</style>;
+}
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'link';
 
@@ -56,130 +63,427 @@ type Variant = 'primary' | 'secondary' | 'danger' | 'link';
 export type ShellVariant = 'workspace' | 'insurance' | 'admin';
 export const ShellVariantContext = createContext<ShellVariant>('workspace');
 
-export function Button({ children, onClick, variant = 'secondary', type = 'button', busy, disabled, title, size, icon }: {
-  children: ReactNode; onClick?: (() => void) | undefined; variant?: Variant | undefined;
-  type?: 'button' | 'submit'; busy?: boolean | undefined; disabled?: boolean | undefined; title?: string | undefined;
-  size?: 'sm' | undefined; icon?: IconName | undefined;
+export function Button({
+  children,
+  onClick,
+  variant = 'secondary',
+  type = 'button',
+  busy,
+  disabled,
+  title,
+  size,
+  icon,
+}: {
+  children: ReactNode;
+  onClick?: (() => void) | undefined;
+  variant?: Variant | undefined;
+  type?: 'button' | 'submit';
+  busy?: boolean | undefined;
+  disabled?: boolean | undefined;
+  title?: string | undefined;
+  size?: 'sm' | undefined;
+  icon?: IconName | undefined;
 }) {
   const cls = variant === 'link' ? 'kit-link' : `btn btn-${variant}${size === 'sm' ? ' btn-sm' : ''}`;
-  return <button className={cls} type={type} onClick={onClick} disabled={disabled || busy}
-    aria-busy={busy || undefined} title={title}>{icon && <Icon name={icon} />}{busy ? '…' : children}</button>;
+  return (
+    <button
+      className={cls}
+      type={type}
+      onClick={onClick}
+      disabled={disabled || busy}
+      aria-busy={busy || undefined}
+      title={title}
+    >
+      {icon && <Icon name={icon} />}
+      {busy ? '…' : children}
+    </button>
+  );
 }
 
 /** Centered card for sign-in and other pre-app screens. */
-export function Card({ title, subtitle, children }: { title: string; subtitle?: string | undefined; children: ReactNode }) {
-  return <section className="surface kit-auth">
-    <div className="brand"><div className="brand-mark">J</div><div><div className="brand-name">JustixAuto</div>{subtitle && <div className="brand-role">{subtitle}</div>}</div></div>
-    <h1>{title}</h1>{children}
-  </section>;
+export function Card({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string | undefined;
+  children: ReactNode;
+}) {
+  return (
+    <section className="surface kit-auth">
+      <div className="brand">
+        <div className="brand-mark">J</div>
+        <div>
+          <div className="brand-name">JustixAuto</div>
+          {subtitle && <div className="brand-role">{subtitle}</div>}
+        </div>
+      </div>
+      <h1>{title}</h1>
+      {children}
+    </section>
+  );
 }
 
-export function Notice({ kind = 'info', children }: { kind?: 'info' | 'success' | 'warning' | 'danger'; children: ReactNode }) {
-  return <div className="kit-notice" data-kind={kind} role={kind === 'danger' ? 'alert' : 'status'}>{children}</div>;
+export function Notice({
+  kind = 'info',
+  children,
+}: {
+  kind?: 'info' | 'success' | 'warning' | 'danger';
+  children: ReactNode;
+}) {
+  return (
+    <div className="kit-notice" data-kind={kind} role={kind === 'danger' ? 'alert' : 'status'}>
+      {children}
+    </div>
+  );
 }
 
-const toneClass = { success: 'status-success', warning: 'status-warning', danger: 'status-danger', info: 'status-info' } as const;
+const toneClass = {
+  success: 'status-success',
+  warning: 'status-warning',
+  danger: 'status-danger',
+  info: 'status-info',
+} as const;
 
 /** Status pill of the reference (`.status`). */
-export function Badge({ tone, children }: { tone?: 'success' | 'warning' | 'danger' | 'info' | undefined; children: ReactNode }) {
+export function Badge({
+  tone,
+  children,
+}: {
+  tone?: 'success' | 'warning' | 'danger' | 'info' | undefined;
+  children: ReactNode;
+}) {
   return <span className={`status ${tone ? toneClass[tone] : 'status-neutral'}`}>{children}</span>;
 }
 
-export function Field({ label, value, onChange, type = 'text', error, required, autoComplete, placeholder }: {
-  label: string; value: string; onChange: (v: string) => void; type?: string; error?: string | undefined;
-  required?: boolean; autoComplete?: string; placeholder?: string;
+export function Field({
+  label,
+  value,
+  onChange,
+  type = 'text',
+  error,
+  required,
+  autoComplete,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  error?: string | undefined;
+  required?: boolean;
+  autoComplete?: string;
+  placeholder?: string;
 }) {
   const id = useId();
-  return <div className="field"><label htmlFor={id}>{label}</label>
-    <input id={id} type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required}
-      autoComplete={autoComplete} placeholder={placeholder} aria-invalid={error ? true : undefined} />
-    {error && <div className="field-error">{error}</div>}
-  </div>;
+  return (
+    <div className="field">
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required={required}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        aria-invalid={error ? true : undefined}
+      />
+      {error && <div className="field-error">{error}</div>}
+    </div>
+  );
 }
 
-export function Page({ title, subtitle, actions, children }: { title: string; subtitle?: ReactNode; actions?: ReactNode; children: ReactNode }) {
+export function Page({
+  title,
+  subtitle,
+  actions,
+  children,
+}: {
+  title: string;
+  subtitle?: ReactNode;
+  actions?: ReactNode;
+  children: ReactNode;
+}) {
   const variant = useContext(ShellVariantContext);
-  if (variant === 'insurance') return <section className="page ins-page">
-    <div className="ins-heading"><div><h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>{actions && <div className="page-actions">{actions}</div>}</div>
-    <div className="kit-page-body">{children}</div></section>;
-  if (variant === 'admin') return <section className="admin-page">
-    <div className="admin-title"><div><h1>{title}</h1>{subtitle && <p>{subtitle}</p>}</div>{actions && <div className="page-actions">{actions}</div>}</div>
-    <div className="kit-page-body">{children}</div></section>;
-  return <section className="page">
-    <div className="page-header"><div><h1 className="page-title">{title}</h1>{subtitle && <div className="page-subtitle">{subtitle}</div>}</div>
-      {actions && <div className="page-actions">{actions}</div>}</div>
-    <div className="kit-page-body">{children}</div>
-  </section>;
+  if (variant === 'insurance')
+    return (
+      <section className="page ins-page">
+        <div className="ins-heading">
+          <div>
+            <h1>{title}</h1>
+            {subtitle && <p>{subtitle}</p>}
+          </div>
+          {actions && <div className="page-actions">{actions}</div>}
+        </div>
+        <div className="kit-page-body">{children}</div>
+      </section>
+    );
+  if (variant === 'admin')
+    return (
+      <section className="admin-page">
+        <div className="admin-title">
+          <div>
+            <h1>{title}</h1>
+            {subtitle && <p>{subtitle}</p>}
+          </div>
+          {actions && <div className="page-actions">{actions}</div>}
+        </div>
+        <div className="kit-page-body">{children}</div>
+      </section>
+    );
+  return (
+    <section className="page">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">{title}</h1>
+          {subtitle && <div className="page-subtitle">{subtitle}</div>}
+        </div>
+        {actions && <div className="page-actions">{actions}</div>}
+      </div>
+      <div className="kit-page-body">{children}</div>
+    </section>
+  );
 }
 
 /** A `.surface` block with an optional section header. */
-export function Panel({ title, actions, children, padded }: { title?: string | undefined; actions?: ReactNode; children: ReactNode; padded?: boolean }) {
-  return <section className="surface">
-    {title && <div className="section-head"><h2 className="section-title">{title}</h2>{actions && <div className="page-actions">{actions}</div>}</div>}
-    {padded ? <div className="section-body">{children}</div> : children}
-  </section>;
+export function Panel({
+  title,
+  actions,
+  children,
+  padded,
+}: {
+  title?: string | undefined;
+  actions?: ReactNode;
+  children: ReactNode;
+  padded?: boolean;
+}) {
+  return (
+    <section className="surface">
+      {title && (
+        <div className="section-head">
+          <h2 className="section-title">{title}</h2>
+          {actions && <div className="page-actions">{actions}</div>}
+        </div>
+      )}
+      {padded ? <div className="section-body">{children}</div> : children}
+    </section>
+  );
 }
 
-export interface Column<T> { title: string; render: (row: T) => ReactNode }
+export interface Column<T> {
+  title: string;
+  render: (row: T) => ReactNode;
+}
 
-export function Table<T>({ rows, columns, rowKey, onRowClick, loading, error, empty = 'Пока ничего нет' }: {
-  rows: T[] | undefined; columns: Column<T>[]; rowKey: (row: T) => string; onRowClick?: (row: T) => void;
-  loading?: boolean; error?: unknown; empty?: string;
+export function Table<T>({
+  rows,
+  columns,
+  rowKey,
+  onRowClick,
+  loading,
+  error,
+  empty = 'Пока ничего нет',
+}: {
+  rows: T[] | undefined;
+  columns: Column<T>[];
+  rowKey: (row: T) => string;
+  onRowClick?: (row: T) => void;
+  loading?: boolean;
+  error?: unknown;
+  empty?: string;
 }) {
   const variant = useContext(ShellVariantContext);
-  if (error) return <div className="table-empty-inline"><Notice kind="danger">{errorText(error)}</Notice></div>;
-  if (loading || !rows) return <div className="table-empty-inline"><span className="cell-sub">Загрузка…</span></div>;
-  if (rows.length === 0) return <div className="table-empty-inline"><strong>{empty}</strong></div>;
-  return <div className={`table-wrap${onRowClick ? ' kit-clickable' : ''}`}><table className={variant === 'insurance' ? 'ins-table' : variant === 'admin' ? 'admin-table' : undefined}>
-    <thead><tr>{columns.map((c, i) => <th key={i}>{c.title}</th>)}</tr></thead>
-    <tbody>{rows.map((r) => <tr key={rowKey(r)} onClick={onRowClick ? () => onRowClick(r) : undefined}
-      tabIndex={onRowClick ? 0 : undefined} onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter') onRowClick(r); } : undefined}>
-      {columns.map((c, i) => <td key={i}>{c.render(r)}</td>)}</tr>)}</tbody></table></div>;
+  if (error)
+    return (
+      <div className="table-empty-inline">
+        <Notice kind="danger">{errorText(error)}</Notice>
+      </div>
+    );
+  if (loading || !rows)
+    return (
+      <div className="table-empty-inline">
+        <span className="cell-sub">Загрузка…</span>
+      </div>
+    );
+  if (rows.length === 0)
+    return (
+      <div className="table-empty-inline">
+        <strong>{empty}</strong>
+      </div>
+    );
+  return (
+    <div className={`table-wrap${onRowClick ? ' kit-clickable' : ''}`}>
+      <table className={variant === 'insurance' ? 'ins-table' : variant === 'admin' ? 'admin-table' : undefined}>
+        <thead>
+          <tr>
+            {columns.map((c, i) => (
+              <th key={i}>{c.title}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr
+              key={rowKey(r)}
+              onClick={onRowClick ? () => onRowClick(r) : undefined}
+              tabIndex={onRowClick ? 0 : undefined}
+              onKeyDown={
+                onRowClick
+                  ? (e) => {
+                      if (e.key === 'Enter') onRowClick(r);
+                    }
+                  : undefined
+              }
+            >
+              {columns.map((c, i) => (
+                <td key={i}>{c.render(r)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 /** Label / value rows (`.info-row`). */
 export function Details({ items }: { items: [string, ReactNode][] }) {
-  return <div className="kit-info">{items.map(([k, v]) =>
-    <div key={k} className="info-row"><span>{k}</span><strong>{v ?? '—'}</strong></div>)}</div>;
+  return (
+    <div className="kit-info">
+      {items.map(([k, v]) => (
+        <div key={k} className="info-row">
+          <span>{k}</span>
+          <strong>{v ?? '—'}</strong>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 /** View tabs (`.view-tabs`); a third tuple element shows a count. `channel` = page-level tabs (Клиентам / Партнёрам). */
-export function Tabs<T extends string>({ value, onChange, tabs, channel, actions }: {
-  value: T; onChange: (v: T) => void; tabs: ([T, string] | [T, string, number | undefined])[]; channel?: boolean; actions?: ReactNode;
+export function Tabs<T extends string>({
+  value,
+  onChange,
+  tabs,
+  channel,
+  actions,
+}: {
+  value: T;
+  onChange: (v: T) => void;
+  tabs: ([T, string] | [T, string, number | undefined])[];
+  channel?: boolean;
+  actions?: ReactNode;
 }) {
-  return <div className={`view-tabs${channel ? ' channel-tabs' : ''}`} role="tablist">{tabs.map(([k, label, count]) =>
-    <button key={k} role="tab" aria-selected={value === k} className={`view-tab${value === k ? ' active' : ''}`} onClick={() => onChange(k)}>
-      {label}{count !== undefined && <b>{count}</b>}</button>)}
-    {actions && <div className="kit-row" style={{ marginLeft: 'auto', alignSelf: 'center' }}>{actions}</div>}</div>;
+  return (
+    <div className={`view-tabs${channel ? ' channel-tabs' : ''}`} role="tablist">
+      {tabs.map(([k, label, count]) => (
+        <button
+          key={k}
+          role="tab"
+          aria-selected={value === k}
+          className={`view-tab${value === k ? ' active' : ''}`}
+          onClick={() => onChange(k)}
+        >
+          {label}
+          {count !== undefined && <b>{count}</b>}
+        </button>
+      ))}
+      {actions && (
+        <div className="kit-row" style={{ marginLeft: 'auto', alignSelf: 'center' }}>
+          {actions}
+        </div>
+      )}
+    </div>
+  );
 }
 
 /** Search and filters above a list (`.toolbar`); Сбросить clears them. */
-export function Toolbar({ query, onQuery, placeholder, children, onReset }: {
-  query: string; onQuery: (q: string) => void; placeholder: string; children?: ReactNode; onReset?: () => void;
+export function Toolbar({
+  query,
+  onQuery,
+  placeholder,
+  children,
+  onReset,
+}: {
+  query: string;
+  onQuery: (q: string) => void;
+  placeholder: string;
+  children?: ReactNode;
+  onReset?: () => void;
 }) {
-  return <div className="toolbar">
-    <label className="search-field"><Icon name="search" /><input placeholder={placeholder} value={query} onChange={(e) => onQuery(e.target.value)} aria-label={placeholder} /></label>
-    {children}
-    <button className="btn btn-secondary btn-sm" type="button" onClick={() => { onQuery(''); onReset?.(); }}>Сбросить</button>
-  </div>;
+  return (
+    <div className="toolbar">
+      <label className="search-field">
+        <Icon name="search" />
+        <input
+          placeholder={placeholder}
+          value={query}
+          onChange={(e) => onQuery(e.target.value)}
+          aria-label={placeholder}
+        />
+      </label>
+      {children}
+      <button
+        className="btn btn-secondary btn-sm"
+        type="button"
+        onClick={() => {
+          onQuery('');
+          onReset?.();
+        }}
+      >
+        Сбросить
+      </button>
+    </div>
+  );
 }
 
 /** Filter select of a toolbar; the first option means "all". */
-export function FilterSelect({ value, onChange, all, options }: { value: string; onChange: (v: string) => void; all: string; options: [string, string][] }) {
-  return <select className="select" value={value} onChange={(e) => onChange(e.target.value)} aria-label={all}>
-    <option value="">{all}</option>{options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>;
+export function FilterSelect({
+  value,
+  onChange,
+  all,
+  options,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  all: string;
+  options: [string, string][];
+}) {
+  return (
+    <select className="select" value={value} onChange={(e) => onChange(e.target.value)} aria-label={all}>
+      <option value="">{all}</option>
+      {options.map(([v, l]) => (
+        <option key={v} value={v}>
+          {l}
+        </option>
+      ))}
+    </select>
+  );
 }
 
 /** "N записей · hint" line above a table. */
-export function ResultMeta({ children }: { children: ReactNode }) { return <div className="result-meta">{children}</div>; }
+export function ResultMeta({ children }: { children: ReactNode }) {
+  return <div className="result-meta">{children}</div>;
+}
 
 /** Two-line table cell. */
 export function Cell({ main, sub }: { main: ReactNode; sub?: ReactNode }) {
-  return <><div className="cell-main">{main}</div>{sub && <div className="cell-sub">{sub}</div>}</>;
+  return (
+    <>
+      <div className="cell-main">{main}</div>
+      {sub && <div className="cell-sub">{sub}</div>}
+    </>
+  );
 }
 
 export function Progress({ value, max }: { value: number; max: number }) {
-  return <div className="progress"><span style={{ width: `${max > 0 ? Math.min(100, (value / max) * 100) : 0}%` }} /></div>;
+  return (
+    <div className="progress">
+      <span style={{ width: `${max > 0 ? Math.min(100, (value / max) * 100) : 0}%` }} />
+    </div>
+  );
 }
 
 /** Case-insensitive match of a search query against any of the texts. */
@@ -190,49 +494,144 @@ export const matches = (query: string, ...texts: (string | undefined | null)[]) 
 
 /** Russian plural: plural(5, ['запись', 'записи', 'записей']). */
 export function plural(n: number, forms: [string, string, string]) {
-  const a = Math.abs(n) % 100, b = a % 10;
+  const a = Math.abs(n) % 100,
+    b = a % 10;
   return `${n} ${a > 10 && a < 20 ? forms[2] : b === 1 ? forms[0] : b >= 2 && b <= 4 ? forms[1] : forms[2]}`;
 }
 
 /** One figure of a `.summary-strip`. */
-export function Stat({ label, value, note, onClick }: { label: string; value: ReactNode; note?: string | undefined; onClick?: () => void }) {
+export function Stat({
+  label,
+  value,
+  note,
+  onClick,
+}: {
+  label: string;
+  value: ReactNode;
+  note?: string | undefined;
+  onClick?: () => void;
+}) {
   const variant = useContext(ShellVariantContext);
-  if (variant === 'insurance') return <button type="button" className="surface" onClick={onClick}><span>{label}</span><strong>{value}</strong></button>;
-  if (variant === 'admin') return <button type="button" className="surface admin-card" onClick={onClick}><span>{label}</span><strong>{value}</strong>{note && <span>{note}</span>}</button>;
-  return <div className="summary-item"><div className="summary-label">{label}</div><div className="summary-value">{value}</div>
-    {note && <div className="summary-note">{note}</div>}</div>;
+  if (variant === 'insurance')
+    return (
+      <button type="button" className="surface" onClick={onClick}>
+        <span>{label}</span>
+        <strong>{value}</strong>
+      </button>
+    );
+  if (variant === 'admin')
+    return (
+      <button type="button" className="surface admin-card" onClick={onClick}>
+        <span>{label}</span>
+        <strong>{value}</strong>
+        {note && <span>{note}</span>}
+      </button>
+    );
+  return (
+    <div className="summary-item">
+      <div className="summary-label">{label}</div>
+      <div className="summary-value">{value}</div>
+      {note && <div className="summary-note">{note}</div>}
+    </div>
+  );
 }
 
 export function Stats({ children, columns }: { children: ReactNode; columns?: number }) {
   const variant = useContext(ShellVariantContext);
-  if (variant !== 'workspace') return <div className={variant === 'insurance' ? 'ins-metrics' : 'admin-cards'}>{children}</div>;
-  return <div className="summary-strip" style={columns ? { gridTemplateColumns: `repeat(${columns},minmax(0,1fr))` } : undefined}>{children}</div>;
+  if (variant !== 'workspace')
+    return <div className={variant === 'insurance' ? 'ins-metrics' : 'admin-cards'}>{children}</div>;
+  return (
+    <div
+      className="summary-strip"
+      style={columns ? { gridTemplateColumns: `repeat(${columns},minmax(0,1fr))` } : undefined}
+    >
+      {children}
+    </div>
+  );
 }
 
-export function EmptyState({ icon = 'info', title, text, action }: { icon?: IconName; title: string; text?: string; action?: ReactNode }) {
-  return <div className="empty-state"><div className="empty-icon"><Icon name={icon} size={24} /></div><h3>{title}</h3>{text && <p>{text}</p>}{action}</div>;
+export function EmptyState({
+  icon = 'info',
+  title,
+  text,
+  action,
+}: {
+  icon?: IconName;
+  title: string;
+  text?: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="empty-state">
+      <div className="empty-icon">
+        <Icon name={icon} size={24} />
+      </div>
+      <h3>{title}</h3>
+      {text && <p>{text}</p>}
+      {action}
+    </div>
+  );
 }
 
-export function Modal({ title, onClose, children, footer, size, help, icon = 'file' }: {
-  title: string; onClose: () => void; children: ReactNode; footer?: ReactNode; size?: 'wide' | undefined; help?: ReactNode; icon?: IconName;
+export function Modal({
+  title,
+  onClose,
+  children,
+  footer,
+  size,
+  help,
+  icon = 'file',
+}: {
+  title: string;
+  onClose: () => void;
+  children: ReactNode;
+  footer?: ReactNode;
+  size?: 'wide' | undefined;
+  help?: ReactNode;
+  icon?: IconName;
 }) {
   const ref = useRef<HTMLElement>(null);
   const close = useRef(onClose);
-  useEffect(() => { close.current = onClose; });
+  useEffect(() => {
+    close.current = onClose;
+  });
   // Focus once on open; parents re-render with new callbacks while the user types.
   useEffect(() => {
-    ref.current?.querySelector<HTMLElement>('.modal-body input,.modal-body select,.modal-body textarea,.modal-close')?.focus();
-    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') close.current(); };
+    ref.current
+      ?.querySelector<HTMLElement>('.modal-body input,.modal-body select,.modal-body textarea,.modal-close')
+      ?.focus();
+    const esc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close.current();
+    };
     document.addEventListener('keydown', esc);
     return () => document.removeEventListener('keydown', esc);
   }, []);
-  return <div className="modal-scrim"><section className={`modal${size === 'wide' ? ' modal-wide' : ''}`} role="dialog" aria-modal="true" aria-label={title} ref={ref}>
-    <header className="modal-header"><div className="modal-icon"><Icon name={icon} size={22} /></div>
-      <div><h2 className="modal-title">{title}</h2>{help && <div className="modal-help">{help}</div>}</div>
-      <button className="modal-close" type="button" onClick={onClose} aria-label="Закрыть"><Icon name="close" /></button></header>
-    <div className="modal-body">{children}</div>
-    {footer && <footer className="modal-footer">{footer}</footer>}
-  </section></div>;
+  return (
+    <div className="modal-scrim">
+      <section
+        className={`modal${size === 'wide' ? ' modal-wide' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        ref={ref}
+      >
+        <header className="modal-header">
+          <div className="modal-icon">
+            <Icon name={icon} size={22} />
+          </div>
+          <div>
+            <h2 className="modal-title">{title}</h2>
+            {help && <div className="modal-help">{help}</div>}
+          </div>
+          <button className="modal-close" type="button" onClick={onClose} aria-label="Закрыть">
+            <Icon name="close" />
+          </button>
+        </header>
+        <div className="modal-body">{children}</div>
+        {footer && <footer className="modal-footer">{footer}</footer>}
+      </section>
+    </div>
+  );
 }
 
 // ---- money: exact decimal strings, never floating point ----
@@ -261,13 +660,20 @@ export function toMinor(input: string): string | null {
   return minor;
 }
 
-export const date = (s: string | null | undefined) => s ? new Date(s).toLocaleDateString('ru-RU') : '—';
-export const dateTime = (s: string | null | undefined) => s ? new Date(s).toLocaleString('ru-RU') : '—';
+export const date = (s: string | null | undefined) => (s ? new Date(s).toLocaleDateString('ru-RU') : '—');
+export const dateTime = (s: string | null | undefined) => (s ? new Date(s).toLocaleString('ru-RU') : '—');
 
 // ---- generic form dialog ----
 
 export type FieldSpec =
-  | { name: string; label: string; type: 'text' | 'textarea' | 'date' | 'datetime' | 'number' | 'password' | 'email'; required?: boolean; initial?: string; hint?: string }
+  | {
+      name: string;
+      label: string;
+      type: 'text' | 'textarea' | 'date' | 'datetime' | 'number' | 'password' | 'email';
+      required?: boolean;
+      initial?: string;
+      hint?: string;
+    }
   | { name: string; label: string; type: 'money'; required?: boolean; initial?: string; currency?: string }
   | { name: string; label: string; type: 'select'; options: [string, string][]; required?: boolean; initial?: string }
   | { name: string; label: string; type: 'multiselect'; options: [string, string][]; initial?: string[] }
@@ -282,23 +688,54 @@ export type FormValues = Record<string, string | string[] | boolean>;
  * Money fields yield {amountMinor, currency}; file fields upload first and
  * yield the file ID.
  */
-export function FormDialog({ title, fields, submitLabel = 'Сохранить', onSubmit, onClose, intro, size }: {
-  title: string; fields: FieldSpec[]; submitLabel?: string; intro?: ReactNode; size?: 'wide' | undefined;
-  onSubmit: (values: Record<string, unknown>) => Promise<unknown>; onClose: () => void;
+export function FormDialog({
+  title,
+  fields,
+  submitLabel = 'Сохранить',
+  onSubmit,
+  onClose,
+  intro,
+  size,
+}: {
+  title: string;
+  fields: FieldSpec[];
+  submitLabel?: string;
+  intro?: ReactNode;
+  size?: 'wide' | undefined;
+  onSubmit: (values: Record<string, unknown>) => Promise<unknown>;
+  onClose: () => void;
 }) {
-  const [values, setValues] = useState<FormValues>(() => Object.fromEntries(fields.map((f) =>
-    [f.name, f.type === 'checkbox' ? !!f.initial : f.type === 'multiselect' ? (f.initial ?? []) : f.type === 'file' ? '' :
-      f.type === 'money' ? (f.initial ?? '') : (f.initial ?? '')])));
+  const [values, setValues] = useState<FormValues>(() =>
+    Object.fromEntries(
+      fields.map((f) => [
+        f.name,
+        f.type === 'checkbox'
+          ? !!f.initial
+          : f.type === 'multiselect'
+            ? (f.initial ?? [])
+            : f.type === 'file'
+              ? ''
+              : f.type === 'money'
+                ? (f.initial ?? '')
+                : (f.initial ?? ''),
+      ]),
+    ),
+  );
   const [files, setFiles] = useState<Record<string, File | null>>({});
-  const [currency, setCurrency] = useState<Record<string, string>>(() => Object.fromEntries(fields
-    .filter((f) => f.type === 'money').map((f) => [f.name, (f as { currency?: string }).currency ?? 'USD'])));
+  const [currency, setCurrency] = useState<Record<string, string>>(() =>
+    Object.fromEntries(
+      fields.filter((f) => f.type === 'money').map((f) => [f.name, (f as { currency?: string }).currency ?? 'USD']),
+    ),
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const set = (name: string, v: string | string[] | boolean) => setValues((s) => ({ ...s, [name]: v }));
 
   async function submit() {
-    setBusy(true); setError(''); setErrors({});
+    setBusy(true);
+    setError('');
+    setErrors({});
     try {
       const out: Record<string, unknown> = {};
       for (const f of fields) {
@@ -306,7 +743,11 @@ export function FormDialog({ title, fields, submitLabel = 'Сохранить', 
         if (f.type === 'money') {
           if (v === '' && !f.required) continue;
           const minor = toMinor(String(v));
-          if (minor === null) { setErrors({ [f.name]: 'сумма, например 1500.00' }); setBusy(false); return; }
+          if (minor === null) {
+            setErrors({ [f.name]: 'сумма, например 1500.00' });
+            setBusy(false);
+            return;
+          }
           out[f.name] = { amountMinor: minor, currency: currency[f.name] };
         } else if (f.type === 'file') {
           const file = files[f.name];
@@ -323,67 +764,199 @@ export function FormDialog({ title, fields, submitLabel = 'Сохранить', 
         const rest: string[] = [];
         for (const [k, msg] of Object.entries(e.fields)) {
           const f = fields.find((x) => k === x.name || k.endsWith('.' + x.name) || k.startsWith(x.name + '.'));
-          if (f) byField[f.name] = msg; else rest.push(`${k}: ${msg}`);
+          if (f) byField[f.name] = msg;
+          else rest.push(`${k}: ${msg}`);
         }
         setErrors(byField);
         setError(rest.length ? rest.join('; ') : e.message);
       } else setError(errorText(e));
-    } finally { setBusy(false); }
+    } finally {
+      setBusy(false);
+    }
   }
 
-  return <Modal title={title} onClose={onClose} size={size}
-    footer={<><Button onClick={onClose} disabled={busy}>Отмена</Button><Button variant="primary" busy={busy} onClick={() => void submit()}>{submitLabel}</Button></>}>
-    {intro}
-    {error && <Notice kind="danger">{error}</Notice>}
-    <form onSubmit={(e) => { e.preventDefault(); void submit(); }} className="form-grid">
-      {fields.map((f) => <FieldInput key={f.name} spec={f} value={values[f.name]!} error={errors[f.name]}
-        onChange={(v) => set(f.name, v)} onFile={(file) => setFiles((s) => ({ ...s, [f.name]: file }))}
-        currency={currency[f.name]} onCurrency={(c) => setCurrency((s) => ({ ...s, [f.name]: c }))} />)}
-      <button type="submit" hidden />
-    </form>
-  </Modal>;
+  return (
+    <Modal
+      title={title}
+      onClose={onClose}
+      size={size}
+      footer={
+        <>
+          <Button onClick={onClose} disabled={busy}>
+            Отмена
+          </Button>
+          <Button variant="primary" busy={busy} onClick={() => void submit()}>
+            {submitLabel}
+          </Button>
+        </>
+      }
+    >
+      {intro}
+      {error && <Notice kind="danger">{error}</Notice>}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          void submit();
+        }}
+        className="form-grid"
+      >
+        {fields.map((f) => (
+          <FieldInput
+            key={f.name}
+            spec={f}
+            value={values[f.name]!}
+            error={errors[f.name]}
+            onChange={(v) => set(f.name, v)}
+            onFile={(file) => setFiles((s) => ({ ...s, [f.name]: file }))}
+            currency={currency[f.name]}
+            onCurrency={(c) => setCurrency((s) => ({ ...s, [f.name]: c }))}
+          />
+        ))}
+        <button type="submit" hidden />
+      </form>
+    </Modal>
+  );
 }
 
 const currencies = ['USD', 'UZS', 'EUR', 'RUB', 'KZT'];
 
-function FieldInput({ spec, value, error, onChange, onFile, currency, onCurrency }: {
-  spec: FieldSpec; value: string | string[] | boolean; error: string | undefined;
-  onChange: (v: string | string[] | boolean) => void; onFile: (f: File | null) => void;
-  currency: string | undefined; onCurrency: (c: string) => void;
+function FieldInput({
+  spec,
+  value,
+  error,
+  onChange,
+  onFile,
+  currency,
+  onCurrency,
+}: {
+  spec: FieldSpec;
+  value: string | string[] | boolean;
+  error: string | undefined;
+  onChange: (v: string | string[] | boolean) => void;
+  onFile: (f: File | null) => void;
+  currency: string | undefined;
+  onCurrency: (c: string) => void;
 }) {
   const id = useId();
   const req = 'required' in spec && spec.required;
-  const label = <label htmlFor={id}>{spec.label}{req ? ' *' : ''}</label>;
+  const label = (
+    <label htmlFor={id}>
+      {spec.label}
+      {req ? ' *' : ''}
+    </label>
+  );
   const err = error && <div className="field-error">{error}</div>;
   // Long inputs span both columns of the reference .form-grid.
   const wide = ['textarea', 'multiselect', 'checkbox', 'file'].includes(spec.type) || spec.label.length > 34;
   const cls = `field${wide ? ' field-full' : ''}`;
   switch (spec.type) {
     case 'textarea':
-      return <div className={cls}>{label}<textarea id={id} value={String(value)} onChange={(e) => onChange(e.target.value)} />{err}</div>;
+      return (
+        <div className={cls}>
+          {label}
+          <textarea id={id} value={String(value)} onChange={(e) => onChange(e.target.value)} />
+          {err}
+        </div>
+      );
     case 'select':
-      return <div className={cls}>{label}<select id={id} value={String(value)} onChange={(e) => onChange(e.target.value)}>
-        <option value="">—</option>{spec.options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>{err}</div>;
+      return (
+        <div className={cls}>
+          {label}
+          <select id={id} value={String(value)} onChange={(e) => onChange(e.target.value)}>
+            <option value="">—</option>
+            {spec.options.map(([v, l]) => (
+              <option key={v} value={v}>
+                {l}
+              </option>
+            ))}
+          </select>
+          {err}
+        </div>
+      );
     case 'multiselect':
-      return <fieldset className={`${cls} checkbox-fieldset`}><legend className="form-section-label">{spec.label}</legend>
-        <div className="checkbox-grid">{spec.options.map(([v, l]) =>
-          <label key={v} className="check-line"><input type="checkbox" checked={(value as string[]).includes(v)}
-            onChange={(e) => onChange(e.target.checked ? [...(value as string[]), v] : (value as string[]).filter((x) => x !== v))} /><span>{l}</span></label>)}
-          {spec.options.length === 0 && <span className="cell-sub">Нет вариантов</span>}</div>{err}</fieldset>;
+      return (
+        <fieldset className={`${cls} checkbox-fieldset`}>
+          <legend className="form-section-label">{spec.label}</legend>
+          <div className="checkbox-grid">
+            {spec.options.map(([v, l]) => (
+              <label key={v} className="check-line">
+                <input
+                  type="checkbox"
+                  checked={(value as string[]).includes(v)}
+                  onChange={(e) =>
+                    onChange(
+                      e.target.checked ? [...(value as string[]), v] : (value as string[]).filter((x) => x !== v),
+                    )
+                  }
+                />
+                <span>{l}</span>
+              </label>
+            ))}
+            {spec.options.length === 0 && <span className="cell-sub">Нет вариантов</span>}
+          </div>
+          {err}
+        </fieldset>
+      );
     case 'checkbox':
-      return <div className={cls}><label className="check-line"><input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} /><span>{spec.label}</span></label>{err}</div>;
+      return (
+        <div className={cls}>
+          <label className="check-line">
+            <input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />
+            <span>{spec.label}</span>
+          </label>
+          {err}
+        </div>
+      );
     case 'file':
-      return <div className={cls}>{label}<input id={id} type="file" accept="application/pdf,image/jpeg,image/png"
-        onChange={(e) => onFile(e.target.files?.[0] ?? null)} /><div className="field-hint">PDF, JPEG или PNG до 10 МБ</div>{err}</div>;
+      return (
+        <div className={cls}>
+          {label}
+          <input
+            id={id}
+            type="file"
+            accept="application/pdf,image/jpeg,image/png"
+            onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+          />
+          <div className="field-hint">PDF, JPEG или PNG до 10 МБ</div>
+          {err}
+        </div>
+      );
     case 'money':
-      return <div className={cls}>{label}<div className="kit-row" style={{ flexWrap: 'nowrap' }}>
-        <input id={id} inputMode="decimal" value={String(value)} onChange={(e) => onChange(e.target.value)} placeholder="0.00" />
-        <select value={currency} onChange={(e) => onCurrency(e.target.value)} style={{ width: 96 }} aria-label="Валюта">
-          {currencies.map((c) => <option key={c}>{c}</option>)}</select></div>{err}</div>;
+      return (
+        <div className={cls}>
+          {label}
+          <div className="kit-row" style={{ flexWrap: 'nowrap' }}>
+            <input
+              id={id}
+              inputMode="decimal"
+              value={String(value)}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder="0.00"
+            />
+            <select
+              value={currency}
+              onChange={(e) => onCurrency(e.target.value)}
+              style={{ width: 96 }}
+              aria-label="Валюта"
+            >
+              {currencies.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+          {err}
+        </div>
+      );
     default: {
       const type = spec.type === 'datetime' ? 'datetime-local' : spec.type;
-      return <div className={cls}>{label}<input id={id} type={type} value={String(value)}
-        onChange={(e) => onChange(e.target.value)} />{'hint' in spec && spec.hint && <div className="field-hint">{spec.hint}</div>}{err}</div>;
+      return (
+        <div className={cls}>
+          {label}
+          <input id={id} type={type} value={String(value)} onChange={(e) => onChange(e.target.value)} />
+          {'hint' in spec && spec.hint && <div className="field-hint">{spec.hint}</div>}
+          {err}
+        </div>
+      );
     }
   }
 }
