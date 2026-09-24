@@ -9,7 +9,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"justixauto/internal/platform/apperr"
+	"justixauto/internal/pkg/apperr"
 )
 
 // BranchScope is the session's working branch filter inside the active company.

@@ -4,16 +4,16 @@ import (
 	"net/http"
 	"testing"
 
+	"justixauto/internal/e2e"
 	"justixauto/internal/modules/commerce"
 	"justixauto/internal/modules/inventory"
-	"justixauto/internal/testkit"
 )
 
 // trade is a supplier and a buyer in an active partnership, with one model.
 type trade struct {
-	e               *testkit.Env
-	admin           *testkit.Client
-	supplier, buyer *testkit.Client
+	e               *e2e.Env
+	admin           *e2e.Client
+	supplier, buyer *e2e.Client
 	model           string
 	partnership     string
 }
@@ -24,7 +24,7 @@ var tradePerms = []string{
 }
 
 func newTrade(t *testing.T) *trade {
-	e := testkit.New(t)
+	e := e2e.New(t)
 	admin := e.Admin()
 	tr := &trade{
 		e: e, admin: admin, supplier: e.CompanyUser(admin, "Supplier Motors", tradePerms...),

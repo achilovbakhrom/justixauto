@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"justixauto/internal/platform/database"
+	"justixauto/internal/pkg/database"
 )
 
 // Store gives services access to all identity repositories and lets them run
@@ -42,7 +42,7 @@ func (s *gormStore) InTx(ctx context.Context, fn func(Store) error) error {
 	})
 }
 
-// Shared persistence helpers (see internal/platform/database).
+// Shared persistence helpers (see internal/pkg/database).
 var (
 	translate       = database.Translate
 	updateVersioned = database.UpdateVersioned

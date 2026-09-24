@@ -9,7 +9,7 @@
 
 | Concern | Choice |
 |---|---|
-| Image | One image (`Dockerfile`): API, `migrate`, `bootstrap-admin` and the four built web apps; distroless `nonroot`, base images pinned by digest |
+| Image | One image (`Dockerfile`): API, `migrate` and the four built web apps; distroless `nonroot`, base images pinned by digest |
 | Packaging | Helm chart `deploy/helm/justixauto`, `values-dev.yaml` (kind) and `values-prod.yaml` (template; human-only rollout) |
 | Replicas | 2 by default, rolling update `maxUnavailable: 0`, PodDisruptionBudget `minAvailable: 1`, topology spread over nodes and zones, optional HPA |
 | Migrations | Helm `pre-install,pre-upgrade` Job running `migrate up` before new pods start |

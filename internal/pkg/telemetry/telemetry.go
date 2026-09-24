@@ -20,6 +20,8 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 	"go.opentelemetry.io/otel/trace"
+
+	"justixauto/internal/pkg/envx"
 )
 
 // ServiceName is used when OTEL_SERVICE_NAME is not set.
@@ -35,7 +37,7 @@ func Setup(ctx context.Context, version string) (func(context.Context) error, er
 	host, _ := os.Hostname() // the pod name in Kubernetes
 	// Schemaless: merging with the SDK default resource fails when schema URLs differ.
 	res, err := resource.Merge(resource.Default(), resource.NewSchemaless(
-		semconv.ServiceName(envOr("OTEL_SERVICE_NAME", ServiceName)), semconv.ServiceVersion(version), semconv.ServiceInstanceID(host)))
+		semconv.ServiceName(envx.Or("OTEL_SERVICE_NAME", ServiceName)), semconv.ServiceVersion(version), semconv.ServiceInstanceID(host)))
 	if err != nil {
 		return nil, err
 	}
@@ -53,13 +55,6 @@ func Setup(ctx context.Context, version string) (func(context.Context) error, er
 	otel.SetTracerProvider(tp)
 	otel.SetMeterProvider(mp)
 	return func(ctx context.Context) error { return errors.Join(tp.Shutdown(ctx), mp.Shutdown(ctx)) }, nil
-}
-
-func envOr(key, fallback string) string {
-	if v := os.Getenv(key); v != "" {
-		return v
-	}
-	return fallback
 }
 
 // Logger returns a JSON logger on stdout whose records carry trace_id and

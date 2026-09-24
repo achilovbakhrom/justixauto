@@ -1,6 +1,6 @@
 package inventory
 
-import "justixauto/internal/platform/auth"
+import "justixauto/internal/pkg/auth"
 
 const (
 	PermRead             = "inventory.read"

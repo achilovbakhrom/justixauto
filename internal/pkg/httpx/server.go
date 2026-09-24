@@ -13,7 +13,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"justixauto/internal/platform/apperr"
+	"justixauto/internal/pkg/apperr"
 )
 
 // NewServer returns an Echo instance with shared middleware and error handling.

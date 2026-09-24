@@ -1,4 +1,4 @@
-package testkit
+package e2e
 
 import (
 	"net/http"

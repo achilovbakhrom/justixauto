@@ -7,10 +7,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/validate"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/database"
+	"justixauto/internal/pkg/validate"
 )
 
 // Files shares an uploaded file with another company (implemented by the

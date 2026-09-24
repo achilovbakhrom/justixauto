@@ -12,15 +12,15 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"justixauto/internal/app"
+	"justixauto/internal/e2e"
 	"justixauto/internal/modules/identity"
-	"justixauto/internal/platform/apidocs"
-	"justixauto/internal/testkit"
+	"justixauto/internal/pkg/apidocs"
 )
 
 // Every /api/v1 route must be annotated for the generated spec (make openapi),
 // and the spec must not list routes that no longer exist.
 func TestOpenAPICoversRoutes(t *testing.T) {
-	e, _, err := app.New(testkit.DB(t), app.Config{
+	e, _, err := app.New(e2e.DB(t), app.Config{
 		Session: identity.DefaultSessionConfig, MFAKey: make([]byte, 32),
 		Log: slog.New(slog.NewTextHandler(io.Discard, nil)),
 	})

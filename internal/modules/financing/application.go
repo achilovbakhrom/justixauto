@@ -7,10 +7,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/money"
-	"justixauto/internal/platform/validate"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/money"
+	"justixauto/internal/pkg/validate"
 )
 
 type ApplicationInput struct {

@@ -1,6 +1,6 @@
 // Package identity owns companies, branches, users, roles, memberships,
 // sessions and the identity audit log. Other modules reference them by ID and
-// read the signed-in caller through internal/platform/auth.
+// read the signed-in caller through internal/pkg/auth.
 package identity
 
 import "time"

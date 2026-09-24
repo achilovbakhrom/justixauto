@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/database"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/database"
 )
 
 // Store gives services the inventory repositories and one-transaction runs.

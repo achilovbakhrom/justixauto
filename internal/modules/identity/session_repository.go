@@ -6,7 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"justixauto/internal/platform/apperr"
+	"justixauto/internal/pkg/apperr"
 )
 
 type SessionRepository interface {

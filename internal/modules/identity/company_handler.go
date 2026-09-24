@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/httpx"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/httpx"
 )
 
 // CompanyHandler serves company and branch routes for signed-in users.

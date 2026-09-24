@@ -10,8 +10,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
 )
 
 // CookieConfig controls the session cookie. Secure must be true outside local

@@ -2,7 +2,7 @@
 # lefthook pre-commit: regenerates the OpenAPI spec when Go code is committed
 # and stops the commit if the spec changed, so it can be reviewed and staged.
 set -euo pipefail
-spec=internal/platform/apidocs/swagger.json
+spec=internal/pkg/apidocs/swagger.json
 git diff --cached --name-only --diff-filter=ACMRD | grep -qE '^(cmd|internal)/.*\.go$' || exit 0
 # The generator reads the working tree; unstaged Go edits would leak into the spec.
 if ! git diff --quiet -- 'cmd/*.go' 'internal/*.go'; then

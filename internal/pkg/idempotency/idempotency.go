@@ -17,8 +17,8 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
 )
 
 // abandonAfter: an in-progress key older than this is assumed to belong to a

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"justixauto/internal/testkit"
+	"justixauto/internal/e2e"
 )
 
 func TestInvoicesAndPaymentEvidence(t *testing.T) {
@@ -77,9 +77,9 @@ func TestInvoicesAndPaymentEvidence(t *testing.T) {
 	expect(t, b.Do(http.MethodPost, "/commerce/orders/"+order+"/cancellations", map[string]string{"reason": "changed mind"}, ifMatch(rev)...), http.StatusConflict, "cancellation_blocked")
 
 	// Proof files: the buyer attaches its own upload; the supplier can then read it.
-	proof := str(b.Upload("payment-evidence", "transfer.pdf", testkit.PDF).Data(), "id")
-	foreign := str(s.Upload("payment-evidence", "x.pdf", testkit.PDF).Data(), "id")
-	claim := func(file string) testkit.Response {
+	proof := str(b.Upload("payment-evidence", "transfer.pdf", e2e.PDF).Data(), "id")
+	foreign := str(s.Upload("payment-evidence", "x.pdf", e2e.PDF).Data(), "id")
+	claim := func(file string) e2e.Response {
 		return b.Do(http.MethodPost, "/commerce/invoices/"+id+"/payment-evidence", map[string]any{
 			"claimedAmount": map[string]string{"amountMinor": "1600000", "currency": "USD"}, "paidOn": "2026-09-22",
 			"externalReference": "PP-final", "attachmentBindingIds": []string{file},

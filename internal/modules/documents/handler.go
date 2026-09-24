@@ -10,9 +10,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/httpx"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/httpx"
 )
 
 type Handler struct{ s *Service }

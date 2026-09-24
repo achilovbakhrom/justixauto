@@ -3,7 +3,7 @@ package identity
 import (
 	"slices"
 
-	"justixauto/internal/platform/auth"
+	"justixauto/internal/pkg/auth"
 )
 
 // Permission keys from the HTTP contract. Other modules add their own keys to

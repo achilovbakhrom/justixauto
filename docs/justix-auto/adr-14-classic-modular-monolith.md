@@ -19,7 +19,7 @@ layering **handler → service → repository**:
 | Migrations | Versioned SQL files in `migrations/`, golang-migrate, embedded |
 | Concurrency | Optimistic locking: `version` column, `ETag` / `If-Match`, 412 on stale |
 | Files | Private S3 bucket in production (`FILE_STORAGE=s3`, standard AWS credentials, optional SSE); a private directory for development. Uploads and downloads pass through the API, which checks type, size, hash and access |
-| Errors | Services return `internal/platform/apperr` kinds; one Echo error handler maps them to 404/409/412/422 |
+| Errors | Services return `internal/pkg/apperr` kinds; one Echo error handler maps them to 404/409/412/422 |
 
 Layout and rules: [`internal/AGENTS.md`](../../internal/AGENTS.md).
 

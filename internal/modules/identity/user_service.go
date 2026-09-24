@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
 )
 
 type CreateUserInput struct {

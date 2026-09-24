@@ -13,7 +13,7 @@ import (
 
 	"github.com/golang-migrate/migrate/v4"
 
-	"justixauto/internal/platform/database"
+	"justixauto/internal/pkg/database"
 )
 
 func main() {

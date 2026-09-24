@@ -61,7 +61,7 @@ linters:
     paths: &outside [^docs/, ^web/, node_modules/]
     rules:
       # Tests may ignore errors and use weak randomness / fixed secrets.
-      - path: (_test\.go|^internal/testkit/)
+      - path: (_test\.go|^internal/e2e/)
         linters: [errcheck, gosec, unparam, gocognit]
 
 formatters:

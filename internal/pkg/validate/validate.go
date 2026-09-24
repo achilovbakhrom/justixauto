@@ -11,7 +11,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"justixauto/internal/platform/apperr"
+	"justixauto/internal/pkg/apperr"
 )
 
 // Text trims value and checks its length in characters.

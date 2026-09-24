@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	"justixauto/internal/testkit"
+	"justixauto/internal/e2e"
 )
 
-func warehouse(t *testing.T, c *testkit.Client, name, capacity string) string {
+func warehouse(t *testing.T, c *e2e.Client, name, capacity string) string {
 	w := c.Do(http.MethodPost, "/inventory/warehouses", map[string]any{
 		"name": name, "country": map[string]string{"label": "Uzbekistan"},
 		"city": "Tashkent", "address": "Yard 1", "capacity": capacity,
@@ -18,7 +18,7 @@ func warehouse(t *testing.T, c *testkit.Client, name, capacity string) string {
 }
 
 // receive registers VINs of the model into a warehouse and returns their IDs.
-func receive(t *testing.T, e *testkit.Env, c *testkit.Client, warehouseID, model string, vins ...string) []string {
+func receive(t *testing.T, e *e2e.Env, c *e2e.Client, warehouseID, model string, vins ...string) []string {
 	rev := c.Do(http.MethodGet, "/inventory/warehouses/"+warehouseID, nil).Revision()
 	r := c.Do(http.MethodPost, "/inventory/warehouses/"+warehouseID+"/receipt-batches", map[string]any{
 		"modelId":                   model,
@@ -52,7 +52,7 @@ func TestAllocationShipmentAndReceipt(t *testing.T) {
 		return id
 	}
 	main := order([]map[string]string{{"offerLineId": l1, "quantity": "2"}, {"offerLineId": l2, "quantity": "1"}})
-	alloc := func(id, rev string, items ...[2]string) testkit.Response {
+	alloc := func(id, rev string, items ...[2]string) e2e.Response {
 		var body []map[string]string
 		for _, it := range items {
 			body = append(body, map[string]string{"orderLineId": it[0], "vehicleId": it[1]})
@@ -87,7 +87,7 @@ func TestAllocationShipmentAndReceipt(t *testing.T) {
 	expect(t, b.Do(http.MethodPost, "/commerce/shipments/"+shipment+"/milestones", map[string]string{"milestoneType": "damage-reported", "occurredAt": now, "location": "Tashkent"}), http.StatusUnprocessableEntity)
 
 	// Receipt: the buyer accepts one into its warehouse and rejects the other.
-	decide := func(decision string, ids []string, rev, reason string) testkit.Response {
+	decide := func(decision string, ids []string, rev, reason string) e2e.Response {
 		return b.Do(http.MethodPost, "/commerce/shipments/"+shipment+"/receipt-decisions", map[string]any{
 			"decision":   decision,
 			"vehicleIds": ids, "warehouseId": bw, "reason": reason,

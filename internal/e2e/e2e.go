@@ -1,8 +1,8 @@
-// Package testkit runs module tests end to end: a real PostgreSQL database
+// Package e2e runs module tests end to end: a real PostgreSQL database
 // (TEST_DATABASE_URL, emptied per test), the identity module for sign-in, and
 // HTTP clients that behave like a browser (cookies, CSRF, Idempotency-Key).
 // Use it from _test.go files only.
-package testkit
+package e2e
 
 import (
 	"bytes"
@@ -34,7 +34,7 @@ import (
 	"justixauto/internal/app"
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
-	"justixauto/internal/platform/database"
+	"justixauto/internal/pkg/database"
 )
 
 // Clock is a controllable time source shared by the server and the test.

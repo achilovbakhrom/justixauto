@@ -7,16 +7,16 @@ import (
 	"time"
 
 	"justixauto/internal/modules/inventory"
-	"justixauto/internal/testkit"
+	"justixauto/internal/e2e"
 )
 
 var (
-	expect  = testkit.Expect
-	ifMatch = testkit.IfMatch
+	expect  = e2e.Expect
+	ifMatch = e2e.IfMatch
 )
 
-func newEnv(t *testing.T) (*testkit.Env, *testkit.Client) {
-	e := testkit.New(t)
+func newEnv(t *testing.T) (*e2e.Env, *e2e.Client) {
+	e := e2e.New(t)
 	c := e.Admin()
 	return e, c
 }
@@ -263,7 +263,7 @@ func TestReceiptQuantityCorrection(t *testing.T) {
 	expect(t, c.Do(http.MethodPost, "/inventory/receipt-batches/"+batchID+"/identifications",
 		map[string]any{"items": []map[string]string{{"vin": "XTAAA11111A000009", "modelId": model}}, "atomic": true}), http.StatusOK)
 
-	fix := func(quantity, reason, rev string) testkit.Response {
+	fix := func(quantity, reason, rev string) e2e.Response {
 		return c.Do(http.MethodPost, "/inventory/receipt-batches/"+batchID+"/quantity-corrections",
 			map[string]string{"quantity": quantity, "reason": reason}, ifMatch(rev)...)
 	}
@@ -287,14 +287,14 @@ func TestWarehouseBranchAttachment(t *testing.T) {
 	e, admin := newEnv(t)
 	c := e.CompanyUser(admin, "Motors", append(allPerms, "branches.create")...)
 	other := e.CompanyUser(admin, "Other", "branches.create")
-	branch := func(u *testkit.Client, name string) string {
+	branch := func(u *e2e.Client, name string) string {
 		r := u.Do(http.MethodPost, "/identity/companies/"+u.CompanyID+"/branches", map[string]any{"name": name})
 		expect(t, r, http.StatusCreated)
 		return str(r.Data(), "id")
 	}
 	north, south, foreign := branch(c, "North"), branch(c, "South"), branch(other, "Elsewhere")
 
-	withBranch := func(name, branchID string) testkit.Response {
+	withBranch := func(name, branchID string) e2e.Response {
 		body := warehouse(name, 5)
 		body["branchId"] = branchID
 		return c.Do(http.MethodPost, "/inventory/warehouses", body)
@@ -309,7 +309,7 @@ func TestWarehouseBranchAttachment(t *testing.T) {
 
 	spare := c.Do(http.MethodPost, "/inventory/warehouses", warehouse("Spare", 5))
 	spareID := str(spare.Data(), "id")
-	attach := func(branchID any, rev string) testkit.Response {
+	attach := func(branchID any, rev string) e2e.Response {
 		return c.Do(http.MethodPost, "/inventory/warehouses/"+spareID+"/branch-attachment", map[string]any{"branchId": branchID}, ifMatch(rev)...)
 	}
 	expect(t, attach(nil, "1"), http.StatusConflict, "invalid_transition") // not attached yet

@@ -11,8 +11,8 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/database"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/database"
 )
 
 // Reservation holds a vehicle for one deal. At most one hold per vehicle is

@@ -22,10 +22,10 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/httpx"
-	"justixauto/internal/platform/idempotency"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/database"
+	"justixauto/internal/pkg/httpx"
+	"justixauto/internal/pkg/idempotency"
 )
 
 // These tests exercise the real HTTP API against PostgreSQL. TEST_DATABASE_URL

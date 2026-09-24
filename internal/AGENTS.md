@@ -31,7 +31,7 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   Add new permission keys to the identity catalog
   (`<module>.<resource>.<action>`) and mark `RequiresMFA` for sensitive ones
   (decisions, terms, payments, fulfillment, sensitive downloads).
-- Retries: authenticated POSTs require `Idempotency-Key`; the platform
+- Retries: authenticated POSTs require `Idempotency-Key`; the idempotency
   middleware replays the first 2xx response. Existing-resource writes use
   If-Match instead.
 - `internal/app` is the composition root (used by `cmd/api` and tests): it
@@ -39,10 +39,10 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   identity and mounts every module. Modules never import each other: a module
   needing another's data declares a small port interface (e.g. commerce
   `Directory`) and `internal/app` adapts the other module's exported service.
-  Shared helpers are in `internal/platform` (`database`, `validate`, `jsonx`,
-  `httpx`, `auth`, `apperr`). `internal/architecture` enforces these import
-  rules in the test suite (no module-to-module or platform-to-module imports).
+  Shared helpers are in `internal/pkg` (`database`, `validate`, `jsonx`,
+  `httpx`, `auth`, `apperr`, `envx`). Modules never import each other, and `internal/pkg`
+  never imports a module or `internal/app`.
 - Tests: pure logic as in-package unit tests; behaviour end to end through
-  HTTP in the external `<module>_test` package with `internal/testkit`
+  HTTP in the external `<module>_test` package with `internal/e2e`
   (full app, active seller companies, MFA admin, CSRF/Idempotency handled).
   `bash tools/test-go.sh` starts a throwaway database.

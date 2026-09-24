@@ -7,7 +7,7 @@
 // Only internal/app wires modules together, through ports the consuming
 // module declares. This keeps the import graph a star around app, so module
 // cycles cannot appear. Test files may import other modules (they consume
-// the public API) and the testkit.
+// the public API) and the e2e.
 package architecture
 
 import (

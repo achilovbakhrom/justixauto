@@ -5,19 +5,19 @@ import (
 	"testing"
 	"time"
 
+	"justixauto/internal/e2e"
 	"justixauto/internal/modules/insurance"
-	"justixauto/internal/testkit"
 )
 
 var (
-	expect  = testkit.Expect
-	ifMatch = testkit.IfMatch
+	expect  = e2e.Expect
+	ifMatch = e2e.IfMatch
 )
 
 func str(m map[string]any, k string) string { s, _ := m[k].(string); return s }
 
 func TestInsuranceDecisionUnlocksOwnInstallmentDelivery(t *testing.T) {
-	e := testkit.New(t)
+	e := e2e.New(t)
 	admin := e.Admin()
 	shop := e.NewShop(admin, "Seller", "XTAAA11111A40000", 2, insurance.PermRead, insurance.PermApply)
 	insurer := e.KindUser(admin, "insurance", "Safe Insurance", insurance.PermRead, insurance.PermReview, insurance.PermDecide)
@@ -27,7 +27,7 @@ func TestInsuranceDecisionUnlocksOwnInstallmentDelivery(t *testing.T) {
 	deal := shop.Sale(1, "own-installment", "1800000")
 	dealID := str(deal.Data(), "id")
 
-	create := func(dealID, insurerID string) testkit.Response {
+	create := func(dealID, insurerID string) e2e.Response {
 		return shop.Do(http.MethodPost, "/insurance/applications", map[string]string{"retailDealId": dealID, "insurerCompanyId": insurerID})
 	}
 	expect(t, create(cash, insurer.CompanyID), http.StatusConflict, "sale_not_eligible")
@@ -47,7 +47,7 @@ func TestInsuranceDecisionUnlocksOwnInstallmentDelivery(t *testing.T) {
 	expect(t, shop.Do(http.MethodPatch, "/insurance/applications/"+id, map[string]string{"insurerCompanyId": insurer.CompanyID}, ifMatch("2")...), http.StatusConflict, "not_draft")
 
 	// Only the addressed insurer reviews; notes are required.
-	act := func(c *testkit.Client, path, note, rev string) testkit.Response {
+	act := func(c *e2e.Client, path, note, rev string) e2e.Response {
 		return c.Do(http.MethodPost, "/insurance/applications/"+id+"/"+path, map[string]string{"note": note}, ifMatch(rev)...)
 	}
 	expect(t, act(shop.Client, "take", "", "2"), http.StatusForbidden)

@@ -20,10 +20,10 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/validate"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/database"
+	"justixauto/internal/pkg/validate"
 )
 
 const (

@@ -8,8 +8,8 @@ import (
 	"slices"
 	"time"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/money"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/money"
 )
 
 // The only calculation policy so far. It reproduces the documented

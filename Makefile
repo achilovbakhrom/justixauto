@@ -15,15 +15,12 @@ export
 POSTGRES_PORT ?= 55432
 API_PORT      ?= 8080
 APP           ?= realization
-ADMIN_LOGIN   ?= admin
-ADMIN_EMAIL   ?= admin@example.com
-ADMIN_NAME    ?= Администратор Justix
 COMPOSE       := docker compose --env-file .env -f infra/local/compose.yaml
 GO            := bash tools/go.sh
 LINT          := $(GO) tool -modfile=tools/lint/go.mod golangci-lint
 API_URL       = http://$(or $(HTTP_ADDR),127.0.0.1:$(API_PORT))
 
-.PHONY: help env db-up db-down db-reset db-psql migrate migrate-down bootstrap-admin \
+.PHONY: help env db-up db-down db-reset db-psql migrate migrate-down \
         api web web-install web-build dev test test-go test-web lint typecheck check \
         openapi openapi-check hooks lint-go fmt deadcode image k8s-up k8s-down
 
@@ -68,10 +65,6 @@ migrate: ## Apply SQL migrations
 
 migrate-down: ## Roll back the last migration
 	$(GO) run ./cmd/migrate down 1
-
-bootstrap-admin: ## Create the first platform admin (asks for a password; once per database)
-	@read -rsp "Password for $(ADMIN_LOGIN) (12+ chars): " pw; echo; \
-	printf '%s\n' "$$pw" | $(GO) run ./cmd/bootstrap-admin -login "$(ADMIN_LOGIN)" -email "$(ADMIN_EMAIL)" -name "$(ADMIN_NAME)"
 
 # ---- run ----
 
@@ -120,11 +113,11 @@ deadcode: ## Fail on unreachable Go functions (tests count as callers)
 openapi: ## Regenerate the OpenAPI spec from handler annotations (served at /api/docs with API_DOCS=true)
 	$(GO) tool swag fmt --dir ./cmd/api,./internal
 	$(GO) tool swag init --quiet --dir ./cmd/api,./internal --generalInfo main.go \
-	  --output internal/platform/apidocs --outputTypes json --parseInternal --parseDependency --requiredByDefault
+	  --output internal/pkg/apidocs --outputTypes json --parseInternal --parseDependency --requiredByDefault
 
 openapi-check: openapi ## Fail when the committed spec differs from the annotations
-	@git diff --quiet -- internal/platform/apidocs/swagger.json || \
-	  { echo "OpenAPI spec is out of date: review and commit internal/platform/apidocs/swagger.json"; exit 1; }
+	@git diff --quiet -- internal/pkg/apidocs/swagger.json || \
+	  { echo "OpenAPI spec is out of date: review and commit internal/pkg/apidocs/swagger.json"; exit 1; }
 
 hooks: ## Install the Git hooks (lefthook.yml); npm install does this too
 	npx lefthook install

@@ -18,11 +18,11 @@ import (
 	"justixauto/internal/config"
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/identity"
-	"justixauto/internal/platform/apidocs"
-	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/httpx"
-	"justixauto/internal/platform/telemetry"
-	"justixauto/internal/platform/webui"
+	"justixauto/internal/pkg/apidocs"
+	"justixauto/internal/pkg/database"
+	"justixauto/internal/pkg/httpx"
+	"justixauto/internal/pkg/telemetry"
+	"justixauto/internal/pkg/webui"
 )
 
 // version is set at build time (-ldflags "-X main.version=...").

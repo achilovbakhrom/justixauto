@@ -4,21 +4,21 @@ import (
 	"net/http"
 	"testing"
 
+	"justixauto/internal/e2e"
 	"justixauto/internal/modules/commerce"
-	"justixauto/internal/testkit"
 )
 
 var (
-	expect  = testkit.Expect
-	ifMatch = testkit.IfMatch
+	expect  = e2e.Expect
+	ifMatch = e2e.IfMatch
 )
 
 func str(m map[string]any, k string) string { s, _ := m[k].(string); return s }
 
-func actions(r testkit.Response) []any { return r.Data()["allowedActions"].([]any) }
+func actions(r e2e.Response) []any { return r.Data()["allowedActions"].([]any) }
 
 func TestPartnershipLifecycle(t *testing.T) {
-	e := testkit.New(t)
+	e := e2e.New(t)
 	admin := e.Admin()
 	perms := []string{commerce.PermRead, commerce.PermPartnershipsManage}
 	a := e.CompanyUser(admin, "Alpha Motors", perms...)
@@ -78,7 +78,7 @@ func TestPartnershipLifecycle(t *testing.T) {
 }
 
 func TestOnlyActiveSellersTrade(t *testing.T) {
-	e := testkit.New(t)
+	e := e2e.New(t)
 	admin := e.Admin()
 	a := e.CompanyUser(admin, "Alpha Motors", commerce.PermRead, commerce.PermPartnershipsManage)
 
@@ -93,7 +93,7 @@ func TestOnlyActiveSellersTrade(t *testing.T) {
 		"firstAdmin": map[string]string{"displayName": "B", "login": "banker", "email": "banker@b.test", "password": "bank-password-12", "passwordConfirmation": "bank-password-12"},
 	})
 	expect(t, bank, http.StatusCreated)
-	for _, r := range []testkit.Response{draft, bank} {
+	for _, r := range []e2e.Response{draft, bank} {
 		id := str(r.Data()["company"].(map[string]any), "id")
 		expect(t, a.Do(http.MethodPost, "/commerce/partnerships", map[string]string{"counterpartyCompanyId": id}), http.StatusConflict, "company_not_trading")
 	}

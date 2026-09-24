@@ -12,12 +12,12 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/database"
-	"justixauto/internal/platform/jsonx"
-	"justixauto/internal/platform/money"
-	"justixauto/internal/platform/validate"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/database"
+	"justixauto/internal/pkg/jsonx"
+	"justixauto/internal/pkg/money"
+	"justixauto/internal/pkg/validate"
 )
 
 const PermOffersManage = "commerce.offers.manage"

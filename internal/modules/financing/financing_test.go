@@ -4,14 +4,14 @@ import (
 	"net/http"
 	"testing"
 
+	"justixauto/internal/e2e"
 	"justixauto/internal/modules/documents"
 	"justixauto/internal/modules/financing"
-	"justixauto/internal/testkit"
 )
 
 var (
-	expect  = testkit.Expect
-	ifMatch = testkit.IfMatch
+	expect  = e2e.Expect
+	ifMatch = e2e.IfMatch
 )
 
 func str(m map[string]any, k string) string { s, _ := m[k].(string); return s }
@@ -25,7 +25,7 @@ func program(policy string) map[string]any {
 }
 
 func TestProgramApplicationTermsAndAgreement(t *testing.T) {
-	e := testkit.New(t)
+	e := e2e.New(t)
 	admin := e.Admin()
 	bank := e.KindUser(admin, "bank", "Capital Bank", financing.PermRead, financing.PermPrograms, financing.PermReview, financing.PermDecide,
 		documents.PermRead, documents.PermSensitiveDownload)
@@ -60,7 +60,7 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	}
 	expect(t, bank.Do(http.MethodGet, "/financing/applications/"+id, nil), http.StatusNotFound) // draft
 
-	submit := func(digest string) testkit.Response {
+	submit := func(digest string) e2e.Response {
 		return shop.Do(http.MethodPost, "/financing/applications/"+id+"/submit", map[string]any{
 			"confirmation": true,
 			"dealRevision": deal.Revision(), "calculationDigest": digest,
@@ -69,7 +69,7 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	expect(t, submit("stale"), http.StatusConflict, "calculation_changed")
 	expect(t, submit(str(a.Data(), "calculationDigest")), http.StatusOK)
 
-	act := func(c *testkit.Client, path string, body map[string]any, rev string) testkit.Response {
+	act := func(c *e2e.Client, path string, body map[string]any, rev string) e2e.Response {
 		return c.Do(http.MethodPost, "/financing/applications/"+id+"/"+path, body, ifMatch(rev)...)
 	}
 	expect(t, act(shop.Client, "take", nil, "2"), http.StatusForbidden)
@@ -115,9 +115,9 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	expect(t, req, http.StatusCreated)
 	doc := str(req.Data(), "id")
 	other := e.CompanyUser(admin, "Other", documents.PermUpload)
-	foreign := str(other.Upload("finance-document", "x.pdf", testkit.PDF).Data(), "id")
+	foreign := str(other.Upload("finance-document", "x.pdf", e2e.PDF).Data(), "id")
 	expect(t, shop.Do(http.MethodPost, "/financing/document-requests/"+doc+"/submissions", map[string]string{"attachmentBindingId": foreign}, ifMatch("1")...), http.StatusUnprocessableEntity)
-	file := str(shop.Upload("finance-document", "agreement.pdf", testkit.PDF).Data(), "id")
+	file := str(shop.Upload("finance-document", "agreement.pdf", e2e.PDF).Data(), "id")
 	if status, _ := bank.Raw("/documents/files/" + file + "/content"); status != http.StatusNotFound {
 		t.Fatal("the provider must not read the file before it is submitted")
 	}

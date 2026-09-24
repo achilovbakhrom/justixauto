@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
+	"justixauto/internal/e2e"
 	"justixauto/internal/modules/commerce"
 	"justixauto/internal/modules/inventory"
-	"justixauto/internal/testkit"
 )
 
 func usd(amount string) map[string]string {
@@ -25,7 +25,7 @@ func terms(model string, schedule ...map[string]any) map[string]any {
 }
 
 // partner makes a and b active partners.
-func partner(t *testing.T, a, b *testkit.Client) string {
+func partner(t *testing.T, a, b *e2e.Client) string {
 	req := a.Do(http.MethodPost, "/commerce/partnerships", map[string]string{"counterpartyCompanyId": b.CompanyID})
 	expect(t, req, http.StatusCreated)
 	id := str(req.Data(), "id")
@@ -34,7 +34,7 @@ func partner(t *testing.T, a, b *testkit.Client) string {
 }
 
 func TestOfferPublishingAndVisibility(t *testing.T) {
-	e := testkit.New(t)
+	e := e2e.New(t)
 	admin := e.Admin()
 	s := e.CompanyUser(admin, "Supplier Motors", commerce.PermRead, commerce.PermPartnershipsManage, commerce.PermOffersManage, inventory.PermModelsEdit)
 	b1 := e.CompanyUser(admin, "Buyer One", commerce.PermRead, commerce.PermPartnershipsManage)

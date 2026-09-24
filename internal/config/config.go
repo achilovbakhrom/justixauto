@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"justixauto/internal/pkg/envx"
 )
 
 type Config struct {
@@ -46,16 +48,16 @@ type S3 struct {
 // everything else has a safe default.
 func Load() (Config, error) {
 	cfg := Config{
-		HTTPAddr:        getenv("HTTP_ADDR", "127.0.0.1:8080"),
+		HTTPAddr:        envx.Or("HTTP_ADDR", "127.0.0.1:8080"),
 		DatabaseURL:     os.Getenv("DATABASE_URL"),
 		ShutdownTimeout: 10 * time.Second,
-		CookieSecure:    getenv("COOKIE_SECURE", "true") != "false",
-		FileStorage:     getenv("FILE_STORAGE", "local"),
-		DocumentsDir:    getenv("DOCUMENTS_DIR", "var/documents"),
+		CookieSecure:    envx.Or("COOKIE_SECURE", "true") != "false",
+		FileStorage:     envx.Or("FILE_STORAGE", "local"),
+		DocumentsDir:    envx.Or("DOCUMENTS_DIR", "var/documents"),
 		WebDir:          os.Getenv("WEB_DIR"),
 		APIDocs:         os.Getenv("API_DOCS") == "true",
 		S3: S3{
-			Bucket: os.Getenv("S3_BUCKET"), Region: getenv("S3_REGION", "us-east-1"), Prefix: getenv("S3_PREFIX", "documents/"),
+			Bucket: os.Getenv("S3_BUCKET"), Region: envx.Or("S3_REGION", "us-east-1"), Prefix: envx.Or("S3_PREFIX", "documents/"),
 			Endpoint: os.Getenv("S3_ENDPOINT"), SSE: os.Getenv("S3_SSE"), PathStyle: os.Getenv("S3_FORCE_PATH_STYLE") == "true",
 		},
 	}
@@ -85,11 +87,4 @@ func Load() (Config, error) {
 		return Config{}, fmt.Errorf("config: FILE_STORAGE must be s3 or local")
 	}
 	return cfg, nil
-}
-
-func getenv(key, fallback string) string {
-	if v := os.Getenv(key); v != "" {
-		return v
-	}
-	return fallback
 }

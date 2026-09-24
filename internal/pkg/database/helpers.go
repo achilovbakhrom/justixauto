@@ -6,7 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"justixauto/internal/platform/apperr"
+	"justixauto/internal/pkg/apperr"
 )
 
 // Translate maps GORM errors to apperr kinds. Services add specific codes.

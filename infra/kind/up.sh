@@ -68,20 +68,10 @@ echo "== JustixAuto (migrations run as a pre-install/pre-upgrade job)"
 $H upgrade --install justixauto deploy/helm/justixauto -n justixauto -f deploy/helm/justixauto/values-dev.yaml \
   --set image.tag="$TAG" --wait --timeout 10m >/dev/null
 
-ADMIN_PASSWORD=${ADMIN_PASSWORD:-AdminPassw0rd!!}
-if ! $K -n justixauto get configmap platform-admin-bootstrapped >/dev/null 2>&1; then
-  printf '%s\n' "$ADMIN_PASSWORD" | $K -n justixauto run bootstrap-admin --rm -i --restart=Never --quiet \
-    --image="justixauto:$TAG" --image-pull-policy=IfNotPresent \
-    --overrides='{"spec":{"containers":[{"name":"bootstrap-admin","image":"justixauto:'"$TAG"'","stdin":true,"stdinOnce":true,
-      "command":["/app/bootstrap-admin","-login","admin","-email","admin@example.com","-name","Администратор Justix"],
-      "envFrom":[{"secretRef":{"name":"justixauto-secrets"}}]}]}}' >/dev/null
-  $K -n justixauto create configmap platform-admin-bootstrapped >/dev/null
-fi
-
 $K -n justixauto get pods -l app.kubernetes.io/component=api -o wide
 cat <<MSG
 
-App:     http://localhost:18090  (admin: http://localhost:18090/admin/ — admin / \$ADMIN_PASSWORD, default AdminPassw0rd!!)
+App:     http://localhost:18090
 Grafana: http://localhost:13000  (user admin; password:
   kubectl --context $CTX -n observability get secret grafana-admin -o jsonpath='{.data.admin-password}' | base64 -d)
 MSG

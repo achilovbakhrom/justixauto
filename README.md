@@ -34,7 +34,6 @@ Use another `MOCK_PORT` if 4180 is occupied; do not kill an unrelated server.
 ```sh
 make env                 # .env with generated secrets (ports: make env POSTGRES_PORT=55433 API_PORT=8090)
 make dev                 # PostgreSQL + migrations + built web apps + API on one port
-make bootstrap-admin     # once per database: first platform admin (asks for a password)
 ```
 
 For UI work with hot reload run `make api` in one terminal and
@@ -50,9 +49,6 @@ cp .env.example .env                    # local-only credentials
 docker compose --env-file .env -f infra/local/compose.yaml up -d
 set -a && . ./.env && set +a
 bash tools/go.sh run ./cmd/migrate up   # apply SQL migrations
-# once: first platform administrator (password on stdin, single-use)
-printf '%s\n' 'choose-a-long-password' | bash tools/go.sh run ./cmd/bootstrap-admin \
-  -login admin -email admin@example.com -name "Platform Admin"
 bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
 ```
 
@@ -120,9 +116,8 @@ New migration: add the next numbered pair
 ```text
 cmd/api/                  HTTP API entry point (composition root)
 cmd/migrate/              migration CLI (up / down [N] / version)
-cmd/bootstrap-admin/      single-use creation of the first platform admin
 internal/modules/<name>/  one module: handler → service → repository, model
-internal/platform/        shared tech: config, database, HTTP server, errors
+internal/pkg/             shared tech: config, database, HTTP server, errors
 migrations/               versioned SQL migrations (embedded)
 web/                      four React apps and shared packages (kit = shared UI)
 docs/justix-auto/         business rules, decisions, mocks and dev state

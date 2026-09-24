@@ -8,9 +8,9 @@ import (
 
 	"github.com/google/uuid"
 
-	"justixauto/internal/platform/apperr"
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/validate"
+	"justixauto/internal/pkg/apperr"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/validate"
 )
 
 // deps is shared by all identity services.
@@ -47,7 +47,7 @@ func (d deps) isMember(ctx context.Context, st Store, userID, companyID string) 
 	return err == nil, err
 }
 
-// Shared input checks (see internal/platform/validate).
+// Shared input checks (see internal/pkg/validate).
 var (
 	validID   = validate.IDs
 	text      = validate.Text

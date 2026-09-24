@@ -18,8 +18,8 @@ import (
 	"justixauto/internal/modules/insurance"
 	"justixauto/internal/modules/inventory"
 	"justixauto/internal/modules/retail"
-	"justixauto/internal/platform/httpx"
-	"justixauto/internal/platform/idempotency"
+	"justixauto/internal/pkg/httpx"
+	"justixauto/internal/pkg/idempotency"
 )
 
 type Config struct {

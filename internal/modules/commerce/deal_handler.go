@@ -8,9 +8,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"justixauto/internal/platform/auth"
-	"justixauto/internal/platform/httpx"
-	"justixauto/internal/platform/money"
+	"justixauto/internal/pkg/auth"
+	"justixauto/internal/pkg/httpx"
+	"justixauto/internal/pkg/money"
 )
 
 func party(c Company) counterpartyDTO {

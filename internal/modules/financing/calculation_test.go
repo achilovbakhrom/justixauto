@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"justixauto/internal/platform/money"
+	"justixauto/internal/pkg/money"
 )
 
 func usd(a string) money.Money { return money.Money{AmountMinor: a, Currency: "USD"} }
