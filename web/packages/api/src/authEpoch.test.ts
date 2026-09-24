@@ -177,6 +177,18 @@ describe('memory-only auth epochs', () => {
     });
   });
 
+  it('logout is admitted against the phase it was invoked from, not the uncertain phase it causes', async () => {
+    const { controller, fetcher, acquire } = setup();
+    await acquire('session');
+    expect(controller.state()).toMatchObject({ phase: 'authenticated' });
+    fetcher.mockResolvedValueOnce(response(204, undefined, ''));
+    const logout = { ...operation('logout', { kind: 'clear' }, 204, false), expected: ['authenticated'] as const };
+    expect(await controller.execute(logout)).toEqual({ kind: 'accepted', epoch: 1, status: 204 });
+    await acquire('session');
+    const wrongPhase = { ...operation('logout', { kind: 'clear' }, 204, false), expected: ['anonymous'] as const };
+    expect(await controller.execute(wrongPhase)).toEqual({ kind: 'invalid-request' });
+  });
+
   it('logout uses the old token only in its private new-epoch exchange and never reacquires automatically', async () => {
     const { controller, fetcher, acquire } = setup();
     await acquire('session');

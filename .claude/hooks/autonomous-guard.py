@@ -243,6 +243,10 @@ def segment_ask_reason(prog, seg):
         r"\b(apply|patch|scale|edit|replace|annotate|label|set|create)\b", seg
     ):
         return "kubectl cluster mutation"
+    if prog == "git" and re.search(
+        r"\b(reset\s+--hard|checkout\s+--\s|restore\b|branch\s+-D|stash\s+(drop|clear))", seg
+    ):
+        return "discards uncommitted or unmerged work"
     if prog == "make" and re.search(r"\b(db-reset|k8s-down)\b", seg):
         return "wipes the local database/cluster"
     if prog == "docker" and re.search(r"\bcompose\b[^\n]*\bdown\b[^\n]*(-v\b|--volumes)|\bvolume\s+(rm|prune)\b", seg):

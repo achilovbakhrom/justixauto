@@ -422,6 +422,7 @@ function computeAcceptanceTransition<T, Session, Restricted, View>(
 function gateExecution(
   purpose: AuthPurpose,
   expected: readonly AuthPhase[],
+  entryPhase: AuthPhase,
   phase: AuthPhase,
   slotBusy: boolean,
   preAborted: boolean,
@@ -429,7 +430,9 @@ function gateExecution(
 ): AuthOutcome | undefined {
   if (phase === 'exhausted') return { kind: 'exhausted' };
   if (slotBusy) return { kind: 'busy' };
-  if (!expected.includes(phase) || preAborted) return { kind: 'invalid-request' };
+  // The caller's expectation is about the phase it started from: logout has
+  // already moved the live phase to 'uncertain' by the time we get here.
+  if (!expected.includes(entryPhase) || preAborted) return { kind: 'invalid-request' };
   if (purpose !== 'session' && !csrfValid(requestToken)) return { kind: 'invalid-request' };
   return undefined;
 }
@@ -569,8 +572,9 @@ export function createAuthEpoch<Session, Restricted, View>(
       const { purpose, expected, request, classify, signal, preAborted } = parsed;
       // Logout clears visible memory even while an older fetch keeps the exclusion slot.
       let requestToken = csrf;
+      const entryPhase = phase;
       if (purpose === 'logout') invalidate('uncertain');
-      const gated = gateExecution(purpose, expected, phase, slot !== undefined, preAborted, requestToken);
+      const gated = gateExecution(purpose, expected, entryPhase, phase, slot !== undefined, preAborted, requestToken);
       if (gated) return gated;
       const ticketEpoch = epoch;
       const ticketPhase = phase;

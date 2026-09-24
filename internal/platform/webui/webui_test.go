@@ -46,7 +46,7 @@ func TestMount(t *testing.T) {
 	}
 	for _, tc := range cases {
 		rec := httptest.NewRecorder()
-		e.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, tc.path, nil))
+		e.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, tc.path, http.NoBody))
 		if rec.Code != tc.status {
 			t.Fatalf("%s: status %d, want %d", tc.path, rec.Code, tc.status)
 		}

@@ -58,7 +58,7 @@ linters:
     generated: strict
     presets: [std-error-handling]
     # docs/ holds the pinned Go toolchain (ADR-13): never lint or rewrite it.
-    paths: &outside [docs, web, node_modules]
+    paths: &outside [^docs/, ^web/, node_modules/]
     rules:
       # Tests may ignore errors and use weak randomness / fixed secrets.
       - path: (_test\.go|^internal/testkit/)

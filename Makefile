@@ -112,7 +112,7 @@ fmt: ## Format Go (gofumpt, goimports) and web (Prettier) sources
 	npm run format
 
 deadcode: ## Fail on unreachable Go functions (tests count as callers)
-	@out=$$($(GO) tool -modfile=tools/lint/go.mod deadcode -test ./...); \
+	@out=$$($(GO) tool -modfile=tools/lint/go.mod deadcode -test ./...) || { echo "$$out"; exit 1; }; \
 	  if [ -n "$$out" ]; then echo "$$out"; exit 1; fi
 
 # ---- API docs ----
