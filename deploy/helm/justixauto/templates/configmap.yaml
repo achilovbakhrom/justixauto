@@ -9,7 +9,6 @@ data:
   COOKIE_SECURE: {{ .Values.config.cookieSecure | quote }}
   ALLOWED_ORIGINS: {{ .Values.config.allowedOrigins | quote }}
   SHUTDOWN_DRAIN: {{ .Values.config.shutdownDrain | quote }}
-  MFA_DISABLED: {{ .Values.config.mfaDisabled | quote }}
   WEB_DIR: {{ .Values.config.webDir | quote }}
   FILE_STORAGE: {{ .Values.config.fileStorage | quote }}
   S3_BUCKET: {{ .Values.config.s3.bucket | quote }}

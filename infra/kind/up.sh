@@ -45,7 +45,7 @@ if ! $K -n justixauto-deps get secret deps-secrets >/dev/null 2>&1; then
   secret justixauto-deps deps-secrets POSTGRES_PASSWORD="$PG" MINIO_ROOT_PASSWORD="$S3"
   secret justixauto justixauto-secrets \
     DATABASE_URL="postgres://justixauto:$PG@postgres.justixauto-deps:5432/justixauto?sslmode=disable" \
-    MFA_KEY="$(openssl rand -base64 32)" AWS_ACCESS_KEY_ID=justixauto AWS_SECRET_ACCESS_KEY="$S3"
+    AWS_ACCESS_KEY_ID=justixauto AWS_SECRET_ACCESS_KEY="$S3"
 fi
 secret observability grafana-admin admin-user=admin admin-password="$(rand)"
 

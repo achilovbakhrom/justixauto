@@ -31,15 +31,14 @@ help: ## Show this help
 
 env: ## Create .env from .env.example with generated secrets (never overwrites)
 	@if [ -f .env ]; then echo ".env exists — edit it or delete it first"; exit 0; fi; \
-	pw=$$(openssl rand -hex 16); key=$$(openssl rand -base64 32); \
+	pw=$$(openssl rand -hex 16); \
 	sed -e "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$$pw|" \
 	    -e "s|^DATABASE_URL=.*|DATABASE_URL=postgres://justixauto:$$pw@127.0.0.1:$(POSTGRES_PORT)/justixauto?sslmode=disable|" \
 	    -e "s|^HTTP_ADDR=.*|HTTP_ADDR=127.0.0.1:$(API_PORT)|" \
-	    -e "s|^MFA_KEY=.*|MFA_KEY=$$key|" \
 	    -e "s|^ALLOWED_ORIGINS=.*|ALLOWED_ORIGINS=http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5175,http://127.0.0.1:5176|" \
 	    .env.example > .env; \
-	printf 'POSTGRES_PORT=%s\nMFA_DISABLED=true\n' "$(POSTGRES_PORT)" >> .env; \
-	echo "created .env (Postgres on $(POSTGRES_PORT), API on $(API_PORT), two-factor off for local use)"
+	printf 'POSTGRES_PORT=%s\n' "$(POSTGRES_PORT)" >> .env; \
+	echo "created .env (Postgres on $(POSTGRES_PORT), API on $(API_PORT))"
 
 web-install: ## Install web dependencies (npm ci)
 	npm ci --ignore-scripts

@@ -8,11 +8,11 @@ image:
   digest: ""
   pullPolicy: IfNotPresent
 
-# Two replicas by default: the API keeps no state in memory (sessions, lockouts
-# and MFA counters live in PostgreSQL; files in S3).
+# Two replicas by default: the API keeps no state in memory (sessions and
+# lockouts live in PostgreSQL; files in S3).
 replicaCount: 2
 
-# Secret with DATABASE_URL and MFA_KEY (and AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
+# Secret with DATABASE_URL (and AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
 # when S3 uses static keys). Created outside the chart; the chart never holds secrets.
 existingSecret: justixauto-secrets
 
@@ -20,7 +20,6 @@ config:
   cookieSecure: true
   allowedOrigins: ""            # comma-separated extra origins (dev servers)
   shutdownDrain: 5s             # keep serving after SIGTERM while endpoints update
-  mfaDisabled: false            # never true outside local development (enforced for prod)
   webDir: /app/web/apps
   fileStorage: s3               # several replicas need shared storage: always s3
   s3:

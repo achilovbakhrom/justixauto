@@ -23,10 +23,9 @@ app.kubernetes.io/component: api
 {{- if .Values.serviceAccount.create }}{{ include "justixauto.name" . }}{{ else }}default{{ end }}
 {{- end }}
 
-{{/* Guards: production must pin the image by digest and keep MFA on; replicas share S3. */}}
+{{/* Guards: production must pin the image by digest; replicas share S3. */}}
 {{- define "justixauto.guards" -}}
 {{- if eq .Values.environment "prod" }}
-{{- if .Values.config.mfaDisabled }}{{ fail "config.mfaDisabled must be false in prod" }}{{ end }}
 {{- if not .Values.image.digest }}{{ fail "image.digest is required in prod (immutable image reference)" }}{{ end }}
 {{- if not .Values.config.cookieSecure }}{{ fail "config.cookieSecure must be true in prod" }}{{ end }}
 {{- end }}
@@ -37,6 +36,4 @@ app.kubernetes.io/component: api
 {{- define "justixauto.env" -}}
 - name: DATABASE_URL
   valueFrom: { secretKeyRef: { name: {{ .Values.existingSecret }}, key: DATABASE_URL } }
-- name: MFA_KEY
-  valueFrom: { secretKeyRef: { name: {{ .Values.existingSecret }}, key: MFA_KEY } }
 {{- end }}

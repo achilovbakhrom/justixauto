@@ -8,7 +8,6 @@ replicaCount: 2
 config:
   cookieSecure: false           # http://localhost only
   allowedOrigins: "http://localhost:18090,http://127.0.0.1:18090"
-  mfaDisabled: true             # local stand without two-factor (user decision 2026-09-22)
   s3:
     bucket: justixauto-documents
     endpoint: http://minio.justixauto-deps:9000

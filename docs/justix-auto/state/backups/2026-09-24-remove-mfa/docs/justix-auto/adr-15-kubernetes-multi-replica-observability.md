@@ -28,6 +28,7 @@ The API keeps no per-process state; every shared fact lives in PostgreSQL.
 | Sessions, CSRF, context | Rows in `identity.sessions`; any replica serves any request |
 | Repeated writes | Idempotent by data: unique business keys, state checks, If-Match; no request-key ledger. Background jobs take a PostgreSQL advisory lock (`database.RunOnce`) so one replica runs them |
 | Login lockout | **Fixed**: failed attempts were read-modify-written and could lose counts under parallel attempts on several replicas; now one atomic `UPDATE … failed_logins + 1` (test `TestLoginLockoutUnderConcurrency`) |
+| TOTP replay, recovery codes, MFA challenge attempts | Conditional/atomic updates (`mfa_last_counter < ?`, `used_at IS NULL`, `attempts + 1`) |
 | Capacity, stock, orders, deals | Row locks (`SELECT … FOR UPDATE`) and version checks (If-Match) inside transactions |
 | Uploaded files | Local directory is per pod → S3 required (guarded in the chart) |
 | Background jobs, caches, timers | None |
@@ -38,9 +39,8 @@ The API keeps no per-process state; every shared fact lives in PostgreSQL.
 
 - Operating rules: never ship a migration that drops or renames something the
   previous release still uses; split it across two releases.
-- The chart refuses a missing image digest or insecure cookies in
-  `environment: prod`. (Two-factor authentication and `MFA_DISABLED` were
-  removed on 2026-09-24; migration 000019 drops the MFA schema.)
+- `MFA_DISABLED` exists only for local development; the chart refuses it in
+  `environment: prod`, together with a missing image digest or insecure cookies.
 - The Grafana Tempo single-binary chart is marked deprecated upstream; it is fine
   for the local stack. Production observability (managed Grafana/Loki/Tempo or
   `tempo-distributed`) needs its own environment decision.

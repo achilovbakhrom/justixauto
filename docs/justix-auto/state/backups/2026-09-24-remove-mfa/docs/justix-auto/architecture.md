@@ -116,7 +116,7 @@ owner-local under `services/<owner>/app`; there is no global command/query bus.
 | ADR-06 | `/api/v1/{owner}`, string revisions, If-Match, common receipt/error | Replaces incompatible slice routes/body versions/number receipts |
 | ADR-07 | Minor-unit integer money strings + versioned currency/policy | Replaces decimal-major DTO; no copied float/demo financial authority |
 | ADR-08 | Identity-local credentials/session records; same-origin opaque cookie | Enables atomic new-provider provisioning and live permission checks |
-| ADR-09 | Argon2id; no second factor (TOTP/MFA removed by user decision 2026-09-24) | Sensitive actions rely on dedicated permissions, audit and state checks |
+| ADR-09 | Argon2id; TOTP + recovery codes; MFA on catalogued sensitive actions | Preserves sensitive-action requirement without adding MFA to ordinary CRM edits |
 | ADR-10 | Private filesystem locally; version-pinned S3-compatible object API for production | No vendor commitment; byte identity cannot change after clean scan |
 | ADR-11 | React/strict TS/Vite, Router, TanStack Query, RHF/Zod, CSS Modules, Radix Dialog | Four client workspaces need no React server or new design system |
 | ADR-12 | Echo/GORM, amqp091-go, Zap/OTel, golang-migrate | Preserve useful Gaze technologies; maintained AMQP replacement is explicit |
@@ -172,7 +172,7 @@ Child lists below are typed immutable versions/local child records. Foreign-obje
 | identity.Branch | companyId/name/address?/status active/inactive; setupState none/pending/failed/complete; linkOperationId?; lifecycleFence?; primary warehouse is inventory-owned |
 | identity.User/Role | user profileRevisionId, normalized login/email UNIQUE, pending/active/suspended, global roleIds, securityVersion; role name/system/permissionKeys; system role protected |
 | identity.Membership | userId+companyId UNIQUE; active/revoked; branchAccess ALL_BRANCHES or SELECTED_BRANCHES+branchIds; **no role field** |
-| identity.Auth records | Credential algorithm/hash/parameters; Session tokenDigest/expiry/context; RecoveryToken digest/use; PlatformAccessGuard singleton; none is a public event payload |
+| identity.Auth records | Credential algorithm/hash/parameters; Session tokenDigest/expiry/MFA/context; MfaFactor secret/counter; RecoveryToken digest/use; PlatformAccessGuard singleton; none is a public event payload |
 | inventory.VehicleModel | make/model/variant/specificationVersion/specificationRef; exact nine-field specification in HTTP appendix; matching uses IDs/immutable versions, not labels |
 | inventory.VehicleUnit | immutable normalizedVin UNIQUE; modelId/specificationVersion; exterior/interior photo-version refs; ownerCompanyId?/custodianCompanyId?; receipt/customs/ownership/custody fact refs; damageBlockerIds; availabilityFence |
 | inventory.Warehouse | companyId, branchId?, name, country, region?, city, address, capacity>0, active; UNIQUE nonnull `(companyId,branchId)`; capacity>=occupied |
@@ -212,7 +212,7 @@ Receipt correction is reasoned delta, not editing confirmed quantity; cannot rem
 Exact action fields, query shapes and transitions are in [HTTP/domain contracts](contracts/http-domain.md); process commands/state and immutable scan identity are in [cross-owner protocols](contracts/cross-owner.md).
 All browser routes `/api/v1/{owner}/...`; internal routes `/internal/v1/{owner}/...`. Only static pages use `/finance/`; backend owner name is always `financing`.
 Creates/actions carry Idempotency-Key UUID; existing aggregate writes carry `If-Match: "<revision>"`; missing is428, stale412, invariant/idempotency conflict409, field validation422.
-Login/recovery handshakes use their single-use challenge/session protocol rather than the business idempotency ledger; provider provisioning uses the secret-safe business command contract.
+Login/MFA/recovery handshakes use their single-use challenge/session protocol rather than the business idempotency ledger; provider provisioning uses the secret-safe business command contract.
 `X-Context-Revision` accompanies authenticated company requests. Body companyId is never authority; context change uses session revision as If-Match and atomically resets scope to ALL.
 Synchronous success `{data,revision,operationId}` is the actual commit receipt, never a lagging projection. Multi-aggregate data includes `related:[{type,id,revision}]`.
 Async success202 `{operationId,status:"pending"}`; GET `/api/v1/operations/{owner}/{id}` routes to the named owner without an edge registry/database.
@@ -230,11 +230,11 @@ Only admitted durable processes may finish/compensate after session expiry; they
 Company-wide objects with branchId=null require company permission and remain company-scoped in SELECTED mode; branch-bound objects are filtered to effective authorized branches. ALL never means all platform branches.
 Organization operational activation is independent of capability/compliance/legal/API facts; OD-05/11 disputed state combinations fail closed with explicit unavailable action rather than invented policy.
 New provider provisioning commits draft company+new user+credential+global company-admin role+membership+safe events atomically; duplicate existing login/email rejects all, no silent linking/reset.
-Bootstrap uses deployment-only stdin/secret injection and single-use guard; never a public default Admin account.
-Opaque `__Host-justix_session` cookie Secure/HttpOnly/SameSite=Lax/Path=/; Origin+CSRF checks; session rotation at login/recovery; no browser credential/localStorage tokens.
-Proposed limits: idle30m/absolute12h. Argon2id parameters are versioned and benchmarked in security lock.
-No second factor (MFA removed 2026-09-24): catalogued sensitive operations (platform access/role/credential changes, finance/insurance decisions and terms agreement, payment acceptance, fulfillment, sensitive document downloads) require their dedicated permission and audit; unknown permission keys deny by default. Recovery proof/delivery requires security acceptance before release.
-Last-admin guard locks one identity row before computing effective active platform admins; covers roles/user status removal. Self-removal/blocking is separately rejected.
+Bootstrap uses deployment-only stdin/secret injection and single-use guard; creates pending MFA enrollment, never a public default Admin account.
+Opaque `__Host-justix_session` cookie Secure/HttpOnly/SameSite=Lax/Path=/; Origin+CSRF checks; session rotation at login/MFA/recovery; no browser credential/localStorage tokens.
+Proposed limits: idle30m/absolute12h/MFA freshness5m. Argon2id parameters are versioned and benchmarked in security lock; TOTP verifies counter once, recovery codes single-use; no unrestricted MFA recovery bypass.
+MFA required for catalogued sensitive operations: platform access/role/credential changes, finance/insurance decisions and terms agreement, payment acceptance, fulfillment and sensitive document downloads. Ordinary CRM contacts/model edits do not require MFA unless explicitly reclassified; unknown permission keys deny by default. Recovery proof/delivery requires security acceptance before release.
+Last-admin guard locks one identity row before computing effective active MFA-enabled platform admins; covers roles/user status/MFA removal. Self-removal/blocking is separately rejected.
 Changing company clears scope and query epoch; create-company leaves working context unchanged. Membership revocation invalidates only affected context, preserving other memberships.
 
 Confirmed commerce: active partnership for new offers/RFQ/orders; profile-only beforehand; prior contractual records persist after ending. Requested-side decline and requester-side withdraw are separate commands.
@@ -298,7 +298,7 @@ Polling starts2s, backs off10s; reconnect/focus resumes. Persist only operationI
 Closing modal/browser request is not durable cancellation; a supported cancel command is explicit. Radix owns focus trapping/restoration; clicks inside never dismiss, Escape behavior respects processing/dirty state.
 Reads retain committed receipt until projection revision catches up; no optimistic authoritative stock decrement. Sign-out/context change clears local data, not the server's durable operations.
 Base states loading/empty/filter-empty/read-error/session-expired/forbidden/not-found; mutation states invalid/confirm/submitting/pending/success/error/stale/unknown-outcome. Partial state only for an explicitly approved partial endpoint; current batch endpoints are atomic.
-Missing production auth, pending branch, scan interruption, stale/permission, projection-lag, RFQ/factory/logistics states need captured evidence or user-confirmed supplements before their FE parity tasks. No Figma gate is introduced.
+Missing production auth/MFA, pending branch, scan interruption, stale/permission, projection-lag, RFQ/factory/logistics states need captured evidence or user-confirmed supplements before their FE parity tasks. No Figma gate is introduced.
 
 ## 9. Infrastructure, verification and build order
 
@@ -324,7 +324,7 @@ Parallelize only disjoint owner paths after their contracts freeze; shared lockf
 C-01 dependency lock; C-02 one identity Go scaffold; C-03 local PostgreSQL; C-04 local RabbitMQ; C-05 event envelope; C-06 event migration; C-07 conditional append; C-08 ordered replay.
 C-09 transactional outbox insert; C-10 confirmed relay adapter; C-11 inbox transaction; C-12 sequence-aware projector; C-13 quarantine; C-14 idempotency ledger; C-15 Money; C-16 messaging crash harness.
 C-17 provider organization aggregate; C-18 global roles/role-free membership contracts; C-19 credential adapter; C-20 atomic provider-create command; C-21 **one Admin** React scaffold; C-22 Dialog primitive; C-23 country/region fields; C-24 provider form presentation with fixtures.
-The provider journey is not finished at C-24: session/CSRF/bootstrap, activation/API binding, app admission and independent end-to-end QA remain separate follow-on units.
+The provider journey is not finished at C-24: session/MFA/CSRF/bootstrap, activation/API binding, app admission and independent end-to-end QA remain separate follow-on units.
 All candidates are proposed; architecture approval→PO release-backlog approval→PM decomposition precede readiness. Git/security/OD/mock-state gates apply to their exact affected units.
 
 ## 11. Open for user — scoped business/security/release decisions

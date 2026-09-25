@@ -52,19 +52,12 @@ bash tools/go.sh run ./cmd/migrate up   # apply SQL migrations
 bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
 ```
 
-`.env` needs your own `MFA_KEY` (`openssl rand -base64 32`); it encrypts
-two-factor secrets, so keep it stable and secret. `MFA_DISABLED=true` switches
-two-factor authentication off for local development only; business rules
-require it for sensitive actions everywhere else.
-
 Sign in with `POST /api/v1/identity/session/login` `{"login","password"}`; the
 session is an HttpOnly cookie. Every state-changing request sends the
 `X-CSRF-Token` returned by login / `GET /api/v1/identity/session`. Repeating a
 write is safe: unique business keys, state checks and `If-Match` reject it.
-Administrators must set up TOTP (`POST /session/mfa/enrollment`, then
-`…/{id}/confirm`) before sensitive actions; after that, login returns an MFA
-challenge answered with `POST /session/mfa/verify`, and sensitive actions need
-a code from the last 5 minutes (`POST /session/mfa/step-up`).
+There is no second factor: the password alone signs in, and permissions alone
+authorize sensitive actions.
 
 ## Run the web apps
 
@@ -85,15 +78,14 @@ API (`JUSTIX_API`, default `http://127.0.0.1:8080`):
 npm run dev --workspace web/apps/realization      # also: financing, insurance, admin
 ```
 
-First steps after bootstrap: sign in at `/admin/`, enable two-factor
-protection (“Безопасность”), create seller / bank / MFO / insurance companies
+First steps after bootstrap: sign in at `/admin/`, create seller / bank / MFO / insurance companies
 with their first administrator and activate them. A company administrator
 manages only company details and branches; business work needs a role — create
 one under “Роли и права” (e.g. all `inventory.*`, `commerce.*`, `retail.*`
 permissions for a seller) and assign it to the user.
 
 Shared UI code lives in `web/packages/kit` (HTTP client with CSRF
-and If-Match, session gate with MFA, shell, forms, tables and
+and If-Match, session gate, shell, forms, tables and
 the insurance/financing application views). Checks:
 
 ```sh

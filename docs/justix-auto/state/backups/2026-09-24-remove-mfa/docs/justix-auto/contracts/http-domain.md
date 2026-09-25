@@ -3,17 +3,17 @@
 Status: ARCHITECTURE BASELINE APPROVED 2026-09-13; part of `../architecture.md`. Typed contract baseline for owner tasks, not implemented APIs or an exhaustive approved release backlog. OD/security/visual-state gates remain.
 Common transport, domain fields, authorization and OD gates in the parent apply. Tables use owner-relative paths: prefix every public row with `/api/v1/{owner}`.
 Existing aggregate writes use If-Match, never body expectedVersion; additional referenced revisions have explicit field names. Creates and actions are idempotent by their data (unique business keys, state checks, If-Match), never by a request key: a repeat gets 409/412, not a replayed response.
-Authentication handshakes are exceptions to the business command ledger: login
-and recovery use rate limits, single-use tokens and replay guards; logout is
-idempotent session revocation. There is no second factor (MFA removed 2026-09-24).
-Do not persist credentials or authentication responses in a generic
+Authentication handshakes are exceptions to the business command ledger: login,
+MFA verification/enrollment and recovery use rate limits, session-bound single-use
+challenges/tokens and replay guards; logout is idempotent session revocation.
+Do not persist credentials, MFA codes or authentication responses in a generic
 command receipt. Authenticated provider provisioning is a business command whose
 repeat is rejected by the company and user unique keys (see below).
 Request bodies below do not include trusted actor/company/permissions; use authenticated context. Explicit counterparty IDs select an object and must be authorized.
 Response: create201/command200 `{data:<resource receipt>,revision:<string>,operationId}`; cross-owner202 `{operationId,status:"pending"}`. Logout204 is the explicit no-body exception.
 All receipts carry exact affected IDs/state; multi-object receipts have `data.related:[{type,id,revision}]`. GET detail `{data:<typed resource>,revision,asOf}`; list `{items,nextCursor,asOf}`.
 Typed resources are the parent data model plus allowedActions:string[]; no private auth records/PII refs/object keys in ordinary public DTOs. Public PII fields require owner field-level authorization.
-Errors use `{error:{code,message,fields:{},traceId},operationId?}`; status400 syntax,401 session,403 permission/policy,404 hidden/missing,409 invariant,412 stale,422 fields,428 missing precondition,503 authoritative dependency unavailable.
+Errors use `{error:{code,message,fields:{},traceId},operationId?}`; status400 syntax,401 session,403 permission/MFA/policy,404 hidden/missing,409 invariant,412 stale,422 fields,428 missing precondition,503 authoritative dependency unavailable.
 
 ## 1. Common exact value contracts
 
@@ -54,12 +54,15 @@ Input length/upload limits are named versioned server configuration delivered wi
 
 | Method/path | Exact request / result specifics |
 |---|---|
-| GET `/session` | `{data:{user:{id,displayName,status},roles:[{id,name}],permissions:string[],context:{revision,companyId:null\|ID,branchScope:Scope},accessibleCompanies:[{id,name,kind,access}],setup:{next:company\|branch\|none,partnershipRequiredForB2B:true}},revision,asOf}`; revision is session context revision |
-| POST `/session/login` | `{login,password}` → session cookie + session view |
+| GET `/session` | `{data:{user:{id,displayName,status},roles:[{id,name}],permissions:string[],mfa:{enrolled,authenticatedAt?},context:{revision,companyId:null\|ID,branchScope:Scope},accessibleCompanies:[{id,name,kind,access}],setup:{next:company\|branch\|none,partnershipRequiredForB2B:true}},revision,asOf}`; revision is session context revision |
+| POST `/session/login` | `{login,password}` → session cookie + session view, or `{data:{challengeId,required:"mfa"},revision:"0",operationId}` with restricted challenge cookie only |
+| POST `/session/mfa/verify` | `{challengeId,code}` → rotated cookie + session view; challenge single-use |
 | POST `/session/logout` | `{}` + CSRF → revoke cookie/session,204 |
 | PUT `/session/context` | `{companyId}` + If-Match session context revision → context with revision incremented and branchScope ALL/[] |
 | PUT `/session/branch-scope` | Scope + If-Match session context revision → context; ALL requires[], SELECTED nonempty permitted branches |
-| POST `/session/revoke-all` | `{reason}` + reauth → revoke other sessions, rotate current cookie |
+| POST `/session/revoke-all` | `{reason}` + reauth/MFA → revoke other sessions, rotate current cookie |
+| POST `/session/mfa/enrollment` | `{}` in restricted authenticated enrollment flow → `{enrollmentId,secretOrChallenge}` once, never logged |
+| POST `/session/mfa/enrollment/{id}/confirm` | `{code}` → enrolled, rotate security/session version |
 | POST `/session/recovery/request` | `{login}` → uniform202, no account-existence response; delivery/proof security gate |
 | POST `/session/recovery/complete` | `{token,newPassword,confirmation}` →204 + revoke sessions; no role/membership changes |
 | POST `/admin/provider-companies` | `{kind:"bank"\|"mfo"\|"insurance",company:CompanyInput,firstAdmin:{displayName,login,email,password,passwordConfirmation}}` → organization/user/membership refs, company draft |
@@ -82,13 +85,13 @@ Input length/upload limits are named versioned server configuration delivered wi
 | POST `/admin/invitations/{id}/revoke` | `{reason}` → pending invitation revoked |
 
 Identity GET collections/details: `/companies/{id}`, `/admin/companies?kind&access`, `/admin/users`, `/admin/users/{id}`, `/admin/roles`, `/admin/permissions`, `/admin/audit?resourceType&resourceId&actorId`, company branches.
-Permission catalog `{key,scope:platform|company,assignable}` is deployment-versioned. Platform powers do not imply company-financial or insurer permissions.
+Permission catalog `{key,scope:platform|company,requiresMfa,assignable}` is deployment-versioned. Platform powers do not imply company-financial or insurer permissions.
 Default business action permission is `<owner>.<resource>.<action>` (e.g. `financing.applications.terms`, `insurance.applications.approve`); identity special grants are `platform.companies.create|access`, `platform.users.manage`, `platform.memberships.manage`, `platform.roles.manage`, `platform.directory.read`, `platform.audit.read`, `company.create|edit`, `branches.create|edit`.
-Catalog explicit allowlist is generated from approved action schemas; unknown action denied. Sensitive document download additionally requires `documents.sensitive.download` and owner-side read grant.
-No permission requires a second factor (MFA removed 2026-09-24); sensitive actions rely on their dedicated permission, audit and state checks. Catalog changes are versioned security decisions.
+Catalog explicit allowlist is generated from approved action schemas; unknown action denied. Sensitive document download additionally requires `documents.sensitive.download` and owner-side read grant/MFA.
+`requiresMfa=true` for platform access/roles/credentials, membership/user administration, provider provisioning, finance/insurance decisions and terms agreement, payment acceptance, fulfillment and sensitive downloads. Routine CRM contacts and model/profile edits use their permission without blanket step-up; catalog changes are versioned security decisions.
 New company initial capabilities are empty, not inferred from kind or activation; assignment/live capability-compliance policy awaits OD-11. Provider sign-in can show the empty admitted workspace without publishing a program or granting product authority.
 Secret-bearing commands (provider provisioning, user creation with an initial password) keep no request ledger: a repeat hits the company registration / user email unique keys and gets a generic 409; it never resets the password. The outcome is recovered by an authorized lookup of the created company or user.
-Private `POST /internal/v1/identity/authorize {sessionHandle,operationId,action,companyId?,branchId?,resource:{type,id}?,contextRevision}` → `{decisionId,allowed,denyCode?,actorId,companyId?,effectiveBranchIds,policyRevision,securityRevision,decidedAt}`. Session handle never enters events/logs.
+Private `POST /internal/v1/identity/authorize {sessionHandle,operationId,action,companyId?,branchId?,resource:{type,id}?,contextRevision}` → `{decisionId,allowed,denyCode?,actorId,companyId?,effectiveBranchIds,policyRevision,securityRevision,mfaAuthenticatedAt?,decidedAt}`. Session handle never enters events/logs.
 
 ## 3. Inventory and commerce
 
@@ -187,7 +190,7 @@ Invoice/evidence correction, overpayment allocation, installment servicing and b
 | POST `/upload-intents` | `{ownerDomain,ownerObjectId,purpose,fileName,declaredMime,declaredBytes,sha256}` → `{uploadId,documentId,versionId,uploadUrl,expiresAt,requiredHeaders,limitsVersion}` plus standard receipt |
 | POST `/upload-intents/{id}/complete` | `{}` + upload If-Match →202 byte finalization/scan operation; actual stored bytes checked |
 | GET `/versions/{id}` | `{data:{id,documentId,number,fileName,detectedMime,byteLength,sha256,scanState,createdAt},revision,asOf}` with owner authorization, no storage key |
-| POST `/versions/{id}/download-grants` | `{purpose}` → `{grantId,href,expiresAt}`; sensitive needs owner read grant |
+| POST `/versions/{id}/download-grants` | `{purpose}` → `{grantId,href,expiresAt}`; sensitive MFA/owner read grant |
 | GET `/downloads/{grantId}` | authenticated same-session byte stream, owner reauthorization and immutable generation pin |
 
 UploadUrl is an opaque staging-only capability; production provider/generation semantics, scan callback and binding are fixed by `cross-owner.md`. File clean is not domain accepted.

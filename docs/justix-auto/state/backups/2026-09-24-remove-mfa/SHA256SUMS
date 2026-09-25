@@ -1,0 +1,5 @@
+802f9e6a9b85dba2df0432865f8d3b6fad2d387f3d07d7a418cad987ee83aada  internal/AGENTS.md
+96323bc3f245c9896b8f69d2760bda904bf21ab3a25d7a6eb366345e6dacfb5e  docs/justix-auto/contracts/http-domain.md
+20041e7f71f2c220b6e35400dd6a046b38d6dbb7be8695456724c93c2e69f911  docs/justix-auto/business-logic.md
+62c20cc397978b5cef80d908d62f7a58f3183dd79ce89c0381631fb58e64f475  docs/justix-auto/architecture.md
+dd83a8423a5e1ea7672635329fc80013a91f5fa88857d532970398ec3b961ee4  docs/justix-auto/adr-15-kubernetes-multi-replica-observability.md

@@ -24,7 +24,7 @@ bash infra/kind/up.sh     # create/update cluster "justixauto" and deploy everyt
 bash infra/kind/down.sh   # delete the cluster
 ```
 
-- App: http://localhost:18090; two-factor is off (`values-dev.yaml`).
+- App: http://localhost:18090.
 - Grafana: http://localhost:13000, user `admin`, password:
   `kubectl --context kind-justixauto -n observability get secret grafana-admin -o jsonpath='{.data.admin-password}' | base64 -d`.
   Dashboard *JustixAuto → JustixAuto API*; in Explore, Loki log lines link to Tempo traces by `trace_id`.
