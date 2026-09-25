@@ -10,3 +10,5 @@ dist/
 *.log
 docs/justix-auto/dev/local/
 var/
+# Generated review/audit output from code-quality agents
+docs/justix-auto/dev/reviews/
