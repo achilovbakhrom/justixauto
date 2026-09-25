@@ -53,6 +53,10 @@ Added by the user 2026-09-25 after slicing (primary amendment, packet P6):
   primary here; `deploy/README.md` replaces it), drop `k8s-up`/`k8s-down`, add
   `deploy/.helmignore`. P5 keeps: README laptop workflow, `.vscode/launch.json`,
   `values-dev.yaml` header comment.
+- UD-7 (2026-09-25) Server environments are dev and prod; the laptop uses
+  `deploy/local`. `values-dev.yaml` is rewritten by the primary as a dev-server
+  template (registry image with required tag/digest, HTTPS ingress, S3 via IRSA,
+  REPLACE placeholders), superseding D-8 and every P5 item/check on `values-dev.yaml`.
 
 ## 2. Source hashes (SHA-256 at base 5f37324)
 

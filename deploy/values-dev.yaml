@@ -1,23 +1,29 @@
-# Local kind cluster (infra/kind). Plain HTTP on a NodePort, MinIO as S3,
-# telemetry to the in-cluster OpenTelemetry Collector.
+# Dev server environment (shared, non-production). Fill the REPLACE placeholders
+# before the first rollout; any rollout is an explicit human decision (AGENTS.md).
 environment: dev
 image:
-  repository: justixauto
-  tag: dev
+  repository: REGISTRY/justixauto   # same registry as prod
+  tag: ""                           # set a unique tag (e.g. the Git SHA) or the digest
+  digest: ""
 replicaCount: 2
 config:
-  cookieSecure: false           # http://localhost only
-  allowedOrigins: "http://localhost:18090,http://127.0.0.1:18090"
+  cookieSecure: true                # served over HTTPS through the ingress
   s3:
-    bucket: justixauto-documents
-    endpoint: http://minio.justixauto-deps:9000
-    forcePathStyle: true
+    bucket: REPLACE-justixauto-documents-dev
+    region: eu-central-1
   otel:
-    endpoint: http://otel-collector.observability:4318
+    endpoint: ""                    # set when the cluster runs an OpenTelemetry Collector
     traceSampleRatio: "0.5"
-service:
-  type: NodePort
-  nodePort: 30080
 resources:
   requests: { cpu: 50m, memory: 96Mi }
   limits: { memory: 256Mi }
+ingress:
+  enabled: true
+  className: nginx
+  host: dev.example.com
+  tls:
+    - secretName: justixauto-dev-tls
+      hosts: [dev.example.com]
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: REPLACE-arn:aws:iam::ACCOUNT:role/justixauto-dev-s3
