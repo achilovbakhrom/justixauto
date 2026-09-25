@@ -15,14 +15,14 @@ export
 POSTGRES_PORT ?= 55432
 API_PORT      ?= 8080
 APP           ?= realization
-COMPOSE       := docker compose --env-file .env -f deploy/local/compose.yaml
+COMPOSE       := docker compose --env-file .env -f infra/local/compose.yaml
 GO            := bash tools/go.sh
 LINT          := $(GO) tool -modfile=tools/lint/go.mod golangci-lint
 API_URL       = http://$(or $(HTTP_ADDR),127.0.0.1:$(API_PORT))
 
 .PHONY: help env db-up db-down db-reset db-psql migrate migrate-down \
         api web web-install web-build dev test test-go test-web lint typecheck check \
-        openapi openapi-check hooks lint-go fmt deadcode image
+        openapi openapi-check hooks lint-go fmt deadcode image k8s-up k8s-down
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -123,7 +123,13 @@ hooks: ## Install the Git hooks (lefthook.yml); npm install does this too
 
 check: lint typecheck test ## Everything CI would run
 
-# ---- containers ----
+# ---- containers / Kubernetes ----
 
 image: ## Build the Docker image justixauto:dev
 	docker build -t justixauto:dev --build-arg VERSION=$$(git rev-parse --short HEAD) .
+
+k8s-up: ## Local kind cluster: 2 API replicas + Postgres, MinIO, Loki, Tempo, Prometheus, Grafana
+	bash infra/kind/up.sh
+
+k8s-down: ## Delete the local kind cluster
+	bash infra/kind/down.sh

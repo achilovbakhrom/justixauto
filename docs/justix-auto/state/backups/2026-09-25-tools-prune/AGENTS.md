@@ -63,7 +63,9 @@ sequentially with the same review/QA gates.
   before changing an existing canonical document. Never delete+add to replace it.
 - `version_control` creates/switches task branches in the main project directory
   only after checking clean state and that no agent is using the current checkout.
-  Use explicit-path Git staging/commits in the current checkout.
+  Do not invoke legacy helper operations that create worktrees, including
+  `agent-git create-worktree` and its temporary-worktree-based `commit` operation.
+  Use explicit-path Git staging/commits in the current checkout instead.
 - Slicer writes bounded packets and acceptance coverage. Independent plan review
   precedes dispatch. Worker writes code; version_control commits; reviewer checks
   the exact diff; QA verifies small behavior packets. Aggregation schedules

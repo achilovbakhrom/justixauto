@@ -39,14 +39,14 @@ make dev                 # PostgreSQL + migrations + built web apps + API on one
 For UI work with hot reload run `make api` in one terminal and
 `make web APP=realization` (or `financing`, `insurance`, `admin`) in another;
 Vite proxies `/api` to the API. `make help` lists everything: tests
-(`make test`, `make check`), database (`make db-psql`, `make db-reset`), and the
-Docker image (`make image`).
+(`make test`, `make check`), database (`make db-psql`, `make db-reset`), the
+Docker image (`make image`) and the local Kubernetes stack (`make k8s-up`).
 
 ## Run the backend
 
 ```sh
 cp .env.example .env                    # local-only credentials
-docker compose --env-file .env -f deploy/local/compose.yaml up -d
+docker compose --env-file .env -f infra/local/compose.yaml up -d
 set -a && . ./.env && set +a
 bash tools/go.sh run ./cmd/migrate up   # apply SQL migrations
 bash tools/go.sh run ./cmd/api          # http://127.0.0.1:8080/healthz
@@ -113,8 +113,8 @@ internal/pkg/             shared tech: config, database, HTTP server, errors
 migrations/               versioned SQL migrations (embedded)
 web/                      four React apps and shared packages (kit = shared UI)
 docs/justix-auto/         business rules, decisions, mocks and dev state
-tools/                    Go wrapper, dev tool, mock tooling
-deploy/                   server Helm chart; deploy/local/ = local services (Docker Compose)
+tools/                    Go wrapper, mock tooling, agent/Git helpers
+infra/local/              local PostgreSQL (Docker Compose)
 AGENTS.md / CLAUDE.md     rules for coding agents
 ```
 

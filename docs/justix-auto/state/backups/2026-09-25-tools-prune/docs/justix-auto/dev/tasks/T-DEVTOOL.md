@@ -4,7 +4,7 @@
 - Kind: repository tooling change (like the HUB setup). It is **not** one of the 949
   product backlog tasks and adds no backlog ID; the primary records it on the board.
 - Authority: primary (application/delivery hub) owns scheduling and acceptance.
-  P5 deletes `infra/kind/` and edits a `deploy` comment: infrastructure scope, so
+  P5 deletes `infra/kind/` and edits a `deploy/helm` comment: infrastructure scope, so
   the devops_orchestrator acknowledgement is recorded at plan acceptance (cross-boundary
   rule). The user's decision below is the authority for the removal itself.
 - Depends on: nothing. Branch `chore/go-devtool`, main checkout
@@ -19,11 +19,11 @@
   `tools/openapi-staged.sh`, `Makefile`, `lefthook.yml`, `package.json` (`scripts.doctor`
   only), `internal/e2e/e2e.go` (one skip string), `internal/modules/documents/repository/s3_test.go`
   (one skip string), deletion of `infra/kind/**`, `README.md`, `infra/README.md`,
-  `.vscode/launch.json` (new), `deploy/values-dev.yaml` (header comment only).
+  `.vscode/launch.json` (new), `deploy/helm/justixauto/values-dev.yaml` (header comment only).
 - NOT owned by any packet (primary follow-up, section 10): ADR-15, ADR-16, `AGENTS.md`,
   `internal/AGENTS.md`, `tools/AGENTS.md`, `docs/justix-auto/dev/*` canonical records,
   `docs/justix-auto/architecture.md`, `.claude/**`, `.codex/**`, `.github/workflows/ci.yml`
-  (no change needed, see D-12), `deploy/values-prod.yaml`, chart templates.
+  (no change needed, see D-12), `deploy/helm/justixauto/values-prod.yaml`, chart templates.
 
 ## 1. Binding user decisions (2026-09-25)
 
@@ -36,23 +36,6 @@
   `make web APP=…`, plus a minimal, documented `.vscode/launch.json`.
 - UD-3 Kubernetes stays for servers: `deploy/helm/justixauto/` and `values-prod.yaml`
   are untouched. `values-dev.yaml`: slicer recommendation adopted in D-8.
-  (UD-5 moves the chart; its content stays untouched.)
-
-Added by the user 2026-09-25 after slicing (primary amendment, packet P6):
-
-- UD-4 Remove the legacy hub helpers `tools/agent-flow*` and `tools/agent-git*`
-  (scripts, tests, README folders). The packet ledger is unused since 2026-09-20 and
-  the only allowed agent-git operations were thin Git wrappers. The local ledger in
-  `.git/justix-agent-state` is not tracked and stays as history.
-- UD-5 `deploy/` holds only this project's chart: move `deploy/helm/justixauto/*`
-  to `deploy/` (chart root `deploy/Chart.yaml`), no content change.
-- UD-6 `deploy/` is the only infrastructure folder: keep `infra/local` as
-  `deploy/local/compose.yaml` (third-party services; backend and frontend run on the
-  laptop), move `infra/AGENTS.md`/`CLAUDE.md` to `deploy/`, delete the rest of `infra/`
-  (incl. `infra/kind`, so P5's deletion and `infra/README.md` edit are done by the
-  primary here; `deploy/README.md` replaces it), drop `k8s-up`/`k8s-down`, add
-  `deploy/.helmignore`. P5 keeps: README laptop workflow, `.vscode/launch.json`,
-  `values-dev.yaml` header comment.
 
 ## 2. Source hashes (SHA-256 at base 5f37324)
 
@@ -153,8 +136,6 @@ accepted packet of this task) stops with `STALE_INPUT`.
 | DT-13 | `values-dev.yaml` header comment corrected; values, `values-prod.yaml`, chart unchanged. |
 | DT-14 | Quality: golangci-lint (`.golangci.yml`) clean, `make deadcode` clean, every `//nolint` specific with explanation, unit tests hermetic (no Docker, no network beyond `httptest` loopback), `-race` clean, `go.mod` unchanged, `make lint` green at final SHA. |
 | DT-15 | Documentation follow-up list for the primary (section 10) is complete; packets do not edit those files. |
-| DT-16 | `tools/agent-flow.mjs`, `tools/agent-flow.test.mjs`, `tools/agent-flow/README.md`, `tools/agent-git.mjs`, `tools/agent-git.test.mjs`, `tools/agent-git/README.md` deleted; no live reference outside history (UD-4). |
-| DT-17 | Chart files live directly under `deploy/` with byte-identical content; live path references updated (UD-5). |
 
 ## 5. Shared internal interface (defined in P1, consumed by P2/P3)
 
@@ -445,7 +426,7 @@ git diff --stat -- go.mod go.sum        # expected: empty
 - Owned: delete exactly these tracked files (plain `rm <file>`; then `rmdir infra/kind/observability infra/kind`):
   `infra/kind/deps.yaml`, `infra/kind/down.sh`, `infra/kind/kind-config.yaml`, `infra/kind/up.sh`,
   `infra/kind/observability/{dashboard,grafana,loki,otel-collector,prometheus,tempo}.yaml`;
-  edit `README.md`, `infra/README.md`, `deploy/values-dev.yaml` (lines 1–2 only);
+  edit `README.md`, `infra/README.md`, `deploy/helm/justixauto/values-dev.yaml` (lines 1–2 only);
   create `.vscode/launch.json`.
 - Changes:
   - `values-dev.yaml` lines 1–2 → exactly:
@@ -501,53 +482,23 @@ git diff --stat -- go.mod go.sum        # expected: empty
     `make web APP=realization`. New short "Developer tool" note: subcommands
     `check-git`, `doctor`, `env`, `test`, `openapi-staged` via
     `bash tools/go.sh run ./tools/devtool <command>`; `npm run doctor`. Layout: `tools/`
-    line mentions `devtool`; add `deploy/` line ("server Helm chart"). A stale
+    line mentions `devtool`; add `deploy/helm/` line ("server Helm chart"). A stale
     test container, if a run was killed: `docker ps --filter name=justixauto-test-`.
     No other sections change.
   - `infra/README.md`: remove the "Local Kubernetes (kind)" section (lines 13–32);
     keep the compose section; replace the production paragraph with a "Servers
-    (Kubernetes)" paragraph: chart `deploy`, `values-dev.yaml`
+    (Kubernetes)" paragraph: chart `deploy/helm/justixauto`, `values-dev.yaml`
     non-production server values, `values-prod.yaml` template; rollout to any cluster
     is human-only (`AGENTS.md`); link ADR-15. No kind/kubectl commands.
 - Checks:
   - `git ls-files infra/kind` → empty; `test ! -e infra/kind`.
   - `git grep -n -I -E 'infra/kind|k8s-up|k8s-down|kind cluster|kind-justixauto' -- ':!docs' ':!.claude' ':!.codex'` → no matches.
   - `node -e "JSON.parse(require('fs').readFileSync('.vscode/launch.json','utf8'))"` → exit 0.
-  - `git diff -U0 -- deploy/values-dev.yaml` → only lines 1–2, both comments.
-  - `git diff --stat -- deploy/values-prod.yaml deploy/templates deploy/values.yaml deploy/Chart.yaml` → empty.
-  - If `helm` is installed: `helm template justixauto deploy -f deploy/values-dev.yaml`
+  - `git diff -U0 -- deploy/helm/justixauto/values-dev.yaml` → only lines 1–2, both comments.
+  - `git diff --stat -- deploy/helm/justixauto/values-prod.yaml deploy/helm/justixauto/templates deploy/helm/justixauto/values.yaml deploy/helm/justixauto/Chart.yaml` → empty.
+  - If `helm` is installed: `helm template justixauto deploy/helm/justixauto -f deploy/helm/justixauto/values-dev.yaml`
     output identical at base and after (compare via files under `$TMPDIR`); else record "helm not installed".
   - Every `make <target>` named in README exists in `make help`.
-
-### P6 — Remove legacy hub helpers; flatten the chart into `deploy/` (DT-16, DT-17)
-
-- Runs after Q2 and before P3 (user request 2026-09-25; file-disjoint from P3/P4).
-  P5 text above already uses the new chart paths. Resources: main-checkout writer.
-  Infra scope for the chart move: offline only, no helm install/upgrade, no cluster.
-- Read-only inputs: `infra/README.md` line 16, `infra/kind/up.sh` lines 1–10 and 60–75.
-- Owned: delete (plain `rm`, then `rmdir tools/agent-flow tools/agent-git`)
-  `tools/agent-flow.mjs`, `tools/agent-flow.test.mjs`, `tools/agent-flow/README.md`,
-  `tools/agent-git.mjs`, `tools/agent-git.test.mjs`, `tools/agent-git/README.md`;
-  move (plain `mv`, no Git commands) every file under `deploy/helm/justixauto/`
-  to the same relative path under `deploy/`, then `rmdir` the empty
-  `deploy/helm/justixauto` and `deploy/helm`; edit the chart path only in
-  `infra/README.md` (line 16) and `infra/kind/up.sh` (line 4 comment and the
-  `helm upgrade --install` line; the file is deleted by P5 anyway).
-- Canonical docs (`AGENTS.md`, `tools/AGENTS.md`, `agent-workflow.md`, version_control
-  role files, ADR-15) are edited by the primary, not by P6.
-- Checks:
-  - `git ls-files tools | grep agent-` after staging → empty; `test ! -e tools/agent-flow -a ! -e tools/agent-git`.
-  - `test ! -e deploy/helm`; `ls deploy` → `Chart.yaml templates values-dev.yaml values-prod.yaml values.yaml`.
-  - Content identical: for each file `f` in `git ls-tree -r --name-only HEAD deploy/helm/justixauto`,
-    `git show HEAD:$f | cmp - deploy/${f#deploy/helm/justixauto/}` → exit 0.
-  - `git grep -n -I -e 'deploy/helm' -e 'agent-flow' -e 'agent-git' -- ':!docs/justix-auto/state' ':!docs/justix-auto/dev/tasks' ':!docs/justix-auto/dev/qa' ':!docs/justix-auto/dev/results' ':!docs/justix-auto/dev/agent-setup-plan.md' ':!docs/justix-auto/dev/agent-setup-results.md'`
-    → only primary-owned files (AGENTS.md, tools/AGENTS.md, agent-workflow.md, ADR-15,
-    `.claude/**`, `.codex/**`), none in P6-owned files.
-  - If `helm` is installed: `helm lint deploy -f deploy/values-dev.yaml` → exit 0;
-    else record "helm not installed".
-- Result: `docs/justix-auto/dev/results/T-DEVTOOL-P6.md`. Commit (version_control):
-  `chore(tooling): remove agent-flow and agent-git; move chart to deploy/`, explicit
-  paths (deleted + old and new chart paths + the two infra files).
 
 ## 7. Review packets (reviewer, gpt-5.6-sol/high, read-only, fresh context)
 
@@ -558,7 +509,6 @@ git diff --stat -- go.mod go.sum        # expected: empty
 | R2 | P2 commit | P1→P2 diff | image strings byte-exact vs base `tools/test-go.sh`, argv order, cleanup on all paths incl. cancel, fresh cleanup context, password never logged, exit propagation |
 | R3 | P3 commit | P2→P3 diff | literal pathspecs, message bytes vs base script, exit-code handling of git diff |
 | R4 | P4 commit | P3→P4 diff | Makefile only the listed hunks, shim/go.sh byte-exact to §6, go.sh guarantees, deleted files, two string edits only |
-| R6 | P6 commit | Q2 SHA→P6 diff (`-M`) | only the 6 deletions, 100% renames of all chart files, two path edits, primary doc edits consistent with UD-4/UD-5, no other change |
 | R5 | P5 commit | P4→P5 diff | 10 files deleted and nothing else in infra/, values-dev comment-only, launch.json content, README accuracy vs Makefile, no helm/prod change |
 
 Verdict GREEN/BOUNCE with file:line findings to `docs/justix-auto/dev/qa/T-DEVTOOL-Rn.md`
@@ -617,20 +567,13 @@ disposable directories; never touch `.env` contents.
   not a list of earlier reports: `make lint` (includes openapi-check, golangci-lint,
   deadcode, ESLint, Prettier, knip), `make typecheck`, `make test-go`,
   `bash tools/check-git.sh` (0), `npm run doctor`, `make help`,
-  `git diff --exit-code` afterwards (tree unchanged), `git diff --stat 5f37324 -- go.mod go.sum .github`
-  → empty; chart moved unchanged (UD-5): for each of `Chart.yaml`, `values.yaml`,
-  `values-prod.yaml`, `templates` the object ID of `5f37324:deploy/helm/justixauto/<x>`
-  equals `HEAD:deploy/<x>` (`git rev-parse`); reference sweep
+  `git diff --exit-code` afterwards (tree unchanged), `git diff --stat 5f37324 -- go.mod go.sum deploy/helm/justixauto/values-prod.yaml deploy/helm/justixauto/templates .github`
+  → empty; reference sweep
   `git grep -n -I -E 'test-go\.sh|doctor\.sh|openapi-staged\.sh|infra/kind|k8s-up|k8s-down' -- ':!docs/justix-auto/state' ':!docs/justix-auto/dev/tasks' ':!docs/justix-auto/dev/qa' ':!docs/justix-auto/dev/results'`
   → only the section-10 files (ADR-15/16, `internal/AGENTS.md`, dev docs, `.claude/hooks`);
   audit the coverage matrix below against the evidence.
 
-- **Q6 (after P6, offline)**: all P6 checks at the P6 commit; `git show -M --stat HEAD`
-  lists only renames `deploy/helm/justixauto/* → deploy/*` (100%), the six deletions,
-  the two infra files and the primary doc edits; `make help` and `npm run doctor`
-  still work (neither referenced the removed tools).
-
-Dependency graph: R0 → P1 → R1 → Q1 → P2 → R2 → Q2 → P6 → R6 → Q6 → P3 → R3 → Q3 → P4 → R4 → Q4 →
+Dependency graph: R0 → P1 → R1 → Q1 → P2 → R2 → Q2 → P3 → R3 → Q3 → P4 → R4 → Q4 →
 Q-LIVE → P5 → R5 → Q5 → QA-FINAL → primary follow-up (§9) → human approval for dev.
 Commits between packets: version_control, explicit paths, one commit per packet
 (`feat(tools): …` / `chore(infra): …`, no AI attribution per user rule).
@@ -654,8 +597,6 @@ Commits between packets: version_control, explicit paths, one commit per packet
 | DT-13 | P5 | diff -U0, helm template equality | Q5, QA-FINAL |
 | DT-14 | P1–P4 | common checks, `make lint` | every Q, QA-FINAL |
 | DT-15 | primary | §10 list | QA-FINAL sweep |
-| DT-16 | P6 (+ primary docs) | ls-files, reference grep | Q6, QA-FINAL |
-| DT-17 | P6 | cmp per file, `helm lint` if available | Q6, QA-FINAL (object IDs) |
 
 ## 10. Primary follow-up (not packet work; after QA-FINAL, with SHA-256 + snapshot)
 
@@ -682,10 +623,6 @@ Commits between packets: version_control, explicit paths, one commit per packet
   context exception), `:250` (`k8s-down` ask rule) are stale; configuration changes need
   the user (agents may not edit hook config). Mirror in `.codex` if it has an equivalent.
 - `.claude/agents/worker.md:14`, `.codex/agents/worker.toml:10`, `.github/workflows/ci.yml`: no change.
-- UD-4/UD-5 (done by the primary with P6, snapshot `docs/justix-auto/state/backups/2026-09-25-tools-prune/`):
-  `AGENTS.md`, `tools/AGENTS.md`, `agent-workflow.md`, both version_control role files,
-  ADR-15 chart path. `.claude/hooks/autonomous-guard.py:200–202` (agent-git rule) is
-  now dead but harmless; removing it is a user hook-config change.
 
 ## 11. Risks and gaps
 

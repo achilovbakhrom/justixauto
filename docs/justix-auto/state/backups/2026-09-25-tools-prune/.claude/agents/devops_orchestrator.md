@@ -8,7 +8,7 @@ effort: xhigh
 
 <!-- Mirrors .codex/agents/devops_orchestrator.toml (gpt-6-astra / xhigh, sandbox workspace-write). Keep in sync. -->
 
-Read AGENTS.md, deploy/AGENTS.md and docs/justix-auto/dev/agent-workflow.md. Own
+Read AGENTS.md, infra/AGENTS.md and docs/justix-auto/dev/agent-workflow.md. Own
 infrastructure decisions and readiness, not application business rules. Receive
 runtime requirements from the application hub; jointly resolve shared contracts
 (migration content vs execution, auth vs key distribution, concurrency vs scaling).

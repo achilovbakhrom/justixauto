@@ -57,8 +57,8 @@ The slicer writes artifacts in its assigned execution directory. It records
 canonical task identity, source hashes, base SHA, authority hub, requirement IDs,
 packet dependencies, owned paths, scoped rules and decision gates. Each packet
 has one coherent behavior, acceptance criteria, required checks and an explicit
-context limit. The task file and board are the packet record; there is no
-separate controller tool (removed 2026-09-25 by user decision).
+context limit. The controller validates its supported JSON format; see
+`tools/agent-flow/README.md` for the exact commands and schema.
 
 Read only the current packet and its referenced rules. Handoffs contain paths,
 identifiers and short findings, never full transcripts. Start independent workers,
@@ -80,7 +80,7 @@ Resume from those checkpoints and Git, not from an accumulated chat summary.
    interfaces. Reviewer independently checks the plan and requirement coverage.
    Owning hub accepts the reviewed manifest digest before dispatch.
 3. Version control creates a task branch from dev in the main checkout. Pin source contracts
-   and base SHA. Record the plan on the board and reserve writer/resources there.
+   and base SHA. Register the plan with the controller; reserve writer/resources.
 4. Worker edits its owned paths and runs checks. Version control creates a scoped
    commit. Submission records the complete before..after range, not HEAD~1.
 5. Independent reviewer inspects the packet diff and necessary adjacent code.
@@ -127,9 +127,13 @@ Allowed agent branch prefixes: task/, feature/, fix/, infra/. Branches are
 independent work units based on dev; commits carry task/packet intent. Push only
 same-name origin refs at a verified SHA. No force, wildcard staging, automatic
 conflict resolution, history rewriting or cleanup of unverified worktrees.
-Use explicit-path Git commits in the main checkout, checking the staged diff
-before committing and the actual commit diff afterward. Never create additional
-worktrees or checkouts.
+Do not use the legacy `agent-git create-worktree` or `agent-git commit` commands:
+both create worktrees. Use explicit-path Git commits in the main checkout, checking
+the staged diff before committing and the actual commit diff afterward. The
+helper's inspect, push and prepare-dev commands do not require extra worktrees.
+Controller `--worktree` fields are legacy names for the main checkout path; they
+do not authorize additional checkouts. Do not infer workflow permission from a
+legacy helper's available commands or disposable test fixtures.
 
 Every dev merge/push requires human approval. Prefer protected GitHub PRs with
 required checks, a human reviewer, dismissal of stale approvals and no agent
@@ -137,7 +141,8 @@ bypass identity. Approval binds the source SHA and tested target base. If either
 changes, revalidate affected checks and request renewed approval. A local JSON
 file saying `human_approved` is not authentication and cannot authorize a merge.
 
-Agents never write dev/main; they prepare candidates. Human-reviewed GitHub integration is an external gate. Until branch
+The local Git adapter intentionally refuses writes to dev/main; it prepares
+candidates. Human-reviewed GitHub integration is an external gate. Until branch
 protection and its permissions are verified, the human performs dev integration.
 Prompt instructions and local scripts do not confine an agent that also has
 unrestricted Git credentials. Repository rules and credentials must enforce this.
@@ -150,17 +155,21 @@ branches start at main 682696f2fea8e874cc9572749f9faadb2b532b4e; this provenance
 explicit. Creating/pushing dev requires human approval at the end of bootstrap.
 Existing product task worktrees/history are retained, not rebased en masse.
 
-## Orchestration records
+## Controller boundaries and adoption
 
-The primary dispatches agents and keeps packet state in the task file, board and
-assigned execution artifacts. Actor names and reports are attributed inputs, not
-signed attestations; the hub must preserve actual independent runs and raw test
-evidence. The earlier `agent-flow`/`agent-git` helpers were removed 2026-09-25;
-their local ledger in the Git common directory is untracked history only.
+`tools/agent-flow.mjs` is a local state/validation CLI, not an unattended agent
+daemon. The Codex hubs dispatch agents. State is shared via the repository's Git
+common directory, excluded from commits; durable exported reports belong in the
+assigned execution artifacts. Preserve that local state when moving repositories.
+Only the controller mutates its state. Global lock and revision checks prevent
+accidental concurrent updates; they are not a hostile-process security boundary.
+Actor IDs/reports are attributed orchestration inputs, not signed attestations.
+The hub must preserve actual independent runs and raw test evidence.
 
 Do not install multiple orchestration frameworks over the existing backlog.
 Augani is a close candidate, but its external-CLI/account routing and runtime
-policies need audit before adoption.
+policies need audit before adoption. This first implementation uses a small,
+dependency-free controller and native Codex roles to make project gates testable.
 
 References inspected:
 - https://github.com/Augani/agent-orchestrator — bounded contexts and checkpoints

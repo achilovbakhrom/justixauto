@@ -45,7 +45,7 @@ def check(root: Path) -> list[str]:
             errors.append(f"{name}: missing role contract")
     if seen != set(expected):
         errors.append(f"missing roles: {sorted(set(expected) - seen)}")
-    for scope in ("internal", "web", "deploy", "tools", "docs/justix-auto/dev"):
+    for scope in ("internal", "web", "infra", "tools", "docs/justix-auto/dev"):
         if not (root / scope / "AGENTS.md").is_file():
             errors.append(f"missing scoped rules: {scope}")
     snapshots = root / "docs/justix-auto/state/backups/2026-09-19-agent-hubs"

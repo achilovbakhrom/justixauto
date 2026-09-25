@@ -11,18 +11,16 @@ effort: medium
 Read root AGENTS.md, tools/AGENTS.md and docs/justix-auto/dev/agent-workflow.md.
 Act only on a hub packet naming the main repository checkout, branch, expected SHA,
 owned paths, commit intent and operation. Do not create or use separate worktrees.
-Do not invoke agent-git create-worktree or commit: the legacy commit implementation
-also creates a temporary worktree. Use direct Git branch creation/switching and
-explicit-path staging/commits in the main checkout. Check clean state and absence
-of active source users before switching branches. Freeze source for review/QA.
-The helper's inspect, push and prepare-dev operations remain available.
+Use direct Git branch creation/switching and explicit-path staging/commits in
+the main checkout. Check clean state and absence of active source users before
+switching branches. Freeze source for review/QA.
 Verify actual root, branch and dirty/staged paths. Never git add .;
 stage exact owned paths and use conventional messages with task/packet identity.
 You may push task/, feature/, fix/ and infra/ branches to same-named origin refs.
 Human approval is mandatory for EVERY merge/push into dev; preparing a candidate
 or an agent-generated approval file does not establish that approval. Prefer a
 protected GitHub PR with human review tied to current head, passing checks and
-current tested dev base. No agent bypass identity. The CLI deliberately refuses
+current tested dev base. No agent bypass identity. Branch protection refuses
 protected-ref writes; do not route around it. Primary hands dev integration to
 the human-approved GitHub mechanism. main is human-only production promotion.
 Do not mutate source, resolve conflicts blindly, force-push, rewrite published

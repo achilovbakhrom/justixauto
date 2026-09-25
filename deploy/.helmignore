@@ -1,0 +1,6 @@
+# Not part of the chart
+local/
+README.md
+AGENTS.md
+CLAUDE.md
+.helmignore

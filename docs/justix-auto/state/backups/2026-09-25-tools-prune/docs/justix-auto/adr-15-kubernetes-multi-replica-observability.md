@@ -10,14 +10,14 @@
 | Concern | Choice |
 |---|---|
 | Image | One image (`Dockerfile`): API, `migrate` and the four built web apps; distroless `nonroot`, base images pinned by digest |
-| Packaging | Helm chart `deploy/` (moved from `deploy/helm/justixauto` 2026-09-25), `values-dev.yaml` (non-production servers) and `values-prod.yaml` (template; human-only rollout) |
+| Packaging | Helm chart `deploy/helm/justixauto`, `values-dev.yaml` (kind) and `values-prod.yaml` (template; human-only rollout) |
 | Replicas | 2 by default, rolling update `maxUnavailable: 0`, PodDisruptionBudget `minAvailable: 1`, topology spread over nodes and zones, optional HPA |
 | Migrations | Helm `pre-install,pre-upgrade` Job running `migrate up` before new pods start |
 | Probes | `/healthz` liveness/startup (process), `/readyz` readiness (database ping) |
 | Shutdown | `SHUTDOWN_DRAIN` keeps serving after SIGTERM while endpoints update, then graceful Echo shutdown within the 30 s grace period |
 | Files | `FILE_STORAGE=s3` is mandatory with more than one replica (chart guard) |
 | Telemetry | OpenTelemetry SDK in the API: OTLP/HTTP traces (span per request and per SQL statement) and metrics (`http.server.request.duration`); JSON logs on stdout with `trace_id`/`span_id` |
-| Local stack | Removed 2026-09-25 by user decision: no local Kubernetes. Backend and frontend run on the laptop; third-party services run from `deploy/local/compose.yaml` (was: kind cluster with PostgreSQL, MinIO and an observability stack) |
+| Local stack | kind cluster `justixauto` (`infra/kind/up.sh`): PostgreSQL 18.6, MinIO, OpenTelemetry Collector (DaemonSet: OTLP + pod stdout), Loki (logs), Tempo (traces), Prometheus (metrics via remote write), Grafana (datasources linked logs ↔ traces, API dashboard) |
 
 ## Multi-replica review (2026-09-23)
 

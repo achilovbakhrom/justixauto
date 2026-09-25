@@ -1,6 +1,6 @@
 # JustixAuto: one image with the API, the migration and bootstrap commands and
 # the four built web apps (served by the API from WEB_DIR).
-# Base images are pinned by digest (deploy/AGENTS.md: immutable references).
+# Base images are pinned by digest (infra/AGENTS.md: immutable references).
 
 FROM node:24.21.0-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS web
 WORKDIR /src
