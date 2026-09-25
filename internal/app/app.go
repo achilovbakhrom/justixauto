@@ -26,11 +26,8 @@ type Config struct {
 	Files   documents.Storage
 	Cookie  identity.CookieConfig
 	Session identity.SessionConfig
-	MFAKey  []byte
-	// MFADisabled switches two-factor authentication off (local development).
-	MFADisabled bool
-	Now         func() time.Time // nil = time.Now
-	Log         *slog.Logger
+	Now     func() time.Time // nil = time.Now
+	Log     *slog.Logger
 	// Middleware runs on every request after the request ID (telemetry).
 	Middleware []echo.MiddlewareFunc
 }
@@ -46,7 +43,7 @@ func New(db *gorm.DB, cfg Config) (*echo.Echo, *identity.Module, error) {
 	identity.RegisterPermissions(insurance.Permissions...)
 	identity.RegisterPermissions(financing.Permissions...)
 	identity.RegisterPermissions(documents.Permissions...)
-	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, MFAKey: cfg.MFAKey, Now: cfg.Now, MFADisabled: cfg.MFADisabled})
+	idm, err := identity.New(db, identity.Config{Cookie: cfg.Cookie, Session: cfg.Session, Now: cfg.Now})
 	if err != nil {
 		return nil, nil, err
 	}

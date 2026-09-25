@@ -7,14 +7,8 @@ package e2e
 import (
 	"bytes"
 	"context"
-	"crypto/hmac"
-	"crypto/rand"
-	"crypto/sha1"
-	"encoding/base32"
-	"encoding/binary"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"log/slog"
 	"mime/multipart"
@@ -43,8 +37,7 @@ type Clock struct {
 	t  time.Time
 }
 
-func (c *Clock) Now() time.Time      { c.mu.Lock(); defer c.mu.Unlock(); return c.t }
-func (c *Clock) Add(d time.Duration) { c.mu.Lock(); c.t = c.t.Add(d); c.mu.Unlock() }
+func (c *Clock) Now() time.Time { c.mu.Lock(); defer c.mu.Unlock(); return c.t }
 
 // DB migrates TEST_DATABASE_URL and empties all application tables. The test
 // is skipped when the variable is not set.
@@ -101,10 +94,8 @@ func New(t *testing.T) *Env {
 	t.Helper()
 	db := DB(t)
 	clock := &Clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
-	key := make([]byte, 32)
-	_, _ = rand.Read(key)
 	e, idm, err := app.New(db, app.Config{
-		Files: fileStorage(t), Session: identity.DefaultSessionConfig, MFAKey: key, Now: clock.Now,
+		Files: fileStorage(t), Session: identity.DefaultSessionConfig, Now: clock.Now,
 		Log: slog.New(slog.NewTextHandler(io.Discard, nil)),
 	})
 	if err != nil {
@@ -120,7 +111,6 @@ type Client struct {
 	env  *Env
 	http *http.Client
 	csrf string
-	totp []byte
 	// UserID and CompanyID are filled by the helpers that create them.
 	UserID, CompanyID string
 }
@@ -187,45 +177,14 @@ func Expect(t *testing.T, r Response, status int, code ...string) {
 	}
 }
 
-// SignIn logs in and answers the MFA challenge when the client has TOTP.
+// SignIn logs in with login and password.
 func (c *Client) SignIn(login, password string) Response {
-	r := c.Do(http.MethodPost, "/identity/session/login", map[string]string{"login": login, "password": password})
-	if id, ok := r.Data()["challengeId"].(string); ok {
-		r = c.Do(http.MethodPost, "/identity/session/mfa/verify", map[string]string{"challengeId": id, "code": c.code()})
-	}
-	return r
-}
-
-// EnrollMFA sets up TOTP for the signed-in user.
-func (c *Client) EnrollMFA() {
-	t := c.env.T
-	t.Helper()
-	start := c.Do(http.MethodPost, "/identity/session/mfa/enrollment", nil)
-	Expect(t, start, http.StatusCreated)
-	secret, err := base32.StdEncoding.WithPadding(base32.NoPadding).DecodeString(start.Data()["secret"].(string))
-	if err != nil {
-		t.Fatal(err)
-	}
-	c.totp = secret
-	Expect(t, c.Do(http.MethodPost, "/identity/session/mfa/enrollment/"+start.Data()["enrollmentId"].(string)+"/confirm",
-		map[string]string{"code": c.code()}), http.StatusOK)
-}
-
-// code returns an unused TOTP code by moving the clock to the next 30s step.
-func (c *Client) code() string {
-	c.env.Clock.Add(30 * time.Second)
-	var msg [8]byte
-	binary.BigEndian.PutUint64(msg[:], uint64(c.env.Clock.Now().Unix()/30))
-	mac := hmac.New(sha1.New, c.totp)
-	mac.Write(msg[:])
-	sum := mac.Sum(nil)
-	o := sum[len(sum)-1] & 0x0f
-	return fmt.Sprintf("%06d", (binary.BigEndian.Uint32(sum[o:o+4])&0x7fffffff)%1_000_000)
+	return c.Do(http.MethodPost, "/identity/session/login", map[string]string{"login": login, "password": password})
 }
 
 const adminPassword = "admin-password-123"
 
-// Admin bootstraps the platform administrator (once per Env) with MFA.
+// Admin bootstraps and signs in the platform administrator (once per Env).
 func (e *Env) Admin() *Client {
 	t := e.T
 	t.Helper()
@@ -237,7 +196,6 @@ func (e *Env) Admin() *Client {
 	}
 	admin := e.Browser()
 	Expect(t, admin.SignIn("admin", adminPassword), http.StatusOK)
-	admin.EnrollMFA()
 	return admin
 }
 

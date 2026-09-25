@@ -10,8 +10,8 @@ const (
 	PermCRM            = "retail.crm.manage"
 	PermListings       = "retail.listings.manage"
 	PermDeals          = "retail.deals.manage"
-	PermPaymentsAccept = "retail.payments.accept" // sensitive: needs fresh MFA
-	PermDeliver        = "retail.deals.deliver"   // sensitive: needs fresh MFA
+	PermPaymentsAccept = "retail.payments.accept"
+	PermDeliver        = "retail.deals.deliver"
 )
 
 // Permissions are registered in the identity catalog at startup.
@@ -20,6 +20,6 @@ var Permissions = []auth.PermissionInfo{
 	{Key: PermCRM, Scope: "company", Assignable: true},
 	{Key: PermListings, Scope: "company", Assignable: true},
 	{Key: PermDeals, Scope: "company", Assignable: true},
-	{Key: PermPaymentsAccept, Scope: "company", RequiresMFA: true, Assignable: true},
-	{Key: PermDeliver, Scope: "company", RequiresMFA: true, Assignable: true},
+	{Key: PermPaymentsAccept, Scope: "company", Assignable: true},
+	{Key: PermDeliver, Scope: "company", Assignable: true},
 }

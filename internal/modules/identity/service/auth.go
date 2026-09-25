@@ -35,20 +35,10 @@ var DefaultSessionConfig = SessionConfig{
 type Auth struct {
 	Deps
 	cfg SessionConfig
-	box *secretBox // encrypts MFA secrets
-	// mfaOff: two-factor authentication is switched off (Config.MFADisabled).
-	mfaOff bool
 }
 
-// NewAuth builds the auth service. mfaKey must be 32 bytes: it encrypts MFA
-// secrets at rest and never leaves this constructor.
-func NewAuth(d Deps, cfg SessionConfig, mfaKey []byte, mfaDisabled bool) (*Auth, error) {
-	box, err := newSecretBox(mfaKey)
-	if err != nil {
-		return nil, err
-	}
-	return &Auth{Deps: d, cfg: cfg, box: box, mfaOff: mfaDisabled}, nil
-}
+// NewAuth builds the auth service.
+func NewAuth(d Deps, cfg SessionConfig) *Auth { return &Auth{Deps: d, cfg: cfg} }
 
 // AbsoluteTimeout returns how long a session cookie lives once issued.
 func (s *Auth) AbsoluteTimeout() time.Duration { return s.cfg.AbsoluteTimeout }
@@ -68,79 +58,51 @@ func tokenHash(token string) []byte {
 	return h[:]
 }
 
-// LoginResult is either a session (Token) or, for users with MFA, a pending
-// challenge (ChallengeID + ChallengeToken for the challenge cookie).
-type LoginResult struct {
-	Token          string
-	ChallengeID    string
-	ChallengeToken string
-}
-
-// Login verifies credentials. Without MFA it starts a session; with MFA it
-// creates a short-lived challenge that VerifyChallenge completes. A previous
-// session of the same browser (previousToken) is revoked, so the cookie
-// always rotates.
-func (s *Auth) Login(ctx context.Context, login, password, previousToken string) (*LoginResult, error) {
+// Login verifies credentials and starts a session, returning its raw cookie
+// token. A previous session of the same browser (previousToken) is revoked,
+// so the cookie always rotates.
+func (s *Auth) Login(ctx context.Context, login, password, previousToken string) (string, error) {
 	now := s.clock()
 	u, err := s.store.Users().FindByLogin(ctx, strings.TrimSpace(login))
 	if errors.Is(err, apperr.ErrNotFound) || (err == nil && u.PasswordHash == nil) {
 		_, _ = verifyPassword(password, dummyHash) // equalize timing
-		return nil, errInvalidCredentials
+		return "", errInvalidCredentials
 	}
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	if u.LockedUntil != nil && u.LockedUntil.After(now) {
-		return nil, &apperr.RateLimitedError{RetryAfter: u.LockedUntil.Sub(now)}
+		return "", &apperr.RateLimitedError{RetryAfter: u.LockedUntil.Sub(now)}
 	}
 	ok, err := verifyPassword(password, *u.PasswordHash)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	if !ok {
 		if err := s.recordFailure(ctx, u); err != nil {
-			return nil, err
+			return "", err
 		}
-		return nil, errInvalidCredentials
+		return "", errInvalidCredentials
 	}
 	if u.Status != model.UserActive {
-		return nil, apperr.New(apperr.ErrForbidden, "account_suspended", "this account is suspended")
-	}
-	if u.MFAEnabledAt != nil && !s.mfaOff {
-		// Failed-attempt counter resets only after the second factor, so
-		// repeated logins cannot bypass the lockout for code guessing.
-		token, err := randomToken()
-		if err != nil {
-			return nil, err
-		}
-		ch := &model.MFAChallenge{
-			ID: uuid.NewString(), UserID: u.ID, TokenHash: tokenHash(token),
-			CreatedAt: now, ExpiresAt: now.Add(mfaChallengeTTL),
-		}
-		if err := s.store.MFA().CreateChallenge(ctx, ch); err != nil {
-			return nil, err
-		}
-		return &LoginResult{ChallengeID: ch.ID, ChallengeToken: token}, nil
+		return "", apperr.New(apperr.ErrForbidden, "account_suspended", "this account is suspended")
 	}
 	if err := s.store.Users().SetLoginState(ctx, u.ID, 0, nil); err != nil {
-		return nil, err
+		return "", err
 	}
-	token, _, err := s.startSession(ctx, u, previousToken, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &LoginResult{Token: token}, nil
+	token, _, err := s.startSession(ctx, u, previousToken)
+	return token, err
 }
 
-// recordFailure counts a failed password or second factor and locks the
+// recordFailure counts a failed password and locks the
 // account for a while after too many in a row.
 func (s *Auth) recordFailure(ctx context.Context, u *model.User) error {
 	return s.store.Users().RecordFailure(ctx, u.ID, s.cfg.LockoutThreshold, s.clock().Add(s.cfg.LockoutDuration))
 }
 
 // startSession creates a session and returns its raw cookie token, which is
-// never stored. mfaAt marks a session that passed the second factor.
-func (s *Auth) startSession(ctx context.Context, u *model.User, previousToken string, mfaAt *time.Time) (string, *model.Session, error) {
+// never stored.
+func (s *Auth) startSession(ctx context.Context, u *model.User, previousToken string) (string, *model.Session, error) {
 	now := s.clock()
 	token, err := randomToken()
 	if err != nil {
@@ -152,7 +114,7 @@ func (s *Auth) startSession(ctx context.Context, u *model.User, previousToken st
 	}
 	sess := &model.Session{
 		ID: uuid.NewString(), TokenHash: tokenHash(token), CSRFToken: csrf, UserID: u.ID,
-		BranchScopeMode: model.ScopeAll, BranchIDs: []string{}, ContextRevision: 1, MFAAuthenticatedAt: mfaAt,
+		BranchScopeMode: model.ScopeAll, BranchIDs: []string{}, ContextRevision: 1,
 		CreatedAt: now, LastSeenAt: now, ExpiresAt: now.Add(s.cfg.AbsoluteTimeout),
 	}
 	err = s.store.InTx(ctx, func(st Store) error {
@@ -204,8 +166,6 @@ func (s *Auth) Authenticate(ctx context.Context, token string) (*auth.Principal,
 	p := &auth.Principal{
 		UserID: u.ID, SessionID: sess.ID, Permissions: map[string]bool{},
 		ContextRevision: sess.ContextRevision, BranchScope: auth.BranchScope{Mode: model.ScopeAll, BranchIDs: []string{}},
-		MFAEnrolled: u.MFAEnabledAt != nil, MFARequired: s.mfaRequired(),
-		MFAFresh:               sess.MFAAuthenticatedAt != nil && now.Sub(*sess.MFAAuthenticatedAt) <= MFAFreshness,
 		PasswordChangeRequired: u.PasswordChangeRequired,
 	}
 	for _, r := range roles {
@@ -240,7 +200,6 @@ type SessionView struct {
 	User                SessionUser         `json:"user"`
 	Roles               []RoleRef           `json:"roles"`
 	Permissions         []string            `json:"permissions"`
-	MFA                 MFAView             `json:"mfa"`
 	Context             ContextView         `json:"context"`
 	AccessibleCompanies []AccessibleCompany `json:"accessibleCompanies"`
 	Setup               SetupView           `json:"setup"`
@@ -256,12 +215,6 @@ type SessionUser struct {
 type RoleRef struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
-}
-
-type MFAView struct {
-	Enrolled        bool       `json:"enrolled"`
-	Disabled        bool       `json:"disabled"` // two-factor authentication is switched off on this server
-	AuthenticatedAt *time.Time `json:"authenticatedAt,omitempty"`
 }
 
 type ContextView struct {
@@ -282,7 +235,7 @@ type SetupView struct {
 	PartnershipRequiredForB2B bool   `json:"partnershipRequiredForB2B"`
 }
 
-func (s *Auth) View(ctx context.Context, p *auth.Principal, sess *model.Session) (*SessionView, error) {
+func (s *Auth) View(ctx context.Context, p *auth.Principal) (*SessionView, error) {
 	u, err := s.store.Users().Get(ctx, p.UserID)
 	if err != nil {
 		return nil, err
@@ -309,7 +262,6 @@ func (s *Auth) View(ctx context.Context, p *auth.Principal, sess *model.Session)
 		User:                SessionUser{ID: u.ID, DisplayName: u.DisplayName, Status: u.Status, PasswordChangeRequired: u.PasswordChangeRequired},
 		Roles:               make([]RoleRef, len(roles)),
 		Permissions:         p.PermissionList(),
-		MFA:                 MFAView{Enrolled: u.MFAEnabledAt != nil, Disabled: s.mfaOff, AuthenticatedAt: sess.MFAAuthenticatedAt},
 		Context:             ContextView{Revision: revision(p.ContextRevision), BranchScope: p.BranchScope},
 		AccessibleCompanies: make([]AccessibleCompany, len(companies)),
 		Setup:               SetupView{Next: "none", PartnershipRequiredForB2B: true},

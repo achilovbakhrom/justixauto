@@ -134,7 +134,6 @@ func TestCashSaleToDelivery(t *testing.T) {
 
 	rev := func() string { return c.Do(http.MethodGet, "/retail/deals/"+id, nil).Revision() }
 	now := s.e.Clock.Now().Format(time.RFC3339)
-	c.EnrollMFA() // payment acceptance and delivery are sensitive
 	expect(t, c.Do(http.MethodPost, "/retail/deals/"+id+"/deliveries", map[string]string{"occurredAt": now}, ifMatch(rev())...), http.StatusConflict, "delivery_not_ready")
 	record := func(files ...string) e2e.Response {
 		return c.Do(http.MethodPost, "/retail/deals/"+id+"/contract-records", map[string]any{"signedOn": "2026-09-22", "reference": "DKP-17", "bindingIds": files}, ifMatch(rev())...)
@@ -179,7 +178,6 @@ func TestSchemeGatesAndCancellation(t *testing.T) {
 	s := newShop(t)
 	c := s.c
 	cust := s.customer(t, "Rustam")
-	c.EnrollMFA()
 	create := func(vehicle, scheme string) string {
 		d := c.Do(http.MethodPost, "/retail/deals", map[string]any{
 			"customerId": cust, "vehicleId": vehicle, "branchId": s.branch,

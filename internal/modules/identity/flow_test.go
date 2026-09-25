@@ -3,8 +3,6 @@ package identity
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
-	"encoding/base32"
 	"encoding/json"
 	"errors"
 	"io"
@@ -14,7 +12,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"slices"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -23,7 +20,6 @@ import (
 	"gorm.io/gorm"
 
 	"justixauto/internal/modules/identity/model"
-	"justixauto/internal/modules/identity/service"
 	"justixauto/internal/pkg/apperr"
 	"justixauto/internal/pkg/database"
 	"justixauto/internal/pkg/httpx"
@@ -83,9 +79,7 @@ type env struct {
 func newEnv(t *testing.T) *env {
 	db := openTestDB(t)
 	clk := &clock{t: time.Date(2026, 9, 22, 9, 0, 0, 0, time.UTC)}
-	key := make([]byte, 32)
-	_, _ = rand.Read(key)
-	mod, err := New(db, Config{Cookie: CookieConfig{Secure: false}, Session: DefaultSessionConfig, MFAKey: key, Now: clk.now})
+	mod, err := New(db, Config{Cookie: CookieConfig{Secure: false}, Session: DefaultSessionConfig, Now: clk.now})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +95,6 @@ type client struct {
 	env  *env
 	http *http.Client
 	csrf string
-	totp []byte
 }
 
 func (e *env) browser() *client {
@@ -155,15 +148,6 @@ func (c *client) login(login, password string) response {
 	return c.do(http.MethodPost, "/session/login", map[string]string{"login": login, "password": password})
 }
 
-// signIn logs in and, for users with MFA, answers the challenge.
-func (c *client) signIn(login, password string) response {
-	r := c.login(login, password)
-	if id, ok := r.data()["challengeId"].(string); ok {
-		r = c.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": c.code()})
-	}
-	return r
-}
-
 func expect(t *testing.T, r response, status int, code ...string) {
 	t.Helper()
 	if r.status != status || (len(code) > 0 && r.code() != code[0]) {
@@ -185,36 +169,7 @@ func (e *env) bootstrap() *client {
 	}
 	admin := e.browser()
 	expect(e.t, admin.login("admin", adminPassword), http.StatusOK)
-	admin.enrollMFA()
 	return admin
-}
-
-// enrollMFA sets up TOTP for the signed-in user and remembers the secret.
-func (c *client) enrollMFA() []string {
-	t := c.env.t
-	t.Helper()
-	start := c.do(http.MethodPost, "/session/mfa/enrollment", nil)
-	expect(t, start, http.StatusCreated)
-	secret, err := base32.StdEncoding.WithPadding(base32.NoPadding).DecodeString(start.data()["secret"].(string))
-	if err != nil {
-		t.Fatal(err)
-	}
-	c.totp = secret
-	confirm := c.do(http.MethodPost, "/session/mfa/enrollment/"+start.data()["enrollmentId"].(string)+"/confirm",
-		map[string]string{"code": c.code()})
-	expect(t, confirm, http.StatusOK)
-	var codes []string
-	for _, rc := range confirm.data()["recoveryCodes"].([]any) {
-		codes = append(codes, rc.(string))
-	}
-	return codes
-}
-
-// code returns a fresh TOTP code, moving the clock to the next 30s step so
-// the code has not been used yet.
-func (c *client) code() string {
-	c.env.clock.add(service.TOTPStep * time.Second)
-	return service.TOTPCode(c.totp, c.env.clock.now())
 }
 
 func company(name, registration string) map[string]any {
@@ -273,7 +228,7 @@ func TestLoginSessionAndCSRF(t *testing.T) {
 	expect(t, admin.do(http.MethodGet, "/session", nil), http.StatusUnauthorized)
 
 	// Logout revokes the session.
-	expect(t, admin.signIn("admin", adminPassword), http.StatusOK)
+	expect(t, admin.login("admin", adminPassword), http.StatusOK)
 	expect(t, admin.do(http.MethodPost, "/session/logout", nil), http.StatusNoContent)
 	expect(t, admin.do(http.MethodGet, "/session", nil), http.StatusUnauthorized)
 }
@@ -423,74 +378,15 @@ func TestUsersRolesAndGuards(t *testing.T) {
 	expect(t, insurer.login("safe", "provider-password-1"), http.StatusOK)
 }
 
-func TestMFA(t *testing.T) {
-	e := newEnv(t)
-	_, err := e.mod.Users.Bootstrap(context.Background(), BootstrapInput{
-		DisplayName: "Platform Admin", Login: "admin", Email: "admin@justix.test", Password: adminPassword,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	admin := e.browser()
-	expect(t, admin.login("admin", adminPassword), http.StatusOK)
-
-	// Sensitive permissions need MFA; reading the directory does not.
-	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusForbidden, "mfa_enrollment_required")
-	expect(t, admin.do(http.MethodGet, "/admin/companies", nil), http.StatusOK)
-
-	recovery := admin.enrollMFA()
-	if len(recovery) != service.RecoveryCodeCount {
-		t.Fatalf("recovery codes: %v", recovery)
-	}
-	s := admin.do(http.MethodGet, "/session", nil)
-	if s.data()["mfa"].(map[string]any)["enrolled"] != true {
-		t.Fatalf("mfa view: %v", s.data()["mfa"])
-	}
-	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusOK)
-	expect(t, admin.do(http.MethodPost, "/session/mfa/enrollment", nil), http.StatusConflict, "mfa_already_enrolled")
-
-	// The second factor goes stale; step-up renews it. A code works only once.
-	e.clock.add(service.MFAFreshness + time.Second)
-	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusForbidden, "mfa_required")
-	code := admin.code()
-	expect(t, admin.do(http.MethodPost, "/session/mfa/step-up", map[string]string{"code": code}), http.StatusOK)
-	expect(t, admin.do(http.MethodPost, "/session/mfa/step-up", map[string]string{"code": code}), http.StatusUnauthorized, "invalid_mfa_code")
-	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusOK)
-
-	// Login now requires the second factor; the challenge is bound to the browser.
-	expect(t, admin.do(http.MethodPost, "/session/logout", nil), http.StatusNoContent)
-	ch := admin.login("admin", adminPassword)
-	expect(t, ch, http.StatusOK)
-	id, _ := ch.data()["challengeId"].(string)
-	if id == "" || ch.data()["required"] != "mfa" {
-		t.Fatalf("challenge: %v", ch.body)
-	}
-	expect(t, admin.do(http.MethodGet, "/session", nil), http.StatusUnauthorized)
-	thief := e.browser() // same challenge ID without the challenge cookie
-	thief.totp = admin.totp
-	expect(t, thief.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": thief.code()}), http.StatusUnauthorized, "invalid_mfa_code")
-	expect(t, admin.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": "000000"}), http.StatusUnauthorized, "invalid_mfa_code")
-	expect(t, admin.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": admin.code()}), http.StatusOK)
-	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusOK) // login with MFA is fresh
-	expect(t, admin.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": admin.code()}), http.StatusUnauthorized)
-
-	// A recovery code replaces the authenticator once.
-	expect(t, admin.do(http.MethodPost, "/session/logout", nil), http.StatusNoContent)
-	id = admin.login("admin", adminPassword).data()["challengeId"].(string)
-	expect(t, admin.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": strings.ToUpper(recovery[0])}), http.StatusOK)
-	expect(t, admin.do(http.MethodPost, "/session/mfa/step-up", map[string]string{"code": recovery[0]}), http.StatusUnauthorized, "invalid_mfa_code")
-}
-
-func TestMFACodeGuessingLocksAccount(t *testing.T) {
+// Sensitive actions work right after the password: there is no second factor.
+func TestNoSecondFactor(t *testing.T) {
 	e := newEnv(t)
 	admin := e.bootstrap()
-	expect(t, admin.do(http.MethodPost, "/session/logout", nil), http.StatusNoContent)
-	// Each login gives a new challenge, but wrong codes still count toward lockout.
-	for i := 0; i < DefaultSessionConfig.LockoutThreshold; i++ {
-		id := admin.login("admin", adminPassword).data()["challengeId"].(string)
-		expect(t, admin.do(http.MethodPost, "/session/mfa/verify", map[string]string{"challengeId": id, "code": "000000"}), http.StatusUnauthorized)
+	expect(t, admin.do(http.MethodGet, "/admin/users", nil), http.StatusOK)
+	if _, ok := admin.do(http.MethodGet, "/session", nil).data()["mfa"]; ok {
+		t.Fatal("session view still reports MFA")
 	}
-	expect(t, admin.login("admin", adminPassword), http.StatusTooManyRequests, "rate_limited")
+	expect(t, admin.do(http.MethodPost, "/session/mfa/enrollment", nil), http.StatusNotFound)
 }
 
 func TestSellerOnboardingAndAdminSetPasswords(t *testing.T) {

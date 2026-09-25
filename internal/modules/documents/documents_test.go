@@ -35,14 +35,10 @@ func TestUploadAccessAndSensitivity(t *testing.T) {
 		t.Fatalf("foreign download: %d", status)
 	}
 
-	// Sensitive files need a fresh second factor to download.
+	// Sensitive files download with the permission alone.
 	sens := a.Upload("finance-document", "passport.pdf", e2e.PDF)
 	e2e.Expect(t, sens, http.StatusCreated)
-	if status, _ := a.Raw("/documents/files/" + sens.Data()["id"].(string) + "/content"); status != http.StatusForbidden {
-		t.Fatalf("sensitive download without MFA: %d", status)
-	}
-	a.EnrollMFA()
 	if status, _ := a.Raw("/documents/files/" + sens.Data()["id"].(string) + "/content"); status != http.StatusOK {
-		t.Fatalf("sensitive download with MFA: %d", status)
+		t.Fatalf("sensitive download: %d", status)
 	}
 }

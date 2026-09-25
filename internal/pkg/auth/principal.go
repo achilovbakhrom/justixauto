@@ -21,12 +21,10 @@ type BranchScope struct {
 // PermissionInfo is one entry of the permission catalog. Modules declare their
 // own keys (`<module>.<resource>.<action>`); the identity module owns the
 // catalog. Assignable=false keys can only be held through a system role.
-// RequiresMFA marks sensitive actions that need a recent second factor.
 type PermissionInfo struct {
-	Key         string `json:"key"`
-	Scope       string `json:"scope"` // "platform" or "company"
-	RequiresMFA bool   `json:"requiresMfa"`
-	Assignable  bool   `json:"assignable"`
+	Key        string `json:"key"`
+	Scope      string `json:"scope"` // "platform" or "company"
+	Assignable bool   `json:"assignable"`
 }
 
 // Principal is the signed-in user as seen by the current request.
@@ -39,10 +37,6 @@ type Principal struct {
 	CompanyID       string
 	ContextRevision int64
 	BranchScope     BranchScope
-	// MFA: permissions in MFARequired are usable only with a recent second factor.
-	MFAEnrolled bool
-	MFAFresh    bool
-	MFARequired map[string]bool
 	// PasswordChangeRequired limits the session to changing the password.
 	PasswordChangeRequired bool
 }
@@ -50,24 +44,12 @@ type Principal struct {
 // Has reports whether the user's roles grant the permission.
 func (p *Principal) Has(permission string) bool { return p != nil && p.Permissions[permission] }
 
-// Can reports whether the permission is usable now: granted and, for
-// sensitive permissions, backed by a recent second factor.
-func (p *Principal) Can(permission string) bool {
-	return p.Has(permission) && (!p.MFARequired[permission] || p.MFAFresh)
-}
-
-// Allow returns nil if the permission is usable now, otherwise the reason.
+// Allow returns nil if the user holds the permission, otherwise a 403.
 func (p *Principal) Allow(permission string) error {
-	switch {
-	case !p.Has(permission):
+	if !p.Has(permission) {
 		return apperr.New(apperr.ErrForbidden, "permission_denied", "missing permission "+permission)
-	case p.Can(permission):
-		return nil
-	case !p.MFAEnrolled:
-		return apperr.New(apperr.ErrForbidden, "mfa_enrollment_required", "set up two-factor authentication to use "+permission)
-	default:
-		return apperr.New(apperr.ErrForbidden, "mfa_required", "confirm with your two-factor code to use "+permission)
 	}
+	return nil
 }
 
 // PermissionList returns the permissions sorted, for responses.
@@ -98,8 +80,8 @@ func MustGet(c echo.Context) (*Principal, error) {
 	return nil, apperr.ErrUnauthenticated
 }
 
-// Require rejects anonymous callers (401) and callers that cannot use all of
-// the permissions now (403: permission_denied, mfa_enrollment_required, mfa_required).
+// Require rejects anonymous callers (401) and callers missing any of the
+// permissions (403 permission_denied).
 func Require(permissions ...string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

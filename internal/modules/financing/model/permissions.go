@@ -17,7 +17,7 @@ var Permissions = []auth.PermissionInfo{
 	{Key: PermRead, Scope: "company", Assignable: true},
 	{Key: PermPrograms, Scope: "company", Assignable: true},
 	{Key: PermApply, Scope: "company", Assignable: true},
-	{Key: PermAgree, Scope: "company", RequiresMFA: true, Assignable: true},
+	{Key: PermAgree, Scope: "company", Assignable: true},
 	{Key: PermReview, Scope: "company", Assignable: true},
-	{Key: PermDecide, Scope: "company", RequiresMFA: true, Assignable: true},
+	{Key: PermDecide, Scope: "company", Assignable: true},
 }

@@ -206,7 +206,7 @@ func (s *Company) visible(ctx context.Context, actor *auth.Principal, id string)
 	if err := validID(id); err != nil {
 		return nil, err
 	}
-	if !actor.Can(model.PermPlatformDirectoryRead) {
+	if !actor.Has(model.PermPlatformDirectoryRead) {
 		member, err := s.isMember(ctx, s.store, actor.UserID, id)
 		if err != nil {
 			return nil, err

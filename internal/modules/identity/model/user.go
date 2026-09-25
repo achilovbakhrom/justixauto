@@ -23,13 +23,9 @@ type User struct {
 	StatusReason           string
 	FailedLogins           int
 	LockedUntil            *time.Time
-	// MFA fields change only through MFARepository, never through Update.
-	MFASecretEnc   []byte     `gorm:"column:mfa_secret_enc"`
-	MFAEnabledAt   *time.Time `gorm:"column:mfa_enabled_at"`
-	MFALastCounter int64      `gorm:"column:mfa_last_counter"`
-	Version        int64
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	Version                int64
+	CreatedAt              time.Time
+	UpdatedAt              time.Time
 }
 
 func (User) TableName() string { return "identity.users" }

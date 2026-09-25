@@ -373,8 +373,7 @@ type SetPasswordInput struct {
 
 // SetPassword lets an administrator give a pending user credentials, or reset
 // a forgotten password. The user must choose a new password at the next
-// sign-in; existing sessions end. Two-factor settings are not touched, so this
-// never bypasses MFA.
+// sign-in; existing sessions end.
 func (s *User) SetPassword(ctx context.Context, actor *auth.Principal, id string, expected int64, in SetPasswordInput) (*UserDetail, error) {
 	if err := validID(id); err != nil {
 		return nil, err

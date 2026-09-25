@@ -41,26 +41,6 @@ func (c CookieConfig) set(ctx echo.Context, token string, maxAge int) {
 
 func (c CookieConfig) token(ctx echo.Context) string { return cookieValue(ctx, c.name()) }
 
-// The MFA challenge cookie holds no authority on its own; it only binds a
-// pending challenge to the browser that entered the password.
-func (c CookieConfig) challengeName() string {
-	if c.Secure {
-		return "__Host-justix_mfa_challenge"
-	}
-	return "justix_mfa_challenge"
-}
-
-func (c CookieConfig) setChallenge(ctx echo.Context, token string, maxAge int) {
-	ctx.SetCookie(&http.Cookie{ //nolint:gosec // Secure comes from CookieConfig.Secure (config-driven, true outside local dev); HttpOnly/SameSite are set below
-		Name: c.challengeName(), Value: token, Path: "/", MaxAge: maxAge,
-		Secure: c.Secure, HttpOnly: true, SameSite: http.SameSiteStrictMode,
-	})
-}
-
-func (c CookieConfig) challengeToken(ctx echo.Context) string {
-	return cookieValue(ctx, c.challengeName())
-}
-
 func cookieValue(ctx echo.Context, name string) string {
 	cookie, err := ctx.Cookie(name)
 	if err != nil {
@@ -102,7 +82,7 @@ func (a *Authenticator) originAllowed(c echo.Context) bool {
 }
 
 // Middleware authenticates requests. csrfExempt lists route suffixes that run
-// before a session exists (login and MFA verification).
+// before a session exists (login).
 func (a *Authenticator) Middleware(csrfExempt ...string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {

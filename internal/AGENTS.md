@@ -36,10 +36,10 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
 - Auth: the identity module authenticates every `/api/v1` request. Read the
   caller with `auth.Get(c)`; protect routes with `auth.Require(perm...)` and
   company-scoped routes with `auth.RequireCompany()`. In services use
-  `actor.Allow(perm)` (returns the precise 403 reason) rather than `Can`.
+  `actor.Allow(perm)` (returns the 403) or `actor.Has(perm)` for a boolean.
   Add new permission keys to the identity catalog
-  (`<module>.<resource>.<action>`) and mark `RequiresMFA` for sensitive ones
-  (decisions, terms, payments, fulfillment, sensitive downloads).
+  (`<module>.<resource>.<action>`). There is no second factor (user decision
+  2026-09-24): a held permission is enough, sensitive actions included.
 - Idempotency lives in the data, never in request keys: creates carry a unique
   business key (409 on repeat), actions check the state they transition from,
   existing-resource writes use If-Match (412). Background jobs run on one
@@ -55,5 +55,5 @@ One binary (`cmd/api`), one PostgreSQL, Echo + GORM, SQL migrations in
   never imports a module or `internal/app`.
 - Tests: pure logic as in-package unit tests; behaviour end to end through
   HTTP in the external `<module>_test` package with `internal/e2e`
-  (full app, active seller companies, MFA admin, CSRF handled).
+  (full app, active seller companies, platform admin, CSRF handled).
   `bash tools/test-go.sh` starts a throwaway database.

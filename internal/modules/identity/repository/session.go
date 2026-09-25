@@ -45,11 +45,6 @@ func (r *SessionRepository) Touch(ctx context.Context, id string, at time.Time) 
 	return translate(r.db.WithContext(ctx).Model(&model.Session{}).Where("id = ?", id).Update("last_seen_at", at).Error)
 }
 
-// SetMFA records a successful second factor for the session.
-func (r *SessionRepository) SetMFA(ctx context.Context, id string, at time.Time) error {
-	return translate(r.db.WithContext(ctx).Model(&model.Session{}).Where("id = ?", id).Update("mfa_authenticated_at", at).Error)
-}
-
 func (r *SessionRepository) Revoke(ctx context.Context, id string, at time.Time) error {
 	return translate(r.db.WithContext(ctx).Model(&model.Session{}).
 		Where("id = ? AND revoked_at IS NULL", id).Update("revoked_at", at).Error)

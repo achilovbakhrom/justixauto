@@ -17,12 +17,10 @@ type Session struct {
 	BranchScopeMode string
 	BranchIDs       []string `gorm:"-"` // only for SELECTED scope
 	ContextRevision int64
-	// MFAAuthenticatedAt is the last successful second factor in this session.
-	MFAAuthenticatedAt *time.Time `gorm:"column:mfa_authenticated_at"`
-	CreatedAt          time.Time
-	LastSeenAt         time.Time
-	ExpiresAt          time.Time
-	RevokedAt          *time.Time
+	CreatedAt       time.Time
+	LastSeenAt      time.Time
+	ExpiresAt       time.Time
+	RevokedAt       *time.Time
 }
 
 func (Session) TableName() string { return "identity.sessions" }

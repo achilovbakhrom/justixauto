@@ -54,7 +54,6 @@ type userDTO struct {
 	Status       model.UserStatus  `json:"status"`
 	StatusReason string            `json:"statusReason"`
 	Roles        []service.RoleRef `json:"roles"`
-	MFAEnabled   bool              `json:"mfaEnabled"`
 	Revision     string            `json:"revision"`
 	CreatedAt    time.Time         `json:"createdAt"`
 }
@@ -63,7 +62,7 @@ func toUser(d *service.UserDetail) userDTO {
 	u := d.User
 	out := userDTO{
 		ID: u.ID, DisplayName: u.DisplayName, Email: u.Email, Login: u.Login, Status: u.Status,
-		StatusReason: u.StatusReason, Roles: make([]service.RoleRef, len(d.Roles)), MFAEnabled: u.MFAEnabledAt != nil, Revision: revision(u.Version), CreatedAt: u.CreatedAt,
+		StatusReason: u.StatusReason, Roles: make([]service.RoleRef, len(d.Roles)), Revision: revision(u.Version), CreatedAt: u.CreatedAt,
 	}
 	for i, r := range d.Roles {
 		out.Roles[i] = service.RoleRef{ID: r.ID, Name: r.Name}

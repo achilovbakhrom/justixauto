@@ -6415,7 +6415,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "signed in; when MFA is required, data is {challengeId, required: mfa} instead (then POST /identity/session/mfa/verify)",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
                         }
@@ -6463,191 +6463,6 @@
                         "CSRF": []
                     }
                 ]
-            }
-        },
-        "/identity/session/mfa/enrollment": {
-            "post": {
-                "tags": [
-                    "identity/session"
-                ],
-                "summary": "Start MFA enrollment",
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_Enrollment"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "CSRF": []
-                    }
-                ]
-            }
-        },
-        "/identity/session/mfa/enrollment/{id}/confirm": {
-            "post": {
-                "tags": [
-                    "identity/session"
-                ],
-                "summary": "Confirm MFA enrollment",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enrollment ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "code",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/modules_identity_handler.mfaCodeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_confirmEnrollmentResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "CSRF": []
-                    }
-                ]
-            }
-        },
-        "/identity/session/mfa/step-up": {
-            "post": {
-                "tags": [
-                    "identity/session"
-                ],
-                "summary": "Step-up MFA",
-                "parameters": [
-                    {
-                        "description": "code",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/modules_identity_handler.mfaCodeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "CSRF": []
-                    }
-                ]
-            }
-        },
-        "/identity/session/mfa/verify": {
-            "post": {
-                "tags": [
-                    "identity/session"
-                ],
-                "summary": "Verify MFA challenge",
-                "parameters": [
-                    {
-                        "description": "challenge response",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/modules_identity_handler.verifyMFARequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "422": {
-                        "description": "Unprocessable Entity",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
             }
         },
         "/identity/session/password": {
@@ -11162,7 +10977,6 @@
             "required": [
                 "assignable",
                 "key",
-                "requiresMfa",
                 "scope"
             ],
             "properties": {
@@ -11171,9 +10985,6 @@
                 },
                 "key": {
                     "type": "string"
-                },
-                "requiresMfa": {
-                    "type": "boolean"
                 },
                 "scope": {
                     "description": "\"platform\" or \"company\"",
@@ -11352,25 +11163,6 @@
                 }
             }
         },
-        "justixauto_internal_modules_identity_service.Enrollment": {
-            "type": "object",
-            "required": [
-                "enrollmentId",
-                "otpauthUri",
-                "secret"
-            ],
-            "properties": {
-                "enrollmentId": {
-                    "type": "string"
-                },
-                "otpauthUri": {
-                    "type": "string"
-                },
-                "secret": {
-                    "type": "string"
-                }
-            }
-        },
         "justixauto_internal_modules_identity_service.FirstAdminInput": {
             "type": "object",
             "required": [
@@ -11424,25 +11216,6 @@
                 },
                 "label": {
                     "type": "string"
-                }
-            }
-        },
-        "justixauto_internal_modules_identity_service.MFAView": {
-            "type": "object",
-            "required": [
-                "disabled",
-                "enrolled"
-            ],
-            "properties": {
-                "authenticatedAt": {
-                    "type": "string"
-                },
-                "disabled": {
-                    "description": "two-factor authentication is switched off on this server",
-                    "type": "boolean"
-                },
-                "enrolled": {
-                    "type": "boolean"
                 }
             }
         },
@@ -11572,7 +11345,6 @@
             "required": [
                 "accessibleCompanies",
                 "context",
-                "mfa",
                 "permissions",
                 "roles",
                 "setup",
@@ -11587,9 +11359,6 @@
                 },
                 "context": {
                     "$ref": "#/definitions/justixauto_internal_modules_identity_service.ContextView"
-                },
-                "mfa": {
-                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.MFAView"
                 },
                 "permissions": {
                     "type": "array",
@@ -12145,25 +11914,6 @@
                 }
             }
         },
-        "justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_Enrollment": {
-            "type": "object",
-            "required": [
-                "data",
-                "revision"
-            ],
-            "properties": {
-                "asOf": {
-                    "description": "AsOf is set on GET responses.",
-                    "type": "string"
-                },
-                "data": {
-                    "$ref": "#/definitions/justixauto_internal_modules_identity_service.Enrollment"
-                },
-                "revision": {
-                    "type": "string"
-                }
-            }
-        },
         "justixauto_internal_pkg_httpx.DataEnvelope-justixauto_internal_modules_identity_service_SessionView": {
             "type": "object",
             "required": [
@@ -12405,25 +12155,6 @@
                 },
                 "data": {
                     "$ref": "#/definitions/modules_identity_handler.companyDTO"
-                },
-                "revision": {
-                    "type": "string"
-                }
-            }
-        },
-        "justixauto_internal_pkg_httpx.DataEnvelope-modules_identity_handler_confirmEnrollmentResponse": {
-            "type": "object",
-            "required": [
-                "data",
-                "revision"
-            ],
-            "properties": {
-                "asOf": {
-                    "description": "AsOf is set on GET responses.",
-                    "type": "string"
-                },
-                "data": {
-                    "$ref": "#/definitions/modules_identity_handler.confirmEnrollmentResponse"
                 },
                 "revision": {
                     "type": "string"
@@ -14776,24 +14507,6 @@
                 }
             }
         },
-        "modules_identity_handler.confirmEnrollmentResponse": {
-            "type": "object",
-            "required": [
-                "enrolled",
-                "recoveryCodes"
-            ],
-            "properties": {
-                "enrolled": {
-                    "type": "boolean"
-                },
-                "recoveryCodes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "modules_identity_handler.createCompanyRequest": {
             "type": "object",
             "required": [
@@ -14862,17 +14575,6 @@
                     "type": "string"
                 },
                 "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity_handler.mfaCodeRequest": {
-            "type": "object",
-            "required": [
-                "code"
-            ],
-            "properties": {
-                "code": {
                     "type": "string"
                 }
             }
@@ -14975,7 +14677,6 @@
                 "email",
                 "id",
                 "login",
-                "mfaEnabled",
                 "revision",
                 "roles",
                 "status",
@@ -14997,9 +14698,6 @@
                 "login": {
                     "type": "string"
                 },
-                "mfaEnabled": {
-                    "type": "boolean"
-                },
                 "revision": {
                     "type": "string"
                 },
@@ -15013,21 +14711,6 @@
                     "$ref": "#/definitions/justixauto_internal_modules_identity_model.UserStatus"
                 },
                 "statusReason": {
-                    "type": "string"
-                }
-            }
-        },
-        "modules_identity_handler.verifyMFARequest": {
-            "type": "object",
-            "required": [
-                "challengeId",
-                "code"
-            ],
-            "properties": {
-                "challengeId": {
-                    "type": "string"
-                },
-                "code": {
                     "type": "string"
                 }
             }

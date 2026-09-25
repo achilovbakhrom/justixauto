@@ -82,13 +82,11 @@ func run(log *slog.Logger) error {
 		}
 	}
 	e, _, err := app.New(db, app.Config{
-		Files:       files,
-		Cookie:      identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
-		Session:     identity.DefaultSessionConfig,
-		MFAKey:      cfg.MFAKey,
-		MFADisabled: cfg.MFADisabled,
-		Log:         log,
-		Middleware:  append([]echo.MiddlewareFunc{drain.Middleware}, telemetry.HTTP(log)...),
+		Files:      files,
+		Cookie:     identity.CookieConfig{Secure: cfg.CookieSecure, AllowedOrigins: cfg.AllowedOrigins},
+		Session:    identity.DefaultSessionConfig,
+		Log:        log,
+		Middleware: append([]echo.MiddlewareFunc{drain.Middleware}, telemetry.HTTP(log)...),
 	})
 	if err != nil {
 		return err

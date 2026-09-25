@@ -62,10 +62,6 @@ func TestInsuranceDecisionUnlocksOwnInstallmentDelivery(t *testing.T) {
 	expect(t, act(insurer, "information-requests", "Need the customer's income statement", "3"), http.StatusOK)
 	expect(t, act(shop.Client, "responses", "Uploaded to the deal file", "4"), http.StatusOK)
 
-	// Deciding is sensitive: fresh MFA needed.
-	r := act(insurer, "approve", "Risk acceptable", "5")
-	expect(t, r, http.StatusForbidden, "mfa_enrollment_required")
-	insurer.EnrollMFA()
 	approved := act(insurer, "approve", "Risk acceptable", "5")
 	expect(t, approved, http.StatusOK)
 	h := approved.Data()["history"].([]any)
@@ -74,7 +70,6 @@ func TestInsuranceDecisionUnlocksOwnInstallmentDelivery(t *testing.T) {
 	}
 
 	// The approval is one of the own-installment delivery prerequisites.
-	shop.EnrollMFA()
 	rev := func() string { return shop.Do(http.MethodGet, "/retail/deals/"+dealID, nil).Revision() }
 	if shop.Do(http.MethodGet, "/retail/deals/"+dealID, nil).Data()["checklist"].(map[string]any)["insuranceApproved"] != true {
 		t.Fatal("checklist should show the approval")

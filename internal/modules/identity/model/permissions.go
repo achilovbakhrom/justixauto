@@ -26,17 +26,17 @@ const (
 type PermissionInfo = auth.PermissionInfo
 
 var Catalog = []PermissionInfo{
-	{Key: PermPlatformCompaniesCreate, Scope: "platform", RequiresMFA: true, Assignable: false},
-	{Key: PermPlatformCompaniesAccess, Scope: "platform", RequiresMFA: true, Assignable: false},
-	{Key: PermPlatformUsersManage, Scope: "platform", RequiresMFA: true, Assignable: false},
-	{Key: PermPlatformMembershipsManage, Scope: "platform", RequiresMFA: true, Assignable: false},
-	{Key: PermPlatformRolesManage, Scope: "platform", RequiresMFA: true, Assignable: false},
-	{Key: PermPlatformDirectoryRead, Scope: "platform", RequiresMFA: false, Assignable: true},
-	{Key: PermPlatformAuditRead, Scope: "platform", RequiresMFA: false, Assignable: true},
-	{Key: PermCompanyCreate, Scope: "company", RequiresMFA: false, Assignable: true},
-	{Key: PermCompanyEdit, Scope: "company", RequiresMFA: false, Assignable: true},
-	{Key: PermBranchesCreate, Scope: "company", RequiresMFA: false, Assignable: true},
-	{Key: PermBranchesEdit, Scope: "company", RequiresMFA: false, Assignable: true},
+	{Key: PermPlatformCompaniesCreate, Scope: "platform", Assignable: false},
+	{Key: PermPlatformCompaniesAccess, Scope: "platform", Assignable: false},
+	{Key: PermPlatformUsersManage, Scope: "platform", Assignable: false},
+	{Key: PermPlatformMembershipsManage, Scope: "platform", Assignable: false},
+	{Key: PermPlatformRolesManage, Scope: "platform", Assignable: false},
+	{Key: PermPlatformDirectoryRead, Scope: "platform", Assignable: true},
+	{Key: PermPlatformAuditRead, Scope: "platform", Assignable: true},
+	{Key: PermCompanyCreate, Scope: "company", Assignable: true},
+	{Key: PermCompanyEdit, Scope: "company", Assignable: true},
+	{Key: PermBranchesCreate, Scope: "company", Assignable: true},
+	{Key: PermBranchesEdit, Scope: "company", Assignable: true},
 }
 
 const (

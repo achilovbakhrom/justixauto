@@ -4,7 +4,7 @@
 //
 // This package is the only one other code imports; internal/modules/identity
 // splits into model (GORM models, enums, the permission catalog), repository
-// (GORM persistence), service (business rules, sessions, MFA) and handler
+// (GORM persistence), service (business rules, sessions) and handler
 // (Echo routes, the authentication middleware) layers, wired together here.
 package identity
 
@@ -53,11 +53,7 @@ func RegisterPermissions(perms ...auth.PermissionInfo) { model.RegisterPermissio
 type Config struct {
 	Cookie  CookieConfig
 	Session SessionConfig
-	MFAKey  []byte           // 32-byte key encrypting TOTP secrets at rest
 	Now     func() time.Time // nil = time.Now
-	// MFADisabled turns two-factor authentication off everywhere: no login
-	// challenge and no second factor for sensitive actions. Local use only.
-	MFADisabled bool
 }
 
 // storeAdapter bridges repository.Store (which cannot import service, since
@@ -72,7 +68,6 @@ func (a storeAdapter) Branches() service.BranchRepository        { return a.r.Br
 func (a storeAdapter) Memberships() service.MembershipRepository { return a.r.Memberships() }
 func (a storeAdapter) Sessions() service.SessionRepository       { return a.r.Sessions() }
 func (a storeAdapter) Audit() service.AuditRepository            { return a.r.Audit() }
-func (a storeAdapter) MFA() service.MFARepository                { return a.r.MFA() }
 
 func (a storeAdapter) InTx(ctx context.Context, fn func(service.Store) error) error {
 	return a.r.InTx(ctx, func(rs *repository.Store) error { return fn(storeAdapter{rs}) })
@@ -94,12 +89,8 @@ func New(db *gorm.DB, cfg Config) (*Module, error) {
 		cfg.Now = time.Now
 	}
 	d := service.NewDeps(storeAdapter{repository.NewStore(db)}, cfg.Now)
-	authSvc, err := service.NewAuth(d, cfg.Session, cfg.MFAKey, cfg.MFADisabled)
-	if err != nil {
-		return nil, err
-	}
 	m := &Module{
-		Auth:      authSvc,
+		Auth:      service.NewAuth(d, cfg.Session),
 		Companies: service.NewCompany(d),
 		Users:     service.NewUser(d),
 	}
@@ -114,7 +105,7 @@ func New(db *gorm.DB, cfg Config) (*Module, error) {
 // Authenticate must wrap the whole /api/v1 group so every module sees the
 // signed-in principal (auth.Get) and CSRF/Origin checks apply everywhere.
 func (m *Module) Authenticate() echo.MiddlewareFunc {
-	return m.authenticator.Middleware("/identity/session/login", "/identity/session/mfa/verify")
+	return m.authenticator.Middleware("/identity/session/login")
 }
 
 // Register mounts the identity routes under /api/v1/identity.

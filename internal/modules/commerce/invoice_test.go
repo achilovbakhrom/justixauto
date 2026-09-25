@@ -50,16 +50,10 @@ func TestInvoicesAndPaymentEvidence(t *testing.T) {
 	first, second := ev[0].(map[string]any), ev[1].(map[string]any)
 	expect(t, s.Do(http.MethodPost, "/commerce/invoices/"+id+"/void", map[string]string{"reason": "x"}, ifMatch("1")...), http.StatusConflict, "invoice_has_payments")
 
-	// Accepting a payment is sensitive: it needs a fresh second factor.
 	accept := func(e map[string]any, body map[string]any) (int, map[string]any) {
 		r := s.Do(http.MethodPost, "/commerce/payment-evidence/"+str(e, "id")+"/accept", body, ifMatch(str(e, "revision"))...)
 		return r.Status, r.Body
 	}
-	if st, body := accept(first, map[string]any{"confirmation": true}); st != http.StatusForbidden ||
-		body["error"].(map[string]any)["code"] != "mfa_enrollment_required" {
-		t.Fatalf("accept without MFA: %d %v", st, body)
-	}
-	s.EnrollMFA()
 	if st, body := accept(first, map[string]any{}); st != http.StatusUnprocessableEntity {
 		t.Fatalf("acceptance needs explicit confirmation: %d %v", st, body)
 	}

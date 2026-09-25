@@ -21,8 +21,8 @@ import (
 // and the spec must not list routes that no longer exist.
 func TestOpenAPICoversRoutes(t *testing.T) {
 	e, _, err := app.New(e2e.DB(t), app.Config{
-		Session: identity.DefaultSessionConfig, MFAKey: make([]byte, 32),
-		Log: slog.New(slog.NewTextHandler(io.Discard, nil)),
+		Session: identity.DefaultSessionConfig,
+		Log:     slog.New(slog.NewTextHandler(io.Discard, nil)),
 	})
 	if err != nil {
 		t.Fatal(err)

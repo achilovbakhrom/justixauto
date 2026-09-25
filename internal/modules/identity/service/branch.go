@@ -36,7 +36,7 @@ func (s *Branch) companyFor(ctx context.Context, actor *auth.Principal, companyI
 		return err
 	}
 	if !member {
-		if permission == "" && actor.Can(model.PermPlatformDirectoryRead) {
+		if permission == "" && actor.Has(model.PermPlatformDirectoryRead) {
 			_, err := s.store.Companies().Get(ctx, companyID)
 			return err
 		}

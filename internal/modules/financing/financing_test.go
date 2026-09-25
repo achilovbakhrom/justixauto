@@ -83,10 +83,8 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 	expect(t, act(bank, "information-requests", map[string]any{"note": "Customer's employment certificate"}, "3"), http.StatusOK)
 	expect(t, act(shop.Client, "responses", map[string]any{"note": "Sent by email"}, "4"), http.StatusOK)
 
-	// Proposing terms is a sensitive decision; the server recalculates.
+	// The server recalculates the proposed terms.
 	terms := map[string]any{"note": "We need 30% down", "calculationInputs": map[string]any{"downPayment": map[string]string{"amountMinor": "600000", "currency": "USD"}, "termMonths": 24, "firstDueDate": "2026-10-15"}}
-	expect(t, act(bank, "terms", terms, "5"), http.StatusForbidden, "mfa_enrollment_required")
-	bank.EnrollMFA()
 	t1 := act(bank, "terms", terms, "5")
 	expect(t, t1, http.StatusOK)
 	if t1.Data()["status"] != "terms" || len(t1.Data()["terms"].([]any)) != 1 {
@@ -97,9 +95,7 @@ func TestProgramApplicationTermsAndAgreement(t *testing.T) {
 		"downPayment": map[string]string{"amountMinor": "500000", "currency": "USD"}, "termMonths": 24, "firstDueDate": "2026-10-15",
 	}}, "7"), http.StatusOK)
 
-	// The seller agrees to the exact current terms, with a fresh second factor.
-	expect(t, act(shop.Client, "agree", map[string]any{"termsVersion": 1, "confirmation": true}, "8"), http.StatusForbidden)
-	shop.EnrollMFA()
+	// The seller agrees to the exact current terms.
 	expect(t, act(shop.Client, "agree", map[string]any{"termsVersion": 1, "confirmation": true}, "8"), http.StatusConflict, "terms_changed")
 	agreed := act(shop.Client, "agree", map[string]any{"termsVersion": 2, "confirmation": true}, "8")
 	expect(t, agreed, http.StatusOK)

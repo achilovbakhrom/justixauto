@@ -24,7 +24,6 @@ func (s *Store) Branches() *BranchRepository        { return &BranchRepository{s
 func (s *Store) Memberships() *MembershipRepository { return &MembershipRepository{s.db} }
 func (s *Store) Sessions() *SessionRepository       { return &SessionRepository{s.db} }
 func (s *Store) Audit() *AuditRepository            { return &AuditRepository{s.db} }
-func (s *Store) MFA() *MFARepository                { return &MFARepository{s.db} }
 
 // InTx runs fn with a Store bound to one transaction; any error rolls back.
 func (s *Store) InTx(ctx context.Context, fn func(*Store) error) error {

@@ -17,7 +17,6 @@ type Store interface {
 	Memberships() MembershipRepository
 	Sessions() SessionRepository
 	Audit() AuditRepository
-	MFA() MFARepository
 	// InTx runs fn with a Store bound to one transaction; any error rolls back.
 	InTx(ctx context.Context, fn func(Store) error) error
 }
@@ -88,8 +87,6 @@ type SessionRepository interface {
 	// FindLive returns the unrevoked session with this token hash, or ErrNotFound.
 	FindLive(ctx context.Context, tokenHash []byte) (*model.Session, error)
 	Touch(ctx context.Context, id string, at time.Time) error
-	// SetMFA records a successful second factor for the session.
-	SetMFA(ctx context.Context, id string, at time.Time) error
 	Revoke(ctx context.Context, id string, at time.Time) error
 	// RevokeUser revokes all live sessions of a user except exceptID ("" = all).
 	RevokeUser(ctx context.Context, userID, exceptID string, at time.Time) error
@@ -104,22 +101,4 @@ type SessionRepository interface {
 type AuditRepository interface {
 	Append(ctx context.Context, e *model.AuditEvent) error
 	List(ctx context.Context, f model.AuditFilter) ([]model.AuditEvent, error)
-}
-
-type MFARepository interface {
-	CreateEnrollment(ctx context.Context, e *model.MFAEnrollment) error
-	// Enrollment returns the user's unconfirmed enrollment, or ErrNotFound.
-	Enrollment(ctx context.Context, id, userID string) (*model.MFAEnrollment, error)
-	// Enable confirms the enrollment and stores the secret on the user.
-	Enable(ctx context.Context, e *model.MFAEnrollment, at time.Time, counter int64) error
-	// UseCounter records a TOTP step; false if it (or a later one) was used.
-	UseCounter(ctx context.Context, userID string, counter int64) (bool, error)
-	ReplaceRecoveryCodes(ctx context.Context, userID string, hashes [][]byte) error
-	// UseRecoveryCode marks an unused code as used; false if none matched.
-	UseRecoveryCode(ctx context.Context, userID string, hash []byte, at time.Time) (bool, error)
-	CreateChallenge(ctx context.Context, c *model.MFAChallenge) error
-	Challenge(ctx context.Context, id string) (*model.MFAChallenge, error)
-	FailChallenge(ctx context.Context, id string) error
-	// ConsumeChallenge marks it used; false if it was already consumed.
-	ConsumeChallenge(ctx context.Context, id string, at time.Time) (bool, error)
 }
