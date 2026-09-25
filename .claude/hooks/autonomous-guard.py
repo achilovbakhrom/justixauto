@@ -184,7 +184,7 @@ def segment_denied(prog, seg):
     if prog == "git":
         if re.search(r"\bpush\b[^\n]*(--force\b|-f\b)", seg):
             return "git force-push"
-        if re.search(r"\bpush\b[^\n]*\b(origin\s+)?(dev|main|master)(\s|$|:)", seg):
+        if re.search(r"\bpush\b[^\n]*\b(origin\s+)?(main|master)(\s|$|:)", seg):
             return "git push to protected branch"
         if re.search(r"\breset\s+--hard\b[^\n]*origin/(dev|main|master)\b", seg):
             return "git hard-reset to protected branch"
