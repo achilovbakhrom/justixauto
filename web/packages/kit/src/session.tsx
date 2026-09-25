@@ -13,7 +13,6 @@ export interface SessionView {
   user: { id: string; displayName: string; status: string; passwordChangeRequired: boolean };
   roles: { id: string; name: string }[];
   permissions: string[];
-  mfa: { enrolled: boolean; disabled?: boolean; authenticatedAt?: string };
   context: {
     revision: string;
     companyId: string | null;
@@ -45,7 +44,6 @@ type State =
   | { kind: 'loading' }
   | { kind: 'error'; message: string }
   | { kind: 'anonymous' }
-  | { kind: 'challenge'; challengeId: string }
   | { kind: 'ready'; view: SessionView };
 
 async function loadSession(): Promise<State> {
@@ -57,7 +55,7 @@ async function loadSession(): Promise<State> {
 }
 
 /**
- * Loads the session and shows sign-in, the MFA challenge or the forced
+ * Loads the session and shows sign-in or the forced
  * password change before rendering the app. `kinds` limits which company
  * kinds this app works with (e.g. the insurer cabinet).
  */
@@ -131,22 +129,7 @@ export function SessionGate({
     );
   }
   if (state.kind === 'anonymous') {
-    return (
-      <Login
-        title={title}
-        brand={brand}
-        onDone={(r) => (r.challengeId ? setState({ kind: 'challenge', challengeId: r.challengeId }) : refresh())}
-      />
-    );
-  }
-  if (state.kind === 'challenge') {
-    return (
-      <MFAChallenge
-        challengeId={state.challengeId}
-        onDone={() => void refresh()}
-        onCancel={() => setState({ kind: 'anonymous' })}
-      />
-    );
+    return <Login title={title} brand={brand} onDone={() => void refresh()} />;
   }
   if (state.view.user.passwordChangeRequired) return <ChangePassword forced onDone={() => void refresh()} />;
   return (
@@ -201,14 +184,7 @@ function Centered({ children }: { children: ReactNode }) {
   return <div className={css.centered}>{children}</div>;
 }
 
-function Login({
-  brand,
-  onDone,
-}: {
-  title: string;
-  brand: string | undefined;
-  onDone: (r: { challengeId?: string }) => void;
-}) {
+function Login({ brand, onDone }: { title: string; brand: string | undefined; onDone: () => void }) {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -223,8 +199,8 @@ function Login({
             setBusy(true);
             setError('');
             try {
-              const r = await call<{ challengeId?: string }>('POST', '/identity/session/login', { login, password });
-              onDone(r.data ?? {});
+              await call('POST', '/identity/session/login', { login, password });
+              onDone();
             } catch (err) {
               setError(
                 err instanceof ApiError && err.status === 429
@@ -252,47 +228,6 @@ function Login({
           <p className="cell-sub">
             Нет доступа? Компанию и её первого администратора подключает администратор платформы JustixAuto.
           </p>
-        </form>
-      </Card>
-    </Centered>
-  );
-}
-
-function MFAChallenge({
-  challengeId,
-  onDone,
-  onCancel,
-}: {
-  challengeId: string;
-  onDone: () => void;
-  onCancel: () => void;
-}) {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-  return (
-    <Centered>
-      <Card title="Двухфакторная проверка">
-        <form
-          className={css.stack}
-          onSubmit={async (e) => {
-            e.preventDefault();
-            try {
-              await call('POST', '/identity/session/mfa/verify', { challengeId, code });
-              onDone();
-            } catch (err) {
-              setError(errorText(err));
-            }
-          }}
-        >
-          <p>Введите 6-значный код из приложения-аутентификатора или резервный код.</p>
-          {error && <Notice kind="danger">{error}</Notice>}
-          <Field label="Код" value={code} onChange={setCode} autoComplete="one-time-code" required />
-          <div className={css.row}>
-            <Button type="submit" variant="primary">
-              Подтвердить
-            </Button>
-            <Button onClick={onCancel}>Назад</Button>
-          </div>
         </form>
       </Card>
     </Centered>
@@ -359,89 +294,4 @@ export function ChangePassword({ forced, onDone }: { forced?: boolean; onDone: (
   ) : (
     form
   );
-}
-
-/** Sets up TOTP: shows the secret, confirms a code, shows recovery codes once. */
-export function MFASetup({ onDone }: { onDone: () => void }) {
-  const [enrollment, setEnrollment] = useState<{ enrollmentId: string; secret: string; otpauthUri: string } | null>(
-    null,
-  );
-  const [code, setCode] = useState('');
-  const [codes, setCodes] = useState<string[] | null>(null);
-  const [error, setError] = useState('');
-  if (codes) {
-    return (
-      <div className={css.stack}>
-        <Notice kind="success">
-          Двухфакторная защита включена. Сохраните резервные коды — они показываются один раз.
-        </Notice>
-        <pre className={css.codes}>{codes.join('\n')}</pre>
-        <Button variant="primary" onClick={onDone}>
-          Готово
-        </Button>
-      </div>
-    );
-  }
-  if (!enrollment) {
-    return (
-      <div className={css.stack}>
-        {error && <Notice kind="danger">{error}</Notice>}
-        <p>
-          Для чувствительных действий нужна двухфакторная аутентификация (приложение Google Authenticator, 1Password и
-          т.п.).
-        </p>
-        <Button
-          variant="primary"
-          onClick={async () => {
-            try {
-              setEnrollment(
-                (
-                  await call<{ enrollmentId: string; secret: string; otpauthUri: string }>(
-                    'POST',
-                    '/identity/session/mfa/enrollment',
-                  )
-                ).data,
-              );
-            } catch (e) {
-              setError(errorText(e));
-            }
-          }}
-        >
-          Начать настройку
-        </Button>
-      </div>
-    );
-  }
-  return (
-    <form
-      className={css.stack}
-      onSubmit={async (e) => {
-        e.preventDefault();
-        try {
-          const r = await call<{ recoveryCodes: string[] }>(
-            'POST',
-            `/identity/session/mfa/enrollment/${enrollment.enrollmentId}/confirm`,
-            { code },
-          );
-          setCodes(r.data.recoveryCodes);
-        } catch (err) {
-          setError(errorText(err));
-        }
-      }}
-    >
-      <p>Добавьте ключ в приложение-аутентификатор:</p>
-      <pre className={css.codes}>{enrollment.secret}</pre>
-      <a href={enrollment.otpauthUri}>Открыть в приложении</a>
-      {error && <Notice kind="danger">{error}</Notice>}
-      <Field label="Код из приложения" value={code} onChange={setCode} autoComplete="one-time-code" required />
-      <Button type="submit" variant="primary">
-        Включить
-      </Button>
-    </form>
-  );
-}
-
-/** Re-confirms the second factor for sensitive actions (5 minutes). */
-export async function stepUp(code: string) {
-  await call('POST', '/identity/session/mfa/step-up', { code });
 }

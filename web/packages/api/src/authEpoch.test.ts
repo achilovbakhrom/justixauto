@@ -6,8 +6,8 @@ import { createAuthEpoch } from './authEpoch';
 import type { AuthAcceptance, AuthOperation, AuthPhase, AuthPurpose, AuthTransport } from './authEpoch';
 
 type DTO = { value: string };
-type Decision = AuthAcceptance<DTO, DTO, DTO>;
-type Operation = AuthOperation<DTO, DTO, DTO, DTO>;
+type Decision = AuthAcceptance<DTO, DTO>;
+type Operation = AuthOperation<DTO, DTO, DTO>;
 const token = 'fixture_csrf';
 const body = { value: 'synthetic' };
 const phases: readonly AuthPhase[] = [
@@ -35,10 +35,6 @@ function operation(purpose: AuthPurpose, decision: Decision, status: 200 | 202 |
   const suffix: Record<AuthPurpose, string> = {
     session: '',
     login: '/login',
-    'challenge-create': '/mfa/challenges',
-    'challenge-verify': '/mfa/verify',
-    'enrollment-start': '/mfa/enrollment',
-    'enrollment-confirm': '/mfa/enrollment/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/confirm',
     'recovery-request': '/recovery/request',
     'recovery-complete': '/recovery/complete',
     'revoke-all': '/revoke-all',
@@ -73,7 +69,7 @@ function operation(purpose: AuthPurpose, decision: Decision, status: 200 | 202 |
 }
 function setup() {
   const fetcher = vi.fn<typeof fetch>();
-  const controller = createAuthEpoch<DTO, DTO, DTO>(createApiClient({ origin: 'https://justix.test', fetch: fetcher }));
+  const controller = createAuthEpoch<DTO, DTO>(createApiClient({ origin: 'https://justix.test', fetch: fetcher }));
   const acquire = async (kind: 'anonymous' | 'session' | 'restricted' = 'anonymous') => {
     fetcher.mockResolvedValueOnce(kind === 'anonymous' ? response(401, receipt('SESSION_REQUIRED')) : response());
     return controller.execute(
@@ -99,7 +95,7 @@ describe('memory-only auth epochs', () => {
   it('acquires anonymous CSRF without admitting a user or exposing response data', async () => {
     const { controller, fetcher, acquire } = setup();
     expect(await acquire()).toEqual({ kind: 'accepted', epoch: 0, status: 401 });
-    expect(controller.state()).toEqual({ epoch: 0, phase: 'anonymous', busy: false, hasView: false });
+    expect(controller.state()).toEqual({ epoch: 0, phase: 'anonymous', busy: false });
     expect(controller.withSession(vi.fn())).toBe(false);
     expect(JSON.stringify(controller.state())).not.toContain(token);
     fetcher.mockResolvedValueOnce(response());
@@ -216,7 +212,7 @@ describe('memory-only auth epochs', () => {
       expect(await controller.execute(operation('login', { kind: 'session', session: body }))).toEqual({
         kind: 'uncertain',
       });
-      expect(controller.state()).toMatchObject({ epoch: 1, phase: 'uncertain', hasView: false });
+      expect(controller.state()).toMatchObject({ epoch: 1, phase: 'uncertain' });
       expect(fetcher).toHaveBeenCalledTimes(2);
       expect(await acquire()).toEqual({ kind: 'accepted', epoch: 1, status: 401 });
     },
@@ -245,31 +241,8 @@ describe('memory-only auth epochs', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
 
-  it('keeps enrollment values only in the current view and requires explicit session reacquisition after confirmation', async () => {
-    const { controller, fetcher, acquire } = setup();
-    await acquire('restricted');
-    fetcher.mockResolvedValueOnce(response(200, body, ''));
-    await controller.execute(
-      operation('enrollment-start', { kind: 'enrollment-secret', view: { value: 'one-time-secret' } }, 200, false),
-    );
-    const secret = vi.fn();
-    expect(controller.withView(secret)).toBe(true);
-    expect(secret).toHaveBeenCalledWith({ value: 'one-time-secret' });
-    controller.clearView();
-    expect(controller.withView(vi.fn())).toBe(false);
-    fetcher.mockResolvedValueOnce(response());
-    await controller.execute(
-      operation('enrollment-confirm', { kind: 'enrollment-confirmed', view: { value: 'one-time-codes' } }),
-    );
-    expect(controller.state()).toMatchObject({ phase: 'context-unresolved', hasView: true });
-    expect(controller.withSession(vi.fn())).toBe(false);
-    expect(fetcher).toHaveBeenCalledTimes(3);
-    await acquire('session');
-    expect(controller.state()).toMatchObject({ phase: 'authenticated', hasView: false });
-  });
-
   it.each(['login-intent', 'context-change', 'revocation', 'navigation', 'unmount', 'uncertainty'] as const)(
-    '%s invalidates binding and all views',
+    '%s invalidates binding',
     async (reason) => {
       const { controller, acquire } = setup();
       await acquire('session');
@@ -277,7 +250,6 @@ describe('memory-only auth epochs', () => {
       expect(controller.state()).toMatchObject({
         epoch: 1,
         phase: reason === 'uncertainty' ? 'uncertain' : 'empty',
-        hasView: false,
       });
       expect(controller.withSession(vi.fn())).toBe(false);
     },
@@ -360,7 +332,7 @@ describe('memory-only auth epochs', () => {
       exchange = request.authExchange as AuthExchange<DTO>;
       return pending.promise;
     });
-    const controller = createAuthEpoch<DTO, DTO, DTO>({
+    const controller = createAuthEpoch<DTO, DTO>({
       responseContractVersion: 1,
       request: send as AuthTransport['request'],
     });
@@ -383,29 +355,6 @@ describe('memory-only auth epochs', () => {
     );
     expect(getter).not.toHaveBeenCalled();
     expect(() => createAuthEpoch({ request: vi.fn() } as unknown as AuthTransport)).toThrow('Invalid auth transport');
-  });
-
-  it('step-up challenge creation retains the old session assurance until verified', async () => {
-    const { controller, fetcher, acquire } = setup();
-    await acquire('session');
-    fetcher.mockResolvedValueOnce(response(200, body, ''));
-    expect(
-      await controller.execute(
-        operation('challenge-create', { kind: 'challenge', view: { value: 'challenge-id' } }, 200, false),
-      ),
-    ).toMatchObject({ kind: 'accepted' });
-    expect(controller.state()).toMatchObject({ phase: 'authenticated', hasView: true });
-    const old = vi.fn();
-    controller.withSession(old);
-    expect(old).toHaveBeenCalledWith(body);
-    fetcher.mockResolvedValueOnce(response(200, body, 'rotated_csrf'));
-    expect(
-      await controller.execute(operation('challenge-verify', { kind: 'session', session: { value: 'verified' } })),
-    ).toMatchObject({ kind: 'accepted' });
-    expect(controller.state().hasView).toBe(false);
-    const current = vi.fn();
-    controller.withSession(current);
-    expect(current).toHaveBeenCalledWith({ value: 'verified' });
   });
 
   it('recovery acceptance grants no session and completion clears the anonymous binding', async () => {
@@ -486,25 +435,13 @@ describe('memory-only auth epochs', () => {
     [401, 'SESSION_REQUIRED'],
     [401, 'SESSION_EXPIRED'],
   ] as const) {
-    for (const state of ['authenticated', 'restricted', 'one-time-view'] as const) {
+    for (const state of ['authenticated', 'restricted'] as const) {
       it.each(['unchanged', 'invalidate-binding'] as const)(
         `${status} ${code} clears ${state} with %s and requires explicit reacquisition`,
         async (kind) => {
           const { controller, fetcher, acquire } = setup();
           await acquire(state === 'authenticated' ? 'session' : 'restricted');
-          if (state === 'one-time-view') {
-            fetcher.mockResolvedValueOnce(response(200, body, ''));
-            await controller.execute(
-              operation('enrollment-start', { kind: 'enrollment-secret', view: { value: 'private' } }, 200, false),
-            );
-            expect(controller.state().hasView).toBe(true);
-          }
-          const rejected = operation(
-            state === 'authenticated' ? 'challenge-create' : 'enrollment-start',
-            { kind },
-            200,
-            false,
-          );
+          const rejected = operation('revoke-all', { kind }, 200, false);
           const contract = rejected.request.responseContract!;
           const guarded: Operation = {
             ...rejected,
@@ -528,10 +465,9 @@ describe('memory-only auth epochs', () => {
           };
           fetcher.mockResolvedValueOnce(response(status, receipt(code), ''));
           expect(await controller.execute(guarded)).toEqual({ kind: 'binding-invalid' });
-          expect(controller.state()).toEqual({ epoch: 1, phase: 'empty', busy: false, hasView: false });
+          expect(controller.state()).toEqual({ epoch: 1, phase: 'empty', busy: false });
           expect(controller.withSession(vi.fn())).toBe(false);
           expect(controller.withRestricted(vi.fn())).toBe(false);
-          expect(controller.withView(vi.fn())).toBe(false);
           const count = fetcher.mock.calls.length;
           expect(await controller.execute(rejected)).toEqual({ kind: 'invalid-request' });
           expect(fetcher).toHaveBeenCalledTimes(count);
@@ -551,7 +487,7 @@ describe('memory-only auth epochs', () => {
     const gate = deferred<void>();
     const accepted = deferred<void>();
     let hold = false;
-    const controller = createAuthEpoch<DTO, DTO, DTO>({
+    const controller = createAuthEpoch<DTO, DTO>({
       responseContractVersion: 1,
       async request<T>(request: ApiRequest<T>) {
         const result = await actual.request(request);
@@ -564,7 +500,7 @@ describe('memory-only auth epochs', () => {
     });
     await controller.execute(operation('session', { kind: 'session', session: body }));
     hold = true;
-    const result = controller.execute(operation('challenge-create', { kind: 'invalidate-binding' }, 200, false));
+    const result = controller.execute(operation('revoke-all', { kind: 'invalidate-binding' }, 200, false));
     await accepted.promise;
     expect(controller.state()).toMatchObject({ phase: 'empty', busy: true, epoch: 1 });
     expect(await controller.execute(operation('session', { kind: 'anonymous' }))).toEqual({ kind: 'busy' });

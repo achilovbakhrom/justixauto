@@ -3,12 +3,12 @@ import type { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { BrowserRouter, NavLink, Navigate, Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
-import { errorText, list, setStepUpHandler } from './http';
+import { list } from './http';
 import { Icon } from './icons';
 import type { IconName } from './icons';
-import { ChangePassword, MFASetup, SessionGate, stepUp, useSession } from './session';
+import { ChangePassword, SessionGate, useSession } from './session';
 import type { Company } from './session';
-import { Button, Field, FormDialog, KitStyles, Modal, Notice, ShellVariantContext, Tabs } from './ui';
+import { Button, FormDialog, KitStyles, Modal, ShellVariantContext } from './ui';
 import type { ShellVariant } from './ui';
 import type { FieldSpec } from './ui';
 
@@ -188,7 +188,6 @@ function Shell({ brand, nav, banner, branches, search, kinds, shellClass, varian
             {routes}
           </main>
           {security && <SecurityDialog onClose={() => setSecurity(false)} />}
-          <StepUpHost />
         </div>
       </ShellVariantContext.Provider>
     );
@@ -211,7 +210,6 @@ function Shell({ brand, nav, banner, branches, search, kinds, shellClass, varian
             {routes}
           </main>
           {security && <SecurityDialog onClose={() => setSecurity(false)} />}
-          <StepUpHost />
         </div>
       </ShellVariantContext.Provider>
     );
@@ -303,7 +301,6 @@ function Shell({ brand, nav, banner, branches, search, kinds, shellClass, varian
         {routes}
       </main>
       {security && <SecurityDialog onClose={() => setSecurity(false)} />}
-      <StepUpHost />
     </div>
   );
 }
@@ -493,99 +490,14 @@ function GlobalSearch({ placeholder, path }: { placeholder: string; path: (q: st
 
 function SecurityDialog({ onClose }: { onClose: () => void }) {
   const s = useSession();
-  const off = !!s.view.mfa.disabled;
-  const [tab, setTab] = useState<'mfa' | 'password'>(off ? 'password' : 'mfa');
-  if (off)
-    return (
-      <Modal title="Безопасность" onClose={onClose}>
-        <ChangePassword
-          onDone={() => {
-            void s.refresh();
-            onClose();
-          }}
-        />
-      </Modal>
-    );
   return (
     <Modal title="Безопасность" onClose={onClose}>
-      <Tabs
-        value={tab}
-        onChange={setTab}
-        tabs={[
-          ['mfa', 'Двухфакторная защита'],
-          ['password', 'Пароль'],
-        ]}
+      <ChangePassword
+        onDone={() => {
+          void s.refresh();
+          onClose();
+        }}
       />
-      {tab === 'mfa' &&
-        (s.view.mfa.enrolled ? (
-          <Notice kind="success">Двухфакторная защита включена.</Notice>
-        ) : (
-          <MFASetup
-            onDone={() => {
-              void s.refresh();
-              onClose();
-            }}
-          />
-        ))}
-      {tab === 'password' && (
-        <ChangePassword
-          onDone={() => {
-            void s.refresh();
-            onClose();
-          }}
-        />
-      )}
-    </Modal>
-  );
-}
-
-/** Asks for a TOTP/recovery code when a sensitive action needs a fresh second factor. */
-function StepUpHost() {
-  const [pending, setPending] = useState<((ok: boolean) => void) | null>(null);
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-  useEffect(() => {
-    setStepUpHandler(
-      () =>
-        new Promise<boolean>((resolve) => {
-          setCode('');
-          setError('');
-          setPending(() => resolve);
-        }),
-    );
-    return () => setStepUpHandler(undefined);
-  }, []);
-  if (!pending) return null;
-  const close = (ok: boolean) => {
-    pending(ok);
-    setPending(null);
-  };
-  return (
-    <Modal
-      title="Подтвердите действие"
-      onClose={() => close(false)}
-      footer={
-        <>
-          <Button onClick={() => close(false)}>Отмена</Button>
-          <Button
-            variant="primary"
-            onClick={async () => {
-              try {
-                await stepUp(code);
-                close(true);
-              } catch (e) {
-                setError(errorText(e));
-              }
-            }}
-          >
-            Подтвердить
-          </Button>
-        </>
-      }
-    >
-      <p>Это чувствительное действие. Введите код из приложения-аутентификатора.</p>
-      {error && <Notice kind="danger">{error}</Notice>}
-      <Field label="Код" value={code} onChange={setCode} autoComplete="one-time-code" />
     </Modal>
   );
 }

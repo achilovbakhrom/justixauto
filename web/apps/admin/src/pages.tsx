@@ -54,7 +54,6 @@ interface User {
   login: string | null;
   status: string;
   roles: { id: string; name: string }[];
-  mfaEnabled: boolean;
   revision: string;
 }
 interface Role {
@@ -67,7 +66,6 @@ interface Role {
 interface Permission {
   key: string;
   scope: string;
-  requiresMfa: boolean;
   assignable: boolean;
 }
 interface Membership {
@@ -388,7 +386,6 @@ export function UsersPage() {
               render: (u) => <Cell main={u.displayName} sub={u.login ? `${u.login} · ${u.email}` : u.email} />,
             },
             { title: 'Роли', render: (u) => u.roles.map((r) => r.name).join(', ') || '—' },
-            { title: 'MFA', render: (u) => (u.mfaEnabled ? 'Включена' : 'Не настроена') },
             {
               title: 'Доступ',
               render: (u) => (
@@ -559,9 +556,7 @@ export function RolesPage() {
   const q = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
   const perms = useData(['admin-permissions'], () => list<Permission>('/identity/admin/permissions'));
   const users = useData(['admin-users'], () => list<User>('/identity/admin/users?limit=200'));
-  const options = (perms.data ?? [])
-    .filter((p) => p.assignable)
-    .map((p): [string, string] => [p.key, p.key + (p.requiresMfa ? ' (MFA)' : '')]);
+  const options = (perms.data ?? []).filter((p) => p.assignable).map((p): [string, string] => [p.key, p.key]);
   const fields = (r?: Role): FieldSpec[] => [
     { name: 'name', label: 'Название', type: 'text', required: true, initial: r?.name ?? '' },
     { name: 'permissionKeys', label: 'Права', type: 'multiselect', options, initial: r?.permissionKeys ?? [] },

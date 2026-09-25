@@ -6,7 +6,6 @@ import {
   Cell,
   ChangePassword,
   Details,
-  MFASetup,
   Notice,
   Panel,
   Table,
@@ -44,7 +43,7 @@ type Section = 'companies' | 'members' | 'account';
 const sections: [Section, string, string][] = [
   ['companies', 'Компании и филиалы', 'Юридические лица и точки продаж'],
   ['members', 'Пользователи и роли', 'Доступ сотрудников'],
-  ['account', 'Личный аккаунт', 'Профиль, пароль и MFA'],
+  ['account', 'Личный аккаунт', 'Профиль и пароль'],
 ];
 const initials = (n: string) =>
   n
@@ -352,13 +351,13 @@ function Members() {
 
 function Account() {
   const s = useSession();
-  const [tab, setTab] = useState<'mfa' | 'password' | null>(null);
+  const [tab, setTab] = useState<'password' | null>(null);
   return (
     <div className="settings-content">
       <div className="settings-title-row">
         <div>
           <h2>Личный аккаунт</h2>
-          <p>Профиль, пароль и двухфакторная защита</p>
+          <p>Профиль и пароль</p>
         </div>
       </div>
       <Panel title="Профиль" padded>
@@ -370,34 +369,9 @@ function Account() {
         />
       </Panel>
       <Panel title="Безопасность" padded>
-        {!s.view.mfa.disabled && (
-          <Details
-            items={[
-              [
-                'Двухфакторная защита',
-                s.view.mfa.enrolled ? <Badge tone="success">Включена</Badge> : <Badge tone="warning">Выключена</Badge>,
-              ],
-            ]}
-          />
-        )}
-        <div className="kit-row" style={{ marginTop: 14 }}>
-          {!s.view.mfa.enrolled && !s.view.mfa.disabled && (
-            <Button variant="primary" onClick={() => setTab('mfa')}>
-              Включить двухфакторную защиту
-            </Button>
-          )}
+        <div className="kit-row">
           <Button onClick={() => setTab('password')}>Сменить пароль</Button>
         </div>
-        {tab === 'mfa' && (
-          <div style={{ marginTop: 16 }}>
-            <MFASetup
-              onDone={() => {
-                void s.refresh();
-                setTab(null);
-              }}
-            />
-          </div>
-        )}
         {tab === 'password' && (
           <div style={{ marginTop: 16, maxWidth: 420 }}>
             <ChangePassword

@@ -2,34 +2,21 @@ import type { ApiRequest, ApiResult, ResponseMetadata, ValidatedResult } from '.
 
 export type AuthPhase =
   'empty' | 'anonymous' | 'restricted' | 'authenticated' | 'context-unresolved' | 'uncertain' | 'exhausted';
-export type AuthPurpose =
-  | 'session'
-  | 'login'
-  | 'challenge-create'
-  | 'challenge-verify'
-  | 'enrollment-start'
-  | 'enrollment-confirm'
-  | 'recovery-request'
-  | 'recovery-complete'
-  | 'revoke-all'
-  | 'logout';
+export type AuthPurpose = 'session' | 'login' | 'recovery-request' | 'recovery-complete' | 'revoke-all' | 'logout';
 export type AuthInvalidation =
   'login-intent' | 'context-change' | 'revocation' | 'navigation' | 'unmount' | 'uncertainty';
-export type AuthAcceptance<Session, Restricted, View> =
+export type AuthAcceptance<Session, Restricted> =
   | { readonly kind: 'anonymous' }
   | { readonly kind: 'session'; readonly session: Session }
   | { readonly kind: 'restricted'; readonly restricted: Restricted }
-  | { readonly kind: 'challenge'; readonly view: View }
-  | { readonly kind: 'enrollment-secret'; readonly view: View }
-  | { readonly kind: 'enrollment-confirmed'; readonly view: View }
   | { readonly kind: 'clear' | 'unchanged' | 'invalidate-binding' | 'uncertain' };
-export interface AuthOperation<T, Session, Restricted, View> {
+export interface AuthOperation<T, Session, Restricted> {
   readonly purpose: AuthPurpose;
   /** Trusted typed adapter: a state precondition, never server authorization. */
   readonly expected: readonly AuthPhase[];
   readonly request: Omit<ApiRequest<T>, 'authExchange'>;
   /** Must return synchronously after all feature semantics have passed. */
-  classify(result: ValidatedResult<T>): AuthAcceptance<Session, Restricted, View>;
+  classify(result: ValidatedResult<T>): AuthAcceptance<Session, Restricted>;
 }
 export interface AuthTransport {
   readonly responseContractVersion: 1;
@@ -55,10 +42,6 @@ const phases: readonly AuthPhase[] = [
 const purposes: readonly AuthPurpose[] = [
   'session',
   'login',
-  'challenge-create',
-  'challenge-verify',
-  'enrollment-start',
-  'enrollment-confirm',
   'recovery-request',
   'recovery-complete',
   'revoke-all',
@@ -67,11 +50,6 @@ const purposes: readonly AuthPurpose[] = [
 const routes: Readonly<Record<AuthPurpose, RegExp>> = {
   session: /^\/api\/v1\/identity\/session$/,
   login: /^\/api\/v1\/identity\/session\/login$/,
-  'challenge-create': /^\/api\/v1\/identity\/session\/mfa\/challenges$/,
-  'challenge-verify': /^\/api\/v1\/identity\/session\/mfa\/verify$/,
-  'enrollment-start': /^\/api\/v1\/identity\/session\/mfa\/enrollment$/,
-  'enrollment-confirm':
-    /^\/api\/v1\/identity\/session\/mfa\/enrollment\/(?!00000000-0000-0000-0000-000000000000\/)[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/confirm$/,
   'recovery-request': /^\/api\/v1\/identity\/session\/recovery\/request$/,
   'recovery-complete': /^\/api\/v1\/identity\/session\/recovery\/complete$/,
   'revoke-all': /^\/api\/v1\/identity\/session\/revoke-all$/,
@@ -147,19 +125,19 @@ function snapshot<T>(value: T, depth = 0, seen = new Set<object>()): T {
 const csrfValid = (value: unknown): value is string =>
   typeof value === 'string' && value.length > 0 && value.length <= 4096 && !/[^A-Za-z0-9_-]/.test(value);
 
-interface ParsedAuthOperation<T, Session, Restricted, View> {
+interface ParsedAuthOperation<T, Session, Restricted> {
   readonly purpose: AuthPurpose;
   readonly expected: readonly AuthPhase[];
   readonly request: Omit<ApiRequest<T>, 'authExchange'>;
-  readonly classify: AuthOperation<T, Session, Restricted, View>['classify'];
+  readonly classify: AuthOperation<T, Session, Restricted>['classify'];
   readonly signal: AbortSignal | undefined;
   readonly preAborted: boolean;
 }
 
 /** Validates and normalizes a caller-supplied operation; never throws. */
-function parseAuthOperation<T, Session, Restricted, View>(
-  operation: AuthOperation<T, Session, Restricted, View>,
-): ParsedAuthOperation<T, Session, Restricted, View> | undefined {
+function parseAuthOperation<T, Session, Restricted>(
+  operation: AuthOperation<T, Session, Restricted>,
+): ParsedAuthOperation<T, Session, Restricted> | undefined {
   try {
     const captured = fields(operation, ['purpose', 'expected', 'request', 'classify']);
     const purpose = captured.purpose as AuthPurpose;
@@ -175,7 +153,7 @@ function parseAuthOperation<T, Session, Restricted, View>(
       throw new Error('Invalid auth operation');
     }
     const expected = [...captured.expected] as AuthPhase[];
-    const classify = captured.classify as ParsedAuthOperation<T, Session, Restricted, View>['classify'];
+    const classify = captured.classify as ParsedAuthOperation<T, Session, Restricted>['classify'];
     const request = fields(captured.request, [
       'path',
       'method',
@@ -187,7 +165,7 @@ function parseAuthOperation<T, Session, Restricted, View>(
       'headers',
       'signal',
       'responseContract',
-    ]) as unknown as ParsedAuthOperation<T, Session, Restricted, View>['request'];
+    ]) as unknown as ParsedAuthOperation<T, Session, Restricted>['request'];
     const signal = request.signal;
     const preAborted = signal !== undefined ? (Reflect.apply(signalAborted, signal, []) as boolean) : false;
     if (
@@ -205,18 +183,16 @@ function parseAuthOperation<T, Session, Restricted, View>(
   }
 }
 
-interface AcceptanceTransition<Session, Restricted, View> {
+interface AcceptanceTransition<Session, Restricted> {
   readonly next: AuthPhase;
   readonly session: Session | undefined;
   readonly restricted: Restricted | undefined;
-  readonly view: View | undefined;
   readonly token: string | undefined;
 }
 
 function exactKeysForKind(kind: unknown): readonly string[] {
   if (kind === 'session') return ['kind', 'session'];
   if (kind === 'restricted') return ['kind', 'restricted'];
-  if (kind === 'challenge' || kind === 'enrollment-secret' || kind === 'enrollment-confirmed') return ['kind', 'view'];
   return ['kind'];
 }
 
@@ -238,21 +214,21 @@ function isBindingError<T>(
   );
 }
 
-function transitionBindingError<Session, Restricted, View>(
+function transitionBindingError<Session, Restricted>(
   kind: unknown,
   meta: { readonly csrf?: unknown },
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (!['unchanged', 'invalidate-binding'].includes(kind as string) || meta.csrf !== undefined) return false;
   return baseline;
 }
 
-function transitionAnonymous<T, Session, Restricted, View>(
+function transitionAnonymous<T, Session, Restricted>(
   value: ValidatedResult<T>,
   meta: { readonly csrf?: unknown },
   purpose: AuthPurpose,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (
     purpose !== 'session' ||
     value.kind !== 'http-error' ||
@@ -266,22 +242,21 @@ function transitionAnonymous<T, Session, Restricted, View>(
     next: 'anonymous',
     session: undefined,
     restricted: undefined,
-    view: undefined,
     token: meta.csrf,
   };
 }
 
-function transitionSession<T, Session, Restricted, View>(
+function transitionSession<T, Session, Restricted>(
   value: ValidatedResult<T>,
   meta: { readonly csrf?: unknown },
   purpose: AuthPurpose,
   decision: Record<string, unknown>,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (
     value.kind !== 'success' ||
     value.status !== 200 ||
-    !['session', 'login', 'challenge-verify', 'revoke-all'].includes(purpose) ||
+    !['session', 'login', 'revoke-all'].includes(purpose) ||
     !csrfValid(meta.csrf)
   )
     return false;
@@ -290,18 +265,17 @@ function transitionSession<T, Session, Restricted, View>(
     next: 'authenticated',
     session: snapshot(decision.session as Session),
     restricted: undefined,
-    view: undefined,
     token: meta.csrf,
   };
 }
 
-function transitionRestricted<T, Session, Restricted, View>(
+function transitionRestricted<T, Session, Restricted>(
   value: ValidatedResult<T>,
   meta: { readonly csrf?: unknown },
   purpose: AuthPurpose,
   decision: Record<string, unknown>,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (
     value.kind !== 'success' ||
     value.status !== 200 ||
@@ -314,75 +288,35 @@ function transitionRestricted<T, Session, Restricted, View>(
     next: 'restricted',
     session: undefined,
     restricted: snapshot(decision.restricted as Restricted),
-    view: undefined,
     token: (meta.csrf as string | undefined) ?? baseline.token,
   };
 }
 
-function transitionChallenge<T, Session, Restricted, View>(
-  value: ValidatedResult<T>,
-  meta: { readonly csrf?: unknown },
-  purpose: AuthPurpose,
-  phase: AuthPhase,
-  decision: Record<string, unknown>,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
-  if (
-    value.kind !== 'success' ||
-    value.status !== 200 ||
-    purpose !== 'challenge-create' ||
-    phase !== 'authenticated' ||
-    meta.csrf !== undefined
-  )
-    return false;
-  return { ...baseline, view: snapshot(decision.view as View) };
-}
-
-function transitionEnrollment<T, Session, Restricted, View>(
-  kind: unknown,
-  value: ValidatedResult<T>,
-  meta: { readonly csrf?: unknown },
-  purpose: AuthPurpose,
-  decision: Record<string, unknown>,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
-  if (
-    value.kind !== 'success' ||
-    value.status !== 200 ||
-    purpose !== (kind === 'enrollment-secret' ? 'enrollment-start' : 'enrollment-confirm')
-  )
-    return false;
-  const view = snapshot(decision.view as View);
-  if (kind !== 'enrollment-confirmed') return { ...baseline, view };
-  if (!csrfValid(meta.csrf)) return false;
-  return { next: 'context-unresolved', session: undefined, restricted: undefined, view, token: meta.csrf };
-}
-
-function transitionClear<T, Session, Restricted, View>(
+function transitionClear<T, Session, Restricted>(
   value: ValidatedResult<T>,
   purpose: AuthPurpose,
-): AcceptanceTransition<Session, Restricted, View> | false {
+): AcceptanceTransition<Session, Restricted> | false {
   if (value.kind !== 'success' || value.status !== 204 || !['logout', 'recovery-complete'].includes(purpose))
     return false;
-  return { next: 'empty', session: undefined, restricted: undefined, view: undefined, token: undefined };
+  return { next: 'empty', session: undefined, restricted: undefined, token: undefined };
 }
 
-function transitionUncertain<T, Session, Restricted, View>(
+function transitionUncertain<T, Session, Restricted>(
   value: ValidatedResult<T>,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (value.kind !== 'http-error' || value.status !== 503 || value.receipt.error.code !== 'AUTH_OUTCOME_UNKNOWN')
     return false;
   return baseline;
 }
 
-function transitionUnchanged<T, Session, Restricted, View>(
+function transitionUnchanged<T, Session, Restricted>(
   kind: unknown,
   value: ValidatedResult<T>,
   meta: { readonly csrf?: unknown },
   purpose: AuthPurpose,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (
     kind !== 'unchanged' ||
     meta.csrf !== undefined ||
@@ -394,23 +328,19 @@ function transitionUnchanged<T, Session, Restricted, View>(
 }
 
 /** Dispatches to the per-kind acceptance rule; returns false for any rejected/invalid shape. */
-function computeAcceptanceTransition<T, Session, Restricted, View>(
+function computeAcceptanceTransition<T, Session, Restricted>(
   bindingError: boolean,
   kind: unknown,
   value: ValidatedResult<T>,
   meta: { readonly csrf?: unknown },
   purpose: AuthPurpose,
-  phase: AuthPhase,
   decision: Record<string, unknown>,
-  baseline: AcceptanceTransition<Session, Restricted, View>,
-): AcceptanceTransition<Session, Restricted, View> | false {
+  baseline: AcceptanceTransition<Session, Restricted>,
+): AcceptanceTransition<Session, Restricted> | false {
   if (bindingError) return transitionBindingError(kind, meta, baseline);
   if (kind === 'anonymous') return transitionAnonymous(value, meta, purpose, baseline);
   if (kind === 'session') return transitionSession(value, meta, purpose, decision, baseline);
   if (kind === 'restricted') return transitionRestricted(value, meta, purpose, decision, baseline);
-  if (kind === 'challenge') return transitionChallenge(value, meta, purpose, phase, decision, baseline);
-  if (kind === 'enrollment-secret' || kind === 'enrollment-confirmed')
-    return transitionEnrollment(kind, value, meta, purpose, decision, baseline);
   if (kind === 'clear') return transitionClear(value, purpose);
   if (kind === 'uncertain') return transitionUncertain(value, baseline);
   return transitionUnchanged(kind, value, meta, purpose, baseline);
@@ -505,7 +435,7 @@ function isValidDecisionShape<T>(decision: Record<string, unknown>, value: Valid
 }
 
 /** Cooperative local ordering only: HttpOnly cookies and other tabs remain owner responsibilities. */
-export function createAuthEpoch<Session, Restricted, View>(
+export function createAuthEpoch<Session, Restricted>(
   transport: AuthTransport,
   options: { readonly initialEpoch?: number } = {},
 ) {
@@ -521,14 +451,12 @@ export function createAuthEpoch<Session, Restricted, View>(
   let csrf: string | undefined;
   let session: Session | undefined;
   let restricted: Restricted | undefined;
-  let view: View | undefined;
   let slot:
     { readonly id: symbol; readonly abort: AbortController; readonly unsafe: boolean; prepared: boolean } | undefined;
   function clear(next: AuthPhase): void {
     csrf = undefined;
     session = undefined;
     restricted = undefined;
-    view = undefined;
     phase = next;
   }
   function invalidate(next: 'empty' | 'uncertain'): void {
@@ -547,13 +475,10 @@ export function createAuthEpoch<Session, Restricted, View>(
     }
   }
   return Object.freeze({
-    state: () => Object.freeze({ epoch, phase, busy: slot !== undefined, hasView: view !== undefined }),
-    /** Explicit intent/notification; navigation and unmount also discard one-time views. */
+    state: () => Object.freeze({ epoch, phase, busy: slot !== undefined }),
+    /** Explicit intent/notification; navigation and unmount also discard binding state. */
     invalidate(reason: AuthInvalidation): void {
       invalidate(reason === 'uncertainty' ? 'uncertain' : 'empty');
-    },
-    clearView(): void {
-      view = undefined;
     },
     withSession(visitor: (value: Session) => void): boolean {
       return phase === 'authenticated' && visit(session, visitor);
@@ -561,10 +486,7 @@ export function createAuthEpoch<Session, Restricted, View>(
     withRestricted(visitor: (value: Restricted) => void): boolean {
       return phase === 'restricted' && visit(restricted, visitor);
     },
-    withView(visitor: (value: View) => void): boolean {
-      return visit(view, visitor);
-    },
-    async execute<T>(operation: AuthOperation<T, Session, Restricted, View>): Promise<AuthOutcome> {
+    async execute<T>(operation: AuthOperation<T, Session, Restricted>): Promise<AuthOutcome> {
       const parsed = parseAuthOperation(operation);
       if (!parsed) return { kind: 'invalid-request' };
       const { purpose, expected, request, classify, signal, preAborted } = parsed;
@@ -625,18 +547,16 @@ export function createAuthEpoch<Session, Restricted, View>(
                     'kind',
                     'session',
                     'restricted',
-                    'view',
                   ]);
                   const meta = validateAcceptanceMeta(metadata);
                   if (!meta) return false;
                   if (!isValidDecisionShape(decision, value)) return false;
                   const kind = decision.kind;
                   const bindingError = isBindingError(value, purpose, meta);
-                  const baseline: AcceptanceTransition<Session, Restricted, View> = {
+                  const baseline: AcceptanceTransition<Session, Restricted> = {
                     next: phase,
                     session,
                     restricted,
-                    view,
                     token: csrf,
                   };
                   const transition = computeAcceptanceTransition(
@@ -645,7 +565,6 @@ export function createAuthEpoch<Session, Restricted, View>(
                     value,
                     meta,
                     purpose,
-                    phase,
                     decision,
                     baseline,
                   );
@@ -662,7 +581,6 @@ export function createAuthEpoch<Session, Restricted, View>(
                     phase = transition.next;
                     session = transition.session;
                     restricted = transition.restricted;
-                    view = transition.view;
                     csrf = transition.token;
                   }
                   accepted = true;

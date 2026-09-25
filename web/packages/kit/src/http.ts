@@ -20,12 +20,6 @@ export class ApiError extends Error {
 
 let csrf = '';
 let onUnauthenticated: (() => void) | undefined;
-let stepUpHandler: (() => Promise<boolean>) | undefined;
-
-/** Registers the prompt that re-confirms the second factor (returns true when confirmed). */
-export function setStepUpHandler(handler: (() => Promise<boolean>) | undefined) {
-  stepUpHandler = handler;
-}
 
 /** The session layer keeps the CSRF token current and reacts to 401. */
 export function configureHttp(options: { onUnauthenticated: () => void }) {
@@ -45,7 +39,6 @@ type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 export interface CallOptions {
   ifMatch?: string;
   contextRevision?: string;
-  retried?: boolean;
 }
 
 function buildRequestHeaders(method: Method, contentType: string | undefined, options: CallOptions): Headers {
@@ -80,21 +73,9 @@ async function dispatchFetch(method: Method, path: string, headers: Headers, bod
 
 type ErrorBody = { error?: { code?: string; message?: string; fields?: Record<string, string> } } | null;
 
-/** Handles a non-ok response: replays once for a step-up challenge, otherwise throws. */
-async function handleErrorResponse(
-  response: Response,
-  json: unknown,
-  method: Method,
-  path: string,
-  body: BodyInit | undefined,
-  contentType: string | undefined,
-  options: CallOptions,
-): Promise<{ json: unknown; response: Response }> {
+/** Turns a non-ok response into an ApiError. */
+function handleErrorResponse(response: Response, json: unknown, path: string): never {
   const e = (json as ErrorBody)?.error;
-  // A stale second factor: ask for a code once, then repeat the same request.
-  if (e?.code === 'mfa_required' && stepUpHandler && !options.retried && (await stepUpHandler())) {
-    return send(method, path, body, contentType, { ...options, retried: true });
-  }
   if (response.status === 401 && !path.startsWith('/identity/session')) onUnauthenticated?.();
   const code = e?.code ?? 'http_' + response.status;
   throw new ApiError(response.status, code, errorMessages[code] ?? e?.message ?? response.statusText, e?.fields ?? {});
@@ -118,7 +99,7 @@ async function send(
   } catch {
     /* non-JSON error */
   }
-  if (!response.ok) return handleErrorResponse(response, json, method, path, body, contentType, options);
+  if (!response.ok) handleErrorResponse(response, json, path);
   return { json, response };
 }
 

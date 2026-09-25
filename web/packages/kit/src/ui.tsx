@@ -11,7 +11,6 @@ export const css = {
   centered: 'kit-centered',
   stack: 'kit-stack',
   row: 'kit-row',
-  codes: 'kit-codes',
   grid: 'kit-grid',
   muted: 'cell-sub',
   right: 'kit-right',
@@ -31,7 +30,6 @@ const styles = `
 .kit-stack { display:grid;gap:14px }
 .kit-row { display:flex;gap:10px;align-items:center;flex-wrap:wrap }
 .kit-right { margin-left:auto }
-.kit-codes { margin:0;padding:12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface-subtle);font-size:14px;letter-spacing:.04em;white-space:pre-wrap;word-break:break-all }
 .kit-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px }
 .kit-page-body > * + * { margin-top:18px }
 .kit-page-body > .summary-strip { margin-bottom:0 }
