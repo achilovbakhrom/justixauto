@@ -87,7 +87,7 @@ func runEnv(_ context.Context, a *app, _ []string) error {
 		return fmt.Errorf("read .env.example: %w", err)
 	}
 
-	password, err := randomHex(16)
+	password, err := randomHex()
 	if err != nil {
 		return fmt.Errorf("generate password: %w", err)
 	}

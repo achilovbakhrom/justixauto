@@ -47,12 +47,13 @@ var commands = []struct {
 	{"check-git", "verify the project has its own Git repository with a commit", runCheckGit},
 	{"doctor", "check local development prerequisites", runDoctor},
 	{"env", "create .env from .env.example with generated secrets", runEnv},
+	{"test", "run go test with throwaway PostgreSQL/MinIO containers", runTest},
 }
 
-// randomHex returns nBytes of crypto/rand entropy, hex-encoded (2*nBytes
-// lowercase hex characters).
-func randomHex(nBytes int) (string, error) {
-	buf := make([]byte, nBytes)
+// randomHex returns 16 bytes of crypto/rand entropy as 32 lowercase hex
+// characters: the generated password shape shared by env and test.
+func randomHex() (string, error) {
+	buf := make([]byte, 16)
 	if _, err := rand.Read(buf); err != nil {
 		return "", err
 	}

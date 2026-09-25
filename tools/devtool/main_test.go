@@ -47,14 +47,14 @@ func TestRealMainHelp(t *testing.T) {
 }
 
 func TestRandomHex(t *testing.T) {
-	h1, err := randomHex(16)
+	h1, err := randomHex()
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(h1) != 32 {
 		t.Errorf("len = %d, want 32", len(h1))
 	}
-	h2, err := randomHex(16)
+	h2, err := randomHex()
 	if err != nil {
 		t.Fatal(err)
 	}
