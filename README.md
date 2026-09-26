@@ -33,12 +33,15 @@ Use another `MOCK_PORT` if 4180 is occupied; do not kill an unrelated server.
 
 ```sh
 make env                 # .env with generated secrets (ports: make env POSTGRES_PORT=55433 API_PORT=8090)
-make dev                 # PostgreSQL + migrations + built web apps + API on one port
+make dev                 # PostgreSQL + migrations + API + all four web apps with hot reload
 ```
 
-For UI work with hot reload run `make api` in one terminal and
-`make web APP=realization` (or `financing`, `insurance`, `admin`) in another;
-Vite proxies `/api` to the API. `make help` lists everything: tests
+`make dev` prints the four app URLs (ports from 5191 up, the next free one if
+taken) and prefixes each log line with `[api]`, `[realization]`, … Vite proxies
+`/api` to the API, and the app origins are allowed for that run without editing
+`.env`. Ctrl-C stops everything. For a single app use `make api` plus
+`make web APP=realization` (or `financing`, `insurance`, `admin`);
+`make api` alone serves the last `make web-build` output on one port. `make help` lists everything: tests
 (`make test`, `make check`), database (`make db-psql`, `make db-reset`), and the
 Docker image (`make image`).
 

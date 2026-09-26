@@ -1,7 +1,8 @@
 # JustixAuto — local development. `make help` lists the targets.
 #
-# First run:   make env && make dev        → http://127.0.0.1:$(API_PORT)
-# Hot reload:  make api  (one terminal) + make web APP=realization (another)
+# First run:   make env && make dev   → API + four web apps with hot reload
+#              (the URLs are printed on start; Ctrl-C stops everything)
+# One app:     make api (one terminal) + make web APP=realization (another)
 #
 # Ports are configurable when the defaults are taken:
 #   make env POSTGRES_PORT=55433 API_PORT=8090
@@ -68,7 +69,8 @@ web: ## Vite dev server with hot reload for one app: make web APP=realization|fi
 web-build: ## Build the four web apps into web/apps/*/dist
 	npm run build:apps
 
-dev: web-build api ## Build the web apps and run everything on one port
+dev: db-up migrate ## Run the API and all four web apps with hot reload (URLs printed on start)
+	@$(GO) run ./tools/devtool dev
 
 # ---- checks ----
 

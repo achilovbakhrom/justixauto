@@ -26,6 +26,7 @@ type app struct {
 	stderr   io.Writer
 	getenv   func(string) string
 	lookPath func(string) (string, error)
+	portFree func(port int) bool // nil = probe 127.0.0.1 (dev only)
 }
 
 // exitError requests a specific process exit code without printing anything
@@ -49,6 +50,7 @@ var commands = []struct {
 	{"env", "create .env from .env.example with generated secrets", runEnv},
 	{"test", "run go test with throwaway PostgreSQL/MinIO containers", runTest},
 	{"openapi-staged", "regenerate and verify the OpenAPI spec against staged Go changes", runOpenapiStaged},
+	{"dev", "run the API and all four web apps with hot reload", runDev},
 }
 
 // randomHex returns 16 bytes of crypto/rand entropy as 32 lowercase hex
