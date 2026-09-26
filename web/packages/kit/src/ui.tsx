@@ -797,8 +797,9 @@ export function FormDialog({
         const rest: string[] = [];
         for (const [k, msg] of Object.entries(e.fields)) {
           const f = fields.find((x) => k === x.name || k.endsWith('.' + x.name) || k.startsWith(x.name + '.'));
-          if (f && !(byField[f.name] ?? []).includes(msg)) (byField[f.name] ??= []).push(msg);
-          else rest.push(`${k}: ${msg}`);
+          if (f) {
+            if (!(byField[f.name] ?? []).includes(msg)) (byField[f.name] ??= []).push(msg);
+          } else rest.push(`${k}: ${msg}`);
         }
         setErrors(byField);
         setError(rest.length ? rest.join('; ') : e.message);

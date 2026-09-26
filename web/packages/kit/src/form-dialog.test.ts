@@ -69,7 +69,8 @@ describe('FormDialog grouping and server errors', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Сохранить' }));
     await screen.findByText('Некорректный адрес');
-    expect(document.querySelectorAll('.field-error')).toHaveLength(1);
+    expect(screen.getAllByText('Некорректный адрес')).toHaveLength(1);
+    expect(screen.queryByText(/firstAdmin\.email:/)).toBeNull();
   });
 
   it('does not clear a region when an unchanged canonical country blurs', () => {
