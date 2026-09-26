@@ -1,0 +1,231 @@
+name: Build Push Deploy Justix Auto Dev
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches:
+      - dev
+
+permissions:
+  contents: read
+
+concurrency:
+  group: justix-auto-dev
+  cancel-in-progress: true
+
+env:
+  DOCKER_USERNAME: poirot92
+  IMAGE_NAME: justix-auto
+
+jobs:
+
+  deploy:
+    name: Build, Migrate and Deploy
+    if: >
+      ${{ github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.head_branch == 'dev' }}
+
+    runs-on:
+      group: jlearnx runner
+      labels: [self-hosted, docker, jlearnx]
+
+    timeout-minutes: 20
+
+    steps:
+
+      # ---------------------------------------------------------
+      # CHECKOUT EXACT COMMIT THAT PASSED CI
+      # ---------------------------------------------------------
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+
+
+      # ---------------------------------------------------------
+      # RUNNER INFO
+      # ---------------------------------------------------------
+
+      - name: Show runner information
+        run: |
+          echo "=== Runner ==="
+          hostname
+
+          echo "=== Commit ==="
+          git rev-parse HEAD
+
+          echo "=== Docker ==="
+          docker version --format '{{.Server.Version}}'
+
+
+      # ---------------------------------------------------------
+      # DOCKER HUB LOGIN
+      # ---------------------------------------------------------
+
+      - name: Login Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | \
+            docker login \
+              -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+              --password-stdin
+
+
+      # ---------------------------------------------------------
+      # BUILD
+      # ---------------------------------------------------------
+
+      - name: Build Justix Auto
+        run: |
+          docker build \
+            --build-arg VERSION="${{ github.event.workflow_run.head_sha }}" \
+            -t "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.event.workflow_run.head_sha }}" \
+            .
+
+
+      # ---------------------------------------------------------
+      # PUSH
+      # ---------------------------------------------------------
+
+      - name: Push Justix Auto
+        run: |
+          docker push \
+            "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.event.workflow_run.head_sha }}"
+
+
+      # ---------------------------------------------------------
+      # CREATE TEMPORARY ENV
+      # ---------------------------------------------------------
+
+      - name: Create deployment environment
+        run: |
+          cat > "$GITHUB_WORKSPACE/.env" << EOF
+          IMAGE_TAG=${{ github.event.workflow_run.head_sha }}
+
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+
+          HTTP_ADDR=:8080
+          COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
+          ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+
+          WEB_DIR=${{ secrets.WEB_DIR }}
+          API_DOCS=${{ secrets.API_DOCS }}
+
+          FILE_STORAGE=${{ secrets.FILE_STORAGE }}
+          DOCUMENTS_DIR=${{ secrets.DOCUMENTS_DIR }}
+
+          HOST_PORT=${{ secrets.HOST_PORT }}
+          EOF
+
+          chmod 600 "$GITHUB_WORKSPACE/.env"
+
+
+      # ---------------------------------------------------------
+      # VALIDATE COMPOSE
+      # ---------------------------------------------------------
+
+      - name: Validate Docker Compose
+        run: |
+          docker compose config --quiet
+
+          echo "Justix Auto compose: OK"
+
+
+      # ---------------------------------------------------------
+      # PULL EXACT IMAGE
+      # ---------------------------------------------------------
+
+      - name: Pull Justix Auto image
+        run: |
+          docker compose pull api migrate
+
+
+      # ---------------------------------------------------------
+      # DATABASE MIGRATION
+      # ---------------------------------------------------------
+
+      - name: Run database migrations
+        run: |
+          docker compose run --rm migrate
+
+
+      # ---------------------------------------------------------
+      # DEPLOY
+      # ---------------------------------------------------------
+
+      - name: Deploy Justix Auto
+        run: |
+          docker compose up -d \
+            --remove-orphans \
+            --force-recreate \
+            api
+
+          docker compose ps
+
+
+      # ---------------------------------------------------------
+      # HEALTH CHECK
+      # ---------------------------------------------------------
+
+      - name: Health check
+        run: |
+          echo "Waiting for Justix Auto..."
+
+          for i in $(seq 1 30); do
+            if curl \
+              --fail \
+              --silent \
+              --show-error \
+              --max-time 3 \
+              "http://127.0.0.1:${{ secrets.HOST_PORT }}/healthz"
+            then
+              echo
+              echo "Justix Auto is healthy"
+              exit 0
+            fi
+
+            sleep 2
+          done
+
+          echo "Health check failed"
+          exit 1
+
+
+      # ---------------------------------------------------------
+      # STATUS
+      # ---------------------------------------------------------
+
+      - name: Show container status
+        run: |
+          docker ps \
+            --filter "name=justix-auto" \
+            --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+
+      # ---------------------------------------------------------
+      # LIGHT CLEANUP
+      # ---------------------------------------------------------
+
+      - name: Cleanup build cache
+        run: |
+          docker builder prune -f --filter "until=24h"
+
+
+      # ---------------------------------------------------------
+      # FAILURE LOGS
+      # ---------------------------------------------------------
+
+      - name: Show application logs on failure
+        if: failure()
+        run: |
+          echo "================ JUSTIX AUTO ================"
+
+          docker compose ps || true
+
+          docker compose logs \
+            --tail=150 \
+            api \
+            migrate || true
