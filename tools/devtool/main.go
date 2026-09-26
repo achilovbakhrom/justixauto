@@ -48,6 +48,7 @@ var commands = []struct {
 	{"doctor", "check local development prerequisites", runDoctor},
 	{"env", "create .env from .env.example with generated secrets", runEnv},
 	{"test", "run go test with throwaway PostgreSQL/MinIO containers", runTest},
+	{"openapi-staged", "regenerate and verify the OpenAPI spec against staged Go changes", runOpenapiStaged},
 }
 
 // randomHex returns 16 bytes of crypto/rand entropy as 32 lowercase hex
