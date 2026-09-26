@@ -81,6 +81,7 @@ type Module struct {
 	authenticator *handler.Authenticator
 	session       *handler.SessionHandler
 	company       *handler.CompanyHandler
+	companyUsers  *handler.CompanyUserHandler
 	admin         *handler.AdminHandler
 }
 
@@ -98,6 +99,7 @@ func New(db *gorm.DB, cfg Config) (*Module, error) {
 	m.authenticator = handler.NewAuthenticator(m.Auth, cfg.Cookie)
 	m.session = handler.NewSessionHandler(m.Auth, cfg.Cookie)
 	m.company = handler.NewCompanyHandler(m.Companies, branches)
+	m.companyUsers = handler.NewCompanyUserHandler(service.NewCompanyUser(d, m.Users))
 	m.admin = handler.NewAdminHandler(m.Companies, m.Users, service.NewRole(d), service.NewMembership(d), service.NewAudit(d))
 	return m, nil
 }
@@ -113,5 +115,6 @@ func (m *Module) Register(api *echo.Group) {
 	g := api.Group("/identity")
 	m.session.Routes(g)
 	m.company.Routes(g)
+	m.companyUsers.Routes(g)
 	m.admin.Routes(g)
 }

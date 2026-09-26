@@ -44,7 +44,10 @@ type UserRepository interface {
 	EmailOrLoginTaken(ctx context.Context, email string, login *string) (bool, error)
 	// LoginTaken reports whether another user already signs in with login.
 	LoginTaken(ctx context.Context, login, exceptUserID string) (bool, error)
-	List(ctx context.Context, limit, offset int) ([]model.User, error)
+	// EmailTakenByOther reports whether another user already uses the email.
+	EmailTakenByOther(ctx context.Context, email, exceptUserID string) (bool, error)
+	// ListStaff lists users who are not employees of any live company.
+	ListStaff(ctx context.Context, limit, offset int) ([]model.User, error)
 	Update(ctx context.Context, u *model.User, expected int64) error
 	// SetLoginState records failed attempts and lockouts without bumping the
 	// version, so sign-in attempts never make an admin's edit stale.
@@ -83,6 +86,8 @@ type MembershipRepository interface {
 	Create(ctx context.Context, m *model.Membership) error
 	Get(ctx context.Context, id string) (*model.Membership, error)
 	ListByUser(ctx context.Context, userID string) ([]model.Membership, error)
+	// ActiveInCompany lists the company's active memberships.
+	ActiveInCompany(ctx context.Context, companyID string) ([]model.Membership, error)
 	// Active returns the user's active membership in the company, or ErrNotFound.
 	Active(ctx context.Context, userID, companyID string) (*model.Membership, error)
 	Update(ctx context.Context, m *model.Membership, expected int64) error

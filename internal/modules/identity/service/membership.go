@@ -82,6 +82,9 @@ func (s *Membership) Grant(ctx context.Context, actor *auth.Principal, userID st
 		if _, err := st.Users().Get(ctx, userID); err != nil {
 			return err
 		}
+		if err := oneCompany(ctx, st, userID, in.CompanyID); err != nil {
+			return err
+		}
 		if _, err := st.Companies().Get(ctx, in.CompanyID); errors.Is(err, apperr.ErrNotFound) {
 			return apperr.FieldError("companyId", "company does not exist")
 		} else if err != nil {
@@ -178,4 +181,19 @@ func (s *Membership) Revoke(ctx context.Context, actor *auth.Principal, id strin
 		return s.audit(ctx, st, actor, "membership.revoked", "membership", m.ID, &m.CompanyID, why, map[string]any{"userId": m.UserID})
 	})
 	return result, err
+}
+
+// oneCompany enforces "one user = one company" (user decision 2026-09-26):
+// a user with an active membership elsewhere cannot join another company.
+func oneCompany(ctx context.Context, st Store, userID, companyID string) error {
+	ms, err := st.Memberships().ListByUser(ctx, userID)
+	if err != nil {
+		return err
+	}
+	for _, m := range ms {
+		if m.Status == model.MembershipActive && m.CompanyID != companyID {
+			return apperr.New(apperr.ErrConflict, "user_has_company", "the user already belongs to another company")
+		}
+	}
+	return nil
 }

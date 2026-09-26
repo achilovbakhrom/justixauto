@@ -20,6 +20,9 @@ const (
 	PermCompanyEdit               = "company.edit"
 	PermBranchesCreate            = "branches.create"
 	PermBranchesEdit              = "branches.edit"
+	// PermCompanyUsersManage lets a company admin manage the company's own
+	// employees with roles prepared in Admin (user decision 2026-09-26).
+	PermCompanyUsersManage = "company.users.manage"
 )
 
 // PermissionInfo describes one catalog entry (see auth.PermissionInfo).
@@ -37,6 +40,7 @@ var Catalog = []PermissionInfo{
 	{Key: PermCompanyEdit, Scope: "company", Assignable: true},
 	{Key: PermBranchesCreate, Scope: "company", Assignable: true},
 	{Key: PermBranchesEdit, Scope: "company", Assignable: true},
+	{Key: PermCompanyUsersManage, Scope: "company", Assignable: true},
 }
 
 const (

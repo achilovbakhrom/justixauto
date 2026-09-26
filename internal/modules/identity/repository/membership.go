@@ -152,3 +152,8 @@ func (r *MembershipRepository) Update(ctx context.Context, m *model.Membership, 
 	m.Version = expected + 1
 	return r.saveBranches(ctx, m)
 }
+
+// ActiveInCompany lists the company's active memberships (its employees).
+func (r *MembershipRepository) ActiveInCompany(ctx context.Context, companyID string) ([]model.Membership, error) {
+	return r.find(ctx, "company_id = ? AND status = ?", companyID, model.MembershipActive)
+}

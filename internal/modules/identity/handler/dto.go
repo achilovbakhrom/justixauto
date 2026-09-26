@@ -73,11 +73,15 @@ func toUser(d *service.UserDetail) userDTO {
 }
 
 type roleDTO struct {
-	ID             string   `json:"id"`
-	Name           string   `json:"name"`
-	System         bool     `json:"system"`
-	PermissionKeys []string `json:"permissionKeys"`
-	Revision       string   `json:"revision"`
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	System bool   `json:"system"`
+	// Scope is "platform" (staff) or "company"; CompanyKind limits a company
+	// role to one company type (null = any type).
+	Scope          string             `json:"scope"`
+	CompanyKind    *model.CompanyKind `json:"companyKind"`
+	PermissionKeys []string           `json:"permissionKeys"`
+	Revision       string             `json:"revision"`
 }
 
 func toRole(r *model.Role) roleDTO {
@@ -85,7 +89,10 @@ func toRole(r *model.Role) roleDTO {
 	if perms == nil {
 		perms = []string{}
 	}
-	return roleDTO{ID: r.ID, Name: r.Name, System: r.System(), PermissionKeys: perms, Revision: revision(r.Version)}
+	return roleDTO{
+		ID: r.ID, Name: r.Name, System: r.System(), Scope: r.Scope, CompanyKind: r.CompanyKind,
+		PermissionKeys: perms, Revision: revision(r.Version),
+	}
 }
 
 type membershipDTO struct {

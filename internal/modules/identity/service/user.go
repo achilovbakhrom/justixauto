@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 	"slices"
 	"time"
 
@@ -16,17 +15,16 @@ import (
 // NewUser builds the user service.
 func NewUser(d Deps) *User { return &User{d} }
 
-// CreateUserInput creates a platform user. User decision 2026-09-26: email
-// is optional; login and a temporary password may be set right away (both or
-// neither), and companyId adds an active membership with access to all
-// branches, so a company employee is created in one step.
+// CreateUserInput creates a JustixAuto staff user with platform roles (user
+// decisions 2026-09-26): email is optional; login and a temporary password
+// may be set right away (both or neither). Company employees are created by
+// their company admin (see CompanyUser).
 type CreateUserInput struct {
 	DisplayName string   `json:"displayName"`
 	Email       string   `json:"email" binding:"optional"`
 	RoleIDs     []string `json:"roleIds"`
 	Login       string   `json:"login" binding:"optional"`
 	Password    string   `json:"password" binding:"optional"`
-	CompanyID   string   `json:"companyId" binding:"optional"`
 }
 
 type UpdateUserInput struct {
@@ -46,7 +44,14 @@ type UserDetail struct {
 // User manages platform user accounts.
 type User struct{ Deps }
 
+// roles validates role IDs for platform staff: only platform roles
+// (user decision 2026-09-26: Admin manages JustixAuto staff only).
 func (s *User) roles(ctx context.Context, st Store, v *apperr.Validation, ids []string) ([]string, error) {
+	return checkRoles(ctx, st, v, ids, func(r model.Role) bool { return r.Scope == model.RoleScopePlatform })
+}
+
+// checkRoles validates role IDs: all must exist and satisfy allowed.
+func checkRoles(ctx context.Context, st Store, v *apperr.Validation, ids []string, allowed func(model.Role) bool) ([]string, error) {
 	ids = uniqueIDs(v, "roleIds", ids)
 	if len(ids) == 0 {
 		return ids, nil
@@ -57,6 +62,12 @@ func (s *User) roles(ctx context.Context, st Store, v *apperr.Validation, ids []
 	}
 	if len(found) != len(ids) {
 		v.Add("roleIds", "contains unknown roles")
+		return ids, nil
+	}
+	for _, r := range found {
+		if !allowed(r) {
+			v.Add("roleIds", "role "+r.Name+" cannot be assigned here")
+		}
 	}
 	return ids, nil
 }
@@ -79,78 +90,91 @@ func (s *User) detail(ctx context.Context, st Store, u *model.User) (*UserDetail
 	return &UserDetail{User: u, Roles: roles, CompanyIDs: companyIDs}, nil
 }
 
-// Create registers a pending user. No password or enrollment is created here:
-// credentials are set through a separate, security-approved flow.
+// newUser holds a validated user about to be created: its optional
+// credentials, roles and (for company employees) company.
+type newUser struct {
+	user      *model.User
+	password  string // empty = no credentials yet (pending)
+	companyID string // empty = platform staff
+}
+
+// buildUser validates the common fields of a new user.
+func buildUser(v *apperr.Validation, now time.Time, displayName, email, login, password string) newUser {
+	u := &model.User{
+		ID: uuid.NewString(), DisplayName: text(v, "displayName", displayName, 1, 200),
+		Email: optionalEmail(v, "email", email), Status: model.UserPending, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
+	if login != "" || password != "" {
+		l := validLogin(v, "login", login)
+		u.Login = &l
+		validatePassword(v, "password", password, password)
+	}
+	return newUser{user: u, password: password}
+}
+
+// create stores a validated user with its roles and optional membership in
+// one transaction. An administrator-set password activates the user, who
+// must change it at first sign-in.
+func (d Deps) create(ctx context.Context, st Store, actor *auth.Principal, n newUser, roleIDs []string) (*UserDetail, error) {
+	u := n.user
+	taken, err := st.Users().EmailOrLoginTaken(ctx, u.Email, u.Login)
+	if err != nil {
+		return nil, err
+	}
+	if taken {
+		return nil, apperr.New(apperr.ErrConflict, "user_exists", "a user with this login or email already exists")
+	}
+	if n.password != "" {
+		hash, err := hashPassword(n.password)
+		if err != nil {
+			return nil, err
+		}
+		u.PasswordHash, u.PasswordChangeRequired, u.Status = &hash, true, model.UserActive
+	}
+	if err := st.Users().Create(ctx, u); err != nil {
+		return nil, err
+	}
+	if err := st.Roles().SetUserRoles(ctx, u.ID, roleIDs); err != nil {
+		return nil, err
+	}
+	var companyID *string
+	if n.companyID != "" {
+		companyID = &n.companyID
+	}
+	if err := d.audit(ctx, st, actor, "user.created", "user", u.ID, companyID, "", map[string]any{"email": u.Email, "login": u.Login, "roleIds": roleIDs}); err != nil {
+		return nil, err
+	}
+	if n.companyID != "" {
+		m := &model.Membership{
+			ID: uuid.NewString(), UserID: u.ID, CompanyID: n.companyID, Status: model.MembershipActive,
+			BranchAccess: model.AllBranches, Version: 1, CreatedAt: u.CreatedAt, UpdatedAt: u.CreatedAt,
+		}
+		if err := st.Memberships().Create(ctx, m); err != nil {
+			return nil, err
+		}
+		if err := d.audit(ctx, st, actor, "membership.granted", "membership", m.ID, &m.CompanyID, "",
+			map[string]any{"userId": u.ID, "branchAccess": m.BranchAccess}); err != nil {
+			return nil, err
+		}
+	}
+	return (&User{d}).detail(ctx, st, u)
+}
+
+// Create registers a JustixAuto staff user with platform roles. Without a
+// login and password the user stays pending until credentials are set.
 func (s *User) Create(ctx context.Context, actor *auth.Principal, in CreateUserInput) (*UserDetail, error) {
 	var v apperr.Validation
-	now := s.clock()
-	u := &model.User{
-		ID: uuid.NewString(), DisplayName: text(&v, "displayName", in.DisplayName, 1, 200),
-		Email: optionalEmail(&v, "email", in.Email), Status: model.UserPending, Version: 1, CreatedAt: now, UpdatedAt: now,
-	}
-	credentials := in.Login != "" || in.Password != ""
-	if credentials {
-		login := validLogin(&v, "login", in.Login)
-		u.Login = &login
-		validatePassword(&v, "password", in.Password, in.Password)
-	}
-	if in.CompanyID != "" && uuid.Validate(in.CompanyID) != nil {
-		v.Add("companyId", "must be a valid ID")
-	}
+	n := buildUser(&v, s.clock(), in.DisplayName, in.Email, in.Login, in.Password)
 	var result *UserDetail
 	err := s.store.InTx(ctx, func(st Store) error {
 		roleIDs, err := s.roles(ctx, st, &v, in.RoleIDs)
 		if err != nil {
 			return err
 		}
-		if in.CompanyID != "" && v.Err() == nil {
-			if _, err := st.Companies().Get(ctx, in.CompanyID); errors.Is(err, apperr.ErrNotFound) {
-				v.Add("companyId", "company does not exist")
-			} else if err != nil {
-				return err
-			}
-		}
 		if err := v.Err(); err != nil {
 			return err
 		}
-		taken, err := st.Users().EmailOrLoginTaken(ctx, u.Email, u.Login)
-		if err != nil {
-			return err
-		}
-		if taken {
-			return apperr.New(apperr.ErrConflict, "user_exists", "a user with this login or email already exists")
-		}
-		if credentials {
-			hash, err := hashPassword(in.Password)
-			if err != nil {
-				return err
-			}
-			// An administrator set the password: active, but must change it.
-			u.PasswordHash, u.PasswordChangeRequired, u.Status = &hash, true, model.UserActive
-		}
-		if err := st.Users().Create(ctx, u); err != nil {
-			return err
-		}
-		if err := st.Roles().SetUserRoles(ctx, u.ID, roleIDs); err != nil {
-			return err
-		}
-		if err := s.audit(ctx, st, actor, "user.created", "user", u.ID, nil, "", map[string]any{"email": u.Email, "login": u.Login, "roleIds": roleIDs}); err != nil {
-			return err
-		}
-		if in.CompanyID != "" {
-			m := &model.Membership{
-				ID: uuid.NewString(), UserID: u.ID, CompanyID: in.CompanyID, Status: model.MembershipActive,
-				BranchAccess: model.AllBranches, Version: 1, CreatedAt: now, UpdatedAt: now,
-			}
-			if err := st.Memberships().Create(ctx, m); err != nil {
-				return err
-			}
-			if err := s.audit(ctx, st, actor, "membership.granted", "membership", m.ID, &m.CompanyID, "",
-				map[string]any{"userId": u.ID, "branchAccess": m.BranchAccess}); err != nil {
-				return err
-			}
-		}
-		result, err = s.detail(ctx, st, u)
+		result, err = s.create(ctx, st, actor, n, roleIDs)
 		return err
 	})
 	return result, err
@@ -167,8 +191,9 @@ func (s *User) Get(ctx context.Context, id string) (*UserDetail, error) {
 	return s.detail(ctx, s.store, u)
 }
 
+// List lists JustixAuto staff (not company employees) for the Admin panel.
 func (s *User) List(ctx context.Context, limit, offset int) ([]UserDetail, error) {
-	users, err := s.store.Users().List(ctx, limit, offset)
+	users, err := s.store.Users().ListStaff(ctx, limit, offset)
 	if err != nil {
 		return nil, err
 	}

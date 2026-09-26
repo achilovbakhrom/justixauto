@@ -57,10 +57,21 @@ func (r *UserRepository) LoginTaken(ctx context.Context, login, exceptUserID str
 	return n > 0, translate(err)
 }
 
-func (r *UserRepository) List(ctx context.Context, limit, offset int) ([]model.User, error) {
+// EmailTakenByOther reports whether another user already uses the email.
+func (r *UserRepository) EmailTakenByOther(ctx context.Context, email, exceptUserID string) (bool, error) {
+	var n int64
+	err := r.db.WithContext(ctx).Model(&model.User{}).Where("email <> '' AND lower(email) = lower(?) AND id <> ?", email, exceptUserID).Count(&n).Error
+	return n > 0, translate(err)
+}
+
+// ListStaff lists JustixAuto staff: users without an active membership in a
+// live company (company employees are managed in their company's cabinet).
+func (r *UserRepository) ListStaff(ctx context.Context, limit, offset int) ([]model.User, error) {
 	limit, offset = pageDefaults(limit, offset)
 	users := []model.User{}
-	err := r.db.WithContext(ctx).Order("display_name, id").Limit(limit).Offset(offset).Find(&users).Error
+	err := r.db.WithContext(ctx).
+		Where("id NOT IN (SELECT user_id FROM identity.memberships WHERE status = ? AND "+inLiveCompany+")", model.MembershipActive).
+		Order("display_name, id").Limit(limit).Offset(offset).Find(&users).Error
 	return users, translate(err)
 }
 
