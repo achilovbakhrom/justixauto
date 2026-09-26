@@ -25,7 +25,7 @@ pre-commit:
             stage_fixed: true
           - name: eslint
             glob: "web/**/*.{ts,tsx,js,cjs,mjs}"
-            run: npx eslint --config web/eslint.config.js --max-warnings 0 {staged_files}
+            run: npx eslint --config web/eslint.config.js --max-warnings 0 --no-warn-ignored {staged_files}
 
 commit-msg:
   jobs:

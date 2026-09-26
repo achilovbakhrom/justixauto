@@ -2377,6 +2377,24 @@ tbody tr:hover {
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
+.form-fieldset {
+  grid-column: 1/-1;
+  min-width: 0;
+  margin: 0;
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+.form-fieldset:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.form-fieldset legend {
+  padding: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
 .field {
   display: grid;
   gap: 6px;
@@ -2434,6 +2452,56 @@ tbody tr:hover {
 .field-hint {
   color: var(--text-muted);
   font-size: 11px;
+}
+/* Country/region combobox (docs/justix-auto/mocks/company-fields.css). */
+.company-autocomplete {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.company-autocomplete input {
+  border: 0;
+  border-radius: 0;
+  min-width: 0;
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 8px 9px 11px;
+  background: transparent;
+}
+.company-autocomplete input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+.company-autocomplete input:focus {
+  outline: 0;
+  box-shadow: none;
+}
+.company-autocomplete button {
+  border: 0;
+  align-self: stretch;
+  background: none;
+  color: var(--text-muted);
+  font-size: 22px;
+  width: 40px;
+  flex: 0 0 40px;
+  cursor: pointer;
+}
+.company-autocomplete:focus-within {
+  outline: 2px solid rgba(23, 105, 224, 0.16);
+  outline-offset: 1px;
+  border-color: var(--primary);
+}
+.company-autocomplete:has(input:disabled) {
+  background: #f1f5f9;
+}
+.company-autocomplete button:disabled,
+.company-autocomplete input:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
 }
 .choice-grid {
   display: grid;
@@ -4373,6 +4441,9 @@ button.vehicle-photo-tile:hover {
   }
 }
 @media (max-width: 600px) {
+  .form-fieldset > .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .ins-workspace {
     display: block;
   }
