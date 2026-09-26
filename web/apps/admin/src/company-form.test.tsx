@@ -157,4 +157,32 @@ describe('company onboarding form', () => {
     });
     expect(new Headers(init?.headers).get('If-Match')).toBe('"7"');
   });
+
+  it('soft-deletes a company with a reason and closes its card', async () => {
+    let deleted = false;
+    const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith('/identity/admin/companies/company-1/delete') && init?.method === 'POST') {
+        deleted = true;
+        return response({ data: company, revision: '8' });
+      }
+      if (url.includes('/admin/companies')) return response({ items: deleted ? [] : [company] });
+      if (url.endsWith('/identity/companies/company-1')) return response({ data: company, revision: '7' });
+      throw new Error(`Unexpected request ${url} ${init?.method}`);
+    });
+    vi.stubGlobal('fetch', fetch);
+    renderCompanies('seller');
+
+    fireEvent.click(await screen.findByText('Авто плюс'));
+    fireEvent.click(await screen.findByRole('button', { name: 'Удалить' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Удалить' });
+    fireEvent.change(within(dialog).getByLabelText('Основание'), { target: { value: 'Дубликат' } });
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Удалить' }));
+
+    await waitFor(() => expect(deleted).toBe(true));
+    const [, init] = fetch.mock.calls.find(([url]) => String(url).endsWith('/delete'))!;
+    expect(JSON.parse(String(init?.body))).toEqual({ reason: 'Дубликат' });
+    expect(new Headers(init?.headers).get('If-Match')).toBe('"7"');
+    await waitFor(() => expect(screen.queryByText('Авто плюс')).toBeNull());
+  });
 });

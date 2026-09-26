@@ -23,11 +23,17 @@ type Store interface {
 
 type CompanyRepository interface {
 	Create(ctx context.Context, c *model.Company) error
+	// Get, GetMany and List see live companies only; a soft-deleted company
+	// is ErrNotFound / absent.
 	Get(ctx context.Context, id string) (*model.Company, error)
+	// GetIncludingDeleted also returns a soft-deleted company (history only).
+	GetIncludingDeleted(ctx context.Context, id string) (*model.Company, error)
 	GetMany(ctx context.Context, ids []string) ([]model.Company, error)
 	List(ctx context.Context, f model.CompanyFilter) ([]model.Company, error)
 	// Update saves c if the stored version equals expected and sets c.Version.
 	Update(ctx context.Context, c *model.Company, expected int64) error
+	// SoftDelete marks c deleted if the stored version equals expected.
+	SoftDelete(ctx context.Context, c *model.Company, expected int64) error
 }
 
 type UserRepository interface {

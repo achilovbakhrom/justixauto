@@ -181,13 +181,14 @@ func (h *AdminHandler) listCompanies(c echo.Context) error {
 	return httpx.List(c, mapSlice(companies, toCompany), nil)
 }
 
-// companyAccess grants or revokes platform access for a company (suspend/restore/etc).
+// companyAccess changes a company's platform access (activate, suspend,
+// restore) or soft-deletes it (delete: hidden everywhere, history kept).
 //
 //	@Summary	Change company access (admin)
 //	@Tags		identity/admin
 //	@Security	CSRF
 //	@Param		id						path		string		true	"company ID"
-//	@Param		action					path		string		true	"access action"
+//	@Param		action					path		string		true	"activate | suspend | restore | delete"
 //	@Param		If-Match				header		string		true	"revision"
 //	@Param		body					body		reasonBody	true	"reason"
 //	@Success	200						{object}	httpx.DataEnvelope[handler.companyDTO]

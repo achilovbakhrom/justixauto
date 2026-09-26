@@ -127,14 +127,20 @@ func (r *MembershipRepository) Get(ctx context.Context, id string) (*model.Membe
 	return r.one(ctx, "id = ?", id)
 }
 
+// ListByUser lists the user's memberships in live companies; memberships in
+// a soft-deleted company are hidden.
 func (r *MembershipRepository) ListByUser(ctx context.Context, userID string) ([]model.Membership, error) {
-	return r.find(ctx, "user_id = ?", userID)
+	return r.find(ctx, "user_id = ? AND "+inLiveCompany, userID)
 }
 
 // Active returns the user's active membership in the company, or ErrNotFound.
+// A soft-deleted company grants no access, so its memberships never count.
 func (r *MembershipRepository) Active(ctx context.Context, userID, companyID string) (*model.Membership, error) {
-	return r.one(ctx, "user_id = ? AND company_id = ? AND status = ?", userID, companyID, model.MembershipActive)
+	return r.one(ctx, "user_id = ? AND company_id = ? AND status = ? AND "+inLiveCompany, userID, companyID, model.MembershipActive)
 }
+
+// inLiveCompany limits memberships to companies that are not soft-deleted.
+const inLiveCompany = "company_id IN (SELECT id FROM identity.companies WHERE deleted_at IS NULL)"
 
 func (r *MembershipRepository) Update(ctx context.Context, m *model.Membership, expected int64) error {
 	err := updateVersioned(r.db.WithContext(ctx), &model.Membership{}, m.ID, expected, map[string]any{

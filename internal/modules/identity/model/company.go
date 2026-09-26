@@ -54,6 +54,9 @@ type Company struct {
 	Version            int64
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
+	// DeletedAt marks a soft-deleted company: hidden everywhere, memberships
+	// no longer grant access, the row stays for history.
+	DeletedAt *time.Time
 }
 
 func (Company) TableName() string { return "identity.companies" }

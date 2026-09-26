@@ -321,6 +321,10 @@ const (
 	ActionActivate = "activate"
 	ActionSuspend  = "suspend"
 	ActionRestore  = "restore"
+	// ActionDelete soft-deletes the company from any access state (user
+	// decision 2026-09-26): it disappears from every list and page and its
+	// memberships stop granting access; the row and history remain.
+	ActionDelete = "delete"
 )
 
 var accessTransitions = map[string]struct{ from, to model.CompanyAccess }{
@@ -330,6 +334,9 @@ var accessTransitions = map[string]struct{ from, to model.CompanyAccess }{
 }
 
 func (s *Company) SetAccess(ctx context.Context, actor *auth.Principal, id string, expected int64, action, why string) (*model.Company, error) {
+	if action == ActionDelete {
+		return s.Delete(ctx, actor, id, expected, why)
+	}
 	t, ok := accessTransitions[action]
 	if !ok {
 		return nil, apperr.ErrNotFound
@@ -359,6 +366,37 @@ func (s *Company) SetAccess(ctx context.Context, actor *auth.Principal, id strin
 			return err
 		}
 		return s.audit(ctx, st, actor, "company."+action, "company", c.ID, &c.ID, why, map[string]any{"before": before, "after": c.Status})
+	})
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+// Delete soft-deletes a company with a mandatory reason (audited).
+func (s *Company) Delete(ctx context.Context, actor *auth.Principal, id string, expected int64, why string) (*model.Company, error) {
+	if err := validID(id); err != nil {
+		return nil, err
+	}
+	c, err := s.store.Companies().Get(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	if c.Version != expected {
+		return nil, apperr.ErrStale
+	}
+	var v apperr.Validation
+	why = reason(&v, why)
+	if err := v.Err(); err != nil {
+		return nil, err
+	}
+	now := s.clock()
+	c.DeletedAt, c.StatusReason, c.UpdatedAt = &now, why, now
+	err = s.store.InTx(ctx, func(st Store) error {
+		if err := st.Companies().SoftDelete(ctx, c, expected); err != nil {
+			return err
+		}
+		return s.audit(ctx, st, actor, "company.deleted", "company", c.ID, &c.ID, why, map[string]any{"name": c.Name, "access": c.Status})
 	})
 	if err != nil {
 		return nil, err
@@ -398,12 +436,13 @@ func (s *Company) Directory(ctx context.Context, f model.CompanyFilter) ([]Profi
 	return out, nil
 }
 
-// CompanyProfile returns any company's public profile (for other modules).
+// CompanyProfile returns any company's public profile (for other modules),
+// including a soft-deleted one so old records can still show its name.
 func (s *Company) CompanyProfile(ctx context.Context, id string) (*Profile, error) {
 	if err := validID(id); err != nil {
 		return nil, err
 	}
-	c, err := s.store.Companies().Get(ctx, id)
+	c, err := s.store.Companies().GetIncludingDeleted(ctx, id)
 	if err != nil {
 		return nil, err
 	}

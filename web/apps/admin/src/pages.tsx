@@ -365,6 +365,27 @@ function CompanyDialog({ id, onClose }: { id: string; onClose: () => void }) {
             {c.access === 'active' && access('suspend', 'Приостановить')}
             {c.access === 'suspended' && access('restore', 'Восстановить')}
             <ActionButton
+              label="Удалить"
+              variant="danger"
+              intro={
+                <p>
+                  Компания исчезнет из всех списков и справочников, её сотрудники потеряют к ней доступ. Данные и
+                  история сохраняются.
+                </p>
+              }
+              fields={[{ name: 'reason', label: 'Основание', type: 'textarea', required: true }]}
+              refresh={[['admin-companies'], ['admin-memberships']]}
+              onSubmit={async (v) => {
+                const r = await post(
+                  `/identity/admin/companies/${id}/delete`,
+                  { reason: v.reason },
+                  { ifMatch: c.revision },
+                );
+                onClose();
+                return r;
+              }}
+            />
+            <ActionButton
               label="Изменить реквизиты"
               fields={companyFields(c)}
               refresh={refresh}
@@ -704,6 +725,7 @@ const auditLabel: Record<string, string> = {
   'company.activated': 'Доступ компании активирован',
   'company.suspended': 'Доступ компании приостановлен',
   'company.restored': 'Доступ компании восстановлен',
+  'company.deleted': 'Компания удалена',
   'branch.created': 'Филиал создан',
   'branch.updated': 'Филиал изменён',
   'user.created': 'Пользователь создан',
