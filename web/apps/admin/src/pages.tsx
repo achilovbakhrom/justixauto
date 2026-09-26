@@ -421,6 +421,8 @@ export function UsersPage() {
   const q = useData(['admin-users'], () => list<User>('/identity/admin/users?limit=200'));
   const roles = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
   const staffRoles = (roles.data ?? []).filter((r) => r.scope === 'platform');
+  // New staff start as platform administrators (user decision 2026-09-26).
+  const platformAdmin = staffRoles.find((r) => r.system);
   const [open, setOpen] = useState<string | null>(null);
   const [query, setQuery] = useSearchQuery();
   const [status, setStatus] = useState('');
@@ -443,23 +445,14 @@ export function UsersPage() {
             { name: 'email', label: 'E-mail', type: 'email' },
             { name: 'login', label: 'Логин', type: 'text' },
             { name: 'password', label: 'Временный пароль', type: 'password', hint: 'Не менее 12 символов' },
-            {
-              name: 'roleIds',
-              label: 'Роли платформы',
-              type: 'multiselect',
-              options: staffRoles.map((r) => [r.id, r.name]),
-            },
           ]}
           intro={
             <p>
-              Логин и временный пароль можно выдать сразу или позже в карточке сотрудника — при первом входе пароль
-              нужно сменить. Письма не отправляются.
-              {roles.data &&
-                staffRoles.length === 0 &&
-                ' Ролей платформы пока нет — подготовьте их в «Роли и разрешения».'}
+              Сотрудник получает роль «Platform administrator»; её можно изменить в карточке. Логин и временный пароль
+              можно выдать сразу или позже — при первом входе пароль нужно сменить. Письма не отправляются.
             </p>
           }
-          onSubmit={(v) => post('/identity/admin/users', v)}
+          onSubmit={(v) => post('/identity/admin/users', { ...v, roleIds: platformAdmin ? [platformAdmin.id] : [] })}
         />
       }
     >
