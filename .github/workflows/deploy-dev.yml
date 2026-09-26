@@ -96,6 +96,7 @@ jobs:
             "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.event.workflow_run.head_sha }}"
 
 
+
       # ---------------------------------------------------------
       # CREATE TEMPORARY ENV
       # ---------------------------------------------------------
@@ -105,19 +106,17 @@ jobs:
           cat > "$GITHUB_WORKSPACE/.env" << EOF
           IMAGE_TAG=${{ github.event.workflow_run.head_sha }}
 
-          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          DATABASE_URL=postgres://${{ secrets.JUSTIX_AUTO_DB_USER }}:${{ secrets.JUSTIX_AUTO_DB_PASSWORD }}@${{ secrets.JUSTIX_AUTO_DB_HOST }}:${{ secrets.JUSTIX_AUTO_DB_PORT }}/${{ secrets.JUSTIX_AUTO_DB_NAME }}?sslmode=disable
 
           HTTP_ADDR=:8080
-          COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
-          ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+          COOKIE_SECURE=${{ secrets.JUSTIX_AUTO_COOKIE_SECURE }}
+          ALLOWED_ORIGINS=${{ secrets.JUSTIX_AUTO_ALLOWED_ORIGINS }}
 
-          WEB_DIR=${{ secrets.WEB_DIR }}
-          API_DOCS=${{ secrets.API_DOCS }}
+          WEB_DIR=web/apps
+          API_DOCS=${{ secrets.JUSTIX_AUTO_API_DOCS }}
 
-          FILE_STORAGE=${{ secrets.FILE_STORAGE }}
-          DOCUMENTS_DIR=${{ secrets.DOCUMENTS_DIR }}
-
-          HOST_PORT=${{ secrets.HOST_PORT }}
+          FILE_STORAGE=${{ secrets.JUSTIX_AUTO_FILE_STORAGE }}
+          DOCUMENTS_DIR=var/documents
           EOF
 
           chmod 600 "$GITHUB_WORKSPACE/.env"
