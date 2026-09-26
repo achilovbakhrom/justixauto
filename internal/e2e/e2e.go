@@ -45,7 +45,7 @@ func DB(t *testing.T) *gorm.DB {
 	t.Helper()
 	url := os.Getenv("TEST_DATABASE_URL")
 	if url == "" {
-		t.Skip("set TEST_DATABASE_URL to a disposable PostgreSQL database (bash tools/test-go.sh)")
+		t.Skip("set TEST_DATABASE_URL to a disposable PostgreSQL database (make test-go)")
 	}
 	m, err := database.NewMigrator(url)
 	if err != nil {

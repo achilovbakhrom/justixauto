@@ -30,15 +30,7 @@ help: ## Show this help
 # ---- setup ----
 
 env: ## Create .env from .env.example with generated secrets (never overwrites)
-	@if [ -f .env ]; then echo ".env exists — edit it or delete it first"; exit 0; fi; \
-	pw=$$(openssl rand -hex 16); \
-	sed -e "s|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=$$pw|" \
-	    -e "s|^DATABASE_URL=.*|DATABASE_URL=postgres://justixauto:$$pw@127.0.0.1:$(POSTGRES_PORT)/justixauto?sslmode=disable|" \
-	    -e "s|^HTTP_ADDR=.*|HTTP_ADDR=127.0.0.1:$(API_PORT)|" \
-	    -e "s|^ALLOWED_ORIGINS=.*|ALLOWED_ORIGINS=http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5175,http://127.0.0.1:5176|" \
-	    .env.example > .env; \
-	printf 'POSTGRES_PORT=%s\n' "$(POSTGRES_PORT)" >> .env; \
-	echo "created .env (Postgres on $(POSTGRES_PORT), API on $(API_PORT))"
+	@$(GO) run ./tools/devtool env
 
 web-install: ## Install web dependencies (npm ci)
 	npm ci --ignore-scripts
@@ -81,7 +73,7 @@ dev: web-build api ## Build the web apps and run everything on one port
 # ---- checks ----
 
 test-go: ## Go tests incl. database and S3 (throwaway PostgreSQL + MinIO containers)
-	bash tools/test-go.sh
+	$(GO) run ./tools/devtool test
 
 test-web: ## Web unit tests
 	npm run test:unit
@@ -100,7 +92,7 @@ lint-go: ## golangci-lint (config: .golangci.yml)
 	$(LINT) run ./...
 
 fmt: ## Format Go (gofumpt, goimports) and web (Prettier) sources
-	$(LINT) fmt ./cmd/... ./internal/... ./migrations/...
+	$(LINT) fmt ./cmd/... ./internal/... ./migrations/... ./tools/devtool/...
 	npm run format
 
 deadcode: ## Fail on unreachable Go functions (tests count as callers)
@@ -123,7 +115,7 @@ hooks: ## Install the Git hooks (lefthook.yml); npm install does this too
 
 check: lint typecheck test ## Everything CI would run
 
-# ---- containers ----
+# ---- container image ----
 
 image: ## Build the Docker image justixauto:dev
 	docker build -t justixauto:dev --build-arg VERSION=$$(git rev-parse --short HEAD) .

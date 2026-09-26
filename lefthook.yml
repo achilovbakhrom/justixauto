@@ -12,7 +12,7 @@ pre-commit:
             run: bash tools/go.sh tool -modfile=tools/lint/go.mod golangci-lint fmt {staged_files}
             stage_fixed: true
           - name: openapi
-            run: bash tools/openapi-staged.sh
+            run: bash tools/go.sh run ./tools/devtool openapi-staged
           - name: go-lint
             run: bash tools/go.sh tool -modfile=tools/lint/go.mod golangci-lint run --new-from-rev HEAD ./...
     - name: web

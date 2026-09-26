@@ -10,7 +10,7 @@
     "mocks:verify": "node tools/verify-mocks.mjs",
     "mocks:test": "node tools/test-mocks.mjs",
     "mocks:serve": "node tools/serve-mocks.mjs",
-    "doctor": "bash tools/doctor.sh",
+    "doctor": "bash tools/go.sh run ./tools/devtool doctor",
     "typecheck": "npm run typecheck:config && npm run typecheck --workspaces",
     "typecheck:config": "tsc --noEmit --strict --module esnext --moduleResolution bundler --target es2022 --types node web/vitest.workspace.ts",
     "lint": "eslint --config web/eslint.config.js web --max-warnings 0",

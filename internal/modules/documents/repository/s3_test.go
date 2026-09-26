@@ -13,7 +13,7 @@ import (
 func TestS3Storage(t *testing.T) {
 	endpoint := os.Getenv("TEST_S3_ENDPOINT")
 	if endpoint == "" {
-		t.Skip("set TEST_S3_ENDPOINT (bash tools/test-go.sh starts MinIO)")
+		t.Skip("set TEST_S3_ENDPOINT (make test-go starts MinIO)")
 	}
 	ctx := context.Background()
 	s, err := NewS3Storage(ctx, S3Config{
