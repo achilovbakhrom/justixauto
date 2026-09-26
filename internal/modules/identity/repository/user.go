@@ -31,11 +31,20 @@ func (r *UserRepository) FindByLogin(ctx context.Context, login string) (*model.
 	return &u, nil
 }
 
-// EmailOrLoginTaken reports whether another user already uses the email or login.
+// EmailOrLoginTaken reports whether another user already uses the email or
+// login. An empty email never counts as taken: it is optional and many users
+// may have none (user decision 2026-09-26).
 func (r *UserRepository) EmailOrLoginTaken(ctx context.Context, email string, login *string) (bool, error) {
-	q := r.db.WithContext(ctx).Model(&model.User{}).Where("lower(email) = lower(?)", email)
-	if login != nil {
-		q = q.Or("lower(login) = lower(?)", *login)
+	q := r.db.WithContext(ctx).Model(&model.User{})
+	switch {
+	case email != "" && login != nil:
+		q = q.Where("lower(email) = lower(?) OR lower(login) = lower(?)", email, *login)
+	case email != "":
+		q = q.Where("lower(email) = lower(?)", email)
+	case login != nil:
+		q = q.Where("lower(login) = lower(?)", *login)
+	default:
+		return false, nil
 	}
 	var n int64
 	return n > 0, translate(q.Count(&n).Error)

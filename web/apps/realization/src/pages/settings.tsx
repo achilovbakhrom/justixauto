@@ -103,22 +103,18 @@ function CompanyEditAction({
           name: 'legalName',
           label: 'Юридическое название',
           type: 'text',
-          required: true,
           initial: c.legalName,
         },
-        {
-          name: 'registration',
-          label: 'Регистрационный номер',
-          type: 'text',
-          required: true,
-          initial: c.registration,
-        },
-        { name: 'email', label: 'Email', type: 'email', required: true, initial: c.email },
+        { name: 'email', label: 'Email', type: 'email', initial: c.email },
         { name: 'phone', label: 'Телефон', type: 'text', initial: c.phone },
         { name: 'address', label: 'Юридический адрес', type: 'text', initial: c.address },
       ]}
       onSubmit={(v) =>
-        patch(`/identity/companies/${id}`, { ...v, country: c.country, region: c.region }, { ifMatch: revision! })
+        patch(
+          `/identity/companies/${id}`,
+          { ...v, country: c.country, region: c.region, registration: c.registration },
+          { ifMatch: revision! },
+        )
       }
     />
   );

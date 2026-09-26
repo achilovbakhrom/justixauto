@@ -103,18 +103,9 @@ const companyFields = (c?: Company): FieldSpec[] => [
     group: 'Информация о компании',
   },
   {
-    name: 'registration',
-    label: 'Регистрационный номер (ИНН/БИН)',
-    type: 'text',
-    required: true,
-    initial: c?.registration ?? '',
-    group: 'Информация о компании',
-  },
-  {
     name: 'country',
     label: 'Страна',
     type: 'combobox',
-    required: true,
     initial: c?.country.label ?? '',
     options: countries(),
     canonicalize: canonicalCountry,
@@ -139,24 +130,32 @@ const companyFields = (c?: Company): FieldSpec[] => [
     name: 'email',
     label: 'Электронная почта',
     type: 'email',
-    required: true,
     initial: c?.email ?? '',
     group: 'Контакты',
   },
   { name: 'phone', label: 'Телефон', type: 'text', initial: c?.phone ?? '', group: 'Контакты' },
 ];
-const companyInput = (v: Record<string, unknown>, legalName = '') => ({
+// registration is never entered in a form; on create it stays empty and on
+// edit the company's current value is preserved unchanged (it only ever
+// changes through the future government-source integration).
+const companyInput = (v: Record<string, unknown>, legalName = '', registration = '') => ({
   name: v.name,
   legalName,
   country: { label: canonicalCountry(String(v.country)) ?? v.country },
   region: v.region ? { label: v.region } : null,
-  registration: v.registration,
+  registration,
   email: v.email,
   phone: v.phone,
   address: v.address,
 });
 const adminFields: FieldSpec[] = [
-  { name: 'displayName', label: 'Имя администратора', type: 'text', required: true, group: 'Данные для входа' },
+  {
+    name: 'displayName',
+    label: 'Имя администратора',
+    type: 'text',
+    hint: 'Если не заполнено, используется логин.',
+    group: 'Данные для входа',
+  },
   { name: 'login', label: 'Логин', type: 'text', required: true, group: 'Данные для входа' },
   {
     name: 'password',
@@ -270,7 +269,10 @@ export function CompaniesPage({ kind }: { kind: Kind }) {
             {
               title: 'Компания',
               render: (c) => (
-                <Cell main={c.name} sub={`${c.registration} · ${kind === 'seller' ? 'Реализация' : kindLabel[kind]}`} />
+                <Cell
+                  main={c.name}
+                  sub={[c.registration, kind === 'seller' ? 'Реализация' : kindLabel[kind]].filter(Boolean).join(' · ')}
+                />
               ),
             },
             { title: 'Страна / регион', render: (c) => <Cell main={c.country.label} sub={c.region?.label} /> },
@@ -367,7 +369,9 @@ function CompanyDialog({ id, onClose }: { id: string; onClose: () => void }) {
               fields={companyFields(c)}
               refresh={refresh}
               onSubmit={(v) =>
-                patch(`/identity/companies/${id}`, companyInput(v, c.legalName), { ifMatch: c.revision })
+                patch(`/identity/companies/${id}`, companyInput(v, c.legalName, c.registration), {
+                  ifMatch: c.revision,
+                })
               }
             />
           </>
@@ -382,7 +386,7 @@ function CompanyDialog({ id, onClose }: { id: string; onClose: () => void }) {
             ['Основание', c.accessReason || '—'],
             ['Юр. название', c.legalName || '—'],
             ['Страна / регион', `${c.country.label}${c.region ? ', ' + c.region.label : ''}`],
-            ['Рег. номер', c.registration],
+            ...(c.registration ? [['Рег. номер', c.registration] as [string, string]] : []),
             ['E-mail', c.email],
             ['Телефон', c.phone || '—'],
             ['Адрес', c.address || '—'],

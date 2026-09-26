@@ -42,10 +42,8 @@ const response = (body: unknown) =>
 
 function fillCreationForm() {
   fireEvent.change(screen.getByLabelText('Название компании'), { target: { value: 'Новая компания' } });
-  fireEvent.change(screen.getByLabelText('Регистрационный номер (ИНН/БИН)'), { target: { value: '67890' } });
   fireEvent.change(screen.getByLabelText('Страна'), { target: { value: 'Казахстан' } });
   fireEvent.change(screen.getByLabelText('Электронная почта'), { target: { value: 'admin@example.test' } });
-  fireEvent.change(screen.getByLabelText('Имя администратора'), { target: { value: 'Первый администратор' } });
   fireEvent.change(screen.getByLabelText('Логин'), { target: { value: 'first-admin' } });
   fireEvent.change(screen.getByLabelText('Пароль'), { target: { value: 'long-enough-password' } });
   fireEvent.change(screen.getByLabelText('Повторите пароль'), { target: { value: 'long-enough-password' } });
@@ -86,6 +84,47 @@ describe('company onboarding form', () => {
     if (kind === 'bank') expect(body.kind).toBe('bank');
   });
 
+  it('only requires the company name, admin login and password to create a seller company', async () => {
+    const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).includes('/admin/companies')) return response({ items: [] });
+      if (String(input).includes('/admin/seller-companies')) return response({ data: {}, revision: '1' });
+      throw new Error(`Unexpected request ${String(input)} ${init?.method}`);
+    });
+    vi.stubGlobal('fetch', fetch);
+    renderCompanies('seller');
+
+    fireEvent.click(await screen.findByRole('button', { name: '+ Добавить компанию' }));
+    expect(screen.queryByLabelText('Регистрационный номер (ИНН/БИН)')).toBeNull();
+
+    fireEvent.change(screen.getByLabelText('Название компании'), { target: { value: 'Минимальная компания' } });
+    fireEvent.change(screen.getByLabelText('Логин'), { target: { value: 'bare-admin' } });
+    fireEvent.change(screen.getByLabelText('Пароль'), { target: { value: 'long-enough-password' } });
+    fireEvent.change(screen.getByLabelText('Повторите пароль'), { target: { value: 'long-enough-password' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Создать компанию' }));
+
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/admin/seller-companies'), expect.any(Object)),
+    );
+    const [, init] = fetch.mock.calls.find(([input]) => String(input).includes('/admin/seller-companies'))!;
+    const body = JSON.parse(String(init?.body));
+    expect(body.company).toMatchObject({ name: 'Минимальная компания', registration: '' });
+    expect(body.firstAdmin).toMatchObject({ login: 'bare-admin' });
+  });
+
+  it('hides the registration sub-line when a company has no registration number', async () => {
+    const noRegistration = { ...company, registration: '' };
+    const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).includes('/admin/companies')) return response({ items: [noRegistration] });
+      throw new Error(`Unexpected request ${String(input)} ${init?.method}`);
+    });
+    vi.stubGlobal('fetch', fetch);
+    renderCompanies('seller');
+
+    await screen.findByText('Авто плюс');
+    expect(screen.queryByText('Реализация')?.textContent).toBe('Реализация');
+    expect(screen.queryByText(/·\s*Реализация/)).toBeNull();
+  });
+
   it('keeps the fetched legal name and revision when editing displayed requisites', async () => {
     const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
@@ -114,6 +153,7 @@ describe('company onboarding form', () => {
       name: 'Новое имя',
       email: 'new@example.test',
       legalName: 'АО Старое имя',
+      registration: '12345',
     });
     expect(new Headers(init?.headers).get('If-Match')).toBe('"7"');
   });

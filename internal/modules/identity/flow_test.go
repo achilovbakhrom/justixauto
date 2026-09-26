@@ -378,6 +378,81 @@ func TestUsersRolesAndGuards(t *testing.T) {
 	expect(t, insurer.login("safe", "provider-password-1"), http.StatusOK)
 }
 
+// User decision 2026-09-26: only the company name and the first admin's login
+// (plus password and its confirmation) are required. Every other requisite,
+// including the registration number, is optional and arrives later from a
+// government-source integration; duplicate detection by country/registration
+// applies only once a registration number is known.
+func TestOptionalCompanyRequisitesAndEmptyAdminEmail(t *testing.T) {
+	e := newEnv(t)
+	admin := e.bootstrap()
+
+	bareAdmin := func(login string) map[string]string {
+		return map[string]string{"login": login, "password": "long-enough-pass-1", "passwordConfirmation": "long-enough-pass-1"}
+	}
+
+	first := admin.do(http.MethodPost, "/admin/seller-companies", map[string]any{
+		"company":    map[string]any{"name": "Bare Motors"},
+		"firstAdmin": bareAdmin("bare1"),
+	})
+	expect(t, first, http.StatusCreated)
+	created := first.data()["admin"].(map[string]any)
+	if created["displayName"] != "bare1" {
+		t.Fatalf("displayName should default to the login: %v", created)
+	}
+	firstCompany := first.data()["company"].(map[string]any)
+	if firstCompany["country"].(map[string]any)["label"] != "" || firstCompany["registration"] != "" {
+		t.Fatalf("company requisites should stay empty: %v", firstCompany)
+	}
+	bareOwner := e.browser()
+	expect(t, bareOwner.login("bare1", "long-enough-pass-1"), http.StatusOK)
+
+	// A second company with another empty-email admin must succeed: an empty
+	// email never counts as taken.
+	expect(t, admin.do(http.MethodPost, "/admin/seller-companies", map[string]any{
+		"company":    map[string]any{"name": "Bare Motors Two"},
+		"firstAdmin": bareAdmin("bare2"),
+	}), http.StatusCreated)
+
+	// Without a registration number, two otherwise-identical companies do not
+	// collide.
+	expect(t, admin.do(http.MethodPost, "/admin/seller-companies", map[string]any{
+		"company":    map[string]any{"name": "Bare Motors Three"},
+		"firstAdmin": bareAdmin("bare3"),
+	}), http.StatusCreated)
+
+	// Once a registration number is known, duplicate detection still applies
+	// (case-insensitively).
+	withReg := func(name, login, reg string) map[string]any {
+		return map[string]any{
+			"company":    map[string]any{"name": name, "registration": reg},
+			"firstAdmin": bareAdmin(login),
+		}
+	}
+	regOne := admin.do(http.MethodPost, "/admin/seller-companies", withReg("Reg One", "reg1", "REG-1"))
+	expect(t, regOne, http.StatusCreated)
+	regCompany := regOne.data()["company"].(map[string]any)
+	expect(t, admin.do(http.MethodPost, "/admin/seller-companies", withReg("Reg Two", "reg2", "reg-1")), http.StatusConflict, "company_duplicate")
+
+	// Updating a company with its own (unchanged) registration number must not
+	// trip the duplicate check against itself, and must keep the number.
+	regOwner := e.browser()
+	expect(t, regOwner.login("reg1", "long-enough-pass-1"), http.StatusOK)
+	regID := regCompany["id"].(string)
+	updated := regOwner.do(http.MethodPatch, "/companies/"+regID, map[string]any{
+		"name": "Reg One Updated", "registration": "REG-1",
+	}, ifMatch(regCompany["revision"])...)
+	expect(t, updated, http.StatusOK)
+	if updated.data()["registration"] != "REG-1" {
+		t.Fatalf("registration should be kept unchanged on update: %v", updated.data())
+	}
+	fetched := regOwner.do(http.MethodGet, "/companies/"+regID, nil)
+	expect(t, fetched, http.StatusOK)
+	if fetched.data()["registration"] != "REG-1" || fetched.data()["name"] != "Reg One Updated" {
+		t.Fatalf("registration should still be kept after refetch: %v", fetched.data())
+	}
+}
+
 // Sensitive actions work right after the password: there is no second factor.
 func TestNoSecondFactor(t *testing.T) {
 	e := newEnv(t)

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"strings"
 
 	"github.com/google/uuid"
 
@@ -20,22 +21,31 @@ type Label struct {
 	Label string `json:"label"`
 }
 
-// CompanyInput is the contract's CompanyInput.
+// CompanyInput is the contract's CompanyInput. User decision 2026-09-26: only
+// the company name is required here; country, region, registration number,
+// email, address and phone are requisites that arrive later from a
+// government-source integration and are optional until then. The
+// registration number is never entered in a form, so duplicate detection by
+// country/registration only applies once a number is known.
 type CompanyInput struct {
 	Name         string `json:"name"`
 	LegalName    string `json:"legalName"`
-	Country      Label  `json:"country"`
+	Country      Label  `json:"country" binding:"optional"`
 	Region       *Label `json:"region"`
-	Registration string `json:"registration"`
-	Email        string `json:"email"`
+	Registration string `json:"registration" binding:"optional"`
+	Email        string `json:"email" binding:"optional"`
 	Address      string `json:"address"`
 	Phone        string `json:"phone"`
 }
 
+// FirstAdminInput is the contract's FirstAdminInput. User decision
+// 2026-09-26: only the login (plus password and its confirmation, without
+// which sign-in is impossible) is required; displayName defaults to the
+// login and email is optional.
 type FirstAdminInput struct {
-	DisplayName          string `json:"displayName"`
+	DisplayName          string `json:"displayName" binding:"optional"`
 	Login                string `json:"login"`
-	Email                string `json:"email"`
+	Email                string `json:"email" binding:"optional"`
 	Password             string `json:"password"`
 	PasswordConfirmation string `json:"passwordConfirmation"`
 }
@@ -49,10 +59,20 @@ type ProviderInput struct {
 // Company manages company registration, requisites and platform access.
 type Company struct{ Deps }
 
+// optionalEmail validates the email format only when a value is given: the
+// company email and the first administrator's email are both optional
+// (user decision 2026-09-26).
+func optionalEmail(v *apperr.Validation, field, value string) string {
+	if strings.TrimSpace(value) == "" {
+		return ""
+	}
+	return email(v, field, value)
+}
+
 func (in CompanyInput) apply(v *apperr.Validation, c *model.Company) {
 	c.Name = text(v, "company.name", in.Name, 1, 200)
 	c.LegalName = text(v, "company.legalName", in.LegalName, 0, 300)
-	c.Country = text(v, "company.country", in.Country.Label, 1, 100)
+	c.Country = text(v, "company.country", in.Country.Label, 0, 100)
 	c.CountryKey = text(v, "company.country", in.Country.Key, 0, 50)
 	c.Region, c.RegionKey = "", ""
 	if in.Region != nil {
@@ -62,8 +82,8 @@ func (in CompanyInput) apply(v *apperr.Validation, c *model.Company) {
 			v.Add("company.region", "requires a country")
 		}
 	}
-	c.RegistrationNumber = text(v, "company.registration", in.Registration, 1, 64)
-	c.Email = email(v, "company.email", in.Email)
+	c.RegistrationNumber = text(v, "company.registration", in.Registration, 0, 64)
+	c.Email = optionalEmail(v, "company.email", in.Email)
 	c.Address = text(v, "company.address", in.Address, 0, 500)
 	c.Phone = text(v, "company.phone", in.Phone, 0, 50)
 }
@@ -144,10 +164,14 @@ func (s *Company) CreateSellerWithAdmin(ctx context.Context, actor *auth.Princip
 func (s *Company) provision(ctx context.Context, actor *auth.Principal, v *apperr.Validation, kind model.CompanyKind, company CompanyInput, a FirstAdminInput) (*ProvisionResult, error) {
 	c := s.newCompany(v, kind, company)
 	login := validLogin(v, "firstAdmin.login", a.Login)
+	displayName := text(v, "firstAdmin.displayName", a.DisplayName, 0, 200)
+	if displayName == "" {
+		displayName = login
+	}
 	now := c.CreatedAt
 	u := &model.User{
-		ID: uuid.NewString(), DisplayName: text(v, "firstAdmin.displayName", a.DisplayName, 1, 200),
-		Email: email(v, "firstAdmin.email", a.Email), Login: &login, Status: model.UserActive,
+		ID: uuid.NewString(), DisplayName: displayName,
+		Email: optionalEmail(v, "firstAdmin.email", a.Email), Login: &login, Status: model.UserActive,
 		Version: 1, CreatedAt: now, UpdatedAt: now,
 	}
 	validatePassword(v, "firstAdmin.password", a.Password, a.PasswordConfirmation)
