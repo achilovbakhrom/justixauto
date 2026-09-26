@@ -5,8 +5,8 @@ import {
   Button,
   Cell,
   ChangePassword,
+  CompanyEmployees,
   Details,
-  Notice,
   Panel,
   Table,
   get,
@@ -325,19 +325,15 @@ function Members() {
       <div className="settings-title-row">
         <div>
           <h2>Пользователи и роли</h2>
-          <p>Роли глобальные и действуют во всех компаниях пользователя.</p>
+          <p>Сотрудники компании и их роли. Роли подготовлены администратором платформы JustixAuto.</p>
         </div>
       </div>
-      <Notice>
-        Сотрудников, их доступ к компаниям и роли назначает администратор платформы JustixAuto. Отправьте ему запрос с
-        именем, email и нужными разделами.
-      </Notice>
+      <CompanyEmployees />
       <Panel title="Ваш доступ" padded>
         <Details
           items={[
             ['Роли', s.view.roles.map((r) => r.name).join(', ') || '—'],
             ['Разрешений', String(s.view.permissions.length)],
-            ['Компаний доступно', String(s.view.accessibleCompanies.length)],
           ]}
         />
       </Panel>

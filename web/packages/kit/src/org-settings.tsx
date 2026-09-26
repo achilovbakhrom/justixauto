@@ -3,6 +3,7 @@ import { get } from './http';
 import { ChangePassword, useSession } from './session';
 import { useData } from './shell';
 import { Button, Notice, Page, Panel } from './ui';
+import { CompanyEmployees } from './company-employees';
 
 interface Org {
   name: string;
@@ -51,9 +52,10 @@ export function OrgSettings() {
         </div>
       </Panel>
       <Notice>
-        Реквизиты организации, сотрудников и их роли меняет администратор платформы JustixAuto. Подключение кабинета не
-        означает интеграцию с API банка или страховой.
+        Реквизиты организации меняет администратор платформы JustixAuto. Подключение кабинета не означает интеграцию с
+        API банка или страховой.
       </Notice>
+      <CompanyEmployees />
       <Panel title="Безопасность" padded>
         <div className="kit-row">
           <Button onClick={() => setForm('password')}>Сменить пароль</Button>
