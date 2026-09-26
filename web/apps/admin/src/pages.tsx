@@ -17,9 +17,12 @@ import {
   dateTime,
   get,
   list,
+  canonicalCountry,
+  countries,
   matches,
   patch,
   post,
+  regionsFor,
   useData,
   useRefresh,
   useSearchQuery,
@@ -91,25 +94,61 @@ const accessTone = (a: string) => (a === 'active' ? 'success' : a === 'suspended
 const accessLabel: Record<string, string> = { draft: 'Черновик', active: 'Активна', suspended: 'Приостановлена' };
 
 const companyFields = (c?: Company): FieldSpec[] => [
-  { name: 'name', label: 'Название', type: 'text', required: true, initial: c?.name ?? '' },
-  { name: 'legalName', label: 'Юридическое название', type: 'text', initial: c?.legalName ?? '' },
-  { name: 'country', label: 'Страна', type: 'text', required: true, initial: c?.country.label ?? '' },
-  { name: 'region', label: 'Регион', type: 'text', initial: c?.region?.label ?? '' },
+  {
+    name: 'name',
+    label: 'Название компании',
+    type: 'text',
+    required: true,
+    initial: c?.name ?? '',
+    group: 'Информация о компании',
+  },
   {
     name: 'registration',
     label: 'Регистрационный номер (ИНН/БИН)',
     type: 'text',
     required: true,
     initial: c?.registration ?? '',
+    group: 'Информация о компании',
   },
-  { name: 'email', label: 'E-mail', type: 'email', required: true, initial: c?.email ?? '' },
-  { name: 'phone', label: 'Телефон', type: 'text', initial: c?.phone ?? '' },
-  { name: 'address', label: 'Адрес', type: 'text', initial: c?.address ?? '' },
+  {
+    name: 'country',
+    label: 'Страна',
+    type: 'combobox',
+    required: true,
+    initial: c?.country.label ?? '',
+    options: countries(),
+    canonicalize: canonicalCountry,
+    placeholder: 'Выберите или найдите страну',
+    ariaLabel: 'Показать страны',
+    group: 'Адрес',
+  },
+  {
+    name: 'region',
+    label: 'Регион',
+    type: 'combobox',
+    initial: c?.region?.label ?? '',
+    dependsOn: 'country',
+    optionsFor: regionsFor,
+    placeholder: 'Выберите или найдите регион',
+    disabledPlaceholder: 'Сначала выберите страну',
+    ariaLabel: 'Показать регионы',
+    group: 'Адрес',
+  },
+  { name: 'address', label: 'Адрес', type: 'text', initial: c?.address ?? '', group: 'Адрес' },
+  {
+    name: 'email',
+    label: 'Электронная почта',
+    type: 'email',
+    required: true,
+    initial: c?.email ?? '',
+    group: 'Контакты',
+  },
+  { name: 'phone', label: 'Телефон', type: 'text', initial: c?.phone ?? '', group: 'Контакты' },
 ];
-const companyInput = (v: Record<string, unknown>) => ({
+const companyInput = (v: Record<string, unknown>, legalName = '') => ({
   name: v.name,
-  legalName: v.legalName,
-  country: { label: v.country },
+  legalName,
+  country: { label: canonicalCountry(String(v.country)) ?? v.country },
   region: v.region ? { label: v.region } : null,
   registration: v.registration,
   email: v.email,
@@ -117,16 +156,28 @@ const companyInput = (v: Record<string, unknown>) => ({
   address: v.address,
 });
 const adminFields: FieldSpec[] = [
-  { name: 'displayName', label: 'Имя администратора', type: 'text', required: true },
-  { name: 'login', label: 'Логин', type: 'text', required: true },
-  { name: 'adminEmail', label: 'E-mail администратора', type: 'email', required: true },
-  { name: 'password', label: 'Пароль (не менее 12 символов)', type: 'password', required: true },
-  { name: 'passwordConfirmation', label: 'Повторите пароль', type: 'password', required: true },
+  { name: 'displayName', label: 'Имя администратора', type: 'text', required: true, group: 'Данные для входа' },
+  { name: 'login', label: 'Логин', type: 'text', required: true, group: 'Данные для входа' },
+  {
+    name: 'password',
+    label: 'Пароль',
+    type: 'password',
+    required: true,
+    hint: 'Не менее 12 символов.',
+    group: 'Данные для входа',
+  },
+  {
+    name: 'passwordConfirmation',
+    label: 'Повторите пароль',
+    type: 'password',
+    required: true,
+    group: 'Данные для входа',
+  },
 ];
 const firstAdmin = (v: Record<string, unknown>) => ({
   displayName: v.displayName,
   login: v.login,
-  email: v.adminEmail,
+  email: v.email,
   password: v.password,
   passwordConfirmation: v.passwordConfirmation,
 });
@@ -161,14 +212,16 @@ export function CompaniesPage({ kind }: { kind: Kind }) {
         kind === 'seller' ? (
           <ActionButton
             label="+ Добавить компанию"
+            title="Новая компания и администратор"
+            submitLabel="Создать компанию"
             variant="primary"
             size="wide"
             fields={[...companyFields(), ...adminFields]}
             refresh={[['admin-companies']]}
             intro={
               <p>
-                Компания, её первый администратор и доступ создаются одной операцией. Компания остаётся черновиком до
-                активации.
+                Контактная электронная почта также используется для первого администратора. Компания остаётся черновиком
+                до активации.
               </p>
             }
             onSubmit={(v) =>
@@ -178,11 +231,18 @@ export function CompaniesPage({ kind }: { kind: Kind }) {
         ) : (
           <ActionButton
             label={`+ Подключить: ${kindLabel[kind]}`}
+            title={`Новая компания и администратор: ${kindLabel[kind]}`}
+            submitLabel="Создать компанию"
             variant="primary"
             size="wide"
             fields={[...companyFields(), ...adminFields]}
             refresh={[['admin-companies']]}
-            intro={<p>Подключение создаёт отдельный кабинет. Оно не подключает API и не публикует программы.</p>}
+            intro={
+              <p>
+                Контактная электронная почта также используется для первого администратора. Подключение создаёт
+                отдельный кабинет.
+              </p>
+            }
             onSubmit={(v) =>
               post('/identity/admin/provider-companies', { kind, company: companyInput(v), firstAdmin: firstAdmin(v) })
             }
@@ -306,7 +366,9 @@ function CompanyDialog({ id, onClose }: { id: string; onClose: () => void }) {
               label="Изменить реквизиты"
               fields={companyFields(c)}
               refresh={refresh}
-              onSubmit={(v) => patch(`/identity/companies/${id}`, companyInput(v), { ifMatch: c.revision })}
+              onSubmit={(v) =>
+                patch(`/identity/companies/${id}`, companyInput(v, c.legalName), { ifMatch: c.revision })
+              }
             />
           </>
         )

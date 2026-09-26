@@ -5,3 +5,4 @@ export * from './shell';
 export * from './applications';
 export * from './icons';
 export * from './org-settings';
+export * from './geo';

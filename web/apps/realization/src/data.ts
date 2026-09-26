@@ -1,5 +1,5 @@
 /** Seller data: types, query hooks and labels shared by the pages. */
-import { list, useData, useSession } from '@justixauto/kit';
+import { canonicalCountry, countries, list, useData, useSession } from '@justixauto/kit';
 import type { FieldSpec } from '@justixauto/kit';
 
 export interface Money {
@@ -431,13 +431,23 @@ export function sumMoney(items: Money[]): Money[] {
 // ---- warehouse form ----
 export const warehouseFields = (w?: Warehouse): FieldSpec[] => [
   { name: 'name', label: 'Название', type: 'text', required: true, initial: w?.name ?? '' },
-  { name: 'country', label: 'Страна', type: 'text', required: true, initial: w?.country.label ?? '' },
+  {
+    name: 'country',
+    label: 'Страна',
+    type: 'combobox',
+    required: true,
+    initial: w?.country.label ?? '',
+    options: countries(),
+    canonicalize: canonicalCountry,
+    placeholder: 'Выберите или найдите страну',
+    ariaLabel: 'Показать страны',
+  },
   { name: 'city', label: 'Город', type: 'text', required: true, initial: w?.city ?? '' },
   { name: 'address', label: 'Адрес', type: 'text', required: true, initial: w?.address ?? '' },
 ];
 export const warehouseInput = (v: Record<string, unknown>) => ({
   name: v.name,
-  country: { label: v.country },
+  country: { label: canonicalCountry(String(v.country)) ?? v.country },
   city: v.city,
   address: v.address,
 });

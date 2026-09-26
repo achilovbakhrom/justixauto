@@ -663,20 +663,43 @@ export const dateTime = (s: string | null | undefined) => (s ? new Date(s).toLoc
 
 // ---- generic form dialog ----
 
-export type FieldSpec =
-  | {
-      name: string;
-      label: string;
-      type: 'text' | 'textarea' | 'date' | 'datetime' | 'number' | 'password' | 'email';
-      required?: boolean;
-      initial?: string;
-      hint?: string;
-    }
-  | { name: string; label: string; type: 'money'; required?: boolean; initial?: string; currency?: string }
-  | { name: string; label: string; type: 'select'; options: [string, string][]; required?: boolean; initial?: string }
-  | { name: string; label: string; type: 'multiselect'; options: [string, string][]; initial?: string[] }
-  | { name: string; label: string; type: 'checkbox'; initial?: boolean }
-  | { name: string; label: string; type: 'file'; purpose: string; required?: boolean };
+type FieldGroup = { group?: string };
+
+export type FieldSpec = FieldGroup &
+  (
+    | {
+        name: string;
+        label: string;
+        type: 'text' | 'textarea' | 'date' | 'datetime' | 'number' | 'password' | 'email';
+        required?: boolean;
+        initial?: string;
+        hint?: string;
+      }
+    | { name: string; label: string; type: 'money'; required?: boolean; initial?: string; currency?: string }
+    | { name: string; label: string; type: 'select'; options: [string, string][]; required?: boolean; initial?: string }
+    | {
+        name: string;
+        label: string;
+        type: 'combobox';
+        /** Options shown when the field has no dependency (e.g. country). */
+        options?: string[];
+        /** Name of another field this one depends on (e.g. region depends on country). */
+        dependsOn?: string;
+        /** Options derived from the dependency's current value. */
+        optionsFor?: (parentValue: string) => string[];
+        /** Canonicalizes free text to the catalogue spelling on blur, if it matches. */
+        canonicalize?: (raw: string) => string | undefined;
+        placeholder?: string;
+        /** Placeholder shown while disabled because the dependency is empty. */
+        disabledPlaceholder?: string;
+        ariaLabel?: string;
+        required?: boolean;
+        initial?: string;
+      }
+    | { name: string; label: string; type: 'multiselect'; options: [string, string][]; initial?: string[] }
+    | { name: string; label: string; type: 'checkbox'; initial?: boolean }
+    | { name: string; label: string; type: 'file'; purpose: string; required?: boolean }
+  );
 
 export type FormValues = Record<string, string | string[] | boolean>;
 
@@ -725,12 +748,24 @@ export function FormDialog({
       fields.filter((f) => f.type === 'money').map((f) => [f.name, (f as { currency?: string }).currency ?? 'USD']),
     ),
   );
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
-  const set = (name: string, v: string | string[] | boolean) => setValues((s) => ({ ...s, [name]: v }));
+  const submitting = useRef(false);
+  // Combobox fields with dependsOn clear when their dependency's value changes
+  // (docs/justix-auto/business-logic.md:110: region is unavailable/cleared without its country).
+  const set = (name: string, v: string | string[] | boolean) =>
+    setValues((s) => {
+      const next = { ...s, [name]: v };
+      for (const f of fields) {
+        if (f.type === 'combobox' && f.dependsOn === name && s[name] !== v) next[f.name] = '';
+      }
+      return next;
+    });
 
   async function submit() {
+    if (submitting.current) return;
+    submitting.current = true;
     setBusy(true);
     setError('');
     setErrors({});
@@ -742,7 +777,7 @@ export function FormDialog({
           if (v === '' && !f.required) continue;
           const minor = toMinor(String(v));
           if (minor === null) {
-            setErrors({ [f.name]: 'сумма, например 1500.00' });
+            setErrors({ [f.name]: ['сумма, например 1500.00'] });
             setBusy(false);
             return;
           }
@@ -758,17 +793,18 @@ export function FormDialog({
       onClose();
     } catch (e) {
       if (e instanceof ApiError && Object.keys(e.fields).length) {
-        const byField: Record<string, string> = {};
+        const byField: Record<string, string[]> = {};
         const rest: string[] = [];
         for (const [k, msg] of Object.entries(e.fields)) {
           const f = fields.find((x) => k === x.name || k.endsWith('.' + x.name) || k.startsWith(x.name + '.'));
-          if (f) byField[f.name] = msg;
+          if (f && !(byField[f.name] ?? []).includes(msg)) (byField[f.name] ??= []).push(msg);
           else rest.push(`${k}: ${msg}`);
         }
         setErrors(byField);
         setError(rest.length ? rest.join('; ') : e.message);
       } else setError(errorText(e));
     } finally {
+      submitting.current = false;
       setBusy(false);
     }
   }
@@ -798,25 +834,123 @@ export function FormDialog({
         }}
         className="form-grid"
       >
-        {fields.map((f) => (
-          <FieldInput
-            key={f.name}
-            spec={f}
-            value={values[f.name]!}
-            error={errors[f.name]}
-            onChange={(v) => set(f.name, v)}
-            onFile={(file) => setFiles((s) => ({ ...s, [f.name]: file }))}
-            currency={currency[f.name]}
-            onCurrency={(c) => setCurrency((s) => ({ ...s, [f.name]: c }))}
-          />
-        ))}
+        {groupFields(fields).map(([group, groupedFields]) =>
+          group ? (
+            <fieldset className="form-fieldset" key={group}>
+              <legend>{group}</legend>
+              <div className="form-grid">
+                {groupedFields.map((f) => fieldInput(f, values, errors, set, setFiles, currency, setCurrency))}
+              </div>
+            </fieldset>
+          ) : (
+            groupedFields.map((f) => fieldInput(f, values, errors, set, setFiles, currency, setCurrency))
+          ),
+        )}
         <button type="submit" hidden />
       </form>
     </Modal>
   );
 }
 
+function groupFields(fields: FieldSpec[]) {
+  const groups = new Map<string | undefined, FieldSpec[]>();
+  for (const field of fields) groups.set(field.group, [...(groups.get(field.group) ?? []), field]);
+  return [...groups];
+}
+
+function fieldInput(
+  spec: FieldSpec,
+  values: FormValues,
+  errors: Record<string, string[]>,
+  set: (name: string, value: string | string[] | boolean) => void,
+  setFiles: React.Dispatch<React.SetStateAction<Record<string, File | null>>>,
+  currency: Record<string, string>,
+  setCurrency: React.Dispatch<React.SetStateAction<Record<string, string>>>,
+) {
+  return (
+    <FieldInput
+      key={spec.name}
+      spec={spec}
+      value={values[spec.name]!}
+      error={errors[spec.name]}
+      onChange={(value) => set(spec.name, value)}
+      onFile={(file) => setFiles((state) => ({ ...state, [spec.name]: file }))}
+      currency={currency[spec.name]}
+      onCurrency={(value) => setCurrency((state) => ({ ...state, [spec.name]: value }))}
+      dependsOnValue={spec.type === 'combobox' && spec.dependsOn ? values[spec.dependsOn] : undefined}
+    />
+  );
+}
+
 const currencies = ['USD', 'UZS', 'EUR', 'RUB', 'KZT'];
+
+function ComboboxField({
+  id,
+  cls,
+  label,
+  spec,
+  value,
+  error,
+  onChange,
+  dependsOnValue,
+}: {
+  id: string;
+  cls: string;
+  label: ReactNode;
+  spec: Extract<FieldSpec, { type: 'combobox' }>;
+  value: string | string[] | boolean;
+  error: ReactNode;
+  onChange: (value: string | string[] | boolean) => void;
+  dependsOnValue: string | string[] | boolean | undefined;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+  const disabled = !!spec.dependsOn && !String(dependsOnValue ?? '').trim();
+  const options = spec.dependsOn ? (spec.optionsFor?.(String(dependsOnValue ?? '')) ?? []) : (spec.options ?? []);
+  const listId = `${id}-list`;
+  const placeholder = disabled ? (spec.disabledPlaceholder ?? 'Сначала выберите страну') : spec.placeholder;
+  return (
+    <div className={cls}>
+      {label}
+      <span className="company-autocomplete">
+        <input
+          id={id}
+          ref={ref}
+          list={listId}
+          autoComplete="off"
+          disabled={disabled}
+          placeholder={placeholder}
+          value={String(value)}
+          onChange={(event) => onChange(event.target.value)}
+          onBlur={() => {
+            const canonical = spec.canonicalize?.(String(value));
+            if (canonical && canonical !== value) onChange(canonical);
+          }}
+        />
+        <datalist id={listId}>
+          {options.map((option) => (
+            <option key={option} value={option} />
+          ))}
+        </datalist>
+        <button
+          type="button"
+          aria-label={spec.ariaLabel ?? 'Показать варианты'}
+          disabled={disabled}
+          onClick={() => {
+            ref.current?.focus();
+            try {
+              ref.current?.showPicker?.();
+            } catch {
+              /* Not every environment implements showPicker for datalist inputs. */
+            }
+          }}
+        >
+          ⌄
+        </button>
+      </span>
+      {error}
+    </div>
+  );
+}
 
 function FieldInput({
   spec,
@@ -826,24 +960,30 @@ function FieldInput({
   onFile,
   currency,
   onCurrency,
+  dependsOnValue,
 }: {
   spec: FieldSpec;
   value: string | string[] | boolean;
-  error: string | undefined;
+  error: string[] | undefined;
   onChange: (v: string | string[] | boolean) => void;
   onFile: (f: File | null) => void;
   currency: string | undefined;
   onCurrency: (c: string) => void;
+  dependsOnValue: string | string[] | boolean | undefined;
 }) {
   const id = useId();
   const req = 'required' in spec && spec.required;
   const label = (
-    <label htmlFor={id}>
-      {spec.label}
-      {req ? ' *' : ''}
-    </label>
+    <span className="field-label">
+      <label htmlFor={id}>{spec.label}</label>
+      {req && <span aria-hidden="true"> *</span>}
+    </span>
   );
-  const err = error && <div className="field-error">{error}</div>;
+  const err = error?.map((message) => (
+    <div className="field-error" key={message}>
+      {message}
+    </div>
+  ));
   // Long inputs span both columns of the reference .form-grid.
   const wide = ['textarea', 'multiselect', 'checkbox', 'file'].includes(spec.type) || spec.label.length > 34;
   const cls = `field${wide ? ' field-full' : ''}`;
@@ -870,6 +1010,19 @@ function FieldInput({
           </select>
           {err}
         </div>
+      );
+    case 'combobox':
+      return (
+        <ComboboxField
+          id={id}
+          cls={cls}
+          label={label}
+          spec={spec}
+          value={value}
+          error={err}
+          onChange={onChange}
+          dependsOnValue={dependsOnValue}
+        />
       );
     case 'multiselect':
       return (
