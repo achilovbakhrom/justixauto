@@ -40,8 +40,8 @@ func (h *CompanyUserHandler) Routes(g *echo.Group) {
 //
 //	@Summary	Assignable company roles
 //	@Tags		identity/company-users
-//	@Param		id		path		string	true	"company ID"
-//	@Success	200		{object}	httpx.ListEnvelope[handler.roleDTO]
+//	@Param		id			path		string	true	"company ID"
+//	@Success	200			{object}	httpx.ListEnvelope[handler.roleDTO]
 //	@Failure	401,403,404	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/roles [get]
 func (h *CompanyUserHandler) roles(c echo.Context) error {
@@ -56,8 +56,8 @@ func (h *CompanyUserHandler) roles(c echo.Context) error {
 //
 //	@Summary	List company employees
 //	@Tags		identity/company-users
-//	@Param		id		path		string	true	"company ID"
-//	@Success	200		{object}	httpx.ListEnvelope[handler.userDTO]
+//	@Param		id			path		string	true	"company ID"
+//	@Success	200			{object}	httpx.ListEnvelope[handler.userDTO]
 //	@Failure	401,403,404	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/users [get]
 func (h *CompanyUserHandler) list(c echo.Context) error {
@@ -73,9 +73,9 @@ func (h *CompanyUserHandler) list(c echo.Context) error {
 //	@Summary	Add company employee
 //	@Tags		identity/company-users
 //	@Security	CSRF
-//	@Param		id				path		string						true	"company ID"
-//	@Param		body			body		service.CompanyUserInput	true	"employee"
-//	@Success	201				{object}	httpx.DataEnvelope[handler.userDTO]
+//	@Param		id					path		string						true	"company ID"
+//	@Param		body				body		service.CompanyUserInput	true	"employee"
+//	@Success	201					{object}	httpx.DataEnvelope[handler.userDTO]
 //	@Failure	401,403,404,409,422	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/users [post]
 func (h *CompanyUserHandler) create(c echo.Context) error {
@@ -95,11 +95,11 @@ func (h *CompanyUserHandler) create(c echo.Context) error {
 //	@Summary	Update company employee
 //	@Tags		identity/company-users
 //	@Security	CSRF
-//	@Param		id						path		string							true	"company ID"
-//	@Param		userId					path		string							true	"user ID"
-//	@Param		If-Match				header		string							true	"revision"
-//	@Param		body					body		service.UpdateCompanyUserInput	true	"employee"
-//	@Success	200						{object}	httpx.DataEnvelope[handler.userDTO]
+//	@Param		id							path		string							true	"company ID"
+//	@Param		userId						path		string							true	"user ID"
+//	@Param		If-Match					header		string							true	"revision"
+//	@Param		body						body		service.UpdateCompanyUserInput	true	"employee"
+//	@Success	200							{object}	httpx.DataEnvelope[handler.userDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/users/{userId} [patch]
 func (h *CompanyUserHandler) update(c echo.Context) error {
@@ -123,11 +123,11 @@ func (h *CompanyUserHandler) update(c echo.Context) error {
 //	@Summary	Reset company employee password
 //	@Tags		identity/company-users
 //	@Security	CSRF
-//	@Param		id						path		string			true	"company ID"
-//	@Param		userId					path		string			true	"user ID"
-//	@Param		If-Match				header		string			true	"revision"
-//	@Param		body					body		passwordBody	true	"temporary password"
-//	@Success	200						{object}	httpx.DataEnvelope[handler.userDTO]
+//	@Param		id							path		string			true	"company ID"
+//	@Param		userId						path		string			true	"user ID"
+//	@Param		If-Match					header		string			true	"revision"
+//	@Param		body						body		passwordBody	true	"temporary password"
+//	@Success	200							{object}	httpx.DataEnvelope[handler.userDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/users/{userId}/password [post]
 func (h *CompanyUserHandler) setPassword(c echo.Context) error {
@@ -151,11 +151,11 @@ func (h *CompanyUserHandler) setPassword(c echo.Context) error {
 //	@Summary	Suspend company employee
 //	@Tags		identity/company-users
 //	@Security	CSRF
-//	@Param		id						path		string		true	"company ID"
-//	@Param		userId					path		string		true	"user ID"
-//	@Param		If-Match				header		string		true	"revision"
-//	@Param		body					body		reasonBody	true	"reason"
-//	@Success	200						{object}	httpx.DataEnvelope[handler.userDTO]
+//	@Param		id							path		string		true	"company ID"
+//	@Param		userId						path		string		true	"user ID"
+//	@Param		If-Match					header		string		true	"revision"
+//	@Param		body						body		reasonBody	true	"reason"
+//	@Success	200							{object}	httpx.DataEnvelope[handler.userDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/users/{userId}/suspend [post]
 func (h *CompanyUserHandler) suspend(c echo.Context) error { return h.setStatus(c, true) }
@@ -165,11 +165,11 @@ func (h *CompanyUserHandler) suspend(c echo.Context) error { return h.setStatus(
 //	@Summary	Restore company employee
 //	@Tags		identity/company-users
 //	@Security	CSRF
-//	@Param		id						path		string		true	"company ID"
-//	@Param		userId					path		string		true	"user ID"
-//	@Param		If-Match				header		string		true	"revision"
-//	@Param		body					body		reasonBody	true	"reason"
-//	@Success	200						{object}	httpx.DataEnvelope[handler.userDTO]
+//	@Param		id							path		string		true	"company ID"
+//	@Param		userId						path		string		true	"user ID"
+//	@Param		If-Match					header		string		true	"revision"
+//	@Param		body						body		reasonBody	true	"reason"
+//	@Success	200							{object}	httpx.DataEnvelope[handler.userDTO]
 //	@Failure	401,403,404,409,412,422,428	{object}	httpx.ErrorBody
 //	@Router		/identity/companies/{id}/users/{userId}/restore [post]
 func (h *CompanyUserHandler) restore(c echo.Context) error { return h.setStatus(c, false) }

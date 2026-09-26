@@ -81,15 +81,11 @@ API (`JUSTIX_API`, default `http://127.0.0.1:8080`):
 npm run dev --workspace web/apps/realization      # also: financing, insurance, admin
 ```
 
-First steps after bootstrap: sign in at `/admin/` and prepare roles under
-«Роли и разрешения» — a role is a named set of permissions: a **company role**
-(company permissions, optionally for one company type) or a **platform role**
-(for JustixAuto staff). Then create seller / bank / MFO / insurance companies
-with their first administrator («Company administrator»: every company
-permission) and activate them. That administrator adds the company's own
-employees in their cabinet under Настройки → «Пользователи и роли» (login,
-temporary password, prepared roles). One user belongs to one company; Admin's
-«Сотрудники платформы» lists JustixAuto staff only.
+First steps after bootstrap: sign in at `/admin/`, create seller / bank / MFO / insurance companies
+with their first administrator and activate them. A company administrator
+manages only company details and branches; business work needs a role — create
+one under “Роли и права” (e.g. all `inventory.*`, `commerce.*`, `retail.*`
+permissions for a seller) and assign it to the user.
 
 Shared UI code lives in `web/packages/kit` (HTTP client with CSRF
 and If-Match, session gate, shell, forms, tables and
