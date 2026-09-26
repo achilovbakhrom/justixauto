@@ -9,7 +9,7 @@ services:
       - .env
 
     ports:
-      - "${HOST_PORT}:8080"
+      - "2047:8080"
 
     networks:
       - justix-auto-db
