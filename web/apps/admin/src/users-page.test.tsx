@@ -53,6 +53,23 @@ function renderUsers() {
 }
 
 describe('users page', () => {
+  it('still renders users from an API build without companyIds', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.includes('/identity/admin/users')) {
+          const { companyIds: _, ...old } = user('ivan', 'Иван', []);
+          return response({ items: [old] });
+        }
+        if (url.includes('/identity/admin/roles')) return response({ items: [] });
+        return response({ items: companies });
+      }),
+    );
+    renderUsers();
+    expect(await screen.findByText('Иван')).toBeTruthy();
+  });
+
   it('shows the companies each user belongs to and filters by company', async () => {
     stubApi();
     renderUsers();

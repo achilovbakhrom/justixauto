@@ -57,7 +57,7 @@ interface User {
   login: string | null;
   status: string;
   roles: { id: string; name: string }[];
-  companyIds: string[];
+  companyIds?: string[]; // absent from older API builds
   revision: string;
 }
 interface Role {
@@ -436,8 +436,8 @@ export function UsersPage() {
   const rows = (q.data ?? []).filter(
     (u) =>
       (!status || u.status === status) &&
-      (!company || u.companyIds.includes(company)) &&
-      matches(query, u.displayName, u.email, u.login, ...u.companyIds.map((id) => companyName.get(id))),
+      (!company || (u.companyIds ?? []).includes(company)) &&
+      matches(query, u.displayName, u.email, u.login, ...(u.companyIds ?? []).map((id) => companyName.get(id))),
   );
   return (
     <Page
@@ -509,7 +509,7 @@ export function UsersPage() {
             {
               title: 'Компании',
               render: (u) =>
-                u.companyIds
+                (u.companyIds ?? [])
                   .map((id) => companyName.get(id))
                   .filter(Boolean)
                   .join(', ') || '—',
