@@ -47,15 +47,30 @@ const (
 	CompanyAdminRoleID  = "00000000-0000-4000-8000-000000000002"
 )
 
-// systemRolePermissions: administration powers never include financial or
-// insurance decisions.
+// systemRolePermissions: fixed grants of built-in roles. Platform
+// administration never includes company business permissions. The company
+// administrator is not listed: it is computed, see companyScopePermissions.
 var systemRolePermissions = map[string][]string{
 	RolePlatformAdmin: {
 		PermPlatformCompaniesCreate, PermPlatformCompaniesAccess, PermPlatformUsersManage,
 		PermPlatformMembershipsManage, PermPlatformRolesManage, PermPlatformDirectoryRead,
 		PermPlatformAuditRead,
 	},
-	RoleCompanyAdmin: {PermCompanyEdit, PermBranchesCreate, PermBranchesEdit},
+}
+
+// companyScopePermissions lists every company-scoped permission in the
+// catalog, including those other modules register at startup. User decision
+// 2026-09-26: a company administrator holds all of them by default; platform
+// permissions are never included. Organization capabilities still apply, so
+// e.g. a bank cannot sell retail just because its admin holds retail keys.
+func companyScopePermissions() []string {
+	var out []string
+	for _, p := range Catalog {
+		if p.Scope == "company" {
+			out = append(out, p.Key)
+		}
+	}
+	return out
 }
 
 // LookupPermission returns the catalog entry for key, if any.
@@ -70,6 +85,9 @@ func LookupPermission(key string) (PermissionInfo, bool) {
 // EffectivePermissions returns the permissions granted by a role.
 func EffectivePermissions(r Role) []string {
 	if r.SystemKey != nil {
+		if *r.SystemKey == RoleCompanyAdmin {
+			return companyScopePermissions()
+		}
 		return systemRolePermissions[*r.SystemKey]
 	}
 	return r.Permissions
