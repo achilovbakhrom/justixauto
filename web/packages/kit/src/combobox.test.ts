@@ -53,7 +53,7 @@ describe('combobox field (business-logic.md:110)', () => {
 
   it('enables the region field once a country is entered and offers its regions', () => {
     renderForm();
-    const country = screen.getByLabelText('Страна') as HTMLInputElement;
+    const country = screen.getByLabelText('Страна', { exact: false }) as HTMLInputElement;
     fireEvent.change(country, { target: { value: 'Казахстан' } });
     const region = screen.getByLabelText('Регион') as HTMLInputElement;
     expect(region.disabled).toBe(false);
@@ -62,7 +62,7 @@ describe('combobox field (business-logic.md:110)', () => {
 
   it('clears the region value when the country text changes', () => {
     renderForm();
-    const country = screen.getByLabelText('Страна') as HTMLInputElement;
+    const country = screen.getByLabelText('Страна', { exact: false }) as HTMLInputElement;
     fireEvent.change(country, { target: { value: 'Казахстан' } });
     const region = screen.getByLabelText('Регион') as HTMLInputElement;
     fireEvent.change(region, { target: { value: 'Алматы' } });
@@ -73,7 +73,7 @@ describe('combobox field (business-logic.md:110)', () => {
 
   it('canonicalizes a case-insensitive country match on blur', () => {
     renderForm();
-    const country = screen.getByLabelText('Страна') as HTMLInputElement;
+    const country = screen.getByLabelText('Страна', { exact: false }) as HTMLInputElement;
     fireEvent.change(country, { target: { value: 'казахстан' } });
     fireEvent.blur(country);
     expect(country.value).toBe('Казахстан');
@@ -81,7 +81,7 @@ describe('combobox field (business-logic.md:110)', () => {
 
   it('accepts free text for a country outside the demo catalogue', () => {
     renderForm();
-    const country = screen.getByLabelText('Страна') as HTMLInputElement;
+    const country = screen.getByLabelText('Страна', { exact: false }) as HTMLInputElement;
     fireEvent.change(country, { target: { value: 'Германия' } });
     fireEvent.blur(country);
     expect(country.value).toBe('Германия');
