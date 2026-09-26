@@ -24,7 +24,6 @@ import {
   post,
   regionsFor,
   useData,
-  useRefresh,
   useSearchQuery,
 } from '@justixauto/kit';
 import type { FieldSpec } from '@justixauto/kit';
@@ -57,13 +56,14 @@ interface User {
   login: string | null;
   status: string;
   roles: { id: string; name: string }[];
-  companyIds?: string[]; // absent from older API builds
   revision: string;
 }
 interface Role {
   id: string;
   name: string;
   system: boolean;
+  scope: string;
+  companyKind: string | null;
   permissionKeys: string[];
   revision: string;
 }
@@ -71,13 +71,6 @@ interface Permission {
   key: string;
   scope: string;
   assignable: boolean;
-}
-interface Membership {
-  id: string;
-  companyId: string;
-  status: string;
-  branchAccess: { mode: string };
-  revision: string;
 }
 interface AuditEvent {
   id: string;
@@ -427,49 +420,33 @@ const statusLabel: Record<string, string> = { pending: 'Без пароля', ac
 export function UsersPage() {
   const q = useData(['admin-users'], () => list<User>('/identity/admin/users?limit=200'));
   const roles = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
-  const companies = useData(['admin-companies', 'all'], () => list<Company>('/identity/admin/companies?limit=200'));
-  const companyName = new Map((companies.data ?? []).map((c) => [c.id, c.name]));
+  const staffRoles = (roles.data ?? []).filter((r) => r.scope === 'platform');
   const [open, setOpen] = useState<string | null>(null);
   const [query, setQuery] = useSearchQuery();
   const [status, setStatus] = useState('');
-  const [company, setCompany] = useState('');
   const rows = (q.data ?? []).filter(
-    (u) =>
-      (!status || u.status === status) &&
-      (!company || (u.companyIds ?? []).includes(company)) &&
-      matches(query, u.displayName, u.email, u.login, ...(u.companyIds ?? []).map((id) => companyName.get(id))),
+    (u) => (!status || u.status === status) && matches(query, u.displayName, u.email, u.login),
   );
   return (
     <Page
-      title="Пользователи и доступ"
-      subtitle="Глобальные роли и доступ к компаниям"
+      title="Сотрудники платформы"
+      subtitle="Администраторы и операторы JustixAuto. Сотрудников компаний добавляет администратор компании в своём кабинете."
       actions={
         <ActionButton
-          label="+ Добавить пользователя"
+          label="+ Добавить сотрудника"
           variant="primary"
-          refresh={[['admin-users'], ['admin-memberships']]}
+          refresh={[['admin-users']]}
           fields={[
             { name: 'displayName', label: 'Имя', type: 'text', required: true },
-            {
-              name: 'companyId',
-              label: 'Компания',
-              type: 'select',
-              options: (companies.data ?? []).map((c) => [c.id, c.name]),
-            },
             { name: 'login', label: 'Логин', type: 'text' },
             { name: 'password', label: 'Временный пароль (не менее 12 символов)', type: 'password' },
             { name: 'email', label: 'E-mail', type: 'email' },
-            {
-              name: 'roleIds',
-              label: 'Роли',
-              type: 'multiselect',
-              options: (roles.data ?? []).map((r) => [r.id, r.name]),
-            },
+            { name: 'roleIds', label: 'Роли', type: 'multiselect', options: staffRoles.map((r) => [r.id, r.name]) },
           ]}
           intro={
             <p>
-              Компания даёт доступ ко всем её филиалам; права задают роли. Логин и временный пароль можно выдать сразу
-              или позже в карточке пользователя — при первом входе пароль нужно сменить. Письма не отправляются.
+              Логин и временный пароль можно выдать сразу или позже в карточке сотрудника — при первом входе пароль
+              нужно сменить. Письма не отправляются.
             </p>
           }
           onSubmit={(v) => post('/identity/admin/users', v)}
@@ -477,22 +454,8 @@ export function UsersPage() {
       }
     >
       <Panel>
-        <Toolbar
-          query={query}
-          onQuery={setQuery}
-          placeholder="Имя, логин, email или компания"
-          onReset={() => {
-            setStatus('');
-            setCompany('');
-          }}
-        >
+        <Toolbar query={query} onQuery={setQuery} placeholder="Имя, логин или email" onReset={() => setStatus('')}>
           <FilterSelect value={status} onChange={setStatus} all="Все статусы" options={Object.entries(statusLabel)} />
-          <FilterSelect
-            value={company}
-            onChange={setCompany}
-            all="Все компании"
-            options={(companies.data ?? []).map((c) => [c.id, c.name] as [string, string])}
-          />
         </Toolbar>
         <Table
           rows={rows}
@@ -500,19 +463,11 @@ export function UsersPage() {
           error={q.error}
           rowKey={(u) => u.id}
           onRowClick={(u) => setOpen(u.id)}
-          empty="Пользователей нет"
+          empty="Сотрудников нет"
           columns={[
             {
-              title: 'Пользователь',
+              title: 'Сотрудник',
               render: (u) => <Cell main={u.displayName} sub={[u.login, u.email].filter(Boolean).join(' · ')} />,
-            },
-            {
-              title: 'Компании',
-              render: (u) =>
-                (u.companyIds ?? [])
-                  .map((id) => companyName.get(id))
-                  .filter(Boolean)
-                  .join(', ') || '—',
             },
             { title: 'Роли', render: (u) => u.roles.map((r) => r.name).join(', ') || '—' },
             {
@@ -535,23 +490,19 @@ export function UsersPage() {
         />
       </Panel>
       <div className="admin-note">Пароли в журнал не попадают.</div>
-      {open && <UserDialog id={open} roles={roles.data ?? []} onClose={() => setOpen(null)} />}
+      {open && <UserDialog id={open} roles={staffRoles} onClose={() => setOpen(null)} />}
     </Page>
   );
 }
 
 function UserDialog({ id, roles, onClose }: { id: string; roles: Role[]; onClose: () => void }) {
   const q = useData(['admin-user', id], () => get<User>(`/identity/admin/users/${id}`));
-  const ms = useData(['admin-memberships', id], () => list<Membership>(`/identity/admin/users/${id}/memberships`));
-  const companies = useData(['admin-companies', 'all'], () => list<Company>('/identity/admin/companies?limit=100'));
-  const reload = useRefresh();
   const u = q.data?.data;
   const refresh = [['admin-user', id], ['admin-users']];
-  const name = (cid: string) => companies.data?.find((c) => c.id === cid)?.name ?? cid;
   const reason: FieldSpec[] = [{ name: 'reason', label: 'Основание', type: 'textarea', required: true }];
   return (
     <Modal
-      title={u?.displayName ?? 'Пользователь'}
+      title={u?.displayName ?? 'Сотрудник'}
       onClose={onClose}
       size="wide"
       footer={
@@ -575,7 +526,7 @@ function UserDialog({ id, roles, onClose }: { id: string; roles: Role[]; onClose
             <ActionButton
               label={u.login ? 'Сбросить пароль' : 'Выдать доступ'}
               refresh={refresh}
-              intro={<p>Пользователь сменит временный пароль при первом входе. Двухфакторная защита не отключается.</p>}
+              intro={<p>Сотрудник сменит временный пароль при первом входе.</p>}
               fields={[
                 ...(u.login ? [] : [{ name: 'login', label: 'Логин', type: 'text', required: true } as FieldSpec]),
                 { name: 'password', label: 'Временный пароль', type: 'password', required: true },
@@ -611,96 +562,68 @@ function UserDialog({ id, roles, onClose }: { id: string; roles: Role[]; onClose
       {u && (
         <Details
           items={[
-            ['E-mail', u.email],
+            ['E-mail', u.email || '—'],
             ['Логин', u.login ?? '—'],
             ['Статус', statusLabel[u.status]],
             ['Роли', u.roles.map((r) => r.name).join(', ') || '—'],
           ]}
         />
       )}
-      <Panel
-        title="Членство в компаниях"
-        actions={
-          <ActionButton
-            label="Добавить"
-            refresh={[['admin-memberships', id]]}
-            fields={[
-              {
-                name: 'companyId',
-                label: 'Компания',
-                type: 'select',
-                required: true,
-                options: (companies.data ?? []).map((c) => [c.id, c.name]),
-              },
-            ]}
-            onSubmit={(v) =>
-              post(`/identity/admin/users/${id}/memberships`, {
-                companyId: v.companyId,
-                branchAccess: { mode: 'ALL_BRANCHES', branchIds: [] },
-              })
-            }
-          />
-        }
-      >
-        <Table
-          rows={ms.data}
-          loading={ms.isLoading}
-          error={ms.error}
-          rowKey={(m) => m.id}
-          columns={[
-            { title: 'Компания', render: (m) => name(m.companyId) },
-            { title: 'Филиалы', render: (m) => (m.branchAccess.mode === 'ALL_BRANCHES' ? 'Все' : 'Выбранные') },
-            {
-              title: 'Статус',
-              render: (m) => (
-                <Badge tone={m.status === 'active' ? 'success' : undefined}>
-                  {m.status === 'active' ? 'Активно' : 'Отозвано'}
-                </Badge>
-              ),
-            },
-            {
-              title: '',
-              render: (m) =>
-                m.status === 'active' && (
-                  <ActionButton
-                    label="Отозвать"
-                    fields={reason}
-                    onSubmit={async (v) => {
-                      await post(`/identity/admin/memberships/${m.id}/revoke`, v, { ifMatch: m.revision });
-                      await reload(['admin-memberships', id]);
-                    }}
-                  />
-                ),
-            },
-          ]}
-        />
-      </Panel>
     </Modal>
   );
 }
 
+const scopeLabel: Record<string, string> = { company: 'Роль компании', platform: 'Роль платформы' };
+
 export function RolesPage() {
   const q = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
   const perms = useData(['admin-permissions'], () => list<Permission>('/identity/admin/permissions'));
-  const users = useData(['admin-users'], () => list<User>('/identity/admin/users?limit=200'));
-  const options = (perms.data ?? []).filter((p) => p.assignable).map((p): [string, string] => [p.key, p.key]);
-  const fields = (r?: Role): FieldSpec[] => [
+  const permOptions = (scope: string) =>
+    (perms.data ?? []).filter((p) => p.assignable && p.scope === scope).map((p): [string, string] => [p.key, p.key]);
+  const fields = (scope: string, r?: Role): FieldSpec[] => [
     { name: 'name', label: 'Название', type: 'text', required: true, initial: r?.name ?? '' },
-    { name: 'permissionKeys', label: 'Права', type: 'multiselect', options, initial: r?.permissionKeys ?? [] },
+    ...(scope === 'company'
+      ? [
+          {
+            name: 'companyKind',
+            label: 'Тип компании (пусто — любой)',
+            type: 'select',
+            options: Object.entries(kindLabel),
+            initial: r?.companyKind ?? '',
+          } as FieldSpec,
+        ]
+      : []),
+    {
+      name: 'permissionKeys',
+      label: 'Разрешения',
+      type: 'multiselect',
+      options: permOptions(scope),
+      initial: r?.permissionKeys ?? [],
+    },
   ];
+  const submit = (scope: string, v: Record<string, unknown>) => ({ ...v, scope, companyKind: v.companyKind || '' });
   return (
     <Page
       title="Роли и разрешения"
-      subtitle="Роли назначаются пользователю и действуют во всех доступных ему компаниях"
+      subtitle="Роль — готовый набор разрешений. Роли компании администратор компании назначает своим сотрудникам; роли платформы — сотрудникам JustixAuto."
       actions={
-        <ActionButton
-          label="+ Создать роль"
-          variant="primary"
-          size="wide"
-          fields={fields()}
-          refresh={[['admin-roles']]}
-          onSubmit={(v) => post('/identity/admin/roles', v)}
-        />
+        <>
+          <ActionButton
+            label="+ Роль компании"
+            variant="primary"
+            size="wide"
+            fields={fields('company')}
+            refresh={[['admin-roles']]}
+            onSubmit={(v) => post('/identity/admin/roles', submit('company', v))}
+          />
+          <ActionButton
+            label="+ Роль платформы"
+            size="wide"
+            fields={fields('platform')}
+            refresh={[['admin-roles']]}
+            onSubmit={(v) => post('/identity/admin/roles', submit('platform', v))}
+          />
+        </>
       }
     >
       <Panel>
@@ -710,14 +633,18 @@ export function RolesPage() {
           error={q.error}
           rowKey={(r) => r.id}
           columns={[
-            { title: 'Роль', render: (r) => <Cell main={r.name} sub={r.system ? 'Системная' : 'Пользовательская'} /> },
+            {
+              title: 'Роль',
+              render: (r) => <Cell main={r.name} sub={r.system ? 'Встроенная' : 'Подготовленная'} />,
+            },
+            { title: 'Для кого', render: (r) => scopeLabel[r.scope] ?? r.scope },
+            {
+              title: 'Тип компании',
+              render: (r) => (r.scope === 'company' ? (r.companyKind ? kindLabel[r.companyKind] : 'Любой') : '—'),
+            },
             {
               title: 'Разрешения',
               render: (r) => <span title={r.permissionKeys.join(', ')}>{r.permissionKeys.length}</span>,
-            },
-            {
-              title: 'Пользователи',
-              render: (r) => (users.data ?? []).filter((u) => u.roles.some((x) => x.id === r.id)).length,
             },
             {
               title: '',
@@ -736,9 +663,11 @@ export function RolesPage() {
                     small
                     label="Изменить"
                     size="wide"
-                    fields={fields(r)}
+                    fields={fields(r.scope, r)}
                     refresh={[['admin-roles']]}
-                    onSubmit={(v) => patch(`/identity/admin/roles/${r.id}`, v, { ifMatch: r.revision })}
+                    onSubmit={(v) =>
+                      patch(`/identity/admin/roles/${r.id}`, submit(r.scope, v), { ifMatch: r.revision })
+                    }
                   />
                 ),
             },
@@ -746,8 +675,8 @@ export function RolesPage() {
         />
       </Panel>
       <div className="admin-note">
-        Системные роли не изменяются. Права платформы выдаются только системной ролью; администрирование не даёт
-        финансовых и страховых решений.
+        Встроенные роли не изменяются. «Company administrator» получает все разрешения компании и может добавлять её
+        сотрудников.
       </div>
     </Page>
   );

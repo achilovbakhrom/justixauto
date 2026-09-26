@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { UsersPage } from './pages';
+import { RolesPage, UsersPage } from './pages';
 
 afterEach(() => {
   cleanup();
@@ -13,97 +13,111 @@ afterEach(() => {
 const response = (body: unknown) =>
   new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } });
 
-const companies = [
-  { id: 'c-1', name: 'Авто плюс', kind: 'seller', access: 'active', revision: '1' },
-  { id: 'c-2', name: 'Банк Один', kind: 'bank', access: 'active', revision: '1' },
+const roles = [
+  {
+    id: 'r-platform',
+    name: 'Platform administrator',
+    system: true,
+    scope: 'platform',
+    companyKind: null,
+    permissionKeys: [],
+    revision: '1',
+  },
+  {
+    id: 'r-company',
+    name: 'Company administrator',
+    system: true,
+    scope: 'company',
+    companyKind: null,
+    permissionKeys: [],
+    revision: '1',
+  },
+  {
+    id: 'r-sales',
+    name: 'Менеджер продаж',
+    system: false,
+    scope: 'company',
+    companyKind: 'seller',
+    permissionKeys: ['retail.read'],
+    revision: '1',
+  },
 ];
-const user = (id: string, name: string, companyIds: string[]) => ({
-  id,
-  displayName: name,
-  email: '',
-  login: id,
-  status: 'active',
-  roles: [],
-  companyIds,
-  revision: '1',
-});
+const permissions = [
+  { key: 'retail.read', scope: 'company', assignable: true },
+  { key: 'platform.audit.read', scope: 'platform', assignable: true },
+];
 
-function stubApi(onCreate?: (body: unknown) => void) {
+function stubApi(onPost?: (url: string, body: unknown) => void) {
   const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input);
-    if (url.includes('/identity/admin/users') && init?.method === 'POST') {
-      onCreate?.(JSON.parse(String(init.body)));
-      return response({ data: user('new', 'Новый', ['c-1']), revision: '1' });
+    if (init?.method === 'POST') {
+      onPost?.(url, JSON.parse(String(init.body)));
+      return response({ data: {}, revision: '1' });
     }
     if (url.includes('/identity/admin/users')) {
-      return response({ items: [user('ivan', 'Иван', ['c-1']), user('olga', 'Ольга', ['c-2'])] });
+      return response({
+        items: [
+          { id: 'u-1', displayName: 'Иван', email: '', login: 'ivan', status: 'active', roles: [], revision: '1' },
+        ],
+      });
     }
-    if (url.includes('/identity/admin/roles')) return response({ items: [] });
-    if (url.includes('/identity/admin/companies')) return response({ items: companies });
+    if (url.includes('/identity/admin/roles')) return response({ items: roles });
+    if (url.includes('/identity/admin/permissions')) return response({ items: permissions });
     throw new Error(`Unexpected request ${url} ${init?.method}`);
   });
   vi.stubGlobal('fetch', fetch);
 }
 
-function renderUsers() {
+function renderPage(page: typeof UsersPage) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return render(
-    createElement(QueryClientProvider, { client }, createElement(MemoryRouter, null, createElement(UsersPage))),
-  );
+  return render(createElement(QueryClientProvider, { client }, createElement(MemoryRouter, null, createElement(page))));
 }
 
-describe('users page', () => {
-  it('still renders users from an API build without companyIds', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(async (input: RequestInfo | URL) => {
-        const url = String(input);
-        if (url.includes('/identity/admin/users')) {
-          const { companyIds: _, ...old } = user('ivan', 'Иван', []);
-          return response({ items: [old] });
-        }
-        if (url.includes('/identity/admin/roles')) return response({ items: [] });
-        return response({ items: companies });
-      }),
-    );
-    renderUsers();
-    expect(await screen.findByText('Иван')).toBeTruthy();
-  });
-
-  it('shows the companies each user belongs to and filters by company', async () => {
-    stubApi();
-    renderUsers();
-
-    const ivan = (await screen.findByText('Иван')).closest('tr')!;
-    await waitFor(() => expect(within(ivan).getByText('Авто плюс')).toBeTruthy());
-
-    fireEvent.change(screen.getByDisplayValue('Все компании'), { target: { value: 'c-2' } });
-    await waitFor(() => expect(screen.queryByText('Иван')).toBeNull());
-    expect(screen.getByText('Ольга')).toBeTruthy();
-  });
-
-  it('creates a company employee with login and temporary password and no email', async () => {
+describe('platform staff page', () => {
+  it('adds staff with platform roles only and no company', async () => {
     let body: unknown;
-    stubApi((b) => (body = b));
-    renderUsers();
+    stubApi((_, b) => (body = b));
+    renderPage(UsersPage);
     await screen.findByText('Иван');
 
-    fireEvent.click(screen.getByRole('button', { name: '+ Добавить пользователя' }));
-    const dialog = await screen.findByRole('dialog', { name: '+ Добавить пользователя' });
-    fireEvent.change(within(dialog).getByLabelText('Имя'), { target: { value: 'Новый' } });
-    fireEvent.change(within(dialog).getByLabelText('Компания'), { target: { value: 'c-1' } });
-    fireEvent.change(within(dialog).getByLabelText('Логин'), { target: { value: 'new-seller' } });
+    fireEvent.click(screen.getByRole('button', { name: '+ Добавить сотрудника' }));
+    const dialog = await screen.findByRole('dialog', { name: '+ Добавить сотрудника' });
+    expect(within(dialog).queryByLabelText('Компания')).toBeNull();
+    expect(within(dialog).queryByText('Company administrator')).toBeNull();
+    expect(within(dialog).getByText('Platform administrator')).toBeTruthy();
+
+    fireEvent.change(within(dialog).getByLabelText('Имя'), { target: { value: 'Оператор' } });
+    fireEvent.change(within(dialog).getByLabelText('Логин'), { target: { value: 'operator' } });
     fireEvent.change(within(dialog).getByLabelText('Временный пароль (не менее 12 символов)'), {
       target: { value: 'long-enough-password' },
     });
-    fireEvent.click(within(dialog).getByRole('button', { name: '+ Добавить пользователя' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: '+ Добавить сотрудника' }));
+    await waitFor(() => expect(body).toMatchObject({ displayName: 'Оператор', login: 'operator' }));
+  });
+});
 
-    await waitFor(() => expect(body).toBeDefined());
-    expect(body).toMatchObject({
-      displayName: 'Новый',
-      companyId: 'c-1',
-      login: 'new-seller',
-      password: 'long-enough-password',
+describe('roles page', () => {
+  it('prepares a company role for one company type with company permissions only', async () => {
+    let posted: { url: string; body: unknown } | undefined;
+    stubApi((url, body) => (posted = { url, body }));
+    renderPage(RolesPage);
+    expect(await screen.findByText('Менеджер продаж')).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: '+ Роль компании' }));
+    const dialog = await screen.findByRole('dialog', { name: '+ Роль компании' });
+    expect(within(dialog).queryByText('platform.audit.read')).toBeNull();
+    fireEvent.change(within(dialog).getByLabelText('Название'), { target: { value: 'Кассир' } });
+    fireEvent.change(within(dialog).getByLabelText('Тип компании (пусто — любой)'), { target: { value: 'seller' } });
+    fireEvent.click(within(dialog).getByText('retail.read'));
+    fireEvent.click(within(dialog).getByRole('button', { name: '+ Роль компании' }));
+
+    await waitFor(() => expect(posted).toBeDefined());
+    expect(posted!.url).toContain('/identity/admin/roles');
+    expect(posted!.body).toMatchObject({
+      name: 'Кассир',
+      scope: 'company',
+      companyKind: 'seller',
+      permissionKeys: ['retail.read'],
     });
   });
 });
