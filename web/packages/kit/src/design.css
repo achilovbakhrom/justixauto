@@ -2389,6 +2389,9 @@ tbody tr:hover {
   padding-top: 0;
   border-top: 0;
 }
+.form-fieldset .field {
+  align-content: start;
+}
 .form-fieldset legend {
   padding: 0;
   color: var(--text);
