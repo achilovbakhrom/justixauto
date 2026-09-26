@@ -11086,11 +11086,7 @@
         "justixauto_internal_modules_identity_service.CompanyInput": {
             "type": "object",
             "required": [
-                "address",
-                "legalName",
-                "name",
-                "phone",
-                "region"
+                "name"
             ],
             "properties": {
                 "address": {

@@ -451,6 +451,33 @@ func TestOptionalCompanyRequisitesAndEmptyAdminEmail(t *testing.T) {
 	if fetched.data()["registration"] != "REG-1" || fetched.data()["name"] != "Reg One Updated" {
 		t.Fatalf("registration should still be kept after refetch: %v", fetched.data())
 	}
+
+	// Bounce repair (FIX-COMPANY-OPTIONAL-R1): the registration number never
+	// comes from a form, so a PATCH that omits it, or sends it empty, must
+	// never erase the stored value; only a non-empty value replaces it.
+	omitted := regOwner.do(http.MethodPatch, "/companies/"+regID, map[string]any{
+		"name": "Reg One Omitted",
+	}, ifMatch(fetched.data()["revision"])...)
+	expect(t, omitted, http.StatusOK)
+	if omitted.data()["registration"] != "REG-1" {
+		t.Fatalf("omitting registration must keep the stored value: %v", omitted.data())
+	}
+
+	emptied := regOwner.do(http.MethodPatch, "/companies/"+regID, map[string]any{
+		"name": "Reg One Emptied", "registration": "",
+	}, ifMatch(omitted.data()["revision"])...)
+	expect(t, emptied, http.StatusOK)
+	if emptied.data()["registration"] != "REG-1" {
+		t.Fatalf("an empty registration must keep the stored value: %v", emptied.data())
+	}
+
+	replaced := regOwner.do(http.MethodPatch, "/companies/"+regID, map[string]any{
+		"name": "Reg One Replaced", "registration": "REG-2",
+	}, ifMatch(emptied.data()["revision"])...)
+	expect(t, replaced, http.StatusOK)
+	if replaced.data()["registration"] != "REG-2" {
+		t.Fatalf("a non-empty registration must still replace the stored value: %v", replaced.data())
+	}
 }
 
 // Sensitive actions work right after the password: there is no second factor.

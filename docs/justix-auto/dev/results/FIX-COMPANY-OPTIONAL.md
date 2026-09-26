@@ -209,3 +209,80 @@ of scope, not part of the first-company-admin provisioning flow), any other
 module, `docs/justix-auto/business-logic.md`, `docs/justix-auto/dev/results/FIX-GEO-1.md`,
 `docs/justix-auto/state/backups/2026-09-26-company-optional-fields/`, and any
 Git staging/commit/branch operation.
+
+## Bounce repair R1
+
+Reviewer finding (Critical): `CompanyInput.apply` unconditionally overwrote
+`c.RegistrationNumber`, and `Company.Update` applied the PATCH body onto the
+existing company, so a PATCH omitting `registration` (or sending `""`) erased
+a stored registration number — contradicting business-logic.md §9 (the
+registration number is never entered in a form and comes from a
+government-source integration; edits must never erase it).
+
+### Fix
+
+- `internal/modules/identity/service/company.go`: `CompanyInput.apply` now
+  takes an explicit `keepRegistration bool`. When `true` (update path), an
+  empty incoming registration keeps the value already on the model; a
+  non-empty value still replaces it and remains subject to the duplicate
+  check. `newCompany` (create path) passes `false`, so create behaviour is
+  unchanged — a blank registration simply stays blank. `Company.Update`
+  passes `true`. Extended the `CompanyInput` and `apply` doc comments with
+  the keep-if-empty rule and the §9 citation. Also added the missing
+  `binding:"optional"` tag to `legalName`, `region`, `address` and `phone` on
+  `CompanyInput` so the generated OpenAPI required list is exactly `[name]`,
+  matching the other optional fields (`country`, `registration`, `email`).
+
+### Tests added
+
+- `internal/modules/identity/service/company_test.go`: unit tests for `apply`
+  — `TestCompanyInputApplyKeepsRegistrationWhenOmittedOnUpdate`,
+  `TestCompanyInputApplyKeepsRegistrationWhenEmptyOnUpdate`,
+  `TestCompanyInputApplyReplacesRegistrationWhenGivenOnUpdate`,
+  `TestCompanyInputApplyRegistrationStaysEmptyOnCreate`. Updated the four
+  pre-existing `apply` calls to pass the new `false`/`true` argument (all are
+  create-shaped inputs, so `false`).
+- `internal/modules/identity/flow_test.go`: extended
+  `TestOptionalCompanyRequisitesAndEmptyAdminEmail` with three sequential
+  PATCH `/companies/{id}` cases on the same seller-owner session: omitting
+  `registration` keeps `REG-1`; sending `registration: ""` keeps `REG-1`;
+  sending `registration: "REG-2"` replaces it with `REG-2`. Each step uses
+  the previous response's revision for `If-Match`.
+
+### Checks (this round)
+
+- `bash tools/check-git.sh` → `GIT CHECK OK: /Users/bakhromachilov/startups/justixauto`
+  (exit 0); branch `fix/country-region-combobox` at `eba3a6b`, clean before
+  edits; no Git writes made
+- `bash tools/go.sh vet ./...` → no output (exit 0)
+- `bash tools/go.sh run ./tools/devtool test ./internal/modules/identity/...`
+  → `ok justixauto/internal/modules/identity` (46.0s), `ok .../identity/model`,
+  `ok .../identity/service` (exit 0)
+- `make lint-go` → `0 issues.` (exit 0)
+- `make openapi` → regenerated `internal/pkg/apidocs/swagger.json`; the only
+  diff is `CompanyInput`'s `required` list narrowing from
+  `["address","legalName","name","phone","region"]` to `["name"]`, matching
+  the `binding:"optional"` tags added in this round. `make openapi-check`
+  would fail only on `git diff --quiet` against this still-uncommitted,
+  already-verified-correct regeneration — no other drift.
+- `npm run typecheck` → all workspaces pass (exit 0; unaffected by this
+  Go-only change, run per the packet's exact check list)
+- `npm run test:unit` → `Test Files 16 passed (16)`, `Tests 460 passed (460)`
+  (exit 0; unaffected by this Go-only change)
+
+### Changed paths (bounce repair R1)
+
+- `internal/modules/identity/service/company.go`
+- `internal/modules/identity/service/company_test.go`
+- `internal/modules/identity/flow_test.go`
+- `internal/pkg/apidocs/swagger.json`
+- `docs/justix-auto/dev/results/FIX-COMPANY-OPTIONAL.md` (this file)
+
+### Exclusions (bounce repair R1)
+
+Did not touch the frontend registration-field guards already in place (out of
+scope — this round is a backend enforcement fix), `SetAccess` (does not touch
+`CompanyInput`), any other module, or any Git staging/commit/branch operation.
+Did not modify `docs/justix-auto/state/backups/2026-09-26-claude-routine-work/`,
+an untracked directory present before this round's edits that this packet did
+not create.

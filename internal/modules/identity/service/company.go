@@ -26,16 +26,19 @@ type Label struct {
 // email, address and phone are requisites that arrive later from a
 // government-source integration and are optional until then. The
 // registration number is never entered in a form, so duplicate detection by
-// country/registration only applies once a number is known.
+// country/registration only applies once a number is known. On update, an
+// empty incoming registration keeps the stored value instead of erasing it
+// (business-logic.md §9); a non-empty value still replaces it and remains
+// subject to the duplicate check. See CompanyInput.apply.
 type CompanyInput struct {
 	Name         string `json:"name"`
-	LegalName    string `json:"legalName"`
+	LegalName    string `json:"legalName" binding:"optional"`
 	Country      Label  `json:"country" binding:"optional"`
-	Region       *Label `json:"region"`
+	Region       *Label `json:"region" binding:"optional"`
 	Registration string `json:"registration" binding:"optional"`
 	Email        string `json:"email" binding:"optional"`
-	Address      string `json:"address"`
-	Phone        string `json:"phone"`
+	Address      string `json:"address" binding:"optional"`
+	Phone        string `json:"phone" binding:"optional"`
 }
 
 // FirstAdminInput is the contract's FirstAdminInput. User decision
@@ -69,7 +72,12 @@ func optionalEmail(v *apperr.Validation, field, value string) string {
 	return email(v, field, value)
 }
 
-func (in CompanyInput) apply(v *apperr.Validation, c *model.Company) {
+// apply maps the input onto the company model. On create, keepRegistration
+// must be false: a blank registration simply stays blank until the
+// government-source integration supplies one. On update, keepRegistration
+// must be true: an empty incoming registration keeps the value already
+// stored on c instead of erasing it; a non-empty value still replaces it.
+func (in CompanyInput) apply(v *apperr.Validation, c *model.Company, keepRegistration bool) {
 	c.Name = text(v, "company.name", in.Name, 1, 200)
 	c.LegalName = text(v, "company.legalName", in.LegalName, 0, 300)
 	c.Country = text(v, "company.country", in.Country.Label, 0, 100)
@@ -82,7 +90,10 @@ func (in CompanyInput) apply(v *apperr.Validation, c *model.Company) {
 			v.Add("company.region", "requires a country")
 		}
 	}
-	c.RegistrationNumber = text(v, "company.registration", in.Registration, 0, 64)
+	registration := text(v, "company.registration", in.Registration, 0, 64)
+	if registration != "" || !keepRegistration {
+		c.RegistrationNumber = registration
+	}
 	c.Email = optionalEmail(v, "company.email", in.Email)
 	c.Address = text(v, "company.address", in.Address, 0, 500)
 	c.Phone = text(v, "company.phone", in.Phone, 0, 50)
@@ -98,7 +109,7 @@ func duplicateCompany(err error) error {
 func (s *Company) newCompany(v *apperr.Validation, kind model.CompanyKind, in CompanyInput) *model.Company {
 	now := s.clock()
 	c := &model.Company{ID: uuid.NewString(), Kind: kind, Status: model.AccessDraft, Version: 1, CreatedAt: now, UpdatedAt: now}
-	in.apply(v, c)
+	in.apply(v, c, false)
 	return c
 }
 
@@ -287,7 +298,7 @@ func (s *Company) Update(ctx context.Context, actor *auth.Principal, id string, 
 		return nil, apperr.ErrStale
 	}
 	var v apperr.Validation
-	in.apply(&v, c)
+	in.apply(&v, c, true)
 	if err := v.Err(); err != nil {
 		return nil, err
 	}
