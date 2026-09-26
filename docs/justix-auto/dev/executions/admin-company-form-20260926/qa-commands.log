@@ -1,0 +1,64 @@
+Q1 command record
+final candidate: f9c4f3564afb195b48cba2e66c9be3e4d00d2948
+base: eca22f60f9082f7fe59004c81be63170ebfe1483
+workspace: /Users/bakhromachilov/startups/justixauto
+
+[e8709bbffa125f94b7667e52e230938b656838b4 — TypeScript/application behavior source later proven byte-identical]
+argv: node --version
+exit: 0
+result: v24.21.0
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js --version
+exit: 0
+result: 11.19.0
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js run test:unit -- --project @justixauto/admin --project @justixauto/kit --project @justixauto/realization --project @justixauto/financing --project @justixauto/insurance --reporter verbose
+exit: 0
+result: 10 test files, 28 tests passed; company-form 3, form-dialog 6, combobox 5, geo 5 all discovered and passed.
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js run typecheck
+exit: 0
+result: config and all workspaces passed.
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js run build
+exit: 0
+result: all workspaces and Admin/Financing/Insurance/Realization Vite builds passed.
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js exec -- eslint --config web/eslint.config.js web/apps/admin/src/pages.tsx web/packages/kit/src/ui.tsx web/packages/kit/src/shell.tsx web/apps/admin/src/company-form.test.tsx web/packages/kit/src/form-dialog.test.ts web/packages/kit/src/combobox.test.ts --max-warnings 0
+exit: 0
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js exec -- eslint --config web/eslint.config.js --max-warnings 0 --no-warn-ignored web/apps/admin/src/pages.tsx web/packages/kit/src/ui.tsx web/packages/kit/src/design.css web/packages/kit/package.json package-lock.json
+exit: 0
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js exec -- eslint --config web/eslint.config.js --max-warnings 0 --no-warn-ignored web/packages/kit/src/design.css web/packages/kit/package.json package-lock.json
+exit: 0
+
+argv: printf 'const broken: = ;\n' | node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js exec -- eslint --config web/eslint.config.js --max-warnings 0 --no-warn-ignored --stdin --stdin-filename web/apps/admin/src/hook-negative.ts
+exit: 1 (expected negative control)
+result: Parsing error: Type expected; one error, zero warnings.
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npx-cli.js -y react-doctor@latest . --verbose --diff
+exit: 1
+result: historical independent-QA attempt at db055e46 failed ENOTFOUND registry.npmjs.org. The later authorized repair run completed separately: 63 files, score 65/100, 30 warnings; assessment and raw diagnostic hash are in react-doctor-assessment.md. No project dependency changed.
+
+[f9c4f3564afb195b48cba2e66c9be3e4d00d2948 — final candidate]
+argv: git diff --quiet e8709bbffa125f94b7667e52e230938b656838b4..f9c4f3564afb195b48cba2e66c9be3e4d00d2948 -- ':!web/packages/kit/src/design.css'
+exit: 0
+result: all paths except design.css byte-identical; the only final delta is `.form-fieldset .field { align-content: start; }`.
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js run build
+exit: 0
+result: final CSS built in all workspaces and all four applications.
+
+argv: node docs/justix-auto/dev/local/toolchains/node-24.21.0/lib/node_modules/npm/bin/npm-cli.js run dev --workspace @justixauto/admin -- --port 5176 --strictPort
+exit: 1 in restricted sandbox (EPERM listen), then started successfully with approved loopback escalation; stopped by QA with Ctrl-C after browser completion.
+
+argv: node /private/tmp/justixauto-admin-company-form-qa/browser-qa.cjs
+exit: 0 (final run)
+result: Google Chrome 154.0.8037.57, Playwright channel chrome, synthetic route interception, desktop 1440x900 and mobile 390x844. Three screenshots written. Earlier diagnostic runs failed only on QA harness selectors/assertions and produced the visual CF-08 finding that was repaired before this final run.
+
+argv: git diff --quiet -- <13 authorized application/tooling paths>
+exit: 0
+argv: git diff --cached --quiet -- <13 authorized application/tooling paths>
+exit: 0
+result: final application/tooling source and index stayed unchanged throughout final QA.

@@ -3,16 +3,12 @@
 > **2026-09-26 — current user-requested form correction.** Simplify Admin company
 > onboarding into information, address, contacts and login sections, with one
 > company name and one shared onboarding email. See [bounded record](admin-company-form-20260926.md).
-> Branch: `fix/country-region-combobox`; tested source `f9c4f356`, dev base `eca22f60`.
-> The bounded correction is **qa-green**: independent cumulative code review,
-> final desktop/mobile browser integration and four-app builds passed. Selected
-> units (28 tests), typecheck and lint passed on byte-equivalent non-CSS source.
-> Existing geographic-input work is preserved and included in cumulative QA;
-> the bounded record documents the separate session's collision report and
-> adopted test-selector edit. Source/browser leases are released. Task-branch
-> publication may proceed; dev/main integration remains human-controlled.
-> This does not close T-426/B-11 or authorize deployment. Historical task/phase
-> entries below do not describe the current tree.
+> Actual branch is `fix/country-region-combobox`, HEAD/base `eca22f60`; existing
+> uncommitted geographic-input changes are preserved and included in cumulative
+> review/QA. No branch switch, dev integration or deployment is authorized by this
+> correction. Historical task/phase entries below do not describe the current tree.
+> Plan review is GREEN; implementation and worker typecheck/build/scoped tests
+> passed. Source is released for the cumulative commit and independent review/QA.
 
 > **2026-09-22 — backend reset ([ADR-14](../adr-14-classic-modular-monolith.md)).** The CQRS/ES microservice backend was removed (tag `archive/cqrs-es-backend`) and replaced by a modular monolith: `cmd/api`, `internal/modules/*` (handler → service → repository), Echo + GORM, SQL migrations. First module: `identity` companies. Backend tasks below that assume event sourcing, outbox/inbox, projections or per-owner databases are obsolete until re-planned. Entries below are historical.
 

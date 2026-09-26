@@ -8,12 +8,9 @@ Date: 2026-09-16. Release scope and architecture approved; development authorize
   associated with T-426/B-11 without claiming their completion. The user approved
   one company name/email, information/address/contact/login sections and clearer
   wording. Preserve the existing geo precursor on `fix/country-region-combobox`;
-  cumulative review/QA starts at `eca22f60`. The bounded correction is
-  **qa-green** at source `f9c4f356`: independent cumulative review, final
-  desktop/mobile browser integration and four-app builds passed; 28 selected
-  unit tests/typecheck/lint passed on byte-equivalent non-CSS source. The bounded
-  record reconciles the separate session's geographic-precursor collision report.
-  Source/browser leases are released; task-branch handoff is ready. No dev integration.
+  cumulative review/QA starts at `eca22f60`. Independent plan review is GREEN and
+  bounded implementation/worker checks passed; source writer released for the
+  candidate commit and independent review/browser QA. No dev integration.
   Previous canonical state and SHA-256 inventory: `../state/backups/admin-company-form-20260926-entry/`.
 
 - Current agent/Git policy: [agent-workflow.md](agent-workflow.md). Task slicer produces bounded packets; generic worker, reviewer and QA handle one packet at a time. Application and DevOps hubs share three total delegate slots. Human approval gates EVERY dev merge/push; main/production promotion is human-only. Historical main integration records do not authorize new main writes.

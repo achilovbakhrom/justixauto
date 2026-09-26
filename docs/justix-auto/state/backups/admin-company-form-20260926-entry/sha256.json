@@ -1,0 +1,15 @@
+{
+  "docs/justix-auto/dev/task-board.md": "18749b8691f77c4713f2276b68f5b3ff1cabf9c7f3b26a9a95af7547bd3e1ef2",
+  "docs/justix-auto/dev/dev-state.md": "a559e878c8da1ecbcc137a6afd723f413c1b878d9fcb5a0c421a7f7022087a09",
+  "docs/justix-auto/dev/admin-company-form-20260926.md": "b1b5f302a1ea5938a716ee1b0e2753d25acfe1542b06ab0c782b4d644c1d109c",
+  "package-lock.json": "d82fffa16072ebc06b37c8f5fee740c3185e234b5b4ccadd2e3e1dd95d383abf",
+  "web/apps/admin/src/pages.tsx": "4b3e32af2e2a232fdef5f206db199304e818742eac1dee3f23019f54fd868ff5",
+  "web/apps/realization/src/data.ts": "1b1dc450fe29c6598de9aeefea97c884ac6a23f4693ee0ea5663c634464bdf52",
+  "web/packages/kit/package.json": "5cadd4b05265b5e76067b88eeb5f5368fa02ae5e4d624c54af890ae98589331a",
+  "web/packages/kit/src/design.css": "49ee83df1a053573fbea8d205ab60ae8ae6833a26021fbccef0b6e1508019f4c",
+  "web/packages/kit/src/index.ts": "31532ab768beaef9a36bdfd0739c13f71aaeb4809b677919e7cb87d77aa10f17",
+  "web/packages/kit/src/ui.tsx": "10186b2aa3ea88537ee16937dd3fec95d3b8234b8098d058d666a59f16d4b603",
+  "web/packages/kit/src/combobox.test.ts": "f2ea9d30ab48c20b0d34342df2b2f850c96f45c26594565fa053c3f236b38749",
+  "web/packages/kit/src/geo.test.ts": "659152c6701ff0e5a06b116202cbd2bc2e47fb2f4a37e60aa9162eef22ac53a2",
+  "web/packages/kit/src/geo.ts": "2b7cfc9bf1a10de10bee6077a4773eab3323f3970d9a8f765b273ecb1c4b4062"
+}

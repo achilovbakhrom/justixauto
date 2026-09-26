@@ -1,19 +1,5 @@
 # Development state
 
-> **2026-09-26 — current user-requested form correction.** Simplify Admin company
-> onboarding into information, address, contacts and login sections, with one
-> company name and one shared onboarding email. See [bounded record](admin-company-form-20260926.md).
-> Branch: `fix/country-region-combobox`; tested source `f9c4f356`, dev base `eca22f60`.
-> The bounded correction is **qa-green**: independent cumulative code review,
-> final desktop/mobile browser integration and four-app builds passed. Selected
-> units (28 tests), typecheck and lint passed on byte-equivalent non-CSS source.
-> Existing geographic-input work is preserved and included in cumulative QA;
-> the bounded record documents the separate session's collision report and
-> adopted test-selector edit. Source/browser leases are released. Task-branch
-> publication may proceed; dev/main integration remains human-controlled.
-> This does not close T-426/B-11 or authorize deployment. Historical task/phase
-> entries below do not describe the current tree.
-
 > **2026-09-22 — backend reset ([ADR-14](../adr-14-classic-modular-monolith.md)).** The CQRS/ES microservice backend was removed (tag `archive/cqrs-es-backend`) and replaced by a modular monolith: `cmd/api`, `internal/modules/*` (handler → service → repository), Echo + GORM, SQL migrations. First module: `identity` companies. Backend tasks below that assume event sourcing, outbox/inbox, projections or per-owner databases are obsolete until re-planned. Entries below are historical.
 
 > **2026-09-22 — current state.** All backend modules are implemented (identity with MFA, inventory, commerce, retail, insurance, financing, documents with S3) and the four React apps were rebuilt on the shared `web/packages/kit`. `WEB_DIR=web/apps` makes `cmd/api` serve the built apps (`/`, `/finance/`, `/insurance/`, `/admin/`). Browser smoke test passed on a local stack for admin onboarding, a cash retail sale through delivery, a B2B offer → order → shipment → receipt → payment, RFQ → quotation → order, insurer approval, and bank program → application → terms → agreement → document exchange. Since then: provider snapshots carry VIN/model/client, retail contract scans are stored (review finding), receipt batch quantities have an audited correction, and warehouses can be a branch's main warehouse. The four apps now use the reference design system (mocks common.css/styles.css copied into web/packages/kit/src/design.css) and the reference navigation and page layouts; companies are registered by the platform admin only (user decision 2026-09-22). Still open: detailed parity of detail dialogs (deal stage bar, vehicle photos), pixel/interaction parity with the HTML mocks (independent browser QA), OD-01/OD-06/OD-12 decisions, the fixed-markup calculation policy approval, and company-level staff management (today only the platform admin assigns roles).

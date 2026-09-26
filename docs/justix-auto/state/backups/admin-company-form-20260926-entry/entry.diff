@@ -1,0 +1,329 @@
+diff --git a/package-lock.json b/package-lock.json
+index db1cd7d..75d8f5c 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -7423,6 +7423,13 @@
+         "react": "19.3.0",
+         "react-dom": "19.3.0",
+         "react-router-dom": "7.18.3"
++      },
++      "devDependencies": {
++        "@testing-library/dom": "10.4.2",
++        "@testing-library/react": "16.3.3",
++        "@types/react": "19.3.0",
++        "@types/react-dom": "19.3.0",
++        "jsdom": "30.0.1"
+       }
+     },
+     "web/packages/test-kit": {
+diff --git a/web/apps/admin/src/pages.tsx b/web/apps/admin/src/pages.tsx
+index 4667366..9c566bf 100644
+--- a/web/apps/admin/src/pages.tsx
++++ b/web/apps/admin/src/pages.tsx
+@@ -17,9 +17,12 @@ import {
+   dateTime,
+   get,
+   list,
++  canonicalCountry,
++  countries,
+   matches,
+   patch,
+   post,
++  regionsFor,
+   useData,
+   useRefresh,
+   useSearchQuery,
+@@ -93,8 +96,28 @@ const accessLabel: Record<string, string> = { draft: 'Черновик', active:
+ const companyFields = (c?: Company): FieldSpec[] => [
+   { name: 'name', label: 'Название', type: 'text', required: true, initial: c?.name ?? '' },
+   { name: 'legalName', label: 'Юридическое название', type: 'text', initial: c?.legalName ?? '' },
+-  { name: 'country', label: 'Страна', type: 'text', required: true, initial: c?.country.label ?? '' },
+-  { name: 'region', label: 'Регион', type: 'text', initial: c?.region?.label ?? '' },
++  {
++    name: 'country',
++    label: 'Страна',
++    type: 'combobox',
++    required: true,
++    initial: c?.country.label ?? '',
++    options: countries(),
++    canonicalize: canonicalCountry,
++    placeholder: 'Выберите или найдите страну',
++    ariaLabel: 'Показать страны',
++  },
++  {
++    name: 'region',
++    label: 'Регион',
++    type: 'combobox',
++    initial: c?.region?.label ?? '',
++    dependsOn: 'country',
++    optionsFor: regionsFor,
++    placeholder: 'Выберите или найдите регион',
++    disabledPlaceholder: 'Сначала выберите страну',
++    ariaLabel: 'Показать регионы',
++  },
+   {
+     name: 'registration',
+     label: 'Регистрационный номер (ИНН/БИН)',
+@@ -109,7 +132,7 @@ const companyFields = (c?: Company): FieldSpec[] => [
+ const companyInput = (v: Record<string, unknown>) => ({
+   name: v.name,
+   legalName: v.legalName,
+-  country: { label: v.country },
++  country: { label: canonicalCountry(String(v.country)) ?? v.country },
+   region: v.region ? { label: v.region } : null,
+   registration: v.registration,
+   email: v.email,
+diff --git a/web/apps/realization/src/data.ts b/web/apps/realization/src/data.ts
+index fd0b9bb..4e02ac3 100644
+--- a/web/apps/realization/src/data.ts
++++ b/web/apps/realization/src/data.ts
+@@ -1,5 +1,5 @@
+ /** Seller data: types, query hooks and labels shared by the pages. */
+-import { list, useData, useSession } from '@justixauto/kit';
++import { canonicalCountry, countries, list, useData, useSession } from '@justixauto/kit';
+ import type { FieldSpec } from '@justixauto/kit';
+ 
+ export interface Money {
+@@ -431,13 +431,23 @@ export function sumMoney(items: Money[]): Money[] {
+ // ---- warehouse form ----
+ export const warehouseFields = (w?: Warehouse): FieldSpec[] => [
+   { name: 'name', label: 'Название', type: 'text', required: true, initial: w?.name ?? '' },
+-  { name: 'country', label: 'Страна', type: 'text', required: true, initial: w?.country.label ?? '' },
++  {
++    name: 'country',
++    label: 'Страна',
++    type: 'combobox',
++    required: true,
++    initial: w?.country.label ?? '',
++    options: countries(),
++    canonicalize: canonicalCountry,
++    placeholder: 'Выберите или найдите страну',
++    ariaLabel: 'Показать страны',
++  },
+   { name: 'city', label: 'Город', type: 'text', required: true, initial: w?.city ?? '' },
+   { name: 'address', label: 'Адрес', type: 'text', required: true, initial: w?.address ?? '' },
+ ];
+ export const warehouseInput = (v: Record<string, unknown>) => ({
+   name: v.name,
+-  country: { label: v.country },
++  country: { label: canonicalCountry(String(v.country)) ?? v.country },
+   city: v.city,
+   address: v.address,
+ });
+diff --git a/web/packages/kit/package.json b/web/packages/kit/package.json
+index e468d0c..9fb1cf4 100644
+--- a/web/packages/kit/package.json
++++ b/web/packages/kit/package.json
+@@ -16,5 +16,12 @@
+     "react": "19.3.0",
+     "react-dom": "19.3.0",
+     "react-router-dom": "7.18.3"
++  },
++  "devDependencies": {
++    "@types/react": "19.3.0",
++    "@types/react-dom": "19.3.0",
++    "@testing-library/react": "16.3.3",
++    "@testing-library/dom": "10.4.2",
++    "jsdom": "30.0.1"
+   }
+ }
+diff --git a/web/packages/kit/src/design.css b/web/packages/kit/src/design.css
+index 034a36f..48445bd 100644
+--- a/web/packages/kit/src/design.css
++++ b/web/packages/kit/src/design.css
+@@ -2435,6 +2435,56 @@ tbody tr:hover {
+   color: var(--text-muted);
+   font-size: 11px;
+ }
++/* Country/region combobox (docs/justix-auto/mocks/company-fields.css). */
++.company-autocomplete {
++  display: flex;
++  align-items: center;
++  width: 100%;
++  min-height: 40px;
++  border: 1px solid var(--border);
++  border-radius: var(--radius);
++  background: var(--surface);
++  overflow: hidden;
++}
++.company-autocomplete input {
++  border: 0;
++  border-radius: 0;
++  min-width: 0;
++  width: 100%;
++  min-height: 38px;
++  padding: 9px 8px 9px 11px;
++  background: transparent;
++}
++.company-autocomplete input::-webkit-calendar-picker-indicator {
++  opacity: 0;
++}
++.company-autocomplete input:focus {
++  outline: 0;
++  box-shadow: none;
++}
++.company-autocomplete button {
++  border: 0;
++  align-self: stretch;
++  background: none;
++  color: var(--text-muted);
++  font-size: 22px;
++  width: 40px;
++  flex: 0 0 40px;
++  cursor: pointer;
++}
++.company-autocomplete:focus-within {
++  outline: 2px solid rgba(23, 105, 224, 0.16);
++  outline-offset: 1px;
++  border-color: var(--primary);
++}
++.company-autocomplete:has(input:disabled) {
++  background: #f1f5f9;
++}
++.company-autocomplete button:disabled,
++.company-autocomplete input:disabled {
++  background: #f1f5f9;
++  cursor: not-allowed;
++}
+ .choice-grid {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+diff --git a/web/packages/kit/src/index.ts b/web/packages/kit/src/index.ts
+index 2e10d8c..0623b87 100644
+--- a/web/packages/kit/src/index.ts
++++ b/web/packages/kit/src/index.ts
+@@ -5,3 +5,4 @@ export * from './shell';
+ export * from './applications';
+ export * from './icons';
+ export * from './org-settings';
++export * from './geo';
+diff --git a/web/packages/kit/src/ui.tsx b/web/packages/kit/src/ui.tsx
+index 1c12074..6498323 100644
+--- a/web/packages/kit/src/ui.tsx
++++ b/web/packages/kit/src/ui.tsx
+@@ -674,6 +674,25 @@ export type FieldSpec =
+     }
+   | { name: string; label: string; type: 'money'; required?: boolean; initial?: string; currency?: string }
+   | { name: string; label: string; type: 'select'; options: [string, string][]; required?: boolean; initial?: string }
++  | {
++      name: string;
++      label: string;
++      type: 'combobox';
++      /** Options shown when the field has no dependency (e.g. country). */
++      options?: string[];
++      /** Name of another field this one depends on (e.g. region depends on country). */
++      dependsOn?: string;
++      /** Options derived from the dependency's current value. */
++      optionsFor?: (parentValue: string) => string[];
++      /** Canonicalizes free text to the catalogue spelling on blur, if it matches. */
++      canonicalize?: (raw: string) => string | undefined;
++      placeholder?: string;
++      /** Placeholder shown while disabled because the dependency is empty. */
++      disabledPlaceholder?: string;
++      ariaLabel?: string;
++      required?: boolean;
++      initial?: string;
++    }
+   | { name: string; label: string; type: 'multiselect'; options: [string, string][]; initial?: string[] }
+   | { name: string; label: string; type: 'checkbox'; initial?: boolean }
+   | { name: string; label: string; type: 'file'; purpose: string; required?: boolean };
+@@ -728,7 +747,16 @@ export function FormDialog({
+   const [errors, setErrors] = useState<Record<string, string>>({});
+   const [error, setError] = useState('');
+   const [busy, setBusy] = useState(false);
+-  const set = (name: string, v: string | string[] | boolean) => setValues((s) => ({ ...s, [name]: v }));
++  // Combobox fields with dependsOn clear when their dependency's value changes
++  // (docs/justix-auto/business-logic.md:110: region is unavailable/cleared without its country).
++  const set = (name: string, v: string | string[] | boolean) =>
++    setValues((s) => {
++      const next = { ...s, [name]: v };
++      for (const f of fields) {
++        if (f.type === 'combobox' && f.dependsOn === name) next[f.name] = '';
++      }
++      return next;
++    });
+ 
+   async function submit() {
+     setBusy(true);
+@@ -808,6 +836,7 @@ export function FormDialog({
+             onFile={(file) => setFiles((s) => ({ ...s, [f.name]: file }))}
+             currency={currency[f.name]}
+             onCurrency={(c) => setCurrency((s) => ({ ...s, [f.name]: c }))}
++            dependsOnValue={f.type === 'combobox' && f.dependsOn ? values[f.dependsOn] : undefined}
+           />
+         ))}
+         <button type="submit" hidden />
+@@ -826,6 +855,7 @@ function FieldInput({
+   onFile,
+   currency,
+   onCurrency,
++  dependsOnValue,
+ }: {
+   spec: FieldSpec;
+   value: string | string[] | boolean;
+@@ -834,8 +864,10 @@ function FieldInput({
+   onFile: (f: File | null) => void;
+   currency: string | undefined;
+   onCurrency: (c: string) => void;
++  dependsOnValue: string | string[] | boolean | undefined;
+ }) {
+   const id = useId();
++  const comboRef = useRef<HTMLInputElement>(null);
+   const req = 'required' in spec && spec.required;
+   const label = (
+     <label htmlFor={id}>
+@@ -871,6 +903,54 @@ function FieldInput({
+           {err}
+         </div>
+       );
++    case 'combobox': {
++      const disabled = !!spec.dependsOn && !String(dependsOnValue ?? '').trim();
++      const options = spec.dependsOn ? (spec.optionsFor?.(String(dependsOnValue ?? '')) ?? []) : (spec.options ?? []);
++      const listId = `${id}-list`;
++      const placeholder = disabled ? (spec.disabledPlaceholder ?? 'Сначала выберите страну') : spec.placeholder;
++      return (
++        <div className={cls}>
++          {label}
++          <span className="company-autocomplete">
++            <input
++              id={id}
++              ref={comboRef}
++              list={listId}
++              autoComplete="off"
++              disabled={disabled}
++              placeholder={placeholder}
++              value={String(value)}
++              onChange={(e) => onChange(e.target.value)}
++              onBlur={() => {
++                const canonical = spec.canonicalize?.(String(value));
++                if (canonical) onChange(canonical);
++              }}
++            />
++            <datalist id={listId}>
++              {options.map((o) => (
++                <option key={o} value={o} />
++              ))}
++            </datalist>
++            <button
++              type="button"
++              aria-label={spec.ariaLabel ?? 'Показать варианты'}
++              disabled={disabled}
++              onClick={() => {
++                comboRef.current?.focus();
++                try {
++                  (comboRef.current as unknown as { showPicker?: () => void } | null)?.showPicker?.();
++                } catch {
++                  /* Not every environment implements showPicker for datalist inputs. */
++                }
++              }}
++            >
++              ⌄
++            </button>
++          </span>
++          {err}
++        </div>
++      );
++    }
+     case 'multiselect':
+       return (
+         <fieldset className={`${cls} checkbox-fieldset`}>

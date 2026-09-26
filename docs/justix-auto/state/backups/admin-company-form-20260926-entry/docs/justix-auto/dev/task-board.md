@@ -4,18 +4,6 @@ Date: 2026-09-16. Release scope and architecture approved; development authorize
 
 ## Readiness and execution rules
 
-- 2026-09-26 current bounded correction: [Admin company form](admin-company-form-20260926.md),
-  associated with T-426/B-11 without claiming their completion. The user approved
-  one company name/email, information/address/contact/login sections and clearer
-  wording. Preserve the existing geo precursor on `fix/country-region-combobox`;
-  cumulative review/QA starts at `eca22f60`. The bounded correction is
-  **qa-green** at source `f9c4f356`: independent cumulative review, final
-  desktop/mobile browser integration and four-app builds passed; 28 selected
-  unit tests/typecheck/lint passed on byte-equivalent non-CSS source. The bounded
-  record reconciles the separate session's geographic-precursor collision report.
-  Source/browser leases are released; task-branch handoff is ready. No dev integration.
-  Previous canonical state and SHA-256 inventory: `../state/backups/admin-company-form-20260926-entry/`.
-
 - Current agent/Git policy: [agent-workflow.md](agent-workflow.md). Task slicer produces bounded packets; generic worker, reviewer and QA handle one packet at a time. Application and DevOps hubs share three total delegate slots. Human approval gates EVERY dev merge/push; main/production promotion is human-only. Historical main integration records do not authorize new main writes.
 - HUB agent setup is included in human-approved dev at `3f3fe03`, not a new product backlog item. All 949 tasks are retained. T-938's index status is reconciled with historical independent/integration GREEN; see [resume evidence](resume-t933-20260919.md).
 - ENV-GIT is global for application mutations: own root and initial commit required. On 2026-09-14 the user authorized project-local Git initialization and the initial push; verify with `bash tools/check-git.sh` before application work. Never use parent main. Documentation-only contract/policy/design proposals may proceed.
