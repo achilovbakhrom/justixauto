@@ -179,7 +179,7 @@ jobs:
               --silent \
               --show-error \
               --max-time 3 \
-              "http://127.0.0.1:${{ secrets.HOST_PORT }}/healthz"
+              "http://127.0.0.1:2047/healthz"
             then
               echo
               echo "Justix Auto is healthy"
