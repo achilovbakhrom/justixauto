@@ -1650,6 +1650,10 @@ tbody tr:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  /* Long lists (e.g. permissions) scroll inside a fixed-height box. */
+  max-height: 400px;
+  overflow: auto;
+  padding: 2px;
 }
 .check-line {
   min-height: 58px;
@@ -2310,9 +2314,13 @@ tbody tr:hover {
   background: rgba(24, 33, 47, 0.34);
 }
 .modal {
+  /* Header and footer stay put; only the body scrolls, so the action buttons
+     are always visible at the bottom of a long form. */
+  display: flex;
+  flex-direction: column;
   width: min(600px, 100%);
   max-height: calc(100vh - 64px);
-  overflow: auto;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -2364,6 +2372,9 @@ tbody tr:hover {
   background: var(--surface-subtle);
 }
 .modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
   padding: 20px 24px 24px;
 }
 .context-band {

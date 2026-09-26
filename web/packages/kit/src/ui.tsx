@@ -663,7 +663,11 @@ export const dateTime = (s: string | null | undefined) => (s ? new Date(s).toLoc
 
 // ---- generic form dialog ----
 
-type FieldGroup = { group?: string };
+type FieldGroup = {
+  group?: string;
+  /** Take the whole form row instead of half of it. */
+  full?: boolean;
+};
 
 export type FieldSpec = FieldGroup &
   (
@@ -986,7 +990,8 @@ function FieldInput({
     </div>
   ));
   // Long inputs span both columns of the reference .form-grid.
-  const wide = ['textarea', 'multiselect', 'checkbox', 'file'].includes(spec.type) || spec.label.length > 34;
+  const wide =
+    spec.full || ['textarea', 'multiselect', 'checkbox', 'file'].includes(spec.type) || spec.label.length > 34;
   const cls = `field${wide ? ' field-full' : ''}`;
   switch (spec.type) {
     case 'textarea':

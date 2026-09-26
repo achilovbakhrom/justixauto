@@ -589,7 +589,7 @@ export function RolesPage() {
   const options = permissionOptions((perms.data ?? []).filter((p) => p.assignable).map((p) => p.key));
   const permList = (keys: string[]) => keys.map(permissionLabel).join(', ');
   const fields = (r?: Role): FieldSpec[] => [
-    { name: 'name', label: 'Название', type: 'text', required: true, initial: r?.name ?? '' },
+    { name: 'name', label: 'Название', type: 'text', required: true, full: true, initial: r?.name ?? '' },
     { name: 'permissionKeys', label: 'Разрешения', type: 'multiselect', options, initial: r?.permissionKeys ?? [] },
   ];
   return (
