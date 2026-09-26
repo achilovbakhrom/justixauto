@@ -76,12 +76,10 @@ type roleDTO struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`
 	System bool   `json:"system"`
-	// Scope is "platform" (staff) or "company"; CompanyKind limits a company
-	// role to one company type (null = any type).
-	Scope          string             `json:"scope"`
-	CompanyKind    *model.CompanyKind `json:"companyKind"`
-	PermissionKeys []string           `json:"permissionKeys"`
-	Revision       string             `json:"revision"`
+	// Scope follows from the permissions: "platform" (staff) or "company".
+	Scope          string   `json:"scope"`
+	PermissionKeys []string `json:"permissionKeys"`
+	Revision       string   `json:"revision"`
 }
 
 func toRole(r *model.Role) roleDTO {
@@ -90,7 +88,7 @@ func toRole(r *model.Role) roleDTO {
 		perms = []string{}
 	}
 	return roleDTO{
-		ID: r.ID, Name: r.Name, System: r.System(), Scope: r.Scope, CompanyKind: r.CompanyKind,
+		ID: r.ID, Name: r.Name, System: r.System(), Scope: r.Scope,
 		PermissionKeys: perms, Revision: revision(r.Version),
 	}
 }

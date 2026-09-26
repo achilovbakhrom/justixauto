@@ -11836,9 +11836,6 @@
                 "permissionKeys"
             ],
             "properties": {
-                "companyKind": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -11847,10 +11844,6 @@
                     "items": {
                         "type": "string"
                     }
-                },
-                "scope": {
-                    "description": "default \"company\"",
-                    "type": "string"
                 }
             }
         },
@@ -15230,7 +15223,6 @@
         "modules_identity_handler.roleDTO": {
             "type": "object",
             "required": [
-                "companyKind",
                 "id",
                 "name",
                 "permissionKeys",
@@ -15239,9 +15231,6 @@
                 "system"
             ],
             "properties": {
-                "companyKind": {
-                    "$ref": "#/definitions/justixauto_internal_modules_identity_model.CompanyKind"
-                },
                 "id": {
                     "type": "string"
                 },
@@ -15258,7 +15247,7 @@
                     "type": "string"
                 },
                 "scope": {
-                    "description": "Scope is \"platform\" (staff) or \"company\"; CompanyKind limits a company\nrole to one company type (null = any type).",
+                    "description": "Scope follows from the permissions: \"platform\" (staff) or \"company\".",
                     "type": "string"
                 },
                 "system": {

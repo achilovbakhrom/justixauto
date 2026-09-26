@@ -1,14 +1,10 @@
--- User decisions 2026-09-26: the platform admin prepares roles (named groups
--- of permissions) in Admin. A role is either a platform role (for JustixAuto
--- staff) or a company role, optionally limited to one company type; company
--- admins assign prepared company roles to their own employees. A company
--- employee belongs to exactly one company.
+-- User decisions 2026-09-26: the platform admin prepares roles (a name and a
+-- set of permissions) in Admin. A role's scope follows from its permissions:
+-- company roles are assigned by company admins to their employees, platform
+-- roles to JustixAuto staff. A company employee belongs to exactly one company.
 
 ALTER TABLE identity.roles
-    ADD COLUMN scope text NOT NULL DEFAULT 'company' CHECK (scope IN ('platform', 'company')),
-    -- NULL = any company type; only company roles may set it.
-    ADD COLUMN company_kind text CHECK (company_kind IN ('seller', 'bank', 'mfo', 'insurance')),
-    ADD CONSTRAINT roles_company_kind_scope_check CHECK (company_kind IS NULL OR scope = 'company');
+    ADD COLUMN scope text NOT NULL DEFAULT 'company' CHECK (scope IN ('platform', 'company'));
 
 UPDATE identity.roles SET scope = 'platform' WHERE system_key = 'platform_admin';
 

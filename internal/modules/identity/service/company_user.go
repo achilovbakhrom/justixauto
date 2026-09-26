@@ -10,8 +10,7 @@ import (
 
 // CompanyUser lets a company admin manage the company's own employees with
 // roles prepared in Admin (user decisions 2026-09-26). An employee belongs to
-// exactly one company; only company roles for this company's type can be
-// assigned. Account operations reuse the User service after the checks here.
+// exactly one company; only company roles can be assigned. Account operations reuse the User service after the checks here.
 type CompanyUser struct {
 	Deps
 	users *User
@@ -71,17 +70,16 @@ func (s *CompanyUser) employee(ctx context.Context, st Store, companyID, userID 
 	return nil
 }
 
-func assignableRoles(ctx context.Context, st Store, v *apperr.Validation, kind model.CompanyKind, ids []string) ([]string, error) {
-	return checkRoles(ctx, st, v, ids, func(r model.Role) bool { return r.AssignableIn(kind) })
+func assignableRoles(ctx context.Context, st Store, v *apperr.Validation, ids []string) ([]string, error) {
+	return checkRoles(ctx, st, v, ids, model.Role.AssignableByCompany)
 }
 
 // Roles lists the prepared roles the company may give its employees.
 func (s *CompanyUser) Roles(ctx context.Context, actor *auth.Principal, companyID string) ([]model.Role, error) {
-	c, err := s.company(ctx, s.store, actor, companyID)
-	if err != nil {
+	if _, err := s.company(ctx, s.store, actor, companyID); err != nil {
 		return nil, err
 	}
-	return (&Role{s.Deps}).AssignableIn(ctx, c.Kind)
+	return (&Role{s.Deps}).Assignable(ctx)
 }
 
 // List returns the company's employees.
@@ -116,11 +114,11 @@ func (s *CompanyUser) Create(ctx context.Context, actor *auth.Principal, company
 	n.companyID = companyID
 	var result *UserDetail
 	err := s.store.InTx(ctx, func(st Store) error {
-		c, err := s.company(ctx, st, actor, companyID)
+		_, err := s.company(ctx, st, actor, companyID)
 		if err != nil {
 			return err
 		}
-		roleIDs, err := assignableRoles(ctx, st, &v, c.Kind, in.RoleIDs)
+		roleIDs, err := assignableRoles(ctx, st, &v, in.RoleIDs)
 		if err != nil {
 			return err
 		}
@@ -138,7 +136,7 @@ func (s *CompanyUser) Create(ctx context.Context, actor *auth.Principal, company
 func (s *CompanyUser) Update(ctx context.Context, actor *auth.Principal, companyID, userID string, expected int64, in UpdateCompanyUserInput) (*UserDetail, error) {
 	var result *UserDetail
 	err := s.store.InTx(ctx, func(st Store) error {
-		c, err := s.company(ctx, st, actor, companyID)
+		_, err := s.company(ctx, st, actor, companyID)
 		if err != nil {
 			return err
 		}
@@ -155,7 +153,7 @@ func (s *CompanyUser) Update(ctx context.Context, actor *auth.Principal, company
 		var v apperr.Validation
 		u.DisplayName = text(&v, "displayName", in.DisplayName, 1, 200)
 		u.Email = optionalEmail(&v, "email", in.Email)
-		roleIDs, err := assignableRoles(ctx, st, &v, c.Kind, in.RoleIDs)
+		roleIDs, err := assignableRoles(ctx, st, &v, in.RoleIDs)
 		if err != nil {
 			return err
 		}

@@ -104,7 +104,7 @@ func (r *RoleRepository) Create(ctx context.Context, role *model.Role) error {
 
 func (r *RoleRepository) Update(ctx context.Context, role *model.Role, expected int64) error {
 	err := updateVersioned(r.db.WithContext(ctx), &model.Role{}, role.ID, expected, map[string]any{
-		"name": role.Name, "scope": role.Scope, "company_kind": role.CompanyKind, "updated_at": role.UpdatedAt,
+		"name": role.Name, "scope": role.Scope, "updated_at": role.UpdatedAt,
 	})
 	if err != nil {
 		return err

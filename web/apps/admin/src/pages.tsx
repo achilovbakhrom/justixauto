@@ -65,7 +65,6 @@ interface Role {
   name: string;
   system: boolean;
   scope: string;
-  companyKind: string | null;
   permissionKeys: string[];
   revision: string;
 }
@@ -584,58 +583,30 @@ function UserDialog({ id, roles, onClose }: { id: string; roles: Role[]; onClose
   );
 }
 
-const scopeLabel: Record<string, string> = { company: 'Роль компании', platform: 'Роль платформы' };
-
 export function RolesPage() {
   const q = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
   const perms = useData(['admin-permissions'], () => list<Permission>('/identity/admin/permissions'));
-  const permOptions = (scope: string) =>
-    permissionOptions((perms.data ?? []).filter((p) => p.assignable && p.scope === scope).map((p) => p.key));
+  const options = permissionOptions((perms.data ?? []).filter((p) => p.assignable).map((p) => p.key));
   const permList = (keys: string[]) => keys.map(permissionLabel).join(', ');
-  const fields = (scope: string, r?: Role): FieldSpec[] => [
+  const fields = (r?: Role): FieldSpec[] => [
     { name: 'name', label: 'Название', type: 'text', required: true, initial: r?.name ?? '' },
-    ...(scope === 'company'
-      ? [
-          {
-            name: 'companyKind',
-            label: 'Тип компании (пусто — любой)',
-            type: 'select',
-            options: Object.entries(kindLabel),
-            initial: r?.companyKind ?? '',
-          } as FieldSpec,
-        ]
-      : []),
-    {
-      name: 'permissionKeys',
-      label: 'Разрешения',
-      type: 'multiselect',
-      options: permOptions(scope),
-      initial: r?.permissionKeys ?? [],
-    },
+    { name: 'permissionKeys', label: 'Разрешения', type: 'multiselect', options, initial: r?.permissionKeys ?? [] },
   ];
-  const submit = (scope: string, v: Record<string, unknown>) => ({ ...v, scope, companyKind: v.companyKind || '' });
   return (
     <Page
       title="Роли и разрешения"
-      subtitle="Роль — готовый набор разрешений. Роли компании администратор компании назначает своим сотрудникам; роли платформы — сотрудникам JustixAuto."
+      subtitle="Роль — название и набор разрешений. Администратор компании назначает роли своим сотрудникам."
       actions={
-        <>
-          <ActionButton
-            label="+ Роль компании"
-            variant="primary"
-            size="wide"
-            fields={fields('company')}
-            refresh={[['admin-roles']]}
-            onSubmit={(v) => post('/identity/admin/roles', submit('company', v))}
-          />
-          <ActionButton
-            label="+ Роль платформы"
-            size="wide"
-            fields={fields('platform')}
-            refresh={[['admin-roles']]}
-            onSubmit={(v) => post('/identity/admin/roles', submit('platform', v))}
-          />
-        </>
+        <ActionButton
+          label="+ Создать роль"
+          title="Новая роль"
+          submitLabel="Создать"
+          variant="primary"
+          size="wide"
+          fields={fields()}
+          refresh={[['admin-roles']]}
+          onSubmit={(v) => post('/identity/admin/roles', v)}
+        />
       }
     >
       <Panel>
@@ -645,15 +616,7 @@ export function RolesPage() {
           error={q.error}
           rowKey={(r) => r.id}
           columns={[
-            {
-              title: 'Роль',
-              render: (r) => <Cell main={r.name} sub={r.system ? 'Встроенная' : 'Подготовленная'} />,
-            },
-            { title: 'Для кого', render: (r) => scopeLabel[r.scope] ?? r.scope },
-            {
-              title: 'Тип компании',
-              render: (r) => (r.scope === 'company' ? (r.companyKind ? kindLabel[r.companyKind] : 'Любой') : '—'),
-            },
+            { title: 'Роль', render: (r) => <Cell main={r.name} sub={r.system ? 'Встроенная' : undefined} /> },
             {
               title: 'Разрешения',
               render: (r) => <span title={permList(r.permissionKeys)}>{r.permissionKeys.length}</span>,
@@ -665,6 +628,7 @@ export function RolesPage() {
                   <ActionButton
                     small
                     label="Просмотреть"
+                    title={r.name}
                     fields={[]}
                     submitLabel="Закрыть"
                     intro={<p>{permList(r.permissionKeys) || 'Права платформы'}</p>}
@@ -674,12 +638,12 @@ export function RolesPage() {
                   <ActionButton
                     small
                     label="Изменить"
+                    title="Изменить роль"
+                    submitLabel="Сохранить"
                     size="wide"
-                    fields={fields(r.scope, r)}
+                    fields={fields(r)}
                     refresh={[['admin-roles']]}
-                    onSubmit={(v) =>
-                      patch(`/identity/admin/roles/${r.id}`, submit(r.scope, v), { ifMatch: r.revision })
-                    }
+                    onSubmit={(v) => patch(`/identity/admin/roles/${r.id}`, v, { ifMatch: r.revision })}
                   />
                 ),
             },
@@ -687,8 +651,8 @@ export function RolesPage() {
         />
       </Panel>
       <div className="admin-note">
-        Встроенные роли не изменяются. «Company administrator» получает все разрешения компании и может добавлять её
-        сотрудников.
+        Встроенные роли не изменяются. «Company administrator» получает все разрешения компании. Роль не может сочетать
+        разрешения платформы и компании.
       </div>
     </Page>
   );

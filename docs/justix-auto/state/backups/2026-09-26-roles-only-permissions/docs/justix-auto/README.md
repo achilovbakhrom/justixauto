@@ -82,9 +82,9 @@ npm run dev --workspace web/apps/realization      # also: financing, insurance, 
 ```
 
 First steps after bootstrap: sign in at `/admin/` and prepare roles under
-«Роли и разрешения» — a role is a name and a set of permissions. Roles made of
-company permissions are assigned by company admins; roles made of platform
-permissions go to JustixAuto staff (a role cannot mix the two). Then create seller / bank / MFO / insurance companies
+«Роли и разрешения» — a role is a named set of permissions: a **company role**
+(company permissions, optionally for one company type) or a **platform role**
+(for JustixAuto staff). Then create seller / bank / MFO / insurance companies
 with their first administrator («Company administrator»: every company
 permission) and activate them. That administrator adds the company's own
 employees in their cabinet under Настройки → «Пользователи и роли» (login,

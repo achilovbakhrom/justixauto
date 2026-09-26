@@ -14,31 +14,28 @@ import (
 // NewRole builds the role service.
 func NewRole(d Deps) *Role { return &Role{d} }
 
-// RoleInput prepares a role (user decisions 2026-09-26): scope "platform"
-// (JustixAuto staff, platform permissions) or "company" (assigned by company
-// admins, company permissions), and for company roles an optional company
-// type that limits which companies may assign it.
+// RoleInput prepares a role: a name and a set of permissions (user
+// decisions 2026-09-26). Its scope follows from the permissions: company
+// permissions make a role company admins may assign to employees; platform
+// permissions make a role for JustixAuto staff. Mixing both is rejected.
 type RoleInput struct {
 	Name           string   `json:"name"`
-	Scope          string   `json:"scope" binding:"optional"` // default "company"
-	CompanyKind    string   `json:"companyKind" binding:"optional"`
 	PermissionKeys []string `json:"permissionKeys"`
 }
 
 // Role manages prepared roles and their permission grants.
 type Role struct{ Deps }
 
-// AssignableIn lists the company roles a company of kind may give its
-// employees: company-scope roles for any type or exactly this type,
-// including the built-in company administrator.
-func (s *Role) AssignableIn(ctx context.Context, kind model.CompanyKind) ([]model.Role, error) {
+// Assignable lists the roles company admins may give their employees:
+// company roles, including the built-in company administrator.
+func (s *Role) Assignable(ctx context.Context) ([]model.Role, error) {
 	roles, err := s.List(ctx)
 	if err != nil {
 		return nil, err
 	}
 	out := []model.Role{}
 	for _, r := range roles {
-		if r.AssignableIn(kind) {
+		if r.AssignableByCompany() {
 			out = append(out, r)
 		}
 	}
@@ -56,48 +53,31 @@ func (s *Role) List(ctx context.Context) ([]model.Role, error) {
 	return roles, nil
 }
 
-// permissions validates keys: unknown, non-assignable and keys of another
-// scope than the role's are rejected.
-func permissions(v *apperr.Validation, scope string, keys []string) []string {
+// permissions validates keys (unknown and non-assignable keys are rejected)
+// and derives the role's scope from them: platform if they are platform
+// permissions, otherwise company. A role cannot mix both scopes.
+func permissions(v *apperr.Validation, keys []string) ([]string, string) {
 	out := []string{}
+	scopes := map[string]bool{}
 	for _, k := range keys {
 		info, ok := model.LookupPermission(k)
 		if !ok || !info.Assignable {
 			v.Add("permissionKeys", "unknown or non-assignable permission "+k)
 			continue
 		}
-		if info.Scope != scope {
-			v.Add("permissionKeys", "permission "+k+" does not belong to a "+scope+" role")
-			continue
-		}
+		scopes[info.Scope] = true
 		if !slices.Contains(out, k) {
 			out = append(out, k)
 		}
 	}
 	slices.Sort(out)
-	return out
-}
-
-// roleScope validates the scope and company type of a prepared role.
-func roleScope(v *apperr.Validation, in RoleInput) (string, *model.CompanyKind) {
-	if in.Scope == "" {
-		in.Scope = model.RoleScopeCompany // most prepared roles are company roles
+	if scopes[model.RoleScopePlatform] && scopes[model.RoleScopeCompany] {
+		v.Add("permissionKeys", "a role cannot mix platform and company permissions")
 	}
-	if in.Scope != model.RoleScopePlatform && in.Scope != model.RoleScopeCompany {
-		v.Add("scope", "must be platform or company")
-		return in.Scope, nil
+	if scopes[model.RoleScopePlatform] {
+		return out, model.RoleScopePlatform
 	}
-	if in.CompanyKind == "" {
-		return in.Scope, nil
-	}
-	kind := model.CompanyKind(in.CompanyKind)
-	switch {
-	case in.Scope != model.RoleScopeCompany:
-		v.Add("companyKind", "only company roles have a company type")
-	case !kind.Valid():
-		v.Add("companyKind", "unknown company type")
-	}
-	return in.Scope, &kind
+	return out, model.RoleScopeCompany
 }
 
 func duplicateRole(err error) error {
@@ -110,10 +90,10 @@ func duplicateRole(err error) error {
 func (s *Role) Create(ctx context.Context, actor *auth.Principal, in RoleInput) (*model.Role, error) {
 	var v apperr.Validation
 	now := s.clock()
-	scope, kind := roleScope(&v, in)
+	perms, scope := permissions(&v, in.PermissionKeys)
 	r := &model.Role{
-		ID: uuid.NewString(), Name: text(&v, "name", in.Name, 1, 100), Scope: scope, CompanyKind: kind,
-		Permissions: permissions(&v, scope, in.PermissionKeys), Version: 1, CreatedAt: now, UpdatedAt: now,
+		ID: uuid.NewString(), Name: text(&v, "name", in.Name, 1, 100), Scope: scope,
+		Permissions: perms, Version: 1, CreatedAt: now, UpdatedAt: now,
 	}
 	if err := v.Err(); err != nil {
 		return nil, err
@@ -122,7 +102,7 @@ func (s *Role) Create(ctx context.Context, actor *auth.Principal, in RoleInput) 
 		if err := st.Roles().Create(ctx, r); err != nil {
 			return duplicateRole(err)
 		}
-		return s.audit(ctx, st, actor, "role.created", "role", r.ID, nil, "", map[string]any{"name": r.Name, "scope": r.Scope, "companyKind": r.CompanyKind, "permissions": r.Permissions})
+		return s.audit(ctx, st, actor, "role.created", "role", r.ID, nil, "", map[string]any{"name": r.Name, "scope": r.Scope, "permissions": r.Permissions})
 	})
 	if err != nil {
 		return nil, err
@@ -150,8 +130,7 @@ func (s *Role) Update(ctx context.Context, actor *auth.Principal, id string, exp
 		var v apperr.Validation
 		before := r.Permissions
 		r.Name = text(&v, "name", in.Name, 1, 100)
-		r.Scope, r.CompanyKind = roleScope(&v, in)
-		r.Permissions = permissions(&v, r.Scope, in.PermissionKeys)
+		r.Permissions, r.Scope = permissions(&v, in.PermissionKeys)
 		if err := v.Err(); err != nil {
 			return err
 		}

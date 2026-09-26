@@ -96,27 +96,21 @@ describe('platform staff page', () => {
 });
 
 describe('roles page', () => {
-  it('prepares a company role for one company type with company permissions only', async () => {
+  it('creates a role from a name and permissions only', async () => {
     let posted: { url: string; body: unknown } | undefined;
     stubApi((url, body) => (posted = { url, body }));
     renderPage(RolesPage);
     expect(await screen.findByText('Менеджер продаж')).toBeTruthy();
 
-    fireEvent.click(screen.getByRole('button', { name: '+ Роль компании' }));
-    const dialog = await screen.findByRole('dialog', { name: '+ Роль компании' });
-    expect(within(dialog).queryByText('Платформа: журнал действий')).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: '+ Создать роль' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Новая роль' });
+    expect(within(dialog).queryByText(/Тип компании/)).toBeNull();
     fireEvent.change(within(dialog).getByLabelText('Название'), { target: { value: 'Кассир' } });
-    fireEvent.change(within(dialog).getByLabelText('Тип компании (пусто — любой)'), { target: { value: 'seller' } });
-    fireEvent.click(within(dialog).getByText('Продажи: просмотр'));
-    fireEvent.click(within(dialog).getByRole('button', { name: '+ Роль компании' }));
+    fireEvent.click(await within(dialog).findByText('Продажи: просмотр'));
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Создать' }));
 
     await waitFor(() => expect(posted).toBeDefined());
     expect(posted!.url).toContain('/identity/admin/roles');
-    expect(posted!.body).toMatchObject({
-      name: 'Кассир',
-      scope: 'company',
-      companyKind: 'seller',
-      permissionKeys: ['retail.read'],
-    });
+    expect(posted!.body).toEqual({ name: 'Кассир', permissionKeys: ['retail.read'] });
   });
 });
