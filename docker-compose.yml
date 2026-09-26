@@ -12,7 +12,7 @@ services:
       - "2047:8080"
 
     networks:
-      - justix-auto-db
+      - justix-db
 
   migrate:
     image: poirot92/justix-auto:${IMAGE_TAG}
@@ -27,8 +27,8 @@ services:
       - up
 
     networks:
-      - justix-auto-db
+      - justix-db
 
 networks:
-  justix-auto-db:
+  justix-db:
     external: true
