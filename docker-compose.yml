@@ -1,0 +1,34 @@
+services:
+
+  api:
+    image: poirot92/justix-auto:${IMAGE_TAG}
+    container_name: justix-auto
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${HOST_PORT}:8080"
+
+    networks:
+      - justix-auto-db
+
+  migrate:
+    image: poirot92/justix-auto:${IMAGE_TAG}
+
+    env_file:
+      - .env
+
+    entrypoint:
+      - /app/migrate
+
+    command:
+      - up
+
+    networks:
+      - justix-auto-db
+
+networks:
+  justix-auto-db:
+    external: true
