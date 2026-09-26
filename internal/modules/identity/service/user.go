@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"slices"
 	"time"
 
@@ -15,10 +16,17 @@ import (
 // NewUser builds the user service.
 func NewUser(d Deps) *User { return &User{d} }
 
+// CreateUserInput creates a platform user. User decision 2026-09-26: email
+// is optional; login and a temporary password may be set right away (both or
+// neither), and companyId adds an active membership with access to all
+// branches, so a company employee is created in one step.
 type CreateUserInput struct {
 	DisplayName string   `json:"displayName"`
-	Email       string   `json:"email"`
+	Email       string   `json:"email" binding:"optional"`
 	RoleIDs     []string `json:"roleIds"`
+	Login       string   `json:"login" binding:"optional"`
+	Password    string   `json:"password" binding:"optional"`
+	CompanyID   string   `json:"companyId" binding:"optional"`
 }
 
 type UpdateUserInput struct {
@@ -30,6 +38,9 @@ type UpdateUserInput struct {
 type UserDetail struct {
 	User  *model.User
 	Roles []model.Role
+	// CompanyIDs are the companies the user is an active member of (live
+	// companies only), so lists can show where a user belongs.
+	CompanyIDs []string
 }
 
 // User manages platform user accounts.
@@ -55,7 +66,17 @@ func (s *User) detail(ctx context.Context, st Store, u *model.User) (*UserDetail
 	if err != nil {
 		return nil, err
 	}
-	return &UserDetail{User: u, Roles: roles}, nil
+	memberships, err := st.Memberships().ListByUser(ctx, u.ID)
+	if err != nil {
+		return nil, err
+	}
+	companyIDs := []string{}
+	for _, m := range memberships {
+		if m.Status == model.MembershipActive {
+			companyIDs = append(companyIDs, m.CompanyID)
+		}
+	}
+	return &UserDetail{User: u, Roles: roles, CompanyIDs: companyIDs}, nil
 }
 
 // Create registers a pending user. No password or enrollment is created here:
@@ -65,7 +86,16 @@ func (s *User) Create(ctx context.Context, actor *auth.Principal, in CreateUserI
 	now := s.clock()
 	u := &model.User{
 		ID: uuid.NewString(), DisplayName: text(&v, "displayName", in.DisplayName, 1, 200),
-		Email: email(&v, "email", in.Email), Status: model.UserPending, Version: 1, CreatedAt: now, UpdatedAt: now,
+		Email: optionalEmail(&v, "email", in.Email), Status: model.UserPending, Version: 1, CreatedAt: now, UpdatedAt: now,
+	}
+	credentials := in.Login != "" || in.Password != ""
+	if credentials {
+		login := validLogin(&v, "login", in.Login)
+		u.Login = &login
+		validatePassword(&v, "password", in.Password, in.Password)
+	}
+	if in.CompanyID != "" && uuid.Validate(in.CompanyID) != nil {
+		v.Add("companyId", "must be a valid ID")
 	}
 	var result *UserDetail
 	err := s.store.InTx(ctx, func(st Store) error {
@@ -73,15 +103,30 @@ func (s *User) Create(ctx context.Context, actor *auth.Principal, in CreateUserI
 		if err != nil {
 			return err
 		}
+		if in.CompanyID != "" && v.Err() == nil {
+			if _, err := st.Companies().Get(ctx, in.CompanyID); errors.Is(err, apperr.ErrNotFound) {
+				v.Add("companyId", "company does not exist")
+			} else if err != nil {
+				return err
+			}
+		}
 		if err := v.Err(); err != nil {
 			return err
 		}
-		taken, err := st.Users().EmailOrLoginTaken(ctx, u.Email, nil)
+		taken, err := st.Users().EmailOrLoginTaken(ctx, u.Email, u.Login)
 		if err != nil {
 			return err
 		}
 		if taken {
-			return apperr.New(apperr.ErrConflict, "user_exists", "a user with this email already exists")
+			return apperr.New(apperr.ErrConflict, "user_exists", "a user with this login or email already exists")
+		}
+		if credentials {
+			hash, err := hashPassword(in.Password)
+			if err != nil {
+				return err
+			}
+			// An administrator set the password: active, but must change it.
+			u.PasswordHash, u.PasswordChangeRequired, u.Status = &hash, true, model.UserActive
 		}
 		if err := st.Users().Create(ctx, u); err != nil {
 			return err
@@ -89,8 +134,21 @@ func (s *User) Create(ctx context.Context, actor *auth.Principal, in CreateUserI
 		if err := st.Roles().SetUserRoles(ctx, u.ID, roleIDs); err != nil {
 			return err
 		}
-		if err := s.audit(ctx, st, actor, "user.created", "user", u.ID, nil, "", map[string]any{"email": u.Email, "roleIds": roleIDs}); err != nil {
+		if err := s.audit(ctx, st, actor, "user.created", "user", u.ID, nil, "", map[string]any{"email": u.Email, "login": u.Login, "roleIds": roleIDs}); err != nil {
 			return err
+		}
+		if in.CompanyID != "" {
+			m := &model.Membership{
+				ID: uuid.NewString(), UserID: u.ID, CompanyID: in.CompanyID, Status: model.MembershipActive,
+				BranchAccess: model.AllBranches, Version: 1, CreatedAt: now, UpdatedAt: now,
+			}
+			if err := st.Memberships().Create(ctx, m); err != nil {
+				return err
+			}
+			if err := s.audit(ctx, st, actor, "membership.granted", "membership", m.ID, &m.CompanyID, "",
+				map[string]any{"userId": u.ID, "branchAccess": m.BranchAccess}); err != nil {
+				return err
+			}
 		}
 		result, err = s.detail(ctx, st, u)
 		return err

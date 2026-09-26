@@ -57,6 +57,7 @@ interface User {
   login: string | null;
   status: string;
   roles: { id: string; name: string }[];
+  companyIds: string[];
   revision: string;
 }
 interface Role {
@@ -426,11 +427,17 @@ const statusLabel: Record<string, string> = { pending: 'Без пароля', ac
 export function UsersPage() {
   const q = useData(['admin-users'], () => list<User>('/identity/admin/users?limit=200'));
   const roles = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
+  const companies = useData(['admin-companies', 'all'], () => list<Company>('/identity/admin/companies?limit=200'));
+  const companyName = new Map((companies.data ?? []).map((c) => [c.id, c.name]));
   const [open, setOpen] = useState<string | null>(null);
   const [query, setQuery] = useSearchQuery();
   const [status, setStatus] = useState('');
+  const [company, setCompany] = useState('');
   const rows = (q.data ?? []).filter(
-    (u) => (!status || u.status === status) && matches(query, u.displayName, u.email, u.login),
+    (u) =>
+      (!status || u.status === status) &&
+      (!company || u.companyIds.includes(company)) &&
+      matches(query, u.displayName, u.email, u.login, ...u.companyIds.map((id) => companyName.get(id))),
   );
   return (
     <Page
@@ -440,10 +447,18 @@ export function UsersPage() {
         <ActionButton
           label="+ Добавить пользователя"
           variant="primary"
-          refresh={[['admin-users']]}
+          refresh={[['admin-users'], ['admin-memberships']]}
           fields={[
             { name: 'displayName', label: 'Имя', type: 'text', required: true },
-            { name: 'email', label: 'E-mail', type: 'email', required: true },
+            {
+              name: 'companyId',
+              label: 'Компания',
+              type: 'select',
+              options: (companies.data ?? []).map((c) => [c.id, c.name]),
+            },
+            { name: 'login', label: 'Логин', type: 'text' },
+            { name: 'password', label: 'Временный пароль (не менее 12 символов)', type: 'password' },
+            { name: 'email', label: 'E-mail', type: 'email' },
             {
               name: 'roleIds',
               label: 'Роли',
@@ -451,14 +466,33 @@ export function UsersPage() {
               options: (roles.data ?? []).map((r) => [r.id, r.name]),
             },
           ]}
-          intro={<p>Логин и временный пароль выдаются в карточке пользователя; письма не отправляются.</p>}
+          intro={
+            <p>
+              Компания даёт доступ ко всем её филиалам; права задают роли. Логин и временный пароль можно выдать сразу
+              или позже в карточке пользователя — при первом входе пароль нужно сменить. Письма не отправляются.
+            </p>
+          }
           onSubmit={(v) => post('/identity/admin/users', v)}
         />
       }
     >
       <Panel>
-        <Toolbar query={query} onQuery={setQuery} placeholder="Имя, логин или email" onReset={() => setStatus('')}>
+        <Toolbar
+          query={query}
+          onQuery={setQuery}
+          placeholder="Имя, логин, email или компания"
+          onReset={() => {
+            setStatus('');
+            setCompany('');
+          }}
+        >
           <FilterSelect value={status} onChange={setStatus} all="Все статусы" options={Object.entries(statusLabel)} />
+          <FilterSelect
+            value={company}
+            onChange={setCompany}
+            all="Все компании"
+            options={(companies.data ?? []).map((c) => [c.id, c.name] as [string, string])}
+          />
         </Toolbar>
         <Table
           rows={rows}
@@ -470,7 +504,15 @@ export function UsersPage() {
           columns={[
             {
               title: 'Пользователь',
-              render: (u) => <Cell main={u.displayName} sub={u.login ? `${u.login} · ${u.email}` : u.email} />,
+              render: (u) => <Cell main={u.displayName} sub={[u.login, u.email].filter(Boolean).join(' · ')} />,
+            },
+            {
+              title: 'Компании',
+              render: (u) =>
+                u.companyIds
+                  .map((id) => companyName.get(id))
+                  .filter(Boolean)
+                  .join(', ') || '—',
             },
             { title: 'Роли', render: (u) => u.roles.map((r) => r.name).join(', ') || '—' },
             {
@@ -492,9 +534,7 @@ export function UsersPage() {
           ]}
         />
       </Panel>
-      <div className="admin-note">
-        Двухфакторную защиту пользователь настраивает сам в своём кабинете. Пароли в журнал не попадают.
-      </div>
+      <div className="admin-note">Пароли в журнал не попадают.</div>
       {open && <UserDialog id={open} roles={roles.data ?? []} onClose={() => setOpen(null)} />}
     </Page>
   );
