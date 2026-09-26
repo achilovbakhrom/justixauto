@@ -111,12 +111,7 @@ func (s *CompanyUser) List(ctx context.Context, actor *auth.Principal, companyID
 // Create adds an employee with login, temporary password and prepared roles.
 func (s *CompanyUser) Create(ctx context.Context, actor *auth.Principal, companyID string, in CompanyUserInput) (*UserDetail, error) {
 	var v apperr.Validation
-	if in.Login == "" {
-		v.Add("login", "required")
-	}
-	if in.Password == "" {
-		v.Add("password", "required")
-	}
+	requireCredentials(&v, in.Login, in.Password)
 	n := buildUser(&v, s.clock(), in.DisplayName, in.Email, in.Login, in.Password)
 	n.companyID = companyID
 	var result *UserDetail

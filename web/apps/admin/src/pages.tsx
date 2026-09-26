@@ -443,13 +443,19 @@ export function UsersPage() {
           fields={[
             { name: 'displayName', label: 'Имя', type: 'text', required: true },
             { name: 'email', label: 'E-mail', type: 'email' },
-            { name: 'login', label: 'Логин', type: 'text' },
-            { name: 'password', label: 'Временный пароль', type: 'password', hint: 'Не менее 12 символов' },
+            { name: 'login', label: 'Логин', type: 'text', required: true },
+            {
+              name: 'password',
+              label: 'Временный пароль',
+              type: 'password',
+              required: true,
+              hint: 'Не менее 12 символов',
+            },
           ]}
           intro={
             <p>
-              Сотрудник получает роль «Platform administrator»; её можно изменить в карточке. Логин и временный пароль
-              можно выдать сразу или позже — при первом входе пароль нужно сменить. Письма не отправляются.
+              Сотрудник получает роль «Platform administrator»; её можно изменить в карточке. При первом входе временный
+              пароль нужно сменить. Письма не отправляются.
             </p>
           }
           onSubmit={(v) => post('/identity/admin/users', { ...v, roleIds: platformAdmin ? [platformAdmin.id] : [] })}

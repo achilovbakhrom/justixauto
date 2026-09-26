@@ -11700,6 +11700,8 @@
             "type": "object",
             "required": [
                 "displayName",
+                "login",
+                "password",
                 "roleIds"
             ],
             "properties": {

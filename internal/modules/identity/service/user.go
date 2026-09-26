@@ -16,15 +16,15 @@ import (
 func NewUser(d Deps) *User { return &User{d} }
 
 // CreateUserInput creates a JustixAuto staff user with platform roles (user
-// decisions 2026-09-26): email is optional; login and a temporary password
-// may be set right away (both or neither). Company employees are created by
-// their company admin (see CompanyUser).
+// decisions 2026-09-26): login and a temporary password are required, email
+// is optional. Company employees are created by their company admin (see
+// CompanyUser).
 type CreateUserInput struct {
 	DisplayName string   `json:"displayName"`
 	Email       string   `json:"email" binding:"optional"`
 	RoleIDs     []string `json:"roleIds"`
-	Login       string   `json:"login" binding:"optional"`
-	Password    string   `json:"password" binding:"optional"`
+	Login       string   `json:"login"`
+	Password    string   `json:"password"`
 }
 
 type UpdateUserInput struct {
@@ -88,6 +88,17 @@ func (s *User) detail(ctx context.Context, st Store, u *model.User) (*UserDetail
 		}
 	}
 	return &UserDetail{User: u, Roles: roles, CompanyIDs: companyIDs}, nil
+}
+
+// requireCredentials: every new user gets a login and a temporary password
+// (user decision 2026-09-26).
+func requireCredentials(v *apperr.Validation, login, password string) {
+	if login == "" {
+		v.Add("login", "required")
+	}
+	if password == "" {
+		v.Add("password", "required")
+	}
 }
 
 // newUser holds a validated user about to be created: its optional
@@ -160,10 +171,11 @@ func (d Deps) create(ctx context.Context, st Store, actor *auth.Principal, n new
 	return (&User{d}).detail(ctx, st, u)
 }
 
-// Create registers a JustixAuto staff user with platform roles. Without a
-// login and password the user stays pending until credentials are set.
+// Create registers a JustixAuto staff user with platform roles, a login and
+// a temporary password (changed at first sign-in).
 func (s *User) Create(ctx context.Context, actor *auth.Principal, in CreateUserInput) (*UserDetail, error) {
 	var v apperr.Validation
+	requireCredentials(&v, in.Login, in.Password)
 	n := buildUser(&v, s.clock(), in.DisplayName, in.Email, in.Login, in.Password)
 	var result *UserDetail
 	err := s.store.InTx(ctx, func(st Store) error {
