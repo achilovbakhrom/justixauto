@@ -54,19 +54,30 @@ export function CompanyEmployees() {
       actions={
         <ActionButton
           label="+ Добавить сотрудника"
+          title="Новый сотрудник"
+          submitLabel="Добавить"
           variant="primary"
           refresh={refresh}
           fields={[
             { name: 'displayName', label: 'Имя', type: 'text', required: true },
-            { name: 'login', label: 'Логин', type: 'text', required: true },
-            { name: 'password', label: 'Временный пароль (не менее 12 символов)', type: 'password', required: true },
             { name: 'email', label: 'E-mail', type: 'email' },
+            { name: 'login', label: 'Логин', type: 'text', required: true },
+            {
+              name: 'password',
+              label: 'Временный пароль',
+              type: 'password',
+              required: true,
+              hint: 'Не менее 12 символов',
+            },
             { name: 'roleIds', label: 'Роли', type: 'multiselect', options: roleOptions },
           ]}
           intro={
             <p>
               Роли подготовлены администратором платформы. Сотрудник сменит временный пароль при первом входе; письма не
               отправляются.
+              {roles.data &&
+                roleOptions.length === 0 &&
+                ' Подходящих ролей пока нет — их готовит администратор платформы.'}
             </p>
           }
           onSubmit={(v) => post(`${base}/users`, v)}
@@ -124,9 +135,10 @@ export function CompanyEmployees() {
                       fields={[
                         {
                           name: 'password',
-                          label: 'Временный пароль (не менее 12 символов)',
+                          label: 'Временный пароль',
                           type: 'password',
                           required: true,
+                          hint: 'Не менее 12 символов',
                         },
                       ]}
                       onSubmit={(v) => post(`${base}/users/${u.id}/password`, v, { ifMatch: u.revision })}

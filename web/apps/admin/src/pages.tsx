@@ -434,19 +434,29 @@ export function UsersPage() {
       actions={
         <ActionButton
           label="+ Добавить сотрудника"
+          title="Новый сотрудник платформы"
+          submitLabel="Добавить"
           variant="primary"
           refresh={[['admin-users']]}
           fields={[
             { name: 'displayName', label: 'Имя', type: 'text', required: true },
-            { name: 'login', label: 'Логин', type: 'text' },
-            { name: 'password', label: 'Временный пароль (не менее 12 символов)', type: 'password' },
             { name: 'email', label: 'E-mail', type: 'email' },
-            { name: 'roleIds', label: 'Роли', type: 'multiselect', options: staffRoles.map((r) => [r.id, r.name]) },
+            { name: 'login', label: 'Логин', type: 'text' },
+            { name: 'password', label: 'Временный пароль', type: 'password', hint: 'Не менее 12 символов' },
+            {
+              name: 'roleIds',
+              label: 'Роли платформы',
+              type: 'multiselect',
+              options: staffRoles.map((r) => [r.id, r.name]),
+            },
           ]}
           intro={
             <p>
               Логин и временный пароль можно выдать сразу или позже в карточке сотрудника — при первом входе пароль
               нужно сменить. Письма не отправляются.
+              {roles.data &&
+                staffRoles.length === 0 &&
+                ' Ролей платформы пока нет — подготовьте их в «Роли и разрешения».'}
             </p>
           }
           onSubmit={(v) => post('/identity/admin/users', v)}

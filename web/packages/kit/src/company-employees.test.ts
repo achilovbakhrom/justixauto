@@ -56,14 +56,14 @@ describe('company employees', () => {
     await screen.findByText('Иван');
 
     fireEvent.click(screen.getByRole('button', { name: '+ Добавить сотрудника' }));
-    const dialog = await screen.findByRole('dialog', { name: '+ Добавить сотрудника' });
+    const dialog = await screen.findByRole('dialog', { name: 'Новый сотрудник' });
     fireEvent.change(within(dialog).getByLabelText('Имя'), { target: { value: 'Ольга' } });
     fireEvent.change(within(dialog).getByLabelText('Логин'), { target: { value: 'olga' } });
-    fireEvent.change(within(dialog).getByLabelText('Временный пароль (не менее 12 символов)'), {
+    fireEvent.change(within(dialog).getByLabelText('Временный пароль'), {
       target: { value: 'long-enough-password' },
     });
     fireEvent.click(await within(dialog).findByText('Менеджер продаж'));
-    fireEvent.click(within(dialog).getByRole('button', { name: '+ Добавить сотрудника' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Добавить' }));
 
     await waitFor(() => expect(posted).toBeDefined());
     expect(posted!.url).toContain('/identity/companies/c-1/users');

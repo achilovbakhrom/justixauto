@@ -1638,6 +1638,9 @@ tbody tr:hover {
   border: 0;
 }
 .checkbox-fieldset legend {
+  /* A field label, not a section heading: no divider line above it. */
+  border-top: 0;
+  padding-top: 0;
   margin-bottom: 8px;
   color: var(--text-secondary);
   font-size: 12px;

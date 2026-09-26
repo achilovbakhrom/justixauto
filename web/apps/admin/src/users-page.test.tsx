@@ -81,17 +81,17 @@ describe('platform staff page', () => {
     await screen.findByText('Иван');
 
     fireEvent.click(screen.getByRole('button', { name: '+ Добавить сотрудника' }));
-    const dialog = await screen.findByRole('dialog', { name: '+ Добавить сотрудника' });
+    const dialog = await screen.findByRole('dialog', { name: 'Новый сотрудник платформы' });
     expect(within(dialog).queryByLabelText('Компания')).toBeNull();
     expect(within(dialog).queryByText('Company administrator')).toBeNull();
     expect(within(dialog).getByText('Platform administrator')).toBeTruthy();
 
     fireEvent.change(within(dialog).getByLabelText('Имя'), { target: { value: 'Оператор' } });
     fireEvent.change(within(dialog).getByLabelText('Логин'), { target: { value: 'operator' } });
-    fireEvent.change(within(dialog).getByLabelText('Временный пароль (не менее 12 символов)'), {
+    fireEvent.change(within(dialog).getByLabelText('Временный пароль'), {
       target: { value: 'long-enough-password' },
     });
-    fireEvent.click(within(dialog).getByRole('button', { name: '+ Добавить сотрудника' }));
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Добавить' }));
     await waitFor(() => expect(body).toMatchObject({ displayName: 'Оператор', login: 'operator' }));
   });
 });
