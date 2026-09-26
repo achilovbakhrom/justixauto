@@ -20,9 +20,6 @@ jobs:
 
   deploy:
     name: Build, Migrate and Deploy
-    if: >
-      ${{ github.event.workflow_run.conclusion == 'success' &&
-          github.event.workflow_run.head_branch == 'dev' }}
 
     runs-on:
       group: jlearnx runner
@@ -39,7 +36,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
           persist-credentials: false
 
 
@@ -78,8 +74,8 @@ jobs:
       - name: Build Justix Auto
         run: |
           docker build \
-            --build-arg VERSION="${{ github.event.workflow_run.head_sha }}" \
-            -t "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.event.workflow_run.head_sha }}" \
+            --build-arg VERSION="${{ github.sha }}" \
+            -t "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.sha }}" \
             .
 
 
@@ -90,7 +86,7 @@ jobs:
       - name: Push Justix Auto
         run: |
           docker push \
-            "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.event.workflow_run.head_sha }}"
+            "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.sha }}"
 
 
 
@@ -101,7 +97,7 @@ jobs:
       - name: Create deployment environment
         run: |
           cat > "$GITHUB_WORKSPACE/.env" << EOF
-          IMAGE_TAG=${{ github.event.workflow_run.head_sha }}
+          IMAGE_TAG=${{ github.sha }}
 
           DATABASE_URL=postgres://${{ secrets.JUSTIX_AUTO_DB_USER }}:${{ secrets.JUSTIX_AUTO_DB_PASSWORD }}@${{ secrets.JUSTIX_AUTO_DB_HOST }}:${{ secrets.JUSTIX_AUTO_DB_PORT }}/${{ secrets.JUSTIX_AUTO_DB_NAME }}?sslmode=disable
 
