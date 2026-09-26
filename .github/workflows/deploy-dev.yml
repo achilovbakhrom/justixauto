@@ -30,7 +30,7 @@ jobs:
     steps:
 
       # ---------------------------------------------------------
-      # CHECKOUT EXACT COMMIT THAT PASSED CI
+      # CHECKOUT
       # ---------------------------------------------------------
 
       - name: Checkout
@@ -75,6 +75,7 @@ jobs:
         run: |
           docker build \
             --build-arg VERSION="${{ github.sha }}" \
+            --label "com.justix.project=justix-auto" \
             -t "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.sha }}" \
             .
 
@@ -87,7 +88,6 @@ jobs:
         run: |
           docker push \
             "$DOCKER_USERNAME/$IMAGE_NAME:${{ github.sha }}"
-
 
 
       # ---------------------------------------------------------
@@ -166,13 +166,17 @@ jobs:
         run: |
           echo "Waiting for Justix Auto..."
 
+          HOST_IP=$(ip route | awk '/default/ {print $3; exit}')
+
+          echo "Docker host: $HOST_IP"
+
           for i in $(seq 1 30); do
             if curl \
               --fail \
               --silent \
               --show-error \
               --max-time 3 \
-              "http://127.0.0.1:2047/healthz"
+              "http://${HOST_IP}:2047/healthz"
             then
               echo
               echo "Justix Auto is healthy"
@@ -183,6 +187,13 @@ jobs:
           done
 
           echo "Health check failed"
+
+          docker compose ps
+
+          docker compose logs \
+            --tail=150 \
+            api
+
           exit 1
 
 
@@ -198,12 +209,121 @@ jobs:
 
 
       # ---------------------------------------------------------
-      # LIGHT CLEANUP
+      # CLEANUP LOCAL JUSTIX AUTO IMAGES
+      # ---------------------------------------------------------
+
+      - name: Cleanup local Justix Auto images
+        run: |
+          echo "Cleaning unused Justix Auto images..."
+
+          docker image prune \
+            -af \
+            --filter "label=com.justix.project=justix-auto"
+
+          echo "Local Justix Auto cleanup completed."
+
+
+      # ---------------------------------------------------------
+      # CLEANUP OLD DOCKER HUB TAGS
+      # Keep latest 5 SHA tags
+      # ---------------------------------------------------------
+
+      - name: Cleanup old Docker Hub images
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "Cleaning old Docker Hub tags..."
+
+          TOKEN=$(
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --request POST \
+              --header "Content-Type: application/json" \
+              --data "{\"username\":\"${DOCKERHUB_USERNAME}\",\"password\":\"${DOCKERHUB_TOKEN}\"}" \
+              https://hub.docker.com/v2/users/login/ \
+            | python3 -c 'import sys,json; print(json.load(sys.stdin)["token"])'
+          )
+
+          TAGS_JSON=$(
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --header "Authorization: Bearer ${TOKEN}" \
+              --header "Accept: application/json" \
+              "https://hub.docker.com/v2/namespaces/${DOCKERHUB_USERNAME}/repositories/${IMAGE_NAME}/tags?page_size=100"
+          )
+
+          OLD_TAGS=$(
+            echo "$TAGS_JSON" | python3 -c '
+          import sys
+          import json
+
+          data = json.load(sys.stdin)
+
+          tags = [
+              tag
+              for tag in data.get("results", [])
+              if tag.get("name") != "latest"
+          ]
+
+          tags.sort(
+              key=lambda tag: tag.get("last_updated", ""),
+              reverse=True
+          )
+
+          for tag in tags[5:]:
+              print(tag["name"])
+          '
+          )
+
+          if [ -z "$OLD_TAGS" ]; then
+            echo "Nothing to delete. 5 or fewer SHA tags exist."
+            exit 0
+          fi
+
+          while IFS= read -r TAG; do
+            [ -z "$TAG" ] && continue
+
+            echo "Deleting old Docker Hub tag: ${TAG}"
+
+            curl \
+              --fail \
+              --silent \
+              --show-error \
+              --request DELETE \
+              --header "Authorization: Bearer ${TOKEN}" \
+              "https://hub.docker.com/v2/namespaces/${DOCKERHUB_USERNAME}/repositories/${IMAGE_NAME}/tags/${TAG}"
+
+          done <<< "$OLD_TAGS"
+
+          echo "Docker Hub cleanup completed."
+
+
+      # ---------------------------------------------------------
+      # CLEANUP BUILD CACHE
       # ---------------------------------------------------------
 
       - name: Cleanup build cache
         run: |
-          docker builder prune -f --filter "until=24h"
+          docker builder prune \
+            -f \
+            --filter "until=24h"
+
+
+      # ---------------------------------------------------------
+      # REMOVE TEMPORARY ENV
+      # ---------------------------------------------------------
+
+      - name: Remove temporary environment
+        if: always()
+        run: |
+          rm -f "$GITHUB_WORKSPACE/.env"
 
 
       # ---------------------------------------------------------
