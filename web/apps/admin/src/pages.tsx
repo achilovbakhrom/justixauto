@@ -21,6 +21,8 @@ import {
   countries,
   matches,
   patch,
+  permissionLabel,
+  permissionOptions,
   post,
   regionsFor,
   useData,
@@ -588,7 +590,8 @@ export function RolesPage() {
   const q = useData(['admin-roles'], () => list<Role>('/identity/admin/roles'));
   const perms = useData(['admin-permissions'], () => list<Permission>('/identity/admin/permissions'));
   const permOptions = (scope: string) =>
-    (perms.data ?? []).filter((p) => p.assignable && p.scope === scope).map((p): [string, string] => [p.key, p.key]);
+    permissionOptions((perms.data ?? []).filter((p) => p.assignable && p.scope === scope).map((p) => p.key));
+  const permList = (keys: string[]) => keys.map(permissionLabel).join(', ');
   const fields = (scope: string, r?: Role): FieldSpec[] => [
     { name: 'name', label: 'Название', type: 'text', required: true, initial: r?.name ?? '' },
     ...(scope === 'company'
@@ -653,7 +656,7 @@ export function RolesPage() {
             },
             {
               title: 'Разрешения',
-              render: (r) => <span title={r.permissionKeys.join(', ')}>{r.permissionKeys.length}</span>,
+              render: (r) => <span title={permList(r.permissionKeys)}>{r.permissionKeys.length}</span>,
             },
             {
               title: '',
@@ -664,7 +667,7 @@ export function RolesPage() {
                     label="Просмотреть"
                     fields={[]}
                     submitLabel="Закрыть"
-                    intro={<p>{r.permissionKeys.join(', ') || 'Права платформы'}</p>}
+                    intro={<p>{permList(r.permissionKeys) || 'Права платформы'}</p>}
                     onSubmit={async () => undefined}
                   />
                 ) : (

@@ -104,10 +104,10 @@ describe('roles page', () => {
 
     fireEvent.click(screen.getByRole('button', { name: '+ Роль компании' }));
     const dialog = await screen.findByRole('dialog', { name: '+ Роль компании' });
-    expect(within(dialog).queryByText('platform.audit.read')).toBeNull();
+    expect(within(dialog).queryByText('Платформа: журнал действий')).toBeNull();
     fireEvent.change(within(dialog).getByLabelText('Название'), { target: { value: 'Кассир' } });
     fireEvent.change(within(dialog).getByLabelText('Тип компании (пусто — любой)'), { target: { value: 'seller' } });
-    fireEvent.click(within(dialog).getByText('retail.read'));
+    fireEvent.click(within(dialog).getByText('Продажи: просмотр'));
     fireEvent.click(within(dialog).getByRole('button', { name: '+ Роль компании' }));
 
     await waitFor(() => expect(posted).toBeDefined());
